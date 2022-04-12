@@ -48,18 +48,18 @@ module.exports = withNextra({
         statusCode: 301,
       },
       {
-        source: "/releases/:path",
-        destination: "/resources/:path",
+        source: "/releases/:path*",
+        destination: "/resources/:path*",
         statusCode: 301,
       },
       {
-        source: "/user/:path",
-        destination: "/resources/:path",
+        source: "/user/:path*",
+        destination: "/resources/:path*",
         statusCode: 301,
       },
       {
-        source: "/roles/:path",
-        destination: "/:path",
+        source: "/roles/:path*",
+        destination: "/:path*",
         statusCode: 301,
       },
     ];
