@@ -18,7 +18,7 @@
     "intersection-observer": "^0.10.0",
     "lodash": "^4.17.21",
     "markdown-to-jsx": "^6.11.4",
-    "next": "12.1.1-canary.6",
+    "next": "^12.1.0",
     "nextra": "2.0.0-alpha.44",
     "nextra-theme-docs": "2.0.0-alpha.44",
     "postcss-flexbugs-fixes": "^5.0.2",
