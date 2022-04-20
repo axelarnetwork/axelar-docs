@@ -58,6 +58,11 @@ module.exports = withNextra({
         destination: "/:slug*",
         statusCode: 301,
       },
+      {
+        source: "/dev",
+        destination: "/dev/intro",
+        statusCode: 301,
+      },
     ];
   },
 });

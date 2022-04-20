@@ -9,7 +9,7 @@ const items = [
     icon: (
       <RiCodeFill size={24} />
     ),
-    url: "/dev",
+    url: "/dev/intro",
     external: false,
   },
   {

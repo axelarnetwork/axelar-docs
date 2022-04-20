@@ -1,4 +1,5 @@
 {
+  "intro": "Introduction",
   "gmp": "General message passing",
   "cli": "CLI",
   "sdk": "AxelarJS SDK"
