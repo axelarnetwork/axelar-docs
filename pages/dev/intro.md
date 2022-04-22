@@ -12,7 +12,3 @@ Here are two basic cross-chain functions you can add to a dApp using Axelar.
 2. General Message Passing: Call any function on any chain from inside a dApp; compose DeFi functions; move NFTs cross-chain; perform cross-chain calls of any kind that sync state securely between dApps on various ecosystems.
 
 The following sections will show you how to set up a local development environment for testing these functions in your dApp, then deploy to testnet and mainnet.
-
-## A note to protocol developers
-
-The material in this section is primarily relevant to application developers. However, protocol developers can integrate new chains easily, with the support of Axelar's permissionless validator set. Please refer to our [section for protocol developers](TKTKTK link to section for protocol developers) to learn more.
