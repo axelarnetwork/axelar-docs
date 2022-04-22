@@ -1,5 +1,7 @@
 # Learn about Axelar
 
+import Button from '../components/button'
+
 UNDER CONSTRUCTION
 
 ## Gateway smart contracts
@@ -17,3 +19,11 @@ What is MS and what does it do? MS is an optional convenience provided by Axelar
 ## Gas receiver
 
 Gas receiver is an example of MS: without gas receiver your GMP tx is “approved” but not “executed”. You could execute it yourself or you could use Axelar’s gas receiver to automatically execute your approved tx.
+
+## AxelarJS SDK
+
+[link](./learn/sdk)
+
+## CLI
+
+[link](./learn/cli)
