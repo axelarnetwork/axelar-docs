@@ -1,13 +1,13 @@
-# General message passing
+# General Message Passing
 
 With General Message Passing you can:
 
-- Call a contract on chain B from chain A
-- Call a contract on chain B from chain A and attach some tokens
+- Call a contract on chain B from chain A.
+- Call a contract on chain B from chain A and attach some tokens.
 
-For GMP to work, both chain A and chain B should have an axelar Gateway deployed.
+For GMP to work, both chain A and chain B should have an Axelar Gateway deployed.
 
-To check if a chain has an Axelar Gateway deployed you can refer to Resources: [mainnet](../resources/mainnetmd) | [testnet](../resources/testnet.md).
+To check if a chain has an Axelar Gateway deployed you can refer to Resources: [mainnet](../resources/mainnet) | [testnet](../resources/testnet).
 
 ![axelar-gmp.png](/images/axelar-gmp.png)
 
@@ -15,9 +15,9 @@ To check if a chain has an Axelar Gateway deployed you can refer to Resources: [
 
 To call chain B from chain A the user needs to call `callContract` on the gateway of chain A, specifying:
 
-- the destination chain
-- the destination contract address to call
-- the payload to pass to the destination contract.
+- The destination chain.
+- The destination contract address to call.
+- The payload to pass to the destination contract.
 
 As per snippet below.
 
@@ -31,7 +31,7 @@ function callContract(
 
 The destination contract must implement the `IAxelarExecutable` interface defined in [IAxelarExecutable.sol](https://github.com/axelarnetwork/axelar-cgp-solidity/blob/main/src/interfaces/IAxelarExecutable.sol).
 
-`IAxelarExecutable` has an `_execute` function that will be triggered by the Axelar Network after the `callContract` function has been executed. You can write any custom logic there.
+`IAxelarExecutable` has an `_execute` function that will be triggered by the Axelar network after the `callContract` function has been executed. You can write any custom logic there.
 
 ```solidity
 function _execute(
@@ -45,11 +45,11 @@ function _execute(
 
 To call chain B from chain A and send some tokens along the way, the user needs to call `callContractWithToken` on the gateway of chain A, specifying:
 
-- the destination chain
-- the destination contract address to call
-- the payload to pass to the destination contract
-- the symbol of the token to transfer
-- the amount of the token to transfer.
+- The destination chain.
+- The destination contract address to call.
+- The payload to pass to the destination contract.
+- The symbol of the token to transfer.
+- The amount of the token to transfer.
 
 As per snippet below.
 
@@ -65,9 +65,9 @@ function callContractWithToken(
 
 The destination contract must implement the `IAxelarExecutable` interface defined in [IAxelarExecutable.sol](https://github.com/axelarnetwork/axelar-cgp-solidity/blob/main/src/interfaces/IAxelarExecutable.sol).
 
-`IAxelarExecutable` has an `\_executeWithToken` function that will be triggered by the Axelar Network after the `callContractWithToken` function has been executed. You can write any custom logic there.
+`IAxelarExecutable` has an `\_executeWithToken` function that will be triggered by the Axelar network after the `callContractWithToken` function has been executed. You can write any custom logic there.
 
-The destination contract will be authorised to transfer the ERC20 identified by the `tokenSymbol`.
+The destination contract will be authorized to transfer the ERC-20 identified by the `tokenSymbol`.
 
 ```solidity
 function _executeWithToken(
@@ -93,7 +93,7 @@ function _executeWithToken(
 ) internal virtual {
 	// decode recipient
   address memory recipient = abi.decode(payload, (address));
-	// get ERC20 address from gateway
+	// get ERC-20 address from gateway
   address tokenAddress = gateway.tokenAddresses(tokenSymbol);
 
 	// transfer received tokens to the recipient
@@ -105,7 +105,7 @@ function _executeWithToken(
 
 You have probably noticed that the `payload` that is passed to `callContract` (and ultimately to the `_execute` and `_executeWithToken`) are `bytes`. To encode data as `bytes` you can use the ABI encoder/decoder.
 
-Example of payload encoding in javascript (using ethers.js)
+Example of payload encoding in JavaScript (using ethers.js):
 
 ```jsx
 const { ethers } = require("ethers");
@@ -117,7 +117,7 @@ const payload = ethers.utils.defaultAbiCoder.encode(
 );
 ```
 
-Example of payload decoding in Solidity
+Example of payload decoding in Solidity:
 
 ```solidity
 function _execute(
