@@ -7,7 +7,7 @@ With General Message Passing you can:
 
 For GMP to work, both chain A and chain B should have an Axelar Gateway deployed.
 
-To check if a chain has an Axelar Gateway deployed you can refer to Resources: [mainnet](../resources/mainnet) | [testnet](../resources/testnet).
+To check if a chain has an Axelar Gateway deployed you can refer to [Resources](../resources).
 
 ![axelar-gmp.png](/images/axelar-gmp.png)
 

@@ -25,7 +25,7 @@ Use a deposit address if:
 
 ### 1. Locate the Axelar Gateway contract on the source chain
 
-Axelar Gateways are application-layer smart contracts established on source and destination chains. They send and receive payloads, and monitor state. Find a list of gateway addresses for the chains we support in Resources: [mainnet](../resources/mainnet) | [testnet](../resources/testnet).
+Axelar Gateways are application-layer smart contracts established on source and destination chains. They send and receive payloads, and monitor state. Find a list of gateway addresses for the chains we support in [Resources](../resources).
 
 An Axelar Gateway implements the `IAxelarGateway` interface, which has a public method called `sendToken`:
 
@@ -48,7 +48,7 @@ function approve(address spender, uint256 amount) external returns (bool);
 
 Here `spender` is the Gateway address on the source chain.
 
-Find a list of assets, their names and their addresses in resources: [mainnet](../resources/mainnet) | [testnet](../resources/testnet).
+Find a list of assets, their names and their addresses in [Resources](../resources).
 
 ### 3. Execute sendToken on the Gateway
 
