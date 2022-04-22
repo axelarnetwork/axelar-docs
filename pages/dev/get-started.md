@@ -21,15 +21,15 @@ When you're ready to go live:
 1. Deploy your `IAxelarExecutable` contracts to any EVM chain supported by Axelar.
 2. Remove calls to `relay()`---the Axelar network will handle everything for you!
 
-TODO
-
-## Working examples
-
-TODO
-
-- Hello world
-- more
-
-View the github README for instructions and code:
+See `axelar-local-gmp-examples` for a working example:
 
 <Button title="axelar-local-gmp-examples" url="https://github.com/axelarnetwork/axelar-local-gmp-examples" />
+
+## More examples
+
+- [Simple](https://github.com/axelarnetwork/axelar-local-gmp-examples/tree/main/advanced-examples/general-message-passing). Set up two EVM chains, transfer tokens from one chain to the other, send a "Hello world!" message to a contract on both chains.
+- [Metamask](https://github.com/axelarnetwork/axelar-local-gmp-examples/tree/main/advanced-examples/metamask). Set up two EVM chains and a simple web page to connect Metamask and transfer tokens from one chain to the other.
+- [Remote](https://github.com/axelarnetwork/axelar-local-gmp-examples/tree/main/advanced-examples/remote). Set up a test environment and connect to it remotely.
+- [Token linker](https://github.com/axelarnetwork/axelar-local-gmp-examples/tree/main/advanced-examples/token-linker). Use cross-chain contract calls to transfer ERC-20 tokens across EVM chains.
+- [NFT linker](https://github.com/axelarnetwork/axelar-local-gmp-examples/tree/main/advanced-examples/nft-linker). Use cross-chain contract calls to transfer NFTs across EVM chains.
+- More to come
