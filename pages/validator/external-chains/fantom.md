@@ -33,12 +33,12 @@ Install the [latest version of golang](https://go.dev/doc/install).
 
 ### 1. Checkout and build go-opera
 
-Use the commands below to clone the `go-opera` repository, checkout correct version and compile the binary.
+Please make sure you checkout the [latest release tag](https://github.com/Fantom-foundation/go-opera/tags). In this tutorial we are using `1.1.0-rc.4`.
 
 ```bash
 git clone https://github.com/Fantom-foundation/go-opera.git
 cd go-opera/
-git checkout release/1.0.2-rc.5
+git checkout release/1.1.0-rc.4
 make
 ```
 

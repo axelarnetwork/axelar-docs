@@ -41,13 +41,13 @@ Polygon node consists of 2 layers, `Heimdall` and `Bor`. Heimdall is a fork of t
 
 ### 1. Install Heimdall
 
-Please make sure you checkout the [latest release tag](https://github.com/maticnetwork/heimdall/tags). In this tutorial we are using `v0.2.5-beta1`
+Please make sure you checkout the [latest release tag](https://github.com/maticnetwork/heimdall/tags). In this tutorial we are using `v0.2.9`
 
 ```bash
 cd ~/
 git clone https://github.com/maticnetwork/heimdall
 cd heimdall
-git checkout v0.2.5-beta1
+git checkout v0.2.9
 make install
 
 # Verify the correct version
@@ -56,13 +56,13 @@ heimdalld version --long
 
 ### 2. Install Bor
 
-Please make sure you checkout the [latest release tag](https://github.com/maticnetwork/bor/tags). In this tutorial we are using `v0.2.13-beta2`
+Please make sure you checkout the [latest release tag](https://github.com/maticnetwork/bor/tags). In this tutorial we are using `v0.2.14`
 
 ```bash
 cd ~/
 git clone https://github.com/maticnetwork/bor
 cd bor
-git checkout v0.2.13-beta2
+git checkout v0.2.14
 make bor-all
 sudo ln -nfs ~/bor/build/bin/bor /usr/bin/bor
 sudo ln -nfs ~/bor/build/bin/bootnode /usr/bin/bootnode
