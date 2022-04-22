@@ -13,7 +13,7 @@ Use `sendToken` if:
 Use a deposit address if:
 
 - You need functionality not offered by `sendToken`. Example: Cosmos-to-X.
-- You want to accept withdrawals from a centralized exchange
+- You want to accept withdrawals from a centralized exchange.
 
 ## Call `sendToken`
 
@@ -25,7 +25,7 @@ Use a deposit address if:
 
 ### 1. Locate the Axelar Gateway contract on the source chain
 
-Axelar Gateways are application-layer smart contracts established on source and destination chains. They send and receive payloads, and monitor state. Find a list of gateway addresses for the chains we support in Resources: [mainnet](../resources/mainnetmd) | [testnet](../resources/testnet.md).
+Axelar Gateways are application-layer smart contracts established on source and destination chains. They send and receive payloads, and monitor state. Find a list of gateway addresses for the chains we support in Resources: [mainnet](../resources/mainnet) | [testnet](../resources/testnet).
 
 An Axelar Gateway implements the `IAxelarGateway` interface, which has a public method called `sendToken`:
 
@@ -48,7 +48,7 @@ function approve(address spender, uint256 amount) external returns (bool);
 
 Here `spender` is the Gateway address on the source chain.
 
-Find a list of assets, their names and their addresses in resources: [mainnet](../resources/mainnetmd) | [testnet](../resources/testnet.md).
+Find a list of assets, their names and their addresses in resources: [mainnet](../resources/mainnet) | [testnet](../resources/testnet).
 
 ### 3. Execute sendToken on the Gateway
 
@@ -67,14 +67,14 @@ Watch for the tokens to appear at the destination address on the destination cha
 
 ## Get a deposit address
 
-The Axelar SDK is a wrapper around API calls that you can use to generate a deposit address. A _deposit address_ is a special address created and monitored by Axelar. It is similar to how crypto exchanges generate a **monitored one-time deposit address** that facilitate your crypto transfers.
+The Axelar SDK is a wrapper around API calls that you can use to generate a deposit address. A _deposit address_ is a special address created and monitored by Axelar. It is similar to how crypto exchanges generate a monitored one-time deposit address that facilitate your crypto transfers.
 
 The process using the Axelar SDK is as follows:
 
-1. User specifies the source chain, destination chain and the asset to be transferred
-2. Axelar generates a deposit address
-3. User sends tokens to the deposit address. Examples: withdrawal from a centralized exchange, transaction from your favourite wallet software.
-4. Axelar picks up the transfers and forwards it to the destination chain
+1. User specifies the source chain, destination chain and the asset to be transferred.
+2. Axelar generates a deposit address.
+3. User sends tokens to the deposit address. Examples: withdrawal from a centralized exchange, transaction from your favorite wallet software.
+4. Axelar picks up the transfer and forwards it to the destination chain.
 
 ### 1. Install Axelar SDK
 
@@ -107,7 +107,7 @@ Example: Cosmos-to-EVM (Terra to Avalanche):
 ```tsx
 getDepositAddress(
     "terra", // source chain
-    "avalance", // destination chain
+    "avalanche", // destination chain
     "0xF16DfB26e1FEc993E085092563ECFAEaDa7eD7fD", // destination address
     "uusd" // asset to transfer
   );
@@ -126,6 +126,6 @@ getDepositAddress(
 }
 ```
 
-NB: The destination address format is validated based on the destination chain. Make sure that the destination address is a valid address on the destination chain. For instance terra addresses start with “terra”, osmosis with “osmo”,...etc
+Note: The destination address format is validated based on the destination chain. Make sure that the destination address is a valid address on the destination chain. For instance Terra addresses start with “terra,” Osmosis with “osmo,” etc.
 
-One the deposit address has been generated the user can make a **token transfer (on blockchain) to the deposit address**. The transfer will be picked up by the axelar network and relayed to the destination chain.
+Once the deposit address has been generated the user can make a token transfer (on blockchain) to the deposit address. The transfer will be picked up by the Axelar network and relayed to the destination chain.
