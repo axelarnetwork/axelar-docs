@@ -13,7 +13,7 @@ Here are two basic cross-chain functions you can add to a dApp using Axelar.
 
 ## Supported Networks
 
-When sending tokes/remote contract calls to any remote network you need to specify a `destinationChain` as a string. Currently supported values for `destinationChain` are:
+When executing token transfers or calling functions on remote chains, you need to specify a `destinationChain` as a string. Currently supported values for `destinationChain` are:
 
 - EVM, can ne the destination of token transfers and contract calls:
   - Ethereum
