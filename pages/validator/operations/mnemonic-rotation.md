@@ -1,9 +1,6 @@
 # tofnd Mnemonic Rotation
 
-import Callout from 'nextra-theme-docs/callout'
 import Markdown from 'markdown-to-jsx'
-import Tabs from '../../../components/tabs'
-import CodeBlock from '../../../components/code-block'
 
 Rotate out tofnd mnemonics.
 
