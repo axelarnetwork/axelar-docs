@@ -13,22 +13,6 @@ Here are two basic cross-chain functions you can add to a dApp using Axelar.
 
 ## Supported Networks
 
-When executing token transfers or calling functions on remote chains, you need to specify a `destinationChain` as a string. Currently supported values for `destinationChain` are:
-
-- EVM, can ne the destination of token transfers and contract calls:
-  - Ethereum
-  - Avalanche
-  - Fantom
-  - Polygon
-  - Moonbeam
-- non-EVM, can only be the destination of token transfers:
-  - Axelarnet
-  - cosmoshub
-  - terra
-  - crescent
-  - juno
-  - osmosis
-  - osmosis-2
-  - eMoney
+When executing token transfers or calling functions on remote chains, you need to specify a `destinationChain` as a string. Currently supported values for `destinationChain` can be found in the [Resourses](../resources/supported.md) section.
 
 The following sections will show you how to set up a local development environment for testing this functionality in your dApp, then deploy to testnet and mainnet.
