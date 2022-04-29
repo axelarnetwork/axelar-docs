@@ -7,16 +7,11 @@ import Button from '../../components/button'
 1. **_Build._** Develop your dapp, test against the Axelar local development environment.
 2. **_Deploy._** Deploy your contracts, point your dapp to a live network: testnet or mainnet.
 
-## Example: Hello-world
+## Examples
 
-The `testnet` project is a complete, working example illustrating the build-deploy process.
+There are several examples at the `axelar-local-gmp-examples` project complete with instruction of how to run each on your local machine or testnet. View the github README for instructions and code:
 
-1. Run the dapp in the local development environment.
-2. Run the same dapp in the live testnet, interacting with contracts already deployed on Ethereum and Avalanche testnets.
-
-View the github README for instructions and code:
-
-<Button title="testnet example" url="https://github.com/axelarnetwork/axelar-local-gmp-examples/tree/main/advanced-examples/testnet" />
+<Button title="examples" url="https://github.com/axelarnetwork/axelar-local-gmp-examples/tree/main/" />
 
 ## Build
 
