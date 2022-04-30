@@ -38,11 +38,11 @@ One example of a relayer service is starting deposit confirmation votes. During 
 
 The gas receiver is an example of Axelar relayer services.
 
-During General Message Passing, a cross-chain smart contract call is approved by Axelar network validators, and is stored on the Axelar Gateway of the destination chain. This transaction is approved and ready to be executed, but it will not be executed automatically. In order to complete the General Message Passing workflow, the Axelar Gateway on the destination chain needs to execute the approved smart contract call, however, this contract execution incurs a gas fee that needs to be paid.
+During General Message Passing, a cross-chain smart contract call is approved by Axelar network validators, and the approval is stored in the Axelar Gateway on the destination chain. This transaction is approved and ready to be executed, but it will not be executed immediately. In order to complete the General Message Passing workflow, the executable destination contract needs to be called with the exact parameters approved by the Axelar Gateway, however, this contract call incurs a gas fee that needs to be paid.
 
-Application developers using Axelar for General Message Passing have two options. They can build their own relayer services on the destination chain, which pay the gas fees required for the Axelar Gateway to complete the smart contract execution; or they can pay gas fees with the Axelar gas receiver on the source chain.
+Application developers using Axelar for General Message Passing have two options. They can build their own relayer services on the destination chain, which will cover the gas fees required for the final executable smart contract call; or they can pay gas fees with the Axelar Gas Receiver on the source chain.
 
-The gas receiver is a smart contract that accepts tokens as payment to cover costs of contract execution for general message passing transactions. First, send funds to the gas receiver on the source chain, and specify the general message passing transaction that should be covered, as well as the payment token and amount. Axelar relayer services will confirm the gas payment on the source chain, then automatically execute the smart contract call on the destination chain.
+The Gas Receiver is a smart contract that accepts tokens as payment to cover costs of contract execution for general message passing transactions. First, send funds to the Gas Receiver on the source chain, and specify the general message passing transaction that should be covered, as well as the payment token and amount. Axelar relayer services will confirm the gas payment on the source chain, then automatically execute the smart contract call on the destination chain when it gets approved.
 
 
 ## Tech stack diagram & network overview
