@@ -9,7 +9,7 @@ import Button from '../../components/button'
 
 ## Examples
 
-There are several examples at the `axelar-local-gmp-examples` project complete with instruction of how to run each on your local machine or testnet. View the github README for instructions and code:
+There are several examples at the `axelar-local-gmp-examples` project complete with instruction on how to run each on your local machine or testnet. View the github README for instructions and code:
 
 <Button title="examples" url="https://github.com/axelarnetwork/axelar-local-gmp-examples/tree/main/" />
 
