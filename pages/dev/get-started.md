@@ -9,9 +9,14 @@ import Button from '../../components/button'
 
 ## Examples
 
-There are several examples at the `axelar-local-gmp-examples` project complete with instruction on how to run each on your local machine or testnet. View the github README for instructions and code:
+There are several complete, working examples with instructions at the `axelar-local-gmp-examples` repo that illustrate the build-deploy process. For each example you can:
 
-<Button title="examples" url="https://github.com/axelarnetwork/axelar-local-gmp-examples/tree/main/" />
+1. Run the dapp in the local development environment.
+2. Run the same dapp in the live testnet, interacting with contracts already deployed on Ethereum and Avalanche testnets.
+
+View the github README for instructions and code:
+
+<Button title="examples" url="https://github.com/axelarnetwork/axelar-local-gmp-examples" />
 
 ## Build
 
