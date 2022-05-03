@@ -175,4 +175,5 @@ The Axelar consensus protocol simply ignores all votes for chain C events from t
 - Your broadcaster account will lose funds because the Axelar network does not refund transaction fees for vote messages unless you are a registered maintainer for chain C.
 - You will see spurious error messages in your vald logs.
 - Axelar dashboards might display your votes for chain C even though you are not a registered maintainer for C.
-  </Callout>
+
+</Callout>
