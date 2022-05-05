@@ -1,5 +1,6 @@
 {
   "config-cli": "CLI configuration",
+  "config-node": "Node configuration",
   "join": "Quick sync (recommended)",
   "join-genesis": "Genesis sync",
   "basic": "Basic node management",
