@@ -1,5 +1,5 @@
 {
-  "config": "Configure your environment",
+  "config-cli": "CLI configuration",
   "join": "Quick sync (recommended)",
   "join-genesis": "Genesis sync",
   "basic": "Basic node management",

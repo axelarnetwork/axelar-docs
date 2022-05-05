@@ -1,4 +1,4 @@
-# Configure your environment
+# CLI configuration
 
 By default, many Axelar CLI commands contain boilerplate material that obfuscates the command and adds complexity to documentation. Here we describe documentation conventions and ways to configure your system so as to reduce this boilerplate.
 
