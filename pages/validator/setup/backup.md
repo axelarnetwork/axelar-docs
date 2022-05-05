@@ -26,6 +26,8 @@ As described in [Basic node management](../../node/basic), BACKUP the secret mne
 
 ## Create and backup tofnd mnemonic
 
+Similar to your [Axelar keyring](../../node/keyring), your `tofnd` storage is encrypted with a password you choose. Your password must have at least 8 characters.
+
 Set `tofnd` password and create `tofnd` mnemonic:
 
 ```bash

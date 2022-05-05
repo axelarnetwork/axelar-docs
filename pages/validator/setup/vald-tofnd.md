@@ -1,77 +1,39 @@
 # Launch companion processes
 
-import Callout from 'nextra-theme-docs/callout'
-import Markdown from 'markdown-to-jsx'
-import Tabs from '../../../components/tabs'
-import CodeBlock from '../../../components/code-block'
-
 Launch validator companion processes `tofnd` and `vald`.
 
-## Choose a tofnd password
+## Launch tofnd
 
-Similar to your Axelar keyring, your `tofnd` storage is encrypted with a password you choose. Your password must have at least 8 characters.
+You may wish to redirect log output to a file:
 
-In what follows you will execute a shell script to launch the companion processes. Your keyring and `tofnd` passwords are supplied to the shell script via `KEYRING_PASSWORD` and `TOFND_PASSWORD` environment variables.
+```bash
+tofnd -m existing -d {AXELARD_HOME}/tofnd >> {AXELARD_HOME}/logs/tofnd.log 2>&1
+```
 
-<Callout type="warning" emoji="⚠️">
-  Caution: In the following instructions you must substitute your chosen keyring and `tofnd` passwords for `my-secret-password` and `my-tofnd-password`.
-</Callout>
+View your logs in real time:
 
-## Launch companion processes
+```bash
+tail -f {AXELARD_HOME}/logs/tofnd.log
+```
 
-Launch `vald`, `tofnd` for the first time:
+## Launch vald
 
-<Tabs tabs={[
-{
-title: "Mainnet",
-content: <CodeBlock language="bash">
-{"KEYRING_PASSWORD=my-secret-password TOFND_PASSWORD=my-tofnd-password ./scripts/validator-tools-host.sh -n mainnet"}
-</CodeBlock>
-},
-{
-title: "Testnet",
-content: <CodeBlock language="bash">
-{"KEYRING_PASSWORD=my-secret-password TOFND_PASSWORD=my-tofnd-password ./scripts/validator-tools-host.sh"}
-</CodeBlock>
-},
-{
-title: "Testnet-2",
-content: <CodeBlock language="bash">
-{"KEYRING_PASSWORD=my-secret-password TOFND_PASSWORD=my-tofnd-password ./scripts/validator-tools-host.sh -n testnet-2"}
-</CodeBlock>
-}
-]} />
+Learn the `valoper` address associated with your `validator` account:
 
-To recover your secret keys from mnemonics, use `-p path_to_broadcaster_mnemonic -z path_to_tofnd_mnemonic`. These flags work only on a completely fresh state.
+```bash
+axelard keys show validator --bech val -a --home {AXELARD_HOME}
+```
 
-<Callout type="error" emoji="☠️">
-  Danger: You created new secret key material. You must backup this data. Failure to backup this data could result in loss of funds. See [Backup your secret data](./backup) for detailed instructions.
-</Callout>
+Let `{VALOPER_ADDR}` denote this address.
 
-## View logs
+Launch `vald`. You may wish to redirect log output to a file:
 
-View the streaming logs for `vald`, `tofnd`:
+```bash
+axelard vald-start --validator-addr {VALOPER_ADDR} --chain-id {AXELARD_CHAIN_ID} --log_level debug --home {AXELARD_HOME} >> {AXELARD_HOME}/logs/vald.log 2>&1
+```
 
-<Tabs tabs={[
-{
-title: "Mainnet",
-content: <CodeBlock language="bash">
-{`tail -f ~/.axelar/logs/vald.log
-tail -f ~/.axelar/logs/tofnd.log`}
-</CodeBlock>
-},
-{
-title: "Testnet",
-content: <CodeBlock language="bash">
-{`tail -f ~/.axelar_testnet/logs/vald.log
-tail -f ~/.axelar_testnet/logs/tofnd.log`}
-</CodeBlock>
-},
-{
-title: "Testnet-2",
-content: <CodeBlock language="bash">
-{`tail -f ~/.axelar_testnet-2/logs/vald.log
-tail -f ~/.axelar_testnet-2/logs/tofnd.log`}
-</CodeBlock>
-}
-]} />
+View your logs in real time:
+
+```bash
+tail -f {AXELARD_HOME}/logs/vald.log
+```

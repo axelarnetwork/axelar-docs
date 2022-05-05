@@ -17,7 +17,9 @@ Similar to [Node configuration](../../node/config-node), run `setup-validator.sh
 
 The binary `tofnd` is placed in your `{AXELARD_HOME}/bin` directory. The binary `vald` is actually part of `axelard`.
 
-TODO FIX:
+## Directory structure of a running validator
+
+Later, after you've launched your companion processes and created your validator, your directory structure should look like:
 
 ```
 .axelar
@@ -30,8 +32,19 @@ TODO FIX:
 │   ├── app.toml
 │   ├── config.toml
 │   ├── genesis.json
+│   ├── node_key.json
+│   ├── priv_validator_key.json
+│   ├── priv_validator_state.json
 │   └── seeds.toml
+├── data
 ├── logs
 ├── tofnd
 └── vald
+    └── state.json
 ```
+
+Relevant files:
+
+- `priv_validator_key.json`, `node_key.json` : Created when you first launched your node as described in [Basic node management](../../node/basic).
+- `priv_validator_state.json` : Last block height signed by the validator. This prevents double signing old blocks. If it’s content is `{}`, it’ll start signing from a synced node’s latest block
+- `vald/state.json` : State file specifying the last block processed. If it’s not present, or is too old, vald starts from the latest block instead.
