@@ -5,9 +5,7 @@ import Markdown from 'markdown-to-jsx'
 import Tabs from '../../../components/tabs'
 import CodeBlock from '../../../components/code-block'
 
-Launch validator companion processes for the first time.
-
-Axelar validators need two companion processes called `vald` and `tofnd`.
+Launch validator companion processes `tofnd` and `vald`.
 
 ## Choose a tofnd password
 
