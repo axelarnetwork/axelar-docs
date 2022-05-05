@@ -2,19 +2,41 @@
 
 import Callout from 'nextra-theme-docs/callout'
 
-Start and stop your node, backup your keys and chain data. Create an account, check your AXL balance, get AXL tokens from the faucet.
+Start and stop your node, test whether your blockchain is downloaded. Backup your keys and chain data. Create an account, check your AXL balance, get AXL tokens from the faucet.
 
 ## Prerequisites
 
 - Configure your environment as per [CLI configuration](config-cli) and [Node configuration](config-node).
 - Let `{AXELARD_HOME}` denote the home directory path as per [Node configuration](config-node).
-- TODO I'd like to remove `--home {AXELARD_HOME}` from everything but if the user forgets it then `axelard` will silently use the default `~/.axelar` which will cause confusion.
 
 ## Start your Axelar node
 
+You may wish to redirect log output to a file:
+
 ```bash
-axelard start --home {AXELARD_HOME}
+axelard start --home {AXELARD_HOME} >> {AXELARD_HOME}/logs/axelard.log 2>&1
 ```
+
+View your logs in real time:
+
+```bash
+tail -f {AXELARD_HOME}/logs/axelard.log
+```
+
+## Test whether your blockchain is downloaded
+
+Eventually your Axelar node will download the entire Axelar blockchain and exit `catching_up` mode. At that time your logs will show a new block added to the blockchain every 5 seconds.
+
+You can test whether your Axelar node has exited `catching_up` mode:
+
+```bash
+axelard status
+```
+
+Look for the field `catching_up`:
+
+- `true`: you are still downloading the blockchain.
+- `false`: you have finished downloading the blockchain.
 
 ## Stop your Axelar node
 
