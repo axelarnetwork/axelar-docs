@@ -12,8 +12,11 @@ import CodeBlock from '../../../components/code-block'
 
 ## Get Binaries
 
-```bash
-# create a temp dir for binaries
+<Tabs tabs={[
+{
+title: "Mainnet",
+content: <CodeBlock language="bash">
+{`# create a temp dir for binaries
 mkdir binaries && cd binaries
 
 # get axelard, tofnd binaries and rename
@@ -33,18 +36,59 @@ cd .. && rmdir binaries
 
 # check versions
 axelard version
-tofnd --help
-```
+tofnd --help`} </CodeBlock> 
+},
+{
+title: "Testnet",
+content: <CodeBlock language="bash">
+{`# create a temp dir for binaries
+mkdir binaries && cd binaries
 
-## Generate keys
+# get axelard, tofnd binaries and rename
+wget https://github.com/axelarnetwork/axelar-core/releases/download/v0.17.1/axelard-linux-amd64-v0.17.1
+wget https://github.com/axelarnetwork/tofnd/releases/download/v0.10.1/tofnd-linux-amd64-v0.10.1
+mv axelard-linux-amd64-v0.17.1 axelard
+mv tofnd-linux-amd64-v0.10.1 tofnd
 
-```bash
-axelard keys add broadcaster
-axelard keys add validator
-tofnd -m create
-```
+# make binaries executable
+chmod +x *
 
-Your `tofnd` secret mnemonic is in a file `.tofnd/export`. Save this mnemonic somewhere safe and delete the file `.tofnd/export`.
+# move to usr bin
+sudo mv * /usr/bin/
+
+# clean up temp dir
+cd .. && rmdir binaries
+
+# check versions
+axelard version
+tofnd --help`} </CodeBlock> 
+},
+{
+title: "Testnet-2",
+content: <CodeBlock language="bash">
+{`# create a temp dir for binaries
+mkdir binaries && cd binaries
+
+# get axelard, tofnd binaries and rename
+wget https://github.com/axelarnetwork/axelar-core/releases/download/v0.17.3/axelard-linux-amd64-v0.17.3
+wget https://github.com/axelarnetwork/tofnd/releases/download/v0.10.1/tofnd-linux-amd64-v0.10.1
+mv axelard-linux-amd64-v0.17.3 axelard
+mv tofnd-linux-amd64-v0.10.1 tofnd
+
+# make binaries executable
+chmod +x *
+
+# move to usr bin
+sudo mv * /usr/bin/
+
+# clean up temp dir
+cd .. && rmdir binaries
+
+# check versions
+axelard version
+tofnd --help`} </CodeBlock> 
+}
+]} />
 
 ## Set environment variables
 
@@ -113,7 +157,40 @@ sed -i.bak 's/seeds = \"\"/seeds = \"'$(cat $HOME/.axelar/config/seeds.txt)'\"/g
 
 # set external ip to your config.json file
 
-sed -i.bak 's/external_address = \"\"/external_address = \"'"$(curl -4 ifconfig.co)"':26656\"/g' $HOME/.axelar/config/config.toml`} </CodeBlock> }
+sed -i.bak 's/external_address = \"\"/external_address = \"'"$(curl -4 ifconfig.co)"':26656\"/g' $HOME/.axelar/config/config.toml`} </CodeBlock> 
+},
+{
+title: "Testnet",
+content: <CodeBlock language="bash">
+{`axelard init $MONIKER --chain-id $CHAIN_ID
+wget https://raw.githubusercontent.com/axelarnetwork/axelarate-community/main/configuration/config.toml -O $HOME/.axelar/config/config.toml
+wget https://raw.githubusercontent.com/axelarnetwork/axelarate-community/main/configuration/app.toml -O $HOME/.axelar/config/app.toml
+wget https://axelar-mainnet.s3.us-east-2.amazonaws.com/genesis.json -O $HOME/.axelar/config/genesis.json
+wget https://axelar-mainnet.s3.us-east-2.amazonaws.com/seeds.txt -O $HOME/.axelar/config/seeds.txt
+
+# enter seeds to your config.json file
+
+sed -i.bak 's/seeds = \"\"/seeds = \"'$(cat $HOME/.axelar/config/seeds.txt)'\"/g' $HOME/.axelar/config/config.toml
+
+# set external ip to your config.json file
+
+sed -i.bak 's/external_address = \"\"/external_address = \"'"$(curl -4 ifconfig.co)"':26656\"/g' $HOME/.axelar/config/config.toml`} </CodeBlock> 
+},
+{
+title: "Testnet-2",
+content: <CodeBlock language="bash">
+{`axelard init $MONIKER --chain-id $CHAIN_ID
+wget -q https://raw.githubusercontent.com/axelarnetwork/axelarate-community/main/configuration/config.toml -O $HOME/.axelar/config/config.toml
+wget -q https://raw.githubusercontent.com/axelarnetwork/axelarate-community/main/configuration/app.toml -O $HOME/.axelar/config/app.toml
+wget -q https://raw.githubusercontent.com/axelarnetwork/axelarate-community/main/resources/testnet-2/genesis.json -O $HOME/.axelar/config/genesis.json
+wget -q https://raw.githubusercontent.com/Errorist79/seeds/main/axl-2-seed.txt -O $HOME/.axelar/config/seeds.txt
+
+# enter seeds to your config.json file
+sed -i.bak 's/seeds = ""/seeds = "'$(cat $HOME/.axelar/config/seeds.txt)'"/g' $HOME/.axelar/config/config.toml
+
+# set external ip to your config.json file
+sed -i.bak 's/external_address = ""/external_address = "'"$(curl -4 ifconfig.co)"':26656"/g' $HOME/.axelar/config/config.toml`} </CodeBlock> 
+}
 ]} />
 
 ## Sync From Snapshot
@@ -126,7 +203,27 @@ content: <CodeBlock language="bash">
 echo $URL
 cd $HOME/.axelar/
 wget -O - $URL | lz4 -d | tar -xvf -
-cd $HOME`} </CodeBlock> }
+cd $HOME`} </CodeBlock> 
+},
+{
+title: "Testnet",
+content: <CodeBlock language="bash">
+{`axelard unsafe-reset-all URL=\`curl https://quicksync.io/axelar.json | jq -r '.[] |select(.file=="axelartestnet-lisbon-3-pruned")|.url'\`
+echo $URL
+cd $HOME/.axelar/
+wget -O - $URL | lz4 -d | tar -xvf -
+cd $HOME`} </CodeBlock> 
+},
+{
+title: "Testnet-2",
+content: <CodeBlock language="bash">
+{`axelard unsafe-reset-all
+URL="https://snapshots.bitszn.com/snapshots/axelar/axelar.tar"
+echo $URL
+cd $HOME/.axelar/data
+wget -O - $URL | tar -xvf -
+cd $HOME`} </CodeBlock> 
+}
 ]} />
 
 ## Create services
