@@ -7,7 +7,7 @@ import CodeBlock from '../../../components/code-block'
 
 ## Prerequisites
 
-- Ubuntu (tested on 18.04)
+- Ubuntu (tested on 18.04 and 20.04)
 - `sudo apt-get install wget liblz4-tool aria2 jq -y`
 
 ## Get Binaries
