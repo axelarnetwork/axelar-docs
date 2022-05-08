@@ -249,7 +249,7 @@ sudo systemctl restart vald
 ## Check logs
 
 ```bash
-# change log settings to persistent
+# change log settings to persistent if not already
 sed -i 's/#Storage=auto/Storage=persistent/g' /etc/systemd/journald.conf
 sudo systemctl restart systemd-journald
 
