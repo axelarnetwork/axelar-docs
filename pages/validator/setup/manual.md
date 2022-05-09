@@ -11,10 +11,12 @@ import CodeBlock from '../../../components/code-block'
 - `sudo apt-get install wget liblz4-tool aria2 jq -y`
 
 ## Get Binaries
+
 Check the appropriate version for the network accordingly:
 - [Mainnet](/resources/mainnet)
 - [Testnet](/resources/testnet)
 - [Testnet-2](/resources/testnet-2)
+
 
 <Tabs tabs={[
 {
@@ -319,7 +321,6 @@ sudo systemctl enable tofnd
 ### vald
 
 ```bash
-# TODO is --chain-id necessary?
 sudo tee <<EOF >/dev/null /etc/systemd/system/vald.service
 [Unit]
 Description=Vald daemon
