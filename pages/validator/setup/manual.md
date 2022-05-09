@@ -33,10 +33,10 @@ echo $AXELARD_RELEASE $TOFND_RELEASE
 mkdir binaries && cd binaries
 
 # get axelard, tofnd binaries and rename
-wget https://github.com/axelarnetwork/axelar-core/releases/download/v0.17.1/axelard-linux-amd64-v0.17.1
-wget https://github.com/axelarnetwork/tofnd/releases/download/v0.10.1/tofnd-linux-amd64-v0.10.1
-mv axelard-linux-amd64-v0.17.1 axelard
-mv tofnd-linux-amd64-v0.10.1 tofnd
+wget https://github.com/axelarnetwork/axelar-core/releases/download/$AXELARD_RELEASE/axelard-linux-amd64-$AXELARD_RELEASE
+wget https://github.com/axelarnetwork/tofnd/releases/download/$TOFND_RELEASE/tofnd-linux-amd64-$TOFND_RELEASE
+mv axelard-linux-amd64-$AXELARD_RELEASE axelard
+mv tofnd-linux-amd64-$TOFND_RELEASE tofnd
 
 # make binaries executable
 chmod +x *
@@ -67,10 +67,10 @@ echo $AXELARD_RELEASE $TOFND_RELEASE
 mkdir binaries && cd binaries
 
 # get axelard, tofnd binaries and rename
-wget https://github.com/axelarnetwork/axelar-core/releases/download/v0.17.1/axelard-linux-amd64-v0.17.1
-wget https://github.com/axelarnetwork/tofnd/releases/download/v0.10.1/tofnd-linux-amd64-v0.10.1
-mv axelard-linux-amd64-v0.17.1 axelard
-mv tofnd-linux-amd64-v0.10.1 tofnd
+wget https://github.com/axelarnetwork/axelar-core/releases/download/$AXELARD_RELEASE/axelard-linux-amd64-$AXELARD_RELEASE
+wget https://github.com/axelarnetwork/tofnd/releases/download/$TOFND_RELEASE/tofnd-linux-amd64-$TOFND_RELEASE
+mv axelard-linux-amd64-$AXELARD_RELEASE axelard
+mv tofnd-linux-amd64-$TOFND_RELEASE tofnd
 
 # make binaries executable
 chmod +x *
@@ -101,10 +101,10 @@ echo $AXELARD_RELEASE $TOFND_RELEASE
 mkdir binaries && cd binaries
 
 # get axelard, tofnd binaries and rename
-wget https://github.com/axelarnetwork/axelar-core/releases/download/v0.17.3/axelard-linux-amd64-v0.17.3
-wget https://github.com/axelarnetwork/tofnd/releases/download/v0.10.1/tofnd-linux-amd64-v0.10.1
-mv axelard-linux-amd64-v0.17.3 axelard
-mv tofnd-linux-amd64-v0.10.1 tofnd
+wget https://github.com/axelarnetwork/axelar-core/releases/download/$AXELARD_RELEASE/axelard-linux-amd64-$AXELARD_RELEASE
+wget https://github.com/axelarnetwork/tofnd/releases/download/$TOFND_RELEASE/tofnd-linux-amd64-$TOFND_RELEASE
+mv axelard-linux-amd64-$AXELARD_RELEASE axelard
+mv tofnd-linux-amd64-$TOFND_RELEASE tofnd
 
 # make binaries executable
 chmod +x *
@@ -200,14 +200,9 @@ content: <CodeBlock language="bash">
 wget https://raw.githubusercontent.com/axelarnetwork/axelarate-community/main/configuration/config.toml -O $HOME/.axelar/config/config.toml
 wget https://raw.githubusercontent.com/axelarnetwork/axelarate-community/main/configuration/app.toml -O $HOME/.axelar/config/app.toml
 wget https://axelar-mainnet.s3.us-east-2.amazonaws.com/genesis.json -O $HOME/.axelar/config/genesis.json
-wget https://axelar-mainnet.s3.us-east-2.amazonaws.com/seeds.txt -O $HOME/.axelar/config/seeds.txt
-
-# enter seeds to your config.json file
-
-sed -i.bak 's/seeds = \"\"/seeds = \"'$(cat $HOME/.axelar/config/seeds.txt)'\"/g' $HOME/.axelar/config/config.toml
+wget https://raw.githubusercontent.com/axelarnetwork/axelarate-community/main/resources/testnet/seeds.toml -O $HOME/.axelar/config/seeds.toml
 
 # set external ip to your config.json file
-
 sed -i.bak 's/external_address = \"\"/external_address = \"'"$(curl -4 ifconfig.co)"':26656\"/g' $HOME/.axelar/config/config.toml`} </CodeBlock> 
 },
 {
@@ -216,28 +211,20 @@ content: <CodeBlock language="bash">
 {`axelard init $MONIKER --chain-id $CHAIN_ID
 wget https://raw.githubusercontent.com/axelarnetwork/axelarate-community/main/configuration/config.toml -O $HOME/.axelar/config/config.toml
 wget https://raw.githubusercontent.com/axelarnetwork/axelarate-community/main/configuration/app.toml -O $HOME/.axelar/config/app.toml
-wget https://axelar-mainnet.s3.us-east-2.amazonaws.com/genesis.json -O $HOME/.axelar/config/genesis.json
-wget https://axelar-mainnet.s3.us-east-2.amazonaws.com/seeds.txt -O $HOME/.axelar/config/seeds.txt
-
-# enter seeds to your config.json file
-
-sed -i.bak 's/seeds = \"\"/seeds = \"'$(cat $HOME/.axelar/config/seeds.txt)'\"/g' $HOME/.axelar/config/config.toml
+wget https://raw.githubusercontent.com/axelarnetwork/axelarate-community/main/resources/testnet/genesis.json -O $HOME/.axelar/config/genesis.json
+wget https://raw.githubusercontent.com/axelarnetwork/axelarate-community/main/resources/testnet/seeds.toml -O $HOME/.axelar/config/seeds.toml
 
 # set external ip to your config.json file
-
 sed -i.bak 's/external_address = \"\"/external_address = \"'"$(curl -4 ifconfig.co)"':26656\"/g' $HOME/.axelar/config/config.toml`} </CodeBlock> 
 },
 {
 title: "Testnet-2",
 content: <CodeBlock language="bash">
 {`axelard init $MONIKER --chain-id $CHAIN_ID
-wget -q https://raw.githubusercontent.com/axelarnetwork/axelarate-community/main/configuration/config.toml -O $HOME/.axelar/config/config.toml
-wget -q https://raw.githubusercontent.com/axelarnetwork/axelarate-community/main/configuration/app.toml -O $HOME/.axelar/config/app.toml
-wget -q https://raw.githubusercontent.com/axelarnetwork/axelarate-community/main/resources/testnet-2/genesis.json -O $HOME/.axelar/config/genesis.json
-wget -q https://raw.githubusercontent.com/Errorist79/seeds/main/axl-2-seed.txt -O $HOME/.axelar/config/seeds.txt
-
-# enter seeds to your config.json file
-sed -i.bak 's/seeds = ""/seeds = "'$(cat $HOME/.axelar/config/seeds.txt)'"/g' $HOME/.axelar/config/config.toml
+wget https://raw.githubusercontent.com/axelarnetwork/axelarate-community/main/configuration/config.toml -O $HOME/.axelar/config/config.toml
+wget https://raw.githubusercontent.com/axelarnetwork/axelarate-community/main/configuration/app.toml -O $HOME/.axelar/config/app.toml
+wget https://raw.githubusercontent.com/axelarnetwork/axelarate-community/main/resources/testnet-2/genesis.json -O $HOME/.axelar/config/genesis.json
+wget https://raw.githubusercontent.com/axelarnetwork/axelarate-community/main/resources/testnet-2/seeds.toml -O $HOME/.axelar/config/seeds.toml
 
 # set external ip to your config.json file
 sed -i.bak 's/external_address = ""/external_address = "'"$(curl -4 ifconfig.co)"':26656"/g' $HOME/.axelar/config/config.toml`} </CodeBlock> 
