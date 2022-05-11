@@ -13,11 +13,12 @@ Use `sendToken` if:
 Use a deposit address if:
 
 - You need functionality not offered by `sendToken`. Example: Cosmos-to-X.
-- You want to accept withdrawals from a centralized exchange.
+- You want to allow token transfers from wallets that don't know anything about Axelar.
+  - Example: Withdrawals from a centralized exchange.
 
 ## Call `sendToken`
 
-### Outline
+### Overview
 
 1. Locate the Axelar Gateway contract on the source chain
 2. Execute approve on the source chain (ERC-20)
@@ -106,8 +107,8 @@ Example: Cosmos-to-EVM (Terra to Avalanche):
 
 ```tsx
 const sdk = new AxelarAssetTransfer({
-    environment: 'testnet',
-    auth: "local",
+  environment: "testnet",
+  auth: "local",
 });
 const depositAddress = await sdk.getDepositAddress(
   "terra", // source chain
@@ -121,8 +122,8 @@ Example: EVM-to-Cosmos (Avalanche to Terra)
 
 ```tsx
 const sdk = new AxelarAssetTransfer({
-    environment: 'testnet',
-    auth: "local",
+  environment: "testnet",
+  auth: "local",
 });
 const depositAddress = await sdk.getDepositAddress(
   "avalanche", // source chain
@@ -130,7 +131,6 @@ const depositAddress = await sdk.getDepositAddress(
   "terra1qem4njhac8azalrav7shvp06myhqldpmkk3p0t", // destination address
   "uusd" // asset to transfer
 );
-
 ```
 
 Note: The destination address format is validated based on the destination chain. Make sure that the destination address is a valid address on the destination chain. For instance Terra addresses start with “terra,” Osmosis with “osmo,” etc.
