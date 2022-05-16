@@ -1,5 +1,6 @@
 # Testnet
 
+import Callout from 'nextra-theme-docs/callout'
 import MarkdownPath from '../../components/markdown'
 import EVMChains from '../../components/evm/chains'
 import EVMAssets from '../../components/evm/assets'
