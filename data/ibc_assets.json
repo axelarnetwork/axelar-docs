@@ -137,20 +137,6 @@
       "image": "/images/assets/glmr.png"
     },
     {
-      "id": "ungm",
-      "name": "e-Money Staking Coin",
-      "symbol": "NGM",
-      "image": "/images/assets/ngm.png",
-      "transfer_fee": 0.5
-    },
-    {
-      "id": "ueeur",
-      "name": "e-Money EUR",
-      "symbol": "EEUR",
-      "image": "/images/assets/eeur.png",
-      "transfer_fee": 0.5
-    },
-    {
       "id": "uusd",
       "name": "TerraUSD",
       "symbol": "UST",
