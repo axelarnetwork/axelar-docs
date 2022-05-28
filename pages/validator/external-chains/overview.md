@@ -129,10 +129,20 @@ axelard tx nexus register-chain-maintainer avalanche ethereum fantom moonbeam po
 If you have added an RPC endpoint to your configuration for chain C then your validator will _always_ post vote messages for chain C on the Axelar network, regardless of whether you are registered as a maintainer for chain C. (Why? Because the `vald` process that posts vote messages is stateless; it doesn't know whether your validator is registered as a maintainer for chain C.)
 
 The Axelar consensus protocol simply ignores all votes for chain C events from those validators who are not registered as a maintainer for C.
-</Callout>
+
+## Deregister as chain maintainer from an external chain
+
+If for some reason you need to deregister an external chain as a maintainer you must inform the Axelar network of every chain you intent to leave.
+This is accomplished via the `deregister-chain-maintainer` command.
+
+Example: Deregister the Avalanche chain:
+
+```bash
+axelard tx nexus deregister-chain-maintainer avalanche --from broadcaster --chain-id $AXELARD_CHAIN_ID --home $AXELARD_HOME
+```
 
 <Callout type="warning" emoji="⚠️">
-  Caution: If for some reason you need to deregister as chain maintainer for a chain C then you should also disable the RPC endpoint for C (set `start-with-bridge = false` in your `config.toml` file) and then restart vald. Otherwise, your validator will continue to post vote messages for chain C on the Axelar network, leading to the following consequences:
+  Caution: You should also disable the RPC endpoint for C (set `start-with-bridge = false` in your `config.toml` file) and then restart vald. Otherwise, your validator will continue to post vote messages for chain C on the Axelar network, leading to the following consequences:
 
 - Your broadcaster account will lose funds because the Axelar network does not refund transaction fees for vote messages unless you are a registered maintainer for chain C.
 - You will see spurious error messages in your vald logs.
