@@ -13,97 +13,37 @@ import CodeBlock from '../../../components/code-block'
 ## Get Binaries
 
 Check the appropriate version for the network accordingly:
+
 - [Mainnet](/resources/mainnet)
 - [Testnet](/resources/testnet)
 - [Testnet-2](/resources/testnet-2)
-
 
 <Tabs tabs={[
 {
 title: "Mainnet",
 content: <CodeBlock language="bash">
-{`# set versions: the below is an example and the numbers should be replaced
-# AXELARD_RELEASE=v0.17.3
-# TOFND_RELEASE=v0.10.1
-
-AXELARD_RELEASE=<GIVE_VERSION>
-TOFND_RELEASE=<GIVE_VERSION>
-
-# verify
-echo $AXELARD_RELEASE $TOFND_RELEASE
-
-# create a temp dir for binaries
-cd $HOME
-mkdir binaries && cd binaries
-
-
-# get axelard, tofnd binaries and rename
-wget https://github.com/axelarnetwork/axelar-core/releases/download/$AXELARD_RELEASE/axelard-linux-amd64-$AXELARD_RELEASE
-wget https://github.com/axelarnetwork/tofnd/releases/download/$TOFND_RELEASE/tofnd-linux-amd64-$TOFND_RELEASE
-mv axelard-linux-amd64-$AXELARD_RELEASE axelard
-mv tofnd-linux-amd64-$TOFND_RELEASE tofnd
-
-# make binaries executable
-chmod +x *
-
-# move to usr bin
-sudo mv * /usr/bin/
-
-# get out of binaries directory
-cd $HOME
-
-# check versions
-axelard version
-tofnd --help`} </CodeBlock> 
+{`AXELARD_RELEASE=v0.17.3
+TOFND_RELEASE=v0.10.1`}
+</CodeBlock>
 },
 {
 title: "Testnet",
 content: <CodeBlock language="bash">
-{`# set versions: the below is an example and the numbers should be replaced
-# AXELARD_RELEASE=v0.19.0
-# TOFND_RELEASE=v0.10.1
-
-AXELARD_RELEASE=<GIVE_VERSION>
-TOFND_RELEASE=<GIVE_VERSION>
-
-# verify
-echo $AXELARD_RELEASE $TOFND_RELEASE
-
-# create a temp dir for binaries
-cd $HOME
-mkdir binaries && cd binaries
-
-
-# get axelard, tofnd binaries and rename
-wget https://github.com/axelarnetwork/axelar-core/releases/download/$AXELARD_RELEASE/axelard-linux-amd64-$AXELARD_RELEASE
-wget https://github.com/axelarnetwork/tofnd/releases/download/$TOFND_RELEASE/tofnd-linux-amd64-$TOFND_RELEASE
-mv axelard-linux-amd64-$AXELARD_RELEASE axelard
-mv tofnd-linux-amd64-$TOFND_RELEASE tofnd
-
-# make binaries executable
-chmod +x *
-
-# move to usr bin
-sudo mv * /usr/bin/
-
-# get out of binaries directory
-cd $HOME
-
-# check versions
-axelard version
-tofnd --help`} </CodeBlock> 
+{`AXELARD_RELEASE=v0.19.0
+TOFND_RELEASE=v0.10.1`}
+</CodeBlock>
 },
 {
 title: "Testnet-2",
 content: <CodeBlock language="bash">
-{`# set versions: the below is an example and the numbers should be replaced
-# AXELARD_RELEASE=v0.17.3
-# TOFND_RELEASE=v0.10.1
+{`AXELARD_RELEASE=v0.17.3
+TOFND_RELEASE=v0.10.1`}
+</CodeBlock>
+}
+]} />
 
-AXELARD_RELEASE=<GIVE_VERSION>
-TOFND_RELEASE=<GIVE_VERSION>
-
-# verify
+```bash
+# verify correct versions
 echo $AXELARD_RELEASE $TOFND_RELEASE
 
 # create a temp dir for binaries
@@ -128,19 +68,21 @@ cd $HOME
 
 # check versions
 axelard version
-tofnd --help`} </CodeBlock> 
-}
-]} />
+tofnd --help
+```
 
 ## Generate keys
 
 To create new keys
+
 ```bash
 axelard keys add broadcaster
 axelard keys add validator
 tofnd -m create
 ```
+
 To recover exsiting keys
+
 ```bash
 axelard keys add broadcaster --recover
 axelard keys add validator --recover
@@ -214,31 +156,34 @@ wget https://axelar-mainnet.s3.us-east-2.amazonaws.com/genesis.json -O $HOME/.ax
 wget https://raw.githubusercontent.com/axelarnetwork/axelarate-community/main/resources/mainnet/seeds.toml -O $HOME/.axelar/config/seeds.toml
 
 # set external ip to your config.json file
-sed -i.bak 's/external_address = \"\"/external_address = \"'"$(curl -4 ifconfig.co)"':26656\"/g' $HOME/.axelar/config/config.toml`} </CodeBlock> 
+
+sed -i.bak 's/external_address = \"\"/external_address = \"'"$(curl -4 ifconfig.co)"':26656\"/g' $HOME/.axelar/config/config.toml`}
+
+</CodeBlock>
 },
-{
-title: "Testnet",
-content: <CodeBlock language="bash">
-{`axelard init $MONIKER --chain-id $CHAIN_ID
+ { title: "Testnet", content: <CodeBlock language="bash"> {`axelard init $MONIKER --chain-id $CHAIN_ID
 wget https://raw.githubusercontent.com/axelarnetwork/axelarate-community/main/configuration/config.toml -O $HOME/.axelar/config/config.toml
 wget https://raw.githubusercontent.com/axelarnetwork/axelarate-community/main/configuration/app.toml -O $HOME/.axelar/config/app.toml
 wget https://raw.githubusercontent.com/axelarnetwork/axelarate-community/main/resources/testnet/genesis.json -O $HOME/.axelar/config/genesis.json
 wget https://raw.githubusercontent.com/axelarnetwork/axelarate-community/main/resources/testnet/seeds.toml -O $HOME/.axelar/config/seeds.toml
 
 # set external ip to your config.json file
-sed -i.bak 's/external_address = \"\"/external_address = \"'"$(curl -4 ifconfig.co)"':26656\"/g' $HOME/.axelar/config/config.toml`} </CodeBlock> 
+
+sed -i.bak 's/external_address = \"\"/external_address = \"'"$(curl -4 ifconfig.co)"':26656\"/g' $HOME/.axelar/config/config.toml`}
+
+</CodeBlock>
 },
-{
-title: "Testnet-2",
-content: <CodeBlock language="bash">
-{`axelard init $MONIKER --chain-id $CHAIN_ID
+{ title: "Testnet-2", content: <CodeBlock language="bash"> {`axelard init $MONIKER --chain-id $CHAIN_ID
 wget https://raw.githubusercontent.com/axelarnetwork/axelarate-community/main/configuration/config.toml -O $HOME/.axelar/config/config.toml
 wget https://raw.githubusercontent.com/axelarnetwork/axelarate-community/main/configuration/app.toml -O $HOME/.axelar/config/app.toml
 wget https://raw.githubusercontent.com/axelarnetwork/axelarate-community/main/resources/testnet-2/genesis.json -O $HOME/.axelar/config/genesis.json
 wget https://raw.githubusercontent.com/axelarnetwork/axelarate-community/main/resources/testnet-2/seeds.toml -O $HOME/.axelar/config/seeds.toml
 
 # set external ip to your config.json file
-sed -i.bak 's/external_address = ""/external_address = "'"$(curl -4 ifconfig.co)"':26656"/g' $HOME/.axelar/config/config.toml`} </CodeBlock> 
+
+sed -i.bak 's/external_address = ""/external_address = "'"$(curl -4 ifconfig.co)"':26656"/g' $HOME/.axelar/config/config.toml`}
+
+</CodeBlock>
 }
 ]} />
 
@@ -248,32 +193,21 @@ sed -i.bak 's/external_address = ""/external_address = "'"$(curl -4 ifconfig.co)
 {
 title: "Mainnet",
 content: <CodeBlock language="bash">
-{`axelard unsafe-reset-all
-URL=\`curl https://quicksync.io/axelar.json | jq -r '.[] |select(.file=="axelar-dojo-1-pruned")|.url'\`
+{`axelard unsafe-reset-all URL=\`curl https://quicksync.io/axelar.json | jq -r '.[] |select(.file=="axelar-dojo-1-pruned")|.url'\`
 echo $URL
 cd $HOME/.axelar/
 wget -O - $URL | lz4 -d | tar -xvf -
-cd $HOME`} </CodeBlock> 
-},
-{
-title: "Testnet",
-content: <CodeBlock language="bash">
-{`axelard unsafe-reset-all
+cd $HOME`} </CodeBlock> }, { title: "Testnet", content: <CodeBlock language="bash"> {`axelard unsafe-reset-all
 URL=\`curl https://quicksync.io/axelar.json | jq -r '.[] |select(.file=="axelartestnet-lisbon-3-pruned")|.url'\`
 echo $URL
 cd $HOME/.axelar/
 wget -O - $URL | lz4 -d | tar -xvf -
-cd $HOME`} </CodeBlock> 
-},
-{
-title: "Testnet-2",
-content: <CodeBlock language="bash">
-{`axelard unsafe-reset-all
+cd $HOME`} </CodeBlock> }, { title: "Testnet-2", content: <CodeBlock language="bash"> {`axelard unsafe-reset-all
 URL="https://snapshots.bitszn.com/snapshots/axelar/axelar.tar"
 echo $URL
 cd $HOME/.axelar/data
 wget -O - $URL | tar -xvf -
-cd $HOME`} </CodeBlock> 
+cd $HOME`} </CodeBlock>
 }
 ]} />
 
@@ -413,6 +347,7 @@ axelard tx staking create-validator --yes \
 See [Support external chains](../external-chains).
 
 ## Upgrade Process
+
 ```bash
 cd $HOME
 cd binaries
