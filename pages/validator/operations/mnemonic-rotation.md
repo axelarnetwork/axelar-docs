@@ -34,6 +34,10 @@ After performing the rotation, monitor your validator to make sure it's
 still posting heartbeats and there are no unexpected errors in `vald`/`tofnd` logs.
 It's also useful to perform a health check.
 
+## Rotation Frequency
+
+Validators are recommended to have processes in place to rotate their `tofnd` mnemonic once every 2 months.
+
 ## Recovery of mnmenonics
 
 As before, you can import a `tofnd` mnemonic with `tofnd -m import -d $TOFND_HOME`.
