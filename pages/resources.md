@@ -42,7 +42,8 @@
     <td>
       https://quickapi.com/ <br/>
       https://axelar-rpc.pops.one/ <br/>
-      https://axelar-rpc.chainode.tech/
+      https://axelar-rpc.chainode.tech/ <br/>
+      https://axelar.rpc.stake2.me/
     </td>
     <td>https://quickapi.com/ </td>
     <td></td>
