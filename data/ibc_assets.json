@@ -26,9 +26,9 @@
     },
     {
       "id": "dot-planck",
-      "name": "xcDOT",
+      "name": "Wrapped DOT",
       "symbol": "DOT",
-      "image": "/images/assets/dot.png",
+      "image": "/images/assets/dot.svg",
       "decimals": 10,
       "transfer_fee": 0.05
     },
@@ -178,7 +178,7 @@
     },
     {
       "id": "xcn-wei",
-      "name": "Chain",
+      "name": "XCN",
       "symbol": "XCN",
       "image": "/images/assets/xcn.svg",
       "decimals": 18,

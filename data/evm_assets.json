@@ -92,9 +92,9 @@
     },
     {
       "id": "dot-planck",
-      "name": "xcDOT",
+      "name": "Wrapped DOT",
       "symbol": "DOT",
-      "image": "/images/assets/dot.png",
+      "image": "/images/assets/dot.svg",
       "contracts": [
         {
           "chain": "moonbeam",
