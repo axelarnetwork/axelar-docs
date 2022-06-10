@@ -2,7 +2,7 @@
 
 import Callout from 'nextra-theme-docs/callout'
 
-Set up your Ethereum Mainnet or Ropsten Testnet node.
+Set up your Ethereum Mainnet or Ropsten Testnet node post transition to PoS
 
 ## Prerequisites
 
@@ -10,6 +10,12 @@ Set up your Ethereum Mainnet or Ropsten Testnet node.
 - Minimum hardware requirements: CPU with 2+ cores, 4GB RAM, 600GB+ free storage space.
 - MacOS or Ubuntu 18.04+
 - [Official Documentation](https://geth.ethereum.org/docs/getting-started)
+
+# High level Steps
+1. Install Geth
+2. Install consensus layer
+3. Expose methods
+
 
 ## Install Geth
 
