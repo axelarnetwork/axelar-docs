@@ -80,6 +80,10 @@ sudo systemctl status geth
 sudo journalctl -u geth -f
 ```
 
+##### 3. Verify if its in sync
+
+To verify if your node is in sync you can check the latest value from the [explorer](https://ropsten.etherscan.io/). 
+
 ## Test your Ethereum RPC connection
 
 Alternatively, you can now also use the Geth JavaScript console and check status of your node by attaching to your newly created `geth.ipc`. Don't forget to replace $USER and path, depending on your server configuration.
