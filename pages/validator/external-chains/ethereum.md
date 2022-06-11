@@ -53,6 +53,7 @@ Use a random 32byte hex string and store it in a local directory
 ```
 Refer:
 https://docs.prylabs.network/docs/execution-node/authentication/
+
 https://docs.prylabs.network/docs/next/install/install-with-script
 
 ## Run `geth` through systemd
@@ -74,7 +75,7 @@ After=network.target
 [Service]
 User=$USER
 Type=simple
-ExecStart=/usr/bin/geth --syncmode "snap" --http --http.vhosts "*" --http.addr 0.0.0.0
+ExecStart=/usr/bin/geth --syncmode "snap" --http --http.api=eth,net,web3,engine --http.vhosts * --http.addr 0.0.0.0 --authrpc.jwtsecret=/PathToFile/jwtsecret --override.terminaltotaldifficulty 50000000000000000
 Restart=on-failure
 LimitNOFILE=65535
 
