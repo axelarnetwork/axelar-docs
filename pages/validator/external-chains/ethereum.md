@@ -49,16 +49,18 @@ export USE_PRYSM_VERSION=v2.1.3-rc.3
 #Download the Ropsten network genesis file
 wget https://github.com/eth-clients/merge-testnets/raw/main/ropsten-beacon-chain/genesis.ssz
 #Generate a secret key for authentication 
-Generate a random 32byte hex string and store it in a local directory [https://seanwasere.com/generate-random-hex/]
+Generate a random 32byte hex string and store it in a local directory 
 #Start Local Prysm beacon chain 
 ./prysm.sh beacon-chain --http-web3provider=http://localhost:8551  --jwt-secret=/PathToFile/jwtsecret --ropsten --genesis-state=./genesis.ssz --block-batch-limit=64
 ```
 
 Refer:
+
 https://docs.prylabs.network/docs/execution-node/authentication/
 
 https://docs.prylabs.network/docs/next/install/install-with-script
 
+[https://seanwasere.com/generate-random-hex/]
 
 ## Run `geth` through systemd
 
