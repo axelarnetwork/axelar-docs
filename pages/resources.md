@@ -68,7 +68,7 @@
       https://services.staketab.com/axelar-testnet-1-api
     </td>
     <td>
-    https://services.staketab.com/axelar-testnet-2-api
+      https://services.staketab.com/axelar-testnet-2-api
     </td>
   </tr>
   <tr>
