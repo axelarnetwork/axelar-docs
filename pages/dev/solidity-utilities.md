@@ -8,7 +8,7 @@ Creating a cross chain dApp will often require the same contract to be deployed 
 
 - `deployedAddress(bytes bytecode, address sender, bytes32 salt)`: Calculates the address of contracts that has been/will be deployed with a certain bytecode and salt, by a certain sender.
 - `deploy(bytes bytecode, bytes32 salt)`: Deploys a contract with a certain bytecode and salt.
-- `deployAndInit(bytes bytecode, bytes32 salt, bytes init)`: Deploys a contract with a certain bytecode and salt and runs `deployedContract.call(init)` afterwards. Use in case you need constructor arguments that are not constant accross chains, as different constructor arguments result in different bytecodes.
+- `deployAndInit(bytes bytecode, bytes32 salt, bytes init)`: Deploys a contract with a certain bytecode and salt and runs `deployedContract.call(init)` afterwards. Use in case you need constructor arguments that are not constant across chains, as different constructor arguments result in different bytecodes.
 
 The above can be used directly, but we also provide some scripts. Simply use `require('@axelar-network/axelar-utils-solidity')` to access:
 
