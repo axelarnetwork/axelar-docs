@@ -1,6 +1,6 @@
 # Solidity Utilities
 
-To ease cross chain developement we have provided some solidity utilites. These can be found [here](https://github.com/axelarnetwork/axelar-utils-solidity). Each of these as well as their proposed use is detialed below.
+To ease cross chain developement we have provided some solidity utilites. These can be found [here](https://github.com/axelarnetwork/axelar-utils-solidity). Each of these as well as their proposed use is detailed below.
 
 ## Constant Address Deployer
 
