@@ -19,7 +19,7 @@ The above can be used directly, but we also provide some scripts. Simply use `re
 
 ## String and Address utilities
 
-Axelar uses the string representation of addresses (42 characters) for EVM addresses (20 bytes). It is often usefull to convert between the two. [`StringAddressUtils.sol`](https://github.com/axelarnetwork/axelar-utils-solidity/blob/main/src/StringAddressUtils.sol) is a library that can be used to do so. Below see an example of how to use it.
+Axelar uses the string representation of addresses (42 characters) for EVM addresses (20 bytes). It is often useful to convert between the two. [`StringAddressUtils.sol`](https://github.com/axelarnetwork/axelar-utils-solidity/blob/main/src/StringAddressUtils.sol) is a library that can be used to do so. Below see an example of how to use it.
 
 ```solidity
 import { StringToAddress, AddressToString } from '../StringAddressUtils.sol';
