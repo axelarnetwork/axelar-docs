@@ -20,7 +20,7 @@ See [[Gas Services](../gas-services/overview)]
 
 ### Step 3: (optional): Check the status of the call
 
-See [[Monitoring state of cross-chain transactions](../gmp-tracker)]
+See [[Monitoring state of cross-chain transactions](../gmp-tracker-recovery/monitoring)]
 
 ### Step 4: (optional): Execute and recovery methods
 

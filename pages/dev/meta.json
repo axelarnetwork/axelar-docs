@@ -4,7 +4,7 @@
   "tokens": "Send tokens",
   "gmp": "General Message Passing",
   "gas-services": "Gas services",
-  "gmp-tracker": "Monitoring state of cross-chain transactions",
+  "gmp-tracker-recovery": "Cross-chain transactions monitoring and recovery",
   "axelarjs-sdk": "AxelarJS SDK",
   "chain-names": "Chain names"
 }

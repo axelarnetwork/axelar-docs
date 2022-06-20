@@ -23,7 +23,7 @@ Instantiate the `AxelarGMPRecoveryAPI` module:
 ```
 ### Query transaction status by txHash
 
-Install the AxelarJS SDK:
+Invoke `queryTransactionStatus`:
 
 ```bash
     const txHash: string = "0xfb6fb85f11496ef58b088116cb611497e87e9c72ff0c9333aa21491e4cdd397a";
