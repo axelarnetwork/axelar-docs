@@ -42,6 +42,27 @@ Useful query for GMP transactions, when invoking `callContract` or `callContract
   ): Promise<number>
 ```
 
+#### getTransferFee
+
+Given a source chain, destination chain, and amount of an asset, retrieves the base fee that the network would assess for that transaction
+
+```bash
+  /**
+   * Gets the transfer fee for a given transaction
+   * @param sourceChainName
+   * @param destinationChainName
+   * @param assetDenom
+   * @param amountInDenom
+   * @returns
+   */
+  public async getTransferFee(
+    sourceChainName: string,
+    destinationChainName: string,
+    assetDenom: string,
+    amountInDenom: number
+  ): Promise<TransferFeeResponse>
+```
+
 #### getFeeForChainAndAsset
 
 Given a chain and asset, retrieves the base fee that the network would assess
@@ -58,27 +79,6 @@ Given a chain and asset, retrieves the base fee that the network would assess
     chainName: string,
     assetDenom: string
   ): Promise<FeeInfoResponse> 
-```
-
-#### getFeeForChainAndAsset
-
-Given a source chain, destination chain, and amount of an asset, retrieves the base fee that the network would assess for that transaction
-
-```bash
-  /**
-   * Gest the transfer fee for a given transaction
-   * @param sourceChainName
-   * @param destinationChainName
-   * @param assetDenom
-   * @param amountInDenom
-   * @returns
-   */
-  public async getTransferFee(
-    sourceChainName: string,
-    destinationChainName: string,
-    assetDenom: string,
-    amountInDenom: number
-  ): Promise<TransferFeeResponse>
 ```
 
 #### getDemonFromSymbol

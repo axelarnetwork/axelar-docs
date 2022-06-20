@@ -2,20 +2,15 @@
 
 There are two ways to transfer tokens cross-chain with Axelar:
 
-1. Call `sendToken` on an Axelar gateway EVM contract.
-2. Get a deposit address using the [[AxelarJS SDK](axelarjs-sdk/token-transfer-dep-addr)]
+- (A) Call `sendToken` on an Axelar gateway EVM contract.
+- (B) Get a deposit address using the [[AxelarJS SDK](axelarjs-sdk/token-transfer-dep-addr)]
+
+## A. Call `sendToken`
 
 Use `sendToken` if:
 
 - Your app transfers EVM-to-X where X is one of EVM, Cosmos.
 - Your app uses smart contracts.
-
-Use a deposit address if:
-
-- You need functionality not offered by `sendToken`. Example: Cosmos-to-X.
-- You want to allow token transfers from wallets that don't know anything about Axelar. Example: Withdrawal from a centralized exchange.
-
-## Call `sendToken`
 
 ### Overview
 
@@ -23,7 +18,7 @@ Use a deposit address if:
 2. Execute approve on the source chain (ERC-20)
 3. Execute sendToken on the Gateway
 
-### 1. Locate the Axelar Gateway contract on the source chain
+#### 1. Locate the Axelar Gateway contract on the source chain
 
 Axelar Gateways are application-layer smart contracts established on source and destination chains. They send and receive payloads, and monitor state. Find a list of gateway addresses for the chains we support in Resources [[Mainnet](../resources/mainnet) | [Testnet](../resources/testnet) | [Testnet-2](../resources/testnet-2)].
 
@@ -38,7 +33,7 @@ function sendToken(
 ) external;
 ```
 
-### 2. Execute approve on the source chain (ERC-20)
+#### 2. Execute approve on the source chain (ERC-20)
 
 Transferring tokens through a Gateway is similar to an ERC-20 token transfer. You first need to approve the Gateway to transfer a specific token in a specific amount. This approval is done via the `approve` method of the ERC-20 interface:
 
@@ -50,7 +45,7 @@ Here `spender` is the Gateway address on the source chain.
 
 Find a list of assets, their names and their addresses in Resources [[Mainnet](../resources/mainnet) | [Testnet](../resources/testnet) | [Testnet-2](../resources/testnet-2)].
 
-### 3. Execute sendToken on the Gateway
+#### 3. Execute sendToken on the Gateway
 
 Call `sendToken` on the gateway contract of the source chain. Example:
 
@@ -65,6 +60,11 @@ sendToken(
 
 Watch for the tokens to appear at the destination address on the destination chain.
 
-## Get a deposit address
+## B. Get a deposit address
+Use a deposit address if:
+
+- You need functionality not offered by `sendToken`. Example: Cosmos-to-X.
+- You want to allow token transfers from wallets that don't know anything about Axelar. Example: Withdrawal from a centralized exchange.
+
 
 Refer to [[AxelarJS SDK](axelarjs-sdk/token-transfer-dep-addr)]

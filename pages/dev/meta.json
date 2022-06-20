@@ -1,10 +1,10 @@
 {
   "intro": "Introduction",
   "get-started": "Get started",
-  "tokens": "Transfer tokens",
+  "tokens": "Send tokens",
   "gmp": "General Message Passing",
-  "gas-receiver": "Axelar Gas Receiver",
-  "gmp-tracker": "GMP status tracker",
-  "chain-names": "Chain names",
-  "axelarjs-sdk": "AxelarJS SDK"
+  "gas-services": "Gas services",
+  "gmp-tracker": "Monitoring state of cross-chain transactions",
+  "axelarjs-sdk": "AxelarJS SDK",
+  "chain-names": "Chain names"
 }

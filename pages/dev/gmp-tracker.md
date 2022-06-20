@@ -1,6 +1,9 @@
 # General Message Passing status tracker
+Axelar provides two options to check each GMP transfer status via: 
+1. the Axelarscan UI, OR 
+2. the AxelarJS SDK
 
-### View transfers status
+## 1. Axelarscan UI
 You can view General Message Passing transactions on the GMP page of Axelarscan.
 - mainnet: https://axelarscan.io/gmp
 - testnet: https://testnet.axelarscan.io/gmp.
@@ -40,3 +43,6 @@ Axelar provides a relayer service that automatically executes transfers for you.
 
 ![gmp-connect-wallet.png](/images/gmp-connect-wallet.png)
 ![gmp-execute-button.png](/images/gmp-execute-button.png)
+
+## 2. the AxelarJS SDK
+TBU
