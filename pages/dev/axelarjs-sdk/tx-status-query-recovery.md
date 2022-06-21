@@ -88,24 +88,23 @@ When invoking this method, you will manually execute (and pay for) the executabl
     }
 ```
 
-#### 2. (WIP!!!) Increase Native Gas Payment 
+#### 2. Increase Native Gas Payment 
 
 Invoking this method will execute the `addNativeGas` method on the gas receiver contract on the source chain of your cross-chain transaction to increase the amount of the gas payment, in the form of native tokens.
 
 ```bash
-    // TODO: the txState query can be improved
-    const testnetCachingServiceAPI: string = "https://testnet.api.gmp.axelarscan.io";
-    const txState = await api.execGet(testnetCachingServiceAPI, {
-        method: "searchGMP",
-        txHash,
-    });
-    await sdk.addNativeGas({ gas_paid: res[0].gas_paid }, (data: any) => console.log(data))
-```
-, where possible return values are:
-```bash
-    {
-        status: "pending" | "success" | "failed",
-        message: "Wait for confirmation" | "Execute successful" | <ERROR>,
-        txHash: tx.hash,
+    const options: AddGasOptions = {
+        amount: "10000000", // Amount of gas to be added. If unspecified, sdk will calculate the amount.
+        refundAddress: "", // If not specified, the default value is the tx sender address.
+        estimatedGasUsed: 700000, // An amount of gas to execute `executeWithToken` or `execute` function of the custom destination contract. If not specified, the default value is 700000.
+        evmWalletDetails: { useWindowEthereum: true, privateKey: "0x" }, // A wallet to send an `addNativeGas` transaction. If not specified, the default value is { useWindowEthereum: true}.
+    };
+    const SOURCE_GMP_TX_HASH: string = "YOUR_SRC_GMP_TX_HASH";
+    const txResult = await api.addNativeGas(EvmChain.AVALANCHE, SOURCE_GMP_TX_HASH, options);
+
+    if (txResult.success) {
+        console.log("Added native gas tx:", txResult.transaction?.transactionHash);
+    } else {
+        console.log("Cannot add native gas", txResult.error);
     }
 ```
