@@ -1,6 +1,6 @@
 # `Pay Gas`
 
-For each of `callContract` and `callContractWithToken`, the Gas Receiver can be paid in either native token of the source chain or any supported token in our network. 
+For both `callContract` and `callContractWithToken`, the Gas Receiver can be paid in the native token of the source chain or any token supported by Axelar network. 
 
 ## For `callContract`
 ### `payGasForContractcall`:
@@ -16,7 +16,7 @@ function payGasForContractCall(
 ) external;
 ```
 
-*** Can only be paid in tokens that Axelar supports. See the list of supported assets for the chains we support in Resources [[Mainnet](../../resources/mainnet) | [Testnet](../../resources/testnet) | [Testnet-2](../../resources/testnet-2)].
+*** Gas Receiver can only be paid in tokens Axelar supports. See the list of supported assets in Resources [[Mainnet](../../resources/mainnet) | [Testnet](../../resources/testnet) | [Testnet-2](../../resources/testnet-2)].
 
 
 ### `payGasForContractCallWithToken`
@@ -49,8 +49,7 @@ function payGasForContractCallWithToken(
 ) external;
 ```
 
-*** Can only be paid in tokens that Axelar supports. See the list of supported assets for the chains we support in Resources [[Mainnet](../../resources/mainnet) | [Testnet](../../resources/testnet) | [Testnet-2](../../resources/testnet-2)].
-
+*** Gas Receiver can only be paid in tokens Axelar supports. See the list of supported assets in Resources [[Mainnet](../../resources/mainnet) | [Testnet](../../resources/testnet) | [Testnet-2](../../resources/testnet-2)].
 
 ### `payNativeGasForContractCallWithToken`
 ```solidity
@@ -66,7 +65,7 @@ function payNativeGasForContractCallWithToken(
 ) external payable;
 ```
 
-The function names are prety self explanatory. The following is true for the arguments:
+The function names are prety self-explanatory. The following is true for the arguments:
 
 - For all functions
   - `sender` needs to match the address that calls `callContract` or `callContractWithToken` on the `AxelarGateway`. If the `AxelarGasReceiver` is called by the same contract that will call the gateway then simply specify `address(this)` as `sender`.
@@ -82,9 +81,10 @@ The function names are prety self explanatory. The following is true for the arg
   - `symbol`
   - `amount`
     need to match the arguments of a `contractCallWithToken` on the `AxelarGateway`
-- For `payGasForContractCall` and `payGasForContractCallWtihToken`
-  - `gasToken` is the address of the token that gas will be paid in. Ensure this token is supported with our API.
+- For `payGasForContractCall` and `payGasForContractCallWtihToken`,
+  - `gasToken` is the address of the token that gas will be paid in. Ensure this token is supported by the network, using the Axelar API.
+[//]: # (Cleaned up this last sentence. Confirming it's still accurate.)
   - `gasFeeAmount` is the amount of `gasToken` to transfer from the sender. The sender needs to have approved the `AxelarGasReceiver` with the appropriate amount to `gasToken` first.
-- For `payNativeGasForContractCall` and `payNativeGasForContractCallWithToken` the amount of funds received is specified by `msg.value`.
-- For all functions
+- For `payNativeGasForContractCall` and `payNativeGasForContractCallWithToken`, the amount of funds received is specified by `msg.value`.
+- For all functions,
   - `refundAddress` is the address that will be able to receive excess amount paid for gas.
