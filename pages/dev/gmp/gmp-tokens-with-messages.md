@@ -3,10 +3,10 @@
 
 To call chain B from chain A and send some tokens along the way, the user needs to call `callContractWithToken` on the gateway of chain A, specifying:
 
-- The destination chain: must an EVM chain from [Chain names](chain-names).
+- The destination chain: must an EVM chain from [Chain names](../chain-names).
 - The destination contract address: must implement the `IAxelarExecutable` interface defined in [IAxelarExecutable.sol](https://github.com/axelarnetwork/axelar-cgp-solidity/blob/main/src/interfaces/IAxelarExecutable.sol).
 - The payload `bytes` to pass to the destination contract.
-- The symbol of the token to transfer: must be a supported asset [[Mainnet](../resources/mainnet) | [Testnet](../resources/testnet) | [Testnet-2](../resources/testnet-2)].
+- The symbol of the token to transfer: must be a supported asset [[Mainnet](/resources/mainnet) | [Testnet](/resources/testnet) | [Testnet-2](/resources/testnet-2)].
 - The amount of the token to transfer.
 
 As per snippet below.

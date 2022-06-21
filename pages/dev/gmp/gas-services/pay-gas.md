@@ -16,7 +16,7 @@ function payGasForContractCall(
 ) external;
 ```
 
-*** Gas Receiver can only be paid in tokens Axelar supports. See the list of supported assets in Resources [[Mainnet](../../resources/mainnet) | [Testnet](../../resources/testnet) | [Testnet-2](../../resources/testnet-2)].
+*** Gas Receiver can only be paid in tokens Axelar supports. See the list of supported assets in Resources [[Mainnet](/resources/mainnet) | [Testnet](/resources/testnet) | [Testnet-2](/resources/testnet-2)].
 
 
 ### `payGasForContractCallWithToken`
@@ -49,7 +49,7 @@ function payGasForContractCallWithToken(
 ) external;
 ```
 
-*** Gas Receiver can only be paid in tokens Axelar supports. See the list of supported assets in Resources [[Mainnet](../../resources/mainnet) | [Testnet](../../resources/testnet) | [Testnet-2](../../resources/testnet-2)].
+*** Gas Receiver can only be paid in tokens Axelar supports. See the list of supported assets in Resources [[Mainnet](/resources/mainnet) | [Testnet](/resources/testnet) | [Testnet-2](/resources/testnet-2)].
 
 ### `payNativeGasForContractCallWithToken`
 ```solidity

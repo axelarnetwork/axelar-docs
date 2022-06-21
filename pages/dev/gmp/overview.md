@@ -10,7 +10,7 @@ With GMP you can:
 ### Prerequisites
 - For GMP to work, both chain A and chain B must be EVM chains with a deployed Axelar Gateway contract.
 - The application’s executable contract must be deployed on the destination contract.
-- The application must be on one of Axelar's supported EVM chains. See [Chain names](chain-names) for a list of EVM chains that have an Axelar Gateway deployed. The list is updated as new chains are added.
+- The application must be on one of Axelar's supported EVM chains. See [Chain names](../chain-names) for a list of EVM chains that have an Axelar Gateway deployed. The list is updated as new chains are added.
 
 ### Flow Architecture (in steps)
 

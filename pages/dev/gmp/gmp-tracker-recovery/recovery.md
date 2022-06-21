@@ -30,7 +30,7 @@ Click the ‘Connect’ button under the label ‘Execute at destination chain�
 ![gmp-execute.png](/images/gmp-execute.png)
 
 ### Increase gas payment to the gas receiver on the source chain
-The prepaid gas to the Gas Service contract [[in step 2](../gmp/building-on-gmp#step-2-pay-gas-to-the-gas-services-contract)] could be insufficient when the destination chain is too busy (with many transfers or other conditions). Therefore, Axelarscan provides options to resubmit a new amount of gas as well as an option to refund the paid gas. 
+The prepaid gas to the Gas Service contract [[in step 2](../building-on-gmp#step-2-pay-gas-to-the-gas-services-contract)] could be insufficient when the destination chain is too busy (with many transfers or other conditions). Therefore, Axelarscan provides options to resubmit a new amount of gas as well as an option to refund the paid gas. 
 
 To do this:
 1. Click the Connect button to connect your Metamask wallet. Then switch the wallet network to the transfer’s source chain by clicking the Switch Network button under the label ‘Pay new gas at source chain’.
@@ -42,4 +42,4 @@ To do this:
 
 All of the recovery methods above can be done programmatically through our SDK. The benefit of this would be if you would like to incorporate these recovery features above in your application directly. In fact, Axelarscan leverages all of these methods written into the SDK. 
 
-See SDK docs for [[the full transaction recovery API](../axelarjs-sdk/tx-status-query-recovery#query-and-recover-gmp-transactions)]
+See SDK docs for [[the full transaction recovery API](/dev/axelarjs-sdk/tx-status-query-recovery#query-and-recover-gmp-transactions)]
