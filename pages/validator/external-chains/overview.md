@@ -196,8 +196,8 @@ Conversely, if you are registered as a maintainer for C but your RPC endpoint fo
 
 The Axelar network will automatically deregister your validator as a maintainer for chain C if either of the following conditions is met in the previous 500 polls for C:
 
-1. Your validator missed at least 20% of polls. A poll is "missed" if your validator's vote transaction is posted more than 3 blocks after the poll concludes.
-2. Your validator voted incorrectly in at least 5% of polls.
+1. Your validator missed at least 20% of polls. A poll is "missed" if your validator never submits a vote transaction or if the vote transaction is posted more than 3 blocks after the poll concludes.
+2. Your validator voted incorrectly in at least 5% of polls. A vote is "incorrect" if it conflicts with the majority for that poll.
 
 ### How to recognize automatic deregistration
 
