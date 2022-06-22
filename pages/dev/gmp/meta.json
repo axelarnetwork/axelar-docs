@@ -2,6 +2,8 @@
     "overview": "Overview",
     "building-on-gmp": "Building applications with GMP",
     "gmp-messages": "Send messages",
-    "gmp-tokens-with-messages": "Send tokens with messages"
+    "gmp-tokens-with-messages": "Send tokens with messages",
+    "gas-services": "Gas services",
+    "gmp-tracker-recovery": "Monitoring and recovery"
 }
   

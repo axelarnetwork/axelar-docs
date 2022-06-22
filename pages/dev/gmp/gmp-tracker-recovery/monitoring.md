@@ -1,4 +1,4 @@
-# Monitoring State of Cross-Chain Transactions
+# Monitoring State of GMP Transactions
 Axelar provides two options to check each GMP transaction status: 
 1. The Axelarscan UI. 
 2. The AxelarJS SDK.
@@ -15,5 +15,4 @@ To search for a particular transfer, enter a transaction hash or a sender addres
 
 ## 2. AxelarJS SDK
 
-See SDK docs for [[Query transaction status by txHash](axelarjs-sdk/tx-status-query-recovery#query-transaction-status-by-txhash)]
-[//]: # (Is this link accurate?)
+See SDK docs for [[Query transaction status by txHash](/dev/axelarjs-sdk/tx-status-query-recovery#query-transaction-status-by-txhash)]
