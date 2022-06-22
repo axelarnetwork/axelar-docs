@@ -4,7 +4,7 @@ The AxelarJS SDK is an npm library that includes a collection of APIs and query 
 
 The package can be installed into your DApp as a project dependency with:
 ```bash
-npm i @axelar-network/axelarjs-sdk
+npm i @axelar-network/axelarjs-sdk@alpha
 ```
 
 

@@ -11,7 +11,7 @@ The `AxelarGMPRecoveryAPI` module in the AxelarJS SDK can be used by your DApp t
 Install the AxelarJS SDK:
 
 ```bash
-    npm i @axelar-network/axelarjs-sdk
+    npm i @axelar-network/axelarjs-sdk@alpha
 ```
 
 Instantiate the `AxelarGMPRecoveryAPI` module:
