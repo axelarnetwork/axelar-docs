@@ -16,7 +16,7 @@ An application that wants Axelar to automatically execute contract calls on the 
 
 1. Estimate the `gasLimit` that the contract call will require on your executable contract on the destination chain.
 
-2. Call the getGasPrice method to get the sourceGasPrice in the desired gas-payment token on the destination chain. 
+2. Call the estimateGasFee method to get the sourceGasPrice in the desired gas-payment token on the destination chain. 
 
 Prerequisite: Axelar SDK must be installed. Refer to [[AxelarJS SDK](axelarjs-sdk/token-transfer-dep-addr)].
 

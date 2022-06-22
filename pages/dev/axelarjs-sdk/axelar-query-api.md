@@ -21,25 +21,26 @@ Instantiate the `AxelarQueryAPI` module:
 
 ### Possible queries
 
-#### getGasPrice
+#### estimateGasFee
 
 Useful query for GMP transactions, when invoking `callContract` or `callContractWithToken` to get an estimate of the appropriate gas payment to be made to the gas receiver on the source chain. 
 
 ```bash
-  /** 
-   * Gets the gas price for a destination chain to be paid to the gas receiver on a source chain
+  /**
+   * Calculate estimated gas amount to pay for the gas receiver contract.
+   *
    * @param sourceChainName
    * @param destinationChainName
-   * @param sourceChainTokenAddress
    * @param sourceChainTokenSymbol
+   * @param estimatedGasUsed (Optional) An estimated gas amount required to execute `executeWithToken` function. The default value is 700000 which sufficients for most transaction.
    * @returns
    */
-  public async getGasPrice(
-    sourceChainName: string,
-    destinationChainName: string,
-    sourceChainTokenAddress: string,
-    sourceChainTokenSymbol: string
-  ): Promise<number>
+  public async estimateGasFee(
+    sourceChainName: EvmChain,
+    destinationChainName: EvmChain,
+    sourceChainTokenSymbol: GasToken | string,
+    estimatedGasUsed = DEFAULT_ESTIMATED_GAS
+  ): Promise<string> {
 ```
 
 #### getTransferFee
