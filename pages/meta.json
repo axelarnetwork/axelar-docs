@@ -15,6 +15,10 @@
     "title": "Validators",
     "type": "doc"
   },
+  "integrations": {
+    "title": "Chain Integrations",
+    "type": "doc"
+  },
   "resources": {
     "title": "Resources",
     "type": "doc"
