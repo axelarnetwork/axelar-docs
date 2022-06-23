@@ -26,7 +26,7 @@ function _execute(
 
 *** __Ensure the payload is encoded `bytes`__
 
-The `payload` passed to `callContract` (and ultimately to the `_execute` and `_executeWithToken`) has type `bytes`. Use the ABI encoder/decoder convert your data to `bytes`.
+The `payload` passed to `callContract` (and ultimately to `_execute` and `_executeWithToken`) has type `bytes`. Use the ABI encoder/decoder convert your data to `bytes`.
 
 Example of payload encoding in JavaScript (using ethers.js):
 
