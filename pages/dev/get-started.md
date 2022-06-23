@@ -9,23 +9,22 @@ The ideal development process is completed in two steps:
 1. Build. Develop your dApp and test it against the Axelar local development environment.
 2. Deploy. Deploy your contracts and point your dApp to a live network: testnet or mainnet.
 
-**_To begin, download the Axelar local development environment._**
+**_To begin, download the `axelar-local-gmp-examples` repository, which contains a full suite of starter templates that are run against the Axelar local development environment._**
 
-<Button title="Axelar local development environment" url="https://github.com/axelarnetwork/axelar-local-dev" />
+View the github README for instructions and code:
 
-## Components
-Build a cross-chain dApp in the local development environment using two basic components:
+<Button title="Starter templates" url="https://github.com/axelarnetwork/axelar-local-gmp-examples" />
+
+## Build
+
+**_Build a cross-chain dApp in the local development environment using two basic components:_**
 
 1. RPC endpoints to query or post transactions to the various EVM chains supported by Axelar.
 2. Contract addresses on various EVM chains for:
     - Axelar services such as the Gateway contract and ERC-20 token contracts.
     - Your own custom `IAxelarExecutable` smart contracts.
 
-The Axelar local development environment simulates multiple EVM chains and the Axelar overlay network that connects them. 
-
-## Build
-
-The Axelar local development environment allows you to:
+**_The Axelar local development environment allows you to:_**
 
 1. Create simulated EVM chains with RPC endpoints on your localhost. These chains come pre-loaded with the AxelarGateway, AxelarGasReceiver and a routed ERC-20 token contract (axlUSDC).
 2. Deploy your custom `IAxelarExecutable` contracts to your simulated EVM chains.
@@ -38,17 +37,9 @@ When you're ready to go live to testnet or mainnet:
 1. Deploy your custom `IAxelarExecutable`contracts to the live EVM chains (testnet or mainnet) your dApp supports. 
 2. Swap out the RPC endpoints and contract addresses so they now point to live EVM chains (testnet or mainnet).
 
-## Examples
+## Guided video walkthroughs
 
-### Examples repo
-
-Prefer to build from examples? We have a full library below for you to choose from.
-
-View the README in the `axelar-local-gmp-examples` repo. It provides instructions and code for several application examples.
-
-<Button title="Examples" url="https://github.com/axelarnetwork/axelar-local-gmp-examples" />
-
-### Video on NFT linker example
+### NFT linker
 
 The [axelar-local-gmp-examples](https://github.com/axelarnetwork/axelar-local-gmp-examples) repo contains an example [nft-linker](https://github.com/axelarnetwork/axelar-local-gmp-examples/tree/main/examples/nft-linker) on cross-chain transfer for ERC-721 NFT tokens.
 

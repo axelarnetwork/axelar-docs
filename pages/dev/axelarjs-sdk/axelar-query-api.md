@@ -75,7 +75,7 @@ public async getFeeForChainAndAsset(
 ): Promise<FeeInfoResponse>
 ```
 
-#### getDemonFromSymbol
+#### getDenomFromSymbol
 
 Get the denom for an asset given its symbol on a chain
 

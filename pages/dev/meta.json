@@ -4,5 +4,6 @@
   "tokens": "Send tokens",
   "gmp": "General Message Passing",
   "axelarjs-sdk": "AxelarJS SDK",
-  "chain-names": "Chain names"
+  "chain-names": "Chain names",
+  "solidity-utilities": "Solidity Utilities"
 }
