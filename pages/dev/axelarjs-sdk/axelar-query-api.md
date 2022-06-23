@@ -82,7 +82,7 @@ Given a chain and asset, retrieves the base fee that the network would assess
   ): Promise<FeeInfoResponse> 
 ```
 
-#### getDemonFromSymbol
+#### getDenomFromSymbol
 
 Get the denom for an asset given its symbol on a chain
 
