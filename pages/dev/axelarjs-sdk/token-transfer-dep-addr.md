@@ -44,9 +44,8 @@ async getDepositAddress(
   }
 ): Promise<string> {}
 ```
-[//]: # (We need to update these examples, replacing Terra with Osmosis.)
 
-Example: Cosmos to EVM (Terra to Avalanche):
+Example: Cosmos to EVM (Osmosis to Avalanche):
 
 ```tsx
 const sdk = new AxelarAssetTransfer({
@@ -60,7 +59,7 @@ const depositAddress = await sdk.getDepositAddress(
 );
 ```
 
-Example: EVM to Cosmos (Avalanche to Terra)
+Example: EVM to Cosmos (Avalanche to Osmosis)
 
 ```tsx
 const sdk = new AxelarAssetTransfer({
