@@ -24,7 +24,7 @@ The CALL APPROVED status will be updated once the network approves the transacti
 2. Increase gas payment to the gas receiver on the source chain.
 
 ### Manually execute a transfer
-Click the ‘Connect’ button under the label ‘Execute at destination chain’. Then click Execute.
+Click the ‘Connect’ button under the label ‘Execute at destination chain’. Then click `Execute`.
 
 ![gmp-execute.png](/images/gmp-execute.png)
 
@@ -32,13 +32,13 @@ Click the ‘Connect’ button under the label ‘Execute at destination chain�
 The prepaid gas to the Gas Service contract [[in step 2](../building-on-gmp#step-2-pay-gas-to-the-gas-services-contract)] could be insufficient when the destination chain is too busy (with many transfers or other conditions). Therefore, Axelarscan provides options to resubmit a new amount of gas as well as an option to refund the paid gas. 
 
 To do this:
-1. Click the Connect button to connect your Metamask wallet. Then switch the wallet network to the transfer’s source chain by clicking the Switch Network button under the label ‘Pay new gas at source chain’.
+1. Click the `Connect` button to connect your MetaMask wallet. Then switch the wallet network to the transfer’s source chain by clicking the `Switch Network` button under the label ‘Pay new gas at source chain.'
 ![gmp-pay-gas-connect-wallet.png](/images/gmp-pay-gas-connect-wallet.png)
 2. Click the ‘Pay new gas’ button.
 ![gmp-pay-gas-success.png](/images/gmp-pay-gas-success.png)
 
 ## 2. the AxelarJS SDK
 
-All of the recovery methods above can be done programmatically through our SDK. The benefit of this would be if you would like to incorporate these recovery features above in your application directly. In fact, Axelarscan leverages all of these methods written into the SDK. 
+All of the recovery methods above can be done programmatically through our SDK. The benefit of this would be if you would like to incorporate these recovery features above in your application directly. In fact, Axelarscan makes use of all of these methods written into the SDK. 
 
 See SDK docs for [[the full transaction recovery API](/dev/axelarjs-sdk/tx-status-query-recovery#query-and-recover-gmp-transactions)].

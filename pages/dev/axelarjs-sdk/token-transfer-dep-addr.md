@@ -75,8 +75,6 @@ const depositAddress = await sdk.getDepositAddress(
 );
 ```
 
-Note: The destination address format is validated based on the destination chain. Make sure the destination address is a valid address on the destination chain. For instance, Terra addresses start with “terra,” Osmosis with “osmo,” etc.
-
-[//]: # (Need to change this use of Terra, too. Not sure what the best alternate example might be. ...)
+Note: The destination address format is validated based on the destination chain. Make sure the destination address is a valid address on the destination chain. For instance, Osmosis with “osmo,” etc.
 
 Once the deposit address has been generated, the user can make a token transfer (on blockchain) to the deposit address. The transfer will be picked up by the Axelar network and relayed to the destination chain.

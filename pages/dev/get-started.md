@@ -9,11 +9,9 @@ The ideal development process is completed in two steps:
 1. Build. Develop your dApp and test it against the Axelar local development environment.
 2. Deploy. Deploy your contracts and point your dApp to a live network: testnet or mainnet.
 
-**_To begin, download the Axelar dApp starter kit._**
+**_To begin, download the Axelar local development environment._**
 
-A full-stack template with contracts and UI that can be run in the Axelar local development environment. The starter kit README contains step-by-step directions on building your app from the ground up.
-
-<Button title="Axelar DApp Starter Kit" url="https://github.com/axelarnetwork/axelar-dapp-starter-kit" />
+<Button title="Axelar local development environment" url="https://github.com/axelarnetwork/axelar-local-dev" />
 
 ## Components
 Build a cross-chain dApp in the local development environment using two basic components:
@@ -23,7 +21,7 @@ Build a cross-chain dApp in the local development environment using two basic co
     - Axelar services such as the Gateway contract and ERC-20 token contracts.
     - Your own custom `IAxelarExecutable` smart contracts.
 
-The Axelar local development environment simulates multiple EVM chains and the Axelar overlay network that connects them. The _Axelar dApp starter kit_ allows you to develop your dApp and test it against the Axelar local development environment.
+The Axelar local development environment simulates multiple EVM chains and the Axelar overlay network that connects them. 
 
 ## Build
 
@@ -49,8 +47,6 @@ Prefer to build from examples? We have a full library below for you to choose fr
 View the README in the `axelar-local-gmp-examples` repo. It provides instructions and code for several application examples.
 
 <Button title="Examples" url="https://github.com/axelarnetwork/axelar-local-gmp-examples" />
-
-[//]: # (Suggest we put this on one of the GMP pages, and also create a page that lists all videos, once we have more than 2.)
 
 ### Video on NFT linker example
 
