@@ -68,23 +68,22 @@ function payNativeGasForContractCallWithToken(
 The function names are prety self-explanatory. The following is true for the arguments:
 
 - For all functions
-  - `sender` needs to match the address that calls `callContract` or `callContractWithToken` on the `AxelarGateway`. If the `AxelarGasReceiver` is called by the same contract that will call the gateway then simply specify `address(this)` as `sender`.
-- For `payGasForContractCall` and `payNativeGasForContractCall`
+  - `sender` needs to match the address that calls `callContract` or `callContractWithToken` on the `AxelarGateway`. If the `AxelarGasReceiver` is called by the same contract that will call the Gateway then simply specify `address(this)` as `sender`.
+- For `payGasForContractCall` and `payNativeGasForContractCall`:
   - `destinationChain`
   - `destinationAddress`
   - `payload`
-    need to match the arguments of a `contractCall` on the `AxelarGateway`
-- For `payGasForContractCallWtihToken` and `payNativeGasForContractCallWithToken`
+    need to match the arguments of a `contractCall` on the `AxelarGateway`.
+- For `payGasForContractCallWtihToken` and `payNativeGasForContractCallWithToken`:
   - `destinationChain`
   - `destinationAddress`
   - `payload`
   - `symbol`
   - `amount`
-    need to match the arguments of a `contractCallWithToken` on the `AxelarGateway`
-- For `payGasForContractCall` and `payGasForContractCallWtihToken`,
+    need to match the arguments of a `contractCallWithToken` on the `AxelarGateway`.
+- For `payGasForContractCall` and `payGasForContractCallWtihToken`:
   - `gasToken` is the address of the token that gas will be paid in. Ensure this token is supported by the network, using the Axelar API.
-[//]: # (Cleaned up this last sentence. Confirming it's still accurate.)
   - `gasFeeAmount` is the amount of `gasToken` to transfer from the sender. The sender needs to have approved the `AxelarGasReceiver` with the appropriate amount to `gasToken` first.
 - For `payNativeGasForContractCall` and `payNativeGasForContractCallWithToken`, the amount of funds received is specified by `msg.value`.
 - For all functions,
-  - `refundAddress` is the address that will be able to receive excess amount paid for gas.
+  - `refundAddress` is the address that will eventually be able to receive excess amount paid for gas.
