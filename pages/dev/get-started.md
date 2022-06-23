@@ -40,15 +40,6 @@ When you're ready to go live to testnet or mainnet:
 1. Deploy your custom `IAxelarExecutable`contracts to the live EVM chains (testnet or mainnet) your dApp supports. 
 2. Swap out the RPC endpoints and contract addresses so they now point to live EVM chains (testnet or mainnet).
 
-### Video walkthrough (TBD)
-
-Prefer a video walkthrough? Follow along our (short) video series walking through our starter kit:
-1. axelar-local-dev env set up. (links TBD)
-2. deploying those contracts in the airdrop example to two parallel local network. (links TBD)
-3. frontend that invokes source chain contract in JS. will maybe include explainers for gas receiver, etc. (links TBD)
-4. deploying those contracts to testnet. (links TBD)
-5. then updating frontend to point to testnet contracts, running the example, and then where to view status on testnet.axelarscan (links TBD)
-
 ## Examples
 
 ### Examples repo
