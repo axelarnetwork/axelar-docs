@@ -42,7 +42,9 @@ contract SimpleTransferContract {
       IERC20(tokenAddress).transferFrom(msg.sender, address(this), amount);
       IERC20(tokenAddress).approve(address(gateway), amount);
       bytes memory payload = abi.encode(destinationAddresses);
+
       if(msg.value > 0) {
+          // The line below is where we pay the gas fee
           gasReceiver.payNativeGasForContractCallWithToken{value: msg.value}(
               address(this),
               destinationChain,
