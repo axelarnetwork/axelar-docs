@@ -16,7 +16,7 @@ function addNativeGas(
 ```
 
 * In JavaScript, the SDK abstracts a method that can be invoked directly in a web application.
-See SDK docs for [[Increase Native Gas Payment](/dev/axelarjs-sdk/tx-status-query-recovery#2-wip-increase-native-gas-payment).
+See SDK docs for [[Increase Native Gas Payment](/dev/axelarjs-sdk/tx-status-query-recovery#2-wip-increase-native-gas-payment)].
 
 ### `addGas`
 Pay additional gas to a transaction that needs it (referenced by its txHash) in any of Axelar's supported tokens on its EVM source chain.
