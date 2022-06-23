@@ -3,9 +3,10 @@
 When needed, our smart contract can receive gas to top up an existing General Message Passing (GMP) transaction in the following ways:
 
 ### `addNativeGas`
+
 Pay additional gas to a transaction that needs it (referenced by its txHash) in native tokens on its EVM source chain.
 
-* In Solidity:
+- In Solidity:
 
 ```solidity
 function addNativeGas(
@@ -15,13 +16,14 @@ function addNativeGas(
 ) external payable override;
 ```
 
-* In JavaScript, the SDK abstracts a method that can be invoked directly in a web application.
-See SDK docs for [[Increase Native Gas Payment](/dev/axelarjs-sdk/tx-status-query-recovery#2-wip-increase-native-gas-payment)].
+- In JavaScript or TypeScript, the SDK abstracts a method that can be invoked directly in a web application.
+  See SDK docs for [Increase Native Gas Payment](/dev/axelarjs-sdk/tx-status-query-recovery#21-native-gas-payment).
 
 ### `addGas`
+
 Pay additional gas to a transaction that needs it (referenced by its txHash) in any of Axelar's supported tokens on its EVM source chain.
 
-* In Solidity:
+- In Solidity:
 
 ```solidity
 function addGas(
@@ -32,7 +34,7 @@ function addGas(
     address refundAddress
 ) external override;
 ```
-* In JavaScript: (WIP - will point to the relevant SDK section).
 
-*** Can only be paid in tokens that Axelar supports. See the list of supported assets for the chains we support in Resources [[Mainnet](/resources/mainnet) | [Testnet](/resources/testnet) | [Testnet-2](/resources/testnet-2)].
+- In JavaScript or TypeScript: [Increase ERC-20 Gas Payment](/dev/axelarjs-sdk/tx-status-query-recovery#22-erc-20-gas-payment).
 
+\*\*\* Can only be paid in tokens that Axelar supports. See the list of supported assets for the chains we support in Resources [[Mainnet](/resources/mainnet) | [Testnet](/resources/testnet) | [Testnet-2](/resources/testnet-2)].

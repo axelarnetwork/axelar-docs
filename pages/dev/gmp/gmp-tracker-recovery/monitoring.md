@@ -1,7 +1,7 @@
 # Monitoring State of GMP Transactions
 Axelar provides two options to check each GMP transaction status: 
 1. The Axelarscan UI. 
-2. The [[AxelarJS SDK](axelarjs-sdk/token-transfer-dep-addr)].
+2. The [[AxelarJS SDK](/dev/axelarjs-sdk/token-transfer-dep-addr)].
 
 ## 1. Axelarscan UI
 Anyone can view a General Message Passing transaction on the GMP page of the Axelarscan block explorer.

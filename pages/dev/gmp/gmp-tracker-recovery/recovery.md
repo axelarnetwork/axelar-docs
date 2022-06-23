@@ -7,7 +7,7 @@ Transactions have typically gotten "stuck" in the pipeline due to:
 
 Users can recover a transaction that gets stuck in the pipeline by either: 
 1. Searching for the transaction in the Axelarscan UI and having it invoke recovery.
-2. Incorporating the [[AxelarJS SDK](axelarjs-sdk/token-transfer-dep-addr)] and invoking those methods directly.
+2. Incorporating the [[AxelarJS SDK](/dev/axelarjs-sdk/token-transfer-dep-addr)] and invoking those methods directly.
 
 ## 1. Axelarscan UI
 

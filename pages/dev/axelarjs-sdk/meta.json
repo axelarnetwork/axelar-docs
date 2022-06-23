@@ -2,7 +2,6 @@
     "intro": "Introduction",
     "token-transfer-dep-addr": "Token Transfer via Deposit Address",
     "tx-status-query-recovery": "GMP transaction status and recovery",
-    "axelar-query-api": "Axelar Query API",
-    "axelar-rpc-client": "Axelar RPC Client"
+    "axelar-query-api": "Axelar Query API"
   }
   
