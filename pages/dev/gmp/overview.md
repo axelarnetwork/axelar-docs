@@ -20,8 +20,7 @@ With GMP you can:
 
 #### At the Source Chain
 
-1. User (Dapp) calls a `callContract` (or `callContractWithToken`) function on the Axelar Gateway contract to initiate a call. 
-Once the call is initiated, the user can see its status at https://axelarscan.io/gmp/[txHash] or programmatically track it via the Axelar SDK.
+1. User (dApp) calls a `callContract` (or `callContractWithToken`) function on the Axelar Gateway contract to initiate a call. Once the call is initiated, the user can see its status at https://axelarscan.io/gmp/[txHash] or programmatically track it via the [[AxelarJS SDK](axelarjs-sdk/token-transfer-dep-addr)].
 2. User prepays the relayer gas fee on the source chain to Axelar’s Gas Services contract.
 3. The call enters the Axelar Gateway from the source chain.
 
