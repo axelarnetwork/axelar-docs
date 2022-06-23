@@ -4,24 +4,24 @@ For any General Message Passing (GMP) transaction, the Axelar network routes tra
 1. Manually paid by the user/application on the destination chain.
 2. Executed automatically by Axelar if the user/application prepays gas to the Gas Receiver contract on the source chain.
 
-Gas Receiver is a smart contract deployed on every EVM that is provided by Axelar. Our Gas Services provide users/applications the ability to prepay the full estimated cost for any GMP transaction (from source to destination chains) with the convenience of a single payment on the source chain, relying on Axelar's relay services to manage the full pipeline. Once gas is paid to our gas services for a GMP transaction, Axelar's relayer services pick up the payment and automatically executes the final General Message Passing call.
+Gas Receiver is a smart contract deployed on every EVM that is provided by Axelar. Our Gas Services provide users/applications the ability to prepay the full estimated cost for any GMP transaction (from source to destination chains) with the convenience of a single payment on the source chain, relying on Axelar's relay services to manage the full pipeline. Once gas is paid to our gas services for a GMP transaction, Axelar's relayer services pick up the payment and automatically execute the final General Message Passing call.
 
-Developers can use the Gas Services by pre-paying upfront the relayer gas fee on the source chain, thereby covering the cost of gas to execute the final transaction on the destination chain. 
+Developers can use the Gas Services by prepaying upfront the relayer gas fee on the source chain, thereby covering the cost of gas to execute the final transaction on the destination chain. 
 
 ## Overview of Gas Services
 
-### Pay Gas
+### Pay gas
 
 An application that wants Axelar to automatically execute contract calls on the destination chain needs to do four things:
 
 1. Estimate the `gasLimit` that the contract call will require on your executable contract on the destination chain.
 
-2. Call the estimateGasFee method to get the sourceGasPrice in the desired gas-payment token on the destination chain. 
+2. Call the `estimateGasFee` method to get the `sourceGasPrice` in the desired gas-payment token on the destination chain. 
 
 Prerequisite: Axelar SDK must be installed. Refer to [[AxelarJS SDK](/dev/axelarjs-sdk/token-transfer-dep-addr)].
 
 3. Calculate the amount of token to be paid. 
-gasLimit * sourceGasPrice.
+`gasLimit` * `sourceGasPrice`.
 
 4. Pay the AxelarGasService smart contract on the source chain in the amount calculated in step 3. 
 [Code snippet.]
