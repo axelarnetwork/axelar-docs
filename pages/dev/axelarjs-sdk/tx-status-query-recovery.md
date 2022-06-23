@@ -136,7 +136,7 @@ if (success) {
 
 ##### 2.2 ERC-20 Gas Payment
 
-This is similar to native gas payment except using **ERC-20 token** for gas payment. However, the supported ERC-20 tokens are limited. See the list of supported tokens [here](../../resources/testnet)
+This is similar to native gas payment except using **ERC-20 token** for gas payment. However, the supported ERC-20 tokens are limited. See the list of supported tokens here: [[Mainnet](/resources/mainnet) | [Testnet](/resources/testnet) | [Testnet-2](/resources/testnet-2)]
 
 ```ts
 import {
