@@ -68,7 +68,7 @@ await contract.sendToMany("moonbeam", "0x...", ["0x.."], "USDC", 1, {
 });
 ```
 
-Our service does the following:
+After sending a transaction out, our service will do the following:
 
 - Monitors `AxelarGasReceiver` for receipt of payment, and gets the amount paid as `amountPaid`.
 - Matches those to contract calls.
