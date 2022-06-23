@@ -3,8 +3,8 @@
 
 Occasionally, transactions can get "stuck" in the pipeline from a source to destination chain (e.g. due to one-off issues that arise with relayers that operate on top of the network).
 
-The `AxelarGMPRecoveryAPI` module in the AxelarJS SDK can be used by your DApp to query the status of any GMP transaction (triggered by either `callContract` or `callContractWithToken`) on the gateway contract of a source chain and trigger a manual relay from source to destination if necessary. 
-    - The [[GMP status tracker](../gmp-tracker)] on Axelarscan leverages this feature.
+The `AxelarGMPRecoveryAPI` module in the AxelarJS SDK can be used by your dApp to query the status of any General Message Passing (GMP) transaction (triggered by either `callContract` or `callContractWithToken`) on the gateway contract of a source chain and trigger a manual relay from source to destination if necessary. 
+    - The [[GMP status tracker](../gmp-tracker)] on Axelarscan makes use of this feature.
 
 ### Install the AxelarJS SDK module (AxelarGMPRecoveryAPI)
 
@@ -48,7 +48,7 @@ Invoke `queryTransactionStatus`:
 ### Trigger manual relay of transaction through the Axelar network
 
 The following method, once invoked, will:
-1. Query the current status of the transaction to be in one of the states above
+1. Query the current status of the transaction to be in one of the states above.
 2. Recover from source to destination if needed. 
 
 ```bash
@@ -58,13 +58,13 @@ The following method, once invoked, will:
       const debug = true;
       const recover = await api.manualRelayToDestChain({ txHash, src, dest, debug })
 ```
-, where possible return values are:
-    - `already executed` - transaction was already executed an a manual recovery was not necessary
-    - `triggered relay` - the `manualRelayToDestChain` trigggered a manual relay through our network
-    - `approved but not executed` - the transaction already reached the destination chain but was not executed to reach the intended destination contract address
-        - => WHEN IN THIS STATE, THERE ARE TWO OPTIONS TO REMEDIATE (BELOW)
+Possible return values are:
+    - `already executed` - Transaction was already executed and a manual recovery was not necessary.
+    - `triggered relay` - The `manualRelayToDestChain` trigggered a manual relay through our network.
+    - `approved but not executed` - The transaction already reached the destination chain but was not executed to reach the intended destination contract address.
+        - => WHEN IN THIS STATE, THERE ARE TWO OPTIONS TO REMEDIATE (BELOW).
 
-### Execute Manually OR Increase Gas Payment
+### Execute manually OR increase gas payment
 
 #### 1. Execute manually 
 
@@ -79,7 +79,7 @@ When invoking this method, you will manually execute (and pay for) the executabl
     });
     await sdk.executeManually(res[0], (data: any) => console.log(data))
 ```
-, where possible return values are:
+Possible return values are:
 ```bash
     {
         status: "pending" | "success" | "failed",
@@ -88,7 +88,7 @@ When invoking this method, you will manually execute (and pay for) the executabl
     }
 ```
 
-#### 2. Increase Native Gas Payment 
+#### 2. Increase native gas payment 
 
 Invoking this method will execute the `addNativeGas` method on the gas receiver contract on the source chain of your cross-chain transaction to increase the amount of the gas payment, in the form of native tokens.
 
