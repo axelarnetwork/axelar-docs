@@ -53,10 +53,10 @@ const sdk = new AxelarAssetTransfer({
   environment: "testnet"
 });
 const depositAddress = await sdk.getDepositAddress(
-  "terra", // source chain
+  "osmosis", // source chain
   "avalanche", // destination chain
   "0xF16DfB26e1FEc993E085092563ECFAEaDa7eD7fD", // destination address
-  "uusd" // asset to transfer
+  "uausdc" // asset to transfer in atomic denom units
 );
 ```
 
@@ -69,9 +69,9 @@ const sdk = new AxelarAssetTransfer({
 });
 const depositAddress = await sdk.getDepositAddress(
   "avalanche", // source chain
-  "terra", // destination chain
-  "terra1qem4njhac8azalrav7shvp06myhqldpmkk3p0t", // destination address
-  "uusd" // asset to transfer
+  "osmosis", // destination chain
+  "osmo1x3z2vepjd7fhe30epncxjrk0lehq7xdqe8ltsn", // destination address
+  "uausdc" // asset to transfer in atomic denom units
 );
 ```
 
