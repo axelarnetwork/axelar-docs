@@ -77,23 +77,29 @@ Possible return values are: - `already executed` - Transaction was already execu
 When invoking this method, you will manually execute (and pay for) the executable method on your specified contract on the destination chain of your cross-chain transaction.
 
 ```ts
-// TODO: the txState query can be improved
-const testnetCachingServiceAPI: string =
-  "https://testnet.api.gmp.axelarscan.io";
-const txState = await api.execGet(testnetCachingServiceAPI, {
-  method: "searchGMP",
-  txHash,
-});
-await sdk.executeManually(res[0], (data: any) => console.log(data));
+const sourceTxHash = "0x..";
+const provider = new ethers.providers.JsonRpcProvider(
+  "https://ropsten.infura.io/v3/projectId"
+);
+
+// Optional
+// By default, The sdk uses `window.ethereum` wallet as a sender wallet e.g. Metamask.
+// This option allows caller to pass `privateKey` or `provider` to the sdk directly
+const senderOptions = { privateKey: "0x", provider };
+
+const response = await sdk.execute(
+  sourceTxHash,
+  senderOptions /* can be skipped */
+);
 ```
 
-Possible return values are:
+Possible response values are:
 
 ```ts
 {
-    status: "pending" | "success" | "failed",
-    message: "Wait for confirmation" | "Execute successful" | <ERROR>,
-    txHash: tx.hash,
+    success: "success" | "failed",
+    data: ethers.ContractReceipt | undefined,
+    error: string | undefined
 }
 ```
 
@@ -131,6 +137,16 @@ if (success) {
   console.log("Added native gas tx:", transaction?.transactionHash);
 } else {
   console.log("Cannot add native gas", error);
+}
+```
+
+Possible response values are:
+
+```ts
+{
+    success: "success" | "failed",
+    data: ethers.ContractReceipt | undefined,
+    error: string | undefined
 }
 ```
 
@@ -178,5 +194,15 @@ if (success) {
   console.log("Added gas tx:", transaction?.transactionHash);
 } else {
   console.log("Cannot add gas", error);
+}
+```
+
+Possible response values are:
+
+```ts
+{
+    success: "success" | "failed",
+    data: ethers.ContractReceipt | undefined,
+    error: string | undefined
 }
 ```
