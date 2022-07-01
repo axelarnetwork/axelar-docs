@@ -54,6 +54,7 @@
       https://axelar-rpc.qubelabs.io/ <br/>
       https://axelar-mainnet-rpc.allthatnode.com:1317 (REST API) <br/>
       https://axelar-mainnet-rpc.allthatnode.com:26657 (Tendermint RPC)
+      https://axelar-rpc.quantnode.tech/
     </td>
     <td>
       https://axelartest-rpc.quickapi.com/ <br/>
@@ -61,6 +62,7 @@
       https://axelar-testnet-rpc.qubelabs.io/ <br/>
       https://axelar-lisbon-rpc.allthatnode.com:1317 (REST API) <br/>
       https://axelar-lisbon-rpc.allthatnode.com:26657 (Tendermint RPC)
+      https://axelartest-rpc.quantnode.tech/
     </td>
     <td>
       https://services.staketab.com/axelar-testnet-2-rpc <br/>
@@ -92,10 +94,14 @@
       axelar-grpc.qubelabs.io:9092 <br/>
       axelar-grpc.chainode.tech <br/>
       axelar-grpcweb.chainode.tech
+      axelar-rpc.quantnode.tech:9090
+      http://axelar-rpc.quantnode.tech:9091
     </td>
     <td>
       services.staketab.com:9090 <br/>
       axelar-testnet-grpc.qubelabs.io:9090
+      axelartest-rpc.quantnode.tech:9090
+      http://axelartest-rpc.quantnode.tech:9091
     </td>
     <td></td>
   </tr>
