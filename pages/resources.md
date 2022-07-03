@@ -102,7 +102,7 @@
     </td>
     <td>
       services.staketab.com:9090 <br/>
-      axelar-testnet-grpc.qubelabs.io:9090
+      axelar-testnet-grpc.qubelabs.io:9090 <br/>
       axelartest-grpc.quantnode.tech:9090 <br/>
       axelartest-grpcweb.quantnode.tech:9091 <br/>
       https://axelartest-grpcweb.quantnode.tech/
