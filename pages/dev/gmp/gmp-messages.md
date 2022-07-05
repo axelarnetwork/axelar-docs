@@ -1,4 +1,4 @@
-## Call a contract on chain B from chain A
+# Call a contract on chain B from chain A
 
 To call a contract on chain B from chain A the user needs to call `callContract` on the gateway of chain A, specifying:
 
