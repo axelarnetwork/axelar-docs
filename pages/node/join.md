@@ -52,7 +52,7 @@ Your Axelar node will launch and begin downloading the rest of the blockchain af
 tail -f $AXELARD_HOME/logs/axelard.log
 ```
 
-You should should see the height (representing the downloaded blockchain) increasing in the logs.
+You should see the height (representing the downloaded blockchain) increasing in the logs.
 
 ```
 ... executed block height=690578 ...
