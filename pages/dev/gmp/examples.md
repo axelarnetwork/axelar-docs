@@ -10,7 +10,7 @@ Each example is self-contained and generally follows the same steps for deployme
 1. (One time setup): Install project dependencies and build contracts: [One time setup instructions](https://github.com/axelarnetwork/axelar-local-gmp-examples#one-time-setup)
 2. (One time setup): From a separate terminal window, deploy and run the local network emulator: 
     - `node scripts/createLocal`
-3. Then, deploy and test each example, first locally and then in testnet. A subset of five representative examples below:
+3. Then, deploy and test each example, first locally and then in testnet. A subset of representative examples below:
 
 
 ## "Hello World!"
@@ -25,6 +25,11 @@ Send aUSDC from a source chain to a list of recipients on a destination chain us
 
 [Source Code](https://github.com/axelarnetwork/axelar-local-gmp-examples/tree/main/examples/call-contract-with-token) | [Deploy Instructions](https://github.com/axelarnetwork/axelar-local-gmp-examples#call-contract-with-token)
 
+## Mint tokens and send cross-chain
+
+Mints some amount of ERC20 tokens at a source chain and send it using the `callContract` function to a destination chain. Tokens are burned on the source chain contract and minted on the destination chain contract. 
+
+[Source Code](https://github.com/axelarnetwork/axelar-local-gmp-examples/tree/main/examples/cross-chain-token) | [Deploy Instructions](https://github.com/axelarnetwork/axelar-local-gmp-examples#cross-chain-token)
 
 ## NFT Linker
 
