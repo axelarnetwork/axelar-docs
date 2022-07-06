@@ -32,7 +32,7 @@ Eventually your Axelar node will download the entire Axelar blockchain and exit 
 You can test whether your Axelar node has exited `catching_up` mode:
 
 ```bash
-axelard status
+$AXELARD_HOME/bin/axelard status
 ```
 
 Look for the field `catching_up`:
