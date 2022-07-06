@@ -15,6 +15,7 @@ Start your Axelar node and download the blockchain.
 ## Prerequisites
 
 - Configure your environment as per [CLI configuration](config-cli) and [Node configuration](config-node).
+- Install lz4
 - Ensure AXELARD_HOME variable is set in your current session. See https://docs.axelar.dev/node/config-node#home-directory (example AXELARD_HOME="$HOME/.axelar").
 - Existing chain state is stored in `${AXELARD_HOME}/data`. Delete this directory if it exists.
 
