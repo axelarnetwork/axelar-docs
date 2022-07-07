@@ -6,9 +6,9 @@ To activate the use of the executor service, users are required to pay gas to th
 
 So, only a couple of things are required to make a GMP transfer with the Executor service: 1) call the contract (`callContract` or `callContractWithToken`) and 2) pay gas to the [Gas Service](/dev/gmp/gas-services/overview) contract.
 
-## Two-way transfer
-The Executor service supports Two-way transfer, where a message is sent from a source chain, immediately executed at a destination chain, and sent a message back to the source chain.
+## Two-way call
+The Executor service supports Two-way call, where a message is sent from a source chain, immediately executed at a destination chain, and sent a message back to the source chain.
 
-The service monitors if there's another contract call immediately executed within the same executed transaction on the destination (to send a message back to the source chain). The service will then automatically uses the remaining pre-paid to relay the second call of the two-way transfer. 
+The service monitors if there's another contract call immediately executed within the same executed transaction on the destination (to send a message back to the source chain). The service will then automatically uses the remaining pre-paid to relay the second call of the two-way call. 
 
-In case the remaining gas amount (from the first contract call) is insufficient for the second call, the service will refund it to the payer's address. Users still can pay a new gas amount to the Gas Service contract to trigger the service and relay the transfer’s second call through the [Axelar SDK](/dev/axelarjs-sdk/tx-status-query-recovery#22-erc-20-gas-payment) or [Axelarscan UI](http://localhost:3000/dev/gmp/gmp-tracker-recovery/recovery#increase-gas-payment-to-the-gas-receiver-on-the-source-chain).
+In case the remaining gas amount (from the first contract call) is insufficient for the second call, the service will refund it to the payer's address. Users still can pay a new gas amount to relay the second call of the transfer through the [Axelar SDK](/dev/axelarjs-sdk/tx-status-query-recovery#22-erc-20-gas-payment) or [Axelarscan UI](http://localhost:3000/dev/gmp/gmp-tracker-recovery/recovery#increase-gas-payment-to-the-gas-receiver-on-the-source-chain).
