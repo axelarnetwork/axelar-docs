@@ -7,7 +7,7 @@ To activate the use of the executor service, users are required to pay gas to th
 So, only a couple of things are required to make a GMP transfer with the Executor service: 1) call the contract (`callContract` or `callContractWithToken`) and 2) pay gas to the [Gas Service](/dev/gmp/gas-services/overview) contract.
 
 ## Two-way call
-The Executor service supports Two-way call, where a message is sent from a source chain, immediately executed at a destination chain, and sent a message back to the source chain.
+The Executor service supports Two-way call, where a message is sent from a source chain, immediately executed at a destination chain, and sent another message back to the source chain.
 
 The service monitors if there's another contract call immediately executed within the same executed transaction on the destination (to send a message back to the source chain). The service will then automatically uses the remaining pre-paid to relay the second call of the two-way call. 
 
