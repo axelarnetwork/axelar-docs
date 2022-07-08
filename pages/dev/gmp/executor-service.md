@@ -1,10 +1,8 @@
 # Executor service 
 
-Axelar network provides an optional relayer service, called Executor service, which observes the gas-paid amount to the [Gas Service](/dev/gmp/gas-services/overview) contract, and automatically uses those amounts to relay the approved message to the application’s destination contract.
+Axelar network provides an optional relayer service, called Executor service, which observes the gas-paid amount to the [Gas Service](/dev/gmp/gas-services/overview) contract. Then, it automatically uses those amounts to relay the approved message to the application’s destination contract.
 
-To activate the use of the executor service, users are required to pay gas to the [Gas Service](/dev/gmp/gas-services/overview) contract on the source chain. The executor service will then handle relaying the message to the destination contract on the destination chain, and also [refund](/dev/gmp/gas-services/refund) the remaining gas used to the payer account at the end of the process. 
-
-So, only a couple of things are required to make a GMP transfer with the Executor service: 1) call the contract (`callContract` or `callContractWithToken`) and 2) pay gas to the [Gas Service](/dev/gmp/gas-services/overview) contract.
+Users are required to pay gas to the [Gas Service](/dev/gmp/gas-services/overview) contract to activate the executor service. After an attempt to relay the message to the destination contract, the service calculates the remaining gas amount and [refunds](/dev/gmp/gas-services/refund) it to the payer account. The execution result can be monitored on Axelarscan UI or requested through the AxelarJS SDK. Please see the [Monitoring State of GMP Transactions](/dev/gmp/gmp-tracker-recovery/monitoring) section for more information.
 
 ## Two-way call
 The Executor service supports Two-way call, where a message is sent from a source chain, immediately executed at a destination chain, and sent another message back to the source chain.

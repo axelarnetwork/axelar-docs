@@ -12,8 +12,7 @@ There're two reasons that caused execution failed:
 2) Pay a new gas amount on the source chain. See how to increase gas payment to the gas receiver from the source chain via [Axelarscan UI](/dev/gmp/gmp-tracker-recovery/recovery#increase-gas-payment-to-the-gas-receiver-on-the-source-chain) or [AxelarJS SDK](/dev/axelarjs-sdk/tx-status-query-recovery#2-increase-gas-payment).
 
 ## 2. Error in the destination contract logic
-**What to do next:** We suggest debugging it, then trying a new call. 
-[will add suggestions how to debug it here @Euro]
+**What to do next:** We suggest debugging it, then trying a new call.
 
 <Callout emoji="ℹ️">
   The displayed error is extracted from the data returned by the [Ethers.js](https://github.com/ethers-io/ethers.js/) library, from the data fields `error.error.code` and `error.error.reason`. The displayed error code can be clicked to link to the description of each error code in [Ethers.js's official document](https://docs.ethers.io/v5/api/utils/logger/#errors-ethereum). 
