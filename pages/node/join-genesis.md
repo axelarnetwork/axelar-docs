@@ -40,7 +40,7 @@ content: <MarkdownPath src="/md/testnet-2/upgrade-path.md" />
 }
 ]} />
 
-First, you have to change directory to "axelarate-community" repositoy.
+First, you have to change directory to "axelarate-community" repository.
 
 ```bash
 cd axelarate-community
