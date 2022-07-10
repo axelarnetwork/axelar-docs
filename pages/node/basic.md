@@ -52,7 +52,7 @@ pkill -f "axelard start"
 ## Check your Axelar node status
 
 ```bash
-ps aux | grep "axelar start"
+ps aux | grep "axelard start"
 ```
 
 No process should be running.
