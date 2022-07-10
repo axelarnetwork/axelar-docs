@@ -47,7 +47,7 @@ cd axelarate-community
 ```
 
 To run setup-node.sh you have to specify the network (mainnet, testnet, testnet-2) and the axelard core version you want to use.
-you must follow the upgrade path as specified in the table above (it is different for each network)
+You must follow the upgrade path as specified in the table above (it is different for each network)
 setup-node.sh will download axelard binary version you specified in "$AXELARD_HOME/bin" folder and create a symbolic link.
 
 ```bash
