@@ -44,3 +44,4 @@ View your logs in real time (if you selected option 2 above):
 
 ```bash
 tail -f ${AXELARD_HOME}/logs/vald.log
+```
