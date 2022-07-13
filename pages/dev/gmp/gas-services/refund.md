@@ -1,6 +1,6 @@
 # Refund the prepaid gas
 
-Sometimes, the prepaid gas amount to the payGasForContractCall or payGasForContractCallWithToken excesses the actual amount needed for relaying the call to the destination contract. 
+Sometimes, the prepaid gas amount to the `payGasForContractCall` or `payGasForContractCallWithToken` exceeds the amount needed for relaying the message to the destination contract. 
 
 Our relayer service automatically tracks the excess gas submitted and refunds it to the payer account. To do so, the executor calls the `Refund` method in the Gas Service contract.
 
