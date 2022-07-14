@@ -38,7 +38,7 @@ const txStatus: GMPStatusResponse = await sdk.queryTransactionStatus(txHash);
 where possible status responses for txStatus are outlined below:
 
 ```ts
-export interface GMPStatusResponse {
+interface GMPStatusResponse {
   status: GMPStatus;
   gasPaidInfo?: GasPaidInfo;
   errors?: any;
