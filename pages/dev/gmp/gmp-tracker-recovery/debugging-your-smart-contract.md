@@ -1,4 +1,4 @@
-# Debugging Failed Transaction
+# Debugging Your Smart Contract
 
 The transaction at the destination contract can be reverted because some line in the function has an invalid logic. If it happens, the next step is to identify the problem, so we can know where to fix the issue and redeploy the smart contract.
 
