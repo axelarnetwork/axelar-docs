@@ -20,4 +20,4 @@ There're two reasons that caused execution failed:
 
 ### 2. Error in the destination contract logic
 
-**What to do next:** We suggest debugging your contract and then making a new call. You can try to follow the [Debugging Failed Transaction](/dev/gmp/debugging-failed-transaction) guide.
+**What to do next:** We suggest debugging your contract and then making a new call. You can try to follow the [Debugging your Smart Contract](/dev/gmp/gmp-tracker-recovery/debugging-your-smart-contract) guide.
