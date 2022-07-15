@@ -7,6 +7,5 @@
   "gas-services": "Gas services",
   "executor-service": "Executor service",
   "gmp-tracker-recovery": "Monitoring and recovery",
-  "debugging-failed-transaction": "Debugging failed transaction",
   "fork-mainnet": "Forking Mainnet for Local Testing"
 }
