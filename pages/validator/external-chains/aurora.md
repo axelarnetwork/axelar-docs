@@ -33,5 +33,22 @@ docker-compose version
 Download installation from [official documentation](https://github.com/aurora-is-near/partner-relayer-deploy)
 ```
 git clone https://github.com/aurora-is-near/partner-relayer-deploy
+cd partner-relayer-deploy
 ```
+For testnet purpose run 
+```
+./setup.sh testnet
+```
+For mainet purpose run
+```
+./setup.sh
+```
+### 4. Run Aurora node through docker-compose
+To run docker, you must be in the folder `partner-relayer-deploy`
+``` 
+docker-compose up -d
+```
+To see logs use command
+```
+docker-compose logs -f
 
