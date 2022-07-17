@@ -87,18 +87,23 @@ tcp6       0      0 :::8545                 :::*                    LISTEN      
 
 ### 9. Create a script to run it automatically after reboot
 Create directory
-
-```mkdir /root/work```
+```
+mkdir /root/work
+```
 
 Create tunnel.ssh file:
-```nano /root/work/tunnel.ssh```
+```
+nano /root/work/tunnel.ssh
+```
 and add the following line into it:
 ```
 ssh -f -N root@65.108.202.53 -R 8545:`docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}:8545{{end}}' endpoint`
 ```
 Then open crontab file:
 
-```crontab -e```
+```
+crontab -e
+```
 
 and add this line to the end of the file:
 
