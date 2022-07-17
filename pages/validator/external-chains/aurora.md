@@ -105,7 +105,7 @@ Then open crontab file:
 crontab -e
 ```
 
-and add this line to the end of the file:
+and add this line to the end of it:
 
 ```
 @reboot /root/work/tunnel.sh
