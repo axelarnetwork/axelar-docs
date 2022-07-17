@@ -78,7 +78,7 @@ ssh -f -N root@X.X.X.X -R 8545:`docker inspect -f '{{range.NetworkSettings.Netwo
 Please note X.X.X.X this is IP address of your Axelar Main Node
 
 ### 8. Check that necessary port is listening on the AxelarNode
-On the Axelar Node please run the following commands to make sure that port is listening:
+On the Axelar Node please run the following command to make sure that port is listening:
 ```
 netstat -atnp | grep 8545
 tcp        0      0 0.0.0.0:8545            0.0.0.0:*               LISTEN      2306635/sshd: root
