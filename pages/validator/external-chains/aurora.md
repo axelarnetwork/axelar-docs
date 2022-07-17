@@ -51,4 +51,64 @@ docker-compose up -d
 To see logs use command
 ```
 docker-compose logs -f
+```
 
+## 5. Create SSH keys on the Aurora Node
+Please run the following command on the Aurora server (just press "Enter" for each question):
+```
+ssh-keygen -t rsa
+```
+
+### 6. Add public key on the Axelar Node
+Once the key pair has been generated you need to create it on the Axelar Node '/root/.ssh/authorized_keys' file and copy content from the "/root/.ssh/id_rsa.pub" file which was created on the Aurora Node:
+```
+nano /root/.ssh/authorized_keys
+```
+After this we need to set the following permissions:
+```
+chmod 600 /root/.ssh/authorized_keys
+```
+When you perform these actions you should be able to connect from Aurora Node to Axelar Node without password
+
+### 7. Create SSH tunnel between Aurora Node and Axelar Main Node
+On the Aurora server please run the following command to create a tunnel to forwarding ports:
+```
+ssh -f -N root@X.X.X.X -R 8545:`docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}:8545{{end}}' endpoint`
+```
+Please note X.X.X.X this is IP address of your Axelar Main Node
+
+### 8. Check that necessary port is listening on the AxelarNode
+On the Axelar Node please run the following command to make sure that port is listening:
+```
+netstat -atnp | grep 8545
+tcp        0      0 0.0.0.0:8545            0.0.0.0:*               LISTEN      2306635/sshd: root
+tcp6       0      0 :::8545                 :::*                    LISTEN      2306635/sshd: root
+```
+
+### 9. Create a script to run it automatically after reboot
+Create directory
+```
+mkdir /root/work
+```
+
+Create tunnel.ssh file:
+```
+nano /root/work/tunnel.ssh
+```
+and add the following line into it:
+```
+ssh -f -N root@65.108.202.53 -R 8545:`docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}:8545{{end}}' endpoint`
+```
+Then open crontab file:
+
+```
+crontab -e
+```
+
+and add this line to the end of it:
+
+```
+@reboot /root/work/tunnel.sh
+```
+
+so when the Aurora server will be rebooted the SSH tunnel will be created automatically
