@@ -86,7 +86,7 @@ tcp6       0      0 :::8545                 :::*                    LISTEN      
 ```
 
 ### 9. Create a script to run it automatically after reboot
-Create directory:
+Create directory
 ```mkdir /root/work```
 
 Create tunnel.ssh file:
