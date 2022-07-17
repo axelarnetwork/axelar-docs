@@ -51,6 +51,7 @@ docker-compose up -d
 To see logs use command
 ```
 docker-compose logs -f
+```
 
 ## 5. Create SSH keys on the Aurora Node
 Please run the following command (just press "Enter" for each question):
