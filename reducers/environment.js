@@ -1,18 +1,18 @@
-import { ENVIRONMENT_DATA } from "./types";
+import { ENVIRONMENT } from "./types";
 
-export default function environment(
+export default (
   state = {
-    [`${ENVIRONMENT_DATA}`]: "mainnet",
+    [`${ENVIRONMENT}`]: "mainnet",
   },
-  action
-) {
+  action,
+) => {
   switch (action.type) {
-    case ENVIRONMENT_DATA:
+    case ENVIRONMENT:
       return {
         ...state,
-        [`${ENVIRONMENT_DATA}`]: action.value,
+        [`${ENVIRONMENT}`]: action.value,
       };
     default:
       return state;
-  };
+  }
 };

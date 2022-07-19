@@ -34,8 +34,14 @@
   <tr>
     <td>Faucet</td>
     <td></td>
-    <td> [Axelar testnet faucet](https://faucet.testnet.axelar.dev/) </td>
-    <td> [Axelar testnet-2 faucet](https://faucet-casablanca.testnet.axelar.dev/) </td>
+    <td>
+      [Axelar testnet faucet](https://faucet.testnet.axelar.dev/) <br/>
+      <a href="https://www.allthatnode.com/faucet/axelar.dsrv"> Lisbon faucet by All That Node</a>
+    </td>
+    <td>
+      [Axelar testnet-2 faucet](https://faucet-casablanca.testnet.axelar.dev/) <br/>
+      <a href="https://www.allthatnode.com/faucet/axelar.dsrv"> Casablanca faucet by All That Node</a>
+    </td>
   </tr>
   <tr>
     <td>RPC endpoints</td>
@@ -45,15 +51,23 @@
       https://axelar-rpc.chainode.tech/ <br/>
       https://services.staketab.com/axelar-rpc <br/>
       https://axelar.rpc.stake2.me/ <br/>
-      https://axelar-rpc.qubelabs.io/
+      https://axelar-rpc.qubelabs.io/ <br/>
+      https://axelar-mainnet-rpc.allthatnode.com:1317 (REST API) <br/>
+      https://axelar-mainnet-rpc.allthatnode.com:26657 (Tendermint RPC) <br/>
+      https://axelar-rpc.quantnode.tech/
     </td>
     <td>
       https://axelartest-rpc.quickapi.com/ <br/>
       https://services.staketab.com/axelar-testnet-1-rpc <br/>
-      https://axelar-testnet-rpc.qubelabs.io/
+      https://axelar-testnet-rpc.qubelabs.io/ <br/>
+      https://axelar-lisbon-rpc.allthatnode.com:1317 (REST API) <br/>
+      https://axelar-lisbon-rpc.allthatnode.com:26657 (Tendermint RPC) <br/>
+      https://axelartest-rpc.quantnode.tech/
     </td>
     <td>
-      https://services.staketab.com/axelar-testnet-2-rpc
+      https://services.staketab.com/axelar-testnet-2-rpc <br/>
+      https://axelar-casablanca-rpc.allthatnode.com:1317 (REST API) <br/>
+      https://axelar-casablanca-rpc.allthatnode.com:26657 (Tendermint RPC)
     </td>
   </tr>
   <tr>
@@ -61,12 +75,15 @@
     <td>
       https://axelar-lcd.quickapi.com/ <br/>
       https://axelar-lcd.qubelabs.io/ <br/>
-      https://services.staketab.com/axelar-api
+      https://services.staketab.com/axelar-api <br/>
+      https://axelar-rest.chainode.tech/ <br/>
+      https://axelar-lcd.quantnode.tech/
     </td>
     <td>
       https://axelartest-lcd.quickapi.com/ <br/>
       https://axelar-testnet-lcd.qubelabs.io/ <br/>
-      https://services.staketab.com/axelar-testnet-1-api
+      https://services.staketab.com/axelar-testnet-1-api <br/>
+      https://axelartest-lcd.quantnode.tech/
     </td>
     <td>
       https://services.staketab.com/axelar-testnet-2-api
@@ -76,11 +93,19 @@
     <td>GRPC endpoints</td>
     <td>
       services.staketab.com:9080 <br/>
-      axelar-grpc.qubelabs.io:9092
+      axelar-grpc.qubelabs.io:9092 <br/>
+      axelar-grpc.chainode.tech <br/>
+      axelar-grpcweb.chainode.tech <br/>
+      axelar-grpc.quantnode.tech:9090 <br/>
+      axelar-grpcweb.quantnode.tech:9091 <br/>
+      https://axelar-grpcweb.quantnode.tech/
     </td>
     <td>
       services.staketab.com:9090 <br/>
-      axelar-testnet-grpc.qubelabs.io:9090
+      axelar-testnet-grpc.qubelabs.io:9090 <br/>
+      axelartest-grpc.quantnode.tech:9090 <br/>
+      axelartest-grpcweb.quantnode.tech:9091 <br/>
+      https://axelartest-grpcweb.quantnode.tech/
     </td>
     <td></td>
   </tr>

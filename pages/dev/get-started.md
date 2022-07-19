@@ -2,47 +2,65 @@
 
 import Button from '../../components/button'
 
-## Develop your cross-chain dapp in 2 simple steps
+## Summary: Develop a cross-chain dApp in 2 simple steps
 
-1. **_Build._** Develop your dapp, test against the Axelar local development environment.
-2. **_Deploy._** Deploy your contracts, point your dapp to a live network: testnet or mainnet.
+The ideal development process is completed in two steps: 
 
-## Examples
+1. Build. Develop your dApp and test it against the Axelar local development environment.
+2. Deploy. Deploy your contracts and point your dApp to a live network: testnet or mainnet.
 
-### Examples repo
+**_To begin, download the `axelar-local-gmp-examples` repository, which contains a full suite of starter templates that are run against the Axelar local development environment._**
 
-There are several complete, working examples with instructions at the `axelar-local-gmp-examples` repo that illustrate the build-deploy process.
+View the summary of notable examples with links to github instructions and code for each:
 
-View the github README for instructions and code:
+<Button title="Starter templates" url="./gmp/examples" />
 
-<Button title="examples" url="https://github.com/axelarnetwork/axelar-local-gmp-examples" />
+## Build
 
-### Video on NFT linker example
+**_Build a cross-chain dApp in the local development environment using two basic components:_**
+
+1. RPC endpoints to query or post transactions to the various EVM chains supported by Axelar.
+2. Contract addresses on various EVM chains for:
+    - Axelar services such as the Gateway contract and ERC-20 token contracts.
+    - Your own custom `IAxelarExecutable` smart contracts.
+
+**_The Axelar local development environment allows you to:_**
+
+1. Create simulated EVM chains with RPC endpoints on your localhost. These chains come pre-loaded with the AxelarGateway, AxelarGasReceiver and a routed ERC-20 token contract (axlUSDC).
+2. Deploy your custom `IAxelarExecutable` contracts to your simulated EVM chains.
+3. Test your app against the RPC endoints and contract addresses of your local development environment.
+
+## Deploy
+
+When you're ready to go live to testnet or mainnet: 
+
+1. Deploy your custom `IAxelarExecutable`contracts to the live EVM chains (testnet or mainnet) your dApp supports. 
+2. Swap out the RPC endpoints and contract addresses so they now point to live EVM chains (testnet or mainnet).
+
+## Guided video walkthroughs
+
+### Build, test, & deploy in this three part end-to-end demo
+1. Set up local environment ( Part 1/3, ~8 minutes) [video](https://www.youtube.com/watch?v=PWXmsP_a-ck)
+<iframe width="560" height="315" src="https://www.youtube.com/embed/PWXmsP_a-ck" title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
+
+2. Deploy and run examples locally ( Part 2/3, ~9 minutes) [video](https://www.youtube.com/watch?v=l2MAZKEWzZ4)
+<iframe width="560" height="315" src="https://www.youtube.com/embed/l2MAZKEWzZ4" title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
+
+3. Deploy and run examples in testnets ( Part 3/3, ~7 minutes) [video](https://www.youtube.com/watch?v=X6HwmL6Tbg0)
+<iframe width="560" height="315" src="https://www.youtube.com/embed/X6HwmL6Tbg0" title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
+
+### Example: NFT linker
 
 The [axelar-local-gmp-examples](https://github.com/axelarnetwork/axelar-local-gmp-examples) repo contains an example [nft-linker](https://github.com/axelarnetwork/axelar-local-gmp-examples/tree/main/examples/nft-linker) on cross-chain transfer for ERC-721 NFT tokens.
 
 See the accompanying [video](https://www.youtube.com/watch?v=pAxuQ7PIl8g):
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/pAxuQ7PIl8g" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/pAxuQ7PIl8g" title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
 
-## Build
+### Example: Airdrop! (an end-to-end walkthrough)
 
-Build your cross-chain dapp from basic components:
+Watch Vlad demo an end-to-end walkthrough of our Airdrop example, which sends aUSDC from a source chain to a list of recipients on a destination chain using the callContractWithToken function. The full stack example includes running the examples locally, deploying to testnet, and reviewing analytics tools in testnet... all run with a simple bootstrapped frontend.
 
-- **RPC endpoints** to query or post transactions to the various EVM chains supported by Axelar.
-- **Contract addresses** on various EVM chains for
-  - Axelar services such as the Gateway contract and ERC-20 token contracts.
-  - Your own custom `IAxelarExecutable` smart contracts.
+See the accompanying [video](https://www.youtube.com/watch?v=D5Z6lCbjZNA):
 
-The _Axelar local development environment_ emulates multiple EVM chains and the Axelar overlay network that connects them.
-
-1. Create new emulated EVM chains with RPC endpoints on your localhost. These chains come pre-loaded with the AxelarGateway, AxelarGasReceiver and a routed ERC-20 token contract (UST).
-2. Deploy your custom `IAxelarExecutable` contracts to your emulated EVM chains.
-3. Test your app against the RPC endoints and contract addresses of your local development environment.
-
-## Deploy to testnet or mainnet
-
-When you're ready to go live:
-
-- Deploy your custom `IAxelarExecutable` contracts to the live EVM chains your dapp supports.
-- Swap out the RPC endpoints and contract addresses so they now point to live EVM chains.
+<iframe width="560" height="315" src="https://www.youtube.com/embed/D5Z6lCbjZNA" title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>

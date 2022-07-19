@@ -29,7 +29,7 @@ TOFND_RELEASE=v0.10.1`}
 {
 title: "Testnet",
 content: <CodeBlock language="bash">
-{`AXELARD_RELEASE=v0.19.0
+{`AXELARD_RELEASE=v0.19.4
 TOFND_RELEASE=v0.10.1`}
 </CodeBlock>
 },
@@ -189,8 +189,8 @@ sed -i.bak 's/external_address = ""/external_address = "'"$(curl -4 ifconfig.co)
 {
 title: "Mainnet",
 content: <CodeBlock language="bash">
-{`axelard unsafe-reset-all
-URL=\`curl https://quicksync.io/axelar.json | jq -r '.[] |select(.file=="axelar-dojo-1-pruned")|.url'\`
+{`axelard tendermint unsafe-reset-all
+URL=\`curl -L https://quicksync.io/axelar.json | jq -r '.[] |select(.file=="axelar-dojo-1-pruned")|.url'\`
 echo $URL
 cd $HOME/.axelar/
 wget -O - $URL | lz4 -d | tar -xvf -
@@ -199,7 +199,7 @@ cd $HOME`}
 },
 { title: "Testnet", content: <CodeBlock language="bash">
 {`axelard unsafe-reset-all
-URL=\`curl https://quicksync.io/axelar.json | jq -r '.[] |select(.file=="axelartestnet-lisbon-3-pruned")|.url'\`
+URL=\`curl -L https://quicksync.io/axelar.json | jq -r '.[] |select(.file=="axelartestnet-lisbon-3-pruned")|.url'\`
 echo $URL
 cd $HOME/.axelar/
 wget -O - $URL | lz4 -d | tar -xvf -

@@ -69,18 +69,38 @@
       "from": "axelarnet",
       "to": "terra",
       "channel_id": "channel-11"
+    },
+    {
+      "from": "secret",
+      "to": "axelarnet",
+      "channel_id": "channel-20"
+    },
+    {
+      "from": "axelarnet",
+      "to": "secret",
+      "channel_id": "channel-12"
+    },
+    {
+      "from": "kujira",
+      "to": "axelarnet",
+      "channel_id": "channel-9"
+    },
+    {
+      "from": "axelarnet",
+      "to": "kujira",
+      "channel_id": "channel-14"
     }
   ],
   "testnet": [
     {
       "from": "osmosis",
       "to": "axelarnet",
-      "channel_id": "channel-240"
+      "channel_id": "channel-312"
     },
     {
       "from": "axelarnet",
       "to": "osmosis",
-      "channel_id": "channel-7"
+      "channel_id": "channel-22"
     },
     {
       "from": "crescent",
@@ -101,6 +121,26 @@
       "from": "axelarnet",
       "to": "juno",
       "channel_id": "channel-16"
+    },
+    {
+      "from": "terra",
+      "to": "axelarnet",
+      "channel_id": "channel-8"
+    },
+    {
+      "from": "axelarnet",
+      "to": "terra",
+      "channel_id": "channel-23"
+    },
+    {
+      "from": "kujira",
+      "to": "axelarnet",
+      "channel_id": "channel-8"
+    },
+    {
+      "from": "axelarnet",
+      "to": "kujira",
+      "channel_id": "channel-19"
     }
   ]
 }
