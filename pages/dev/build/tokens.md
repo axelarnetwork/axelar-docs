@@ -2,10 +2,10 @@
 
 There are two ways to transfer tokens cross-chain with Axelar:
 
-- (A) Call `sendToken` on an Axelar gateway EVM contract.
-- (B) Get a deposit address using the [[AxelarJS SDK](axelarjs-sdk/token-transfer-dep-addr)].
+- Call `sendToken` on an Axelar gateway EVM contract.
+- Get a deposit address using the [AxelarJS SDK](../axelarjs-sdk/token-transfer-dep-addr).
 
-## A. Call `sendToken`
+## Call `sendToken`
 
 Use `sendToken` if:
 
@@ -60,11 +60,11 @@ sendToken(
 
 Watch for the tokens to appear at the destination address on the destination chain.
 
-## B. Get a deposit address
+## Get a deposit address
 Use a deposit address if:
 
 - You need functionality not offered by `sendToken`. Example: Cosmos-to-X.
 - You want to allow token transfers from wallets that don't know anything about Axelar. Example: Withdrawal from a centralized exchange.
 
 
-Refer to [[AxelarJS SDK](axelarjs-sdk/token-transfer-dep-addr)].
+Refer to [AxelarJS SDK](axelarjs-sdk/token-transfer-dep-addr).

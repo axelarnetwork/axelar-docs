@@ -1,5 +1,9 @@
 # Increase Gas
 
+On occasion, the prepaid gas to the Gas Service contract could be insufficient, such as when the destination chain is congested with many transfers or due to other conditions. Therefore, Axelar provides an option to resubmit a new amount of gas, as well as an option to refund the paid gas. 
+
+The process can be done through any of the Axelarscan UI, the Axelar SDK, or via direct invocation of the Gas Receiver contract.
+
 When needed, our smart contract can receive gas to top up an existing General Message Passing (GMP) transaction in the following ways:
 
 ### addNativeGas
@@ -37,4 +41,4 @@ function addGas(
 
 - In JavaScript or TypeScript: [Increase ERC-20 Gas Payment](/dev/axelarjs-sdk/tx-status-query-recovery#22-erc-20-gas-payment).
 
-\*\*\* Can only be paid in tokens that Axelar supports. See the list of supported assets for the chains we support in Resources [[Mainnet](/resources/mainnet) | [Testnet](/resources/testnet) | [Testnet-2](/resources/testnet-2)].
+\*\*\* Can only be paid in tokens that Axelar supports. See the list of supported assets for the chains we support: [Mainnet](../build/contract-addresses/mainnet) | [Testnet](../build/contract-addresses/testnet).

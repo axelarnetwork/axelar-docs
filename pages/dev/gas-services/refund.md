@@ -2,7 +2,7 @@
 
 The prepaid gas to `payGasForContractCall` or `payGasForContractCallWithToken` could exceed the needed amount for relaying a message to the destination contract.
 
-The [Executor service](/dev/gmp/executor-service) automatically calculates the excess gas submitted and determines the amount to refund.
+The Executor service automatically calculates the excess gas submitted and determines the amount to refund.
 ```
 The refunded amount = The prepaid amount - the actual gas used - the estimated gas for transferring the refund
 ```

@@ -2,7 +2,7 @@ import DevNav from '../../components/index/dev-nav'
 
 # Building on Axelar
 
-Now that you've run the simple "Hello World" example, this "Build" section will walk you through the suite of Axelar tools you can use to build and deploy your cross-chain dApp. 
+Now that you've run the simple "Hello World" example, this "Build" section will walk you through the suite of Axelar tools you can use to build and deploy your own cross-chain dApp. 
 
 The ideal development process is completed in two steps: 
 
@@ -19,7 +19,7 @@ The ideal development process is completed in two steps:
 
 **_The Axelar local development environment allows you to:_**
 
-* Create simulated EVM chains with RPC endpoints on your localhost. These chains come pre-loaded with the AxelarGateway, AxelarGasReceiver and a routed ERC-20 token contract (axlUSDC).
+* Create simulated EVM chains with RPC endpoints on your localhost. These chains come pre-loaded with the AxelarGateway, AxelarGasReceiver and a routed ERC-20 token contract (aUSDC).
 * Deploy your custom `IAxelarExecutable` contracts to your simulated EVM chains.
 * Test your app against the RPC endoints and contract addresses of your local development environment.
 
@@ -39,10 +39,8 @@ When you're ready to go live to testnet or mainnet:
 1. Deploy your custom `IAxelarExecutable`contracts to the live EVM chains (testnet or mainnet) your dApp supports. 
 2. Swap out the RPC endpoints and contract addresses so they now point to live EVM chains (testnet or mainnet).
 
-## Tools
-If you have any issues with the two steps above, you can use the suite of tools and other "kick-starter" examples in the Axelar developer ecosystem to get you going. 
-
-Additional resources below:
+## Helpful Resources
+If you have any issues with the two steps above, you can use the suite of tools and other "kick-starter" examples in the Axelar developer ecosystem to get you going:
 
 <br/>
 <DevNav />
