@@ -9,7 +9,7 @@ The ideal development process is completed in two steps:
 1. Build. Develop your dApp and test it against the Axelar local development environment.
 2. Deploy. Deploy your contracts and point your dApp to a live network: testnet or mainnet.
 
-**_To begin, download the `axelar-local-gmp-examples` repository, which contains a full suite of starter templates that are run against the Axelar local development environment._**
+**_To begin, download the [axelar-local-gmp-examples](https://github.com/axelarnetwork/axelar-local-gmp-examples) repository, which contains a full suite of starter templates that are run against the Axelar local development environment._**
 
 View the summary of notable examples with links to github instructions and code for each:
 
