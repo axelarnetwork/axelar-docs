@@ -1,9 +1,12 @@
 {
   "intro": "Introduction",
-  "get-started": "Get started",
-  "tokens": "Send tokens",
+  "hello-world": "Hello World",
+  "build": {
+    "title": "Build",
+    "type": "doc"
+  },
   "gmp": "General Message Passing",
   "axelarjs-sdk": "AxelarJS SDK",
-  "chain-names": "Chain names",
   "solidity-utilities": "Solidity Utilities"
+
 }

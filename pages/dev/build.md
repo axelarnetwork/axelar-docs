@@ -1,23 +1,11 @@
-# Get started
+import DevNav from '../../components/index/dev-nav'
 
-import Button from '../../components/button'
+# Building on Axelar
 
-## Summary: Develop a cross-chain dApp in 2 simple steps
-
-The ideal development process is completed in two steps: 
-
-1. Build. Develop your dApp and test it against the Axelar local development environment.
-2. Deploy. Deploy your contracts and point your dApp to a live network: testnet or mainnet.
-
-**_To begin, download the `axelar-local-gmp-examples` repository, which contains a full suite of starter templates that are run against the Axelar local development environment._**
-
-View the summary of notable examples with links to github instructions and code for each:
-
-<Button title="Starter templates" url="./gmp/examples" />
+Now that you've run the simple "Hello World" example, this "Build" section will walk you through the suite of Axelar tools you can use to build and deploy your cross-chain dApp. 
 
 ## Build
-
-**_Build a cross-chain dApp in the local development environment using two basic components:_**
+**_A cross-chain dApp on Axelar consists of two components:_**
 
 1. RPC endpoints to query or post transactions to the various EVM chains supported by Axelar.
 2. Contract addresses on various EVM chains for:
@@ -26,9 +14,9 @@ View the summary of notable examples with links to github instructions and code 
 
 **_The Axelar local development environment allows you to:_**
 
-1. Create simulated EVM chains with RPC endpoints on your localhost. These chains come pre-loaded with the AxelarGateway, AxelarGasReceiver and a routed ERC-20 token contract (axlUSDC).
-2. Deploy your custom `IAxelarExecutable` contracts to your simulated EVM chains.
-3. Test your app against the RPC endoints and contract addresses of your local development environment.
+* Create simulated EVM chains with RPC endpoints on your localhost. These chains come pre-loaded with the AxelarGateway, AxelarGasReceiver and a routed ERC-20 token contract (axlUSDC).
+* Deploy your custom `IAxelarExecutable` contracts to your simulated EVM chains.
+* Test your app against the RPC endoints and contract addresses of your local development environment.
 
 ## Deploy
 
@@ -36,6 +24,12 @@ When you're ready to go live to testnet or mainnet:
 
 1. Deploy your custom `IAxelarExecutable`contracts to the live EVM chains (testnet or mainnet) your dApp supports. 
 2. Swap out the RPC endpoints and contract addresses so they now point to live EVM chains (testnet or mainnet).
+
+## Development tools
+If you have any issues with the two steps above, you can use the suite of tools and other "kick-starter" examples in the Axelar developer ecosystem to get you going. Links to these additional resources are below:
+
+<br/>
+<DevNav />
 
 ## Guided video walkthroughs
 

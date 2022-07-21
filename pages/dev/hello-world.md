@@ -1,0 +1,77 @@
+# Hello World
+
+What better way to start than to lead by example? And a simple one we're all familiar with: "Hello World!"
+
+## Prerequisites
+Install [nodejs](https://nodejs.org/en/download/). Run `node -v` to check your installation.
+
+Version 16 is required. If needed you can switch your node version (or lower, if you are on a higher version) via
+
+```bash
+sudo npm i -g n
+sudo n v16.15.0
+```
+## One-time setup
+Clone this repo:
+
+```bash
+git clone https://github.com/axelarnetwork/axelar-local-gmp-examples.git
+```
+
+Build contracts and tests:
+
+```bash
+npm update && npm install
+npm run build
+```
+In order to run the examples against the local emulator, cd to the root directory (`axelar-local-gmp-examples`) in a separate terminal window and run:
+```bash
+node scripts/createLocal
+```
+Leave this terminal open for the duration of the example.
+
+## Deploy and Run "Hello World"
+
+Run the "Call Contract" example. The application sends a message - "Hello World" - from a source to the destination chain using the callContract function.
+
+1. Deploy
+
+```bash
+node scripts/deploy examples/call-contract [local|testnet]
+```
+
+2. Run
+
+```bash
+node scripts/test examples/call-contract [local|testnet] ${"source-chain"} ${"destination-chain"} ${'message'}
+```
+
+#### Actual Example
+
+```bash
+node scripts/deploy examples/call-contract local
+node scripts/test examples/call-contract local "Moonbeam" "Avalanche" 'Hello World'
+```
+
+Output:
+
+```
+--- Initially ---
+value at Avalanche is
+--- After ---
+value at Avalanche is Hello World
+```
+
+## What did we just do?
+
+We sent a message - "Hello World" - from a smart contract on Moonbeam to a smart contract on Avalanche, updating the latter's "value" property to our "Hello World" message. 
+
+The full transaction flow was:
+1. Started the local developer environment to run local EVM blockchains
+2. With the first node script, deployed [this](https://github.com/axelarnetwork/axelar-local-gmp-examples/blob/main/examples/call-contract/ExecutableSample.sol) smart contract to all the EVM chains in our local developer environment
+3. With the second node script, ran [this](https://github.com/axelarnetwork/axelar-local-gmp-examples/blob/main/examples/call-contract/index.js#L22) test script on local Moonbeam, which
+    - calculated the estimated gas cost of executing the method on Avalanche
+    - invoked `setRemoteValue` on the deployed Moonbeam smart contract. This method first pays the gas receiver on Moonbeam the estimated gas cost, then calls `callContractWithToken` on the Moonbeam gateway contract
+4. After some time, the relay services detect the gas paid on Moonbeam and executes the smart contract on Avalanche, invoking the `_execute` method that updated the value to the message parameter.
+
+## Ready to [build](./build)?
