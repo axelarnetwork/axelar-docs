@@ -15,9 +15,9 @@ There're two reasons that caused execution failed:
 
 **Solution:** There're two options.
 
-1. Manually execute the payload at the destination chain via [Axelarscan UI](/dev/gmp/gmp-tracker-recovery/recovery#manually-execute-a-transfer) or [AxelarJS SDK](/dev/axelarjs-sdk/tx-status-query-recovery#1-execute-manually).
-2. Pay a new gas amount to the Gas Service contract on the source chain via [Axelarscan UI](/dev/gmp/gmp-tracker-recovery/recovery#increase-gas-payment-to-the-gas-receiver-on-the-source-chain) or [AxelarJS SDK](/dev/axelarjs-sdk/tx-status-query-recovery#2-increase-gas-payment).
+1. Manually execute the payload at the destination chain via [Axelarscan UI](../monitor-recover/recovery#manually-execute-a-transfer) or [AxelarJS SDK](/dev/axelarjs-sdk/tx-status-query-recovery#1-execute-manually).
+2. Pay a new gas amount to the Gas Service contract on the source chain via [Axelarscan UI](../monitor-recover/recovery#increase-gas-payment-to-the-gas-receiver-on-the-source-chain) or [AxelarJS SDK](/dev/axelarjs-sdk/tx-status-query-recovery#2-increase-gas-payment).
 
 ### 2. Error in the destination contract logic
 
-**What to do next:** We suggest debugging your contract and then making a new call. You can try to follow the [Debugging your Smart Contract](/dev/gmp/gmp-tracker-recovery/debugging-your-smart-contract) guide.
+**What to do next:** We suggest debugging your contract and then making a new call. You can try to follow the [Debugging your Smart Contract](..//debug/debugging-your-smart-contract) guide.

@@ -101,7 +101,7 @@ function payNativeGasForContractCall(
 Similar to the available pay-gas methods for the `callContract`, there are two available methods to pay gas for relaying the `callContractWithToken`.
 
 ### payGasForContractCallWithToken
-This methods receives any tokens for the relayer fee. The paid gas for this method must be in tokens Axelar supports. See the list of supported assets in Resources [[Mainnet](/resources/mainnet) | [Testnet](/resources/testnet) | [Testnet-2](/resources/testnet-2)].
+This methods receives any tokens for the relayer fee. The paid gas for this method must be in tokens Axelar supports. See the list of supported assets [Mainnet](../build/contract-addresses/mainnet) | [Testnet](../build/contract-addresses/testnet).
 
 ```solidity
 // This is called on the source chain before calling the gateway to execute a remote contract.

@@ -4,7 +4,7 @@
 
 Axelar network provides an optional relayer service, called the Executor service, which observes the gas-paid amount to the Gas Service contract (below). Then, it automatically uses those amounts to relay the approved message to the application’s destination contract.
 
-Users are required to pay gas to the Gas Service contract to activate the executor service. After an attempt to relay the message to the destination contract, the service calculates the remaining gas amount and [refunds](gas-services/refund) it to the payer account. The execution result can be monitored on Axelarscan UI or requested through the AxelarJS SDK. Please see the [Monitoring State of GMP Transactions](monitor-recover/monitoring) section for more information.
+Users are required to pay gas to the Gas Service contract to activate the executor service. After an attempt to relay the message to the destination contract, the service calculates the remaining gas amount and [refunds](./refund) it to the payer account. The execution result can be monitored on Axelarscan UI or requested through the AxelarJS SDK. Please see the [Monitoring State of GMP Transactions](../monitor-recover/monitoring) section for more information.
 
 ## Gas Services
 For any General Message Passing (GMP) transaction, the Axelar network routes transctions to their destination chains. The final step of the pipeline (execution) to the specified destination contract address on the destination chain is invoked in one of two ways.

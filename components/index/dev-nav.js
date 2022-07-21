@@ -20,7 +20,7 @@ const items = [
     icon: (
       <FaGasPump size={24} />
     ),
-    url: "/dev/gas-services",
+    url: "/dev/gas-services/intro",
     external: false,
   },
   {

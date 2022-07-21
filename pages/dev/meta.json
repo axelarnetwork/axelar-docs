@@ -1,7 +1,7 @@
 {
   "intro": "Introduction",
   "gmp-overview": "General Message Passing Overview",
-  "hello-world": "Hello World",
+  "hello-world": "'Hello World' example dApp",
   "build": "Build",
   "guides": "Guides",
   "gas-services": "Gas & Executor Services",

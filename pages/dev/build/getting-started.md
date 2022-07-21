@@ -1,4 +1,4 @@
-import DevNav from '../../components/index/dev-nav'
+import DevNav from '../../../components/index/dev-nav'
 
 # Building on Axelar
 

@@ -1,4 +1,4 @@
-# Hello World
+# `Hello World` Example dApp
 
 What better way to start than to lead by example? And a simple one we're all familiar with: "Hello World!"
 
@@ -98,4 +98,4 @@ The full transaction flow was:
     - invoked `setRemoteValue` on the deployed Moonbeam smart contract. This method first pays the gas receiver on Moonbeam the estimated gas cost, then calls `callContractWithToken` on the Moonbeam gateway contract
 4. After some time, the relay services detect the gas paid on Moonbeam and executes the smart contract on Avalanche, invoking the `_execute` method that updated the value to the message parameter.
 
-## Ready to [build](./build) some more?
+## Ready to [build](./build/getting-started) some more?
