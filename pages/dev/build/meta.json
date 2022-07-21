@@ -4,6 +4,7 @@
     "gmp-messages": "Send messages",
     "gmp-tokens-with-messages": "Send tokens with messages",
     "chain-names": "Chain names",
-    "contract-addresses": "Contract addresses"
+    "contract-addresses": "Contract addresses",
+    "solidity-utilities": "Solidity utilities"
   }
   

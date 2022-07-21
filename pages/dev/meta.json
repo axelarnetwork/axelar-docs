@@ -7,7 +7,6 @@
   "gas-services": "Gas & Executor Services",
   "debug": "Debug",
   "monitor-recover": "Monitor and Recover",
-  "axelarjs-sdk": "AxelarJS SDK",
-  "solidity-utilities": "Solidity Utilities"
+  "axelarjs-sdk": "AxelarJS SDK"
 
 }
