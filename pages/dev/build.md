@@ -18,6 +18,15 @@ Now that you've run the simple "Hello World" example, this "Build" section will 
 * Deploy your custom `IAxelarExecutable` contracts to your simulated EVM chains.
 * Test your app against the RPC endoints and contract addresses of your local development environment.
 
+
+For the actual development of your dApp, there are four simple steps (two mandatory and two optional):
+1. Call the contract method on the source chain.
+    - `callContract`, or
+    - `callContractWithToken`.
+2. Pay gas to the Gas Services contract on the source chain.
+3. *(optional)* Check the status of the call.
+4. *(optional)* Execute and recover transactions.
+
 ## Deploy
 
 When you're ready to go live to testnet or mainnet: 
@@ -25,36 +34,8 @@ When you're ready to go live to testnet or mainnet:
 1. Deploy your custom `IAxelarExecutable`contracts to the live EVM chains (testnet or mainnet) your dApp supports. 
 2. Swap out the RPC endpoints and contract addresses so they now point to live EVM chains (testnet or mainnet).
 
-## Development tools
+## Tools
 If you have any issues with the two steps above, you can use the suite of tools and other "kick-starter" examples in the Axelar developer ecosystem to get you going. Links to these additional resources are below:
 
 <br/>
 <DevNav />
-
-## Guided video walkthroughs
-
-### Build, test, & deploy in this three part end-to-end demo
-1. Set up local environment ( Part 1/3, ~8 minutes) [video](https://www.youtube.com/watch?v=PWXmsP_a-ck)
-<iframe width="560" height="315" src="https://www.youtube.com/embed/PWXmsP_a-ck" title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
-
-2. Deploy and run examples locally ( Part 2/3, ~9 minutes) [video](https://www.youtube.com/watch?v=l2MAZKEWzZ4)
-<iframe width="560" height="315" src="https://www.youtube.com/embed/l2MAZKEWzZ4" title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
-
-3. Deploy and run examples in testnets ( Part 3/3, ~7 minutes) [video](https://www.youtube.com/watch?v=X6HwmL6Tbg0)
-<iframe width="560" height="315" src="https://www.youtube.com/embed/X6HwmL6Tbg0" title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
-
-### Example: NFT linker
-
-The [axelar-local-gmp-examples](https://github.com/axelarnetwork/axelar-local-gmp-examples) repo contains an example [nft-linker](https://github.com/axelarnetwork/axelar-local-gmp-examples/tree/main/examples/nft-linker) on cross-chain transfer for ERC-721 NFT tokens.
-
-See the accompanying [video](https://www.youtube.com/watch?v=pAxuQ7PIl8g):
-
-<iframe width="560" height="315" src="https://www.youtube.com/embed/pAxuQ7PIl8g" title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
-
-### Example: Airdrop! (an end-to-end walkthrough)
-
-Watch Vlad demo an end-to-end walkthrough of our Airdrop example, which sends aUSDC from a source chain to a list of recipients on a destination chain using the callContractWithToken function. The full stack example includes running the examples locally, deploying to testnet, and reviewing analytics tools in testnet... all run with a simple bootstrapped frontend.
-
-See the accompanying [video](https://www.youtube.com/watch?v=D5Z6lCbjZNA):
-
-<iframe width="560" height="315" src="https://www.youtube.com/embed/D5Z6lCbjZNA" title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>

@@ -1,6 +1,6 @@
 import Link from "next/link";
-import { RiCodeFill, RiRadarFill, RiSettings4Fill, RiServerFill } from "react-icons/ri";
-import { AiFillDatabase } from "react-icons/ai";
+import { AiFillBug, AiFillDatabase } from "react-icons/ai";
+import { FiMonitor } from "react-icons/fi";
 import { FaGasPump } from "react-icons/fa";
 import { HiArrowNarrowRight } from "react-icons/hi";
 
@@ -20,25 +20,25 @@ const items = [
     icon: (
       <FaGasPump size={24} />
     ),
-    url: "/resources/satellite",
+    url: "/dev/gas-services",
     external: false,
   },
   {
-    title: "Node operator",
-    description: "Learn how to run a node on the Axelar network",
+    title: "Debug",
+    description: "Debugging tools",
     icon: (
-      <RiSettings4Fill size={24} />
+      <AiFillBug size={24} />
     ),
-    url: "/node/join",
+    url: "/dev/debug",
     external: false,
   },
   {
-    title: "Validator",
-    description: "Axelar validators facilitate cross-chain connections",
+    title: "Monitor & Recover",
+    description: "Monitor & Recover",
     icon: (
-      <RiServerFill size={24} />
+      <FiMonitor size={24} />
     ),
-    url: "/validator/setup/overview",
+    url: "/dev/monitor-recover",
     external: false,
   }
 ];

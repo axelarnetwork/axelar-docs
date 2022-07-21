@@ -1,11 +1,12 @@
 {
   "intro": "Introduction",
+  "gmp-overview": "GMP Overview",
   "hello-world": "Hello World",
-  "build": {
-    "title": "Build",
-    "type": "doc"
-  },
-  "gmp": "General Message Passing",
+  "build": "Build",
+  "guides": "Guides",
+  "gas-services": "Gas & Executor Services",
+  "debug": "Debug",
+  "monitor-recover": "Monitor and Recover",
   "axelarjs-sdk": "AxelarJS SDK",
   "solidity-utilities": "Solidity Utilities"
 
