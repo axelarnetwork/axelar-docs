@@ -71,18 +71,36 @@ The following method, once invoked, will:
 2. Recover from source to destination if needed.
 
 ```ts
-const txHash =
-  "0xfb6fb85f11496ef58b088116cb611497e87e9c72ff0c9333aa21491e4cdd397a";
-const src = "Ethereum";
-const dest = "Avalanche";
-const debug = true;
-const recover = await api.manualRelayToDestChain({ txHash, src, dest, debug });
+const sourceTxHash = "0x..";
+const provider = new ethers.providers.JsonRpcProvider(
+  "https://ropsten.infura.io/v3/projectId"
+);
+
+// Optional
+// By default, The sdk uses `window.ethereum` wallet as a sender wallet e.g. Metamask.
+// This option allows caller to pass `privateKey` or `provider` to the sdk directly
+const senderOptions = { privateKey: "0x", provider };
+
+const response = await sdk.manualRelayToDestChain(
+  sourceTxHash,
+  senderOptions /* can be skipped */
+);
 ```
 
-Possible return values are: 
-- `already executed`: transaction was already executed and a manual recovery was not necessary. 
-- `triggered relay`: the `manualRelayToDestChain` trigggered a manual relay through our network. 
-- `approved but not executed`: the transaction already reached the destination chain but was not executed to reach the intended destination contract address. When in this state, there are two options to remediate (below). 
+Possible response values are:
+
+```ts
+export interface ApproveGatewayResponse {
+  success: boolean;
+  error?: ApproveGatewayError | string;
+  confirmTx?: AxelarTxResponse;
+  createPendingTransferTx?: AxelarTxResponse;
+  signCommandTx?: AxelarTxResponse;
+  approveTx?: any;
+}
+```
+
+When in this state, there are two options to remediate (below). 
 
 ### Execute manually OR increase gas payment
 
