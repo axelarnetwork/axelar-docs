@@ -29,7 +29,7 @@ const items = [
     icon: (
       <AiFillBug size={24} />
     ),
-    url: "/dev/debug",
+    url: "/dev/debug/error-debugging",
     external: false,
   },
   {
@@ -38,7 +38,7 @@ const items = [
     icon: (
       <FiMonitor size={24} />
     ),
-    url: "/dev/monitor-recover",
+    url: "/dev/monitor-recover/monitoring",
     external: false,
   }
 ];

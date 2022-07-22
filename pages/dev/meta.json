@@ -1,12 +1,11 @@
 {
   "intro": "Introduction",
-  "gmp-overview": "General Message Passing overview",
   "hello-world": "'Hello World' example dApp",
+  "gmp-overview": "General Message Passing overview",
   "build": "Build",
   "guides": "Guides",
   "gas-services": "Gas & executor services",
   "debug": "Debug",
   "monitor-recover": "Monitor & recover",
   "axelarjs-sdk": "AxelarJS SDK"
-
 }

@@ -98,4 +98,5 @@ The full transaction flow was:
     - Invoked `setRemoteValue` on the deployed Moonbeam smart contract. This method first pays the gas receiver on Moonbeam the estimated gas cost, then calls `callContractWithToken` on the Moonbeam Gateway contract.
 4. After some time, the relay services detect the gas paid on Moonbeam and executes the smart contract on Avalanche, invoking the `_execute` method that updated the value to the message parameter.
 
-## Ready to [build](./build/getting-started) some more?
+## Ready to [build](./build/getting-started)?
+## Want to learn more about [General Message Passing](./gmp-overview)?

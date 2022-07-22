@@ -32,3 +32,5 @@ With GMP you can:
 6. The executor service relays and executes the approved call to the application’s Axelar Executable interface.
 
 Suppose the paid gas (step 2) is insufficient to relay the transfer to the application interface (step 6). We have [monitoring and recovery](./monitor-recover/monitoring) steps to help deal with such scenarios.
+
+## Ready to [build](./build/getting-started)?
