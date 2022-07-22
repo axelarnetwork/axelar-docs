@@ -3,13 +3,13 @@
 
 To call chain B from chain A and send some tokens along the way, the user needs to call `callContractWithToken` on the gateway of chain A, specifying:
 
-- The destination chain: must be an EVM chain from [Chain names](./chain-names).
-- The destination contract address: must implement the `IAxelarExecutable` interface defined in [IAxelarExecutable.sol](https://github.com/axelarnetwork/axelar-cgp-solidity/blob/main/contracts/interfaces/IAxelarExecutable.sol).
+- The destination chain, which must be an EVM chain from [Chain names](./chain-names).
+- The destination contract address, which must implement the `IAxelarExecutable` interface defined in [IAxelarExecutable.sol](https://github.com/axelarnetwork/axelar-cgp-solidity/blob/main/contracts/interfaces/IAxelarExecutable.sol).
 - The payload `bytes` to pass to the destination contract.
-- The symbol of the token to transfer: must be a supported asset [Mainnet](../build/contract-addresses/mainnet) | [Testnet](../build/contract-addresses/testnet).
+- The symbol of the token to transfer, which must be a supported asset ([Mainnet](../build/contract-addresses/mainnet) | [Testnet](../build/contract-addresses/testnet)).
 - The amount of the token to transfer.
 
-As per snippet below.
+As per the snippet below:
 
 ```solidity
 function callContractWithToken(
@@ -57,7 +57,7 @@ function _executeWithToken(
 }
 ```
 
-*** __Ensure the payload is encoded `bytes`.__
+\*\*\* **Ensure the payload is encoded `bytes`!** \*\*\*
 
 The `payload` passed to `callContract` (and ultimately to the `_execute` and `_executeWithToken`) has type `bytes`. Use the ABI encoder/decoder convert your data to `bytes`.
 

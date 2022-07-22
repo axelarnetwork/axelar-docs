@@ -1,6 +1,6 @@
-# Testnet chain names
+# Chain names: Testnet-1 (Lisbon)
 
-## EVM Networks
+### EVM Networks
 
 The following values are legal arguments for token transfers and General Message Passing calls such as `callContract` and `callContractWithToken`:
 

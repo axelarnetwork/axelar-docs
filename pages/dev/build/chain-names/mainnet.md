@@ -1,4 +1,5 @@
-# Mainnet chain names
+
+# Chain names: Mainnet
 
 ## EVM Networks
 

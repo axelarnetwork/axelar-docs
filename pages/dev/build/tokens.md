@@ -2,15 +2,15 @@
 
 There are two ways to transfer tokens cross-chain with Axelar:
 
-- Call `sendToken` on an Axelar gateway EVM contract
-- Get a deposit address using the [AxelarJS SDK](../axelarjs-sdk/token-transfer-dep-addr)
+- Call `sendToken` on an Axelar gateway EVM contract.
+- Get a deposit address using the [AxelarJS SDK](../axelarjs-sdk/token-transfer-dep-addr).
 
 ## Call `sendToken`
 
 Use `sendToken` if:
 
-- Your app transfers EVM-to-X where X is one of EVM, Cosmos.
-- Your app uses smart contracts.
+- Your dApp transfers EVM-to-X where X is one of EVM, Cosmos.
+- Your dApp uses smart contracts.
 
 ### Overview
 
@@ -20,7 +20,7 @@ Use `sendToken` if:
 
 #### 1. Locate the Axelar Gateway contract on the source chain
 
-Axelar Gateways are application-layer smart contracts established on source and destination chains. They send and receive payloads, and monitor state. Find a list of gateway addresses for the chains we support [Mainnet](../build/contract-addresses/mainnet) | [Testnet](../build/contract-addresses/testnet).
+Axelar Gateways are application-layer smart contracts established on source and destination chains. They send and receive payloads, and monitor state. Find a list of Gateway addresses for the chains we support: [Mainnet](../build/contract-addresses/mainnet) | [Testnet](../build/contract-addresses/testnet).
 
 An Axelar Gateway implements the `IAxelarGateway` interface, which has a public method called `sendToken`:
 
@@ -43,7 +43,7 @@ function approve(address spender, uint256 amount) external returns (bool);
 
 Here, `spender` is the Gateway address on the source chain.
 
-Find a list of assets, their names and their addresses [Mainnet](../build/contract-addresses/mainnet) | [Testnet](../build/contract-addresses/testnet).
+Find a list of assets, their names and their addresses: [Mainnet](../build/contract-addresses/mainnet) | [Testnet](../build/contract-addresses/testnet).
 
 #### 3. Execute sendToken on the Gateway
 
@@ -67,4 +67,4 @@ Use a deposit address if:
 - You want to allow token transfers from wallets that don't know anything about Axelar. Example: Withdrawal from a centralized exchange.
 
 
-Refer to [AxelarJS SDK](../axelarjs-sdk/token-transfer-dep-addr)
+Refer to [AxelarJS SDK](../axelarjs-sdk/token-transfer-dep-addr).

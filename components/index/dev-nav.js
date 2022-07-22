@@ -6,8 +6,8 @@ import { HiArrowNarrowRight } from "react-icons/hi";
 
 const items = [
   {
-    title: "5-minute starter examples",
-    description: "A curate list of representative examples in our axelar-local-gmp-examples repo",
+    title: "5-min starter examples",
+    description: "A curated list of representative examples in our axelar-local-gmp-examples repo",
     icon: (
       <AiFillDatabase size={24} />
     ),
@@ -33,7 +33,7 @@ const items = [
     external: false,
   },
   {
-    title: "Monitor & Recover",
+    title: "Monitor & recover",
     description: "Monitor & Recover",
     icon: (
       <FiMonitor size={24} />
