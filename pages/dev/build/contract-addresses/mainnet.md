@@ -1,7 +1,7 @@
 import EVMChains from '../../../../components/evm/chains'
 import EVMAssets from '../../../../components/evm/assets'
 
-## Contract addresses: Mainnet
+# Contract addresses: Mainnet
 
 <div className="space-y-1 mt-4">
   ### EVM Chains
