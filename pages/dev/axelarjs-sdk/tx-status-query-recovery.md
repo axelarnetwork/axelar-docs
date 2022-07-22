@@ -1,10 +1,10 @@
-# Query and Recover GMP transactions
+# Query and recover GMP transactions
 
 Occasionally, transactions can get "stuck" in the pipeline from a source to destination chain (e.g. due to one-off issues that arise with relayers that operate on top of the network).
 
-The `AxelarGMPRecoveryAPI` module in the AxelarJS SDK can be used by your dApp to query the status of any General Message Passing (GMP) transaction (triggered by either `callContract` or `callContractWithToken`) on the gateway contract of a source chain and trigger a manual relay from source to destination if necessary. - The [[GMP status tracker](../gmp/gmp-tracker-recovery/recovery)] on Axelarscan makes use of this feature.
+The `AxelarGMPRecoveryAPI` module in the AxelarJS SDK can be used by your dApp to query the status of any General Message Passing (GMP) transaction (triggered by either `callContract` or `callContractWithToken`) on the gateway contract of a source chain and trigger a manual relay from source to destination if necessary. - The [GMP status tracker](../gmp/gmp-tracker-recovery/recovery) on Axelarscan makes use of this feature.
 
-### Install the AxelarJS SDK module (AxelarGMPRecoveryAPI)
+### Install the AxelarJS SDK module (`AxelarGMPRecoveryAPI`)
 
 Install the AxelarJS SDK:
 
@@ -35,7 +35,7 @@ const txHash: string =
 const txStatus: GMPStatusResponse = await sdk.queryTransactionStatus(txHash);
 ```
 
-where possible status responses for txStatus are outlined below:
+Possible status responses for txStatus are outlined below:
 
 ```ts
 interface GMPStatusResponse {
@@ -79,7 +79,10 @@ const debug = true;
 const recover = await api.manualRelayToDestChain({ txHash, src, dest, debug });
 ```
 
-Possible return values are: - `already executed` - Transaction was already executed and a manual recovery was not necessary. - `triggered relay` - The `manualRelayToDestChain` trigggered a manual relay through our network. - `approved but not executed` - The transaction already reached the destination chain but was not executed to reach the intended destination contract address. - => WHEN IN THIS STATE, THERE ARE TWO OPTIONS TO REMEDIATE (BELOW).
+Possible return values are: 
+- `already executed`: transaction was already executed and a manual recovery was not necessary. 
+- `triggered relay`: the `manualRelayToDestChain` trigggered a manual relay through our network. 
+- `approved but not executed`: the transaction already reached the destination chain but was not executed to reach the intended destination contract address. When in this state, there are two options to remediate (below). 
 
 ### Execute manually OR increase gas payment
 
@@ -108,13 +111,13 @@ Possible return values are:
 }
 ```
 
-#### 2. Increase Gas Payment
+#### 2. Increase gas payment
 
-There're two different functions to increase gas payment depending on type of the token.
+There are two different functions to increase gas payment depending on type of the token.
 
-##### 2.1 Native Gas Payment
+##### 2.1 Native gas payment
 
-Invoking this method will execute the `addNativeGas` method on the gas receiver contract on the source chain of your cross-chain transaction to increase the amount of the gas payment, in the form of **native token**. The amount to be added is automatically calculated based on many factors e.g. token price of the destination chain, token price of the source chain, current gas price at the destination chain, etc. However, it can be overrided by specifying amount in the `options`.
+Invoking this method will execute the `addNativeGas` method on the Gas Receiver contract on the source chain of your cross-chain transaction to increase the amount of the gas payment, in the source chain native token. The amount to be added is automatically calculated based on many factors e.g. token price of the destination chain, token price of the source chain, current gas price at the destination chain, etc. However, it can be overriden by specifying amount in the `options`.
 
 ```ts
 import {
@@ -170,7 +173,7 @@ const options: AddGasOptions = {
 const environment = Environment.TESTNET; // Can be `Environment.TESTNET` or `Environment.MAINNET`
 const api = new AxelarGMPRecoveryAPI({ environment });
 
-// Approve gas token to the gas receiver contract
+// Approve gas token to the Gas Receiver contract
 const gasToken = "0xGasTokenAddress";
 const erc20 = new ethers.Contract(gasToken, erc20Abi, gasPayer);
 await erc20
