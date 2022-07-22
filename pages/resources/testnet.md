@@ -2,7 +2,6 @@
 
 import Callout from 'nextra-theme-docs/callout'
 import MarkdownPath from '../../components/markdown'
-import Button from '../../components/button'
 import IBCChannels from '../../components/ibc/channels'
 import TransferFeeCalculator from '../../components/transfer-fee/calculator'
 
@@ -13,7 +12,7 @@ import TransferFeeCalculator from '../../components/transfer-fee/calculator'
 | `tofnd` version       | `v0.10.1` |
 
 ## EVM contract addresses
-<Button title="Contract addresses" url="../dev/build/contract-addresses/testnet" />
+Moved [here](../dev/build/contract-addresses/testnet)
 
 <div className="space-y-1 mt-4">
   ## IBC Channels
