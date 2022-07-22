@@ -1,5 +1,7 @@
 # Call a contract on chain B from chain A
 
+import Callout from 'nextra-theme-docs/callout'
+
 To call a contract on chain B from chain A, the user needs to call `callContract` on the gateway of chain A, specifying:
 
 - The destination chain, which must be an EVM chain from [Chain names](./chain-names).
@@ -24,7 +26,9 @@ function _execute(
 ) internal virtual {}
 ```
 
-\*\*\* **Ensure the payload is encoded `bytes`!** \*\*\*
+<Callout emoji="ℹ️">
+  Ensure the payload is encoded `bytes`!
+</Callout>
 
 The `payload` passed to `callContract` (and ultimately to `_execute` and `_executeWithToken`) has type `bytes`. Use the ABI encoder/decoder convert your data to `bytes`.
 

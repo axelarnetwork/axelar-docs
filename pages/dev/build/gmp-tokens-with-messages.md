@@ -1,5 +1,7 @@
 
-## Call a contract on chain B from chain A and attach some tokens
+# Call a contract on chain B from chain A and attach some tokens
+
+import Callout from 'nextra-theme-docs/callout'
 
 To call chain B from chain A and send some tokens along the way, the user needs to call `callContractWithToken` on the gateway of chain A, specifying:
 
@@ -57,7 +59,9 @@ function _executeWithToken(
 }
 ```
 
-\*\*\* **Ensure the payload is encoded `bytes`!** \*\*\*
+<Callout emoji="ℹ️">
+  Ensure the payload is encoded `bytes`!
+</Callout>
 
 The `payload` passed to `callContract` (and ultimately to the `_execute` and `_executeWithToken`) has type `bytes`. Use the ABI encoder/decoder convert your data to `bytes`.
 
