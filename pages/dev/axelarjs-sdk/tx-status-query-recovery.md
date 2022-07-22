@@ -2,14 +2,14 @@
 
 Occasionally, transactions can get "stuck" in the pipeline from a source to destination chain (e.g. due to one-off issues that arise with relayers that operate on top of the network).
 
-The `AxelarGMPRecoveryAPI` module in the AxelarJS SDK can be used by your dApp to query the status of any General Message Passing (GMP) transaction (triggered by either `callContract` or `callContractWithToken`) on the gateway contract of a source chain and trigger a manual relay from source to destination if necessary. - The [GMP status tracker](../gmp/gmp-tracker-recovery/recovery) on Axelarscan makes use of this feature.
+The `AxelarGMPRecoveryAPI` module in the AxelarJS SDK can be used by your dApp to query the status of any General Message Passing (GMP) transaction (triggered by either `callContract` or `callContractWithToken`) on the gateway contract of a source chain and trigger a manual relay from source to destination if necessary. - The [GMP status tracker](../monitor-recover/recovery) on Axelarscan makes use of this feature.
 
 ### Install the AxelarJS SDK module (`AxelarGMPRecoveryAPI`)
 
 Install the AxelarJS SDK:
 
 ```bash
-npm i @axelar-network/axelarjs-sdk@alpha
+npm i @axelar-network/axelarjs-sdk
 ```
 
 Instantiate the `AxelarGMPRecoveryAPI` module:
@@ -150,7 +150,7 @@ if (success) {
 
 ##### 2.2 ERC-20 Gas Payment
 
-This is similar to native gas payment except using **ERC-20 token** for gas payment. However, the supported ERC-20 tokens are limited. See the list of supported tokens here: [[Mainnet](/resources/mainnet) | [Testnet](/resources/testnet) | [Testnet-2](/resources/testnet-2)]
+This is similar to native gas payment except using **ERC-20 token** for gas payment. However, the supported ERC-20 tokens are limited. See the list of supported tokens here: [[Mainnet](../build/contract-addresses/mainnet) | [Testnet](../build/contract-addresses/testnet)]
 
 ```ts
 import {

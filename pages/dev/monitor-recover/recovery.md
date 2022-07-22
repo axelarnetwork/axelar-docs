@@ -7,7 +7,7 @@ Transactions have typically gotten "stuck" in the pipeline due to:
 
 Users can recover a transaction that gets stuck in the pipeline by either: 
 1. Searching for the transaction in the Axelarscan UI and having it invoke recovery.
-2. Incorporating the [[AxelarJS SDK](/dev/axelarjs-sdk/token-transfer-dep-addr)] and invoking those methods directly.
+2. Incorporating the [AxelarJS SDK](/dev/axelarjs-sdk/token-transfer-dep-addr) and invoking those methods directly.
 
 ## 1. Axelarscan UI
 
@@ -34,7 +34,7 @@ If the manual execution fails, you will get an error message with the explained 
 Please debug the deployed contract logic and make a new call. 
 
 ### Increase gas payment to the gas receiver on the source chain
-The prepaid gas to the Gas Service contract [[in step 2](../building-on-gmp#step-2-pay-gas-to-the-gas-services-contract)] could be insufficient when the destination chain is too busy (with many transfers or other conditions). Therefore, Axelarscan provides an option to resubmit a new amount of gas for executing the transaction. 
+The prepaid gas to the Gas Service contract could be insufficient when the destination chain is too busy (with many transfers or other conditions). Therefore, Axelarscan provides an option to resubmit a new amount of gas for executing the transaction. 
 
 To do this:
 1. Click the `Connect` button to connect your MetaMask wallet. Then switch the wallet network to the transfer’s source chain by clicking the `Switch Network` button under the label ‘Pay new gas at source chain‘.
@@ -46,4 +46,4 @@ To do this:
 
 All of the recovery methods above can be done programmatically through our SDK. The benefit of this would be if you would like to incorporate these recovery features above in your application directly. In fact, Axelarscan makes use of all of these methods written into the SDK. 
 
-See SDK docs for [[the full transaction recovery API](/dev/axelarjs-sdk/tx-status-query-recovery#query-and-recover-gmp-transactions)].
+See SDK docs for [the full transaction recovery API](/dev/axelarjs-sdk/tx-status-query-recovery#query-and-recover-gmp-transactions).
