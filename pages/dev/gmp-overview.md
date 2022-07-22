@@ -14,7 +14,7 @@ With GMP you can:
 
 ### Flow architecture (in steps)
 
-![gmp-diagram.png](/images/gmp-diagram.png)
+![gmp-diagram.png](/images/gmp-diagram-jul22.jpg)
 
 ### Steps
 
