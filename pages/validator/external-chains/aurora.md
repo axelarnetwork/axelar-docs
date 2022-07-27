@@ -58,11 +58,11 @@ Please run the following command on the Aurora server (just press "Enter" for ea
 cd
 ```
 ```
-ssh-keygen -t rsa
+ssh-keygen -t ed25519
 ```
 
 ### 6. Add public key on the Axelar Node
-Once the key pair has been generated you need to create it on the Axelar Node `/root/.ssh/authorized_keys` file and copy content from the `/root/.ssh/id_rsa.pub` file which was created on the Aurora Node:
+Once the key pair has been generated you need to create it on the Axelar Node `/root/.ssh/authorized_keys` file and copy content from the `/root/.ssh/id_ed25519.pub` file which was created on the Aurora Node:
 ```
 mkdir .ssh
 nano /root/.ssh/authorized_keys
