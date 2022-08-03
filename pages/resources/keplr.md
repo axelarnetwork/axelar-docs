@@ -1,5 +1,12 @@
 # Add a custom network to Keplr
 import Button from '../../components/addKeplrWallet'
+import ButtonLink from '../../components/button'
+
+## Don't have the Keplr Chrome extension? Add it here
+
+<ButtonLink buttonTitle="Add Keplr Wallet" url="https://chrome.google.com/webstore/detail/keplr/dmkamcknogkgcdfhhbddcghachkejeap?hl=en"></ButtonLink>
+
+## Add your custom network
 
 <label 
     htmlFor="keplr_wallet_json_configuration" 
