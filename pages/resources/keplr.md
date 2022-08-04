@@ -16,9 +16,9 @@ Chain Name  | Testnet                                               | Mainnet   
 Axelar      | <AddKeplr environment="testnet" chain="axelar" />     | Already Supported                                     |
 Crescent    | <AddKeplr environment="testnet" chain="crescent" />   | <AddKeplr environment="mainnet" chain="crescent" />   |
 e-Money     | N/A                                                   | Already Supported                                     |
-Fetch       | <AddKeplr environment="testnet" chain="fetch" />      | NA                                                    |
-Injective   | NA                                                    | <AddKeplr environment="mainnet" chain="injective" />  |
-Juno        | <AddKeplr environment="testnet" chain="juno" />       | Already Supported                                     |
+Fetch       | <AddKeplr environment="testnet" chain="fetch" />      | N/A                                                   |
+Injective   | N/A                                                   | <AddKeplr environment="mainnet" chain="injective" />  |
+Juno        | N/A                                                   | Already Supported                                     |
 Kujira      | <AddKeplr environment="testnet" chain="kujira" />     | <AddKeplr environment="mainnet" chain="kujira" />     |
 Osmosis     | <AddKeplr environment="testnet" chain="osmosis" />    | Already Supported                                     |
 Secret      | N/A                                                   | Already Supported                                     |
