@@ -39,7 +39,7 @@ You can download the pre-build binaries from [release page](https://github.com/b
 ```
 wget https://github.com/bnb-chain/bsc/releases/download/v1.1.11/geth_linux
 ```
-#for Testnet
+# Testnet
 ```
 wget https://github.com/bnb-chain/bsc/releases/download/v1.1.11/testnet.zip
 unzip testnet.zip
