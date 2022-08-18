@@ -9,12 +9,12 @@ sudo apt update && sudo apt upgrade -y
 ```
 sudo apt install make clang pkg-config libssl-dev libclang-dev build-essential git curl ntp jq llvm tmux htop screen unzip -y
 ```
-Install Go 1.18.3
+Install Go 1.19
 ```
-wget https://golang.org/dl/go1.18.3.linux-amd64.tar.gz
+wget https://golang.org/dl/go1.19.linux-amd64.tar.gz
 ```
 ```
-sudo tar -C /usr/local -xzf go1.18.3.linux-amd64.tar.gz
+sudo tar -C /usr/local -xzf go1.19.linux-amd64.tar.gz
 ```
 ```
 cat <<EOF >> ~/.profile
@@ -25,7 +25,7 @@ export PATH=$PATH:/usr/local/go/bin:$HOME/go/bin
 EOF
 source ~/.profile
 go version
-rm -rf go1.18.3.linux-amd64.tar.gz
+rm -rf go1.19.linux-amd64.tar.gz
 ```
 ## 2. Install BSC tesnet node
 ```
@@ -37,16 +37,16 @@ make geth
 
 You can download the pre-build binaries from [release page](https://github.com/bnb-chain/bsc/releases/latest) or follow the instructions bellow
 ```
-wget https://github.com/bnb-chain/bsc/releases/download/v1.1.11/geth_linux
+wget https://github.com/bnb-chain/bsc/releases/download/v1.1.12/geth_linux
 ```
 #for Testnet
 ```
-wget https://github.com/bnb-chain/bsc/releases/download/v1.1.11/testnet.zip
+wget https://github.com/bnb-chain/bsc/releases/download/v1.1.12/testnet.zip
 unzip testnet.zip
 ```
 #for Mainet
 ```
-wget https://github.com/bnb-chain/bsc/releases/download/v1.1.11/mainnet.zip
+wget https://github.com/bnb-chain/bsc/releases/download/v1.1.12/mainnet.zip
 unzip mainnet.zip
 ```
 ```
