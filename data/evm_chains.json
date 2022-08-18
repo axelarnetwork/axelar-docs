@@ -45,8 +45,7 @@
           "blockExplorerUrls": ["https://bscscan.com"]
         }
       ],
-      "image": "/images/chains/binance.png",
-      "is_staging": true
+      "image": "/images/chains/binance.png"
     },
     {
       "id": "avalanche",
@@ -155,8 +154,7 @@
           "blockExplorerUrls": ["https://aurorascan.dev"]
         }
       ],
-      "image": "/images/chains/aurora.png",
-      "is_staging": true
+      "image": "/images/chains/aurora.png"
     }
   ],
   "testnet": [

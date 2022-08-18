@@ -98,6 +98,16 @@ module.exports = withNextra({
         destination: "/resources/wrapped-tokens",
         statusCode: 301,
       },
+      {
+        source: "/dev/gmp/examples",
+        destination: "/dev/build/5-min-starter-examples",
+        statusCode: 301,
+      },
+      {
+        source: "/dev/gmp/overview",
+        destination: "/dev/gmp-overview",
+        statusCode: 301,
+      },
     ];
   },
 });
