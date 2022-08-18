@@ -1,6 +1,8 @@
 **You need server with following requierements**
 
-2CPU/8GBRAM/200GB SSD
+- 2 CPU cores
+- 8 GB RAM
+- 200GB SSD
 
 **1. Upgrade your server**
 ```
