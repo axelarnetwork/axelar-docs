@@ -98,7 +98,7 @@ Checkec that node start synching
 ```
 journalctl -u bscd -f -n 100
 ```
-**7. Synch status**
+**7. Sync status**
 
 Once your BSC node is fully synced, you can run a cURL request to see the status of your node: Please change ``YOUR_IP_ADDRESS`` on your IP.
 ```
