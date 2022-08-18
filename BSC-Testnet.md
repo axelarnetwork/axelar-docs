@@ -44,7 +44,7 @@ wget https://github.com/bnb-chain/bsc/releases/download/v1.1.11/geth_linux
 wget https://github.com/bnb-chain/bsc/releases/download/v1.1.11/testnet.zip
 unzip testnet.zip
 ```
-#for Mainet
+# Mainnet
 ```
 wget https://github.com/bnb-chain/bsc/releases/download/v1.1.11/mainnet.zip
 unzip mainnet.zip
