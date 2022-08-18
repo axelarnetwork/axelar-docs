@@ -112,7 +112,7 @@ Axelar Network will be connecting to the EVM compatible ``Binance``, so your rpc
 
 ``http://IP:PORT``
 
-#for Testnet
+# Testnet
 
 Example: ``http://5.168.135.185:8575``
 
