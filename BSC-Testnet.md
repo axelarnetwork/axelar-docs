@@ -1,4 +1,4 @@
-**You need server with following requierements**
+**Server requierements**
 
 - 2 CPU cores
 - 8 GB RAM
