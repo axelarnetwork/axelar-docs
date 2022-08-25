@@ -10,6 +10,7 @@ export default ({
 
         try {
             await window.keplr.enable(settings.chainId)
+            alert(settings.chainId + " already added")
         } catch (e) {
             console.log("Unable to connect to wallet natively, so trying experimental chain")
             try {
