@@ -9,12 +9,20 @@
       "transfer_fee": 0.5
     },
     {
+      "id": "uaxl",
+      "name": "AXL - Axelar",
+      "symbol": "AXL",
+      "image": "/images/assets/axl.png",
+      "decimals": 6,
+      "transfer_fee": 0.5
+    },
+    {
       "id": "weth-wei",
       "name": "WETH - Wrapped Ether",
       "symbol": "WETH",
       "image": "/images/assets/weth.png",
       "decimals": 18,
-      "transfer_fee": 0.0004
+      "transfer_fee": 0.0003
     },
     {
       "id": "dai-wei",
@@ -22,6 +30,14 @@
       "symbol": "DAI",
       "image": "/images/assets/dai.png",
       "decimals": 18,
+      "transfer_fee": 0.5
+    },
+    {
+      "id": "uusdt",
+      "name": "USDT - Tether USD",
+      "symbol": "USDT",
+      "image": "/images/assets/usdt.png",
+      "decimals": 6,
       "transfer_fee": 0.5
     },
     {
@@ -38,7 +54,7 @@
       "symbol": "WAVAX",
       "image": "/images/assets/wavax.png",
       "decimals": 18,
-      "transfer_fee": 0.03
+      "transfer_fee": 0.02
     },
     {
       "id": "wglmr-wei",
@@ -46,7 +62,7 @@
       "symbol": "WGLMR",
       "image": "/images/assets/wglmr.png",
       "decimals": 18,
-      "transfer_fee": 0.8
+      "transfer_fee": 0.9
     },
     {
       "id": "wmatic-wei",
@@ -54,7 +70,7 @@
       "symbol": "WMATIC",
       "image": "/images/assets/wmatic.png",
       "decimals": 18,
-      "transfer_fee": 1.0
+      "transfer_fee": 0.6
     },
     {
       "id": "wbtc-satoshi",
@@ -63,6 +79,14 @@
       "image": "/images/assets/wbtc.png",
       "decimals": 8,
       "transfer_fee": 2e-05
+    },
+    {
+      "id": "wbnb-wei",
+      "name": "WBNB - Wrapped BNB",
+      "symbol": "WBNB",
+      "image": "/images/assets/wbnb.png",
+      "decimals": 18,
+      "transfer_fee": 0.002
     },
     {
       "id": "wftm-wei",
@@ -74,19 +98,11 @@
     },
     {
       "id": "uatom",
-      "name": "ATOM - Axelar Wrapped ATOM",
+      "name": "ATOM - Cosmoshub staking ATOM",
       "symbol": "ATOM",
       "image": "/images/assets/atom.png",
       "decimals": 6,
-      "transfer_fee": 0.07
-    },
-    {
-      "id": "uusdt",
-      "name": "USDT - Tether USD",
-      "symbol": "USDT",
-      "image": "/images/assets/usdt.png",
-      "decimals": 6,
-      "transfer_fee": 0.5
+      "transfer_fee": 0.04
     },
     {
       "id": "ungm",
@@ -94,7 +110,7 @@
       "symbol": "NGM",
       "image": "/images/assets/ngm.png",
       "decimals": 6,
-      "transfer_fee": 0.8
+      "transfer_fee": 2.0
     },
     {
       "id": "eeur",
@@ -127,14 +143,6 @@
       "image": "/images/assets/aave.png",
       "decimals": 18,
       "transfer_fee": 0.008
-    },
-    {
-      "id": "steth-wei",
-      "name": "stETH - Liquid staked Ether 2.0",
-      "symbol": "stETH",
-      "image": "/images/assets/steth.png",
-      "decimals": 18,
-      "transfer_fee": 0.0005
     },
     {
       "id": "frax-wei",
@@ -190,7 +198,7 @@
       "symbol": "MKR",
       "image": "/images/assets/mkr.png",
       "decimals": 18,
-      "transfer_fee": 0.0005
+      "transfer_fee": 0.0006
     }
   ],
   "testnet": [
