@@ -4,11 +4,12 @@ import Callout from 'nextra-theme-docs/callout'
 import MarkdownPath from '../../components/markdown'
 import IBCChannels from '../../components/ibc/channels'
 import TransferFeeCalculator from '../../components/transfer-fee/calculator'
+import Typeform from '../../components/typeform'
 
 | Variable              | Value     |
 | --------------------- | --------- |
-| `axelar-core` version | `v0.19.4` |
-| `vald` version        | `v0.19.4` |
+| `axelar-core` version | `v0.24.0` |
+| `vald` version        | `v0.24.0` |
 | `tofnd` version       | `v0.10.1` |
 
 ## EVM contract addresses
@@ -62,3 +63,5 @@ The gas relayer fee does not include any transaction fee assessed by the source 
 ## Upgrade Path
 
 <MarkdownPath src="/md/testnet/upgrade-path.md" />
+
+<Typeform />

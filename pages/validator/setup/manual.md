@@ -22,14 +22,14 @@ Check the appropriate version for the network accordingly:
 {
 title: "Mainnet",
 content: <CodeBlock language="bash">
-{`AXELARD_RELEASE=v0.19.2
+{`AXELARD_RELEASE=v0.24.0
 TOFND_RELEASE=v0.10.1`}
 </CodeBlock>
 },
 {
 title: "Testnet",
 content: <CodeBlock language="bash">
-{`AXELARD_RELEASE=v0.19.4
+{`AXELARD_RELEASE=v0.24.0
 TOFND_RELEASE=v0.10.1`}
 </CodeBlock>
 },
@@ -198,7 +198,7 @@ cd $HOME`}
 </CodeBlock>
 },
 { title: "Testnet", content: <CodeBlock language="bash">
-{`axelard unsafe-reset-all
+{`axelard tendermint unsafe-reset-all
 URL=\`curl -L https://quicksync.io/axelar.json | jq -r '.[] |select(.file=="axelartestnet-lisbon-3-pruned")|.url'\`
 echo $URL
 cd $HOME/.axelar/
@@ -207,7 +207,7 @@ cd $HOME`}
 </CodeBlock>
 },
 { title: "Testnet-2", content: <CodeBlock language="bash">
-{`axelard unsafe-reset-all
+{`axelard tendermint unsafe-reset-all
 URL="https://snapshots.bitszn.com/snapshots/axelar/axelar.tar"
 echo $URL
 cd $HOME/.axelar/data
