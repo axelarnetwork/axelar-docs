@@ -25,8 +25,10 @@ export default () => {
     <Popover
       id={process.env.NEXT_PUBLIC_TYPEFORM_ID}
       customIcon="https://images.typeform.com/images/fVTj4k4SPXfM"
-      buttonColor="#E5E7EB"
+      buttonColor="#FBFBFB"
+      notificationDays={7}
       tooltip="Hey 👋&nbsp;&nbsp;How can we help?"
+      open="scroll"
       chat={true}
       medium="snippet"
       style={{ all: 'unset' }}
