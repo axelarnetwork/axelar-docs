@@ -4,7 +4,7 @@ The prepaid gas to `payGasForContractCall` or `payGasForContractCallWithToken` c
 
 The Executor Service automatically calculates the excess gas submitted and determines the amount to refund.
 ```
-The refunded amount = The prepaid amount - the actual gas used - the estimated gas for transferring the refund.
+The refunded amount = The prepaid amount - the network base fee - the actual gas used - the estimated gas for transferring the refund.
 ```
 After getting the refund amount, the service calls `Refund` in the Gas Receiver contract to refund it to the payer account. Then, the refund status will be shown on Axelarscan UI.
 
