@@ -21,6 +21,9 @@ Transaction execution was reverted. Please check the implementation of the desti
 
 **What to do next:** We suggest debugging your contract and then making a new call. You can try to follow the [Debugging your smart contract](..//debug/debugging-your-smart-contract) guide.
 
+<Callout emoji="ℹ️">
+  The error message in `reason:` is extracted from the data returned by the [Ethers.js](https://github.com/ethers-io/ethers.js/) library, from the data fields `error.error.code` and `error.error.reason`. The displayed error code (red tag) can be clicked to link to the description of each error code in [Ethers.js's official document](https://docs.ethers.io/v5/api/utils/logger/#errors-ethereum).
+</Callout>
 
 <Callout emoji="ℹ️">
   If you get `Nonce Expired` or other messages indicating that nonce has already been used. It means that the nonce given in the transaction has already been consumed for the address on a blockchain. This error mostly happens when the same address submits multiple calls in a short period. We suggest you try [manually executing](/dev/monitor-recover/recovery#manually-execute-a-transfer) it once again.

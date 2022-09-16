@@ -5,11 +5,11 @@ Axelar provides two options to check each GMP transaction status:
 2. The [AxelarJS SDK](/dev/axelarjs-sdk/tx-status-query-recovery).
 
 ## 1. Axelarscan UI
-Anyone can view a General Message Passing transaction on the GMP page of the Axelarscan block explorer: [Mainnet](https://axelarscan.io/gmp) | [Testnet](https://testnet.axelarscan.io/gmp).
+Anyone can view General Message Passing calls in realtime on Axelarscan: [Mainnet](https://axelarscan.io/gmp) | [Testnet](https://testnet.axelarscan.io/gmp).
 
 ![gmp-tracker.png](/images/gmp-tracker.png)
 
-To search for a particular transfer, enter a transaction hash or a sender address in the search bar. 
+You can also search for a particular transfer by a transaction hash or a sender address via the search bar. 
 ![gmp-searchbar.png](/images/gmp-searchbar.png)
 
 Each GMP call comprises five statuses, as described below.
