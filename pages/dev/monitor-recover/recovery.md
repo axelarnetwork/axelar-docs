@@ -28,10 +28,12 @@ Click the ‘Connect’ button under the label ‘Execute at destination chain�
 
 ![gmp-execute.png](/images/gmp-execute.png)
 
-If the manual execution fails, you will get an error message with the explained reason.
+Suppose the manual execution fails, you will get an error message with the explained reason.
 ![gmp-execute-error-reverted.png](/images/gmp-execute-error-reverted.png)
 
-Please debug the deployed contract logic and make a new call. 
+What to do next: We suggest debugging your contract and then making a new call. You can try to follow the Debugging your smart contract guide.
+
+
 
 ### Increase gas payment to the gas receiver on the source chain
 The prepaid gas to the Gas Service contract could be insufficient when the destination chain is too busy (with many transfers or other conditions). Therefore, Axelarscan provides an option to increase gas payment to relay the transaction. 
