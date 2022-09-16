@@ -92,6 +92,7 @@ axelard q nexus chain-maintainers {CHAIN_NAME}
 To test if your validator is a chain-maintainer, retrieve the `axelarvaloper` address and look for that in the output. For example, for ethereum, the command would look like:
 ```sh
 axelard q nexus chain-maintainers ethereum | grep {VALOPER_ADDR}
+```
 
 #### Logs
 
