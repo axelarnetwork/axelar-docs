@@ -12,7 +12,7 @@ Before understanding the flow of events processed by Axelar, it's important to u
 
 Axelar is a proof-of-stake blockchain network built using Cosmos SDK. It has its own permissionless set of validators, which constantly produce blocks containing transactions. This validator set is used by the network to securely process cross-chain messages through voting on the legitimacy of all messages. To understand more about the setup, take a look at the Axelar Tech Stack Diagram.
 
-
+![tech-stack.png](/images/learn-tech-stack.jpg)
 
 Axelar delivers secure cross-chain communication between separate blockchain networks. This could involve making cross-chain token transfers, calling a smart contract on another chain or passing general, arbitrary messages across chains. While each feature's exact processing flow varies, it can be simplified down to a cross-chain "message" that the network processes.
 
@@ -57,6 +57,7 @@ Once the cross-chain payload is marked as approved by the Axelar Gateway contrac
 
 Axelar creates and deploys a smart contract called the Gas Receiver to all connected EVM chains. (General Message Passing for Cosmos chains is currently under development and this may enable Gas-Receiver-like services to be deployed there, as well.) This Gas Receiver allows the user to pay for all transaction fees required throughout the entire journey of their cross-chain message in a one-time payment on the source chain, in the source chain's native token. The Gas Receiver estimates the total gas cost required across source chain, Axelar network and destination chain, and converts source-chain tokens (or any token Axelar supports) into AXL, destination-chain tokens and any other required currencies. For more details on this process, see the diagram below and read this [blog post](https://medium.com/@axelar-foundation/the-axl-token-the-cross-chain-future-3dee3dc45e95) providing a high-level description of the AXL token's uses and benefits. 
 
+![tx-flow-simple.png](/images/learn-tx-flow-simple.jpg)
 
 
 ## Monitoring and recovery
