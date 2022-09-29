@@ -80,7 +80,7 @@
       https://axelar-lcd.qubelabs.io/ <br/>
       https://services.staketab.com/axelar-api <br/>
       https://axelar-rest.chainode.tech/ <br/>
-      https://axelar-lcd.quantnode.tech/ </br>
+      https://axelar-lcd.quantnode.tech/ <br/>
       https://axelar-api.polkachu.com/
     </td>
     <td>
