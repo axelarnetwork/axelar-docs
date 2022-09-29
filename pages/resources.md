@@ -55,7 +55,7 @@
       https://axelar-rpc.qubelabs.io/ <br/>
       https://axelar-mainnet-rpc.allthatnode.com:1317 (REST API) <br/>
       https://axelar-mainnet-rpc.allthatnode.com:26657 (Tendermint RPC) <br/>
-      https://axelar-rpc.quantnode.tech/ </br>
+      https://axelar-rpc.quantnode.tech/ <br/>
       https://axelar-rpc.polkachu.com/
     </td>
     <td>
