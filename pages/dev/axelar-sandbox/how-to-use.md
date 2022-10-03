@@ -1,4 +1,4 @@
-## Getting Familiar with Sandbox UI
+# Getting Familiar with Sandbox UI
 
 The Axelar Sandbox UI is divided into four panels.
 
@@ -90,7 +90,7 @@ const ethereumSigner = await $getSigner(Chain.ETHEREUM);
 const avalancheSigner = await $getSigner(Chain.AVALANCHE);
 ```
 
-**Deploy a Contract**
+## Deploy a Contract
 
 The following code is the example of how to deploy a smart contract that we wrote in “**MessageSender.sol**” file.
 
