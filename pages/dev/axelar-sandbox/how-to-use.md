@@ -1,4 +1,4 @@
-# Getting Familiar with Sandbox UI
+# Getting Familiar with Sandbox UI (Alpha version)
 
 The Axelar Sandbox UI is divided into four panels.
 
@@ -12,27 +12,27 @@ The Axelar Sandbox UI is divided into four panels.
 
 ## How to use it?
 
-Let's begin by executing our examples. So, here's how the website looks:
+Let's begin by executing our examples. So, here's how the website looks like:
 
 ![Guide-1](/images/sandbox-guide-1.png)
 
-1. We have some built-in sample code at the bottom left that the developer can play with without modifying anything.
+1. We have some built-in examples at the bottom left that the developer can play with without modifying anything.
 
 ![Guide-2](/images/sandbox-guide-2.png)
 
-2. `hello-world` is the default example, and it shows how to update destination contract states from the source chain contract. We can test against a testnet or a simulated environment.
+2. `hello-world` is the default example. It shows how to update destination contract states from the source chain contract. The example can be run against testnet or simulated environment.
 
 ![Guide-3](/images/sandbox-guide-3.png)
 
-3. To execute the example, click the **Execute** button in the upper right corner.
+3. Clicks at the **Execute** button in the upper right corner to run an example.
 
 ![Guide-4](/images/sandbox-guide-4.png)
 
-4. The application will compile the solidity code; if it is successful, the javascript file will be executed; otherwise, the error message will be displayed. The "Output" panel displays all Javascript logs that have already been run.
+4. Next, the solidity contracts will be compiled; if successful, the javascript file will be executed; otherwise, the error message will be displayed. The "Output" panel displays all Javascript log messages that have already been executed.
 
 ![Guide-5](/images/sandbox-guide-5.png)
 
-5. The "**Transactions**" panel displays all transaction information transmitted from the "**sender**" wallet, and the "**relayer**" wallet. The relayer wallet is the wallet that interacts with your destination contract. The transaction information is including:
+5. The "**Transactions**" panel displays all transaction info that sent from the "**sender**" wallet, and the "**relayer**" wallet. The relayer wallet is the wallet that interacts with your destination contract. The transaction information is including:
 
 - `Transaction hash`
 - `Transaction status`
@@ -48,53 +48,82 @@ The image below shows how it looks like.
 
 ## Using Javascript to interact with smart contracts
 
-You can use [ethers.js](https://github.com/ethers-io/ethers.js/) to deploy and interact with your smart contracts using Javascript. The Sandbox by default includes the Ethers.js library, which can be instantiated as `ethers`.
+You can use [ethers.js](https://github.com/ethers-io/ethers.js/) to deploy and interact with your smart contracts using Javascript. `ethers` variable is automatically injected into the js code editor.
 
-**Available JavaScript global variables**
+### Available JavaScript global variables
 
 You can use the global variables listed below anywhere in your JavaScript code.
 
-- **Chain** - the name of supported chains in enum.
+#### **Chain**
 
-```jsx
-// all supported chains are below
-Chain.ETHEREUM, Chain.AVALANCHE, Chain.FANTOM, Chain.MOONBEAM, Chain.POLYGON;
+An enum representation of string value of chain name. The snippet below expands all available chains.
+
+```ts
+Chain.ETHEREUM; // ethereum
+Chain.AVALANCHE; // avalanche
+Chain.FANTOM; // fantom
+Chain.MOONBEAM; // moonbeam
+Chain.POLYGON; // polygon
 ```
 
-- **$chains** - a global variable of chains info including `rpcUrl`, `gateway`, `gasReceiver`, `tokens.aUSDC`
+#### **$contracts**
 
-```jsx
-// access to ethereum rpc url endpoint.
-$chains[Chain.ETHEREUM].rpcUrl;
-// access to avalanche gateway contract address.
-$chains[Chain.AVALANCHE].gateway;
-// access to fantom gas receiver contract address.
-$chains[Chain.FANTOM].gasReceiver;
-// access to moonbeam aUSDC token address
-$chains[Chain.MOONBEAM].tokens.aUSDC;
-```
+A map of contracts representing compiled contracts including `abi` and `bytecode`. The map is indexed by the smart contract name defined in the Solidity file.
 
-- **$contracts** - A global variable that provides access to a map of JSON objects representing compiled contracts including `abi` and `bytecode`. The map is indexed by the names of the smart contracts defined in the Solidity file.
-
-```jsx
+```ts
 // access to MessageSender contract's abi
 $contracts["MessagerSender"].abi;
 // access to MessageReceiver contract's bytecode
 $contracts["MessageReceiver"].bytecode;
 ```
 
-- $**getSigner** - A global function that provides a signer account for given chain.
+### **$abis**
 
-```jsx
+A map of abis for commonly used contracts.
+
+```ts
+const { erc20, gateway, gasReceiver } = $abis;
+```
+
+#### **$getSigner**
+
+A signer account for given chain.
+
+```ts
 const ethereumSigner = await $getSigner(Chain.ETHEREUM);
 const avalancheSigner = await $getSigner(Chain.AVALANCHE);
+```
+
+#### **$chains**
+
+a map of chains info which uses `Chain` as a key. The snippet below expands all available chain values.
+
+```ts
+const { rpcUrl, gateway, gasReceiver, tokens } = $chains[Chain.ETHEREUM];
+const { aUSDC } = tokens;
+
+// instantiate a provider
+const provider = new ethers.providers.JsonRpcProvider(rpcUrl);
+
+// instantiate a gateway contract
+const gatewayContract = new ethers.Contract(gateway, $abis.gateway, provider);
+
+// instantiate a gas receiver contract
+const gasReceiverContract = new ethers.Contract(
+  gasReceiver,
+  $abis.gasReceiver,
+  provider
+);
+
+// instantiate a wrapped usdc contract.
+const aUsdcContract = new ethers.Contract(aUSDC, $abis.erc20, provider);
 ```
 
 ## Deploy a Contract
 
 The following code is the example of how to deploy a smart contract that we wrote in “**MessageSender.sol**” file.
 
-```jsx
+```ts
 const signer = await $getSigner(Chain.MOONBEAM);
 const contractFactory = new ethers.ContractFactory(
   $contracts["MessageSender"].abi,
@@ -106,3 +135,5 @@ const contract = await srcContractFactory.deploy(
   $chains.moonbeam.gasReceiver
 );
 ```
+
+That's all we have for now. The Axelar Sandbox is still in its early stages of development. We intend to improve it further in the future. Keep an eye out. 👀
