@@ -2,7 +2,7 @@
 
 The Axelar Sandbox UI is divided into four panels.
 
-**Solidity editor (top left) —** Write your Solidity smart contract code here. Several contracts can be written in a single file. They will all be compiled and accessible via JavaScript.
+**Solidity editor (top left) —** Write your Solidity smart contract code here. Currently, only two smart contracts can be compiled. We'll allow developer to add more smart contracts soon.
 
 **JavaScript editor (top right)** — Write the JavaScript code that deploys and interacts with the smart contracts.
 
