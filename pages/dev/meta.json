@@ -7,11 +7,5 @@
   "gas-services": "Gas & executor services",
   "debug": "Debug",
   "monitor-recover": "Monitor & recover",
-  "get-started": "Get started",
-  "tokens": "Send tokens",
-  "gmp": "General Message Passing",
-  "axelarjs-sdk": "AxelarJS SDK",
-  "chain-names": "Chain names",
-  "axelar-sandbox": "Axelar Sandbox",
-  "solidity-utilities": "Solidity Utilities"
+  "axelar-sandbox": "Axelar Sandbox"
 }
