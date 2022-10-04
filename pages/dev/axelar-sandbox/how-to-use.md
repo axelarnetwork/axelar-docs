@@ -96,7 +96,7 @@ const avalancheSigner = await $getSigner(Chain.AVALANCHE);
 
 #### **$chains**
 
-a map of chains info which uses `Chain` as a key. The snippet below expands all available chain values.
+A map of chains info which uses `Chain` as a key. The snippet below expands all available chain values.
 
 ```ts
 const { rpcUrl, gateway, gasReceiver, tokens } = $chains[Chain.ETHEREUM];
