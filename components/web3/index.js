@@ -143,7 +143,7 @@ export default ({
     at_chain ?
       <Tooltip
         placement="top"
-        content="No action needed. your metamask wallet is on this chain"
+        content="No action needed. Your MetaMask wallet is currently on this chain."
         className="z-50"
       >
         {metamaskButton}
