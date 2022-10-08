@@ -152,19 +152,19 @@ vald's `config.toml`
 {
 title: "Mainnet",
 content: <CodeBlock language="yaml">
-[[axelar_bridge_evm]]
+{`[[axelar_bridge_evm]]
 name = "Ethereum"
 rpc_addr = "http://IP:PORT"
-start-with-bridge = true
+start-with-bridge = true`}
 </CodeBlock>
 },
 {
 title: "Goerli Testnet",
 content: <CodeBlock language="yaml">
-[[axelar_bridge_evm]]
+{`[[axelar_bridge_evm]]
 name = "ethereum-2"
 rpc_addr = "http://IP:PORT"
-start-with-bridge = true
+start-with-bridge = true`}
 </CodeBlock>
 }
 ]} />
