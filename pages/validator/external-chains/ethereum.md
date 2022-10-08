@@ -116,8 +116,8 @@ Alternatively, you can now also use the Geth JavaScript console and check status
 {
 title: "Mainnet",
 content: <CodeBlock language="bash">
-{geth attach ipc:/root/.ethereum/geth.ipc
-eth.syncing}
+{`geth attach ipc:/root/.ethereum/geth.ipc
+eth.syncing`}
 </CodeBlock>
 },
 {
