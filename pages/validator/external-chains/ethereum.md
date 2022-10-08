@@ -116,17 +116,15 @@ Alternatively, you can now also use the Geth JavaScript console and check status
 {
 title: "Mainnet",
 content: <CodeBlock language="bash">
-geth attach ipc:/root/.ethereum/geth.ipc
-
-eth.syncing
+{geth attach ipc:/root/.ethereum/geth.ipc
+eth.syncing}
 </CodeBlock>
 },
 {
 title: "Goerli Testnet",
 content: <CodeBlock language="bash">
-geth attach ipc:/root/.ethereum/goerli/geth.ipc
-
-eth.syncing
+{`geth attach ipc:/root/.ethereum/goerli/geth.ipc
+eth.syncing`}
 </CodeBlock>
 }
 ]} />
@@ -155,11 +153,8 @@ vald's `config.toml`
 title: "Mainnet",
 content: <CodeBlock language="yaml">
 [[axelar_bridge_evm]]
-
 name = "Ethereum"
-
 rpc_addr = "http://IP:PORT"
-
 start-with-bridge = true
 </CodeBlock>
 },
@@ -167,11 +162,8 @@ start-with-bridge = true
 title: "Goerli Testnet",
 content: <CodeBlock language="yaml">
 [[axelar_bridge_evm]]
-
 name = "ethereum-2"
-
 rpc_addr = "http://IP:PORT"
-
 start-with-bridge = true
 </CodeBlock>
 }
