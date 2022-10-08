@@ -1,7 +1,7 @@
 # Ethereum
 
 import Callout from 'nextra-theme-docs/callout'
-import CodeBlock from '../../components/code-block'
+import CodeBlock from '../../../components/code-block'
 import Tabs from '../../../components/tabs'
 
 Set up your Ethereum Mainnet or Goerli Testnet RPC node
