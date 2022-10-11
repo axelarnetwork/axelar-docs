@@ -32,7 +32,7 @@ Let's begin by executing our examples. So, here's how the website looks like:
 
 ![Guide-5](/images/sandbox-guide-5.png)
 
-5. The "**Transactions**" panel displays all transaction info that sent from the "**sender**" wallet, and the "**relayer**" wallet. The relayer wallet is the wallet that interacts with your destination contract. The transaction information is including:
+5. The "**Transactions**" panel displays all transaction info sent from the "**sender**" and the "**relayer**" wallet. The relayer wallet is the wallet that interacts with your destination contract while the sender does that with the source contract. The transaction information includes:
 
 - `Transaction hash`
 - `Transaction status`

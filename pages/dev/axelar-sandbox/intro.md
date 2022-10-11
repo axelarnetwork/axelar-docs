@@ -8,6 +8,6 @@ The complete process normally takes about 2-3 minutes on the Testnet. It is too 
 
 Axelar Sandbox is a rapid prototyping sandbox for cross-chain dapps. It includes a Solidity and Javascript editor that runs in your browser, as well as evm-blockchain nodes, Axelar Gateway Contract, and Axelar Relayer running on our server. The cross-chain transactions will be picked up by our simulated relayer periodically, and if everything is correct, they will be relayed to the destination chain immediately. The outcome of the cross-chain transaction can then be confirmed by developers using javascript's console, transaction logs, and transaction events.
 
-The sandbox app can be found at https://alpha-axelar-sandbox.vercel.app.
+The sandbox app can be found at https://xchainbox.axelar.dev
 
 To learn more, please continue reading [how-to-use](/dev/axelar-sandbox/how-to-use) doc.
