@@ -37,16 +37,16 @@ make geth
 
 You can download the pre-build binaries from [release page](https://github.com/bnb-chain/bsc/releases/latest) or follow the instructions bellow
 ```
-wget https://github.com/bnb-chain/bsc/releases/download/v1.1.13/geth_linux
+wget https://github.com/bnb-chain/bsc/releases/download/v1.1.16/geth_linux
 ```
  # Testnet
 ```
-wget https://github.com/bnb-chain/bsc/releases/download/v1.1.13/testnet.zip
+wget https://github.com/bnb-chain/bsc/releases/download/v1.1.16/testnet.zip
 unzip testnet.zip
 ```
  # Mainnet
 ```
-wget https://github.com/bnb-chain/bsc/releases/download/v1.1.13/mainnet.zip
+wget https://github.com/bnb-chain/bsc/releases/download/v1.1.16/mainnet.zip
 unzip mainnet.zip
 ```
 ```
@@ -128,9 +128,9 @@ systemctl stop bscd
 mkdir temp
 cd temp
 ```
-Check the latest [release page](https://github.com/bnb-chain/bsc/releases/latest). In this example the latest release is `v1.1.13`
+Check the latest [release page](https://github.com/bnb-chain/bsc/releases/latest). In this example the latest release is `v1.1.16`
 ```
-wget https://github.com/bnb-chain/bsc/releases/download/v1.1.13/geth_linux
+wget https://github.com/bnb-chain/bsc/releases/download/v1.1.16/geth_linux
 ```
 ```
 mv geth_linux /usr/bin/geth
