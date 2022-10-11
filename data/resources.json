@@ -126,9 +126,6 @@
           "value": "axelar-grpcweb.quantnode.tech:9091"
         },
         {
-          "value": "https://axelar-grpcweb.quantnode.tech"
-        },
-        {
           "value": "axelar-grpc.polkachu.com:15190"
         },
         {
@@ -231,9 +228,6 @@
         },
         {
           "value": "axelartest-grpcweb.quantnode.tech:9091"
-        },
-        {
-          "value": "https://axelartest-grpcweb.quantnode.tech"
         }
       ]
     },
