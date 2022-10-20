@@ -406,8 +406,10 @@ contract CrosschainNativeSwap is Ownable {
 There’s a lot of new code added here. Let’s try to understand it, step by step:
 
 **Step 1** — Add the `gasReceiver` variable and initialize it in the constructor. This handles destination-chain gas token conversion and fee payment, so the user need not transact more than once.
+
 **Step 2** — Add the `addSibling` function so the admin can define identical contract addresses at the other chains.
-**Step 3 —** Add the `nativeTradeSendTrade` function. The client will send a transaction to call this function. This is the most important function in our contract. Here are the implementation details:
+
+**Step 3** — Add the `nativeTradeSendTrade` function. The client will send a transaction to call this function. This is the most important function in our contract. Here are the implementation details:
 
 - Swap native token to USDC with low-level contract call.
 - Burn the USDC with the function that we implemented in Part 1
@@ -504,9 +506,13 @@ contract CrosschainNativeSwap is IAxelarForecallable, Ownable {
 This upgrade mainly implements the `_execute` function to perform a final swap at the destination chain before sending it to the recipient wallet. Here are the implementation details:
 
 **Step 1:** The function decodes `payload` to retrieve all information it needs for swap.
+
 **Step 2**: This is a bit hacky way to correct the amount in `tradeData` bytes before the swap.
+
 **Step 3**: Approve USDC to the router contract and call the swap function, and refund if it fails.
+
 **Step 4**: Finally, emit `SwapSuccess` event if the swap is successful. 
+
 
 And we’re done! Here is the [demo](https://www.youtube.com/watch?v=RyQkEcM1nKE) that communicates with the completed contract.
 
@@ -523,4 +529,4 @@ Axelar delivers secure cross-chain communication. That means dApp users can inte
 
 Axelar has raised capital from top-tier investors, including Binance, Coinbase, Dragonfly Capital and Polychain Capital. Partners include major proof-of-stake blockchains, such as Avalanche, Cosmos, Ethereum, Polkadot and others. Axelar’s team includes experts in distributed systems/cryptography and MIT/Google/Consensys alumni; the co-founders, Sergey Gorbunov and Georgios Vlachos, were founding team members at Algorand.
 
-More about Axelar: [Docs](http://docs.axelar.dev/) | [GitHub](https://github.com/axelarnetwork/axelar-local-gmp-examples) | [Discord](https://discord.com/invite/aRZ3Ra6f7D) | [Twitter](https://twitter.com/axelarcore).
+More about Axelar: [Website](https://axelar.network) | [GitHub](https://github.com/axelarnetwork/axelar-local-gmp-examples) | [Discord](https://discord.com/invite/aRZ3Ra6f7D) | [Twitter](https://twitter.com/axelarcore).
