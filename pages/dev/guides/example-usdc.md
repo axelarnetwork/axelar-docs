@@ -192,7 +192,7 @@ async function fetchAttestation(messageHash: string, maxAttempt = 10) {
       return _response?.attestation;
     }
 
-    sleep(5000);
+    await sleep(5000);
     attempt++;
   }
 }
