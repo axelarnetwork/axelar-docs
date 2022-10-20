@@ -513,6 +513,12 @@ And we’re done! Here is the [demo](https://www.youtube.com/watch?v=RyQkEcM1nKE
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/RyQkEcM1nKE" title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
 
+### Resources
+
+- CrosschainNativeSwap contract: [link](https://github.com/axelarnetwork/crosschain-usdc-demo/blob/live/hardhat/contracts/CrosschainNativeSwap.sol)
+- Running Crosschain USDC Example with Hardhat: [link](https://github.com/axelarnetwork/crosschain-usdc-demo/tree/live/hardhat)
+- Axelar Cross-chain USDC Demo: [link](https://circle-crosschain-usdc.vercel.app/)
+
 ### About Circle
 
 Circle is a global financial technology firm that enables businesses of all sizes to harness the power of digital currencies and public blockchains for payments, commerce and financial applications worldwide. Circle is the issuer of USD Coin (USDC), one of the fastest growing dollar digital currencies powering always-on internet-native commerce and payments. Today, Circle's transactional services, business accounts, and platform APIs are giving rise to a new generation of financial services and commerce applications that hold the promise of raising global economic prosperity for all through the frictionless exchange of financial value. Additionally, Circle operates SeedInvest, a leading startup fundraising platform in the U.S. Learn more at [https://circle.com](https://c212.net/c/link/?t=0&l=en&o=3502185-1&h=961378907&u=https%3A%2F%2Fcircle.com%2F&a=https%3A%2F%2Fcircle.com).
