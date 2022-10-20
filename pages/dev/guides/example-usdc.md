@@ -412,7 +412,7 @@ There’s a lot of new code added here. Let’s try to understand it, step by st
 **Step 3** — Add the `nativeTradeSendTrade` function. The client will send a transaction to call this function. This is the most important function in our contract. Here are the implementation details:
 
 - Swap native token to USDC with low-level contract call.
-- Burn the USDC with the function that we implemented in Part 1
+- Burn the USDC with the function that we implemented in Part 1.
 - Construct the swap payload to send to the **AxelarGateway** contract. The payload will be relayed by Axelar Relayer service to the destination contract.  The destination contract address is defined by `addSibling` function as mentioned in **Step 2**.
 - Pay gas to the **AxelarGasService** contract with the native token. The required amount will be calculated off-chain by using [AxelarJS-SDK](https://docs.axelar.dev/dev/axelarjs-sdk/intro) on the client side. See more information about it [here](https://docs.axelar.dev/dev/axelarjs-sdk/axelar-query-api#estimategasfee).
 - Send `destinationChain`, `destinationContractAddress`and `payload` to the **AxelarGateway** contract.
