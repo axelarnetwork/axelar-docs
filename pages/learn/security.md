@@ -15,7 +15,7 @@ In Byzantine systems, if you break liveness, the system halts its operation, but
 
 This kind of decentralization is critical to satisfy strong safety and liveness properties needed to handle cross-chain functions. This is why Axelar is built using battle-tested proof-of-stake consensus, supporting a diverse and dynamic validator set. Anyone can join, anyone can participate, anyone can contribute to the security of the network.
 
-
+![learn-security-decentralization.png](/images/learn-security-decentralization.jpg)
 
 
 ## Quadratic voting
@@ -28,7 +28,7 @@ Quadratic voting is a way to continue decentralizing the system while making it 
 
 Note that while quadratic voting is implemented for validation and processing of cross-chain transactions, the underlying consensus follows the standard PoS staking model (1 token, 1 vote) for block production and rewards.
 
-
+![learn-security-quadratic-voting.png](/images/learn-security-quadratic-voting.jpg)
 
 
 ## Preemptive measures
