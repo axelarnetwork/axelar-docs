@@ -24,6 +24,12 @@ Build contracts and tests:
 npm update && npm install
 npm run build
 ```
+Set up deployer key
+```bash
+cp .env.example .env
+```
+Then update to your own private key.
+
 In order to run the examples against the local emulator, cd to the root directory (`axelar-local-gmp-examples`) in a separate terminal window and run:
 ```bash
 node scripts/createLocal
