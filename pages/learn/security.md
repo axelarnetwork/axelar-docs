@@ -1,5 +1,7 @@
 # Axelar Security Overview
 
+This page is adapted from [a post originally published to axelar.network/blog](https://axelar.network/blog/security-at-axelar-core).
+
 Security is a multidimensional problem with binary outcomes. Defining the security of a system is an incredibly complex task, but with rigorous models, designs and engineering practices, it's possible to build systems that can stand against attacks. When it comes to securing cross-chain communication, there are two core properties.
 
 - Safety: how many nodes in the system does an adversary need to compromise to double-spend or maliciously execute a transaction (that may lead to an invalid asset transfer, for instance)?
