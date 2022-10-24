@@ -31,7 +31,7 @@ Let `SNAPSHOT_FILE` denote the file name of the snapshot you downloaded. Example
 - **Mainnet:** `axelar-dojo-1-pruned.xyz.tar.lz4`
 - **Testnet:** `axelartestnet-lisbon-3-pruned.xyz.tar.lz4`
 
-Install `lz4`: [MacOS](https://formulae.brew.sh/formula/lz4) | [Ubuntu](https://snapcraft.io/install/lz4/ubuntu))
+Install `lz4`: [MacOS](https://formulae.brew.sh/formula/lz4) | [Ubuntu](https://snapcraft.io/install/lz4/ubuntu)
 
 Decompress the downloaded snapshot into your `${AXELARD_HOME}/data` directory.
 
