@@ -9,8 +9,8 @@ Set up your Arbitrum Mainnet & Goerli Testnet RPC node
 ## Prerequisites
 
 - [Setup your Axelar validator](/validator/setup)
+- [Setup your Ethereum node](ethereum/)
 - Minimum hardware requirements: CPU with 2+ cores, 4GB RAM, 600GB+ free storage space.
-- Docker
 - MacOS or Ubuntu 20.04+
 - [Official Documentation](https://developer.offchainlabs.com/node-running/running-a-node)
 
@@ -34,6 +34,12 @@ curl -fsSL https://get.docker.com -o get-docker.sh && sh get-docker.sh
 mkdir -p $HOME/data/arbitrum
 chmod -fR 777 $HOME/data/arbitrum
 ```
+Now, you will see this flag in the command below `--l1.url <YOUR_ETH_RPC_URL>` this means that your arbitrum node needs a synced Ethereum node.
+Please provide the RPC URL of a synced Ethereum node with this flag.
+
+<Callout type="error" emoji="⚠️">
+  Please avoid using 3rd party providers like alchemy, infura etc. These providers have a specific request limit, and your node can throw 100s of thousands of requests while trying to sync.
+</Callout>
 
 <Tabs tabs={[
 {
