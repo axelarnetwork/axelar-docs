@@ -88,7 +88,7 @@ title: "Mainnet",
 content: <CodeBlock language="yaml">
 {`[[axelar_bridge_evm]]
 name = "arbitrum"
-l1_name_chain = "Ethereum"
+l1_chain_name = "Ethereum"
 rpc_addr = "http://IP:PORT"
 start-with-bridge = true`}
 </CodeBlock>
