@@ -62,7 +62,7 @@ To verify if your node is in sync you can check the latest block from the explor
 Compare it with what you have in `docker ps -q | xargs -L 1 docker logs --tail 10 -f`
 
 - [Mainnet Explorer](https://arbiscan.io)
-- [Goerli explorer](https://goerli.arbiscan.io)
+- [Testnet Explorer](https://goerli.arbiscan.io)
 
 #### Test RPC connection
 
@@ -87,7 +87,8 @@ vald's `config.toml`
 title: "Mainnet",
 content: <CodeBlock language="yaml">
 {`[[axelar_bridge_evm]]
-name = "Arbitrum"
+name = "arbitrum"
+l1_name_chain = "Ethereum"
 rpc_addr = "http://IP:PORT"
 start-with-bridge = true`}
 </CodeBlock>
@@ -96,7 +97,8 @@ start-with-bridge = true`}
 title: "Goerli Testnet",
 content: <CodeBlock language="yaml">
 {`[[axelar_bridge_evm]]
-name = "Arbitrum"
+name = "arbitrum"
+l1_chain_name = "ethereum-2"
 rpc_addr = "http://IP:PORT"
 start-with-bridge = true`}
 </CodeBlock>
