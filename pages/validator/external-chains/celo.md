@@ -5,7 +5,7 @@ Set up your CELO Mainnet or Alfajores Testnet RPC node
 ## Prerequisites
 
 - [Setup your Axelar validator](/validator/setup)
-- Minimum hardware requirements: 
+- [Minimum hardware requirements](https://docs.celo.org/validator/run/mainnet#hardware-requirements): 
    - Memory: 8 GB RAM
    - CPU: Quad core 3GHz (64-bit)
    - Disk: 256 GB of SSD storage, plus a secondary HDD desirable
@@ -68,8 +68,9 @@ docker pull $CELO_IMAGE
 
 First, create the directory that will store your node's configuration and its copy of the blockchain. This directory can be named anything you'd like, but here's a default you can use. The commands below create a directory and then navigate into it. The rest of the steps assume you are running the commands from inside this directory.
 ```
-mkdir celo-data-dir
-cd celo-data-dir
+mkdir -r ~/celo-data-dir
+cd ~/celo-data-dir
+export CELO_DIR=~/celo-data-dir
 ```
 
 ### Create an account and get its address
@@ -77,7 +78,7 @@ In this step, you'll create an account on the network. If you've already done th
 
 Run the command to create a new account:
 ```bash
-docker run -v $PWD:/root/.celo --rm -it $CELO_IMAGE account new
+docker run -v $CELO_DIR:/root/.celo --rm -it $CELO_IMAGE account new
 ```
 
 Example Result:
@@ -108,6 +109,7 @@ Add it to `~/.bash_profile` for future use.
 ```bash
 echo "export CELO_IMAGE=$CELO_IMAGE" >> ~/.bash_profile
 echo "export CELO_ACCOUNT_ADDRESS=$CELO_ACCOUNT_ADDRESS" >> ~/.bash_profile
+echo "export CELO_DIR=$CELO_DIR" >> ~/.bash_profile
 ```
 
 ### Start the node
@@ -118,13 +120,13 @@ This command specifies the settings needed to run the node, and gets it started.
 {
 title: "Mainnet",
 content: <CodeBlock language="bash">
-`docker run --name celo-fullnode -d --restart unless-stopped --stop-timeout 300 -p 8545:8545 -p 8546:8546 -p 30303:30303 -p 30303:30303/udp -v $PWD:/root/.celo $CELO_IMAGE --verbosity 3 --syncmode full --http --http.addr 0.0.0.0 --http.api eth,net,web3,debug,admin,personal --light.serve 90 --light.maxpeers 1000 --maxpeers 1100 --etherbase $CELO_ACCOUNT_ADDRESS --datadir /root/.celo`
+`docker run --name celo-fullnode -d --restart unless-stopped --stop-timeout 300 -p 8545:8545 -p 8546:8546 -p 30303:30303 -p 30303:30303/udp -v $CELO_DIR:/root/.celo $CELO_IMAGE --verbosity 3 --syncmode full --http --http.addr 0.0.0.0 --http.api eth,net,web3,debug,admin,personal --light.serve 90 --light.maxpeers 1000 --maxpeers 1100 --etherbase $CELO_ACCOUNT_ADDRESS --datadir /root/.celo`
 </CodeBlock>
 },
 {
 title: "Alfajores Testnet",
 content: <CodeBlock language="bash">
-`docker run --name celo-fullnode -d --restart unless-stopped --stop-timeout 300 -p 8545:8545 -p 8546:8546 -p 30303:30303 -p 30303:30303/udp -v $PWD:/root/.celo $CELO_IMAGE --verbosity 3 --syncmode full --http --http.addr 0.0.0.0 --http.api eth,net,web3,debug,admin,personal --light.serve 90 --light.maxpeers 1000 --maxpeers 1100 --etherbase $CELO_ACCOUNT_ADDRESS --alfajores --datadir /root/.celo`
+`docker run --name celo-fullnode -d --restart unless-stopped --stop-timeout 300 -p 8545:8545 -p 8546:8546 -p 30303:30303 -p 30303:30303/udp -v $CELO_DIR:/root/.celo $CELO_IMAGE --verbosity 3 --syncmode full --http --http.addr 0.0.0.0 --http.api eth,net,web3,debug,admin,personal --light.serve 90 --light.maxpeers 1000 --maxpeers 1100 --etherbase $CELO_ACCOUNT_ADDRESS --alfajores --datadir /root/.celo`
 </CodeBlock>
 }
 ]} />
@@ -190,13 +192,13 @@ docker rm celo-fullnode
 {
 title: "Mainnet",
 content: <CodeBlock language="bash">
-`docker run --name celo-fullnode -d --restart unless-stopped --stop-timeout 300 -p 8545:8545 -p 8546:8546 -p 30303:30303 -p 30303:30303/udp -v $PWD:/root/.celo $CELO_IMAGE --verbosity 3 --syncmode full --http --http.addr 0.0.0.0 --http.api eth,net,web3,debug,admin,personal --light.serve 90 --light.maxpeers 1000 --maxpeers 1100 --etherbase $CELO_ACCOUNT_ADDRESS --datadir /root/.celo`
+`docker run --name celo-fullnode -d --restart unless-stopped --stop-timeout 300 -p 8545:8545 -p 8546:8546 -p 30303:30303 -p 30303:30303/udp -v $CELO_DIR:/root/.celo $CELO_IMAGE --verbosity 3 --syncmode full --http --http.addr 0.0.0.0 --http.api eth,net,web3,debug,admin,personal --light.serve 90 --light.maxpeers 1000 --maxpeers 1100 --etherbase $CELO_ACCOUNT_ADDRESS --datadir /root/.celo`
 </CodeBlock>
 },
 {
 title: "Alfajores Testnet",
 content: <CodeBlock language="bash">
-`docker run --name celo-fullnode -d --restart unless-stopped --stop-timeout 300 -p 8545:8545 -p 8546:8546 -p 30303:30303 -p 30303:30303/udp -v $PWD:/root/.celo $CELO_IMAGE --verbosity 3 --syncmode full --http --http.addr 0.0.0.0 --http.api eth,net,web3,debug,admin,personal --light.serve 90 --light.maxpeers 1000 --maxpeers 1100 --etherbase $CELO_ACCOUNT_ADDRESS --alfajores --datadir /root/.celo`
+`docker run --name celo-fullnode -d --restart unless-stopped --stop-timeout 300 -p 8545:8545 -p 8546:8546 -p 30303:30303 -p 30303:30303/udp -v $CELO_DIR:/root/.celo $CELO_IMAGE --verbosity 3 --syncmode full --http --http.addr 0.0.0.0 --http.api eth,net,web3,debug,admin,personal --light.serve 90 --light.maxpeers 1000 --maxpeers 1100 --etherbase $CELO_ACCOUNT_ADDRESS --alfajores --datadir /root/.celo`
 </CodeBlock>
 }
 ]} />
