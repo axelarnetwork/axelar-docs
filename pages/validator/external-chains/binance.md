@@ -28,7 +28,7 @@ export PATH=$PATH:/usr/local/go/bin:$HOME/go/bin
 EOF
 source ~/.profile
 go version
-sudo rm pwd/go*
+sudo rm `pwd`/go*
 ```
 ## 2. Install BSC tesnet node
 ```
