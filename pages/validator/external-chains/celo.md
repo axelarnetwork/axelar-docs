@@ -141,6 +141,10 @@ INFO [11-03|07:10:19.736] Imported new chain segment               blocks=1  txs
 INFO [11-03|07:10:24.684] Imported new chain segment               blocks=1  txs=28  mgas=4.218  elapsed=51.408ms    mgasps=82.054  number=15,958,285 hash=c1a6be..c7825e dirty=156.42MiB
 ```
 
+<Callout type="error" emoji="⚠️">
+Security: The command line above includes the parameter --http.addr 0.0.0.0 which makes the Celo Blockchain software listen for incoming RPC requests on all network adaptors. Exercise extreme caution in doing this when running outside Docker, as it means that any unlocked accounts and their funds may be accessed from other machines on the Internet. In the context of running a Docker container on your local machine, this together with the docker -p flags allows you to make RPC calls from outside the container, i.e from your local host, but not from outside your machine. Read more about Docker Networking here.
+</Callout>
+
 ### Check Synced
 
 Once your node is fully synced, the output from above will say `false`. To test your Celo RPC node, you can send an RPC request using `cURL`
