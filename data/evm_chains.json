@@ -308,7 +308,7 @@
       "provider_params": [
         {
           "chainId": "0xAEF3",
-          "chainName": "Alfajores",
+          "chainName": "Celo Alfajores Testnet",
           "rpcUrls": ["https://alfajores-forno.celo-testnet.org"],
           "nativeCurrency": {
             "name": "Celo",
@@ -328,7 +328,7 @@
       "provider_params": [
         {
           "chainId": "0x66EED",
-          "chainName": "Goerli Rollup",
+          "chainName": "Arbitrum Goerli Testnet",
           "rpcUrls": ["https://goerli-rollup.arbitrum.io/rpc"],
           "nativeCurrency": {
             "name": "Ethereum",
