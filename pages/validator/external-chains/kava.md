@@ -1,6 +1,6 @@
 # KAVA EVM Node Setup
 
-This guide presents you the KAVA EMV Node setup for both Testnet and Mainnet, as well as the integration with Axelar Network. 
+This guide presents you the KAVA EVM Node setup for both Testnet and Mainnet, as well as the integration with Axelar Network. 
 
 ## Install Go
 ```
