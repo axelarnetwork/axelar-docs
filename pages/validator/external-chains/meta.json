@@ -1,8 +1,10 @@
 {
   "overview": "Overview",
+  "arbitrum": "Arbitrum",
   "aurora": "Aurora",
   "avalanche": "Avalanche",
   "binance": "Binance",
+  "celo": "Celo",
   "ethereum": "Ethereum",
   "fantom": "Fantom",
   "moonbeam": "Moonbeam",
