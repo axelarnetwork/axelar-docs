@@ -1,4 +1,4 @@
-## axelard set-genesis-mint
+# axelard set-genesis-mint
 
 Set the genesis parameters for the mint module
 
@@ -6,7 +6,7 @@ Set the genesis parameters for the mint module
 axelard set-genesis-mint [flags]
 ```
 
-### Options
+## Options
 
 ```
       --blocks-per-year uint               Expected number of blocks per year
@@ -18,7 +18,7 @@ axelard set-genesis-mint [flags]
       --mint-denom string                  Denomination of minted tokens
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --home string         directory for config and data (default "$HOME/.axelar")
@@ -28,6 +28,6 @@ axelard set-genesis-mint [flags]
       --trace               print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard](/cli-docs/v0_27_0/axelard) - Axelar App

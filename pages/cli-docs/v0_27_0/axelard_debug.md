@@ -1,4 +1,4 @@
-## axelard debug
+# axelard debug
 
 Tool for helping with debugging your application
 
@@ -6,13 +6,13 @@ Tool for helping with debugging your application
 axelard debug [flags]
 ```
 
-### Options
+## Options
 
 ```
   -h, --help   help for debug
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --home string         directory for config and data (default "$HOME/.axelar")
@@ -22,7 +22,7 @@ axelard debug [flags]
       --trace               print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard](/cli-docs/v0_27_0/axelard) - Axelar App
 - [axelard debug addr](/cli-docs/v0_27_0/axelard_debug_addr) - Convert an address between hex and bech32

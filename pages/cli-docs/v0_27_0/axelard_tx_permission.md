@@ -1,4 +1,4 @@
-## axelard tx permission
+# axelard tx permission
 
 permission transactions subcommands
 
@@ -6,13 +6,13 @@ permission transactions subcommands
 axelard tx permission [flags]
 ```
 
-### Options
+## Options
 
 ```
   -h, --help   help for permission
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --chain-id string     The network chain ID (default "axelar")
@@ -23,7 +23,7 @@ axelard tx permission [flags]
       --trace               print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard tx](/cli-docs/v0_27_0/axelard_tx) - Transactions subcommands
 - [axelard tx permission deregister-controller](/cli-docs/v0_27_0/axelard_tx_permission_deregister-controller) - Deregister controller account

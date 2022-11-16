@@ -1,4 +1,4 @@
-## axelard query snapshot operator
+# axelard query snapshot operator
 
 Fetch the operator address associated with \[proxy address\]
 
@@ -6,7 +6,7 @@ Fetch the operator address associated with \[proxy address\]
 axelard query snapshot operator [proxy address] [flags]
 ```
 
-### Options
+## Options
 
 ```
       --height int    Use a specific height to query state at (this can error if the node is pruning state)
@@ -14,7 +14,7 @@ axelard query snapshot operator [proxy address] [flags]
       --node string   <host>:<port> to Tendermint RPC interface for this chain (default "tcp://localhost:26657")
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --chain-id string     The network chain ID (default "axelar")
@@ -25,6 +25,6 @@ axelard query snapshot operator [proxy address] [flags]
       --trace               print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard query snapshot](/cli-docs/v0_27_0/axelard_query_snapshot) - Querying commands for the snapshot module

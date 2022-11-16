@@ -1,4 +1,4 @@
-## axelard query tendermint-validator-set
+# axelard query tendermint-validator-set
 
 Get the full tendermint validator set at given height
 
@@ -6,7 +6,7 @@ Get the full tendermint validator set at given height
 axelard query tendermint-validator-set [height] [flags]
 ```
 
-### Options
+## Options
 
 ```
   -h, --help                     help for tendermint-validator-set
@@ -16,7 +16,7 @@ axelard query tendermint-validator-set [height] [flags]
       --page int                 Query a specific page of paginated results (default 1)
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --chain-id string     The network chain ID (default "axelar")
@@ -27,6 +27,6 @@ axelard query tendermint-validator-set [height] [flags]
       --trace               print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard query](/cli-docs/v0_27_0/axelard_query) - Querying subcommands

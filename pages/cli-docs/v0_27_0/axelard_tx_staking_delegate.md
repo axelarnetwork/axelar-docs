@@ -1,8 +1,8 @@
-## axelard tx staking delegate
+# axelard tx staking delegate
 
 Delegate liquid tokens to a validator
 
-### Synopsis
+## Synopsis
 
 Delegate an amount of liquid coins to a validator from your wallet.
 
@@ -16,7 +16,7 @@ $ <appd> tx staking delegate axelarvaloper1l2rsakp388kuv9k8qzq6lrm9taddae7fpx59w
 axelard tx staking delegate [validator-addr] [amount] [flags]
 ```
 
-### Options
+## Options
 
 ```
   -a, --account-number uint      The account number of the signing account (offline mode only)
@@ -42,7 +42,7 @@ axelard tx staking delegate [validator-addr] [amount] [flags]
   -y, --yes                      Skip tx broadcasting prompt confirmation (default true)
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --chain-id string     The network chain ID (default "axelar")
@@ -53,6 +53,6 @@ axelard tx staking delegate [validator-addr] [amount] [flags]
       --trace               print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard tx staking](/cli-docs/v0_27_0/axelard_tx_staking) - Staking transaction subcommands

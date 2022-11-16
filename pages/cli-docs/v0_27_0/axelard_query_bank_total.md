@@ -1,8 +1,8 @@
-## axelard query bank total
+# axelard query bank total
 
 Query the total supply of coins of the chain
 
-### Synopsis
+## Synopsis
 
 Query total supply of coins that are held by accounts in the chain.
 
@@ -22,7 +22,7 @@ $ <appd> query bank total --denom=\[denom\]
 axelard query bank total [flags]
 ```
 
-### Options
+## Options
 
 ```
       --count-total       count total number of records in all supply totals to query for
@@ -37,7 +37,7 @@ axelard query bank total [flags]
       --reverse           results are sorted in descending order
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --chain-id string     The network chain ID (default "axelar")
@@ -48,6 +48,6 @@ axelard query bank total [flags]
       --trace               print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard query bank](/cli-docs/v0_27_0/axelard_query_bank) - Querying commands for the bank module

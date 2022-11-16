@@ -1,4 +1,4 @@
-## axelard query block
+# axelard query block
 
 Get verified data for a the block at given height
 
@@ -6,14 +6,14 @@ Get verified data for a the block at given height
 axelard query block [height] [flags]
 ```
 
-### Options
+## Options
 
 ```
   -h, --help          help for block
   -n, --node string   Node to connect to (default "tcp://localhost:26657")
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --chain-id string     The network chain ID (default "axelar")
@@ -24,6 +24,6 @@ axelard query block [height] [flags]
       --trace               print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard query](/cli-docs/v0_27_0/axelard_query) - Querying subcommands

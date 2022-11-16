@@ -1,4 +1,4 @@
-## axelard status
+# axelard status
 
 Query remote node for status
 
@@ -6,14 +6,14 @@ Query remote node for status
 axelard status [flags]
 ```
 
-### Options
+## Options
 
 ```
   -h, --help          help for status
   -n, --node string   Node to connect to (default "tcp://localhost:26657")
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --home string         directory for config and data (default "$HOME/.axelar")
@@ -23,6 +23,6 @@ axelard status [flags]
       --trace               print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard](/cli-docs/v0_27_0/axelard) - Axelar App

@@ -1,8 +1,8 @@
-## axelard tx ibc-transfer transfer
+# axelard tx ibc-transfer transfer
 
 Transfer a fungible token through IBC
 
-### Synopsis
+## Synopsis
 
 Transfer a fungible token through IBC. Timeouts can be specified
 as absolute or relative using the "absolute-timeouts" flag. Timeout height can be set by passing in the height string
@@ -15,13 +15,13 @@ corresponding to the counterparty channel. Any timeout set to 0 is disabled.
 axelard tx ibc-transfer transfer [src-port] [src-channel] [receiver] [amount] [flags]
 ```
 
-### Examples
+## Examples
 
 ```
 <appd> tx ibc-transfer transfer [src-port] [src-channel] [receiver] [amount]
 ```
 
-### Options
+## Options
 
 ```
       --absolute-timeouts               Timeout flags are used as absolute timeouts.
@@ -50,7 +50,7 @@ axelard tx ibc-transfer transfer [src-port] [src-channel] [receiver] [amount] [f
   -y, --yes                             Skip tx broadcasting prompt confirmation (default true)
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --chain-id string     The network chain ID (default "axelar")
@@ -61,6 +61,6 @@ axelard tx ibc-transfer transfer [src-port] [src-channel] [receiver] [amount] [f
       --trace               print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard tx ibc-transfer](/cli-docs/v0_27_0/axelard_tx_ibc-transfer) - IBC fungible token transfer transaction subcommands

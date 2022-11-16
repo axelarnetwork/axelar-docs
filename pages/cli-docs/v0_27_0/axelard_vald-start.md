@@ -1,10 +1,10 @@
-## axelard vald-start
+# axelard vald-start
 
 ```
 axelard vald-start [flags]
 ```
 
-### Options
+## Options
 
 ```
   -a, --account-number uint         The account number of the signing account (offline mode only)
@@ -35,7 +35,7 @@ axelard vald-start [flags]
   -y, --yes                         Skip tx broadcasting prompt confirmation
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --home string         directory for config and data (default "$HOME/.axelar")
@@ -45,6 +45,6 @@ axelard vald-start [flags]
       --trace               print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard](/cli-docs/v0_27_0/axelard) - Axelar App

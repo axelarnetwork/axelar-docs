@@ -1,4 +1,4 @@
-## axelard query permission
+# axelard query permission
 
 Querying commands for the permission module
 
@@ -6,13 +6,13 @@ Querying commands for the permission module
 axelard query permission [flags]
 ```
 
-### Options
+## Options
 
 ```
   -h, --help   help for permission
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --chain-id string     The network chain ID (default "axelar")
@@ -23,7 +23,7 @@ axelard query permission [flags]
       --trace               print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard query](/cli-docs/v0_27_0/axelard_query) - Querying subcommands
 - [axelard query permission governance-key](/cli-docs/v0_27_0/axelard_query_permission_governance-key) - Returns the governance key

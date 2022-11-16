@@ -1,8 +1,8 @@
-## axelard tx distribution withdraw-all-rewards
+# axelard tx distribution withdraw-all-rewards
 
 withdraw all delegations rewards for a delegator
 
-### Synopsis
+## Synopsis
 
 Withdraw all rewards for a single delegator.
 Note that if you use this command with --broadcast-mode=sync or --broadcast-mode=async, the max-msgs flag will automatically be set to 0.
@@ -17,7 +17,7 @@ $ <appd> tx distribution withdraw-all-rewards --from mykey
 axelard tx distribution withdraw-all-rewards [flags]
 ```
 
-### Options
+## Options
 
 ```
   -a, --account-number uint      The account number of the signing account (offline mode only)
@@ -44,7 +44,7 @@ axelard tx distribution withdraw-all-rewards [flags]
   -y, --yes                      Skip tx broadcasting prompt confirmation (default true)
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --chain-id string     The network chain ID (default "axelar")
@@ -55,6 +55,6 @@ axelard tx distribution withdraw-all-rewards [flags]
       --trace               print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard tx distribution](/cli-docs/v0_27_0/axelard_tx_distribution) - Distribution transactions subcommands

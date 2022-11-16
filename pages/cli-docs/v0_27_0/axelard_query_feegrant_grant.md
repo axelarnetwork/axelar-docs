@@ -1,8 +1,8 @@
-## axelard query feegrant grant
+# axelard query feegrant grant
 
 Query details of a single grant
 
-### Synopsis
+## Synopsis
 
 Query details for a grant.
 You can find the fee-grant of a granter and grantee.
@@ -17,7 +17,7 @@ $ <appd> query feegrant grant \[granter\] \[grantee\]
 axelard query feegrant grant [granter] [grantee] [flags]
 ```
 
-### Options
+## Options
 
 ```
       --height int    Use a specific height to query state at (this can error if the node is pruning state)
@@ -25,7 +25,7 @@ axelard query feegrant grant [granter] [grantee] [flags]
       --node string   <host>:<port> to Tendermint RPC interface for this chain (default "tcp://localhost:26657")
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --chain-id string     The network chain ID (default "axelar")
@@ -36,6 +36,6 @@ axelard query feegrant grant [granter] [grantee] [flags]
       --trace               print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard query feegrant](/cli-docs/v0_27_0/axelard_query_feegrant) - Querying commands for the feegrant module

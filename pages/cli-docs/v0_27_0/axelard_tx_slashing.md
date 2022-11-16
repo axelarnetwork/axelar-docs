@@ -1,4 +1,4 @@
-## axelard tx slashing
+# axelard tx slashing
 
 Slashing transaction subcommands
 
@@ -6,13 +6,13 @@ Slashing transaction subcommands
 axelard tx slashing [flags]
 ```
 
-### Options
+## Options
 
 ```
   -h, --help   help for slashing
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --chain-id string     The network chain ID (default "axelar")
@@ -23,7 +23,7 @@ axelard tx slashing [flags]
       --trace               print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard tx](/cli-docs/v0_27_0/axelard_tx) - Transactions subcommands
 - [axelard tx slashing unjail](/cli-docs/v0_27_0/axelard_tx_slashing_unjail) - unjail validator previously jailed for downtime

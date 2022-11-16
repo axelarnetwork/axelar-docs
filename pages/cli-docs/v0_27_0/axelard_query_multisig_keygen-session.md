@@ -1,4 +1,4 @@
-## axelard query multisig keygen-session
+# axelard query multisig keygen-session
 
 Returns the keygen session info for the given key ID
 
@@ -6,7 +6,7 @@ Returns the keygen session info for the given key ID
 axelard query multisig keygen-session [key-id] [flags]
 ```
 
-### Options
+## Options
 
 ```
       --height int    Use a specific height to query state at (this can error if the node is pruning state)
@@ -14,7 +14,7 @@ axelard query multisig keygen-session [key-id] [flags]
       --node string   <host>:<port> to Tendermint RPC interface for this chain (default "tcp://localhost:26657")
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --chain-id string     The network chain ID (default "axelar")
@@ -25,6 +25,6 @@ axelard query multisig keygen-session [key-id] [flags]
       --trace               print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard query multisig](/cli-docs/v0_27_0/axelard_query_multisig) - Querying commands for the multisig module

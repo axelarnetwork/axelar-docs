@@ -1,4 +1,4 @@
-## axelard tx ibc-transfer
+# axelard tx ibc-transfer
 
 IBC fungible token transfer transaction subcommands
 
@@ -6,13 +6,13 @@ IBC fungible token transfer transaction subcommands
 axelard tx ibc-transfer [flags]
 ```
 
-### Options
+## Options
 
 ```
   -h, --help   help for ibc-transfer
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --chain-id string     The network chain ID (default "axelar")
@@ -23,7 +23,7 @@ axelard tx ibc-transfer [flags]
       --trace               print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard tx](/cli-docs/v0_27_0/axelard_tx) - Transactions subcommands
 - [axelard tx ibc-transfer transfer](/cli-docs/v0_27_0/axelard_tx_ibc-transfer_transfer) - Transfer a fungible token through IBC

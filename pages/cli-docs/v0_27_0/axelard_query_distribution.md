@@ -1,4 +1,4 @@
-## axelard query distribution
+# axelard query distribution
 
 Querying commands for the distribution module
 
@@ -6,13 +6,13 @@ Querying commands for the distribution module
 axelard query distribution [flags]
 ```
 
-### Options
+## Options
 
 ```
   -h, --help   help for distribution
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --chain-id string     The network chain ID (default "axelar")
@@ -23,7 +23,7 @@ axelard query distribution [flags]
       --trace               print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard query](/cli-docs/v0_27_0/axelard_query) - Querying subcommands
 - [axelard query distribution commission](/cli-docs/v0_27_0/axelard_query_distribution_commission) - Query distribution validator commission

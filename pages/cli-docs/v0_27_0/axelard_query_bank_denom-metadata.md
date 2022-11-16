@@ -1,8 +1,8 @@
-## axelard query bank denom-metadata
+# axelard query bank denom-metadata
 
 Query the client metadata for coin denominations
 
-### Synopsis
+## Synopsis
 
 Query the client metadata for all the registered coin denominations
 
@@ -23,7 +23,7 @@ $ <appd> query bank denom-metadata --denom=\[denom\]
 axelard query bank denom-metadata [flags]
 ```
 
-### Options
+## Options
 
 ```
       --denom string   The specific denomination to query client metadata for
@@ -32,7 +32,7 @@ axelard query bank denom-metadata [flags]
       --node string    <host>:<port> to Tendermint RPC interface for this chain (default "tcp://localhost:26657")
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --chain-id string     The network chain ID (default "axelar")
@@ -43,6 +43,6 @@ axelard query bank denom-metadata [flags]
       --trace               print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard query bank](/cli-docs/v0_27_0/axelard_query_bank) - Querying commands for the bank module

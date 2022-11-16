@@ -1,4 +1,4 @@
-## axelard query slashing
+# axelard query slashing
 
 Querying commands for the slashing module
 
@@ -6,13 +6,13 @@ Querying commands for the slashing module
 axelard query slashing [flags]
 ```
 
-### Options
+## Options
 
 ```
   -h, --help   help for slashing
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --chain-id string     The network chain ID (default "axelar")
@@ -23,7 +23,7 @@ axelard query slashing [flags]
       --trace               print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard query](/cli-docs/v0_27_0/axelard_query) - Querying subcommands
 - [axelard query slashing params](/cli-docs/v0_27_0/axelard_query_slashing_params) - Query the current slashing parameters

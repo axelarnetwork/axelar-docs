@@ -1,4 +1,4 @@
-## axelard query ibc channel
+# axelard query ibc channel
 
 IBC channel query subcommands
 
@@ -6,13 +6,13 @@ IBC channel query subcommands
 axelard query ibc channel [flags]
 ```
 
-### Options
+## Options
 
 ```
   -h, --help   help for channel
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --chain-id string     The network chain ID (default "axelar")
@@ -23,7 +23,7 @@ axelard query ibc channel [flags]
       --trace               print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard query ibc](/cli-docs/v0_27_0/axelard_query_ibc) - Querying commands for the IBC module
 - [axelard query ibc channel channels](/cli-docs/v0_27_0/axelard_query_ibc_channel_channels) - Query all channels

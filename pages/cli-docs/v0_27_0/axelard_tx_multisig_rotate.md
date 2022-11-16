@@ -1,4 +1,4 @@
-## axelard tx multisig rotate
+# axelard tx multisig rotate
 
 Rotate the given chain to the given key
 
@@ -6,7 +6,7 @@ Rotate the given chain to the given key
 axelard tx multisig rotate [chain] [keyID] [flags]
 ```
 
-### Options
+## Options
 
 ```
   -a, --account-number uint      The account number of the signing account (offline mode only)
@@ -32,7 +32,7 @@ axelard tx multisig rotate [chain] [keyID] [flags]
   -y, --yes                      Skip tx broadcasting prompt confirmation (default true)
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --chain-id string     The network chain ID (default "axelar")
@@ -43,6 +43,6 @@ axelard tx multisig rotate [chain] [keyID] [flags]
       --trace               print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard tx multisig](/cli-docs/v0_27_0/axelard_tx_multisig) - multisig transactions subcommands

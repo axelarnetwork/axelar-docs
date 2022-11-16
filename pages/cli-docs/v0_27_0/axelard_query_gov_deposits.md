@@ -1,8 +1,8 @@
-## axelard query gov deposits
+# axelard query gov deposits
 
 Query deposits on a proposal
 
-### Synopsis
+## Synopsis
 
 Query details for all deposits on a proposal.
 You can find the proposal-id by running "<appd> query gov proposals".
@@ -17,7 +17,7 @@ $ <appd> query gov deposits 1
 axelard query gov deposits [proposal-id] [flags]
 ```
 
-### Options
+## Options
 
 ```
       --count-total       count total number of records in deposits to query for
@@ -31,7 +31,7 @@ axelard query gov deposits [proposal-id] [flags]
       --reverse           results are sorted in descending order
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --chain-id string     The network chain ID (default "axelar")
@@ -42,6 +42,6 @@ axelard query gov deposits [proposal-id] [flags]
       --trace               print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard query gov](/cli-docs/v0_27_0/axelard_query_gov) - Querying commands for the governance module

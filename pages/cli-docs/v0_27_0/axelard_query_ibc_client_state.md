@@ -1,8 +1,8 @@
-## axelard query ibc client state
+# axelard query ibc client state
 
 Query a client state
 
-### Synopsis
+## Synopsis
 
 Query stored client state
 
@@ -10,13 +10,13 @@ Query stored client state
 axelard query ibc client state [client-id] [flags]
 ```
 
-### Examples
+## Examples
 
 ```
 <appd> query ibc client state [client-id]
 ```
 
-### Options
+## Options
 
 ```
       --height int    Use a specific height to query state at (this can error if the node is pruning state)
@@ -25,7 +25,7 @@ axelard query ibc client state [client-id] [flags]
       --prove         show proofs for the query results (default true)
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --chain-id string     The network chain ID (default "axelar")
@@ -36,6 +36,6 @@ axelard query ibc client state [client-id] [flags]
       --trace               print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard query ibc client](/cli-docs/v0_27_0/axelard_query_ibc_client) - IBC client query subcommands

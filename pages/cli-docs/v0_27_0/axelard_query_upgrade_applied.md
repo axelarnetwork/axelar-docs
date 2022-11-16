@@ -1,8 +1,8 @@
-## axelard query upgrade applied
+# axelard query upgrade applied
 
 block header for height at which a completed upgrade was applied
 
-### Synopsis
+## Synopsis
 
 If upgrade-name was previously executed on the chain, this returns the header for the block at which it was applied.
 This helps a client determine which binary was valid over a given range of blocks, as well as more context to understand past migrations.
@@ -11,7 +11,7 @@ This helps a client determine which binary was valid over a given range of block
 axelard query upgrade applied [upgrade-name] [flags]
 ```
 
-### Options
+## Options
 
 ```
       --height int    Use a specific height to query state at (this can error if the node is pruning state)
@@ -19,7 +19,7 @@ axelard query upgrade applied [upgrade-name] [flags]
       --node string   <host>:<port> to Tendermint RPC interface for this chain (default "tcp://localhost:26657")
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --chain-id string     The network chain ID (default "axelar")
@@ -30,6 +30,6 @@ axelard query upgrade applied [upgrade-name] [flags]
       --trace               print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard query upgrade](/cli-docs/v0_27_0/axelard_query_upgrade) - Querying commands for the upgrade module

@@ -1,8 +1,8 @@
-## axelard keys delete
+# axelard keys delete
 
 Delete the given keys
 
-### Synopsis
+## Synopsis
 
 Delete keys from the Keybase backend.
 
@@ -14,7 +14,7 @@ private keys stored in a ledger device cannot be deleted with the CLI.
 axelard keys delete <name>... [flags]
 ```
 
-### Options
+## Options
 
 ```
   -f, --force   Remove the key unconditionally without asking for the passphrase. Deprecated.
@@ -22,7 +22,7 @@ axelard keys delete <name>... [flags]
   -y, --yes     Skip confirmation prompt when deleting offline or ledger key references (default true)
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --home string              The application home directory (default "$HOME/.axelar")
@@ -34,6 +34,6 @@ axelard keys delete <name>... [flags]
       --trace                    print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard keys](/cli-docs/v0_27_0/axelard_keys) - Manage your application's keys

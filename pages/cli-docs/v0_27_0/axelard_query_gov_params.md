@@ -1,8 +1,8 @@
-## axelard query gov params
+# axelard query gov params
 
 Query the parameters of the governance process
 
-### Synopsis
+## Synopsis
 
 Query the all the parameters for the governance process.
 
@@ -16,7 +16,7 @@ $ <appd> query gov params
 axelard query gov params [flags]
 ```
 
-### Options
+## Options
 
 ```
       --height int    Use a specific height to query state at (this can error if the node is pruning state)
@@ -24,7 +24,7 @@ axelard query gov params [flags]
       --node string   <host>:<port> to Tendermint RPC interface for this chain (default "tcp://localhost:26657")
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --chain-id string     The network chain ID (default "axelar")
@@ -35,6 +35,6 @@ axelard query gov params [flags]
       --trace               print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard query gov](/cli-docs/v0_27_0/axelard_query_gov) - Querying commands for the governance module

@@ -1,8 +1,8 @@
-## axelard query ibc channel packet-commitments
+# axelard query ibc channel packet-commitments
 
 Query all packet commitments associated with a channel
 
-### Synopsis
+## Synopsis
 
 Query all packet commitments associated with a channel
 
@@ -10,13 +10,13 @@ Query all packet commitments associated with a channel
 axelard query ibc channel packet-commitments [port-id] [channel-id] [flags]
 ```
 
-### Examples
+## Examples
 
 ```
 <appd> query ibc channel packet-commitments [port-id] [channel-id]
 ```
 
-### Options
+## Options
 
 ```
       --count-total       count total number of records in packet commitments associated with a channel to query for
@@ -30,7 +30,7 @@ axelard query ibc channel packet-commitments [port-id] [channel-id] [flags]
       --reverse           results are sorted in descending order
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --chain-id string     The network chain ID (default "axelar")
@@ -41,6 +41,6 @@ axelard query ibc channel packet-commitments [port-id] [channel-id] [flags]
       --trace               print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard query ibc channel](/cli-docs/v0_27_0/axelard_query_ibc_channel) - IBC channel query subcommands

@@ -1,8 +1,8 @@
-## axelard tx feegrant grant
+# axelard tx feegrant grant
 
 Grant Fee allowance to an address
 
-### Synopsis
+## Synopsis
 
 Grant authorization to pay fees from your address. Note, the'--from' flag is
 ignored as it is implied from \[granter\].
@@ -20,7 +20,7 @@ Examples:
 axelard tx feegrant grant [granter_key_or_address] [grantee] [flags]
 ```
 
-### Options
+## Options
 
 ```
   -a, --account-number uint        The account number of the signing account (offline mode only)
@@ -51,7 +51,7 @@ axelard tx feegrant grant [granter_key_or_address] [grantee] [flags]
   -y, --yes                        Skip tx broadcasting prompt confirmation (default true)
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --chain-id string     The network chain ID (default "axelar")
@@ -62,6 +62,6 @@ axelard tx feegrant grant [granter_key_or_address] [grantee] [flags]
       --trace               print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard tx feegrant](/cli-docs/v0_27_0/axelard_tx_feegrant) - Feegrant transactions subcommands

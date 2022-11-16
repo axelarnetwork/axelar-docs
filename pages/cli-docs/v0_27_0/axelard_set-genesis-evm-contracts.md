@@ -1,4 +1,4 @@
-## axelard set-genesis-evm-contracts
+# axelard set-genesis-evm-contracts
 
 Set the EVM's contract parameters in genesis.json
 
@@ -6,7 +6,7 @@ Set the EVM's contract parameters in genesis.json
 axelard set-genesis-evm-contracts [flags]
 ```
 
-### Options
+## Options
 
 ```
       --burnable string   Path to the burner contract ABI.
@@ -14,7 +14,7 @@ axelard set-genesis-evm-contracts [flags]
       --token string      Path to the tokens contract ABI.
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --home string         directory for config and data (default "$HOME/.axelar")
@@ -24,6 +24,6 @@ axelard set-genesis-evm-contracts [flags]
       --trace               print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard](/cli-docs/v0_27_0/axelard) - Axelar App

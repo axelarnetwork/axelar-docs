@@ -1,4 +1,4 @@
-## axelard set-genesis-snapshot
+# axelard set-genesis-snapshot
 
 Set the genesis parameters for the snapshot module
 
@@ -6,14 +6,14 @@ Set the genesis parameters for the snapshot module
 axelard set-genesis-snapshot [flags]
 ```
 
-### Options
+## Options
 
 ```
   -h, --help                    help for set-genesis-snapshot
       --min-proxy-balance int   minimum balance required for a proxy address to be registered (default 5000000)
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --home string         directory for config and data (default "$HOME/.axelar")
@@ -23,6 +23,6 @@ axelard set-genesis-snapshot [flags]
       --trace               print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard](/cli-docs/v0_27_0/axelard) - Axelar App

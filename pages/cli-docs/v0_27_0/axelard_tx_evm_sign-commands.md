@@ -1,4 +1,4 @@
-## axelard tx evm sign-commands
+# axelard tx evm sign-commands
 
 Sign pending commands for an EVM chain contract
 
@@ -6,7 +6,7 @@ Sign pending commands for an EVM chain contract
 axelard tx evm sign-commands [chain] [flags]
 ```
 
-### Options
+## Options
 
 ```
   -a, --account-number uint      The account number of the signing account (offline mode only)
@@ -32,7 +32,7 @@ axelard tx evm sign-commands [chain] [flags]
   -y, --yes                      Skip tx broadcasting prompt confirmation (default true)
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --chain-id string     The network chain ID (default "axelar")
@@ -43,6 +43,6 @@ axelard tx evm sign-commands [chain] [flags]
       --trace               print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard tx evm](/cli-docs/v0_27_0/axelard_tx_evm) - evm transactions subcommands

@@ -1,8 +1,8 @@
-## axelard tx distribution fund-community-pool
+# axelard tx distribution fund-community-pool
 
 Funds the community pool with the specified amount
 
-### Synopsis
+## Synopsis
 
 Funds the community pool with the specified amount
 
@@ -16,7 +16,7 @@ $ <appd> tx distribution fund-community-pool 100uatom --from mykey
 axelard tx distribution fund-community-pool [amount] [flags]
 ```
 
-### Options
+## Options
 
 ```
   -a, --account-number uint      The account number of the signing account (offline mode only)
@@ -42,7 +42,7 @@ axelard tx distribution fund-community-pool [amount] [flags]
   -y, --yes                      Skip tx broadcasting prompt confirmation (default true)
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --chain-id string     The network chain ID (default "axelar")
@@ -53,6 +53,6 @@ axelard tx distribution fund-community-pool [amount] [flags]
       --trace               print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard tx distribution](/cli-docs/v0_27_0/axelard_tx_distribution) - Distribution transactions subcommands

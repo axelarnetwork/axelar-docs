@@ -1,8 +1,8 @@
-## axelard query ibc connection connections
+# axelard query ibc connection connections
 
 Query all connections
 
-### Synopsis
+## Synopsis
 
 Query all connections ends from a chain
 
@@ -10,13 +10,13 @@ Query all connections ends from a chain
 axelard query ibc connection connections [flags]
 ```
 
-### Examples
+## Examples
 
 ```
 <appd> query ibc connection connections
 ```
 
-### Options
+## Options
 
 ```
       --count-total       count total number of records in connection ends to query for
@@ -30,7 +30,7 @@ axelard query ibc connection connections [flags]
       --reverse           results are sorted in descending order
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --chain-id string     The network chain ID (default "axelar")
@@ -41,6 +41,6 @@ axelard query ibc connection connections [flags]
       --trace               print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard query ibc connection](/cli-docs/v0_27_0/axelard_query_ibc_connection) - IBC connection query subcommands

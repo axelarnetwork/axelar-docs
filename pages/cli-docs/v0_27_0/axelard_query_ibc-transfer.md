@@ -1,14 +1,14 @@
-## axelard query ibc-transfer
+# axelard query ibc-transfer
 
 IBC fungible token transfer query subcommands
 
-### Options
+## Options
 
 ```
   -h, --help   help for ibc-transfer
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --chain-id string     The network chain ID (default "axelar")
@@ -19,7 +19,7 @@ IBC fungible token transfer query subcommands
       --trace               print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard query](/cli-docs/v0_27_0/axelard_query) - Querying subcommands
 - [axelard query ibc-transfer denom-hash](/cli-docs/v0_27_0/axelard_query_ibc-transfer_denom-hash) - Query the denom hash info from a given denom trace

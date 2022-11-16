@@ -1,8 +1,8 @@
-## axelard query ibc client consensus-states
+# axelard query ibc client consensus-states
 
 Query all the consensus states of a client.
 
-### Synopsis
+## Synopsis
 
 Query all the consensus states from a given client state.
 
@@ -10,13 +10,13 @@ Query all the consensus states from a given client state.
 axelard query ibc client consensus-states [client-id] [flags]
 ```
 
-### Examples
+## Examples
 
 ```
 <appd> query ibc client consensus-states [client-id]
 ```
 
-### Options
+## Options
 
 ```
       --count-total       count total number of records in consensus states to query for
@@ -30,7 +30,7 @@ axelard query ibc client consensus-states [client-id] [flags]
       --reverse           results are sorted in descending order
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --chain-id string     The network chain ID (default "axelar")
@@ -41,6 +41,6 @@ axelard query ibc client consensus-states [client-id] [flags]
       --trace               print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard query ibc client](/cli-docs/v0_27_0/axelard_query_ibc_client) - IBC client query subcommands

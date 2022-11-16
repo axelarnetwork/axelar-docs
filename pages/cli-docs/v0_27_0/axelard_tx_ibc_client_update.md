@@ -1,8 +1,8 @@
-## axelard tx ibc client update
+# axelard tx ibc client update
 
 update existing client with a header
 
-### Synopsis
+## Synopsis
 
 update existing client with a header
 
@@ -10,19 +10,19 @@ update existing client with a header
 axelard tx ibc client update [client-id] [path/to/header.json] [flags]
 ```
 
-### Examples
+## Examples
 
 ```
 <appd> tx ibc client update [client-id] [path/to/header.json] --from node0 --home ../node0/<app>cli --chain-id $CID
 ```
 
-### Options
+## Options
 
 ```
   -h, --help   help for update
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --chain-id string     The network chain ID (default "axelar")
@@ -33,6 +33,6 @@ axelard tx ibc client update [client-id] [path/to/header.json] [flags]
       --trace               print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard tx ibc client](/cli-docs/v0_27_0/axelard_tx_ibc_client) - IBC client transaction subcommands

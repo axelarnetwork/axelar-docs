@@ -1,4 +1,4 @@
-## axelard query bank
+# axelard query bank
 
 Querying commands for the bank module
 
@@ -6,13 +6,13 @@ Querying commands for the bank module
 axelard query bank [flags]
 ```
 
-### Options
+## Options
 
 ```
   -h, --help   help for bank
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --chain-id string     The network chain ID (default "axelar")
@@ -23,7 +23,7 @@ axelard query bank [flags]
       --trace               print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard query](/cli-docs/v0_27_0/axelard_query) - Querying subcommands
 - [axelard query bank balances](/cli-docs/v0_27_0/axelard_query_bank_balances) - Query for account balances by address

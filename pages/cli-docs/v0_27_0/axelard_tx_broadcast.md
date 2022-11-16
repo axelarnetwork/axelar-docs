@@ -1,8 +1,8 @@
-## axelard tx broadcast
+# axelard tx broadcast
 
 Broadcast transactions generated offline
 
-### Synopsis
+## Synopsis
 
 Broadcast transactions created with the --generate-only
 flag and signed with the sign command. Read a transaction from \[file_path\] and
@@ -15,7 +15,7 @@ $ <appd> tx broadcast ./mytxn.json
 axelard tx broadcast [file_path] [flags]
 ```
 
-### Options
+## Options
 
 ```
   -a, --account-number uint      The account number of the signing account (offline mode only)
@@ -41,7 +41,7 @@ axelard tx broadcast [file_path] [flags]
   -y, --yes                      Skip tx broadcasting prompt confirmation (default true)
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --chain-id string     The network chain ID (default "axelar")
@@ -52,6 +52,6 @@ axelard tx broadcast [file_path] [flags]
       --trace               print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard tx](/cli-docs/v0_27_0/axelard_tx) - Transactions subcommands

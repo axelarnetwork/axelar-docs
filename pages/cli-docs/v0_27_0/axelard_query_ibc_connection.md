@@ -1,14 +1,14 @@
-## axelard query ibc connection
+# axelard query ibc connection
 
 IBC connection query subcommands
 
-### Options
+## Options
 
 ```
   -h, --help   help for connection
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --chain-id string     The network chain ID (default "axelar")
@@ -19,7 +19,7 @@ IBC connection query subcommands
       --trace               print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard query ibc](/cli-docs/v0_27_0/axelard_query_ibc) - Querying commands for the IBC module
 - [axelard query ibc connection connections](/cli-docs/v0_27_0/axelard_query_ibc_connection_connections) - Query all connections

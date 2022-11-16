@@ -1,8 +1,8 @@
-## axelard init
+# axelard init
 
 Initialize private validator, p2p, genesis, and application configuration files
 
-### Synopsis
+## Synopsis
 
 Initialize validators's and node's configuration files.
 
@@ -10,7 +10,7 @@ Initialize validators's and node's configuration files.
 axelard init [moniker] [flags]
 ```
 
-### Options
+## Options
 
 ```
       --chain-id string   genesis file chain-id, if left blank will be randomly created (default "axelar")
@@ -19,7 +19,7 @@ axelard init [moniker] [flags]
       --recover           provide seed phrase to recover existing key instead of creating
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --home string         directory for config and data (default "$HOME/.axelar")
@@ -29,6 +29,6 @@ axelard init [moniker] [flags]
       --trace               print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard](/cli-docs/v0_27_0/axelard) - Axelar App

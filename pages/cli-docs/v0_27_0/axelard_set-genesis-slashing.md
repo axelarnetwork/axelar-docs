@@ -1,4 +1,4 @@
-## axelard set-genesis-slashing
+# axelard set-genesis-slashing
 
 Set the genesis parameters for the slashing module
 
@@ -6,7 +6,7 @@ Set the genesis parameters for the slashing module
 axelard set-genesis-slashing [flags]
 ```
 
-### Options
+## Options
 
 ```
       --downtime-jail-duration string       Jail duration due to downtime (e.g., "600s").
@@ -17,7 +17,7 @@ axelard set-genesis-slashing [flags]
       --slash-fraction-downtime string      Slashing fraction due to downtime (e.g., "0.0001").
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --home string         directory for config and data (default "$HOME/.axelar")
@@ -27,6 +27,6 @@ axelard set-genesis-slashing [flags]
       --trace               print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard](/cli-docs/v0_27_0/axelard) - Axelar App

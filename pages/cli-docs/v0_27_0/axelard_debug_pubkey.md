@@ -1,8 +1,8 @@
-## axelard debug pubkey
+# axelard debug pubkey
 
 Decode a pubkey from proto JSON
 
-### Synopsis
+## Synopsis
 
 Decode a pubkey from proto JSON and display it's address.
 
@@ -16,13 +16,13 @@ $ <appd> debug pubkey '{"@type":"/cosmos.crypto.secp256k1.PubKey","key":"AurroA7
 axelard debug pubkey [pubkey] [flags]
 ```
 
-### Options
+## Options
 
 ```
   -h, --help   help for pubkey
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --home string         directory for config and data (default "$HOME/.axelar")
@@ -32,6 +32,6 @@ axelard debug pubkey [pubkey] [flags]
       --trace               print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard debug](/cli-docs/v0_27_0/axelard_debug) - Tool for helping with debugging your application

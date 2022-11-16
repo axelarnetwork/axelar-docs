@@ -1,4 +1,4 @@
-## axelard tx axelarnet retry-ibc-transfer
+# axelard tx axelarnet retry-ibc-transfer
 
 Retry a failed IBC transfer
 
@@ -6,7 +6,7 @@ Retry a failed IBC transfer
 axelard tx axelarnet retry-ibc-transfer [chain] [transfer ID] [flags]
 ```
 
-### Options
+## Options
 
 ```
   -a, --account-number uint      The account number of the signing account (offline mode only)
@@ -32,7 +32,7 @@ axelard tx axelarnet retry-ibc-transfer [chain] [transfer ID] [flags]
   -y, --yes                      Skip tx broadcasting prompt confirmation (default true)
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --chain-id string     The network chain ID (default "axelar")
@@ -43,6 +43,6 @@ axelard tx axelarnet retry-ibc-transfer [chain] [transfer ID] [flags]
       --trace               print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard tx axelarnet](/cli-docs/v0_27_0/axelard_tx_axelarnet) - axelarnet transactions subcommands

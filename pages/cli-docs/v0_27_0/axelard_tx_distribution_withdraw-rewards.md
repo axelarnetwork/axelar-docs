@@ -1,8 +1,8 @@
-## axelard tx distribution withdraw-rewards
+# axelard tx distribution withdraw-rewards
 
 Withdraw rewards from a given delegation address, and optionally withdraw validator commission if the delegation address given is a validator operator
 
-### Synopsis
+## Synopsis
 
 Withdraw rewards from a given delegation address,
 and optionally withdraw validator commission if the delegation address given is a validator operator.
@@ -18,7 +18,7 @@ $ <appd> tx distribution withdraw-rewards axelarvaloper1gghjut3ccd8ay0zduzj64hwr
 axelard tx distribution withdraw-rewards [validator-addr] [flags]
 ```
 
-### Options
+## Options
 
 ```
   -a, --account-number uint      The account number of the signing account (offline mode only)
@@ -45,7 +45,7 @@ axelard tx distribution withdraw-rewards [validator-addr] [flags]
   -y, --yes                      Skip tx broadcasting prompt confirmation (default true)
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --chain-id string     The network chain ID (default "axelar")
@@ -56,6 +56,6 @@ axelard tx distribution withdraw-rewards [validator-addr] [flags]
       --trace               print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard tx distribution](/cli-docs/v0_27_0/axelard_tx_distribution) - Distribution transactions subcommands

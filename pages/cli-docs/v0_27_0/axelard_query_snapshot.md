@@ -1,4 +1,4 @@
-## axelard query snapshot
+# axelard query snapshot
 
 Querying commands for the snapshot module
 
@@ -6,13 +6,13 @@ Querying commands for the snapshot module
 axelard query snapshot [flags]
 ```
 
-### Options
+## Options
 
 ```
   -h, --help   help for snapshot
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --chain-id string     The network chain ID (default "axelar")
@@ -23,7 +23,7 @@ axelard query snapshot [flags]
       --trace               print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard query](/cli-docs/v0_27_0/axelard_query) - Querying subcommands
 - [axelard query snapshot operator](/cli-docs/v0_27_0/axelard_query_snapshot_operator) - Fetch the operator address associated with \[proxy address\]

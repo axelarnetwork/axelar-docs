@@ -1,4 +1,4 @@
-## axelard tx multisig keygen
+# axelard tx multisig keygen
 
 sub-commands for keygen
 
@@ -6,13 +6,13 @@ sub-commands for keygen
 axelard tx multisig keygen [flags]
 ```
 
-### Options
+## Options
 
 ```
   -h, --help   help for keygen
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --chain-id string     The network chain ID (default "axelar")
@@ -23,7 +23,7 @@ axelard tx multisig keygen [flags]
       --trace               print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard tx multisig](/cli-docs/v0_27_0/axelard_tx_multisig) - multisig transactions subcommands
 - [axelard tx multisig keygen opt-in](/cli-docs/v0_27_0/axelard_tx_multisig_keygen_opt-in) - Opt the sender into future keygens. Sender should be a proxy address for a validator

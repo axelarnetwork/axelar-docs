@@ -1,8 +1,8 @@
-## axelard query feegrant grants-by-granter
+# axelard query feegrant grants-by-granter
 
 Query all grants by a granter
 
-### Synopsis
+## Synopsis
 
 Queries all the grants issued for a granter address.
 
@@ -16,7 +16,7 @@ $ <appd> query feegrant grants-by-granter \[granter\]
 axelard query feegrant grants-by-granter [granter] [flags]
 ```
 
-### Options
+## Options
 
 ```
       --count-total       count total number of records in grants to query for
@@ -30,7 +30,7 @@ axelard query feegrant grants-by-granter [granter] [flags]
       --reverse           results are sorted in descending order
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --chain-id string     The network chain ID (default "axelar")
@@ -41,6 +41,6 @@ axelard query feegrant grants-by-granter [granter] [flags]
       --trace               print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard query feegrant](/cli-docs/v0_27_0/axelard_query_feegrant) - Querying commands for the feegrant module

@@ -1,4 +1,4 @@
-## axelard validate-genesis
+# axelard validate-genesis
 
 validates the genesis file at the default location or at the location passed as an arg
 
@@ -6,13 +6,13 @@ validates the genesis file at the default location or at the location passed as 
 axelard validate-genesis [file] [flags]
 ```
 
-### Options
+## Options
 
 ```
   -h, --help   help for validate-genesis
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --home string         directory for config and data (default "$HOME/.axelar")
@@ -22,6 +22,6 @@ axelard validate-genesis [file] [flags]
       --trace               print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard](/cli-docs/v0_27_0/axelard) - Axelar App

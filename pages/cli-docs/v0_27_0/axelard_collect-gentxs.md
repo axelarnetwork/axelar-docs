@@ -1,4 +1,4 @@
-## axelard collect-gentxs
+# axelard collect-gentxs
 
 Collect genesis txs and output a genesis.json file
 
@@ -6,14 +6,14 @@ Collect genesis txs and output a genesis.json file
 axelard collect-gentxs [flags]
 ```
 
-### Options
+## Options
 
 ```
       --gentx-dir string   override default "gentx" directory from which collect and execute genesis transactions; default [--home]/config/gentx/
   -h, --help               help for collect-gentxs
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --home string         directory for config and data (default "$HOME/.axelar")
@@ -23,6 +23,6 @@ axelard collect-gentxs [flags]
       --trace               print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard](/cli-docs/v0_27_0/axelard) - Axelar App

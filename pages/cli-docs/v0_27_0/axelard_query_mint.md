@@ -1,4 +1,4 @@
-## axelard query mint
+# axelard query mint
 
 Querying commands for the minting module
 
@@ -6,13 +6,13 @@ Querying commands for the minting module
 axelard query mint [flags]
 ```
 
-### Options
+## Options
 
 ```
   -h, --help   help for mint
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --chain-id string     The network chain ID (default "axelar")
@@ -23,7 +23,7 @@ axelard query mint [flags]
       --trace               print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard query](/cli-docs/v0_27_0/axelard_query) - Querying subcommands
 - [axelard query mint annual-provisions](/cli-docs/v0_27_0/axelard_query_mint_annual-provisions) - Query the current minting annual provisions value

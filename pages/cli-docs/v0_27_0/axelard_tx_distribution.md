@@ -1,4 +1,4 @@
-## axelard tx distribution
+# axelard tx distribution
 
 Distribution transactions subcommands
 
@@ -6,13 +6,13 @@ Distribution transactions subcommands
 axelard tx distribution [flags]
 ```
 
-### Options
+## Options
 
 ```
   -h, --help   help for distribution
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --chain-id string     The network chain ID (default "axelar")
@@ -23,7 +23,7 @@ axelard tx distribution [flags]
       --trace               print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard tx](/cli-docs/v0_27_0/axelard_tx) - Transactions subcommands
 - [axelard tx distribution fund-community-pool](/cli-docs/v0_27_0/axelard_tx_distribution_fund-community-pool) - Funds the community pool with the specified amount

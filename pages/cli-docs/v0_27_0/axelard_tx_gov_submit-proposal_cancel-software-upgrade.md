@@ -1,8 +1,8 @@
-## axelard tx gov submit-proposal cancel-software-upgrade
+# axelard tx gov submit-proposal cancel-software-upgrade
 
 Cancel the current software upgrade proposal
 
-### Synopsis
+## Synopsis
 
 Cancel a software upgrade along with an initial deposit.
 
@@ -10,7 +10,7 @@ Cancel a software upgrade along with an initial deposit.
 axelard tx gov submit-proposal cancel-software-upgrade [flags]
 ```
 
-### Options
+## Options
 
 ```
   -a, --account-number uint      The account number of the signing account (offline mode only)
@@ -39,7 +39,7 @@ axelard tx gov submit-proposal cancel-software-upgrade [flags]
   -y, --yes                      Skip tx broadcasting prompt confirmation (default true)
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --chain-id string     The network chain ID (default "axelar")
@@ -50,6 +50,6 @@ axelard tx gov submit-proposal cancel-software-upgrade [flags]
       --trace               print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard tx gov submit-proposal](/cli-docs/v0_27_0/axelard_tx_gov_submit-proposal) - Submit a proposal along with an initial deposit

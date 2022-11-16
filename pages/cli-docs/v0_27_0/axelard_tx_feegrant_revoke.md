@@ -1,8 +1,8 @@
-## axelard tx feegrant revoke
+# axelard tx feegrant revoke
 
 revoke fee-grant
 
-### Synopsis
+## Synopsis
 
 revoke fee grant from a granter to a grantee. Note, the'--from' flag is
 ignored as it is implied from \[granter\].
@@ -17,7 +17,7 @@ $ <appd> tx feegrant revoke cosmos1skj.. cosmos1skj..
 axelard tx feegrant revoke [granter] [grantee] [flags]
 ```
 
-### Options
+## Options
 
 ```
   -a, --account-number uint      The account number of the signing account (offline mode only)
@@ -43,7 +43,7 @@ axelard tx feegrant revoke [granter] [grantee] [flags]
   -y, --yes                      Skip tx broadcasting prompt confirmation (default true)
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --chain-id string     The network chain ID (default "axelar")
@@ -54,6 +54,6 @@ axelard tx feegrant revoke [granter] [grantee] [flags]
       --trace               print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard tx feegrant](/cli-docs/v0_27_0/axelard_tx_feegrant) - Feegrant transactions subcommands

@@ -1,14 +1,14 @@
-## axelard query upgrade
+# axelard query upgrade
 
 Querying commands for the upgrade module
 
-### Options
+## Options
 
 ```
   -h, --help   help for upgrade
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --chain-id string     The network chain ID (default "axelar")
@@ -19,7 +19,7 @@ Querying commands for the upgrade module
       --trace               print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard query](/cli-docs/v0_27_0/axelard_query) - Querying subcommands
 - [axelard query upgrade applied](/cli-docs/v0_27_0/axelard_query_upgrade_applied) - block header for height at which a completed upgrade was applied

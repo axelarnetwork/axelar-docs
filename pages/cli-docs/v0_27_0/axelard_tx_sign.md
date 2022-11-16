@@ -1,8 +1,8 @@
-## axelard tx sign
+# axelard tx sign
 
 Sign a transaction generated offline
 
-### Synopsis
+## Synopsis
 
 Sign a transaction created with the --generate-only flag.
 It will read a transaction from \[file\], sign it, and print its JSON encoding.
@@ -22,7 +22,7 @@ be generated via the 'multisign' command.
 axelard tx sign [file] [flags]
 ```
 
-### Options
+## Options
 
 ```
   -a, --account-number uint      The account number of the signing account (offline mode only)
@@ -53,7 +53,7 @@ axelard tx sign [file] [flags]
   -y, --yes                      Skip tx broadcasting prompt confirmation (default true)
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --chain-id string     The network chain ID (default "axelar")
@@ -64,6 +64,6 @@ axelard tx sign [file] [flags]
       --trace               print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard tx](/cli-docs/v0_27_0/axelard_tx) - Transactions subcommands

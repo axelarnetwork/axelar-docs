@@ -1,4 +1,4 @@
-## axelard query evm chains
+# axelard query evm chains
 
 Return the supported EVM chains by status
 
@@ -6,7 +6,7 @@ Return the supported EVM chains by status
 axelard query evm chains [flags]
 ```
 
-### Options
+## Options
 
 ```
       --height int      Use a specific height to query state at (this can error if the node is pruning state)
@@ -15,7 +15,7 @@ axelard query evm chains [flags]
       --status string   the chain status [activated|deactivated]
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --chain-id string     The network chain ID (default "axelar")
@@ -26,6 +26,6 @@ axelard query evm chains [flags]
       --trace               print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard query evm](/cli-docs/v0_27_0/axelard_query_evm) - Querying commands for the evm module

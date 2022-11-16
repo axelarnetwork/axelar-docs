@@ -1,4 +1,4 @@
-## axelard set-genesis-reward
+# axelard set-genesis-reward
 
 Set the genesis parameters for the reward module
 
@@ -6,7 +6,7 @@ Set the genesis parameters for the reward module
 axelard set-genesis-reward [flags]
 ```
 
-### Options
+## Options
 
 ```
       --external-chain-voting-inflation-rate string   The fraction of total stake per year that's distributed among external chain voters (e.g., "0.02").
@@ -14,7 +14,7 @@ axelard set-genesis-reward [flags]
       --key-mgmt-relative-inflation-rate string       The fraction of current inflation rate that's rewarded for participating in TSS (e.g., "1.00").
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --home string         directory for config and data (default "$HOME/.axelar")
@@ -24,6 +24,6 @@ axelard set-genesis-reward [flags]
       --trace               print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard](/cli-docs/v0_27_0/axelard) - Axelar App

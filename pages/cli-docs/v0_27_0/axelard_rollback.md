@@ -1,8 +1,8 @@
-## axelard rollback
+# axelard rollback
 
 rollback cosmos-sdk and tendermint state by one height
 
-### Synopsis
+## Synopsis
 
 A state rollback is performed to recover from an incorrect application state transition,
 when Tendermint has persisted an incorrect app hash and is thus unable to make
@@ -15,13 +15,13 @@ application.
 axelard rollback [flags]
 ```
 
-### Options
+## Options
 
 ```
   -h, --help   help for rollback
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --home string         directory for config and data (default "$HOME/.axelar")
@@ -31,6 +31,6 @@ axelard rollback [flags]
       --trace               print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard](/cli-docs/v0_27_0/axelard) - Axelar App

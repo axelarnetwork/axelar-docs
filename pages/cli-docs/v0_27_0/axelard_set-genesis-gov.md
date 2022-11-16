@@ -1,4 +1,4 @@
-## axelard set-genesis-gov
+# axelard set-genesis-gov
 
 Set the genesis parameters for the governance module
 
@@ -6,7 +6,7 @@ Set the genesis parameters for the governance module
 axelard set-genesis-gov [flags]
 ```
 
-### Options
+## Options
 
 ```
   -h, --help                        help for set-genesis-gov
@@ -15,7 +15,7 @@ axelard set-genesis-gov [flags]
       --voting-period string        Length of the voting period (time ns)
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --home string         directory for config and data (default "$HOME/.axelar")
@@ -25,6 +25,6 @@ axelard set-genesis-gov [flags]
       --trace               print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard](/cli-docs/v0_27_0/axelard) - Axelar App

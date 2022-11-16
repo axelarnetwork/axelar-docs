@@ -1,4 +1,4 @@
-## axelard query
+# axelard query
 
 Querying subcommands
 
@@ -6,14 +6,14 @@ Querying subcommands
 axelard query [flags]
 ```
 
-### Options
+## Options
 
 ```
       --chain-id string   The network chain ID (default "axelar")
   -h, --help              help for query
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --home string         directory for config and data (default "$HOME/.axelar")
@@ -23,7 +23,7 @@ axelard query [flags]
       --trace               print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard](/cli-docs/v0_27_0/axelard) - Axelar App
 - [axelard query account](/cli-docs/v0_27_0/axelard_query_account) - Query for account by address

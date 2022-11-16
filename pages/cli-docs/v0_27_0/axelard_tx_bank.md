@@ -1,4 +1,4 @@
-## axelard tx bank
+# axelard tx bank
 
 Bank transaction subcommands
 
@@ -6,13 +6,13 @@ Bank transaction subcommands
 axelard tx bank [flags]
 ```
 
-### Options
+## Options
 
 ```
   -h, --help   help for bank
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --chain-id string     The network chain ID (default "axelar")
@@ -23,7 +23,7 @@ axelard tx bank [flags]
       --trace               print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard tx](/cli-docs/v0_27_0/axelard_tx) - Transactions subcommands
 - [axelard tx bank send](/cli-docs/v0_27_0/axelard_tx_bank_send) - Send funds from one account to another. Note, the'--from' flag is

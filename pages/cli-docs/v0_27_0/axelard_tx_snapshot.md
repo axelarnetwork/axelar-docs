@@ -1,4 +1,4 @@
-## axelard tx snapshot
+# axelard tx snapshot
 
 snapshot transactions subcommands
 
@@ -6,13 +6,13 @@ snapshot transactions subcommands
 axelard tx snapshot [flags]
 ```
 
-### Options
+## Options
 
 ```
   -h, --help   help for snapshot
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --chain-id string     The network chain ID (default "axelar")
@@ -23,7 +23,7 @@ axelard tx snapshot [flags]
       --trace               print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard tx](/cli-docs/v0_27_0/axelard_tx) - Transactions subcommands
 - [axelard tx snapshot deactivate-proxy](/cli-docs/v0_27_0/axelard_tx_snapshot_deactivate-proxy) - Deactivate the proxy account of the sender

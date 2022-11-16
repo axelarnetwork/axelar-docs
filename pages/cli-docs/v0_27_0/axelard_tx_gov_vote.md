@@ -1,8 +1,8 @@
-## axelard tx gov vote
+# axelard tx gov vote
 
 Vote for an active proposal, options: yes/no/no_with_veto/abstain
 
-### Synopsis
+## Synopsis
 
 Submit a vote for an active proposal. You can
 find the proposal-id by running "<appd> query gov proposals".
@@ -17,7 +17,7 @@ $ <appd> tx gov vote 1 yes --from mykey
 axelard tx gov vote [proposal-id] [option] [flags]
 ```
 
-### Options
+## Options
 
 ```
   -a, --account-number uint      The account number of the signing account (offline mode only)
@@ -43,7 +43,7 @@ axelard tx gov vote [proposal-id] [option] [flags]
   -y, --yes                      Skip tx broadcasting prompt confirmation (default true)
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --chain-id string     The network chain ID (default "axelar")
@@ -54,6 +54,6 @@ axelard tx gov vote [proposal-id] [option] [flags]
       --trace               print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard tx gov](/cli-docs/v0_27_0/axelard_tx_gov) - Governance transactions subcommands

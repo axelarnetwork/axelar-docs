@@ -1,8 +1,8 @@
-## axelard query staking validator
+# axelard query staking validator
 
 Query a validator
 
-### Synopsis
+## Synopsis
 
 Query details about an individual validator.
 
@@ -16,7 +16,7 @@ $ <appd> query staking validator axelarvaloper1gghjut3ccd8ay0zduzj64hwre2fxs9ldm
 axelard query staking validator [validator-addr] [flags]
 ```
 
-### Options
+## Options
 
 ```
       --height int    Use a specific height to query state at (this can error if the node is pruning state)
@@ -24,7 +24,7 @@ axelard query staking validator [validator-addr] [flags]
       --node string   <host>:<port> to Tendermint RPC interface for this chain (default "tcp://localhost:26657")
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --chain-id string     The network chain ID (default "axelar")
@@ -35,6 +35,6 @@ axelard query staking validator [validator-addr] [flags]
       --trace               print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard query staking](/cli-docs/v0_27_0/axelard_query_staking) - Querying commands for the staking module

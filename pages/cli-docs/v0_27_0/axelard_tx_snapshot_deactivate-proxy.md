@@ -1,4 +1,4 @@
-## axelard tx snapshot deactivate-proxy
+# axelard tx snapshot deactivate-proxy
 
 Deactivate the proxy account of the sender
 
@@ -6,7 +6,7 @@ Deactivate the proxy account of the sender
 axelard tx snapshot deactivate-proxy [flags]
 ```
 
-### Options
+## Options
 
 ```
   -a, --account-number uint      The account number of the signing account (offline mode only)
@@ -32,7 +32,7 @@ axelard tx snapshot deactivate-proxy [flags]
   -y, --yes                      Skip tx broadcasting prompt confirmation (default true)
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --chain-id string     The network chain ID (default "axelar")
@@ -43,6 +43,6 @@ axelard tx snapshot deactivate-proxy [flags]
       --trace               print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard tx snapshot](/cli-docs/v0_27_0/axelard_tx_snapshot) - snapshot transactions subcommands

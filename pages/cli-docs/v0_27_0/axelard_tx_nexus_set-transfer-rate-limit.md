@@ -1,4 +1,4 @@
-## axelard tx nexus set-transfer-rate-limit
+# axelard tx nexus set-transfer-rate-limit
 
 set transfer rate limit for an asset on a chain
 
@@ -6,7 +6,7 @@ set transfer rate limit for an asset on a chain
 axelard tx nexus set-transfer-rate-limit [chain] [limit] [window] [flags]
 ```
 
-### Options
+## Options
 
 ```
   -a, --account-number uint      The account number of the signing account (offline mode only)
@@ -32,7 +32,7 @@ axelard tx nexus set-transfer-rate-limit [chain] [limit] [window] [flags]
   -y, --yes                      Skip tx broadcasting prompt confirmation (default true)
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --chain-id string     The network chain ID (default "axelar")
@@ -43,6 +43,6 @@ axelard tx nexus set-transfer-rate-limit [chain] [limit] [window] [flags]
       --trace               print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard tx nexus](/cli-docs/v0_27_0/axelard_tx_nexus) - nexus transactions subcommands

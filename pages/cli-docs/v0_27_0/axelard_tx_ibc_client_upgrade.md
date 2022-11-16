@@ -1,8 +1,8 @@
-## axelard tx ibc client upgrade
+# axelard tx ibc client upgrade
 
 upgrade an IBC client
 
-### Synopsis
+## Synopsis
 
 upgrade the IBC client associated with the provided client identifier while providing proof committed by the counterparty chain to the new client and consensus states
 \- ClientState JSON example: {"@type":"/ibc.lightclients.solomachine.v1.ClientState","sequence":"1","frozen_sequence":"0","consensus_state":{"public_key":{"@type":"/cosmos.crypto.secp256k1.PubKey","key":"AtK50+5pJOoaa04qqAqrnyAqsYrwrR/INnA6UPIaYZlp"},"diversifier":"testing","timestamp":"10"},"allow_update_after_proposal":false}
@@ -12,13 +12,13 @@ upgrade the IBC client associated with the provided client identifier while prov
 axelard tx ibc client upgrade [client-identifier] [path/to/client_state.json] [path/to/consensus_state.json] [upgrade-client-proof] [upgrade-consensus-state-proof] [flags]
 ```
 
-### Examples
+## Examples
 
 ```
 <appd> tx ibc client upgrade [client-identifier] [path/to/client_state.json] [path/to/consensus_state.json] [client-state-proof] [consensus-state-proof] --from node0 --home ../node0/<app>cli --chain-id $CID
 ```
 
-### Options
+## Options
 
 ```
   -a, --account-number uint      The account number of the signing account (offline mode only)
@@ -44,7 +44,7 @@ axelard tx ibc client upgrade [client-identifier] [path/to/client_state.json] [p
   -y, --yes                      Skip tx broadcasting prompt confirmation (default true)
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --chain-id string     The network chain ID (default "axelar")
@@ -55,6 +55,6 @@ axelard tx ibc client upgrade [client-identifier] [path/to/client_state.json] [p
       --trace               print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard tx ibc client](/cli-docs/v0_27_0/axelard_tx_ibc_client) - IBC client transaction subcommands

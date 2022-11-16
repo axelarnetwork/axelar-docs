@@ -1,4 +1,4 @@
-## axelard tx multisig keygen opt-out
+# axelard tx multisig keygen opt-out
 
 Opt the sender out of future keygens. Sender should be a proxy address for a validator
 
@@ -6,7 +6,7 @@ Opt the sender out of future keygens. Sender should be a proxy address for a val
 axelard tx multisig keygen opt-out [flags]
 ```
 
-### Options
+## Options
 
 ```
   -a, --account-number uint      The account number of the signing account (offline mode only)
@@ -32,7 +32,7 @@ axelard tx multisig keygen opt-out [flags]
   -y, --yes                      Skip tx broadcasting prompt confirmation (default true)
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --chain-id string     The network chain ID (default "axelar")
@@ -43,6 +43,6 @@ axelard tx multisig keygen opt-out [flags]
       --trace               print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard tx multisig keygen](/cli-docs/v0_27_0/axelard_tx_multisig_keygen) - sub-commands for keygen

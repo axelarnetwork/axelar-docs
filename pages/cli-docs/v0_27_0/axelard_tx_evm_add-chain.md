@@ -1,8 +1,8 @@
-## axelard tx evm add-chain
+# axelard tx evm add-chain
 
 Add a new EVM chain
 
-### Synopsis
+## Synopsis
 
 Add a new EVM chain. The chain config parameter should be the path to a json file containing the key requirements and the evm module parameters
 
@@ -10,7 +10,7 @@ Add a new EVM chain. The chain config parameter should be the path to a json fil
 axelard tx evm add-chain [name] [chain config] [flags]
 ```
 
-### Options
+## Options
 
 ```
   -a, --account-number uint      The account number of the signing account (offline mode only)
@@ -36,7 +36,7 @@ axelard tx evm add-chain [name] [chain config] [flags]
   -y, --yes                      Skip tx broadcasting prompt confirmation (default true)
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --chain-id string     The network chain ID (default "axelar")
@@ -47,6 +47,6 @@ axelard tx evm add-chain [name] [chain config] [flags]
       --trace               print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard tx evm](/cli-docs/v0_27_0/axelard_tx_evm) - evm transactions subcommands

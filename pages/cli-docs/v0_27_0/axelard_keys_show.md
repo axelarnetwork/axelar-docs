@@ -1,8 +1,8 @@
-## axelard keys show
+# axelard keys show
 
 Retrieve key information by name or address
 
-### Synopsis
+## Synopsis
 
 Display keys details. If multiple names or addresses are provided,
 then an ephemeral multisig key will be created under the name "multi"
@@ -12,7 +12,7 @@ consisting of all the keys provided by name and multisig threshold.
 axelard keys show [name_or_address [name_or_address...]] [flags]
 ```
 
-### Options
+## Options
 
 ```
   -a, --address                  Output the address only (overrides --output)
@@ -23,7 +23,7 @@ axelard keys show [name_or_address [name_or_address...]] [flags]
   -p, --pubkey                   Output the public key only (overrides --output)
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --home string              The application home directory (default "$HOME/.axelar")
@@ -35,6 +35,6 @@ axelard keys show [name_or_address [name_or_address...]] [flags]
       --trace                    print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard keys](/cli-docs/v0_27_0/axelard_keys) - Manage your application's keys

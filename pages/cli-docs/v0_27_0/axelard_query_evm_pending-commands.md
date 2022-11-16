@@ -1,4 +1,4 @@
-## axelard query evm pending-commands
+# axelard query evm pending-commands
 
 Get the list of commands not yet added to a batch
 
@@ -6,7 +6,7 @@ Get the list of commands not yet added to a batch
 axelard query evm pending-commands [chain] [flags]
 ```
 
-### Options
+## Options
 
 ```
       --height int    Use a specific height to query state at (this can error if the node is pruning state)
@@ -14,7 +14,7 @@ axelard query evm pending-commands [chain] [flags]
       --node string   <host>:<port> to Tendermint RPC interface for this chain (default "tcp://localhost:26657")
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --chain-id string     The network chain ID (default "axelar")
@@ -25,6 +25,6 @@ axelard query evm pending-commands [chain] [flags]
       --trace               print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard query evm](/cli-docs/v0_27_0/axelard_query_evm) - Querying commands for the evm module

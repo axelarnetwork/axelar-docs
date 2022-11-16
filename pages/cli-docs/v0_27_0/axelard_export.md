@@ -1,4 +1,4 @@
-## axelard export
+# axelard export
 
 Export state to JSON
 
@@ -6,7 +6,7 @@ Export state to JSON
 axelard export [flags]
 ```
 
-### Options
+## Options
 
 ```
       --for-zero-height              Export state to start at height zero (perform preproccessing)
@@ -15,7 +15,7 @@ axelard export [flags]
       --jail-allowed-addrs strings   Comma-separated list of operator addresses of jailed validators to unjail
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --home string         directory for config and data (default "$HOME/.axelar")
@@ -25,6 +25,6 @@ axelard export [flags]
       --trace               print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard](/cli-docs/v0_27_0/axelard) - Axelar App

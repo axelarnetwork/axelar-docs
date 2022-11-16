@@ -1,8 +1,8 @@
-## axelard query ibc client consensus-state
+# axelard query ibc client consensus-state
 
 Query the consensus state of a client at a given height
 
-### Synopsis
+## Synopsis
 
 Query the consensus state for a particular light client at a given height.
 If the '--latest' flag is included, the query returns the latest consensus state, overriding the height argument.
@@ -11,13 +11,13 @@ If the '--latest' flag is included, the query returns the latest consensus state
 axelard query ibc client consensus-state [client-id] [height] [flags]
 ```
 
-### Examples
+## Examples
 
 ```
 <appd> query ibc client  consensus-state [client-id] [height]
 ```
 
-### Options
+## Options
 
 ```
       --height int      Use a specific height to query state at (this can error if the node is pruning state)
@@ -27,7 +27,7 @@ axelard query ibc client consensus-state [client-id] [height] [flags]
       --prove           show proofs for the query results (default true)
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --chain-id string     The network chain ID (default "axelar")
@@ -38,6 +38,6 @@ axelard query ibc client consensus-state [client-id] [height] [flags]
       --trace               print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard query ibc client](/cli-docs/v0_27_0/axelard_query_ibc_client) - IBC client query subcommands

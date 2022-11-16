@@ -1,4 +1,4 @@
-## axelard query nexus transfer-rate-limit
+# axelard query nexus transfer-rate-limit
 
 Returns the transfer rate limit for a given chain and asset
 
@@ -6,7 +6,7 @@ Returns the transfer rate limit for a given chain and asset
 axelard query nexus transfer-rate-limit [chain] [asset] [flags]
 ```
 
-### Options
+## Options
 
 ```
       --height int    Use a specific height to query state at (this can error if the node is pruning state)
@@ -14,7 +14,7 @@ axelard query nexus transfer-rate-limit [chain] [asset] [flags]
       --node string   <host>:<port> to Tendermint RPC interface for this chain (default "tcp://localhost:26657")
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --chain-id string     The network chain ID (default "axelar")
@@ -25,6 +25,6 @@ axelard query nexus transfer-rate-limit [chain] [asset] [flags]
       --trace               print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard query nexus](/cli-docs/v0_27_0/axelard_query_nexus) - Querying commands for the nexus module

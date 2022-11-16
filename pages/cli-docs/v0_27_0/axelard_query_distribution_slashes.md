@@ -1,8 +1,8 @@
-## axelard query distribution slashes
+# axelard query distribution slashes
 
 Query distribution validator slashes
 
-### Synopsis
+## Synopsis
 
 Query all slashes of a validator for a given block range.
 
@@ -16,7 +16,7 @@ $ <appd> query distribution slashes axelarvalopervaloper1gghjut3ccd8ay0zduzj64hw
 axelard query distribution slashes [validator] [start-height] [end-height] [flags]
 ```
 
-### Options
+## Options
 
 ```
       --count-total       count total number of records in validator slashes to query for
@@ -30,7 +30,7 @@ axelard query distribution slashes [validator] [start-height] [end-height] [flag
       --reverse           results are sorted in descending order
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --chain-id string     The network chain ID (default "axelar")
@@ -41,6 +41,6 @@ axelard query distribution slashes [validator] [start-height] [end-height] [flag
       --trace               print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard query distribution](/cli-docs/v0_27_0/axelard_query_distribution) - Querying commands for the distribution module

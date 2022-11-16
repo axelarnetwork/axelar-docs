@@ -1,8 +1,8 @@
-## axelard keys
+# axelard keys
 
 Manage your application's keys
 
-### Synopsis
+## Synopsis
 
 Keyring management commands. These keys may be in any format supported by the
 Tendermint crypto library and can be used by light-clients, full nodes, or any other application
@@ -28,7 +28,7 @@ pass https://www.passwordstore.org/
 
 The pass backend requires GnuPG: https://gnupg.org/
 
-### Options
+## Options
 
 ```
   -h, --help                     help for keys
@@ -36,7 +36,7 @@ The pass backend requires GnuPG: https://gnupg.org/
       --keyring-dir string       The client Keyring directory; if omitted, the default 'home' directory will be used
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --home string         directory for config and data (default "$HOME/.axelar")
@@ -46,7 +46,7 @@ The pass backend requires GnuPG: https://gnupg.org/
       --trace               print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard](/cli-docs/v0_27_0/axelard) - Axelar App
 - [axelard keys add](/cli-docs/v0_27_0/axelard_keys_add) - Add an encrypted private key (either newly generated or recovered), encrypt it, and save to <name> file

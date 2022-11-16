@@ -1,8 +1,8 @@
-## axelard query distribution validator-outstanding-rewards
+# axelard query distribution validator-outstanding-rewards
 
 Query distribution outstanding (un-withdrawn) rewards for a validator and all their delegations
 
-### Synopsis
+## Synopsis
 
 Query distribution outstanding (un-withdrawn) rewards for a validator and all their delegations.
 
@@ -16,7 +16,7 @@ $ <appd> query distribution validator-outstanding-rewards axelarvaloper1lwnks33x
 axelard query distribution validator-outstanding-rewards [validator] [flags]
 ```
 
-### Options
+## Options
 
 ```
       --height int    Use a specific height to query state at (this can error if the node is pruning state)
@@ -24,7 +24,7 @@ axelard query distribution validator-outstanding-rewards [validator] [flags]
       --node string   <host>:<port> to Tendermint RPC interface for this chain (default "tcp://localhost:26657")
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --chain-id string     The network chain ID (default "axelar")
@@ -35,6 +35,6 @@ axelard query distribution validator-outstanding-rewards [validator] [flags]
       --trace               print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard query distribution](/cli-docs/v0_27_0/axelard_query_distribution) - Querying commands for the distribution module

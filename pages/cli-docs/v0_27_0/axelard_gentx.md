@@ -1,8 +1,8 @@
-## axelard gentx
+# axelard gentx
 
 Generate a genesis tx carrying a self delegation
 
-### Synopsis
+## Synopsis
 
 Generate a genesis transaction that creates a validator with a self-delegation,
 that is signed by the key in the Keyring referenced by a given name. A node ID and Bech32 consensus
@@ -34,7 +34,7 @@ $ <appd> gentx my-key-name 1000000stake --home=/path/to/home/dir --keyring-backe
 axelard gentx [key_name] [amount] [flags]
 ```
 
-### Options
+## Options
 
 ```
   -a, --account-number uint                 The account number of the signing account (offline mode only)
@@ -75,7 +75,7 @@ axelard gentx [key_name] [amount] [flags]
   -y, --yes                                 Skip tx broadcasting prompt confirmation (default true)
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --home string         directory for config and data (default "$HOME/.axelar")
@@ -85,6 +85,6 @@ axelard gentx [key_name] [amount] [flags]
       --trace               print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard](/cli-docs/v0_27_0/axelard) - Axelar App

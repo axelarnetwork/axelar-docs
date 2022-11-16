@@ -1,8 +1,8 @@
-## axelard keys migrate
+# axelard keys migrate
 
 Migrate keys from the legacy (db-based) Keybase
 
-### Synopsis
+## Synopsis
 
 Migrate key information from the legacy (db-based) Keybase to the new keyring-based Keyring.
 The legacy Keybase used to persist keys in a LevelDB database stored in a 'keys' sub-directory of
@@ -17,14 +17,14 @@ It is recommended to run in 'dry-run' mode first to verify all key migration mat
 axelard keys migrate <old_home_dir> [flags]
 ```
 
-### Options
+## Options
 
 ```
       --dry-run   Run migration without actually persisting any changes to the new Keybase
   -h, --help      help for migrate
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --home string              The application home directory (default "$HOME/.axelar")
@@ -36,6 +36,6 @@ axelard keys migrate <old_home_dir> [flags]
       --trace                    print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard keys](/cli-docs/v0_27_0/axelard_keys) - Manage your application's keys

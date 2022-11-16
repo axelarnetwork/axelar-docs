@@ -1,4 +1,4 @@
-## axelard tx bank send
+# axelard tx bank send
 
 Send funds from one account to another. Note, the'--from' flag is
 ignored as it is implied from \[from_key_or_address\].
@@ -7,7 +7,7 @@ ignored as it is implied from \[from_key_or_address\].
 axelard tx bank send [from_key_or_address] [to_address] [amount] [flags]
 ```
 
-### Options
+## Options
 
 ```
   -a, --account-number uint      The account number of the signing account (offline mode only)
@@ -33,7 +33,7 @@ axelard tx bank send [from_key_or_address] [to_address] [amount] [flags]
   -y, --yes                      Skip tx broadcasting prompt confirmation (default true)
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --chain-id string     The network chain ID (default "axelar")
@@ -44,6 +44,6 @@ axelard tx bank send [from_key_or_address] [to_address] [amount] [flags]
       --trace               print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard tx bank](/cli-docs/v0_27_0/axelard_tx_bank) - Bank transaction subcommands

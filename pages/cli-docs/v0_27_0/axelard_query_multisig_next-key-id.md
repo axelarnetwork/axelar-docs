@@ -1,4 +1,4 @@
-## axelard query multisig next-key-id
+# axelard query multisig next-key-id
 
 Returns the key ID assigned for the next rotation on a given chain and for the given key role
 
@@ -6,7 +6,7 @@ Returns the key ID assigned for the next rotation on a given chain and for the g
 axelard query multisig next-key-id [chain] [flags]
 ```
 
-### Options
+## Options
 
 ```
       --height int    Use a specific height to query state at (this can error if the node is pruning state)
@@ -14,7 +14,7 @@ axelard query multisig next-key-id [chain] [flags]
       --node string   <host>:<port> to Tendermint RPC interface for this chain (default "tcp://localhost:26657")
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --chain-id string     The network chain ID (default "axelar")
@@ -25,6 +25,6 @@ axelard query multisig next-key-id [chain] [flags]
       --trace               print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard query multisig](/cli-docs/v0_27_0/axelard_query_multisig) - Querying commands for the multisig module

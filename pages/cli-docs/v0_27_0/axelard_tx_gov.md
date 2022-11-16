@@ -1,4 +1,4 @@
-## axelard tx gov
+# axelard tx gov
 
 Governance transactions subcommands
 
@@ -6,13 +6,13 @@ Governance transactions subcommands
 axelard tx gov [flags]
 ```
 
-### Options
+## Options
 
 ```
   -h, --help   help for gov
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --chain-id string     The network chain ID (default "axelar")
@@ -23,7 +23,7 @@ axelard tx gov [flags]
       --trace               print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard tx](/cli-docs/v0_27_0/axelard_tx) - Transactions subcommands
 - [axelard tx gov deposit](/cli-docs/v0_27_0/axelard_tx_gov_deposit) - Deposit tokens for an active proposal

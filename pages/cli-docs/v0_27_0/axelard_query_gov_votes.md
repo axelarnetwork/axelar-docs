@@ -1,8 +1,8 @@
-## axelard query gov votes
+# axelard query gov votes
 
 Query votes on a proposal
 
-### Synopsis
+## Synopsis
 
 Query vote details for a single proposal by its identifier.
 
@@ -17,7 +17,7 @@ $ <appd> query gov votes 1 --page=2 --limit=100
 axelard query gov votes [proposal-id] [flags]
 ```
 
-### Options
+## Options
 
 ```
       --count-total       count total number of records in votes to query for
@@ -31,7 +31,7 @@ axelard query gov votes [proposal-id] [flags]
       --reverse           results are sorted in descending order
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --chain-id string     The network chain ID (default "axelar")
@@ -42,6 +42,6 @@ axelard query gov votes [proposal-id] [flags]
       --trace               print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard query gov](/cli-docs/v0_27_0/axelard_query_gov) - Querying commands for the governance module

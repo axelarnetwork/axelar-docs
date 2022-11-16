@@ -1,4 +1,4 @@
-## axelard query evm token-address
+# axelard query evm token-address
 
 Query a token address by by either symbol or asset
 
@@ -6,7 +6,7 @@ Query a token address by by either symbol or asset
 axelard query evm token-address [chain] [flags]
 ```
 
-### Options
+## Options
 
 ```
       --asset string    lookup token by asset name
@@ -16,7 +16,7 @@ axelard query evm token-address [chain] [flags]
       --symbol string   lookup token by symbol
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --chain-id string     The network chain ID (default "axelar")
@@ -27,6 +27,6 @@ axelard query evm token-address [chain] [flags]
       --trace               print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard query evm](/cli-docs/v0_27_0/axelard_query_evm) - Querying commands for the evm module

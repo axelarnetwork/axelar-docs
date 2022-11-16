@@ -1,8 +1,8 @@
-## axelard tx staking redelegate
+# axelard tx staking redelegate
 
 Redelegate illiquid tokens from one validator to another
 
-### Synopsis
+## Synopsis
 
 Redelegate an amount of illiquid staking tokens from one validator to another.
 
@@ -16,7 +16,7 @@ $ <appd> tx staking redelegate axelarvaloper1gghjut3ccd8ay0zduzj64hwre2fxs9ldmqh
 axelard tx staking redelegate [src-validator-addr] [dst-validator-addr] [amount] [flags]
 ```
 
-### Options
+## Options
 
 ```
   -a, --account-number uint      The account number of the signing account (offline mode only)
@@ -42,7 +42,7 @@ axelard tx staking redelegate [src-validator-addr] [dst-validator-addr] [amount]
   -y, --yes                      Skip tx broadcasting prompt confirmation (default true)
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --chain-id string     The network chain ID (default "axelar")
@@ -53,6 +53,6 @@ axelard tx staking redelegate [src-validator-addr] [dst-validator-addr] [amount]
       --trace               print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard tx staking](/cli-docs/v0_27_0/axelard_tx_staking) - Staking transaction subcommands

@@ -1,4 +1,4 @@
-## axelard set-genesis-staking
+# axelard set-genesis-staking
 
 Set the genesis parameters for the staking module
 
@@ -6,7 +6,7 @@ Set the genesis parameters for the staking module
 axelard set-genesis-staking [flags]
 ```
 
-### Options
+## Options
 
 ```
       --bond-denom string           A string representing bondable coin denomination
@@ -17,7 +17,7 @@ axelard set-genesis-staking [flags]
       --unbonding-period string     Time duration of unbonding (e.g., "6h").
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --home string         directory for config and data (default "$HOME/.axelar")
@@ -27,6 +27,6 @@ axelard set-genesis-staking [flags]
       --trace               print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard](/cli-docs/v0_27_0/axelard) - Axelar App

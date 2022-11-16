@@ -1,8 +1,8 @@
-## axelard query ibc client status
+# axelard query ibc client status
 
 Query client status
 
-### Synopsis
+## Synopsis
 
 Query client activity status. Any client without an 'Active' status is considered inactive
 
@@ -10,19 +10,19 @@ Query client activity status. Any client without an 'Active' status is considere
 axelard query ibc client status [client-id] [flags]
 ```
 
-### Examples
+## Examples
 
 ```
 <appd> query ibc client status [client-id]
 ```
 
-### Options
+## Options
 
 ```
   -h, --help   help for status
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --chain-id string     The network chain ID (default "axelar")
@@ -33,6 +33,6 @@ axelard query ibc client status [client-id] [flags]
       --trace               print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard query ibc client](/cli-docs/v0_27_0/axelard_query_ibc_client) - IBC client query subcommands

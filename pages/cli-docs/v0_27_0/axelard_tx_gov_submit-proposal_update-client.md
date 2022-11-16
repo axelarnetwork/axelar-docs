@@ -1,8 +1,8 @@
-## axelard tx gov submit-proposal update-client
+# axelard tx gov submit-proposal update-client
 
 Submit an update IBC client proposal
 
-### Synopsis
+## Synopsis
 
 Submit an update IBC client proposal along with an initial deposit.
 Please specify a subject client identifier you want to update..
@@ -12,7 +12,7 @@ Please specify the substitute client the subject client will be updated to.
 axelard tx gov submit-proposal update-client [subject-client-id] [substitute-client-id] [flags]
 ```
 
-### Options
+## Options
 
 ```
   -a, --account-number uint      The account number of the signing account (offline mode only)
@@ -41,7 +41,7 @@ axelard tx gov submit-proposal update-client [subject-client-id] [substitute-cli
   -y, --yes                      Skip tx broadcasting prompt confirmation (default true)
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --chain-id string     The network chain ID (default "axelar")
@@ -52,6 +52,6 @@ axelard tx gov submit-proposal update-client [subject-client-id] [substitute-cli
       --trace               print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard tx gov submit-proposal](/cli-docs/v0_27_0/axelard_tx_gov_submit-proposal) - Submit a proposal along with an initial deposit

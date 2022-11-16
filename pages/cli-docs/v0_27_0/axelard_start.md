@@ -1,8 +1,8 @@
-## axelard start
+# axelard start
 
 Run the full node
 
-### Synopsis
+## Synopsis
 
 Run the full node application with Tendermint in or out of process. By
 default, the application will run with Tendermint in process.
@@ -35,7 +35,7 @@ is performed. Note, when enabled, gRPC will also be automatically enabled.
 axelard start [flags]
 ```
 
-### Options
+## Options
 
 ```
       --abci string                                     specify abci transport (socket | grpc) (default "socket")
@@ -90,7 +90,7 @@ axelard start [flags]
       --x-crisis-skip-assert-invariants                 Skip x/crisis invariants check on startup
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --home string         directory for config and data (default "$HOME/.axelar")
@@ -100,6 +100,6 @@ axelard start [flags]
       --trace               print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard](/cli-docs/v0_27_0/axelard) - Axelar App

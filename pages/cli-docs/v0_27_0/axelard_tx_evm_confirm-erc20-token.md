@@ -1,4 +1,4 @@
-## axelard tx evm confirm-erc20-token
+# axelard tx evm confirm-erc20-token
 
 Confirm an ERC20 token deployment in an EVM chain transaction for a given asset of some origin chain and gateway address
 
@@ -6,7 +6,7 @@ Confirm an ERC20 token deployment in an EVM chain transaction for a given asset 
 axelard tx evm confirm-erc20-token [chain] [origin chain] [origin asset] [txID] [flags]
 ```
 
-### Options
+## Options
 
 ```
   -a, --account-number uint      The account number of the signing account (offline mode only)
@@ -32,7 +32,7 @@ axelard tx evm confirm-erc20-token [chain] [origin chain] [origin asset] [txID] 
   -y, --yes                      Skip tx broadcasting prompt confirmation (default true)
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --chain-id string     The network chain ID (default "axelar")
@@ -43,6 +43,6 @@ axelard tx evm confirm-erc20-token [chain] [origin chain] [origin asset] [txID] 
       --trace               print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard tx evm](/cli-docs/v0_27_0/axelard_tx_evm) - evm transactions subcommands

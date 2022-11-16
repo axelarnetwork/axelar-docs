@@ -1,4 +1,4 @@
-## axelard tx multisig
+# axelard tx multisig
 
 multisig transactions subcommands
 
@@ -6,13 +6,13 @@ multisig transactions subcommands
 axelard tx multisig [flags]
 ```
 
-### Options
+## Options
 
 ```
   -h, --help   help for multisig
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --chain-id string     The network chain ID (default "axelar")
@@ -23,7 +23,7 @@ axelard tx multisig [flags]
       --trace               print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard tx](/cli-docs/v0_27_0/axelard_tx) - Transactions subcommands
 - [axelard tx multisig keygen](/cli-docs/v0_27_0/axelard_tx_multisig_keygen) - sub-commands for keygen

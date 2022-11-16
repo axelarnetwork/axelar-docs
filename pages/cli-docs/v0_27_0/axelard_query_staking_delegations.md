@@ -1,8 +1,8 @@
-## axelard query staking delegations
+# axelard query staking delegations
 
 Query all delegations made by one delegator
 
-### Synopsis
+## Synopsis
 
 Query delegations for an individual delegator on all validators.
 
@@ -16,7 +16,7 @@ $ <appd> query staking delegations axelar1gghjut3ccd8ay0zduzj64hwre2fxs9ld75ru9p
 axelard query staking delegations [delegator-addr] [flags]
 ```
 
-### Options
+## Options
 
 ```
       --count-total       count total number of records in delegations to query for
@@ -30,7 +30,7 @@ axelard query staking delegations [delegator-addr] [flags]
       --reverse           results are sorted in descending order
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --chain-id string     The network chain ID (default "axelar")
@@ -41,6 +41,6 @@ axelard query staking delegations [delegator-addr] [flags]
       --trace               print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard query staking](/cli-docs/v0_27_0/axelard_query_staking) - Querying commands for the staking module

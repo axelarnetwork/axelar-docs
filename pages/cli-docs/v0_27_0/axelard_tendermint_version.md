@@ -1,8 +1,8 @@
-## axelard tendermint version
+# axelard tendermint version
 
 Print tendermint libraries' version
 
-### Synopsis
+## Synopsis
 
 Print protocols' and libraries' version numbers
 against which this app has been compiled.
@@ -11,13 +11,13 @@ against which this app has been compiled.
 axelard tendermint version [flags]
 ```
 
-### Options
+## Options
 
 ```
   -h, --help   help for version
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --home string         directory for config and data (default "$HOME/.axelar")
@@ -27,6 +27,6 @@ axelard tendermint version [flags]
       --trace               print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard tendermint](/cli-docs/v0_27_0/axelard_tendermint) - Tendermint subcommands

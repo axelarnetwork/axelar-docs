@@ -1,4 +1,4 @@
-## axelard tx evidence
+# axelard tx evidence
 
 Evidence transaction subcommands
 
@@ -6,13 +6,13 @@ Evidence transaction subcommands
 axelard tx evidence [flags]
 ```
 
-### Options
+## Options
 
 ```
   -h, --help   help for evidence
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --chain-id string     The network chain ID (default "axelar")
@@ -23,6 +23,6 @@ axelard tx evidence [flags]
       --trace               print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard tx](/cli-docs/v0_27_0/axelard_tx) - Transactions subcommands

@@ -1,8 +1,8 @@
-## axelard keys list
+# axelard keys list
 
 List all keys
 
-### Synopsis
+## Synopsis
 
 Return a list of all public keys stored by this key manager
 along with their associated name and address.
@@ -11,14 +11,14 @@ along with their associated name and address.
 axelard keys list [flags]
 ```
 
-### Options
+## Options
 
 ```
   -h, --help         help for list
   -n, --list-names   List names only
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --home string              The application home directory (default "$HOME/.axelar")
@@ -30,6 +30,6 @@ axelard keys list [flags]
       --trace                    print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard keys](/cli-docs/v0_27_0/axelard_keys) - Manage your application's keys

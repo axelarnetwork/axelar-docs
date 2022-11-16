@@ -1,4 +1,4 @@
-## axelard tx snapshot register-proxy
+# axelard tx snapshot register-proxy
 
 Register a proxy account for a specific validator principal to broadcast transactions in its stead
 
@@ -6,7 +6,7 @@ Register a proxy account for a specific validator principal to broadcast transac
 axelard tx snapshot register-proxy [proxy address] [flags]
 ```
 
-### Options
+## Options
 
 ```
   -a, --account-number uint      The account number of the signing account (offline mode only)
@@ -32,7 +32,7 @@ axelard tx snapshot register-proxy [proxy address] [flags]
   -y, --yes                      Skip tx broadcasting prompt confirmation (default true)
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --chain-id string     The network chain ID (default "axelar")
@@ -43,6 +43,6 @@ axelard tx snapshot register-proxy [proxy address] [flags]
       --trace               print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard tx snapshot](/cli-docs/v0_27_0/axelard_tx_snapshot) - snapshot transactions subcommands

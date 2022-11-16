@@ -1,4 +1,4 @@
-## axelard query nexus
+# axelard query nexus
 
 Querying commands for the nexus module
 
@@ -6,13 +6,13 @@ Querying commands for the nexus module
 axelard query nexus [flags]
 ```
 
-### Options
+## Options
 
 ```
   -h, --help   help for nexus
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --chain-id string     The network chain ID (default "axelar")
@@ -23,7 +23,7 @@ axelard query nexus [flags]
       --trace               print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard query](/cli-docs/v0_27_0/axelard_query) - Querying subcommands
 - [axelard query nexus assets](/cli-docs/v0_27_0/axelard_query_nexus_assets) - Returns the registered assets of a chain

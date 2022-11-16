@@ -1,8 +1,8 @@
-## axelard query staking redelegations-from
+# axelard query staking redelegations-from
 
 Query all outgoing redelegatations from a validator
 
-### Synopsis
+## Synopsis
 
 Query delegations that are redelegating _from_ a validator.
 
@@ -16,7 +16,7 @@ $ <appd> query staking redelegations-from axelarvaloper1gghjut3ccd8ay0zduzj64hwr
 axelard query staking redelegations-from [validator-addr] [flags]
 ```
 
-### Options
+## Options
 
 ```
       --count-total       count total number of records in validator redelegations to query for
@@ -30,7 +30,7 @@ axelard query staking redelegations-from [validator-addr] [flags]
       --reverse           results are sorted in descending order
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --chain-id string     The network chain ID (default "axelar")
@@ -41,6 +41,6 @@ axelard query staking redelegations-from [validator-addr] [flags]
       --trace               print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard query staking](/cli-docs/v0_27_0/axelard_query_staking) - Querying commands for the staking module

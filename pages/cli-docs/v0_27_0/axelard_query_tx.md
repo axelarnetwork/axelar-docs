@@ -1,8 +1,8 @@
-## axelard query tx
+# axelard query tx
 
 Query for a transaction by hash, "<addr>/<seq>" combination or comma-separated signatures in a committed block
 
-### Synopsis
+## Synopsis
 
 Example:
 
@@ -16,7 +16,7 @@ $ <appd> query tx --type=signature \<sig1_base64>,\<sig2_base64...>
 axelard query tx --type=[hash|acc_seq|signature] [hash|acc_seq|signature] [flags]
 ```
 
-### Options
+## Options
 
 ```
       --height int    Use a specific height to query state at (this can error if the node is pruning state)
@@ -25,7 +25,7 @@ axelard query tx --type=[hash|acc_seq|signature] [hash|acc_seq|signature] [flags
       --type string   The type to be used when querying tx, can be one of "hash", "acc_seq", "signature" (default "hash")
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --chain-id string     The network chain ID (default "axelar")
@@ -36,6 +36,6 @@ axelard query tx --type=[hash|acc_seq|signature] [hash|acc_seq|signature] [flags
       --trace               print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard query](/cli-docs/v0_27_0/axelard_query) - Querying subcommands

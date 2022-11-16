@@ -1,4 +1,4 @@
-## axelard set-genesis-vote
+# axelard set-genesis-vote
 
 Set the genesis parameters for the vote module
 
@@ -6,14 +6,14 @@ Set the genesis parameters for the vote module
 axelard set-genesis-vote [flags]
 ```
 
-### Options
+## Options
 
 ```
   -h, --help               help for set-genesis-vote
       --threshold string   The % of stake that is required for a voting poll to conclude (e.g., "2/3").
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --home string         directory for config and data (default "$HOME/.axelar")
@@ -23,6 +23,6 @@ axelard set-genesis-vote [flags]
       --trace               print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard](/cli-docs/v0_27_0/axelard) - Axelar App

@@ -1,8 +1,8 @@
-## axelard migrate
+# axelard migrate
 
 Migrate genesis to a specified target version
 
-### Synopsis
+## Synopsis
 
 Migrate the source genesis into the target version and print to STDOUT.
 
@@ -16,7 +16,7 @@ $ <appd> migrate v0.36 /path/to/genesis.json --chain-id=cosmoshub-3 --genesis-ti
 axelard migrate [target-version] [genesis-file] [flags]
 ```
 
-### Options
+## Options
 
 ```
       --chain-id string       override chain_id with this flag (default "axelar")
@@ -24,7 +24,7 @@ axelard migrate [target-version] [genesis-file] [flags]
   -h, --help                  help for migrate
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --home string         directory for config and data (default "$HOME/.axelar")
@@ -34,6 +34,6 @@ axelard migrate [target-version] [genesis-file] [flags]
       --trace               print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard](/cli-docs/v0_27_0/axelard) - Axelar App

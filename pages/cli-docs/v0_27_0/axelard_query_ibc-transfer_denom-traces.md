@@ -1,8 +1,8 @@
-## axelard query ibc-transfer denom-traces
+# axelard query ibc-transfer denom-traces
 
 Query the trace info for all token denominations
 
-### Synopsis
+## Synopsis
 
 Query the trace info for all token denominations
 
@@ -10,13 +10,13 @@ Query the trace info for all token denominations
 axelard query ibc-transfer denom-traces [flags]
 ```
 
-### Examples
+## Examples
 
 ```
 <appd> query ibc-transfer denom-traces
 ```
 
-### Options
+## Options
 
 ```
       --count-total       count total number of records in denominations trace to query for
@@ -30,7 +30,7 @@ axelard query ibc-transfer denom-traces [flags]
       --reverse           results are sorted in descending order
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --chain-id string     The network chain ID (default "axelar")
@@ -41,6 +41,6 @@ axelard query ibc-transfer denom-traces [flags]
       --trace               print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard query ibc-transfer](/cli-docs/v0_27_0/axelard_query_ibc-transfer) - IBC fungible token transfer query subcommands

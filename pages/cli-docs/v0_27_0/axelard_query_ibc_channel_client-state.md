@@ -1,8 +1,8 @@
-## axelard query ibc channel client-state
+# axelard query ibc channel client-state
 
 Query the client state associated with a channel
 
-### Synopsis
+## Synopsis
 
 Query the client state associated with a channel, by providing its port and channel identifiers.
 
@@ -10,13 +10,13 @@ Query the client state associated with a channel, by providing its port and chan
 axelard query ibc channel client-state [port-id] [channel-id] [flags]
 ```
 
-### Examples
+## Examples
 
 ```
 <appd> query ibc channel client-state [port-id] [channel-id]
 ```
 
-### Options
+## Options
 
 ```
       --height int    Use a specific height to query state at (this can error if the node is pruning state)
@@ -24,7 +24,7 @@ axelard query ibc channel client-state [port-id] [channel-id] [flags]
       --node string   <host>:<port> to Tendermint RPC interface for this chain (default "tcp://localhost:26657")
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --chain-id string     The network chain ID (default "axelar")
@@ -35,6 +35,6 @@ axelard query ibc channel client-state [port-id] [channel-id] [flags]
       --trace               print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard query ibc channel](/cli-docs/v0_27_0/axelard_query_ibc_channel) - IBC channel query subcommands

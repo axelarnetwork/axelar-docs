@@ -1,8 +1,8 @@
-## axelard query txs
+# axelard query txs
 
 Query for paginated transactions that match a set of events
 
-### Synopsis
+## Synopsis
 
 Search for transactions that match the exact given events where results are paginated.
 Each event takes the form of '{eventType}.{eventAttribute}={value}'. Please refer
@@ -19,7 +19,7 @@ $ <appd> query txs --events 'message.sender=cosmos1...&message.action=withdraw_d
 axelard query txs [flags]
 ```
 
-### Options
+## Options
 
 ```
       --events string   list of transaction events in the form of {eventType}.{eventAttribute}={value}
@@ -30,7 +30,7 @@ axelard query txs [flags]
       --page int        Query a specific page of paginated results (default 1)
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --chain-id string     The network chain ID (default "axelar")
@@ -41,6 +41,6 @@ axelard query txs [flags]
       --trace               print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard query](/cli-docs/v0_27_0/axelard_query) - Querying subcommands

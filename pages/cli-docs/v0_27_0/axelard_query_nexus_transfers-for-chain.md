@@ -1,4 +1,4 @@
-## axelard query nexus transfers-for-chain
+# axelard query nexus transfers-for-chain
 
 Query for account by address
 
@@ -6,7 +6,7 @@ Query for account by address
 axelard query nexus transfers-for-chain [chain] [state (pending|archived|insufficient_amount)] [flags]
 ```
 
-### Options
+## Options
 
 ```
       --count-total       count total number of records in transfers-for-chain to query for
@@ -20,7 +20,7 @@ axelard query nexus transfers-for-chain [chain] [state (pending|archived|insuffi
       --reverse           results are sorted in descending order
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --chain-id string     The network chain ID (default "axelar")
@@ -31,6 +31,6 @@ axelard query nexus transfers-for-chain [chain] [state (pending|archived|insuffi
       --trace               print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard query nexus](/cli-docs/v0_27_0/axelard_query_nexus) - Querying commands for the nexus module

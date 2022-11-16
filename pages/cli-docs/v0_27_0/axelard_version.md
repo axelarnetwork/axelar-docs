@@ -1,4 +1,4 @@
-## axelard version
+# axelard version
 
 Print the application binary version information
 
@@ -6,14 +6,14 @@ Print the application binary version information
 axelard version [flags]
 ```
 
-### Options
+## Options
 
 ```
   -h, --help   help for version
       --long   Print long version information
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --home string         directory for config and data (default "$HOME/.axelar")
@@ -23,6 +23,6 @@ axelard version [flags]
       --trace               print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard](/cli-docs/v0_27_0/axelard) - Axelar App

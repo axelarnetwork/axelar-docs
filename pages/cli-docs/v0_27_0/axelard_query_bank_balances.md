@@ -1,8 +1,8 @@
-## axelard query bank balances
+# axelard query bank balances
 
 Query for account balances by address
 
-### Synopsis
+## Synopsis
 
 Query the total balance of an account or of a specific denomination.
 
@@ -17,7 +17,7 @@ $ <appd> query bank balances \[address\] --denom=\[denom\]
 axelard query bank balances [address] [flags]
 ```
 
-### Options
+## Options
 
 ```
       --count-total       count total number of records in all balances to query for
@@ -32,7 +32,7 @@ axelard query bank balances [address] [flags]
       --reverse           results are sorted in descending order
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --chain-id string     The network chain ID (default "axelar")
@@ -43,6 +43,6 @@ axelard query bank balances [address] [flags]
       --trace               print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard query bank](/cli-docs/v0_27_0/axelard_query_bank) - Querying commands for the bank module

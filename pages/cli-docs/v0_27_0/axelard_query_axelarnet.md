@@ -1,4 +1,4 @@
-## axelard query axelarnet
+# axelard query axelarnet
 
 Querying commands for the axelarnet module
 
@@ -6,13 +6,13 @@ Querying commands for the axelarnet module
 axelard query axelarnet [flags]
 ```
 
-### Options
+## Options
 
 ```
   -h, --help   help for axelarnet
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --chain-id string     The network chain ID (default "axelar")
@@ -23,7 +23,7 @@ axelard query axelarnet [flags]
       --trace               print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard query](/cli-docs/v0_27_0/axelard_query) - Querying subcommands
 - [axelard query axelarnet ibc-transfer-count](/cli-docs/v0_27_0/axelard_query_axelarnet_ibc-transfer-count) - returns the number of pending IBC transfers per chain

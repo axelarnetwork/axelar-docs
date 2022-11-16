@@ -1,8 +1,8 @@
-## axelard tx gov submit-proposal
+# axelard tx gov submit-proposal
 
 Submit a proposal along with an initial deposit
 
-### Synopsis
+## Synopsis
 
 Submit a proposal along with an initial deposit.
 Proposal title, description, type and deposit can be given directly or through a proposal JSON file.
@@ -30,7 +30,7 @@ $ <appd> tx gov submit-proposal --title="Test Proposal" --description="My awesom
 axelard tx gov submit-proposal [flags]
 ```
 
-### Options
+## Options
 
 ```
   -a, --account-number uint      The account number of the signing account (offline mode only)
@@ -61,7 +61,7 @@ axelard tx gov submit-proposal [flags]
   -y, --yes                      Skip tx broadcasting prompt confirmation (default true)
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --chain-id string     The network chain ID (default "axelar")
@@ -72,7 +72,7 @@ axelard tx gov submit-proposal [flags]
       --trace               print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard tx gov](/cli-docs/v0_27_0/axelard_tx_gov) - Governance transactions subcommands
 - [axelard tx gov submit-proposal cancel-software-upgrade](/cli-docs/v0_27_0/axelard_tx_gov_submit-proposal_cancel-software-upgrade) - Cancel the current software upgrade proposal

@@ -1,8 +1,8 @@
-## axelard tx ibc client misbehaviour
+# axelard tx ibc client misbehaviour
 
 submit a client misbehaviour
 
-### Synopsis
+## Synopsis
 
 submit a client misbehaviour to prevent future updates
 
@@ -10,19 +10,19 @@ submit a client misbehaviour to prevent future updates
 axelard tx ibc client misbehaviour [path/to/misbehaviour.json] [flags]
 ```
 
-### Examples
+## Examples
 
 ```
 <appd> tx ibc client misbehaviour [path/to/misbehaviour.json] --from node0 --home ../node0/<app>cli --chain-id $CID
 ```
 
-### Options
+## Options
 
 ```
   -h, --help   help for misbehaviour
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --chain-id string     The network chain ID (default "axelar")
@@ -33,6 +33,6 @@ axelard tx ibc client misbehaviour [path/to/misbehaviour.json] [flags]
       --trace               print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard tx ibc client](/cli-docs/v0_27_0/axelard_tx_ibc_client) - IBC client transaction subcommands

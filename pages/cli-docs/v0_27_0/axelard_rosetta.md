@@ -1,4 +1,4 @@
-## axelard rosetta
+# axelard rosetta
 
 spin up a rosetta server
 
@@ -6,7 +6,7 @@ spin up a rosetta server
 axelard rosetta [flags]
 ```
 
-### Options
+## Options
 
 ```
       --addr string                the address rosetta will bind to (default ":8080")
@@ -23,7 +23,7 @@ axelard rosetta [flags]
       --tendermint string          the tendermint rpc endpoint, without tcp:// (default "localhost:26657")
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --home string         directory for config and data (default "$HOME/.axelar")
@@ -33,6 +33,6 @@ axelard rosetta [flags]
       --trace               print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard](/cli-docs/v0_27_0/axelard) - Axelar App

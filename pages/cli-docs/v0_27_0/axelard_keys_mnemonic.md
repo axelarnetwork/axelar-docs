@@ -1,8 +1,8 @@
-## axelard keys mnemonic
+# axelard keys mnemonic
 
 Compute the bip39 mnemonic for some input entropy
 
-### Synopsis
+## Synopsis
 
 Create a bip39 mnemonic, sometimes called a seed phrase, by reading from the system entropy. To pass your own entropy, use --unsafe-entropy
 
@@ -10,14 +10,14 @@ Create a bip39 mnemonic, sometimes called a seed phrase, by reading from the sys
 axelard keys mnemonic [flags]
 ```
 
-### Options
+## Options
 
 ```
   -h, --help             help for mnemonic
       --unsafe-entropy   Prompt the user to supply their own entropy, instead of relying on the system
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --home string              The application home directory (default "$HOME/.axelar")
@@ -29,6 +29,6 @@ axelard keys mnemonic [flags]
       --trace                    print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard keys](/cli-docs/v0_27_0/axelard_keys) - Manage your application's keys

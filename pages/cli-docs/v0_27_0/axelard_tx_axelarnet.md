@@ -1,4 +1,4 @@
-## axelard tx axelarnet
+# axelard tx axelarnet
 
 axelarnet transactions subcommands
 
@@ -6,13 +6,13 @@ axelarnet transactions subcommands
 axelard tx axelarnet [flags]
 ```
 
-### Options
+## Options
 
 ```
   -h, --help   help for axelarnet
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --chain-id string     The network chain ID (default "axelar")
@@ -23,7 +23,7 @@ axelard tx axelarnet [flags]
       --trace               print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard tx](/cli-docs/v0_27_0/axelard_tx) - Transactions subcommands
 - [axelard tx axelarnet add-cosmos-based-chain](/cli-docs/v0_27_0/axelard_tx_axelarnet_add-cosmos-based-chain) - Add a new cosmos based chain

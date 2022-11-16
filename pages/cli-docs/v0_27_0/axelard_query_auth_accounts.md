@@ -1,4 +1,4 @@
-## axelard query auth accounts
+# axelard query auth accounts
 
 Query all the accounts
 
@@ -6,7 +6,7 @@ Query all the accounts
 axelard query auth accounts [flags]
 ```
 
-### Options
+## Options
 
 ```
       --count-total       count total number of records in all-accounts to query for
@@ -20,7 +20,7 @@ axelard query auth accounts [flags]
       --reverse           results are sorted in descending order
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --chain-id string     The network chain ID (default "axelar")
@@ -31,6 +31,6 @@ axelard query auth accounts [flags]
       --trace               print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard query auth](/cli-docs/v0_27_0/axelard_query_auth) - Querying commands for the auth module

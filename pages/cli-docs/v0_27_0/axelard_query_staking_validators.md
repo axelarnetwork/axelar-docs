@@ -1,8 +1,8 @@
-## axelard query staking validators
+# axelard query staking validators
 
 Query for all validators
 
-### Synopsis
+## Synopsis
 
 Query details about all validators on a network.
 
@@ -16,7 +16,7 @@ $ <appd> query staking validators
 axelard query staking validators [flags]
 ```
 
-### Options
+## Options
 
 ```
       --count-total       count total number of records in validators to query for
@@ -30,7 +30,7 @@ axelard query staking validators [flags]
       --reverse           results are sorted in descending order
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --chain-id string     The network chain ID (default "axelar")
@@ -41,6 +41,6 @@ axelard query staking validators [flags]
       --trace               print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard query staking](/cli-docs/v0_27_0/axelard_query_staking) - Querying commands for the staking module

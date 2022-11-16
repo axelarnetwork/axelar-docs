@@ -1,8 +1,8 @@
-## axelard keys parse
+# axelard keys parse
 
 Parse address from hex to bech32 and vice versa
 
-### Synopsis
+## Synopsis
 
 Convert and print to stdout key addresses and fingerprints from
 hexadecimal into bech32 cosmos prefixed format and vice versa.
@@ -11,13 +11,13 @@ hexadecimal into bech32 cosmos prefixed format and vice versa.
 axelard keys parse <hex-or-bech32-address> [flags]
 ```
 
-### Options
+## Options
 
 ```
   -h, --help   help for parse
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --home string              The application home directory (default "$HOME/.axelar")
@@ -29,6 +29,6 @@ axelard keys parse <hex-or-bech32-address> [flags]
       --trace                    print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard keys](/cli-docs/v0_27_0/axelard_keys) - Manage your application's keys

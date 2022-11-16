@@ -1,8 +1,8 @@
-## axelard query staking unbonding-delegation
+# axelard query staking unbonding-delegation
 
 Query an unbonding-delegation record based on delegator and validator address
 
-### Synopsis
+## Synopsis
 
 Query unbonding delegations for an individual delegator on an individual validator.
 
@@ -16,7 +16,7 @@ $ <appd> query staking unbonding-delegation axelar1gghjut3ccd8ay0zduzj64hwre2fxs
 axelard query staking unbonding-delegation [delegator-addr] [validator-addr] [flags]
 ```
 
-### Options
+## Options
 
 ```
       --height int    Use a specific height to query state at (this can error if the node is pruning state)
@@ -24,7 +24,7 @@ axelard query staking unbonding-delegation [delegator-addr] [validator-addr] [fl
       --node string   <host>:<port> to Tendermint RPC interface for this chain (default "tcp://localhost:26657")
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --chain-id string     The network chain ID (default "axelar")
@@ -35,6 +35,6 @@ axelard query staking unbonding-delegation [delegator-addr] [validator-addr] [fl
       --trace               print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard query staking](/cli-docs/v0_27_0/axelard_query_staking) - Querying commands for the staking module

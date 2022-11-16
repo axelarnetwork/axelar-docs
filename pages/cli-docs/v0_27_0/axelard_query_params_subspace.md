@@ -1,4 +1,4 @@
-## axelard query params subspace
+# axelard query params subspace
 
 Query for raw parameters by subspace and key
 
@@ -6,7 +6,7 @@ Query for raw parameters by subspace and key
 axelard query params subspace [subspace] [key] [flags]
 ```
 
-### Options
+## Options
 
 ```
       --height int    Use a specific height to query state at (this can error if the node is pruning state)
@@ -14,7 +14,7 @@ axelard query params subspace [subspace] [key] [flags]
       --node string   <host>:<port> to Tendermint RPC interface for this chain (default "tcp://localhost:26657")
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --chain-id string     The network chain ID (default "axelar")
@@ -25,6 +25,6 @@ axelard query params subspace [subspace] [key] [flags]
       --trace               print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard query params](/cli-docs/v0_27_0/axelard_query_params) - Querying commands for the params module

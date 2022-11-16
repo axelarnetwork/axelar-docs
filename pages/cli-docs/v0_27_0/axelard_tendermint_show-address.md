@@ -1,4 +1,4 @@
-## axelard tendermint show-address
+# axelard tendermint show-address
 
 Shows this node's tendermint validator consensus address
 
@@ -6,13 +6,13 @@ Shows this node's tendermint validator consensus address
 axelard tendermint show-address [flags]
 ```
 
-### Options
+## Options
 
 ```
   -h, --help   help for show-address
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --home string         directory for config and data (default "$HOME/.axelar")
@@ -22,6 +22,6 @@ axelard tendermint show-address [flags]
       --trace               print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard tendermint](/cli-docs/v0_27_0/axelard_tendermint) - Tendermint subcommands

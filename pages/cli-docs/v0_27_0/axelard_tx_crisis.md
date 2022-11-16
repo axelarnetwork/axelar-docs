@@ -1,4 +1,4 @@
-## axelard tx crisis
+# axelard tx crisis
 
 Crisis transactions subcommands
 
@@ -6,13 +6,13 @@ Crisis transactions subcommands
 axelard tx crisis [flags]
 ```
 
-### Options
+## Options
 
 ```
   -h, --help   help for crisis
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --chain-id string     The network chain ID (default "axelar")
@@ -23,7 +23,7 @@ axelard tx crisis [flags]
       --trace               print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard tx](/cli-docs/v0_27_0/axelard_tx) - Transactions subcommands
 - [axelard tx crisis invariant-broken](/cli-docs/v0_27_0/axelard_tx_crisis_invariant-broken) - Submit proof that an invariant broken to halt the chain

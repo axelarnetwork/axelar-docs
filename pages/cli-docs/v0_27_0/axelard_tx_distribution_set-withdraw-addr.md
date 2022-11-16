@@ -1,8 +1,8 @@
-## axelard tx distribution set-withdraw-addr
+# axelard tx distribution set-withdraw-addr
 
 change the default withdraw address for rewards associated with an address
 
-### Synopsis
+## Synopsis
 
 Set the withdraw address for rewards associated with a delegator address.
 
@@ -16,7 +16,7 @@ $ <appd> tx distribution set-withdraw-addr axelar1gghjut3ccd8ay0zduzj64hwre2fxs9
 axelard tx distribution set-withdraw-addr [withdraw-addr] [flags]
 ```
 
-### Options
+## Options
 
 ```
   -a, --account-number uint      The account number of the signing account (offline mode only)
@@ -42,7 +42,7 @@ axelard tx distribution set-withdraw-addr [withdraw-addr] [flags]
   -y, --yes                      Skip tx broadcasting prompt confirmation (default true)
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --chain-id string     The network chain ID (default "axelar")
@@ -53,6 +53,6 @@ axelard tx distribution set-withdraw-addr [withdraw-addr] [flags]
       --trace               print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard tx distribution](/cli-docs/v0_27_0/axelard_tx_distribution) - Distribution transactions subcommands

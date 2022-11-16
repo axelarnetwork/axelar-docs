@@ -1,4 +1,4 @@
-## axelard set-genesis-crisis
+# axelard set-genesis-crisis
 
 Set the genesis parameters for the crisis module
 
@@ -6,14 +6,14 @@ Set the genesis parameters for the crisis module
 axelard set-genesis-crisis [flags]
 ```
 
-### Options
+## Options
 
 ```
       --constant-fee string   Transaction fee to initiate a broken invariant check.
   -h, --help                  help for set-genesis-crisis
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --home string         directory for config and data (default "$HOME/.axelar")
@@ -23,6 +23,6 @@ axelard set-genesis-crisis [flags]
       --trace               print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard](/cli-docs/v0_27_0/axelard) - Axelar App

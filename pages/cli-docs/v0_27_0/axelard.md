@@ -1,8 +1,8 @@
-## axelard
+# axelard
 
 Axelar App
 
-### Options
+## Options
 
 ```
   -h, --help                help for axelard
@@ -13,7 +13,7 @@ Axelar App
       --trace               print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard add-genesis-account](/cli-docs/v0_27_0/axelard_add-genesis-account) - Add a genesis account to genesis.json
 - [axelard add-genesis-evm-chain](/cli-docs/v0_27_0/axelard_add-genesis-evm-chain) - Adds an EVM chain in genesis.json

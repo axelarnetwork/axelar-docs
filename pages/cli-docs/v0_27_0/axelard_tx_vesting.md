@@ -1,4 +1,4 @@
-## axelard tx vesting
+# axelard tx vesting
 
 Vesting transaction subcommands
 
@@ -6,13 +6,13 @@ Vesting transaction subcommands
 axelard tx vesting [flags]
 ```
 
-### Options
+## Options
 
 ```
   -h, --help   help for vesting
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --chain-id string     The network chain ID (default "axelar")
@@ -23,7 +23,7 @@ axelard tx vesting [flags]
       --trace               print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard tx](/cli-docs/v0_27_0/axelard_tx) - Transactions subcommands
 - [axelard tx vesting create-vesting-account](/cli-docs/v0_27_0/axelard_tx_vesting_create-vesting-account) - Create a new vesting account funded with an allocation of tokens.

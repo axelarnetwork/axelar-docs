@@ -1,8 +1,8 @@
-## axelard keys add
+# axelard keys add
 
 Add an encrypted private key (either newly generated or recovered), encrypt it, and save to <name> file
 
-### Synopsis
+## Synopsis
 
 Derive a new private key and encrypt to disk.
 Optionally specify a BIP39 mnemonic, a BIP39 passphrase to further secure the mnemonic,
@@ -29,7 +29,7 @@ keys add mymultisig --multisig "keyname1,keyname2,keyname3" --multisig-threshold
 axelard keys add <name> [flags]
 ```
 
-### Options
+## Options
 
 ```
       --account uint32           Account number for HD derivation
@@ -49,7 +49,7 @@ axelard keys add <name> [flags]
       --recover                  Provide seed phrase to recover existing key instead of creating
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --home string              The application home directory (default "$HOME/.axelar")
@@ -61,6 +61,6 @@ axelard keys add <name> [flags]
       --trace                    print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard keys](/cli-docs/v0_27_0/axelard_keys) - Manage your application's keys

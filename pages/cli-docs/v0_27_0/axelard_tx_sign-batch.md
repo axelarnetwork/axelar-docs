@@ -1,8 +1,8 @@
-## axelard tx sign-batch
+# axelard tx sign-batch
 
 Sign transaction batch files
 
-### Synopsis
+## Synopsis
 
 Sign batch files of transactions generated with --generate-only.
 The command processes list of transactions from file (one StdTx each line), generate
@@ -24,7 +24,7 @@ account key. It implies --signature-only.
 axelard tx sign-batch [file] [flags]
 ```
 
-### Options
+## Options
 
 ```
   -a, --account-number uint      The account number of the signing account (offline mode only)
@@ -53,7 +53,7 @@ axelard tx sign-batch [file] [flags]
   -y, --yes                      Skip tx broadcasting prompt confirmation (default true)
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --chain-id string     The network chain ID (default "axelar")
@@ -64,6 +64,6 @@ axelard tx sign-batch [file] [flags]
       --trace               print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard tx](/cli-docs/v0_27_0/axelard_tx) - Transactions subcommands

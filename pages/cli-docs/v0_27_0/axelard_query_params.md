@@ -1,4 +1,4 @@
-## axelard query params
+# axelard query params
 
 Querying commands for the params module
 
@@ -6,13 +6,13 @@ Querying commands for the params module
 axelard query params [flags]
 ```
 
-### Options
+## Options
 
 ```
   -h, --help   help for params
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --chain-id string     The network chain ID (default "axelar")
@@ -23,7 +23,7 @@ axelard query params [flags]
       --trace               print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard query](/cli-docs/v0_27_0/axelard_query) - Querying subcommands
 - [axelard query params subspace](/cli-docs/v0_27_0/axelard_query_params_subspace) - Query for raw parameters by subspace and key

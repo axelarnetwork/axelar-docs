@@ -1,8 +1,8 @@
-## axelard query auth params
+# axelard query auth params
 
 Query the current auth parameters
 
-### Synopsis
+## Synopsis
 
 Query the current auth parameters:
 
@@ -12,7 +12,7 @@ $ <appd> query auth params
 axelard query auth params [flags]
 ```
 
-### Options
+## Options
 
 ```
       --height int    Use a specific height to query state at (this can error if the node is pruning state)
@@ -20,7 +20,7 @@ axelard query auth params [flags]
       --node string   <host>:<port> to Tendermint RPC interface for this chain (default "tcp://localhost:26657")
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --chain-id string     The network chain ID (default "axelar")
@@ -31,6 +31,6 @@ axelard query auth params [flags]
       --trace               print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard query auth](/cli-docs/v0_27_0/axelard_query_auth) - Querying commands for the auth module

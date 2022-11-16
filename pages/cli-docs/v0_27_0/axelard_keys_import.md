@@ -1,8 +1,8 @@
-## axelard keys import
+# axelard keys import
 
 Import private keys into the local keybase
 
-### Synopsis
+## Synopsis
 
 Import a ASCII armored private key into the local keybase.
 
@@ -10,13 +10,13 @@ Import a ASCII armored private key into the local keybase.
 axelard keys import <name> <keyfile> [flags]
 ```
 
-### Options
+## Options
 
 ```
   -h, --help   help for import
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --home string              The application home directory (default "$HOME/.axelar")
@@ -28,6 +28,6 @@ axelard keys import <name> <keyfile> [flags]
       --trace                    print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard keys](/cli-docs/v0_27_0/axelard_keys) - Manage your application's keys

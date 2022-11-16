@@ -1,4 +1,4 @@
-## axelard tx staking
+# axelard tx staking
 
 Staking transaction subcommands
 
@@ -6,13 +6,13 @@ Staking transaction subcommands
 axelard tx staking [flags]
 ```
 
-### Options
+## Options
 
 ```
   -h, --help   help for staking
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --chain-id string     The network chain ID (default "axelar")
@@ -23,7 +23,7 @@ axelard tx staking [flags]
       --trace               print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard tx](/cli-docs/v0_27_0/axelard_tx) - Transactions subcommands
 - [axelard tx staking create-validator](/cli-docs/v0_27_0/axelard_tx_staking_create-validator) - create new validator initialized with a self-delegation to it

@@ -1,4 +1,4 @@
-## axelard tx ibc channel
+# axelard tx ibc channel
 
 IBC channel transaction subcommands
 
@@ -6,13 +6,13 @@ IBC channel transaction subcommands
 axelard tx ibc channel [flags]
 ```
 
-### Options
+## Options
 
 ```
   -h, --help   help for channel
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --chain-id string     The network chain ID (default "axelar")
@@ -23,6 +23,6 @@ axelard tx ibc channel [flags]
       --trace               print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard tx ibc](/cli-docs/v0_27_0/axelard_tx_ibc) - IBC transaction subcommands

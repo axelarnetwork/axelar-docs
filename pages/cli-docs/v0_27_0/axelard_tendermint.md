@@ -1,14 +1,14 @@
-## axelard tendermint
+# axelard tendermint
 
 Tendermint subcommands
 
-### Options
+## Options
 
 ```
   -h, --help   help for tendermint
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --home string         directory for config and data (default "$HOME/.axelar")
@@ -18,7 +18,7 @@ Tendermint subcommands
       --trace               print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard](/cli-docs/v0_27_0/axelard) - Axelar App
 - [axelard tendermint reset-state](/cli-docs/v0_27_0/axelard_tendermint_reset-state) - Remove all the data and WAL

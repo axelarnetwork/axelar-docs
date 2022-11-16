@@ -1,4 +1,4 @@
-## axelard tx nexus
+# axelard tx nexus
 
 nexus transactions subcommands
 
@@ -6,13 +6,13 @@ nexus transactions subcommands
 axelard tx nexus [flags]
 ```
 
-### Options
+## Options
 
 ```
   -h, --help   help for nexus
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --chain-id string     The network chain ID (default "axelar")
@@ -23,7 +23,7 @@ axelard tx nexus [flags]
       --trace               print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard tx](/cli-docs/v0_27_0/axelard_tx) - Transactions subcommands
 - [axelard tx nexus activate-chain](/cli-docs/v0_27_0/axelard_tx_nexus_activate-chain) - activate the given chains

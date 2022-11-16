@@ -1,8 +1,8 @@
-## axelard query staking redelegation
+# axelard query staking redelegation
 
 Query a redelegation record based on delegator and a source and destination validator address
 
-### Synopsis
+## Synopsis
 
 Query a redelegation record for an individual delegator between a source and destination validator.
 
@@ -16,7 +16,7 @@ $ <appd> query staking redelegation axelar1gghjut3ccd8ay0zduzj64hwre2fxs9ld75ru9
 axelard query staking redelegation [delegator-addr] [src-validator-addr] [dst-validator-addr] [flags]
 ```
 
-### Options
+## Options
 
 ```
       --height int    Use a specific height to query state at (this can error if the node is pruning state)
@@ -24,7 +24,7 @@ axelard query staking redelegation [delegator-addr] [src-validator-addr] [dst-va
       --node string   <host>:<port> to Tendermint RPC interface for this chain (default "tcp://localhost:26657")
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --chain-id string     The network chain ID (default "axelar")
@@ -35,6 +35,6 @@ axelard query staking redelegation [delegator-addr] [src-validator-addr] [dst-va
       --trace               print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard query staking](/cli-docs/v0_27_0/axelard_query_staking) - Querying commands for the staking module

@@ -1,4 +1,4 @@
-## axelard tx axelarnet link
+# axelard tx axelarnet link
 
 Link a cross chain address to an Axelar address
 
@@ -6,7 +6,7 @@ Link a cross chain address to an Axelar address
 axelard tx axelarnet link [recipient chain] [recipient address] [asset] [flags]
 ```
 
-### Options
+## Options
 
 ```
   -a, --account-number uint      The account number of the signing account (offline mode only)
@@ -32,7 +32,7 @@ axelard tx axelarnet link [recipient chain] [recipient address] [asset] [flags]
   -y, --yes                      Skip tx broadcasting prompt confirmation (default true)
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --chain-id string     The network chain ID (default "axelar")
@@ -43,6 +43,6 @@ axelard tx axelarnet link [recipient chain] [recipient address] [asset] [flags]
       --trace               print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard tx axelarnet](/cli-docs/v0_27_0/axelard_tx_axelarnet) - axelarnet transactions subcommands

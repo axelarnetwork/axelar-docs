@@ -1,8 +1,8 @@
-## axelard debug raw-bytes
+# axelard debug raw-bytes
 
 Convert raw bytes output (eg. \[10 21 13 255\]) to hex
 
-### Synopsis
+## Synopsis
 
 Convert raw-bytes to hex.
 
@@ -16,13 +16,13 @@ $ <appd> debug raw-bytes \[72 101 108 108 111 44 32 112 108 97 121 103 114 111 1
 axelard debug raw-bytes [raw-bytes] [flags]
 ```
 
-### Options
+## Options
 
 ```
   -h, --help   help for raw-bytes
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --home string         directory for config and data (default "$HOME/.axelar")
@@ -32,6 +32,6 @@ axelard debug raw-bytes [raw-bytes] [flags]
       --trace               print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard debug](/cli-docs/v0_27_0/axelard_debug) - Tool for helping with debugging your application

@@ -1,8 +1,8 @@
-## axelard query evidence
+# axelard query evidence
 
 Query for evidence by hash or for all (paginated) submitted evidence
 
-### Synopsis
+## Synopsis
 
 Query for specific submitted evidence by hash or query for all (paginated) evidence:
 
@@ -17,7 +17,7 @@ $ <appd> query evidence --page=2 --limit=50
 axelard query evidence [flags]
 ```
 
-### Options
+## Options
 
 ```
       --count-total       count total number of records in evidence to query for
@@ -31,7 +31,7 @@ axelard query evidence [flags]
       --reverse           results are sorted in descending order
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --chain-id string     The network chain ID (default "axelar")
@@ -42,6 +42,6 @@ axelard query evidence [flags]
       --trace               print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard query](/cli-docs/v0_27_0/axelard_query) - Querying subcommands

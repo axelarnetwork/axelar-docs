@@ -1,4 +1,4 @@
-## axelard tx evm confirm-transfer-operatorship
+# axelard tx evm confirm-transfer-operatorship
 
 Confirm a transfer operatorship in an EVM chain transaction
 
@@ -6,7 +6,7 @@ Confirm a transfer operatorship in an EVM chain transaction
 axelard tx evm confirm-transfer-operatorship [chain] [txID] [flags]
 ```
 
-### Options
+## Options
 
 ```
   -a, --account-number uint      The account number of the signing account (offline mode only)
@@ -32,7 +32,7 @@ axelard tx evm confirm-transfer-operatorship [chain] [txID] [flags]
   -y, --yes                      Skip tx broadcasting prompt confirmation (default true)
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --chain-id string     The network chain ID (default "axelar")
@@ -43,6 +43,6 @@ axelard tx evm confirm-transfer-operatorship [chain] [txID] [flags]
       --trace               print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard tx evm](/cli-docs/v0_27_0/axelard_tx_evm) - evm transactions subcommands

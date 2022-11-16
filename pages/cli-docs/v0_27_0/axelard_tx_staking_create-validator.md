@@ -1,4 +1,4 @@
-## axelard tx staking create-validator
+# axelard tx staking create-validator
 
 create new validator initialized with a self-delegation to it
 
@@ -6,7 +6,7 @@ create new validator initialized with a self-delegation to it
 axelard tx staking create-validator [flags]
 ```
 
-### Options
+## Options
 
 ```
   -a, --account-number uint                 The account number of the signing account (offline mode only)
@@ -45,7 +45,7 @@ axelard tx staking create-validator [flags]
   -y, --yes                                 Skip tx broadcasting prompt confirmation (default true)
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --chain-id string     The network chain ID (default "axelar")
@@ -56,6 +56,6 @@ axelard tx staking create-validator [flags]
       --trace               print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard tx staking](/cli-docs/v0_27_0/axelard_tx_staking) - Staking transaction subcommands

@@ -1,8 +1,8 @@
-## axelard debug addr
+# axelard debug addr
 
 Convert an address between hex and bech32
 
-### Synopsis
+## Synopsis
 
 Convert an address between hex encoding and bech32.
 
@@ -16,13 +16,13 @@ $ <appd> debug addr cosmos1e0jnq2sun3dzjh8p2xq95kk0exp7shwjpfg
 axelard debug addr [address] [flags]
 ```
 
-### Options
+## Options
 
 ```
   -h, --help   help for addr
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --home string         directory for config and data (default "$HOME/.axelar")
@@ -32,6 +32,6 @@ axelard debug addr [address] [flags]
       --trace               print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard debug](/cli-docs/v0_27_0/axelard_debug) - Tool for helping with debugging your application

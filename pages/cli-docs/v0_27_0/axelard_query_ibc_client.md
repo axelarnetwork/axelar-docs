@@ -1,4 +1,4 @@
-## axelard query ibc client
+# axelard query ibc client
 
 IBC client query subcommands
 
@@ -6,13 +6,13 @@ IBC client query subcommands
 axelard query ibc client [flags]
 ```
 
-### Options
+## Options
 
 ```
   -h, --help   help for client
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --chain-id string     The network chain ID (default "axelar")
@@ -23,7 +23,7 @@ axelard query ibc client [flags]
       --trace               print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard query ibc](/cli-docs/v0_27_0/axelard_query_ibc) - Querying commands for the IBC module
 - [axelard query ibc client consensus-state](/cli-docs/v0_27_0/axelard_query_ibc_client_consensus-state) - Query the consensus state of a client at a given height

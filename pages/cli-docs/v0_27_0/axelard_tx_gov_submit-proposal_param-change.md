@@ -1,8 +1,8 @@
-## axelard tx gov submit-proposal param-change
+# axelard tx gov submit-proposal param-change
 
 Submit a parameter change proposal
 
-### Synopsis
+## Synopsis
 
 Submit a parameter proposal along with an initial deposit.
 The proposal details must be supplied via a JSON file. For values that contains
@@ -41,7 +41,7 @@ Where proposal.json contains:
 axelard tx gov submit-proposal param-change [proposal-file] [flags]
 ```
 
-### Options
+## Options
 
 ```
   -a, --account-number uint      The account number of the signing account (offline mode only)
@@ -67,7 +67,7 @@ axelard tx gov submit-proposal param-change [proposal-file] [flags]
   -y, --yes                      Skip tx broadcasting prompt confirmation (default true)
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --chain-id string     The network chain ID (default "axelar")
@@ -78,6 +78,6 @@ axelard tx gov submit-proposal param-change [proposal-file] [flags]
       --trace               print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard tx gov submit-proposal](/cli-docs/v0_27_0/axelard_tx_gov_submit-proposal) - Submit a proposal along with an initial deposit

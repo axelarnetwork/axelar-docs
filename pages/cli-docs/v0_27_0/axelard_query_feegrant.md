@@ -1,4 +1,4 @@
-## axelard query feegrant
+# axelard query feegrant
 
 Querying commands for the feegrant module
 
@@ -6,13 +6,13 @@ Querying commands for the feegrant module
 axelard query feegrant [flags]
 ```
 
-### Options
+## Options
 
 ```
   -h, --help   help for feegrant
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --chain-id string     The network chain ID (default "axelar")
@@ -23,7 +23,7 @@ axelard query feegrant [flags]
       --trace               print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard query](/cli-docs/v0_27_0/axelard_query) - Querying subcommands
 - [axelard query feegrant grant](/cli-docs/v0_27_0/axelard_query_feegrant_grant) - Query details of a single grant

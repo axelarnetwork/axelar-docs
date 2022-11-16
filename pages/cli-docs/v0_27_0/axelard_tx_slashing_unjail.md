@@ -1,8 +1,8 @@
-## axelard tx slashing unjail
+# axelard tx slashing unjail
 
 unjail validator previously jailed for downtime
 
-### Synopsis
+## Synopsis
 
 unjail a jailed validator:
 
@@ -12,7 +12,7 @@ $ <appd> tx slashing unjail --from mykey
 axelard tx slashing unjail [flags]
 ```
 
-### Options
+## Options
 
 ```
   -a, --account-number uint      The account number of the signing account (offline mode only)
@@ -38,7 +38,7 @@ axelard tx slashing unjail [flags]
   -y, --yes                      Skip tx broadcasting prompt confirmation (default true)
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --chain-id string     The network chain ID (default "axelar")
@@ -49,6 +49,6 @@ axelard tx slashing unjail [flags]
       --trace               print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard tx slashing](/cli-docs/v0_27_0/axelard_tx_slashing) - Slashing transaction subcommands

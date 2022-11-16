@@ -1,8 +1,8 @@
-## axelard query gov tally
+# axelard query gov tally
 
 Get the tally of a proposal vote
 
-### Synopsis
+## Synopsis
 
 Query tally of votes on a proposal. You can find
 the proposal-id by running "<appd> query gov proposals".
@@ -17,7 +17,7 @@ $ <appd> query gov tally 1
 axelard query gov tally [proposal-id] [flags]
 ```
 
-### Options
+## Options
 
 ```
       --height int    Use a specific height to query state at (this can error if the node is pruning state)
@@ -25,7 +25,7 @@ axelard query gov tally [proposal-id] [flags]
       --node string   <host>:<port> to Tendermint RPC interface for this chain (default "tcp://localhost:26657")
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --chain-id string     The network chain ID (default "axelar")
@@ -36,6 +36,6 @@ axelard query gov tally [proposal-id] [flags]
       --trace               print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard query gov](/cli-docs/v0_27_0/axelard_query_gov) - Querying commands for the governance module

@@ -1,8 +1,8 @@
-## axelard tx validate-signatures
+# axelard tx validate-signatures
 
 validate transactions signatures
 
-### Synopsis
+## Synopsis
 
 Print the addresses that must sign the transaction, those who have already
 signed it, and make sure that signatures are in the correct order.
@@ -16,7 +16,7 @@ transaction will be not be performed as that will require RPC communication with
 axelard tx validate-signatures [file] [flags]
 ```
 
-### Options
+## Options
 
 ```
   -a, --account-number uint      The account number of the signing account (offline mode only)
@@ -42,7 +42,7 @@ axelard tx validate-signatures [file] [flags]
   -y, --yes                      Skip tx broadcasting prompt confirmation (default true)
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --chain-id string     The network chain ID (default "axelar")
@@ -53,6 +53,6 @@ axelard tx validate-signatures [file] [flags]
       --trace               print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard tx](/cli-docs/v0_27_0/axelard_tx) - Transactions subcommands

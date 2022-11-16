@@ -1,8 +1,8 @@
-## axelard query ibc client states
+# axelard query ibc client states
 
 Query all available light clients
 
-### Synopsis
+## Synopsis
 
 Query all available light clients
 
@@ -10,13 +10,13 @@ Query all available light clients
 axelard query ibc client states [flags]
 ```
 
-### Examples
+## Examples
 
 ```
 <appd> query ibc client states
 ```
 
-### Options
+## Options
 
 ```
       --count-total       count total number of records in client states to query for
@@ -30,7 +30,7 @@ axelard query ibc client states [flags]
       --reverse           results are sorted in descending order
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --chain-id string     The network chain ID (default "axelar")
@@ -41,6 +41,6 @@ axelard query ibc client states [flags]
       --trace               print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard query ibc client](/cli-docs/v0_27_0/axelard_query_ibc_client) - IBC client query subcommands

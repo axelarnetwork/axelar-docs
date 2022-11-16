@@ -1,8 +1,8 @@
-## axelard tx gov submit-proposal ibc-upgrade
+# axelard tx gov submit-proposal ibc-upgrade
 
 Submit an IBC upgrade proposal
 
-### Synopsis
+## Synopsis
 
 Submit an IBC client breaking upgrade proposal along with an initial deposit.
 The client state specified is the upgraded client state representing the upgraded chain
@@ -21,7 +21,7 @@ Example Upgraded Client State JSON:
 axelard tx gov submit-proposal ibc-upgrade [name] [height] [path/to/upgraded_client_state.json] [flags]
 ```
 
-### Options
+## Options
 
 ```
   -a, --account-number uint      The account number of the signing account (offline mode only)
@@ -50,7 +50,7 @@ axelard tx gov submit-proposal ibc-upgrade [name] [height] [path/to/upgraded_cli
   -y, --yes                      Skip tx broadcasting prompt confirmation (default true)
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --chain-id string     The network chain ID (default "axelar")
@@ -61,6 +61,6 @@ axelard tx gov submit-proposal ibc-upgrade [name] [height] [path/to/upgraded_cli
       --trace               print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard tx gov submit-proposal](/cli-docs/v0_27_0/axelard_tx_gov_submit-proposal) - Submit a proposal along with an initial deposit

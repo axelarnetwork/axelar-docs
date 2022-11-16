@@ -1,4 +1,4 @@
-## axelard tx
+# axelard tx
 
 Transactions subcommands
 
@@ -6,14 +6,14 @@ Transactions subcommands
 axelard tx [flags]
 ```
 
-### Options
+## Options
 
 ```
       --chain-id string   The network chain ID (default "axelar")
   -h, --help              help for tx
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --home string         directory for config and data (default "$HOME/.axelar")
@@ -23,7 +23,7 @@ axelard tx [flags]
       --trace               print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard](/cli-docs/v0_27_0/axelard) - Axelar App
 - [axelard tx axelarnet](/cli-docs/v0_27_0/axelard_tx_axelarnet) - axelarnet transactions subcommands

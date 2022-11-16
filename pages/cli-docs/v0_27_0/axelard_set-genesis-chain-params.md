@@ -1,8 +1,8 @@
-## axelard set-genesis-chain-params
+# axelard set-genesis-chain-params
 
 Set chain parameters in genesis.json
 
-### Synopsis
+## Synopsis
 
 Set chain parameters in genesis.json. The provided platform must be one of those axelar supports (currently only EVM).
 
@@ -10,7 +10,7 @@ Set chain parameters in genesis.json. The provided platform must be one of those
 axelard set-genesis-chain-params evm [chain] [flags]
 ```
 
-### Options
+## Options
 
 ```
       --confirmation-height uint    Confirmation height to set for the given chain.
@@ -21,7 +21,7 @@ axelard set-genesis-chain-params evm [chain] [flags]
       --revote-locking-period int   Revote locking period to set for the given chain.
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --home string         directory for config and data (default "$HOME/.axelar")
@@ -31,6 +31,6 @@ axelard set-genesis-chain-params evm [chain] [flags]
       --trace               print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard](/cli-docs/v0_27_0/axelard) - Axelar App

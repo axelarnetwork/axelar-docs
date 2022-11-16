@@ -1,4 +1,4 @@
-## axelard tx crisis invariant-broken
+# axelard tx crisis invariant-broken
 
 Submit proof that an invariant broken to halt the chain
 
@@ -6,7 +6,7 @@ Submit proof that an invariant broken to halt the chain
 axelard tx crisis invariant-broken [module-name] [invariant-route] [flags]
 ```
 
-### Options
+## Options
 
 ```
   -a, --account-number uint      The account number of the signing account (offline mode only)
@@ -32,7 +32,7 @@ axelard tx crisis invariant-broken [module-name] [invariant-route] [flags]
   -y, --yes                      Skip tx broadcasting prompt confirmation (default true)
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --chain-id string     The network chain ID (default "axelar")
@@ -43,6 +43,6 @@ axelard tx crisis invariant-broken [module-name] [invariant-route] [flags]
       --trace               print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard tx crisis](/cli-docs/v0_27_0/axelard_tx_crisis) - Crisis transactions subcommands

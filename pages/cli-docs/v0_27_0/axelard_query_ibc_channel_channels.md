@@ -1,8 +1,8 @@
-## axelard query ibc channel channels
+# axelard query ibc channel channels
 
 Query all channels
 
-### Synopsis
+## Synopsis
 
 Query all channels from a chain
 
@@ -10,13 +10,13 @@ Query all channels from a chain
 axelard query ibc channel channels [flags]
 ```
 
-### Examples
+## Examples
 
 ```
 <appd> query ibc channel channels
 ```
 
-### Options
+## Options
 
 ```
       --count-total       count total number of records in channels to query for
@@ -30,7 +30,7 @@ axelard query ibc channel channels [flags]
       --reverse           results are sorted in descending order
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --chain-id string     The network chain ID (default "axelar")
@@ -41,6 +41,6 @@ axelard query ibc channel channels [flags]
       --trace               print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard query ibc channel](/cli-docs/v0_27_0/axelard_query_ibc_channel) - IBC channel query subcommands

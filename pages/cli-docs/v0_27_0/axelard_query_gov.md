@@ -1,4 +1,4 @@
-## axelard query gov
+# axelard query gov
 
 Querying commands for the governance module
 
@@ -6,13 +6,13 @@ Querying commands for the governance module
 axelard query gov [flags]
 ```
 
-### Options
+## Options
 
 ```
   -h, --help   help for gov
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --chain-id string     The network chain ID (default "axelar")
@@ -23,7 +23,7 @@ axelard query gov [flags]
       --trace               print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard query](/cli-docs/v0_27_0/axelard_query) - Querying subcommands
 - [axelard query gov deposit](/cli-docs/v0_27_0/axelard_query_gov_deposit) - Query details of a deposit

@@ -1,8 +1,8 @@
-## axelard query gov vote
+# axelard query gov vote
 
 Query details of a single vote
 
-### Synopsis
+## Synopsis
 
 Query details for a single vote on a proposal given its identifier.
 
@@ -16,7 +16,7 @@ $ <appd> query gov vote 1 cosmos1skjwj5whet0lpe65qaq4rpq03hjxlwd9nf39lk
 axelard query gov vote [proposal-id] [voter-addr] [flags]
 ```
 
-### Options
+## Options
 
 ```
       --height int    Use a specific height to query state at (this can error if the node is pruning state)
@@ -24,7 +24,7 @@ axelard query gov vote [proposal-id] [voter-addr] [flags]
       --node string   <host>:<port> to Tendermint RPC interface for this chain (default "tcp://localhost:26657")
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --chain-id string     The network chain ID (default "axelar")
@@ -35,6 +35,6 @@ axelard query gov vote [proposal-id] [voter-addr] [flags]
       --trace               print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard query gov](/cli-docs/v0_27_0/axelard_query_gov) - Querying commands for the governance module

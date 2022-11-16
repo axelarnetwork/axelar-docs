@@ -1,4 +1,4 @@
-## axelard tx permission register-controller
+# axelard tx permission register-controller
 
 Register controller account
 
@@ -6,7 +6,7 @@ Register controller account
 axelard tx permission register-controller [controller] [flags]
 ```
 
-### Options
+## Options
 
 ```
   -a, --account-number uint      The account number of the signing account (offline mode only)
@@ -32,7 +32,7 @@ axelard tx permission register-controller [controller] [flags]
   -y, --yes                      Skip tx broadcasting prompt confirmation (default true)
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --chain-id string     The network chain ID (default "axelar")
@@ -43,6 +43,6 @@ axelard tx permission register-controller [controller] [flags]
       --trace               print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard tx permission](/cli-docs/v0_27_0/axelard_tx_permission) - permission transactions subcommands

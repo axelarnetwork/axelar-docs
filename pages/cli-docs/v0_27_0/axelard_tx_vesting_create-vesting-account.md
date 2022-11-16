@@ -1,8 +1,8 @@
-## axelard tx vesting create-vesting-account
+# axelard tx vesting create-vesting-account
 
 Create a new vesting account funded with an allocation of tokens.
 
-### Synopsis
+## Synopsis
 
 Create a new vesting account funded with an allocation of tokens. The
 account can either be a delayed or continuous vesting account, which is determined
@@ -14,7 +14,7 @@ timestamp.
 axelard tx vesting create-vesting-account [to_address] [amount] [end_time] [flags]
 ```
 
-### Options
+## Options
 
 ```
   -a, --account-number uint      The account number of the signing account (offline mode only)
@@ -41,7 +41,7 @@ axelard tx vesting create-vesting-account [to_address] [amount] [end_time] [flag
   -y, --yes                      Skip tx broadcasting prompt confirmation (default true)
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --chain-id string     The network chain ID (default "axelar")
@@ -52,6 +52,6 @@ axelard tx vesting create-vesting-account [to_address] [amount] [end_time] [flag
       --trace               print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard tx vesting](/cli-docs/v0_27_0/axelard_tx_vesting) - Vesting transaction subcommands

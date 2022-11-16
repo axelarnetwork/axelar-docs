@@ -1,8 +1,8 @@
-## axelard tx gov submit-proposal software-upgrade
+# axelard tx gov submit-proposal software-upgrade
 
 Submit a software upgrade proposal
 
-### Synopsis
+## Synopsis
 
 Submit a software upgrade along with an initial deposit.
 Please specify a unique name and height for the upgrade to take effect.
@@ -12,7 +12,7 @@ You may include info to reference a binary download link, in a format compatible
 axelard tx gov submit-proposal software-upgrade [name] (--upgrade-height [height]) (--upgrade-info [info]) [flags]
 ```
 
-### Options
+## Options
 
 ```
   -a, --account-number uint      The account number of the signing account (offline mode only)
@@ -43,7 +43,7 @@ axelard tx gov submit-proposal software-upgrade [name] (--upgrade-height [height
   -y, --yes                      Skip tx broadcasting prompt confirmation (default true)
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --chain-id string     The network chain ID (default "axelar")
@@ -54,6 +54,6 @@ axelard tx gov submit-proposal software-upgrade [name] (--upgrade-height [height
       --trace               print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard tx gov submit-proposal](/cli-docs/v0_27_0/axelard_tx_gov_submit-proposal) - Submit a proposal along with an initial deposit

@@ -1,4 +1,4 @@
-## axelard tx evm
+# axelard tx evm
 
 evm transactions subcommands
 
@@ -6,13 +6,13 @@ evm transactions subcommands
 axelard tx evm [flags]
 ```
 
-### Options
+## Options
 
 ```
   -h, --help   help for evm
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --chain-id string     The network chain ID (default "axelar")
@@ -23,7 +23,7 @@ axelard tx evm [flags]
       --trace               print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard tx](/cli-docs/v0_27_0/axelard_tx) - Transactions subcommands
 - [axelard tx evm add-chain](/cli-docs/v0_27_0/axelard_tx_evm_add-chain) - Add a new EVM chain

@@ -1,8 +1,8 @@
-## axelard tx feegrant
+# axelard tx feegrant
 
 Feegrant transactions subcommands
 
-### Synopsis
+## Synopsis
 
 Grant and revoke fee allowance for a grantee by a granter
 
@@ -10,13 +10,13 @@ Grant and revoke fee allowance for a grantee by a granter
 axelard tx feegrant [flags]
 ```
 
-### Options
+## Options
 
 ```
   -h, --help   help for feegrant
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --chain-id string     The network chain ID (default "axelar")
@@ -27,7 +27,7 @@ axelard tx feegrant [flags]
       --trace               print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard tx](/cli-docs/v0_27_0/axelard_tx) - Transactions subcommands
 - [axelard tx feegrant grant](/cli-docs/v0_27_0/axelard_tx_feegrant_grant) - Grant Fee allowance to an address

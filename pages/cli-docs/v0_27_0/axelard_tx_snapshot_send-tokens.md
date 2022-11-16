@@ -1,4 +1,4 @@
-## axelard tx snapshot send-tokens
+# axelard tx snapshot send-tokens
 
 Sends the specified amount of tokens to the designated addresses
 
@@ -6,7 +6,7 @@ Sends the specified amount of tokens to the designated addresses
 axelard tx snapshot send-tokens [amount] [address 1] ... [address n] [flags]
 ```
 
-### Options
+## Options
 
 ```
   -a, --account-number uint      The account number of the signing account (offline mode only)
@@ -32,7 +32,7 @@ axelard tx snapshot send-tokens [amount] [address 1] ... [address n] [flags]
   -y, --yes                      Skip tx broadcasting prompt confirmation (default true)
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --chain-id string     The network chain ID (default "axelar")
@@ -43,6 +43,6 @@ axelard tx snapshot send-tokens [amount] [address 1] ... [address n] [flags]
       --trace               print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard tx snapshot](/cli-docs/v0_27_0/axelard_tx_snapshot) - snapshot transactions subcommands

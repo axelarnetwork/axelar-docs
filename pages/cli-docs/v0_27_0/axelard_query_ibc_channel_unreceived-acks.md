@@ -1,8 +1,8 @@
-## axelard query ibc channel unreceived-acks
+# axelard query ibc channel unreceived-acks
 
 Query all the unreceived acks associated with a channel
 
-### Synopsis
+## Synopsis
 
 Given a list of acknowledgement sequences from counterparty, determine if an ack on the counterparty chain has been received on the executing chain.
 
@@ -14,13 +14,13 @@ The return value represents:
 axelard query ibc channel unreceived-acks [port-id] [channel-id] [flags]
 ```
 
-### Examples
+## Examples
 
 ```
 <appd> query ibc channel unreceived-acks [port-id] [channel-id] --sequences=1,2,3
 ```
 
-### Options
+## Options
 
 ```
       --height int             Use a specific height to query state at (this can error if the node is pruning state)
@@ -29,7 +29,7 @@ axelard query ibc channel unreceived-acks [port-id] [channel-id] [flags]
       --sequences int64Slice   comma separated list of packet sequence numbers (default [])
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --chain-id string     The network chain ID (default "axelar")
@@ -40,6 +40,6 @@ axelard query ibc channel unreceived-acks [port-id] [channel-id] [flags]
       --trace               print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard query ibc channel](/cli-docs/v0_27_0/axelard_query_ibc_channel) - IBC channel query subcommands

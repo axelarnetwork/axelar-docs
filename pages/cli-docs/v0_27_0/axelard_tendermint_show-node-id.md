@@ -1,4 +1,4 @@
-## axelard tendermint show-node-id
+# axelard tendermint show-node-id
 
 Show this node's ID
 
@@ -6,13 +6,13 @@ Show this node's ID
 axelard tendermint show-node-id [flags]
 ```
 
-### Options
+## Options
 
 ```
   -h, --help   help for show-node-id
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --home string         directory for config and data (default "$HOME/.axelar")
@@ -22,6 +22,6 @@ axelard tendermint show-node-id [flags]
       --trace               print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard tendermint](/cli-docs/v0_27_0/axelard_tendermint) - Tendermint subcommands

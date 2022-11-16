@@ -1,4 +1,4 @@
-## axelard tx multisig keygen start
+# axelard tx multisig keygen start
 
 Initiate key generation protocol
 
@@ -6,7 +6,7 @@ Initiate key generation protocol
 axelard tx multisig keygen start [flags]
 ```
 
-### Options
+## Options
 
 ```
   -a, --account-number uint      The account number of the signing account (offline mode only)
@@ -33,7 +33,7 @@ axelard tx multisig keygen start [flags]
   -y, --yes                      Skip tx broadcasting prompt confirmation (default true)
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --chain-id string     The network chain ID (default "axelar")
@@ -44,6 +44,6 @@ axelard tx multisig keygen start [flags]
       --trace               print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard tx multisig keygen](/cli-docs/v0_27_0/axelard_tx_multisig_keygen) - sub-commands for keygen

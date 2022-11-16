@@ -1,4 +1,4 @@
-## axelard tx axelarnet confirm-deposit
+# axelard tx axelarnet confirm-deposit
 
 Confirm a deposit to Axelar chain that sent given the asset denomination and the burner address
 
@@ -6,7 +6,7 @@ Confirm a deposit to Axelar chain that sent given the asset denomination and the
 axelard tx axelarnet confirm-deposit [denom] [burnerAddr] [flags]
 ```
 
-### Options
+## Options
 
 ```
   -a, --account-number uint      The account number of the signing account (offline mode only)
@@ -32,7 +32,7 @@ axelard tx axelarnet confirm-deposit [denom] [burnerAddr] [flags]
   -y, --yes                      Skip tx broadcasting prompt confirmation (default true)
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --chain-id string     The network chain ID (default "axelar")
@@ -43,6 +43,6 @@ axelard tx axelarnet confirm-deposit [denom] [burnerAddr] [flags]
       --trace               print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard tx axelarnet](/cli-docs/v0_27_0/axelard_tx_axelarnet) - axelarnet transactions subcommands

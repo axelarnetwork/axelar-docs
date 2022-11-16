@@ -1,10 +1,10 @@
-## axelard health-check
+# axelard health-check
 
 ```
 axelard health-check [flags]
 ```
 
-### Options
+## Options
 
 ```
       --height int             Use a specific height to query state at (this can error if the node is pruning state)
@@ -18,7 +18,7 @@ axelard health-check [flags]
       --tofnd-port string      port for tss daemon (default "50051")
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --home string         directory for config and data (default "$HOME/.axelar")
@@ -28,6 +28,6 @@ axelard health-check [flags]
       --trace               print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard](/cli-docs/v0_27_0/axelard) - Axelar App

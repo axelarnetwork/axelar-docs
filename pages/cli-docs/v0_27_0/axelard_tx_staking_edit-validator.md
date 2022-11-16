@@ -1,4 +1,4 @@
-## axelard tx staking edit-validator
+# axelard tx staking edit-validator
 
 edit an existing validator account
 
@@ -6,7 +6,7 @@ edit an existing validator account
 axelard tx staking edit-validator [flags]
 ```
 
-### Options
+## Options
 
 ```
   -a, --account-number uint          The account number of the signing account (offline mode only)
@@ -39,7 +39,7 @@ axelard tx staking edit-validator [flags]
   -y, --yes                          Skip tx broadcasting prompt confirmation (default true)
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --chain-id string     The network chain ID (default "axelar")
@@ -50,6 +50,6 @@ axelard tx staking edit-validator [flags]
       --trace               print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard tx staking](/cli-docs/v0_27_0/axelard_tx_staking) - Staking transaction subcommands

@@ -1,4 +1,4 @@
-## axelard tx nexus activate-chain
+# axelard tx nexus activate-chain
 
 activate the given chains
 
@@ -6,7 +6,7 @@ activate the given chains
 axelard tx nexus activate-chain [chain]... [flags]
 ```
 
-### Options
+## Options
 
 ```
   -a, --account-number uint      The account number of the signing account (offline mode only)
@@ -32,7 +32,7 @@ axelard tx nexus activate-chain [chain]... [flags]
   -y, --yes                      Skip tx broadcasting prompt confirmation (default true)
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --chain-id string     The network chain ID (default "axelar")
@@ -43,6 +43,6 @@ axelard tx nexus activate-chain [chain]... [flags]
       --trace               print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard tx nexus](/cli-docs/v0_27_0/axelard_tx_nexus) - nexus transactions subcommands

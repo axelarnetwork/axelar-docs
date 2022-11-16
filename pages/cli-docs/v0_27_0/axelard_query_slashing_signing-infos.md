@@ -1,8 +1,8 @@
-## axelard query slashing signing-infos
+# axelard query slashing signing-infos
 
 Query signing information of all validators
 
-### Synopsis
+## Synopsis
 
 signing infos of validators:
 
@@ -12,7 +12,7 @@ $ <appd> query slashing signing-infos
 axelard query slashing signing-infos [flags]
 ```
 
-### Options
+## Options
 
 ```
       --count-total       count total number of records in signing infos to query for
@@ -26,7 +26,7 @@ axelard query slashing signing-infos [flags]
       --reverse           results are sorted in descending order
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --chain-id string     The network chain ID (default "axelar")
@@ -37,6 +37,6 @@ axelard query slashing signing-infos [flags]
       --trace               print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard query slashing](/cli-docs/v0_27_0/axelard_query_slashing) - Querying commands for the slashing module

@@ -1,4 +1,4 @@
-## axelard tx decode
+# axelard tx decode
 
 Decode a binary encoded transaction string
 
@@ -6,7 +6,7 @@ Decode a binary encoded transaction string
 axelard tx decode [amino-byte-string] [flags]
 ```
 
-### Options
+## Options
 
 ```
   -a, --account-number uint      The account number of the signing account (offline mode only)
@@ -33,7 +33,7 @@ axelard tx decode [amino-byte-string] [flags]
   -y, --yes                      Skip tx broadcasting prompt confirmation (default true)
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --chain-id string     The network chain ID (default "axelar")
@@ -44,6 +44,6 @@ axelard tx decode [amino-byte-string] [flags]
       --trace               print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard tx](/cli-docs/v0_27_0/axelard_tx) - Transactions subcommands

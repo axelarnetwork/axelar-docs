@@ -1,8 +1,8 @@
-## axelard query gov proposals
+# axelard query gov proposals
 
 Query proposals with optional filters
 
-### Synopsis
+## Synopsis
 
 Query for a all paginated proposals that match optional filters:
 
@@ -19,7 +19,7 @@ $ <appd> query gov proposals --page=2 --limit=100
 axelard query gov proposals [flags]
 ```
 
-### Options
+## Options
 
 ```
       --count-total        count total number of records in proposals to query for
@@ -36,7 +36,7 @@ axelard query gov proposals [flags]
       --voter string       (optional) filter by proposals voted on by voted
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --chain-id string     The network chain ID (default "axelar")
@@ -47,6 +47,6 @@ axelard query gov proposals [flags]
       --trace               print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard query gov](/cli-docs/v0_27_0/axelard_query_gov) - Querying commands for the governance module

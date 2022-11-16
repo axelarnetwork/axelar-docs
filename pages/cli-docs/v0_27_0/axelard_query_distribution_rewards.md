@@ -1,8 +1,8 @@
-## axelard query distribution rewards
+# axelard query distribution rewards
 
 Query all distribution delegator rewards or rewards from a particular validator
 
-### Synopsis
+## Synopsis
 
 Query all rewards earned by a delegator, optionally restrict to rewards from a single validator.
 
@@ -18,7 +18,7 @@ axelarvaloper1gghjut3ccd8ay0zduzj64hwre2fxs9ldmqhffj
 axelard query distribution rewards [delegator-addr] [validator-addr] [flags]
 ```
 
-### Options
+## Options
 
 ```
       --height int    Use a specific height to query state at (this can error if the node is pruning state)
@@ -26,7 +26,7 @@ axelard query distribution rewards [delegator-addr] [validator-addr] [flags]
       --node string   <host>:<port> to Tendermint RPC interface for this chain (default "tcp://localhost:26657")
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --chain-id string     The network chain ID (default "axelar")
@@ -37,6 +37,6 @@ axelard query distribution rewards [delegator-addr] [validator-addr] [flags]
       --trace               print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard query distribution](/cli-docs/v0_27_0/axelard_query_distribution) - Querying commands for the distribution module

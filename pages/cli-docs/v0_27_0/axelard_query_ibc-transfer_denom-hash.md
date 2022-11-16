@@ -1,8 +1,8 @@
-## axelard query ibc-transfer denom-hash
+# axelard query ibc-transfer denom-hash
 
 Query the denom hash info from a given denom trace
 
-### Synopsis
+## Synopsis
 
 Query the denom hash info from a given denom trace
 
@@ -10,13 +10,13 @@ Query the denom hash info from a given denom trace
 axelard query ibc-transfer denom-hash [trace] [flags]
 ```
 
-### Examples
+## Examples
 
 ```
 <appd> query ibc-transfer denom-hash transfer/channel-0/uatom
 ```
 
-### Options
+## Options
 
 ```
       --height int    Use a specific height to query state at (this can error if the node is pruning state)
@@ -24,7 +24,7 @@ axelard query ibc-transfer denom-hash [trace] [flags]
       --node string   <host>:<port> to Tendermint RPC interface for this chain (default "tcp://localhost:26657")
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --chain-id string     The network chain ID (default "axelar")
@@ -35,6 +35,6 @@ axelard query ibc-transfer denom-hash [trace] [flags]
       --trace               print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard query ibc-transfer](/cli-docs/v0_27_0/axelard_query_ibc-transfer) - IBC fungible token transfer query subcommands

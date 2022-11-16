@@ -1,8 +1,8 @@
-## axelard keys export
+# axelard keys export
 
 Export private keys
 
-### Synopsis
+## Synopsis
 
 Export a private key from the local keyring in ASCII-armored encrypted format.
 
@@ -17,7 +17,7 @@ and export your keys in ASCII-armored encrypted format.
 axelard keys export <name> [flags]
 ```
 
-### Options
+## Options
 
 ```
   -h, --help            help for export
@@ -25,7 +25,7 @@ axelard keys export <name> [flags]
       --unsafe          Enable unsafe operations. This flag must be switched on along with all unsafe operation-specific options.
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --home string              The application home directory (default "$HOME/.axelar")
@@ -37,6 +37,6 @@ axelard keys export <name> [flags]
       --trace                    print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard keys](/cli-docs/v0_27_0/axelard_keys) - Manage your application's keys

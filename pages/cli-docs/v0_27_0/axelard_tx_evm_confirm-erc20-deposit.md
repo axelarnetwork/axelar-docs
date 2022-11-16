@@ -1,4 +1,4 @@
-## axelard tx evm confirm-erc20-deposit
+# axelard tx evm confirm-erc20-deposit
 
 Confirm ERC20 deposits in an EVM chain transaction to a burner address
 
@@ -6,7 +6,7 @@ Confirm ERC20 deposits in an EVM chain transaction to a burner address
 axelard tx evm confirm-erc20-deposit [chain] [txID] [burnerAddr] [flags]
 ```
 
-### Options
+## Options
 
 ```
   -a, --account-number uint      The account number of the signing account (offline mode only)
@@ -32,7 +32,7 @@ axelard tx evm confirm-erc20-deposit [chain] [txID] [burnerAddr] [flags]
   -y, --yes                      Skip tx broadcasting prompt confirmation (default true)
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --chain-id string     The network chain ID (default "axelar")
@@ -43,6 +43,6 @@ axelard tx evm confirm-erc20-deposit [chain] [txID] [burnerAddr] [flags]
       --trace               print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard tx evm](/cli-docs/v0_27_0/axelard_tx_evm) - evm transactions subcommands

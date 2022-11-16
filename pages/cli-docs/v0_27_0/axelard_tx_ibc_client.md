@@ -1,4 +1,4 @@
-## axelard tx ibc client
+# axelard tx ibc client
 
 IBC client transaction subcommands
 
@@ -6,13 +6,13 @@ IBC client transaction subcommands
 axelard tx ibc client [flags]
 ```
 
-### Options
+## Options
 
 ```
   -h, --help   help for client
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --chain-id string     The network chain ID (default "axelar")
@@ -23,7 +23,7 @@ axelard tx ibc client [flags]
       --trace               print out full stack trace on errors
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 - [axelard tx ibc](/cli-docs/v0_27_0/axelard_tx_ibc) - IBC transaction subcommands
 - [axelard tx ibc client create](/cli-docs/v0_27_0/axelard_tx_ibc_client_create) - create new IBC client
