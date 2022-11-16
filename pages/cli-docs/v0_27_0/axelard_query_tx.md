@@ -1,6 +1,6 @@
 # axelard query tx
 
-Query for a transaction by hash, "<addr>/<seq>" combination or comma-separated signatures in a committed block
+Query for a transaction by hash, `<addr>/<seq>` combination or comma-separated signatures in a committed block
 
 ## Synopsis
 

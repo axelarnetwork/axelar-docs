@@ -15,16 +15,18 @@ $ <appd> tx gov submit-proposal --proposal="path/to/proposal.json" --from mykey
 
 Where proposal.json contains:
 
+```
 {
 "title": "Test Proposal",
 "description": "My awesome proposal",
 "type": "Text",
 "deposit": "10test"
 }
+```
 
 Which is equivalent to:
 
-$ <appd> tx gov submit-proposal --title="Test Proposal" --description="My awesome proposal" --type="Text" --deposit="10test" --from mykey
+`$ <appd> tx gov submit-proposal --title="Test Proposal" --description="My awesome proposal" --type="Text" --deposit="10test" --from mykey`
 
 ```
 axelard tx gov submit-proposal [flags]

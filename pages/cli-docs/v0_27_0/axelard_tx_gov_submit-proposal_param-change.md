@@ -24,6 +24,7 @@ $ <appd> tx gov submit-proposal param-change \<path/to/proposal.json> --from=\<k
 
 Where proposal.json contains:
 
+```
 {
 "title": "Staking Param Change",
 "description": "Update max validators",
@@ -36,6 +37,7 @@ Where proposal.json contains:
 \],
 "deposit": "1000stake"
 }
+```
 
 ```
 axelard tx gov submit-proposal param-change [proposal-file] [flags]

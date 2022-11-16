@@ -5,7 +5,7 @@ Deposit tokens for an active proposal
 ## Synopsis
 
 Submit a deposit for an active proposal. You can
-find the proposal-id by running "<appd> query gov proposals".
+find the proposal-id by running `<appd>` query gov proposals".
 
 Example:
 

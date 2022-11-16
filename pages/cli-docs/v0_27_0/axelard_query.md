@@ -47,6 +47,6 @@ axelard query [flags]
 - [axelard query snapshot](/cli-docs/v0_27_0/axelard_query_snapshot) - Querying commands for the snapshot module
 - [axelard query staking](/cli-docs/v0_27_0/axelard_query_staking) - Querying commands for the staking module
 - [axelard query tendermint-validator-set](/cli-docs/v0_27_0/axelard_query_tendermint-validator-set) - Get the full tendermint validator set at given height
-- [axelard query tx](/cli-docs/v0_27_0/axelard_query_tx) - Query for a transaction by hash, "<addr>/<seq>" combination or comma-separated signatures in a committed block
+- [axelard query tx](/cli-docs/v0_27_0/axelard_query_tx) - Query for a transaction by hash, `<addr>/<seq>` combination or comma-separated signatures in a committed block
 - [axelard query txs](/cli-docs/v0_27_0/axelard_query_txs) - Query for paginated transactions that match a set of events
 - [axelard query upgrade](/cli-docs/v0_27_0/axelard_query_upgrade) - Querying commands for the upgrade module

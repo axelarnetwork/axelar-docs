@@ -15,6 +15,7 @@ $ <appd> tx gov submit-proposal community-pool-spend \<path/to/proposal.json> --
 
 Where proposal.json contains:
 
+```
 {
 "title": "Community Pool Spend",
 "description": "Pay me some Atoms!",
@@ -22,6 +23,7 @@ Where proposal.json contains:
 "amount": "1000stake",
 "deposit": "1000stake"
 }
+```
 
 ```
 axelard tx gov submit-proposal community-pool-spend [proposal-file] [flags]

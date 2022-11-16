@@ -1,6 +1,6 @@
 # axelard keys add
 
-Add an encrypted private key (either newly generated or recovered), encrypt it, and save to <name> file
+Add an encrypted private key (either newly generated or recovered), encrypt it, and save to `<name>` file
 
 ## Synopsis
 

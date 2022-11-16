@@ -5,7 +5,7 @@ Vote for an active proposal, options: yes/no/no_with_veto/abstain
 ## Synopsis
 
 Submit a vote for an active proposal. You can
-find the proposal-id by running "<appd> query gov proposals".
+find the proposal-id by running `<appd>` query gov proposals".
 
 Example:
 

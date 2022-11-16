@@ -5,7 +5,7 @@ Query details of a single proposal
 ## Synopsis
 
 Query details for a proposal. You can find the
-proposal-id by running "<appd> query gov proposals".
+proposal-id by running `<appd>` query gov proposals".
 
 Example:
 

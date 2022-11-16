@@ -11,9 +11,7 @@ multisig key \[name\], and attach the key name to the transaction read from \[fi
 
 Example:
 
-```
-$ <appd> tx multisign transaction.json k1k2k3 k1sig.json k2sig.json k3sig.json
-```
+`$ <appd> tx multisign transaction.json k1k2k3 k1sig.json k2sig.json k3sig.json`
 
 If --signature-only flag is on, output a JSON representation
 of only the generated signature.

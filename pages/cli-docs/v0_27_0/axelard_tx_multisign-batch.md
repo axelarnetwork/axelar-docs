@@ -11,9 +11,7 @@ multisig key \[name\], and attach the key name to the transaction read from \[fi
 
 Example:
 
-```
-$ <appd> tx multisign-batch transactions.json multisigk1k2k3 k1sigs.json k2sigs.json k3sig.json
-```
+`$ <appd> tx multisign-batch transactions.json multisigk1k2k3 k1sigs.json k2sigs.json k3sig.json`
 
 The current multisig implementation defaults to amino-json sign mode.
 The SIGN_MODE_DIRECT sign mode is not supported.'

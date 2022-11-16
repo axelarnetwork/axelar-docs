@@ -5,7 +5,7 @@ Query deposits on a proposal
 ## Synopsis
 
 Query details for all deposits on a proposal.
-You can find the proposal-id by running "<appd> query gov proposals".
+You can find the proposal-id by running `<appd>` query gov proposals".
 
 Example:
 

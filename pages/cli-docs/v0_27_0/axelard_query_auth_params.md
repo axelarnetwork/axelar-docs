@@ -6,7 +6,7 @@ Query the current auth parameters
 
 Query the current auth parameters:
 
-$ <appd> query auth params
+`$ <appd> query auth params`
 
 ```
 axelard query auth params [flags]

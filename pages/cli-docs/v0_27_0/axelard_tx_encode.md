@@ -5,7 +5,7 @@ Encode transactions generated offline
 ## Synopsis
 
 Encode transactions created with the --generate-only flag and signed with the sign command.
-Read a transaction from <file>, serialize it to the Amino wire protocol, and output it as base64.
+Read a transaction from `<file>`, serialize it to the Amino wire protocol, and output it as base64.
 If you supply a dash (-) argument in place of an input filename, the command reads from standard input.
 
 ```
