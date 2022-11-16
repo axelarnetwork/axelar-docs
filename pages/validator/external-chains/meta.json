@@ -5,9 +5,9 @@
   "avalanche": "Avalanche",
   "binance": "Binance",
   "celo": "Celo",
-  "kava": "Kava",
   "ethereum": "Ethereum",
   "fantom": "Fantom",
+  "kava": "Kava",
   "moonbeam": "Moonbeam",
   "polygon": "Polygon"
 }
