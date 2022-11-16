@@ -25,18 +25,18 @@ axelard query staking [flags]
 
 ### SEE ALSO
 
-- [axelard query](axelard_query.md)	 - Querying subcommands
-- [axelard query staking delegation](axelard_query_staking_delegation.md)	 - Query a delegation based on address and validator address
-- [axelard query staking delegations](axelard_query_staking_delegations.md)	 - Query all delegations made by one delegator
-- [axelard query staking delegations-to](axelard_query_staking_delegations-to.md)	 - Query all delegations made to one validator
-- [axelard query staking historical-info](axelard_query_staking_historical-info.md)	 - Query historical info at given height
-- [axelard query staking params](axelard_query_staking_params.md)	 - Query the current staking parameters information
-- [axelard query staking pool](axelard_query_staking_pool.md)	 - Query the current staking pool values
-- [axelard query staking redelegation](axelard_query_staking_redelegation.md)	 - Query a redelegation record based on delegator and a source and destination validator address
-- [axelard query staking redelegations](axelard_query_staking_redelegations.md)	 - Query all redelegations records for one delegator
-- [axelard query staking redelegations-from](axelard_query_staking_redelegations-from.md)	 - Query all outgoing redelegatations from a validator
-- [axelard query staking unbonding-delegation](axelard_query_staking_unbonding-delegation.md)	 - Query an unbonding-delegation record based on delegator and validator address
-- [axelard query staking unbonding-delegations](axelard_query_staking_unbonding-delegations.md)	 - Query all unbonding-delegations records for one delegator
-- [axelard query staking unbonding-delegations-from](axelard_query_staking_unbonding-delegations-from.md)	 - Query all unbonding delegatations from a validator
-- [axelard query staking validator](axelard_query_staking_validator.md)	 - Query a validator
-- [axelard query staking validators](axelard_query_staking_validators.md)	 - Query for all validators
+- [axelard query](/cli-docs/v0_27_0/axelard_query) - Querying subcommands
+- [axelard query staking delegation](/cli-docs/v0_27_0/axelard_query_staking_delegation) - Query a delegation based on address and validator address
+- [axelard query staking delegations](/cli-docs/v0_27_0/axelard_query_staking_delegations) - Query all delegations made by one delegator
+- [axelard query staking delegations-to](/cli-docs/v0_27_0/axelard_query_staking_delegations-to) - Query all delegations made to one validator
+- [axelard query staking historical-info](/cli-docs/v0_27_0/axelard_query_staking_historical-info) - Query historical info at given height
+- [axelard query staking params](/cli-docs/v0_27_0/axelard_query_staking_params) - Query the current staking parameters information
+- [axelard query staking pool](/cli-docs/v0_27_0/axelard_query_staking_pool) - Query the current staking pool values
+- [axelard query staking redelegation](/cli-docs/v0_27_0/axelard_query_staking_redelegation) - Query a redelegation record based on delegator and a source and destination validator address
+- [axelard query staking redelegations](/cli-docs/v0_27_0/axelard_query_staking_redelegations) - Query all redelegations records for one delegator
+- [axelard query staking redelegations-from](/cli-docs/v0_27_0/axelard_query_staking_redelegations-from) - Query all outgoing redelegatations from a validator
+- [axelard query staking unbonding-delegation](/cli-docs/v0_27_0/axelard_query_staking_unbonding-delegation) - Query an unbonding-delegation record based on delegator and validator address
+- [axelard query staking unbonding-delegations](/cli-docs/v0_27_0/axelard_query_staking_unbonding-delegations) - Query all unbonding-delegations records for one delegator
+- [axelard query staking unbonding-delegations-from](/cli-docs/v0_27_0/axelard_query_staking_unbonding-delegations-from) - Query all unbonding delegatations from a validator
+- [axelard query staking validator](/cli-docs/v0_27_0/axelard_query_staking_validator) - Query a validator
+- [axelard query staking validators](/cli-docs/v0_27_0/axelard_query_staking_validators) - Query for all validators

@@ -25,7 +25,7 @@ axelard query ibc [flags]
 
 ### SEE ALSO
 
-- [axelard query](axelard_query.md)	 - Querying subcommands
-- [axelard query ibc channel](axelard_query_ibc_channel.md)	 - IBC channel query subcommands
-- [axelard query ibc client](axelard_query_ibc_client.md)	 - IBC client query subcommands
-- [axelard query ibc connection](axelard_query_ibc_connection.md)	 - IBC connection query subcommands
+- [axelard query](/cli-docs/v0_27_0/axelard_query) - Querying subcommands
+- [axelard query ibc channel](/cli-docs/v0_27_0/axelard_query_ibc_channel) - IBC channel query subcommands
+- [axelard query ibc client](/cli-docs/v0_27_0/axelard_query_ibc_client) - IBC client query subcommands
+- [axelard query ibc connection](/cli-docs/v0_27_0/axelard_query_ibc_connection) - IBC connection query subcommands

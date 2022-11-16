@@ -23,8 +23,8 @@ test        Stores keys insecurely to disk. It does not prompt for a password to
 
 kwallet and pass backends depend on external tools. Refer to their respective documentation for more
 information:
-KWallet     https://github.com/KDE/kwallet
-pass        https://www.passwordstore.org/
+KWallet https://github.com/KDE/kwallet
+pass https://www.passwordstore.org/
 
 The pass backend requires GnuPG: https://gnupg.org/
 
@@ -48,13 +48,13 @@ The pass backend requires GnuPG: https://gnupg.org/
 
 ### SEE ALSO
 
-- [axelard](axelard.md)	 - Axelar App
-- [axelard keys add](axelard_keys_add.md)	 - Add an encrypted private key (either newly generated or recovered), encrypt it, and save to <name> file
-- [axelard keys delete](axelard_keys_delete.md)	 - Delete the given keys
-- [axelard keys export](axelard_keys_export.md)	 - Export private keys
-- [axelard keys import](axelard_keys_import.md)	 - Import private keys into the local keybase
-- [axelard keys list](axelard_keys_list.md)	 - List all keys
-- [axelard keys migrate](axelard_keys_migrate.md)	 - Migrate keys from the legacy (db-based) Keybase
-- [axelard keys mnemonic](axelard_keys_mnemonic.md)	 - Compute the bip39 mnemonic for some input entropy
-- [axelard keys parse](axelard_keys_parse.md)	 - Parse address from hex to bech32 and vice versa
-- [axelard keys show](axelard_keys_show.md)	 - Retrieve key information by name or address
+- [axelard](/cli-docs/v0_27_0/axelard) - Axelar App
+- [axelard keys add](/cli-docs/v0_27_0/axelard_keys_add) - Add an encrypted private key (either newly generated or recovered), encrypt it, and save to <name> file
+- [axelard keys delete](/cli-docs/v0_27_0/axelard_keys_delete) - Delete the given keys
+- [axelard keys export](/cli-docs/v0_27_0/axelard_keys_export) - Export private keys
+- [axelard keys import](/cli-docs/v0_27_0/axelard_keys_import) - Import private keys into the local keybase
+- [axelard keys list](/cli-docs/v0_27_0/axelard_keys_list) - List all keys
+- [axelard keys migrate](/cli-docs/v0_27_0/axelard_keys_migrate) - Migrate keys from the legacy (db-based) Keybase
+- [axelard keys mnemonic](/cli-docs/v0_27_0/axelard_keys_mnemonic) - Compute the bip39 mnemonic for some input entropy
+- [axelard keys parse](/cli-docs/v0_27_0/axelard_keys_parse) - Parse address from hex to bech32 and vice versa
+- [axelard keys show](/cli-docs/v0_27_0/axelard_keys_show) - Retrieve key information by name or address

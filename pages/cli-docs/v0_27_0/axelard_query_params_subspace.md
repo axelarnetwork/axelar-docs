@@ -27,4 +27,4 @@ axelard query params subspace [subspace] [key] [flags]
 
 ### SEE ALSO
 
-- [axelard query params](axelard_query_params.md)	 - Querying commands for the params module
+- [axelard query params](/cli-docs/v0_27_0/axelard_query_params) - Querying commands for the params module

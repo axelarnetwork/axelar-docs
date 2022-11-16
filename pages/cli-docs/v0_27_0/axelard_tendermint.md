@@ -20,10 +20,10 @@ Tendermint subcommands
 
 ### SEE ALSO
 
-- [axelard](axelard.md)	 - Axelar App
-- [axelard tendermint reset-state](axelard_tendermint_reset-state.md)	 - Remove all the data and WAL
-- [axelard tendermint show-address](axelard_tendermint_show-address.md)	 - Shows this node's tendermint validator consensus address
-- [axelard tendermint show-node-id](axelard_tendermint_show-node-id.md)	 - Show this node's ID
-- [axelard tendermint show-validator](axelard_tendermint_show-validator.md)	 - Show this node's tendermint validator info
-- [axelard tendermint unsafe-reset-all](axelard_tendermint_unsafe-reset-all.md)	 - (unsafe) Remove all the data and WAL, reset this node's validator to genesis state
-- [axelard tendermint version](axelard_tendermint_version.md)	 - Print tendermint libraries' version
+- [axelard](/cli-docs/v0_27_0/axelard) - Axelar App
+- [axelard tendermint reset-state](/cli-docs/v0_27_0/axelard_tendermint_reset-state) - Remove all the data and WAL
+- [axelard tendermint show-address](/cli-docs/v0_27_0/axelard_tendermint_show-address) - Shows this node's tendermint validator consensus address
+- [axelard tendermint show-node-id](/cli-docs/v0_27_0/axelard_tendermint_show-node-id) - Show this node's ID
+- [axelard tendermint show-validator](/cli-docs/v0_27_0/axelard_tendermint_show-validator) - Show this node's tendermint validator info
+- [axelard tendermint unsafe-reset-all](/cli-docs/v0_27_0/axelard_tendermint_unsafe-reset-all) - (unsafe) Remove all the data and WAL, reset this node's validator to genesis state
+- [axelard tendermint version](/cli-docs/v0_27_0/axelard_tendermint_version) - Print tendermint libraries' version

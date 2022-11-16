@@ -25,6 +25,6 @@ axelard tx bank [flags]
 
 ### SEE ALSO
 
-- [axelard tx](axelard_tx.md)	 - Transactions subcommands
-- [axelard tx bank send](axelard_tx_bank_send.md)	 - Send funds from one account to another. Note, the'--from' flag is
+- [axelard tx](/cli-docs/v0_27_0/axelard_tx) - Transactions subcommands
+- [axelard tx bank send](/cli-docs/v0_27_0/axelard_tx_bank_send) - Send funds from one account to another. Note, the'--from' flag is
   ignored as it is implied from \[from_key_or_address\].

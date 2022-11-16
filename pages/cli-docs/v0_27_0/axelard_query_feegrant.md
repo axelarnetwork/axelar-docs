@@ -25,7 +25,7 @@ axelard query feegrant [flags]
 
 ### SEE ALSO
 
-- [axelard query](axelard_query.md)	 - Querying subcommands
-- [axelard query feegrant grant](axelard_query_feegrant_grant.md)	 - Query details of a single grant
-- [axelard query feegrant grants-by-grantee](axelard_query_feegrant_grants-by-grantee.md)	 - Query all grants of a grantee
-- [axelard query feegrant grants-by-granter](axelard_query_feegrant_grants-by-granter.md)	 - Query all grants by a granter
+- [axelard query](/cli-docs/v0_27_0/axelard_query) - Querying subcommands
+- [axelard query feegrant grant](/cli-docs/v0_27_0/axelard_query_feegrant_grant) - Query details of a single grant
+- [axelard query feegrant grants-by-grantee](/cli-docs/v0_27_0/axelard_query_feegrant_grants-by-grantee) - Query all grants of a grantee
+- [axelard query feegrant grants-by-granter](/cli-docs/v0_27_0/axelard_query_feegrant_grants-by-granter) - Query all grants by a granter

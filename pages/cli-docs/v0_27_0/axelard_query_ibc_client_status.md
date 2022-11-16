@@ -35,4 +35,4 @@ axelard query ibc client status [client-id] [flags]
 
 ### SEE ALSO
 
-- [axelard query ibc client](axelard_query_ibc_client.md)	 - IBC client query subcommands
+- [axelard query ibc client](/cli-docs/v0_27_0/axelard_query_ibc_client) - IBC client query subcommands

@@ -24,7 +24,7 @@ axelard debug [flags]
 
 ### SEE ALSO
 
-- [axelard](axelard.md)	 - Axelar App
-- [axelard debug addr](axelard_debug_addr.md)	 - Convert an address between hex and bech32
-- [axelard debug pubkey](axelard_debug_pubkey.md)	 - Decode a pubkey from proto JSON
-- [axelard debug raw-bytes](axelard_debug_raw-bytes.md)	 - Convert raw bytes output (eg. \[10 21 13 255\]) to hex
+- [axelard](/cli-docs/v0_27_0/axelard) - Axelar App
+- [axelard debug addr](/cli-docs/v0_27_0/axelard_debug_addr) - Convert an address between hex and bech32
+- [axelard debug pubkey](/cli-docs/v0_27_0/axelard_debug_pubkey) - Decode a pubkey from proto JSON
+- [axelard debug raw-bytes](/cli-docs/v0_27_0/axelard_debug_raw-bytes) - Convert raw bytes output (eg. \[10 21 13 255\]) to hex

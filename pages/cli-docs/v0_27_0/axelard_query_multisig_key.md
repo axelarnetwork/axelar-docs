@@ -27,4 +27,4 @@ axelard query multisig key [key-id] [flags]
 
 ### SEE ALSO
 
-- [axelard query multisig](axelard_query_multisig.md)	 - Querying commands for the multisig module
+- [axelard query multisig](/cli-docs/v0_27_0/axelard_query_multisig) - Querying commands for the multisig module

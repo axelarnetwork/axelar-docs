@@ -25,9 +25,9 @@ axelard tx staking [flags]
 
 ### SEE ALSO
 
-- [axelard tx](axelard_tx.md)	 - Transactions subcommands
-- [axelard tx staking create-validator](axelard_tx_staking_create-validator.md)	 - create new validator initialized with a self-delegation to it
-- [axelard tx staking delegate](axelard_tx_staking_delegate.md)	 - Delegate liquid tokens to a validator
-- [axelard tx staking edit-validator](axelard_tx_staking_edit-validator.md)	 - edit an existing validator account
-- [axelard tx staking redelegate](axelard_tx_staking_redelegate.md)	 - Redelegate illiquid tokens from one validator to another
-- [axelard tx staking unbond](axelard_tx_staking_unbond.md)	 - Unbond shares from a validator
+- [axelard tx](/cli-docs/v0_27_0/axelard_tx) - Transactions subcommands
+- [axelard tx staking create-validator](/cli-docs/v0_27_0/axelard_tx_staking_create-validator) - create new validator initialized with a self-delegation to it
+- [axelard tx staking delegate](/cli-docs/v0_27_0/axelard_tx_staking_delegate) - Delegate liquid tokens to a validator
+- [axelard tx staking edit-validator](/cli-docs/v0_27_0/axelard_tx_staking_edit-validator) - edit an existing validator account
+- [axelard tx staking redelegate](/cli-docs/v0_27_0/axelard_tx_staking_redelegate) - Redelegate illiquid tokens from one validator to another
+- [axelard tx staking unbond](/cli-docs/v0_27_0/axelard_tx_staking_unbond) - Unbond shares from a validator

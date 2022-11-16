@@ -45,4 +45,4 @@ axelard tx nexus register-asset-fee [chain] [asset] [fee-rate] [min-fee] [max-fe
 
 ### SEE ALSO
 
-- [axelard tx nexus](axelard_tx_nexus.md)	 - nexus transactions subcommands
+- [axelard tx nexus](/cli-docs/v0_27_0/axelard_tx_nexus) - nexus transactions subcommands

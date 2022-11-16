@@ -45,4 +45,4 @@ axelard tx permission register-controller [controller] [flags]
 
 ### SEE ALSO
 
-- [axelard tx permission](axelard_tx_permission.md)	 - permission transactions subcommands
+- [axelard tx permission](/cli-docs/v0_27_0/axelard_tx_permission) - permission transactions subcommands

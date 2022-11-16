@@ -9,7 +9,7 @@ Query distribution outstanding (un-withdrawn) rewards for a validator and all th
 Example:
 
 ```
-$ <appd> query distribution validator-outstanding-rewards axelarvaloper1lwjmdnks33xwnmfayc64ycprww49n33mtm92ne
+$ <appd> query distribution validator-outstanding-rewards axelarvaloper1lwnks33xwnmfayc64ycprww49n33mtm92ne
 ```
 
 ```
@@ -37,4 +37,4 @@ axelard query distribution validator-outstanding-rewards [validator] [flags]
 
 ### SEE ALSO
 
-- [axelard query distribution](axelard_query_distribution.md) - Querying commands for the distribution module
+- [axelard query distribution](/cli-docs/v0_27_0/axelard_query_distribution) - Querying commands for the distribution module

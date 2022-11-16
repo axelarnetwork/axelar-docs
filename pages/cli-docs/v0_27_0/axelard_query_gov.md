@@ -25,14 +25,14 @@ axelard query gov [flags]
 
 ### SEE ALSO
 
-- [axelard query](axelard_query.md)	 - Querying subcommands
-- [axelard query gov deposit](axelard_query_gov_deposit.md)	 - Query details of a deposit
-- [axelard query gov deposits](axelard_query_gov_deposits.md)	 - Query deposits on a proposal
-- [axelard query gov param](axelard_query_gov_param.md)	 - Query the parameters (voting|tallying|deposit) of the governance process
-- [axelard query gov params](axelard_query_gov_params.md)	 - Query the parameters of the governance process
-- [axelard query gov proposal](axelard_query_gov_proposal.md)	 - Query details of a single proposal
-- [axelard query gov proposals](axelard_query_gov_proposals.md)	 - Query proposals with optional filters
-- [axelard query gov proposer](axelard_query_gov_proposer.md)	 - Query the proposer of a governance proposal
-- [axelard query gov tally](axelard_query_gov_tally.md)	 - Get the tally of a proposal vote
-- [axelard query gov vote](axelard_query_gov_vote.md)	 - Query details of a single vote
-- [axelard query gov votes](axelard_query_gov_votes.md)	 - Query votes on a proposal
+- [axelard query](/cli-docs/v0_27_0/axelard_query) - Querying subcommands
+- [axelard query gov deposit](/cli-docs/v0_27_0/axelard_query_gov_deposit) - Query details of a deposit
+- [axelard query gov deposits](/cli-docs/v0_27_0/axelard_query_gov_deposits) - Query deposits on a proposal
+- [axelard query gov param](/cli-docs/v0_27_0/axelard_query_gov_param) - Query the parameters (voting|tallying|deposit) of the governance process
+- [axelard query gov params](/cli-docs/v0_27_0/axelard_query_gov_params) - Query the parameters of the governance process
+- [axelard query gov proposal](/cli-docs/v0_27_0/axelard_query_gov_proposal) - Query details of a single proposal
+- [axelard query gov proposals](/cli-docs/v0_27_0/axelard_query_gov_proposals) - Query proposals with optional filters
+- [axelard query gov proposer](/cli-docs/v0_27_0/axelard_query_gov_proposer) - Query the proposer of a governance proposal
+- [axelard query gov tally](/cli-docs/v0_27_0/axelard_query_gov_tally) - Get the tally of a proposal vote
+- [axelard query gov vote](/cli-docs/v0_27_0/axelard_query_gov_vote) - Query details of a single vote
+- [axelard query gov votes](/cli-docs/v0_27_0/axelard_query_gov_votes) - Query votes on a proposal

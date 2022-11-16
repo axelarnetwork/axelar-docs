@@ -63,4 +63,4 @@ axelard keys add <name> [flags]
 
 ### SEE ALSO
 
-- [axelard keys](axelard_keys.md)	 - Manage your application's keys
+- [axelard keys](/cli-docs/v0_27_0/axelard_keys) - Manage your application's keys

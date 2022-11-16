@@ -25,7 +25,7 @@ axelard tx snapshot [flags]
 
 ### SEE ALSO
 
-- [axelard tx](axelard_tx.md)	 - Transactions subcommands
-- [axelard tx snapshot deactivate-proxy](axelard_tx_snapshot_deactivate-proxy.md)	 - Deactivate the proxy account of the sender
-- [axelard tx snapshot register-proxy](axelard_tx_snapshot_register-proxy.md)	 - Register a proxy account for a specific validator principal to broadcast transactions in its stead
-- [axelard tx snapshot send-tokens](axelard_tx_snapshot_send-tokens.md)	 - Sends the specified amount of tokens to the designated addresses
+- [axelard tx](/cli-docs/v0_27_0/axelard_tx) - Transactions subcommands
+- [axelard tx snapshot deactivate-proxy](/cli-docs/v0_27_0/axelard_tx_snapshot_deactivate-proxy) - Deactivate the proxy account of the sender
+- [axelard tx snapshot register-proxy](/cli-docs/v0_27_0/axelard_tx_snapshot_register-proxy) - Register a proxy account for a specific validator principal to broadcast transactions in its stead
+- [axelard tx snapshot send-tokens](/cli-docs/v0_27_0/axelard_tx_snapshot_send-tokens) - Sends the specified amount of tokens to the designated addresses

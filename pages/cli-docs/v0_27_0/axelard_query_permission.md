@@ -25,5 +25,5 @@ axelard query permission [flags]
 
 ### SEE ALSO
 
-- [axelard query](axelard_query.md)	 - Querying subcommands
-- [axelard query permission governance-key](axelard_query_permission_governance-key.md)	 - Returns the governance key
+- [axelard query](/cli-docs/v0_27_0/axelard_query) - Querying subcommands
+- [axelard query permission governance-key](/cli-docs/v0_27_0/axelard_query_permission_governance-key) - Returns the governance key

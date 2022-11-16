@@ -55,4 +55,4 @@ axelard tx validate-signatures [file] [flags]
 
 ### SEE ALSO
 
-- [axelard tx](axelard_tx.md)	 - Transactions subcommands
+- [axelard tx](/cli-docs/v0_27_0/axelard_tx) - Transactions subcommands

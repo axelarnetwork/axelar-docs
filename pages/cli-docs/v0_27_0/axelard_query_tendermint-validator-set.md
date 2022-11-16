@@ -29,4 +29,4 @@ axelard query tendermint-validator-set [height] [flags]
 
 ### SEE ALSO
 
-- [axelard query](axelard_query.md)	 - Querying subcommands
+- [axelard query](/cli-docs/v0_27_0/axelard_query) - Querying subcommands

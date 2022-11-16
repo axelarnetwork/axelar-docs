@@ -29,4 +29,4 @@ axelard tendermint version [flags]
 
 ### SEE ALSO
 
-- [axelard tendermint](axelard_tendermint.md)	 - Tendermint subcommands
+- [axelard tendermint](/cli-docs/v0_27_0/axelard_tendermint) - Tendermint subcommands

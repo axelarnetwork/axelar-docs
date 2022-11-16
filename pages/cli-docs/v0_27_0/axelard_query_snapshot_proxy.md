@@ -27,4 +27,4 @@ axelard query snapshot proxy [operator address] [flags]
 
 ### SEE ALSO
 
-- [axelard query snapshot](axelard_query_snapshot.md)	 - Querying commands for the snapshot module
+- [axelard query snapshot](/cli-docs/v0_27_0/axelard_query_snapshot) - Querying commands for the snapshot module

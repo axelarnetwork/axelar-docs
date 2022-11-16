@@ -56,4 +56,4 @@ axelard tx gov vote [proposal-id] [option] [flags]
 
 ### SEE ALSO
 
-- [axelard tx gov](axelard_tx_gov.md) - Governance transactions subcommands
+- [axelard tx gov](/cli-docs/v0_27_0/axelard_tx_gov) - Governance transactions subcommands

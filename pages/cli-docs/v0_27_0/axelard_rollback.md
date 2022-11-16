@@ -33,4 +33,4 @@ axelard rollback [flags]
 
 ### SEE ALSO
 
-- [axelard](axelard.md)	 - Axelar App
+- [axelard](/cli-docs/v0_27_0/axelard) - Axelar App

@@ -25,6 +25,6 @@ axelard tx ibc [flags]
 
 ### SEE ALSO
 
-- [axelard tx](axelard_tx.md)	 - Transactions subcommands
-- [axelard tx ibc channel](axelard_tx_ibc_channel.md)	 - IBC channel transaction subcommands
-- [axelard tx ibc client](axelard_tx_ibc_client.md)	 - IBC client transaction subcommands
+- [axelard tx](/cli-docs/v0_27_0/axelard_tx) - Transactions subcommands
+- [axelard tx ibc channel](/cli-docs/v0_27_0/axelard_tx_ibc_channel) - IBC channel transaction subcommands
+- [axelard tx ibc client](/cli-docs/v0_27_0/axelard_tx_ibc_client) - IBC client transaction subcommands

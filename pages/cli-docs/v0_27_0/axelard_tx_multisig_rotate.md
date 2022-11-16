@@ -45,4 +45,4 @@ axelard tx multisig rotate [chain] [keyID] [flags]
 
 ### SEE ALSO
 
-- [axelard tx multisig](axelard_tx_multisig.md)	 - multisig transactions subcommands
+- [axelard tx multisig](/cli-docs/v0_27_0/axelard_tx_multisig) - multisig transactions subcommands

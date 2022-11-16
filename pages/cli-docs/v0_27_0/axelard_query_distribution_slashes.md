@@ -43,4 +43,4 @@ axelard query distribution slashes [validator] [start-height] [end-height] [flag
 
 ### SEE ALSO
 
-- [axelard query distribution](axelard_query_distribution.md) - Querying commands for the distribution module
+- [axelard query distribution](/cli-docs/v0_27_0/axelard_query_distribution) - Querying commands for the distribution module

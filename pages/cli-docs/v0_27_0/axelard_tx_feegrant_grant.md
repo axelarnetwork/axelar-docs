@@ -64,4 +64,4 @@ axelard tx feegrant grant [granter_key_or_address] [grantee] [flags]
 
 ### SEE ALSO
 
-- [axelard tx feegrant](axelard_tx_feegrant.md) - Feegrant transactions subcommands
+- [axelard tx feegrant](/cli-docs/v0_27_0/axelard_tx_feegrant) - Feegrant transactions subcommands

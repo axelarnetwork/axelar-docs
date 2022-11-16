@@ -7,7 +7,7 @@ Query for paginated transactions that match a set of events
 Search for transactions that match the exact given events where results are paginated.
 Each event takes the form of '{eventType}.{eventAttribute}={value}'. Please refer
 to each module's documentation for the full set of events to query for. Each module
-documents its respective events under 'xx_events.md'.
+documents its respective events under 'xx_events'.
 
 Example:
 
@@ -43,4 +43,4 @@ axelard query txs [flags]
 
 ### SEE ALSO
 
-- [axelard query](axelard_query.md) - Querying subcommands
+- [axelard query](/cli-docs/v0_27_0/axelard_query) - Querying subcommands

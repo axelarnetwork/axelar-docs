@@ -25,7 +25,7 @@ axelard tx multisig keygen [flags]
 
 ### SEE ALSO
 
-- [axelard tx multisig](axelard_tx_multisig.md)	 - multisig transactions subcommands
-- [axelard tx multisig keygen opt-in](axelard_tx_multisig_keygen_opt-in.md)	 - Opt the sender into future keygens. Sender should be a proxy address for a validator
-- [axelard tx multisig keygen opt-out](axelard_tx_multisig_keygen_opt-out.md)	 - Opt the sender out of future keygens. Sender should be a proxy address for a validator
-- [axelard tx multisig keygen start](axelard_tx_multisig_keygen_start.md)	 - Initiate key generation protocol
+- [axelard tx multisig](/cli-docs/v0_27_0/axelard_tx_multisig) - multisig transactions subcommands
+- [axelard tx multisig keygen opt-in](/cli-docs/v0_27_0/axelard_tx_multisig_keygen_opt-in) - Opt the sender into future keygens. Sender should be a proxy address for a validator
+- [axelard tx multisig keygen opt-out](/cli-docs/v0_27_0/axelard_tx_multisig_keygen_opt-out) - Opt the sender out of future keygens. Sender should be a proxy address for a validator
+- [axelard tx multisig keygen start](/cli-docs/v0_27_0/axelard_tx_multisig_keygen_start) - Initiate key generation protocol

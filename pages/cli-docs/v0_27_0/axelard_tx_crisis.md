@@ -25,5 +25,5 @@ axelard tx crisis [flags]
 
 ### SEE ALSO
 
-- [axelard tx](axelard_tx.md)	 - Transactions subcommands
-- [axelard tx crisis invariant-broken](axelard_tx_crisis_invariant-broken.md)	 - Submit proof that an invariant broken to halt the chain
+- [axelard tx](/cli-docs/v0_27_0/axelard_tx) - Transactions subcommands
+- [axelard tx crisis invariant-broken](/cli-docs/v0_27_0/axelard_tx_crisis_invariant-broken) - Submit proof that an invariant broken to halt the chain

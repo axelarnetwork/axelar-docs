@@ -58,4 +58,4 @@ axelard tx distribution withdraw-rewards [validator-addr] [flags]
 
 ### SEE ALSO
 
-- [axelard tx distribution](axelard_tx_distribution.md) - Distribution transactions subcommands
+- [axelard tx distribution](/cli-docs/v0_27_0/axelard_tx_distribution) - Distribution transactions subcommands

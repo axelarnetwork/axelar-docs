@@ -25,7 +25,7 @@ axelard query bank [flags]
 
 ### SEE ALSO
 
-- [axelard query](axelard_query.md)	 - Querying subcommands
-- [axelard query bank balances](axelard_query_bank_balances.md)	 - Query for account balances by address
-- [axelard query bank denom-metadata](axelard_query_bank_denom-metadata.md)	 - Query the client metadata for coin denominations
-- [axelard query bank total](axelard_query_bank_total.md)	 - Query the total supply of coins of the chain
+- [axelard query](/cli-docs/v0_27_0/axelard_query) - Querying subcommands
+- [axelard query bank balances](/cli-docs/v0_27_0/axelard_query_bank_balances) - Query for account balances by address
+- [axelard query bank denom-metadata](/cli-docs/v0_27_0/axelard_query_bank_denom-metadata) - Query the client metadata for coin denominations
+- [axelard query bank total](/cli-docs/v0_27_0/axelard_query_bank_total) - Query the total supply of coins of the chain

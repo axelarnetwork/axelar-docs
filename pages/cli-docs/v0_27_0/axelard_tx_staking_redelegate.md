@@ -55,4 +55,4 @@ axelard tx staking redelegate [src-validator-addr] [dst-validator-addr] [amount]
 
 ### SEE ALSO
 
-- [axelard tx staking](axelard_tx_staking.md) - Staking transaction subcommands
+- [axelard tx staking](/cli-docs/v0_27_0/axelard_tx_staking) - Staking transaction subcommands

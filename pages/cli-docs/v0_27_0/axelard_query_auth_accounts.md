@@ -33,4 +33,4 @@ axelard query auth accounts [flags]
 
 ### SEE ALSO
 
-- [axelard query auth](axelard_query_auth.md)	 - Querying commands for the auth module
+- [axelard query auth](/cli-docs/v0_27_0/axelard_query_auth) - Querying commands for the auth module

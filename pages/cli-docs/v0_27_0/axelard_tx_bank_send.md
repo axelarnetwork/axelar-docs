@@ -46,4 +46,4 @@ axelard tx bank send [from_key_or_address] [to_address] [amount] [flags]
 
 ### SEE ALSO
 
-- [axelard tx bank](axelard_tx_bank.md)	 - Bank transaction subcommands
+- [axelard tx bank](/cli-docs/v0_27_0/axelard_tx_bank) - Bank transaction subcommands

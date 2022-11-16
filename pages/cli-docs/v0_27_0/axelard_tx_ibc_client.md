@@ -25,8 +25,8 @@ axelard tx ibc client [flags]
 
 ### SEE ALSO
 
-- [axelard tx ibc](axelard_tx_ibc.md)	 - IBC transaction subcommands
-- [axelard tx ibc client create](axelard_tx_ibc_client_create.md)	 - create new IBC client
-- [axelard tx ibc client misbehaviour](axelard_tx_ibc_client_misbehaviour.md)	 - submit a client misbehaviour
-- [axelard tx ibc client update](axelard_tx_ibc_client_update.md)	 - update existing client with a header
-- [axelard tx ibc client upgrade](axelard_tx_ibc_client_upgrade.md)	 - upgrade an IBC client
+- [axelard tx ibc](/cli-docs/v0_27_0/axelard_tx_ibc) - IBC transaction subcommands
+- [axelard tx ibc client create](/cli-docs/v0_27_0/axelard_tx_ibc_client_create) - create new IBC client
+- [axelard tx ibc client misbehaviour](/cli-docs/v0_27_0/axelard_tx_ibc_client_misbehaviour) - submit a client misbehaviour
+- [axelard tx ibc client update](/cli-docs/v0_27_0/axelard_tx_ibc_client_update) - update existing client with a header
+- [axelard tx ibc client upgrade](/cli-docs/v0_27_0/axelard_tx_ibc_client_upgrade) - upgrade an IBC client

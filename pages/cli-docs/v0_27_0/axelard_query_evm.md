@@ -25,18 +25,18 @@ axelard query evm [flags]
 
 ### SEE ALSO
 
-- [axelard query](axelard_query.md)	 - Querying subcommands
-- [axelard query evm address](axelard_query_evm_address.md)	 - Returns the EVM address
-- [axelard query evm batched-commands](axelard_query_evm_batched-commands.md)	 - Get the signed batched commands that can be wrapped in an EVM transaction to be executed in Axelar Gateway
-- [axelard query evm burner-info](axelard_query_evm_burner-info.md)	 - Get information about a burner address
-- [axelard query evm bytecode](axelard_query_evm_bytecode.md)	 - Fetch the bytecode of an EVM contract \[contract\] for chain \[chain\]
-- [axelard query evm chains](axelard_query_evm_chains.md)	 - Return the supported EVM chains by status
-- [axelard query evm command](axelard_query_evm_command.md)	 - Get information about an EVM gateway command given a chain and the command ID
-- [axelard query evm confirmation-height](axelard_query_evm_confirmation-height.md)	 - Returns the minimum confirmation height for the given chain
-- [axelard query evm erc20-tokens](axelard_query_evm_erc20-tokens.md)	 - Returns the ERC20 tokens for the given chain
-- [axelard query evm event](axelard_query_evm_event.md)	 - Returns an event for the given chain
-- [axelard query evm gateway-address](axelard_query_evm_gateway-address.md)	 - Query the Axelar Gateway contract address
-- [axelard query evm latest-batched-commands](axelard_query_evm_latest-batched-commands.md)	 - Get the latest batched commands that can be wrapped in an EVM transaction to be executed in Axelar Gateway
-- [axelard query evm pending-commands](axelard_query_evm_pending-commands.md)	 - Get the list of commands not yet added to a batch
-- [axelard query evm token-address](axelard_query_evm_token-address.md)	 - Query a token address by by either symbol or asset
-- [axelard query evm token-info](axelard_query_evm_token-info.md)	 - Returns the info of token by either symbol, asset, or address
+- [axelard query](/cli-docs/v0_27_0/axelard_query) - Querying subcommands
+- [axelard query evm address](/cli-docs/v0_27_0/axelard_query_evm_address) - Returns the EVM address
+- [axelard query evm batched-commands](/cli-docs/v0_27_0/axelard_query_evm_batched-commands) - Get the signed batched commands that can be wrapped in an EVM transaction to be executed in Axelar Gateway
+- [axelard query evm burner-info](/cli-docs/v0_27_0/axelard_query_evm_burner-info) - Get information about a burner address
+- [axelard query evm bytecode](/cli-docs/v0_27_0/axelard_query_evm_bytecode) - Fetch the bytecode of an EVM contract \[contract\] for chain \[chain\]
+- [axelard query evm chains](/cli-docs/v0_27_0/axelard_query_evm_chains) - Return the supported EVM chains by status
+- [axelard query evm command](/cli-docs/v0_27_0/axelard_query_evm_command) - Get information about an EVM gateway command given a chain and the command ID
+- [axelard query evm confirmation-height](/cli-docs/v0_27_0/axelard_query_evm_confirmation-height) - Returns the minimum confirmation height for the given chain
+- [axelard query evm erc20-tokens](axelard_query_evm_erc20-tokens) - Returns the ERC20 tokens for the given chain
+- [axelard query evm event](/cli-docs/v0_27_0/axelard_query_evm_event) - Returns an event for the given chain
+- [axelard query evm gateway-address](/cli-docs/v0_27_0/axelard_query_evm_gateway-address) - Query the Axelar Gateway contract address
+- [axelard query evm latest-batched-commands](/cli-docs/v0_27_0/axelard_query_evm_latest-batched-commands) - Get the latest batched commands that can be wrapped in an EVM transaction to be executed in Axelar Gateway
+- [axelard query evm pending-commands](/cli-docs/v0_27_0/axelard_query_evm_pending-commands) - Get the list of commands not yet added to a batch
+- [axelard query evm token-address](/cli-docs/v0_27_0/axelard_query_evm_token-address) - Query a token address by by either symbol or asset
+- [axelard query evm token-info](/cli-docs/v0_27_0/axelard_query_evm_token-info) - Returns the info of token by either symbol, asset, or address

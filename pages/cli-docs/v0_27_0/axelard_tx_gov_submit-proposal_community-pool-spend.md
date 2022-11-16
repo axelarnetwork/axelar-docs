@@ -66,4 +66,4 @@ axelard tx gov submit-proposal community-pool-spend [proposal-file] [flags]
 
 ### SEE ALSO
 
-- [axelard tx gov submit-proposal](axelard_tx_gov_submit-proposal.md) - Submit a proposal along with an initial deposit
+- [axelard tx gov submit-proposal](/cli-docs/v0_27_0/axelard_tx_gov_submit-proposal) - Submit a proposal along with an initial deposit

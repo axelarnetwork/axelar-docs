@@ -21,7 +21,7 @@ Querying commands for the upgrade module
 
 ### SEE ALSO
 
-- [axelard query](axelard_query.md)	 - Querying subcommands
-- [axelard query upgrade applied](axelard_query_upgrade_applied.md)	 - block header for height at which a completed upgrade was applied
-- [axelard query upgrade module_versions](axelard_query_upgrade_module_versions.md)	 - get the list of module versions
-- [axelard query upgrade plan](axelard_query_upgrade_plan.md)	 - get upgrade plan (if one exists)
+- [axelard query](/cli-docs/v0_27_0/axelard_query) - Querying subcommands
+- [axelard query upgrade applied](/cli-docs/v0_27_0/axelard_query_upgrade_applied) - block header for height at which a completed upgrade was applied
+- [axelard query upgrade module_versions](/cli-docs/v0_27_0/axelard_query_upgrade_module_versions) - get the list of module versions
+- [axelard query upgrade plan](/cli-docs/v0_27_0/axelard_query_upgrade_plan) - get upgrade plan (if one exists)

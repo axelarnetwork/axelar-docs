@@ -25,5 +25,5 @@ axelard query params [flags]
 
 ### SEE ALSO
 
-- [axelard query](axelard_query.md)	 - Querying subcommands
-- [axelard query params subspace](axelard_query_params_subspace.md)	 - Query for raw parameters by subspace and key
+- [axelard query](/cli-docs/v0_27_0/axelard_query) - Querying subcommands
+- [axelard query params subspace](/cli-docs/v0_27_0/axelard_query_params_subspace) - Query for raw parameters by subspace and key

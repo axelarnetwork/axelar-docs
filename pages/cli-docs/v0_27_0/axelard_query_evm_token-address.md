@@ -29,4 +29,4 @@ axelard query evm token-address [chain] [flags]
 
 ### SEE ALSO
 
-- [axelard query evm](axelard_query_evm.md)	 - Querying commands for the evm module
+- [axelard query evm](/cli-docs/v0_27_0/axelard_query_evm) - Querying commands for the evm module

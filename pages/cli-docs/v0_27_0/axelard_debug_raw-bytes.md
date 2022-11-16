@@ -34,4 +34,4 @@ axelard debug raw-bytes [raw-bytes] [flags]
 
 ### SEE ALSO
 
-- [axelard debug](axelard_debug.md) - Tool for helping with debugging your application
+- [axelard debug](/cli-docs/v0_27_0/axelard_debug) - Tool for helping with debugging your application

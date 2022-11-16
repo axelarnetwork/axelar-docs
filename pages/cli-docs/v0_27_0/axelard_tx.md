@@ -25,30 +25,30 @@ axelard tx [flags]
 
 ### SEE ALSO
 
-- [axelard](axelard.md)	 - Axelar App
-- [axelard tx axelarnet](axelard_tx_axelarnet.md)	 - axelarnet transactions subcommands
-- [axelard tx bank](axelard_tx_bank.md)	 - Bank transaction subcommands
-- [axelard tx broadcast](axelard_tx_broadcast.md)	 - Broadcast transactions generated offline
-- [axelard tx crisis](axelard_tx_crisis.md)	 - Crisis transactions subcommands
-- [axelard tx decode](axelard_tx_decode.md)	 - Decode a binary encoded transaction string
-- [axelard tx distribution](axelard_tx_distribution.md)	 - Distribution transactions subcommands
-- [axelard tx encode](axelard_tx_encode.md)	 - Encode transactions generated offline
-- [axelard tx evidence](axelard_tx_evidence.md)	 - Evidence transaction subcommands
-- [axelard tx evm](axelard_tx_evm.md)	 - evm transactions subcommands
-- [axelard tx feegrant](axelard_tx_feegrant.md)	 - Feegrant transactions subcommands
-- [axelard tx gov](axelard_tx_gov.md)	 - Governance transactions subcommands
-- [axelard tx ibc](axelard_tx_ibc.md)	 - IBC transaction subcommands
-- [axelard tx ibc-transfer](axelard_tx_ibc-transfer.md)	 - IBC fungible token transfer transaction subcommands
-- [axelard tx multisig](axelard_tx_multisig.md)	 - multisig transactions subcommands
-- [axelard tx multisign](axelard_tx_multisign.md)	 - Generate multisig signatures for transactions generated offline
-- [axelard tx multisign-batch](axelard_tx_multisign-batch.md)	 - Assemble multisig transactions in batch from batch signatures
-- [axelard tx nexus](axelard_tx_nexus.md)	 - nexus transactions subcommands
-- [axelard tx permission](axelard_tx_permission.md)	 - permission transactions subcommands
-- [axelard tx sign](axelard_tx_sign.md)	 - Sign a transaction generated offline
-- [axelard tx sign-batch](axelard_tx_sign-batch.md)	 - Sign transaction batch files
-- [axelard tx slashing](axelard_tx_slashing.md)	 - Slashing transaction subcommands
-- [axelard tx snapshot](axelard_tx_snapshot.md)	 - snapshot transactions subcommands
-- [axelard tx staking](axelard_tx_staking.md)	 - Staking transaction subcommands
-- [axelard tx validate-signatures](axelard_tx_validate-signatures.md)	 - validate transactions signatures
-- [axelard tx vesting](axelard_tx_vesting.md)	 - Vesting transaction subcommands
-- [axelard tx vesting](axelard_tx_vesting.md)	 - Vesting transaction subcommands
+- [axelard](/cli-docs/v0_27_0/axelard) - Axelar App
+- [axelard tx axelarnet](/cli-docs/v0_27_0/axelard_tx_axelarnet) - axelarnet transactions subcommands
+- [axelard tx bank](/cli-docs/v0_27_0/axelard_tx_bank) - Bank transaction subcommands
+- [axelard tx broadcast](/cli-docs/v0_27_0/axelard_tx_broadcast) - Broadcast transactions generated offline
+- [axelard tx crisis](/cli-docs/v0_27_0/axelard_tx_crisis) - Crisis transactions subcommands
+- [axelard tx decode](/cli-docs/v0_27_0/axelard_tx_decode) - Decode a binary encoded transaction string
+- [axelard tx distribution](/cli-docs/v0_27_0/axelard_tx_distribution) - Distribution transactions subcommands
+- [axelard tx encode](/cli-docs/v0_27_0/axelard_tx_encode) - Encode transactions generated offline
+- [axelard tx evidence](/cli-docs/v0_27_0/axelard_tx_evidence) - Evidence transaction subcommands
+- [axelard tx evm](/cli-docs/v0_27_0/axelard_tx_evm) - evm transactions subcommands
+- [axelard tx feegrant](/cli-docs/v0_27_0/axelard_tx_feegrant) - Feegrant transactions subcommands
+- [axelard tx gov](/cli-docs/v0_27_0/axelard_tx_gov) - Governance transactions subcommands
+- [axelard tx ibc](/cli-docs/v0_27_0/axelard_tx_ibc) - IBC transaction subcommands
+- [axelard tx ibc-transfer](/cli-docs/v0_27_0/axelard_tx_ibc-transfer) - IBC fungible token transfer transaction subcommands
+- [axelard tx multisig](/cli-docs/v0_27_0/axelard_tx_multisig) - multisig transactions subcommands
+- [axelard tx multisign](/cli-docs/v0_27_0/axelard_tx_multisign) - Generate multisig signatures for transactions generated offline
+- [axelard tx multisign-batch](/cli-docs/v0_27_0/axelard_tx_multisign-batch) - Assemble multisig transactions in batch from batch signatures
+- [axelard tx nexus](/cli-docs/v0_27_0/axelard_tx_nexus) - nexus transactions subcommands
+- [axelard tx permission](/cli-docs/v0_27_0/axelard_tx_permission) - permission transactions subcommands
+- [axelard tx sign](/cli-docs/v0_27_0/axelard_tx_sign) - Sign a transaction generated offline
+- [axelard tx sign-batch](/cli-docs/v0_27_0/axelard_tx_sign-batch) - Sign transaction batch files
+- [axelard tx slashing](/cli-docs/v0_27_0/axelard_tx_slashing) - Slashing transaction subcommands
+- [axelard tx snapshot](/cli-docs/v0_27_0/axelard_tx_snapshot) - snapshot transactions subcommands
+- [axelard tx staking](/cli-docs/v0_27_0/axelard_tx_staking) - Staking transaction subcommands
+- [axelard tx validate-signatures](/cli-docs/v0_27_0/axelard_tx_validate-signatures) - validate transactions signatures
+- [axelard tx vesting](/cli-docs/v0_27_0/axelard_tx_vesting) - Vesting transaction subcommands
+- [axelard tx vesting](/cli-docs/v0_27_0/axelard_tx_vesting) - Vesting transaction subcommands
