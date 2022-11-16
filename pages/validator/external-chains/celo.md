@@ -10,12 +10,14 @@ Set up your CELO Mainnet or Alfajores Testnet RPC node
 
 - [Setup your Axelar validator](/validator/setup)
 - [Minimum hardware requirements](https://docs.celo.org/validator/run/mainnet#hardware-requirements):
-   - Memory: 8 GB RAM
-   - CPU: Quad core 3GHz (64-bit)
-   - Disk: 256 GB of SSD storage, plus a secondary HDD desirable
-   - Network: At least 1 GB input/output Ethernet with a fiber Internet connection, ideally redundant connections and HA switches
+  - Memory: 8 GB RAM
+  - CPU: Quad core 3GHz (64-bit)
+  - Disk: 256 GB of SSD storage, plus a secondary HDD desirable
+  - Network: At least 1 GB input/output Ethernet with a fiber Internet connection, ideally redundant connections and HA switches
 - MacOS or Ubuntu 18.04+
 - [Official Documentation](https://docs.celo.org/network/node/run-mainnet)
+
+## Steps
 
 1. Setup Preferences
 2. Celo Networks
@@ -43,7 +45,6 @@ sudo apt-get install docker.io
 
 ### Celo Networks
 
-```
 <Tabs tabs={[
 {
 title: "Mainnet",
@@ -58,7 +59,6 @@ content: <CodeBlock language="bash">
 </CodeBlock>
 }
 ]} />
-```
 
 ### Pull the Celo Docker image
 
@@ -128,40 +128,20 @@ echo "export CELO_DIR=$CELO_DIR" >> ~/.bash_profile
 
 This command specifies the settings needed to run the node, and gets it started.
 
-```jsx
-<Tabs
-  tabs={[
-    {
-      title: "Mainnet",
-      content: (
-        <CodeBlock language="bash">
-          `docker run --name celo-fullnode -d --restart unless-stopped
-          --stop-timeout 300 -p 8545:8545 -p 8546:8546 -p 30303:30303 -p
-          30303:30303/udp -v $CELO_DIR:/root/.celo $CELO_IMAGE --verbosity 3
-          --syncmode full --http --http.addr 0.0.0.0 --http.api
-          eth,net,web3,debug,admin,personal --light.serve 90 --light.maxpeers
-          1000 --maxpeers 1100 --etherbase $CELO_ACCOUNT_ADDRESS --datadir
-          /root/.celo`
-        </CodeBlock>
-      ),
-    },
-    {
-      title: "Alfajores Testnet",
-      content: (
-        <CodeBlock language="bash">
-          `docker run --name celo-fullnode -d --restart unless-stopped
-          --stop-timeout 300 -p 8545:8545 -p 8546:8546 -p 30303:30303 -p
-          30303:30303/udp -v $CELO_DIR:/root/.celo $CELO_IMAGE --verbosity 3
-          --syncmode full --http --http.addr 0.0.0.0 --http.api
-          eth,net,web3,debug,admin,personal --light.serve 90 --light.maxpeers
-          1000 --maxpeers 1100 --etherbase $CELO_ACCOUNT_ADDRESS --alfajores
-          --datadir /root/.celo`
-        </CodeBlock>
-      ),
-    },
-  ]}
-/>
-```
+<Tabs tabs={[
+{
+title: "Mainnet",
+content: <CodeBlock language="bash">
+`docker run --name celo-fullnode -d --restart unless-stopped --stop-timeout 300 -p 8545:8545 -p 8546:8546 -p 30303:30303 -p 30303:30303/udp -v $CELO_DIR:/root/.celo $CELO_IMAGE --verbosity 3 --syncmode full --http --http.addr 0.0.0.0 --http.api eth,net,web3,debug,admin,personal --light.serve 90 --light.maxpeers 1000 --maxpeers 1100 --etherbase $CELO_ACCOUNT_ADDRESS --datadir /root/.celo`
+</CodeBlock>
+},
+{
+title: "Alfajores Testnet",
+content: <CodeBlock language="bash">
+`docker run --name celo-fullnode -d --restart unless-stopped --stop-timeout 300 -p 8545:8545 -p 8546:8546 -p 30303:30303 -p 30303:30303/udp -v $CELO_DIR:/root/.celo $CELO_IMAGE --verbosity 3 --syncmode full --http --http.addr 0.0.0.0 --http.api eth,net,web3,debug,admin,personal --light.serve 90 --light.maxpeers 1000 --maxpeers 1100 --etherbase $CELO_ACCOUNT_ADDRESS --alfajores --datadir /root/.celo`
+</CodeBlock>
+}
+]} />
 
 You'll start seeing some output. After a few minutes, you should see lines that look like this. This means your node has started syncing with the network and is receiving blocks.
 
@@ -176,19 +156,9 @@ INFO [11-03|07:10:19.736] Imported new chain segment               blocks=1  txs
 INFO [11-03|07:10:24.684] Imported new chain segment               blocks=1  txs=28  mgas=4.218  elapsed=51.408ms    mgasps=82.054  number=15,958,285 hash=c1a6be..c7825e dirty=156.42MiB
 ```
 
-```jsx
 <Callout type="error" emoji="⚠️">
-  Security: The command line above includes the parameter --http.addr 0.0.0.0
-  which makes the Celo Blockchain software listen for incoming RPC requests on
-  all network adaptors. Exercise extreme caution in doing this when running
-  outside Docker, as it means that any unlocked accounts and their funds may be
-  accessed from other machines on the Internet. In the context of running a
-  Docker container on your local machine, this together with the docker -p flags
-  allows you to make RPC calls from outside the container, i.e from your local
-  host, but not from outside your machine. Read more about Docker Networking
-  here.
+Security: The command line above includes the parameter --http.addr 0.0.0.0 which makes the Celo Blockchain software listen for incoming RPC requests on all network adaptors. Exercise extreme caution in doing this when running outside Docker, as it means that any unlocked accounts and their funds may be accessed from other machines on the Internet. In the context of running a Docker container on your local machine, this together with the docker -p flags allows you to make RPC calls from outside the container, i.e from your local host, but not from outside your machine. Read more about Docker Networking here.
 </Callout>
-```
 
 ### Check Synced
 
