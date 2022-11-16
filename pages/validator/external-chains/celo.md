@@ -1,19 +1,21 @@
 # CELO
 
+import Callout from 'nextra-theme-docs/callout'
+import CodeBlock from '../../../components/code-block'
+import Tabs from '../../../components/tabs'
+
 Set up your CELO Mainnet or Alfajores Testnet RPC node
 
 ## Prerequisites
 
 - [Setup your Axelar validator](/validator/setup)
 - [Minimum hardware requirements](https://docs.celo.org/validator/run/mainnet#hardware-requirements):
-  - Memory: 8 GB RAM
-  - CPU: Quad core 3GHz (64-bit)
-  - Disk: 256 GB of SSD storage, plus a secondary HDD desirable
-  - Network: At least 1 GB input/output Ethernet with a fiber Internet connection, ideally redundant connections and HA switches
+   - Memory: 8 GB RAM
+   - CPU: Quad core 3GHz (64-bit)
+   - Disk: 256 GB of SSD storage, plus a secondary HDD desirable
+   - Network: At least 1 GB input/output Ethernet with a fiber Internet connection, ideally redundant connections and HA switches
 - MacOS or Ubuntu 18.04+
 - [Official Documentation](https://docs.celo.org/network/node/run-mainnet)
-
-## Steps
 
 1. Setup Preferences
 2. Celo Networks
@@ -72,7 +74,7 @@ docker pull $CELO_IMAGE
 
 First, create the directory that will store your node's configuration and its copy of the blockchain. This directory can be named anything you'd like, but here's a default you can use. The commands below create a directory and then navigate into it. The rest of the steps assume you are running the commands from inside this directory.
 
-```
+```bash
 mkdir -r ~/celo-data-dir
 cd ~/celo-data-dir
 export CELO_DIR=~/celo-data-dir
@@ -90,7 +92,7 @@ docker run -v $CELO_DIR:/root/.celo --rm -it $CELO_IMAGE account new
 
 Example Result:
 
-```
+```bash
 INFO [10-28|11:23:37.486] Maximum peer count                       ETH=175 LES=0 total=175
 Your new account is locked with a password. Please give a password. Do not forget this password.
 Password:
@@ -204,7 +206,7 @@ curl https://localhost:8545 \
 In order for `vald` to connect to your Ethereum node, your `rpc_addr` should be exposed in
 vald's `config.toml`
 
-```
+```bash
 [[axelar_bridge_evm]]
 name = "celo"
 rpc_addr = "<node-rpc-addr>"
