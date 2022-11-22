@@ -6,7 +6,7 @@ on:
       - feat/update-cli-docs
 
 jobs:
-  audit-iac:
+  update-cli-docs:
     runs-on: ubuntu-latest
 
     steps:
