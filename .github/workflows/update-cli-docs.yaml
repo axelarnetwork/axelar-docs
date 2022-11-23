@@ -44,3 +44,9 @@ jobs:
           git config --local user.name "kalid"
           git add --all
           git commit -m "chore(upload-cli-docs): upload cli docs version 0.28.0"
+
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: feat/upload-cli-docs-v0_28_0
