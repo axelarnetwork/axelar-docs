@@ -1,9 +1,11 @@
 name: 'Update cli docs'
 
 on:
-  push:
-    branches:
-      - feat/update-cli-docs
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'CLI doc version to upload'
+        required: true
 
 jobs:
   update-cli-docs:
@@ -23,11 +25,11 @@ jobs:
 
       - name: Create new branch
         run: |  
-          git checkout -b feat/upload-cli-docs-v0_28_0
+          git checkout -b feat/upload-cli-docs-${{ github.event.inputs.version }}
 
       - name: Create version folder
         run: |  
-          test -d "pages/cli-docs/v0_28_0" || mkdir -p pages/cli-docs/v0_28_0 
+          test -d "pages/cli-docs/${{ github.event.inputs.version }}" || mkdir -p pages/cli-docs/${{ github.event.inputs.version }} 
 
       - name: Clone axelar-core repo
         run: |  
@@ -35,7 +37,7 @@ jobs:
 
       - name: Copy cli docs to web docs
         run: |  
-          cp axelar-core/docs/cli/* pages/cli-docs/v0_28_0
+          cp axelar-core/docs/cli/* pages/cli-docs/${{ github.event.inputs.version }}
           rm -fr axelar-core
 
       - name: Commit files
@@ -43,10 +45,10 @@ jobs:
           git config --local user.email "kalid@axelar.network"
           git config --local user.name "kalid"
           git add --all
-          git commit -m "chore(upload-cli-docs): upload cli docs version 0.28.0"
+          git commit -m "chore(upload-cli-docs): upload cli docs version ${{ github.event.inputs.version }}"
 
       - name: Push changes
         uses: ad-m/github-push-action@master
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: feat/upload-cli-docs-v0_28_0
+          branch: feat/upload-cli-docs-${{ github.event.inputs.version }}
