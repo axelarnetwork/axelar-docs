@@ -121,16 +121,6 @@
       "channel_id": "channel-3"
     },
     {
-      "from": "persistence",
-      "to": "axelarnet",
-      "channel_id": "channel-108"
-    },
-    {
-      "from": "axelarnet",
-      "to": "persistence",
-      "channel_id": "channel-97"
-    },
-    {
       "from": "regen",
       "to": "axelarnet",
       "channel_id": "channel-48"
@@ -251,6 +241,16 @@
       "from": "axelarnet",
       "to": "osmosis",
       "channel_id": "channel-22"
+    },
+    {
+      "from": "persistence",
+      "to": "axelarnet",
+      "channel_id": "channel-108"
+    },
+    {
+      "from": "axelarnet",
+      "to": "persistence",
+      "channel_id": "channel-97"
     },
     {
       "from": "sei",
