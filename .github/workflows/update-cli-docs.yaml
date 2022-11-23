@@ -20,3 +20,27 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-2
+
+      - name: Create new branch
+        run: |  
+          git checkout -b feat/upload-cli-docs-v0_28_0
+
+      - name: Create version folder
+        run: |  
+          test -d "pages/cli-docs/v0_28_0" || mkdir -p pages/cli-docs/v0_28_0 
+
+      - name: Clone axelar-core repo
+        run: |  
+          git clone https://github.com/axelarnetwork/axelar-core.git 
+
+      - name: Copy cli docs to web docs
+        run: |  
+          cp axelar-core/docs/cli/* pages/cli-docs/v0_28_0
+          rm -fr axelar-core
+
+      - name: Commit files
+        run: |
+          git config --local user.email "kalid@axelar.network"
+          git config --local user.name "kalid"
+          git add --all
+          git commit -m "chore(upload-cli-docs): upload cli docs version 0.28.0"
