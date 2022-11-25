@@ -339,6 +339,26 @@
         }
       ],
       "image": "/images/chains/arbitrum.svg"
+    },
+    {
+      "id": "kava",
+      "name": "Kava",
+      "chain_id": "2221",
+      "network_id": "kava",
+      "provider_params": [
+        {
+          "chainId": "0x8AD",
+          "chainName": "Kava EVM",
+          "rpcUrls": ["https://evm.testnet.kava.io"],
+          "nativeCurrency": {
+            "name": "Kava",
+            "symbol": "KAVA",
+            "decimals": 18
+          },
+          "blockExplorerUrls": ["https://explorer.testnet.kava.io/"]
+        }
+      ],
+      "image": "/images/chains/kava.svg"
     }
   ],
   "testnet-2": [

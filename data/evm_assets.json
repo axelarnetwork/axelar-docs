@@ -671,6 +671,13 @@
           "transfer_fee": 0.1
         },
         {
+          "chain": "kava",
+          "address": "0xA3A2b6F3b34F513BA0084D504E8a6162bd7C7EE6",
+          "symbol": "wAXL",
+          "decimals": 6,
+          "transfer_fee": 0.1
+        },
+        {
           "chain": "moonbeam",
           "address": "0xB4D56B6AD4DD2B48e68D2a26C25A04dC1c0eE393",
           "symbol": "wAXL",
@@ -737,6 +744,13 @@
         {
           "chain": "fantom",
           "address": "0x3C12d813bb36295A8361C4740A732Bb700df6Db0",
+          "symbol": "WMATIC",
+          "decimals": 18,
+          "transfer_fee": 0.07
+        },
+        {
+          "chain": "kava",
+          "address": "0x5e372F445C6afc91Aaca0d6C0Fa170d5f8F30f49",
           "symbol": "WMATIC",
           "decimals": 18,
           "transfer_fee": 0.07
@@ -813,6 +827,13 @@
           "transfer_fee": 0.08
         },
         {
+          "chain": "kava",
+          "address": "0xd7ba4DE2d9cDF1D34D0aE608F3725Aed1A32821E",
+          "symbol": "WFTM",
+          "decimals": 18,
+          "transfer_fee": 0.08
+        },
+        {
           "chain": "moonbeam",
           "address": "0x40EebD34eC6CB4C0644a18494365171b1dcE97eb",
           "symbol": "WFTM",
@@ -865,6 +886,13 @@
         {
           "chain": "fantom",
           "address": "0xB17053aE763aCfD65A58e265aa9A4a59b25A7a87",
+          "symbol": "axlWETH",
+          "decimals": 18,
+          "transfer_fee": 7e-05
+        },
+        {
+          "chain": "kava",
+          "address": "0x3F8a312113ED10833F27bbC1ee08A8cDB4df16B4",
           "symbol": "axlWETH",
           "decimals": 18,
           "transfer_fee": 7e-05
@@ -941,6 +969,13 @@
           "transfer_fee": 0.001
         },
         {
+          "chain": "kava",
+          "address": "0xf3280d7a127Bb743918040fB99108728388e3c9e",
+          "symbol": "WAVAX",
+          "decimals": 18,
+          "transfer_fee": 0.001
+        },
+        {
           "chain": "moonbeam",
           "address": "0x64aae6319934995Bf30e67EBBBA9750256E07283",
           "symbol": "WAVAX",
@@ -1007,6 +1042,13 @@
         {
           "chain": "fantom",
           "address": "0xD6f858A1E75e9a06c42dcd86BB876C5E9FccA572",
+          "symbol": "WDEV",
+          "decimals": 18,
+          "transfer_fee": 0.04
+        },
+        {
+          "chain": "kava",
+          "address": "0xe9a3a0E5C9cFed51E1D60d57e10DeE4478415e52",
           "symbol": "WDEV",
           "decimals": 18,
           "transfer_fee": 0.04
@@ -1083,6 +1125,13 @@
           "transfer_fee": 0.1
         },
         {
+          "chain": "kava",
+          "address": "0xAa03872057AD496Bd6f3eE85b85e1e4DABdb1a5d",
+          "symbol": "aUSDC",
+          "decimals": 6,
+          "transfer_fee": 0.1
+        },
+        {
           "chain": "moonbeam",
           "address": "0xD1633F7Fb3d716643125d6415d4177bC36b7186b",
           "symbol": "aUSDC",
@@ -1149,6 +1198,13 @@
         {
           "chain": "fantom",
           "address": "0x8DA729FC44366eFE36d522B865FeC34653e85F6e",
+          "symbol": "WBNB",
+          "decimals": 18,
+          "transfer_fee": 0.0003
+        },
+        {
+          "chain": "kava",
+          "address": "0x500c333DC86813F930299a68B990F57D1ca6e243",
           "symbol": "WBNB",
           "decimals": 18,
           "transfer_fee": 0.0003
