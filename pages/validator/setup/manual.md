@@ -231,7 +231,7 @@ After=network-online.target
 [Service]
 User=$USER
 ExecStart=/usr/bin/axelard start
-Restart=on-failure
+Restart=always
 RestartSec=3
 LimitNOFILE=4096
 
@@ -254,7 +254,7 @@ After=network-online.target
 [Service]
 User=$USER
 ExecStart=/usr/bin/sh -c 'echo $KEYRING_PASSWORD | tofnd -m existing -d $HOME/.tofnd'
-Restart=on-failure
+Restart=always
 RestartSec=3
 LimitNOFILE=4096
 
@@ -276,7 +276,7 @@ After=network-online.target
 [Service]
 User=$USER
 ExecStart=/usr/bin/sh -c 'echo $KEYRING_PASSWORD | /usr/bin/axelard vald-start --validator-addr $VALIDATOR_OPERATOR_ADDRESS --log_level debug --chain-id $CHAIN_ID --from broadcaster'
-Restart=on-failure
+Restart=always
 RestartSec=3
 LimitNOFILE=4096
 
