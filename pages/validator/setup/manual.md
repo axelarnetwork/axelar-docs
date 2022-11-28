@@ -29,7 +29,7 @@ TOFND_RELEASE=v0.10.1`}
 {
 title: "Testnet",
 content: <CodeBlock language="bash">
-{`AXELARD_RELEASE=v0.26.5
+{`AXELARD_RELEASE=v0.28.0
 TOFND_RELEASE=v0.10.1`}
 </CodeBlock>
 },
@@ -231,7 +231,7 @@ After=network-online.target
 [Service]
 User=$USER
 ExecStart=/usr/bin/axelard start
-Restart=on-failure
+Restart=always
 RestartSec=3
 LimitNOFILE=4096
 
@@ -254,7 +254,7 @@ After=network-online.target
 [Service]
 User=$USER
 ExecStart=/usr/bin/sh -c 'echo $KEYRING_PASSWORD | tofnd -m existing -d $HOME/.tofnd'
-Restart=on-failure
+Restart=always
 RestartSec=3
 LimitNOFILE=4096
 
@@ -276,7 +276,7 @@ After=network-online.target
 [Service]
 User=$USER
 ExecStart=/usr/bin/sh -c 'echo $KEYRING_PASSWORD | /usr/bin/axelard vald-start --validator-addr $VALIDATOR_OPERATOR_ADDRESS --log_level debug --chain-id $CHAIN_ID --from broadcaster'
-Restart=on-failure
+Restart=always
 RestartSec=3
 LimitNOFILE=4096
 

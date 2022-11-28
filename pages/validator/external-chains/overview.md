@@ -33,6 +33,10 @@ See below for details. Read this entire article before you begin supporting exte
   - [Fantom](./fantom)
   - [Moonbeam](./moonbeam)
   - [Polygon](./polygon)
+  - [Celo](./celo)
+  - [Arbitrum](./arbitrum)
+  - [Kava](./kava)
+  - [Heroes of NFT](./hero)
 - Cosmos chains
   - Nothing to do. All Cosmos chains are automatically supported by default.
 
