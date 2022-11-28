@@ -1,43 +1,87 @@
-
 # Get a deposit address
 
-A deposit address is a special address created and monitored by Axelar relayer services on behalf of the requester. It is similar to how centralized exchanges generate a monitored, one-time deposit address that facilitates your token transfers.
+A deposit address is a special address created and monitored by **Axelar's Relayer Services** on behalf of the requester. It is similar to how centralized exchanges generate a monitored, one-time deposit address that facilitates your token transfers.
 
-### Deposit address workflow:
+### Deposit address workflow
 
-1. Generate a deposit address on a specific source chain.
-2. User sends tokens to the deposit address on the source chain. Examples: withdrawal from a centralized exchange, transaction from your favorite wallet software.
+1. The user generates a deposit address on a specific source chain.
+2. The user sends tokens to the deposit address on the source chain.
 
-IMPORTANT NOTE: When making your deposit, please ensure that the amount is greater than the cross-chain relayer gas fee. 
-* A table of fees is listed here: [mainnet](../../resources/mainnet#cross-chain-relayer-gas-fee) | [testnet](../../resources/testnet#cross-chain-relayer-gas-fee). 
-* Alternatively, they can be programmatically queried in the SDK's [AxelarQueryAPI](../axelarjs-sdk/axelar-query-api#gettransferfee).
+- Examples:
+
+  - withdrawal from a centralized exchange
+  - transaction from your favorite wallet software.
+
+> IMPORTANT NOTE: When making your deposit, please ensure that the amount is **greater than the cross-chain relayer gas fee**.
+
+- A table of fees is listed here: [mainnet](../../resources/mainnet#cross-chain-relayer-gas-fee) | [testnet](../../resources/testnet#cross-chain-relayer-gas-fee).
+- Alternatively, they can be programmatically queried in the SDK's [AxelarQueryAPI](../axelarjs-sdk/axelar-query-api#gettransferfee).
 
 3. Axelar relayers observe the deposit transaction on the source chain and complete it on the destination chain.
 4. Watch your tokens arrive on the destination chain.
 
-### 1. Install the AxelarJS SDK module (`AxelarAssetTransfer`)
+### 1. Prerequisite
 
-We'll use the AxelarJS SDK, which is an `npm` dependency that empowers developers to make requests into the Axelar network from a front end. The Axelar SDK provides a wrapper for API calls that you can use to generate a deposit address. (Alternately, you can generate a deposit address using the CLI instead of the Axelar SDK. [See examples, here](../../learn/cli).) 
+To help you write clean code, you can use the `Environment` and `CHAINS` constants.
 
-1. Install the AxelarJS SDK:
+Most methods in the sdk require you to work with chain ids instead of chain names. **Chain ids are unique per Environment** and are _specific to Axelar_. For instance, Ethereum will have a chain id of `ethereum` on mainnet but `ethereum-2` on testnet. In the same way Osmosis will be `osmosis` on mainnet but `osmosis-4` on tesnet. However some chains will have no difference between the chain names and chain ids.
+
+To find the chain ids we support you can check the resources section. You can find the **testnet chain information** [here](/resources/testnet) and **mainnet chain information** [there](/resources/mainnet)
+
+### 2. Install the AxelarJs SDK
+
+The AxelarJS SDK is an `npm` dependency that helps to make requests to the Axelar network. The SDK is essentially a wrapper around various API endpoints. One of the endpoints allows you to generate a deposit address. Alternately, you can create a deposit address using the [CLI instead of the SDK](../../learn/cli).
 
 ```bash
 npm i @axelar-network/axelarjs-sdk
+# or
+yarn add @axelar-network/axelarjs-sdk
 ```
 
-2. Instantiate the `AxelarAssetTransfer` module:
+### 3. Import & instantiate the `AxelarAssetTransfer`
 
-```bash
-const sdk = new AxelarAssetTransfer({
-  environment: "testnet"
+```ts
+import { AxelarAssetTransfer, Environment } from "@axelar-network/axelarjs-sdk";
+
+const axelarAssetTransfer = new AxelarAssetTransfer({
+  environment: Environment.TESTNET,
 });
 ```
 
-### 2. Generate a deposit address using the SDK
+### 4. Get an estimate of the transfer fees (optional)
 
+If you plan on using the transfer assets functionality, it is paramount to take the relayer fees into account.
+Thankfully we have a query that you can use to know how much of a fee should be paid to the relayer.
 
-* Call `getDepositAddress`
-* See accompanying notes at the bottom of this page for important information on method parameters
+```ts
+import {
+  AxelarQueryAPI,
+  CHAINS,
+  Environment,
+} from "@axelar-network/axelarjs-sdk";
+
+async function main() {
+  const axelarQuery = new AxelarQueryAPI({
+    environment: Environment.TESTNET,
+  });
+
+  const fee = await axelarQuery.getTransferFee(
+    CHAINS.TESTNET.OSMOSIS,
+    CHAINS.TESTNET.AVALANCHE,
+    "uausdc",
+    1000000
+  );
+  // returns  { fee: { denom: 'uausdc', amount: '150000' } }
+}
+
+main();
+```
+
+### 5. Generate a deposit address
+
+> When making your deposit, please ensure that the amount is greater than the cross-chain relayer gas fee. The relayer gas fee can be calculated with `getTransferFee` function above.
+
+The `AxelarAssetTransfer` class exposes the `getDepositAddress` function. With this function, you can create a **deposit address**. Here is the function signature 👇
 
 ```tsx
 interface GetDepositAddressParams {
@@ -51,140 +95,199 @@ interface GetDepositAddressParams {
   };
 }
 
-async getDepositAddress({
-  fromChain, toChain, destinationAddress, asset
+async function getDepositAddress({
+  fromChain,
+  toChain,
+  destinationAddress,
+  asset,
 }: GetDepositAddressParams): Promise<string> {}
 ```
 
+Here is an example of the function call. For more examples see the [use cases section below](#use-cases).
+
+```ts
+import {
+  AxelarAssetTransfer,
+  CHAINS,
+  Environment,
+} from "@axelar-network/axelarjs-sdk";
+
+async function main() {
+  const axelarAssetTransfer = new AxelarAssetTransfer({
+    environment: Environment.TESTNET,
+  });
+
+  const depositAddress = await axelarAssetTransfer.getDepositAddress({
+    fromChain: CHAINS.TESTNET.OSMOSIS,
+    toChain: CHAINS.TESTNET.AVALANCHE,
+    destinationAddress: "0xF16DfB26e1FEc993E085092563ECFAEaDa7eD7fD",
+    asset: "uausdc",
+  });
+  // returns axelar1ewz9fnvx9nh0wylzpwxkv6d8pcakmpqa69vxwancyanme3htszcqxts9v3
+}
+
+main();
+```
+
 #### USE CASES
+
 All possible use cases are covered in the scenarios below
 
 ##### 1. Send tokens from a Cosmos-based chain
 
-Transfer any Axelar-supported asset from a cosmos-based chain to a destination chain. 
-* Destination chains can be either an EVM chain or cosmos-based chain
-* When sending to an EVM chain, the asset will arrive as an ERC-20 asset
+Transfer any Axelar-supported asset from a cosmos-based chain to a destination chain.
 
-Example acceptance criteria: 
-`I want to send axlUSDC on Osmosis and receive the equivalent ERC-20 version on Avalanche.`
+- Destination chains can be either an EVM chain or a cosmos-based chain
+- When sending to an EVM chain, the asset will arrive as **an ERC-20 asset**
 
-```tsx
-const sdk = new AxelarAssetTransfer({ environment: "testnet" });
+Example acceptance criteria:
 
-const fromChain = "osmosis-4", 
-  toChain = "avalanche",
-  destinationAddress = "0xF16DfB26e1FEc993E085092563ECFAEaDa7eD7fD",
-  asset: "uausdc";
+> I want to send axlUSDC on Osmosis and receive the equivalent ERC-20 version on Avalanche.
 
-const depositAddress = await sdk.getDepositAddress({
-  fromChain, 
-  toChain, 
-  destinationAddress, 
-  asset
-});
+```ts
+import {
+  AxelarAssetTransfer,
+  CHAINS,
+  Environment,
+} from "@axelar-network/axelarjs-sdk";
+
+async function main() {
+  const sdk = new AxelarAssetTransfer({ environment: Environment.TESTNET });
+
+  const depositAddress = await sdk.getDepositAddress({
+    fromChain: CHAINS.TESTNET.OSMOSIS,
+    toChain: CHAINS.TESTNET.AVALANCHE,
+    destinationAddress: "0xF16DfB26e1FEc993E085092563ECFAEaDa7eD7fD"
+    asset: "uausdc"
+  });
+}
+main();
 ```
 
 ##### 2. Send ERC-20 tokens from a EVM chain
 
 Transfer any Axelar-supported ERC-20 asset from an EVM chain to any destination chain.
-* Destination chains can be either an EVM chain or cosmos-based chain
-* When sending to an EVM chain, the asset will arrive as an ERC-20 asset
 
-Example acceptance criteria: 
-`I want to send axlUSDC on Avalanche and receive axlUSDC on Osmosis.`
+- Destination chains can be either an EVM chain or cosmos-based chain
+- When sending to an EVM chain, the asset will arrive as an ERC-20 asset
 
-```tsx
-const sdk = new AxelarAssetTransfer({ environment: "testnet" });
+Example acceptance criteria:
 
-const fromChain = "avalanche", 
-  toChain = "osmosis-4",
-  destinationAddress = "osmo1x3z2vepjd7fhe30epncxjrk0lehq7xdqe8ltsn",
-  asset: "uausdc";
+> I want to send axlUSDC on Avalanche and receive axlUSDC on Osmosis.
 
-const depositAddress = await sdk.getDepositAddress({
-  fromChain, 
-  toChain, 
-  destinationAddress, 
-  asset
-});
+```ts
+import {
+  AxelarAssetTransfer,
+  CHAINS,
+  Environment,
+} from "@axelar-network/axelarjs-sdk";
+
+async function main() {
+  const sdk = new AxelarAssetTransfer({ environment: Environment.TESTNET });
+
+  const depositAddress = await sdk.getDepositAddress({
+    fromChain: CHAINS.TESTNET.AVALANCHE,
+    toChain: CHAINS.TESTNET.OSMOSIS,
+    destinationAddress: "osmo1x3z2vepjd7fhe30epncxjrk0lehq7xdqe8ltsn"
+    asset: "uausdc"
+  });
+}
+main();
 ```
 
 ##### 3. Send native tokens from a EVM chain
 
 Also known as "wrap", transfer the native asset of an EVM chain to any destination chain.
-* Destination chains can be either an EVM chain or cosmos-based chain
-* When sending to an EVM chain, the asset will arrive as an ERC-20 "wrapped" asset
-* The only difference here vs. case (1) above is that the specified asset is the native asset of the source EVM chain. 
 
-Example acceptance criteria: 
-`I want to send AVAX on Avalanche and receive the equivalent ERC-20 version on Polygon.`
+- Destination chains can be either an EVM chain or cosmos-based chain
+- When sending to an EVM chain, the asset will arrive as an ERC-20 "wrapped" asset
+- The only difference here vs. case (1) above is that the specified asset is the native asset of the source EVM chain.
 
-```tsx
-const sdk = new AxelarAssetTransfer({ environment: "testnet" });
+Example acceptance criteria:
 
-const fromChain = "avalanche", 
-  toChain = "polygon",
-  destinationAddress = "0xF16DfB26e1FEc993E085092563ECFAEaDa7eD7fD",
-  asset: "AVAX"
+> I want to send AVAX on Avalanche and receive the equivalent ERC-20 version on Polygon.
 
-const depositAddress = await sdk.getDepositAddress({
-  fromChain, 
-  toChain, 
-  destinationAddress, 
-  asset
-});
+```ts
+import {
+  AxelarAssetTransfer,
+  CHAINS,
+  Environment,
+} from "@axelar-network/axelarjs-sdk";
+
+async function main() {
+  const sdk = new AxelarAssetTransfer({ environment: Environment.TESTNET });
+
+  const depositAddress = await sdk.getDepositAddress({
+    fromChain: CHAINS.TESTNET.AVALANCHE,
+    toChain: CHAINS.TESTNET.POLYGON,
+    destinationAddress: "0xF16DfB26e1FEc993E085092563ECFAEaDa7eD7fD"
+    asset: "AVAX"
+  });
+}
+main();
 ```
 
 ##### 4. Send a wrapped native token from an EVM chain back to its home EVM chain, e.g. "UNWRAP"
 
-Also known as "wrap", transfer a wrapped native token from an EVM chain back to its home EVM chain
-* Both the source and destination chains can only be an EVM chain
-* You can specify an optional parameter in the configs for `GetDepositAddressParams` whether you want to receive the asset in the form of native tokens on the destination chain OR its ERC-20 equivalent. 
+Also known as "unwrap", transfer a wrapped native token from an EVM chain back to its home EVM chain
+
+- Both the source and destination chains can only be an EVM chain
+- You can specify an optional parameter in the configs for `GetDepositAddressParams` whether you want to receive the asset in the form of native tokens on the destination chain OR its ERC-20 equivalent.
 
 Two scenarios below
 
-Example acceptance criteria: 
-`I want to send WAVAX on Polygon and receive WAVAX on Avalanche.`
+Example acceptance criteria:
 
-```tsx
-const sdk = new AxelarAssetTransfer({ environment: "testnet" });
+> I want to send WAVAX on Polygon and receive WAVAX on Avalanche.
 
-const fromChain = "polygon", 
-  toChain = "avalanche",
-  destinationAddress = "0xF16DfB26e1FEc993E085092563ECFAEaDa7eD7fD",
-  asset: "wavax-wei"
+```ts
+import {
+  AxelarAssetTransfer,
+  CHAINS,
+  Environment,
+} from "@axelar-network/axelarjs-sdk";
 
-const depositAddress = await sdk.getDepositAddress({
-  fromChain, 
-  toChain, 
-  destinationAddress, 
-  asset,
-  options: {
-    shouldUnwrapIntoNative: false
-  }
-});
+async function main() {
+  const sdk = new AxelarAssetTransfer({ environment: Environment.TESTNET });
+
+  const depositAddress = await sdk.getDepositAddress({
+    fromChain: CHAINS.TESTNET.POLYGON,
+    toChain: CHAINS.TESTNET.AVALANCHE,
+    destinationAddress: "0xF16DfB26e1FEc993E085092563ECFAEaDa7eD7fD"
+    asset: "wavax-wei"
+    options: {
+      shouldUnwrapIntoNative: false,
+    },
+  });
+}
+main();
 ```
 
-Example acceptance criteria: 
-`I want to send WAVAX on Polygon and receive AVAX on Avalanche.`
+Example acceptance criteria:
 
-```tsx
-const sdk = new AxelarAssetTransfer({ environment: "testnet" });
+> I want to send WAVAX on Polygon and receive AVAX on Avalanche.
 
-const fromChain = "polygon", 
-  toChain = "avalanche",
-  destinationAddress = "0xF16DfB26e1FEc993E085092563ECFAEaDa7eD7fD",
-  asset: "wavax-wei"
+```ts
+import {
+  AxelarAssetTransfer,
+  CHAINS,
+  Environment,
+} from "@axelar-network/axelarjs-sdk";
 
-const depositAddress = await sdk.getDepositAddress({
-  fromChain, 
-  toChain, 
-  destinationAddress, 
-  asset,
-  options: {
-    shouldUnwrapIntoNative: true
-  }
-});
+async function main() {
+  const sdk = new AxelarAssetTransfer({ environment: Environment.TESTNET });
+
+  const depositAddress = await sdk.getDepositAddress({
+    fromChain: CHAINS.TESTNET.POLYGON,
+    toChain: CHAINS.TESTNET.AVALANCHE,
+    destinationAddress: "0xF16DfB26e1FEc993E085092563ECFAEaDa7eD7fD"
+    asset: "wavax-wei"
+    options: {
+      shouldUnwrapIntoNative: true,
+    },
+  });
+}
+main();
 ```
 
 ##### Notes
@@ -193,8 +296,8 @@ const depositAddress = await sdk.getDepositAddress({
 
 Once the deposit address has been generated, the user can make a token transfer (on blockchain) to the deposit address. The transfer will be picked up by the Axelar network and relayed to the destination chain.
 
-(2) For all the assets that Axelar supports natively, the network identifies the asset by a `denom`. If you are accustomed to the `symbol` typically used on EVM chains, you will have to convert that `symbol` to a `denom`. The SDK has an API method you can use to convert symbol to denom: [getDenomFromSymbol](./axelar-query-api#getdenomfromsymbol) 
+(2) For all the assets that Axelar supports natively, the network identifies the asset by a `denom`. If you are accustomed to the `symbol` typically used on EVM chains, you will have to convert that `symbol` to a `denom`. The SDK has an API method you can use to convert symbol to denom: [getDenomFromSymbol](./axelar-query-api#getdenomfromsymbol)
 
-(3) Chain IDs (as recognized by Axelar) must be used here. For example, in testnet, the chain ID for `Osmosis` is `osmosis-4`. 
+(3) Chain IDs (as recognized by Axelar) must be used here. For example, in testnet, the chain ID for `Osmosis` is `osmosis-4`.
 
 (4) Refund address is an optional parameter. It specifies the address on a source chain where tokens erroneously deposited into a deposit address can be refunded. For example, if a deposit address was generated to send USDC, but the user mistakenly deposits WAVAX. If no address is specified, the API defaults the parameter to the Gas Receiver contract that can refund on the user's behalf. At the moment, the refundAddress parameter is only compatible for use cases 3 and 4 above, wrap and unwrap cases, respectively.
