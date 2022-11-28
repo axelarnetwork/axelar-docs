@@ -57,7 +57,7 @@ const axelarAssetTransfer = new AxelarAssetTransfer({
 
 If you plan on using the transfer assets functionality, it is paramount to take the relayer fees into account. Any deposits into a deposit address that are not in excess of this calculate fee will not get processed until that deposit address is topped up to encompass the fee.
 
-Thankfully we have a query that you can use to know how much of a fee should be paid to the relayer.
+The following query retrieves the fee charged by the relayer for a transfer.
 
 ```ts
 import {
