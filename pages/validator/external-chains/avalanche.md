@@ -120,7 +120,6 @@ EOF
 
 
 # verify and enable
-
 cat /etc/systemd/system/avalanchego.service
 sudo systemctl enable avalanchego
 ```
