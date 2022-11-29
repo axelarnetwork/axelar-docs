@@ -237,6 +237,9 @@
       "name": "RPC endpoints",
       "value": [
         {
+          "value": "https://rpc-axelar-testnet.imperator.co"
+        },
+        {
           "value": "https://axelartest-rpc.quickapi.com"
         },
         {
@@ -250,15 +253,15 @@
         },
         {
           "value": "https://axelartest-rpc.quantnode.tech"
-        },
-        {
-          "value": "https://rpc-axelar-testnet.imperator.co"
         }
       ]
     },
     {
       "name": "LCD endpoints",
       "value": [
+        {
+          "value": "https://lcd-axelar-testnet.imperator.co"
+        },
         {
           "value": "https://axelartest-lcd.quickapi.com"
         },
@@ -273,15 +276,15 @@
         },
         {
           "value": "https://axelartest-lcd.quantnode.tech"
-        },
-        {
-          "value": "https://lcd-axelar-testnet.imperator.co"
         }
       ]
     },
     {
       "name": "gRPC endpoints",
       "value": [
+        {
+          "value": "grpc-axelar-testnet.imperator.co:8002"
+        },
         {
           "value": "services.staketab.com:9090"
         },
@@ -296,9 +299,6 @@
         },
         {
           "value": "https://axelartest-grpcweb.quantnode.tech"
-        },
-        {
-          "value": "grpc-axelar-testnet.imperator.co:8002"
         }
       ]
     }
