@@ -103,7 +103,7 @@ To add an alias for the subnet, edit `~/.avalanchego/vms/aliases.json`:
 ​
 ```json
 {
-  "nyfSdRoaSxyQUqMMQAVNaGR2bin6HRLC1yrRdEZRpfFrDiUk8": ["hero", "herovm", "hvm"]
+  "nzfDQr8VpSZwsJNTqqDPiDGCPc79GLe7QL3qdTbCkPJ8MFevG": ["hero", "herovm", "hvm"]
 }
 ```
 
