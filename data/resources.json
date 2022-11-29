@@ -250,6 +250,9 @@
         },
         {
           "value": "https://axelartest-rpc.quantnode.tech"
+        },
+        {
+          "value": "https://rpc-axelar-testnet.imperator.co"
         }
       ]
     },
@@ -270,6 +273,9 @@
         },
         {
           "value": "https://axelartest-lcd.quantnode.tech"
+        },
+        {
+          "value": "https://lcd-axelar-testnet.imperator.co"
         }
       ]
     },
@@ -290,6 +296,9 @@
         },
         {
           "value": "https://axelartest-grpcweb.quantnode.tech"
+        },
+        {
+          "value": "grpc-axelar-testnet.imperator.co:8002"
         }
       ]
     }
