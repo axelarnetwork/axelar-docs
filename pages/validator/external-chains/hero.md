@@ -140,12 +140,14 @@ Target Block Rate: 2s (Same as C-Chain)
 ​
 ### Validators
 ```
-Validator 1 ID (Authenticated): NodeID-J5nWRXnBpAXxFq6LvcA6LJ2JYc1hmqbDY
-Validator 1 IP: 79.143.180.115
-​
-Validator 2 ID: NodeID-5c4Ckmrb7ZqxdnqAZxQV46zLsXRsty7oi
-Validator 2 IP: 66.94.125.207
-Domain: herotestnet.heroesofnft.com
+Validator 1 ID: NodeID-AGSMAmA7HStwbKCJAYpBzBvDmjyd6BVvd
+Validator 1 IP: 154.12.249.187
+
+Validator 2 ID: NodeID-7iWipVaLBfGSMjY6WNCXiWtY5yKLe1kTx 
+Validator 2 IP: 66.94.125.28
+
+Validator 10 ID: NodeID-6tWHHU9uVWAf46qTYTsnTnVZJeL65hwgR
+Validator 10 IP: 173.249.33.39
 ```
 ​
 ### Metamask Params
