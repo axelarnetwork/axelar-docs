@@ -27,6 +27,14 @@
     {
       "id": "aurora",
       "address": ""
+    },
+    {
+      "id": "arbitrum",
+      "address": "N/A"
+    },
+    {
+      "id": "celo",
+      "address": "N/A"
     }
   ],
   "testnet": [
