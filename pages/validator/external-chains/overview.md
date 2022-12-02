@@ -42,7 +42,7 @@ See below for details. Read this entire article before you begin supporting exte
 
 ## Add external chain info to your validator's configuration
 
-In the `axelarate-community` git repo edit the file `configuration/config.toml`: set the `rpc_addr` and `start-with-bridge` entries corresponding to the external chain you wish to connect.
+In the ` .axelar_testnet ` repo edit the file `config/config.toml`: set the `rpc_addr` and `start-with-bridge` entries corresponding to the external chain you wish to connect.
 
 Your `config.toml` file should already contain a snippet like the following:
 
@@ -92,14 +92,14 @@ rpc_addr = ""
 start-with-bridge = false
 ```
 
-### Example: Ethereum
+### Example: Aurora
 
-Edit the `Ethereum` entry::
+Edit the `Aurora` entry::
 
 ```toml
 [[axelar_bridge_evm]]
-name = "Ethereum"
-rpc_addr = "my_ethereum_host"
+name = "aurora"
+rpc_addr = "http://69.100.6.9:10080"
 start-with-bridge = true
 ```
 
