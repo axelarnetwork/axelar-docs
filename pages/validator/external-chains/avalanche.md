@@ -1,10 +1,11 @@
 # Avalanche
+-----------
 
 import Markdown from 'markdown-to-jsx'
 import Tabs from '../../../components/tabs'
 import CodeBlock from '../../../components/code-block'
 
-Set up your Avalanche node.
+Instructions to set up your Avalanche node.
 
 ## Requirements
 
@@ -73,6 +74,8 @@ avalanchego --version
 ```
 
 ## Set environment variables
+
+Note: Update your shell profile in accordance with the shell you are using
 
 <Tabs tabs={[
 {
@@ -154,7 +157,7 @@ Logs should appear like this
 [11-28|07:52:53.462] INFO <P Chain> bootstrap/bootstrapper.go:481 fetching blocks {"numFetchedBlocks": 130000, "numTotalBlocks": 3241631, "eta": "1h57m49s"}
 ```
 
-# Verify
+## Verify
 
 ```bash
 YOUR_IP=$(curl -4 ifconfig.co)
@@ -187,3 +190,29 @@ Wait for `isBootstrapped` to become true before using it in vald config
 ```bash
 echo "${YOUR_IP}:9650/ext/bc/C/rpc"
 ```
+
+### Configure vald
+
+In order for `vald` to connect to your Avalanche node, your `rpc_addr` should be exposed in
+vald's `config.toml`
+
+<Tabs tabs={[
+{
+title: "Mainnet",
+content: <CodeBlock language="yaml">
+{`[[axelar_bridge_evm]]
+name = "Avalanche"
+rpc_addr = "http://IP:PORT"
+start-with-bridge = true`}
+</CodeBlock>
+},
+{
+title: "Testnet",
+content: <CodeBlock language="yaml">
+{`[[axelar_bridge_evm]]
+name = "Avalanche"
+rpc_addr = "http://IP:PORT"
+start-with-bridge = true`}
+</CodeBlock>
+}
+]} />
