@@ -237,7 +237,7 @@
       "name": "RPC endpoints",
       "value": [
         {
-          "value": "https://rpc-axelar-testnet.imperator.co"
+          "value": "https://rpc-axelar-testnet.imperator.co:443"
         },
         {
           "value": "https://axelartest-rpc.quickapi.com"
