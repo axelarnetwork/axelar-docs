@@ -183,16 +183,6 @@
   ],
   "testnet": [
     {
-      "from": "aura",
-      "to": "axelarnet",
-      "channel_id": "channel-5"
-    },
-    {
-      "from": "axelarnet",
-      "to": "aura",
-      "channel_id": "channel-48"
-    },
-    {
       "from": "comdex",
       "to": "axelarnet",
       "channel_id": "channel-18"

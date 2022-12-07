@@ -47,6 +47,20 @@
           "symbol": "axlUSDC",
           "decimals": 6,
           "transfer_fee": 1.0
+        },
+        {
+          "chain": "arbitrum",
+          "address": "0xEB466342C4d449BC9f53A865D5Cb90586f405215",
+          "symbol": "axlUSDC",
+          "decimals": 6,
+          "transfer_fee": 1.0
+        },
+        {
+          "chain": "celo",
+          "address": "0xEB466342C4d449BC9f53A865D5Cb90586f405215",
+          "symbol": "axlUSDC",
+          "decimals": 6,
+          "transfer_fee": 1.0
         }
       ]
     },
@@ -94,6 +108,20 @@
         {
           "chain": "polygon",
           "address": "0x6e4E624106Cb12E168E6533F8ec7c82263358940",
+          "symbol": "wAXL",
+          "decimals": 6,
+          "transfer_fee": 1.0
+        },
+        {
+          "chain": "arbitrum",
+          "address": "0x23ee2343B892b1BB63503a4FAbc840E0e2C6810f",
+          "symbol": "wAXL",
+          "decimals": 6,
+          "transfer_fee": 1.0
+        },
+        {
+          "chain": "celo",
+          "address": "0x23ee2343B892b1BB63503a4FAbc840E0e2C6810f",
           "symbol": "wAXL",
           "decimals": 6,
           "transfer_fee": 1.0
@@ -155,6 +183,20 @@
           "symbol": "axlDAI",
           "decimals": 18,
           "transfer_fee": 1.0
+        },
+        {
+          "chain": "arbitrum",
+          "address": "0x5C7e299CF531eb66f2A1dF637d37AbB78e6200C7",
+          "symbol": "axlDAI",
+          "decimals": 18,
+          "transfer_fee": 1.0
+        },
+        {
+          "chain": "celo",
+          "address": "0x5C7e299CF531eb66f2A1dF637d37AbB78e6200C7",
+          "symbol": "axlDAI",
+          "decimals": 18,
+          "transfer_fee": 1.0
         }
       ]
     },
@@ -195,6 +237,20 @@
         {
           "chain": "polygon",
           "address": "0xCeED2671d8634e3ee65000EDbbEe66139b132fBf",
+          "symbol": "axlUSDT",
+          "decimals": 6,
+          "transfer_fee": 1.0
+        },
+        {
+          "chain": "arbitrum",
+          "address": "0x7f5373AE26c3E8FfC4c77b7255DF7eC1A9aF52a6",
+          "symbol": "axlUSDT",
+          "decimals": 6,
+          "transfer_fee": 1.0
+        },
+        {
+          "chain": "celo",
+          "address": "0x7f5373AE26c3E8FfC4c77b7255DF7eC1A9aF52a6",
           "symbol": "axlUSDT",
           "decimals": 6,
           "transfer_fee": 1.0
@@ -346,6 +402,20 @@
           "symbol": "axlATOM",
           "decimals": 6,
           "transfer_fee": 0.08
+        },
+        {
+          "chain": "arbitrum",
+          "address": "0x06beE9E7238a331B68D83Df3B5B9B16d5DBa83ff",
+          "symbol": "axlATOM",
+          "decimals": 6,
+          "transfer_fee": 0.08
+        },
+        {
+          "chain": "celo",
+          "address": "0x06beE9E7238a331B68D83Df3B5B9B16d5DBa83ff",
+          "symbol": "axlATOM",
+          "decimals": 6,
+          "transfer_fee": 0.08
         }
       ]
     },
@@ -389,6 +459,20 @@
           "symbol": "NGM",
           "decimals": 6,
           "transfer_fee": 4.0
+        },
+        {
+          "chain": "arbitrum",
+          "address": "0x54B1aa9386f36079fe4B39278c06eadaD457ac15",
+          "symbol": "NGM",
+          "decimals": 6,
+          "transfer_fee": 4.0
+        },
+        {
+          "chain": "celo",
+          "address": "0x54B1aa9386f36079fe4B39278c06eadaD457ac15",
+          "symbol": "NGM",
+          "decimals": 6,
+          "transfer_fee": 4.0
         }
       ]
     },
@@ -429,6 +513,20 @@
         {
           "chain": "polygon",
           "address": "0x8CD51880C0a5dbde37dDdFce8d5B772Fc9007495",
+          "symbol": "EEUR",
+          "decimals": 6,
+          "transfer_fee": 1.0
+        },
+        {
+          "chain": "arbitrum",
+          "address": "0xEeD07F7ef719f69f7D0A50aF2f50bA2d959A3839",
+          "symbol": "EEUR",
+          "decimals": 6,
+          "transfer_fee": 1.0
+        },
+        {
+          "chain": "celo",
+          "address": "0xEeD07F7ef719f69f7D0A50aF2f50bA2d959A3839",
           "symbol": "EEUR",
           "decimals": 6,
           "transfer_fee": 1.0
@@ -517,6 +615,20 @@
         {
           "chain": "polygon",
           "address": "0x53Adc464b488bE8C5d7269B9ABBCe8bA74195C3a",
+          "symbol": "axlFRAX",
+          "decimals": 18,
+          "transfer_fee": 1.0
+        },
+        {
+          "chain": "arbitrum",
+          "address": "0x406Cde76a3fD20e48bc1E0F60651e60Ae204B040",
+          "symbol": "axlFRAX",
+          "decimals": 18,
+          "transfer_fee": 1.0
+        },
+        {
+          "chain": "celo",
+          "address": "0x406Cde76a3fD20e48bc1E0F60651e60Ae204B040",
           "symbol": "axlFRAX",
           "decimals": 18,
           "transfer_fee": 1.0
