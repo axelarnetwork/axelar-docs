@@ -1,35 +1,89 @@
-
 # Get a deposit address
 
-A deposit address is a special address created and monitored by Axelar relayer services on behalf of the requester. It is similar to how centralized exchanges generate a monitored, one-time deposit address that facilitates your token transfers.
+import Callout from 'nextra-theme-docs/callout'
 
-### Deposit address workflow:
+A deposit address is a special address created and monitored by **Axelar's Relayer Services** on behalf of the requester. It is similar to how centralized exchanges generate a monitored, one-time deposit address that facilitates your token transfers.
 
-1. Generate a deposit address on a specific source chain.
-2. User sends tokens to the deposit address on the source chain. Examples: withdrawal from a centralized exchange, transaction from your favorite wallet software.
-3. Axelar relayers observe the deposit transaction on the source chain and complete it on the destination chain.
+### Deposit address workflow
+
+1. The user generates a deposit address on a specific source chain.
+2. The user sends tokens to the deposit address on the source chain.
+
+- Examples:
+
+  - withdrawal from a centralized exchange
+  - transaction from your favorite wallet software.
+
+<Callout emoji="ℹ️">
+IMPORTANT NOTE: When making your deposit, please ensure that the amount is **greater than the cross-chain relayer gas fee**
+- A table of fees is listed here: [mainnet](../../resources/mainnet#cross-chain-relayer-gas-fee) | [testnet](../../resources/testnet#cross-chain-relayer-gas-fee).
+- Alternatively, they can be programmatically queried in the SDK's [AxelarQueryAPI](../axelarjs-sdk/axelar-query-api#gettransferfee).
+</Callout>
+
+
+
+3. Axelar relayers observe the deposit transaction on the source chain and complete it on the destination chain, assuming the amount exceeds the requisite fee.
 4. Watch your tokens arrive on the destination chain.
 
-### 1. Install the AxelarJS SDK module (`AxelarAssetTransfer`)
+### 1. Prerequisite
 
-We'll use the AxelarJS SDK, which is an `npm` dependency that empowers developers to make requests into the Axelar network from a front end. The Axelar SDK provides a wrapper for API calls that you can use to generate a deposit address. (Alternately, you can generate a deposit address using the CLI instead of the Axelar SDK. [See examples, here](../../learn/cli).) 
+To help you write clean code, you can use the `Environment` and `CHAINS` constants.
 
-1. Install the AxelarJS SDK:
+Most methods in the sdk require you to work with chain ids instead of chain names. **Chain ids are unique per Environment** and are _specific to Axelar_. For instance, Ethereum will have a chain id of `ethereum` on mainnet but `ethereum-2` on testnet. In the same way Osmosis will be `osmosis` on mainnet but `osmosis-4` on tesnet. However some chains will have no difference between the chain names and chain ids.
+
+To find the chain ids we support you can check the resources section. You can find the **testnet chain information** [here](/resources/testnet) and **mainnet chain information** [there](/resources/mainnet)
+
+### 2. Install the AxelarJs SDK
+
+The AxelarJS SDK is an `npm` dependency that helps to make requests to the Axelar network. The SDK is essentially a wrapper around various API endpoints. One of the endpoints allows you to generate a deposit address. Alternately, you can create a deposit address using the [CLI instead of the SDK](../../learn/cli).
 
 ```bash
 npm i @axelar-network/axelarjs-sdk
+# or
+yarn add @axelar-network/axelarjs-sdk
 ```
 
-2. Instantiate the `AxelarAssetTransfer` module:
+### 3. Import & instantiate the `AxelarAssetTransfer`
 
-```bash
-const sdk = new AxelarAssetTransfer({
-  environment: "testnet",
-  auth: "local",
+```ts
+import { AxelarAssetTransfer, Environment } from "@axelar-network/axelarjs-sdk";
+
+const axelarAssetTransfer = new AxelarAssetTransfer({
+  environment: Environment.TESTNET,
 });
 ```
 
-### 2. Generate a deposit address using the SDK
+### 4. Get an estimate of the transfer fees (optional)
+
+If you plan on using the transfer assets functionality, it is paramount to take the relayer fees into account. Any deposits into a deposit address that are not in excess of this calculate fee will not get processed until that deposit address is topped up to encompass the fee.
+
+The following query retrieves the fee charged by the relayer for a transfer.
+
+```ts
+import {
+  AxelarQueryAPI,
+  CHAINS,
+  Environment,
+} from "@axelar-network/axelarjs-sdk";
+
+async function main() {
+  const axelarQuery = new AxelarQueryAPI({
+    environment: Environment.TESTNET,
+  });
+
+  const fee = await axelarQuery.getTransferFee(
+    CHAINS.TESTNET.OSMOSIS,
+    CHAINS.TESTNET.AVALANCHE,
+    "uausdc",
+    1000000
+  );
+  // returns  { fee: { denom: 'uausdc', amount: '150000' } }
+}
+
+main();
+```
+
+### 5. Generate a deposit address using the SDK
 
 Call `getDepositAddress`:
 
