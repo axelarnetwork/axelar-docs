@@ -117,12 +117,6 @@
   ],
   "testnet": [
     {
-      "id": "aura",
-      "name": "Aura",
-      "network_id": "aura",
-      "image": "/images/chains/aura.svg"
-    },
-    {
       "id": "axelarnet",
       "name": "Axelar",
       "network_id": "axelarnet",
