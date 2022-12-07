@@ -1,104 +1,14 @@
 {
   "mainnet": [
     {
-      "from": "cosmoshub",
-      "to": "axelarnet",
-      "channel_id": "channel-293"
-    },
-    {
-      "from": "axelarnet",
-      "to": "cosmoshub",
-      "channel_id": "channel-2"
-    },
-    {
-      "from": "osmosis",
-      "to": "axelarnet",
-      "channel_id": "channel-208"
-    },
-    {
-      "from": "axelarnet",
-      "to": "osmosis",
-      "channel_id": "channel-3"
-    },
-    {
-      "from": "juno",
-      "to": "axelarnet",
-      "channel_id": "channel-71"
-    },
-    {
-      "from": "axelarnet",
-      "to": "juno",
-      "channel_id": "channel-4"
-    },
-    {
-      "from": "emoney",
-      "to": "axelarnet",
-      "channel_id": "channel-26"
-    },
-    {
-      "from": "axelarnet",
-      "to": "emoney",
-      "channel_id": "channel-6"
-    },
-    {
-      "from": "crescent",
-      "to": "axelarnet",
-      "channel_id": "channel-4"
-    },
-    {
-      "from": "axelarnet",
-      "to": "crescent",
-      "channel_id": "channel-7"
-    },
-    {
-      "from": "injective",
-      "to": "axelarnet",
-      "channel_id": "channel-84"
-    },
-    {
-      "from": "axelarnet",
-      "to": "injective",
-      "channel_id": "channel-10"
-    },
-    {
-      "from": "terra",
-      "to": "axelarnet",
-      "channel_id": "channel-6"
-    },
-    {
-      "from": "axelarnet",
-      "to": "terra",
-      "channel_id": "channel-11"
-    },
-    {
-      "from": "secret",
-      "to": "axelarnet",
-      "channel_id": "channel-20"
-    },
-    {
-      "from": "axelarnet",
-      "to": "secret",
-      "channel_id": "channel-12"
-    },
-    {
-      "from": "kujira",
+      "from": "agoric",
       "to": "axelarnet",
       "channel_id": "channel-9"
     },
     {
       "from": "axelarnet",
-      "to": "kujira",
-      "channel_id": "channel-14"
-    },
-    {
-      "from": "stargaze",
-      "to": "axelarnet",
-      "channel_id": "channel-50"
-    },
-    {
-      "from": "axelarnet",
-      "to": "stargaze",
-      "channel_id": "channel-18"
+      "to": "agoric",
+      "channel_id": "channel-41"
     },
     {
       "from": "assetmantle",
@@ -111,24 +21,34 @@
       "channel_id": "channel-23"
     },
     {
-      "from": "fetch",
+      "from": "comdex",
       "to": "axelarnet",
-      "channel_id": "channel-14"
+      "channel_id": "channel-34"
     },
     {
       "from": "axelarnet",
-      "to": "fetch",
-      "channel_id": "channel-21"
+      "to": "comdex",
+      "channel_id": "channel-31"
     },
     {
-      "from": "kichain",
+      "from": "cosmoshub",
       "to": "axelarnet",
-      "channel_id": "channel-19"
+      "channel_id": "channel-293"
     },
     {
       "from": "axelarnet",
-      "to": "kichain",
-      "channel_id": "channel-17"
+      "to": "cosmoshub",
+      "channel_id": "channel-2"
+    },
+    {
+      "from": "crescent",
+      "to": "axelarnet",
+      "channel_id": "channel-4"
+    },
+    {
+      "from": "axelarnet",
+      "to": "crescent",
+      "channel_id": "channel-7"
     },
     {
       "from": "evmos",
@@ -141,6 +61,66 @@
       "channel_id": "channel-22"
     },
     {
+      "from": "fetch",
+      "to": "axelarnet",
+      "channel_id": "channel-14"
+    },
+    {
+      "from": "axelarnet",
+      "to": "fetch",
+      "channel_id": "channel-21"
+    },
+    {
+      "from": "injective",
+      "to": "axelarnet",
+      "channel_id": "channel-84"
+    },
+    {
+      "from": "axelarnet",
+      "to": "injective",
+      "channel_id": "channel-10"
+    },
+    {
+      "from": "juno",
+      "to": "axelarnet",
+      "channel_id": "channel-71"
+    },
+    {
+      "from": "axelarnet",
+      "to": "juno",
+      "channel_id": "channel-4"
+    },
+    {
+      "from": "ki",
+      "to": "axelarnet",
+      "channel_id": "channel-19"
+    },
+    {
+      "from": "axelarnet",
+      "to": "ki",
+      "channel_id": "channel-17"
+    },
+    {
+      "from": "kujira",
+      "to": "axelarnet",
+      "channel_id": "channel-9"
+    },
+    {
+      "from": "axelarnet",
+      "to": "kujira",
+      "channel_id": "channel-14"
+    },
+    {
+      "from": "osmosis",
+      "to": "axelarnet",
+      "channel_id": "channel-208"
+    },
+    {
+      "from": "axelarnet",
+      "to": "osmosis",
+      "channel_id": "channel-3"
+    },
+    {
       "from": "regen",
       "to": "axelarnet",
       "channel_id": "channel-48"
@@ -149,6 +129,56 @@
       "from": "axelarnet",
       "to": "regen",
       "channel_id": "channel-29"
+    },
+    {
+      "from": "secret",
+      "to": "axelarnet",
+      "channel_id": "channel-20"
+    },
+    {
+      "from": "axelarnet",
+      "to": "secret",
+      "channel_id": "channel-12"
+    },
+    {
+      "from": "stargaze",
+      "to": "axelarnet",
+      "channel_id": "channel-50"
+    },
+    {
+      "from": "axelarnet",
+      "to": "stargaze",
+      "channel_id": "channel-18"
+    },
+    {
+      "from": "terra",
+      "to": "axelarnet",
+      "channel_id": "channel-6"
+    },
+    {
+      "from": "axelarnet",
+      "to": "terra",
+      "channel_id": "channel-11"
+    },
+    {
+      "from": "umee",
+      "to": "axelarnet",
+      "channel_id": "channel-33"
+    },
+    {
+      "from": "axelarnet",
+      "to": "umee",
+      "channel_id": "channel-36"
+    },
+    {
+      "from": "emoney",
+      "to": "axelarnet",
+      "channel_id": "channel-26"
+    },
+    {
+      "from": "axelarnet",
+      "to": "emoney",
+      "channel_id": "channel-6"
     }
   ],
   "testnet": [
@@ -183,24 +213,14 @@
       "channel_id": "channel-61"
     },
     {
-      "from": "sei",
+      "from": "fetch",
       "to": "axelarnet",
-      "channel_id": "channel-29"
+      "channel_id": "channel-6"
     },
     {
       "from": "axelarnet",
-      "to": "sei",
-      "channel_id": "channel-35"
-    },
-    {
-      "from": "osmosis",
-      "to": "axelarnet",
-      "channel_id": "channel-312"
-    },
-    {
-      "from": "axelarnet",
-      "to": "osmosis",
-      "channel_id": "channel-22"
+      "to": "fetch",
+      "channel_id": "channel-25"
     },
     {
       "from": "kujira",
@@ -213,14 +233,44 @@
       "channel_id": "channel-19"
     },
     {
-      "from": "fetch",
+      "from": "osmosis",
       "to": "axelarnet",
-      "channel_id": "channel-6"
+      "channel_id": "channel-312"
     },
     {
       "from": "axelarnet",
-      "to": "fetch",
-      "channel_id": "channel-25"
+      "to": "osmosis",
+      "channel_id": "channel-22"
+    },
+    {
+      "from": "persistence",
+      "to": "axelarnet",
+      "channel_id": "channel-108"
+    },
+    {
+      "from": "axelarnet",
+      "to": "persistence",
+      "channel_id": "channel-97"
+    },
+    {
+      "from": "sei",
+      "to": "axelarnet",
+      "channel_id": "channel-29"
+    },
+    {
+      "from": "axelarnet",
+      "to": "sei",
+      "channel_id": "channel-35"
+    },
+    {
+      "from": "terra",
+      "to": "axelarnet",
+      "channel_id": "channel-22"
+    },
+    {
+      "from": "axelarnet",
+      "to": "terra",
+      "channel_id": "channel-84"
     }
   ]
 }

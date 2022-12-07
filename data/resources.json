@@ -1,0 +1,361 @@
+{
+  "mainnet": [
+    {
+      "name": "Contracts",
+      "value": [
+        {
+          "title": "Releases",
+          "value": "/resources/mainnet"
+        }
+      ]
+    },
+    {
+      "name": "Block explorers",
+      "value": [
+        {
+          "title": "Axelarscan",
+          "value": "https://axelarscan.io"
+        },
+        {
+          "title": "Mintscan",
+          "value": "https://www.mintscan.io/axelar"
+        },
+        {
+          "title": "Big Dipper",
+          "value": "https://axelar-mainnet.chainode.tech"
+        },
+        {
+          "title": "Metrika",
+          "value": "https://app.metrika.co/dashboard/axelar"
+        },
+        {
+          "title": "Atomscan",
+          "value": "https://atomscan.com/axelar"
+        },
+        {
+          "title": "Ping.Pub",
+          "value": "https://ping.pub/axelar"
+        }
+      ]
+    },
+    {
+      "name": "Wallets",
+      "value": [
+        {
+          "title": "Keplr",
+          "value": "https://wallet.keplr.app"
+        },
+        {
+          "title": "Cosmostation",
+          "value": "https://www.cosmostation.io"
+        }
+      ]
+    },
+    {
+      "name": "RPC endpoints",
+      "value": [
+        {
+          "value": "https://rpc-axelar.imperator.co:443"
+        },
+        {
+          "value": "https://axelar-rpc.quickapi.com:443"
+        },
+        {
+          "value": "https://axelar-rpc.pops.one:443"
+        },
+        {
+          "value": "https://axelar-rpc.chainode.tech:443"
+        },
+        {
+          "value": "https://axelar-rpc.staketab.org:443"
+        },
+        {
+          "value": "https://axelar.rpc.stake2.me"
+        },
+        {
+          "value": "https://axelar-rpc.qubelabs.io"
+        },
+        {
+          "value": "https://axelar-mainnet-rpc.allthatnode.com:26657"
+        },
+        {
+          "value": "https://axelar-rpc.quantnode.tech"
+        },
+        {
+          "value": "https://axelar-rpc.polkachu.com"
+        },
+        {
+          "value": "https://axelar-rpc.4sv.io"
+        },
+        {
+          "value": "https://axelar-rpc.validatrium.club"
+        }
+      ]
+    },
+    {
+      "name": "LCD endpoints",
+      "value": [
+        {
+          "value": "https://lcd-axelar.imperator.co"
+        },
+        {
+          "value": "https://axelar-lcd.quickapi.com"
+        },
+        {
+          "value": "https://axelar-rest.chainode.tech"
+        },
+        {
+          "value": "https://axelar-rest.staketab.org"
+        },
+        {
+          "value": "https://axelar-lcd.qubelabs.io"
+        },
+        {
+          "value": "https://axelar-mainnet-rpc.allthatnode.com:1317"
+        },
+        {
+          "value": "https://axelar-lcd.quantnode.tech"
+        },
+        {
+          "value": "https://axelar-api.polkachu.com"
+        },
+        {
+          "value": "https://axelar-lcd.4sv.io"
+        },
+        {
+          "value": "https://axelar-api.validatrium.club"
+        }
+      ]
+    },
+    {
+      "name": "gRPC endpoints",
+      "value": [
+        {
+          "value": "axelar-grpc.chainode.tech"
+        },
+        {
+          "value": "axelar-grpcweb.chainode.tech"
+        },
+        {
+          "value": "axelar-grpc.polkachu.com:15190"
+        },
+        {
+          "value": "axelar-grpc.qubelabs.io:9092"
+        },
+        {
+          "value": "services.staketab.com:9080"
+        },
+        {
+          "value": "axelar-grpc.quantnode.tech:9090"
+        },
+        {
+          "value": "axelar-grpcweb.quantnode.tech:9091"
+        },
+        {
+          "value": "https://axelar-grpcweb.quantnode.tech"
+        },
+        {
+          "value": "https://axelar-grpc.4sv.io"
+        },
+        {
+          "value": "https://axelar-grpc.quickapi.com"
+        }
+      ]
+    },
+    {
+      "name": "Archival endpoints",
+      "value": [
+        {
+          "value": "https://axelar-archrpc.chainode.tech"
+        },
+        {
+          "value": "https://axelar-archrest.chainode.tech"
+        },
+        {
+          "value": "https://axelar-archgrpc.chainode.tech"
+        },
+        {
+          "value": "https://axelar-archgrpcweb.chainode.tech"
+        },
+        {
+          "value": "https://axelararchive-rpc.quickapi.com"
+        },
+        {
+          "value": "https://axelararchive-lcd.quickapi.com"
+        },
+        {
+          "value": "https://axelararchive-grpc.quickapi.com"
+        }
+      ]
+    }
+  ],
+  "testnet": [
+    {
+      "name": "Contracts",
+      "value": [
+        {
+          "title": "Releases",
+          "value": "/resources/testnet"
+        }
+      ]
+    },
+    {
+      "name": "Block explorers",
+      "value": [
+        {
+          "title": "Axelarscan",
+          "value": "https://testnet.axelarscan.io"
+        },
+        {
+          "title": "Mintscan",
+          "value": "https://testnet.mintscan.io/axelar-testnet"
+        },
+        {
+          "title": "Big Dipper",
+          "value": "https://axelar-testnet.chainode.tech"
+        }
+      ]
+    },
+    {
+      "name": "Faucets",
+      "value": [
+        {
+          "title": "Discord faucet bot",
+          "value": "https://discord.com/channels/770814806105128977/1002423218772136056"
+        },
+        {
+          "title": "Axelar faucet",
+          "value": "https://faucet.testnet.axelar.dev"
+        },
+        {
+          "title": "Faucet by All That Node",
+          "value": "https://www.allthatnode.com/faucet/axelar.dsrv"
+        }
+      ]
+    },
+    {
+      "name": "RPC endpoints",
+      "value": [
+        {
+          "value": "https://rpc-axelar-testnet.imperator.co:443"
+        },
+        {
+          "value": "https://axelartest-rpc.quickapi.com"
+        },
+        {
+          "value": "https://axelar-rpc-1.staketab.org:443"
+        },
+        {
+          "value": "https://axelar-testnet-rpc.qubelabs.io"
+        },
+        {
+          "value": "https://axelar-lisbon-rpc.allthatnode.com:26657"
+        },
+        {
+          "value": "https://axelartest-rpc.quantnode.tech"
+        }
+      ]
+    },
+    {
+      "name": "LCD endpoints",
+      "value": [
+        {
+          "value": "https://lcd-axelar-testnet.imperator.co"
+        },
+        {
+          "value": "https://axelartest-lcd.quickapi.com"
+        },
+        {
+          "value": "https://axelar-rest-1.staketab.org"
+        },
+        {
+          "value": "https://axelar-testnet-lcd.qubelabs.io"
+        },
+        {
+          "value": "https://axelar-lisbon-rpc.allthatnode.com:1317"
+        },
+        {
+          "value": "https://axelartest-lcd.quantnode.tech"
+        }
+      ]
+    },
+    {
+      "name": "gRPC endpoints",
+      "value": [
+        {
+          "value": "grpc-axelar-testnet.imperator.co:8002"
+        },
+        {
+          "value": "services.staketab.com:9090"
+        },
+        {
+          "value": "axelar-testnet-grpc.qubelabs.io:9090"
+        },
+        {
+          "value": "axelartest-grpc.quantnode.tech:9090"
+        },
+        {
+          "value": "axelartest-grpcweb.quantnode.tech:9091"
+        },
+        {
+          "value": "https://axelartest-grpcweb.quantnode.tech"
+        }
+      ]
+    }
+  ],
+  "testnet-2": [
+    {
+      "name": "Contracts",
+      "value": [
+        {
+          "title": "Releases",
+          "value": "/resources/testnet-2"
+        }
+      ]
+    },
+    {
+      "name": "Block explorers",
+      "value": [
+        {
+          "title": "Axelarscan",
+          "value": "https://testnet-2.axelarscan.io"
+        }
+      ]
+    },
+    {
+      "name": "Faucets",
+      "value": [
+        {
+          "title": "Axelar faucet",
+          "value": "https://faucet-casablanca.testnet.axelar.dev"
+        },
+        {
+          "title": "Faucet by All That Node",
+          "value": "https://www.allthatnode.com/faucet/axelar.dsrv"
+        }
+      ]
+    },
+    {
+      "name": "RPC endpoints",
+      "value": [
+        {
+          "value": "https://axelar-rpc-2.staketab.org:443"
+        },
+        {
+          "value": "https://axelar-casablanca-rpc.allthatnode.com:26657"
+        }
+      ]
+    },
+    {
+      "name": "LCD endpoints",
+      "value": [
+        {
+          "value": "https://axelar-rest-2.staketab.org"
+        },
+        {
+          "value": "https://axelar-casablanca-rpc.allthatnode.com:1317"
+        }
+      ]
+    }
+  ]
+}

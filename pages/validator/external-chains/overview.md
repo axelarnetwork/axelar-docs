@@ -26,11 +26,17 @@ See below for details. Read this entire article before you begin supporting exte
 ## External chains you can support on Axelar
 
 - EVM-compatible chains
+  - [Aurora](./aurora)
   - [Avalanche](./avalanche)
+  - [Binance](./binance)
   - [Ethereum](./ethereum)
   - [Fantom](./fantom)
   - [Moonbeam](./moonbeam)
   - [Polygon](./polygon)
+  - [Celo](./celo)
+  - [Arbitrum](./arbitrum)
+  - [Kava](./kava)
+  - [Heroes of NFT](./hero)
 - Cosmos chains
   - Nothing to do. All Cosmos chains are automatically supported by default.
 
@@ -72,6 +78,16 @@ start-with-bridge = false
 
 [[axelar_bridge_evm]]
 name = "Polygon"
+rpc_addr = ""
+start-with-bridge = false
+
+[[axelar_bridge_evm]]
+name = "binance"
+rpc_addr = ""
+start-with-bridge = false
+
+[[axelar_bridge_evm]]
+name = "aurora"
 rpc_addr = ""
 start-with-bridge = false
 ```
@@ -123,26 +139,23 @@ You should see something like:
 2021-11-25T01:25:54Z INF Successfully connected to EVM bridge for chain Avalanche module=vald
 2021-11-25T01:25:54Z INF Successfully connected to EVM bridge for chain Fantom module=vald
 2021-11-25T01:25:54Z INF Successfully connected to EVM bridge for chain Moonbeam module=vald
-2021-11-25T01:25:54Z INF Successfully connected to EVM bridge for chain Polygon module=vald`}
+2021-11-25T01:25:54Z INF Successfully connected to EVM bridge for chain Polygon module=vald
+2021-11-25T01:25:54Z INF Successfully connected to EVM bridge for chain Binance module=vald
+2021-11-25T01:25:54Z INF Successfully connected to EVM bridge for chain Aurora module=vald`}
 </CodeBlock>
 
 ## Register as a maintainer of external chains
 
 For each external chain C you selected earlier you must inform the Axelar network of your intent to maintain C. This is accomplished via the `register-chain-maintainer` command.
+Since `vald` uses the broadcaster account,
+it is recommended to be shut down when submitting this command to avoid
+running into sequence mismatch errors due to concurrent signing.
 
-Example: multiple EVM chains in one command:
+Example:
 
 ```bash
-axelard tx nexus register-chain-maintainer avalanche ethereum fantom moonbeam polygon --from broadcaster --chain-id $AXELARD_CHAIN_ID --home $AXELARD_HOME
+axelard tx nexus register-chain-maintainer avalanche ethereum fantom moonbeam polygon binance aurora --from broadcaster --chain-id $AXELARD_CHAIN_ID --home $AXELARD_HOME --gas auto --gas-adjustment 1.4
 ```
-
-<Callout emoji="ℹ️">
-  Validator voting for maintained chains
-
-If you have added an RPC endpoint to your configuration for chain C then your validator will _always_ post vote messages for chain C on the Axelar network, regardless of whether you are registered as a maintainer for chain C. (Why? Because the `vald` process that posts vote messages is stateless; it doesn't know whether your validator is registered as a maintainer for chain C.)
-
-The Axelar consensus protocol simply ignores all votes for chain C events from those validators who are not registered as a maintainer for C.
-</Callout>
 
 <Callout type="warning" emoji="⚠️">
   Automatic deregistration
@@ -158,7 +171,7 @@ This is accomplished via the `deregister-chain-maintainer` command.
 Example: Deregister the Avalanche chain:
 
 ```bash
-axelard tx nexus deregister-chain-maintainer avalanche --from broadcaster --chain-id $AXELARD_CHAIN_ID --home $AXELARD_HOME
+axelard tx nexus deregister-chain-maintainer avalanche --from broadcaster --chain-id $AXELARD_CHAIN_ID --home $AXELARD_HOME --gas auto --gas-adjustment 1.4
 ```
 
 <Callout type="warning" emoji="⚠️">

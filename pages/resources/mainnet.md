@@ -10,8 +10,8 @@ import EVMAssets from '../../components/evm/assets'
 
 | Variable              | Value     |
 | --------------------- | --------- |
-| `axelar-core` version | `v0.26.0` |
-| `vald` version        | `v0.26.0` |
+| `axelar-core` version | `v0.29.0` |
+| `vald` version        | `v0.29.0` |
 | `tofnd` version       | `v0.10.1` |
 
 
@@ -69,7 +69,7 @@ axelard q nexus transfer-fee avalanche osmosis 1000000000uusdc
 The per-chain gas relayer fee info can be queried via
 
 ```bash
-axelard q nexus fee avalanche uusdc
+axelard q nexus fee-info avalanche uusdc
 ```
 
 If the total amount of a token sent to a deposit address A is NOT greater than the gas relayer fee
