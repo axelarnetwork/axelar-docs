@@ -237,6 +237,9 @@
       "name": "RPC endpoints",
       "value": [
         {
+          "value": "https://rpc-axelar-testnet.imperator.co:443"
+        },
+        {
           "value": "https://axelartest-rpc.quickapi.com"
         },
         {
@@ -257,6 +260,9 @@
       "name": "LCD endpoints",
       "value": [
         {
+          "value": "https://lcd-axelar-testnet.imperator.co"
+        },
+        {
           "value": "https://axelartest-lcd.quickapi.com"
         },
         {
@@ -276,6 +282,9 @@
     {
       "name": "gRPC endpoints",
       "value": [
+        {
+          "value": "grpc-axelar-testnet.imperator.co:8002"
+        },
         {
           "value": "services.staketab.com:9090"
         },
