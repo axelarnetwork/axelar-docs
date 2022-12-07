@@ -1,4 +1,4 @@
-# Testnet
+# Testnet 2 (casablanca)
 
 import Callout from 'nextra-theme-docs/callout'
 import MarkdownPath from '../../components/markdown'
