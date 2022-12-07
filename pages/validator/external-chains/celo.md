@@ -143,6 +143,13 @@ content: <CodeBlock language="bash">
 }
 ]} />
 
+
+To see logs after starting the container, do the following.
+```bash
+docker ps -a
+docker logs [container_id_from_first_step]  -f
+ ```
+ 
 You'll start seeing some output. After a few minutes, you should see lines that look like this. This means your node has started syncing with the network and is receiving blocks.
 
 ```bash
