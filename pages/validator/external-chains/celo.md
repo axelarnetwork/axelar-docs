@@ -144,7 +144,7 @@ content: <CodeBlock language="bash">
 ]} />
 
 
-To see logs after starting container,do the following steps.
+To see logs after starting the container, do the following.
 ```bash
 docker ps -a
 docker logs [container_id_from_first_step]  -f
