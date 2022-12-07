@@ -1,76 +1,218 @@
 # Avalanche
+-----------
 
-import Callout from 'nextra-theme-docs/callout'
+import Markdown from 'markdown-to-jsx'
+import Tabs from '../../../components/tabs'
+import CodeBlock from '../../../components/code-block'
 
-Set up your Avalanche Mainnet or Fuji Testnet node.
+Instructions to set up your Avalanche node.
 
-## Prerequisites
+## Requirements
 
 - [Setup your Axelar validator](/validator/setup)
 - Minimum hardware requirements: 8 AWS vCPU+, 16GB RAM, 500GB+ free storage space.
-- MacOS or Ubuntu 18.04+
+- MacOS or Ubuntu 20.04 (tested on 20.04)
 - [Official Documentation](https://docs.avax.network/build/tutorials/nodes-and-staking/run-avalanche-node)
 
-## Install AvalancheGo
 
-In this guide we will be using a bash script created by the Avalanche team, which will automatically set up a running node with minimum user input required.
-
-##### 1. Download `avalanchego-installer`
-
+## Prerequisites
 ```bash
-wget -nd -m https://raw.githubusercontent.com/ava-labs/avalanche-docs/master/scripts/avalanchego-installer.sh
+sudo apt-get install wget jq -y
 ```
 
-##### 2. Set permission and run the script
+
+
+## Get Binaries
+
+Check the appropriate version for the network accordingly [in their docs](https://docs.avax.network/build/tutorials/nodes-and-staking/run-avalanche-node) or choose the [latest release](https://github.com/ava-labs/avalanchego/releases)
+
+<Tabs tabs={[
+{
+title: "Mainnet",
+content: <CodeBlock language="bash">
+{`# This is an example - check their docs and release page to opt for the right version
+AVALANCHEGO=v1.9.3
+`}
+</CodeBlock>
+},
+{
+title: "Testnet",
+content: <CodeBlock language="bash">
+{`# This is an example - check their docs and release page to opt for the right version
+AVALANCHEGO=v1.9.3`}
+</CodeBlock>
+}
+]} />
+
 
 ```bash
-chmod 755 avalanchego-installer.sh
-./avalanchego-installer.sh
+# verify correct versions
+echo $AVALANCHEGO
+
+# create a temp dir for binaries
+cd $HOME
+mkdir binaries && cd binaries
+
+
+# get avalanchego binary and rename
+wget https://github.com/ava-labs/avalanchego/releases/download/$AVALANCHEGO/avalanchego-linux-amd64-$AVALANCHEGO.tar.gz
+tar -xvf avalanchego-linux-amd64-$AVALANCHEGO.tar.gz
+rm avalanchego-linux-amd64-$AVALANCHEGO.tar.gz
+cd avalanchego-$AVALANCHEGO
+
+# make binaries executable
+chmod +x *
+
+# move to usr bin
+sudo mv * /usr/bin/
+
+# get out of binaries directory
+cd $HOME
+
+# verify version
+avalanchego --version
 ```
 
-The script will start and prompt you for information about your server environment. Follow the required steps, enter your network information, and confirm the installation. The script will then automatically create and start the `avalanchego.service`. To check if the service is running or to follow the logs, use the following commands:
+## Set environment variables
+
+Note: Update your shell profile in accordance with the shell you are using
+
+<Tabs tabs={[
+{
+title: "Mainnet",
+content: <CodeBlock language="bash">
+{"echo export NETWORK_ID=mainnet >> $HOME/.profile"}
+</CodeBlock>
+},
+{
+title: "Testnet",
+content: <CodeBlock language="bash">
+{"echo export NETWORK_ID=fuji >> $HOME/.profile"}
+</CodeBlock>
+}
+]} />
+
+Apply your changes
 
 ```bash
-sudo systemctl status avalanchego
-sudo journalctl -u avalanchego -f
+source $HOME/.profile
 ```
-Now you should be synchronizing on the Avalanche Mainnet network. Once the network is synced, you will see a message similar to:
 
-`health/service.go#130: "isBootstrapped" became healthy with: {"timestamp":"2021-12-27T21:35:36.879654389+01:00","duration":6943,"contiguousFailures":0,"timeOfFirstFailure":null}`
+## Create services
 
-<Callout type="error" emoji="⚠️">
-   By default, the network will start synchronizing on the Mainnet network. If you are trying to set up a node on the testnet network (Avalanche Fuji), you need to stop the  `avalanchego.service`, edit the `node.json` configuration file and restart the service.
-</Callout>
+Use `systemctl` to set up service for `avalanchego`.
+
+### avalanchego
 
 ```bash
-sudo systemctl stop avalanchego
-nano  /home/avax/.avalanchego/configs/node.json
+sudo tee <<EOF >/dev/null /etc/systemd/system/avalanchego.service
+[Unit]
+Description=Avalanche daemon
+After=network-online.target
+
+[Service]
+User=root
+ExecStart=/usr/bin/avalanchego --http-host= --network-id=$NETWORK_ID
+Restart=on-failure
+RestartSec=3
+LimitNOFILE=32768
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+
+# verify and enable
+cat /etc/systemd/system/avalanchego.service
+sudo systemctl enable avalanchego
 ```
 
-Change `"network-id"` to `"fuji"`, save the file and restart the service:
+## Start the service
 
 ```bash
-sudo systemctl start avalanchego
+sudo systemctl daemon-reload
+sudo systemctl restart avalanchego
 ```
 
-## Test your Avalanche RPC connection
-
-Once your node is fully synced, you can run a cURL request to see the status of your node:
+## Check logs
 
 ```bash
-curl -X POST --data '{"jsonrpc": "2.0","method": "info.isBootstrapped","params":{"chain":"C"},"id":1}' -H 'content-type:application/json;' localhost:9650/ext/info
+# change log settings to persistent if not already
+sed -i 's/#Storage=auto/Storage=persistent/g' /etc/systemd/journald.conf
+sudo systemctl restart systemd-journald
 
+journalctl -u avalanchego.service -f -n 100 -o cat
+```
+Logs should appear like this
+```bash
+[11-28|07:50:59.280] INFO <P Chain> bootstrap/bootstrapper.go:481 fetching blocks {"numFetchedBlocks": 85000, "numTotalBlocks": 3241631, "eta": "1h52m8s"}
+[11-28|07:51:13.370] INFO <P Chain> bootstrap/bootstrapper.go:481 fetching blocks {"numFetchedBlocks": 90000, "numTotalBlocks": 3241631, "eta": "1h53m58s"}
+[11-28|07:51:29.644] INFO <P Chain> bootstrap/bootstrapper.go:481 fetching blocks {"numFetchedBlocks": 95000, "numTotalBlocks": 3241631, "eta": "1h56m46s"}
+[11-28|07:51:43.864] INFO <P Chain> bootstrap/bootstrapper.go:481 fetching blocks {"numFetchedBlocks": 100000, "numTotalBlocks": 3241631, "eta": "1h58m12s"}
+[11-28|07:51:52.789] INFO <P Chain> bootstrap/bootstrapper.go:481 fetching blocks {"numFetchedBlocks": 105000, "numTotalBlocks": 3241631, "eta": "1h56m50s"}
+[11-28|07:52:06.814] INFO <P Chain> bootstrap/bootstrapper.go:481 fetching blocks {"numFetchedBlocks": 110000, "numTotalBlocks": 3241631, "eta": "1h58m0s"}
+[11-28|07:52:17.979] INFO <P Chain> bootstrap/bootstrapper.go:481 fetching blocks {"numFetchedBlocks": 115000, "numTotalBlocks": 3241631, "eta": "1h57m45s"}
+[11-28|07:52:31.488] INFO <P Chain> bootstrap/bootstrapper.go:481 fetching blocks {"numFetchedBlocks": 120000, "numTotalBlocks": 3241631, "eta": "1h58m31s"}
+[11-28|07:52:40.475] INFO <P Chain> bootstrap/bootstrapper.go:481 fetching blocks {"numFetchedBlocks": 125000, "numTotalBlocks": 3241631, "eta": "1h57m20s"}
+[11-28|07:52:53.462] INFO <P Chain> bootstrap/bootstrapper.go:481 fetching blocks {"numFetchedBlocks": 130000, "numTotalBlocks": 3241631, "eta": "1h57m49s"}
 ```
 
-If the node is successfully synced, the output from above will print `{"jsonrpc":"2.0","result":{"isBootstrapped":true},"id":1}`
-
-#### EVM RPC endpoint URL
-
-Axelar Network will be connecting to the C-Chain, which is the EVM compatible blockchain, so your `rpc_addr` should be exposed in this format:
+## Verify
 
 ```bash
-http://IP:PORT/ext/bc/C/rpc
+YOUR_IP=$(curl -4 ifconfig.co)
+
+curl -X POST --data '{
+    "jsonrpc":"2.0",
+    "id"     :1,
+    "method" :"info.isBootstrapped",
+    "params": {
+        "chain":"X"
+    }
+}' -H 'content-type:application/json;' $YOUR_IP:9650/ext/info | jq
 ```
 
-Example:
-`http://192.168.192.168:9650/ext/bc/C/rpc`
+If you get something like this in response of the above rpc call, your node is setup correctly
+
+Wait for `isBootstrapped` to become true before using it in vald config
+```bash
+{
+  "jsonrpc": "2.0",
+  "result": {
+    "isBootstrapped": false # wait for it to become true
+  },
+  "id": 1
+}
+```
+
+## Endpoint
+
+```bash
+echo "${YOUR_IP}:9650/ext/bc/C/rpc"
+```
+
+### Configure vald
+
+In order for `vald` to connect to your Avalanche node, your `rpc_addr` should be exposed in
+vald's `config.toml`
+
+<Tabs tabs={[
+{
+title: "Mainnet",
+content: <CodeBlock language="yaml">
+{`[[axelar_bridge_evm]]
+name = "Avalanche"
+rpc_addr = "http://IP:PORT"
+start-with-bridge = true`}
+</CodeBlock>
+},
+{
+title: "Testnet",
+content: <CodeBlock language="yaml">
+{`[[axelar_bridge_evm]]
+name = "Avalanche"
+rpc_addr = "http://IP:PORT"
+start-with-bridge = true`}
+</CodeBlock>
+}
+]} />
