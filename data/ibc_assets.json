@@ -114,17 +114,17 @@
     },
     {
       "id": "uluna",
-      "name": "LUNA - Axelar Wrapped LUNA",
-      "symbol": "LUNA",
-      "image": "/images/assets/luna.svg",
+      "name": "LUNC - Axelar Wrapped LUNC",
+      "symbol": "LUNC",
+      "image": "/images/assets/lunc.svg",
       "decimals": 6,
       "transfer_fee": 3000.0
     },
     {
       "id": "uusd",
-      "name": "UST - Axelar Wrapped UST",
-      "symbol": "UST",
-      "image": "/images/assets/ust.svg",
+      "name": "USTC - Axelar Wrapped USTC",
+      "symbol": "USTC",
+      "image": "/images/assets/ustc.svg",
       "decimals": 6,
       "transfer_fee": 20.0
     },
