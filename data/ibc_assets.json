@@ -41,6 +41,14 @@
       "transfer_fee": 0.5
     },
     {
+      "id": "busd-wei",
+      "name": "BUSD - Binance USD",
+      "symbol": "BUSD",
+      "image": "/images/assets/busd.svg",
+      "decimals": 18,
+      "transfer_fee": 0.5
+    },
+    {
       "id": "dot-planck",
       "name": "DOT - xcDOT",
       "symbol": "DOT",
@@ -105,20 +113,20 @@
       "transfer_fee": 0.04
     },
     {
-      "id": "ungm",
-      "name": "NGM - e-Money NGM staking token",
-      "symbol": "NGM",
-      "image": "/images/assets/ngm.svg",
+      "id": "uluna",
+      "name": "LUNA - Axelar Wrapped LUNA",
+      "symbol": "LUNA",
+      "image": "/images/assets/luna.svg",
       "decimals": 6,
-      "transfer_fee": 2.0
+      "transfer_fee": 3000.0
     },
     {
-      "id": "eeur",
-      "name": "EEUR - e-Money EUR stablecoin",
-      "symbol": "EEUR",
-      "image": "/images/assets/eeur.svg",
+      "id": "uusd",
+      "name": "UST - Axelar Wrapped UST",
+      "symbol": "UST",
+      "image": "/images/assets/ust.svg",
       "decimals": 6,
-      "transfer_fee": 0.5
+      "transfer_fee": 20.0
     },
     {
       "id": "rai-wei",
@@ -150,6 +158,30 @@
       "symbol": "FRAX",
       "image": "/images/assets/frax.svg",
       "decimals": 18,
+      "transfer_fee": 0.5
+    },
+    {
+      "id": "mkr-wei",
+      "name": "MKR - Maker",
+      "symbol": "MKR",
+      "image": "/images/assets/mkr.svg",
+      "decimals": 18,
+      "transfer_fee": 0.0006
+    },
+    {
+      "id": "ungm",
+      "name": "NGM - e-Money NGM staking token",
+      "symbol": "NGM",
+      "image": "/images/assets/ngm.svg",
+      "decimals": 6,
+      "transfer_fee": 2.0
+    },
+    {
+      "id": "eeur",
+      "name": "EEUR - e-Money EUR stablecoin",
+      "symbol": "EEUR",
+      "image": "/images/assets/eeur.svg",
+      "decimals": 6,
       "transfer_fee": 0.5
     },
     {
@@ -191,14 +223,6 @@
       "image": "/images/assets/xcn.svg",
       "decimals": 18,
       "transfer_fee": 6.0
-    },
-    {
-      "id": "mkr-wei",
-      "name": "MKR - Maker",
-      "symbol": "MKR",
-      "image": "/images/assets/mkr.svg",
-      "decimals": 18,
-      "transfer_fee": 0.0006
     }
   ],
   "testnet": [

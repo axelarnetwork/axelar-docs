@@ -103,6 +103,12 @@
       "image": "/images/chains/terra.svg"
     },
     {
+      "id": "terraclassic",
+      "name": "Terra Classic",
+      "network_id": "terra",
+      "image": "/images/chains/terraclassic.svg"
+    },
+    {
       "id": "umee",
       "name": "Umee",
       "network_id": "umee",
