@@ -436,42 +436,42 @@
     },
     {
       "id": "uluna",
-      "name": "LUNA - Axelar Wrapped LUNA",
-      "symbol": "LUNA",
-      "image": "/images/assets/luna.svg",
+      "name": "LUNC - Axelar Wrapped LUNC",
+      "symbol": "LUNC",
+      "image": "/images/assets/lunc.svg",
       "contracts": [
         {
           "chain": "avalanche",
           "address": "0x120AD3e5A7c796349e591F1570D9f7980F4eA9cb",
-          "symbol": "axlLUNA",
+          "symbol": "LUNC",
           "decimals": 6,
           "transfer_fee": 7000.0
         },
         {
           "chain": "ethereum",
           "address": "0x31DAB3430f3081dfF3Ccd80F17AD98583437B213",
-          "symbol": "axlLUNA",
+          "symbol": "LUNC",
           "decimals": 6,
           "transfer_fee": 70000.0
         },
         {
           "chain": "fantom",
           "address": "0x5e3C572A97D898Fe359a2Cea31c7D46ba5386895",
-          "symbol": "axlLUNA",
+          "symbol": "LUNC",
           "decimals": 6,
           "transfer_fee": 7000.0
         },
         {
           "chain": "moonbeam",
           "address": "0x31DAB3430f3081dfF3Ccd80F17AD98583437B213",
-          "symbol": "axlLUNA",
+          "symbol": "LUNC",
           "decimals": 6,
           "transfer_fee": 7000.0
         },
         {
           "chain": "polygon",
           "address": "0xa17927fB75E9faEA10C08259902d0468b3DEad88",
-          "symbol": "axlLUNA",
+          "symbol": "LUNC",
           "decimals": 6,
           "transfer_fee": 7000.0
         }
@@ -479,42 +479,42 @@
     },
     {
       "id": "uusd",
-      "name": "UST - Axelar Wrapped UST",
-      "symbol": "UST",
-      "image": "/images/assets/ust.svg",
+      "name": "USTC - Axelar Wrapped USTC",
+      "symbol": "USTC",
+      "image": "/images/assets/ustc.svg",
       "contracts": [
         {
           "chain": "avalanche",
           "address": "0x260Bbf5698121EB85e7a74f2E45E16Ce762EbE11",
-          "symbol": "axlUST",
+          "symbol": "USTC",
           "decimals": 6,
           "transfer_fee": 50.0
         },
         {
           "chain": "ethereum",
           "address": "0x085416975fe14C2A731a97eC38B9bF8135231F62",
-          "symbol": "axlUST",
+          "symbol": "USTC",
           "decimals": 6,
           "transfer_fee": 500.0
         },
         {
           "chain": "fantom",
           "address": "0x2B9d3F168905067D88d93F094C938BACEe02b0cB",
-          "symbol": "axlUST",
+          "symbol": "USTC",
           "decimals": 6,
           "transfer_fee": 50.0
         },
         {
           "chain": "moonbeam",
           "address": "0x085416975fe14C2A731a97eC38B9bF8135231F62",
-          "symbol": "axlUST",
+          "symbol": "USTC",
           "decimals": 6,
           "transfer_fee": 50.0
         },
         {
           "chain": "polygon",
           "address": "0xeDDc6eDe8F3AF9B4971e1Fa9639314905458bE87",
-          "symbol": "axlUST",
+          "symbol": "USTC",
           "decimals": 6,
           "transfer_fee": 50.0
         }
