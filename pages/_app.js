@@ -11,17 +11,14 @@ import "../styles/components/notification.css";
 import "nextra-theme-docs/style.css";
 import { Notification } from "components/notification.js";
 
-export default ({
-  Component,
-  pageProps,
-}) => {
+export default ({ Component, pageProps }) => {
   const router = useRouter();
 
   const store = useStore(pageProps.initialReduxState);
-  const getLayout = Component.getLayout || (page => page);
+  const getLayout = Component.getLayout || ((page) => page);
 
   useEffect(() => {
-    const handleRouteChange = url => ga.pageview(url);
+    const handleRouteChange = (url) => ga.pageview(url);
     //When the component is mounted, subscribe to router changes
     //and log those page views
     router.events.on("routeChangeComplete", handleRouteChange);
@@ -33,11 +30,9 @@ export default ({
 
   return (
     <Provider store={store}>
-      <Notification suppressHydrationWarning/>
+      <Notification />
 
-      {getLayout(
-        <Component { ...pageProps } />
-      )}
+      {getLayout(<Component {...pageProps} />)}
     </Provider>
   );
-}
+};
