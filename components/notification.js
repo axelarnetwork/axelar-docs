@@ -1,86 +1,59 @@
-import { Component, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import cn from "classnames";
 
-let shimmedLocalStorage =
-  typeof window !== "undefined" ? window.localStorage : {};
-
-export class Notification extends Component {
-  notifications = [
-    {
-      key: "dev-survey-2022",
-      html: (
-        <div>
-          Make your voice heard in our{" "}
-          <b>
-            <a href="https://bit.ly/axelar-developer-2022">1 minute survey</a>
-          </b>
-          !
-        </div>
-      ),
-      start: "2022-12-12T08:00:00Z",
-      end: "2023-01-12T08:00:00Z",
-    },
-  ];
-
-  // Find the first notification we should be rendering right now
-  notification = this.notifications.find((item) => {
-    const now = new Date();
-    const start = new Date(item.start);
-    const end = new Date(item.end);
-    if (now >= start && now <= end) {
-      return true;
-    }
-    return false;
-  });
-  key = this.notification.key;
-
-  constructor(props) {
-    super(props);
-    this.state = {status: 'seen'};
-
-
-    if (this.notification) {
-      console.log("found a valid notification");
-      let state = shimmedLocalStorage[`notification-${this.key}`];
-      this.state = {status: state};
-      console.log("notification state is ", state);
-      if (!state) {
-        shimmedLocalStorage[`notification-${this.key}`] = "seen";
-        this.state = {status: 'seen'};
-        // ((prevState) => ({ status: "seen" }));
-      } else if (state === "seen") {
-        // Show it without transition
-        //   getStyleBox.maxHeight = "100px";
-        //   getStyleBox.transition = "none";
-      } else {
-        //console.log("state didn't match",state);
-      }
-    }
-  }
-
-  close = () => {
-    // state =
-    shimmedLocalStorage[`notification-${this.key}`] = "dismissed";
-    this.setState((prevState) => ({ status: "dismissed" }));
-    // getStyleBox.maxHeight = "0";
-    //  = { "max-height": "0" };
-  };
-
-  render() {
-    console.log(this.state,'Is my state');
-    return this.notification ? (
-      <div
-        id="notification"
-        style={{
-          maxHeight: this.state.status === "dismissed" ? "0" : "100px",
-        }}
-      >
-        <div className="notification-info">
-          <span id="notification-close" onClick={this.close}>
-            X
-          </span>
-          <span className="notification-text">{this.notification.html}</span>
-        </div>
+const notifications = [
+  {
+    key: "dev-survey-2022",
+    html: (
+      <div>
+        Make your voice heard in our{" "}
+        <b>
+          <a href="https://bit.ly/axelar-developer-2022">1 minute survey</a>
+        </b>
+        !
       </div>
-    ) : null;
+    ),
+    start: "2022-12-12T08:00:00Z",
+    end: "2023-01-12T08:00:00Z",
+  },
+];
+
+const notificationKey = "dev-survey-2022";
+
+export const Notification = () => {
+  const [notification, setNotification] = useState();
+
+  // load notification by key on component mount
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    loadNotification(notificationKey);
+  }, []);
+
+  function loadNotification(_notificationKey) {
+    const notif = notifications.find((n) => n.key === _notificationKey);
+    if (!notif) return;
+    const notifIsAcknowledged = window?.localStorage?.getItem(notificationKey);
+    if (notifIsAcknowledged) return;
+    setNotification(notif);
   }
-}
+
+  function handleOnNotificationClose() {
+    setNotification(null);
+    window?.localStorage?.setItem(notificationKey, true);
+  }
+
+  return (
+    <div
+      className={cn("transition-all duration-500 max-h-0 overflow-hidden", {
+        "max-h-[100px]": !!notification,
+      })}
+    >
+      <div className="notification-info">
+        <span id="notification-close" onClick={handleOnNotificationClose}>
+          X
+        </span>
+        <span className="notification-text">{notification?.html}</span>
+      </div>
+    </div>
+  );
+};
