@@ -7,7 +7,9 @@ import * as ga from "../utils/ga";
 import "../styles/globals.css";
 import "../styles/components/tabs.css";
 import "../styles/components/cards.css";
+import "../styles/components/notification.css";
 import "nextra-theme-docs/style.css";
+import { Notification } from "components/notification.js";
 
 export default ({
   Component,
@@ -31,6 +33,8 @@ export default ({
 
   return (
     <Provider store={store}>
+      <Notification suppressHydrationWarning/>
+
       {getLayout(
         <Component { ...pageProps } />
       )}
