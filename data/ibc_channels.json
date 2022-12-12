@@ -271,6 +271,26 @@
       "from": "axelarnet",
       "to": "terra",
       "channel_id": "channel-84"
+    },
+    {
+      "from": "burnt",
+      "to": "axelarnet",
+      "channel_id": "channel-1"
+    },
+    {
+      "from": "axelarnet",
+      "to": "burnt",
+      "channel_id": "channel-109"
+    },
+    {
+      "from": "xpla",
+      "to": "axelarnet",
+      "channel_id": "channel-0"
+    },
+    {
+      "from": "axelarnet",
+      "to": "xpla",
+      "channel_id": "channel-108"
     }
   ]
 }
