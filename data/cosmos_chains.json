@@ -175,6 +175,18 @@
       "name": "Terra",
       "network_id": "terra-3",
       "image": "/images/chains/terra.svg"
+    },
+    {
+      "id": "burnt",
+      "name": "Burnt",
+      "network_id": "burnt",
+      "image": "/images/chains/burnt.svg"
+    },
+    {
+      "id": "xpla",
+      "name": "Xpla",
+      "network_id": "xpla",
+      "image": "/images/chains/xpla.svg"
     }
   ]
 }
