@@ -123,6 +123,12 @@
   ],
   "testnet": [
     {
+      "id": "acrechain",
+      "name": "Acrechain",
+      "network_id": "acre",
+      "image": "/images/chains/acrechain.svg"
+    },
+    {
       "id": "axelarnet",
       "name": "Axelar",
       "network_id": "axelarnet",
@@ -131,7 +137,7 @@
     {
       "id": "comdex",
       "name": "Comdex",
-      "network_id": "comdex",
+      "network_id": "comdex-2",
       "image": "/images/chains/comdex.svg"
     },
     {
@@ -178,13 +184,13 @@
     },
     {
       "id": "burnt",
-      "name": "Burnt",
+      "name": "burnt",
       "network_id": "burnt",
       "image": "/images/chains/burnt.svg"
     },
     {
       "id": "xpla",
-      "name": "Xpla",
+      "name": "xpla",
       "network_id": "xpla",
       "image": "/images/chains/xpla.svg"
     }
