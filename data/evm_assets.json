@@ -7,6 +7,13 @@
       "image": "/images/assets/usdc.svg",
       "contracts": [
         {
+          "chain": "arbitrum",
+          "address": "0xEB466342C4d449BC9f53A865D5Cb90586f405215",
+          "symbol": "axlUSDC",
+          "decimals": 6,
+          "transfer_fee": 1.0
+        },
+        {
           "chain": "avalanche",
           "address": "0xfaB550568C688d5D8A52C7d794cb93Edc26eC0eC",
           "symbol": "axlUSDC",
@@ -16,6 +23,13 @@
         {
           "chain": "binance",
           "address": "0x4268B8F0B87b6Eae5d897996E6b845ddbD99Adf3",
+          "symbol": "axlUSDC",
+          "decimals": 6,
+          "transfer_fee": 1.0
+        },
+        {
+          "chain": "celo",
+          "address": "0xEB466342C4d449BC9f53A865D5Cb90586f405215",
           "symbol": "axlUSDC",
           "decimals": 6,
           "transfer_fee": 1.0
@@ -35,6 +49,13 @@
           "transfer_fee": 1.0
         },
         {
+          "chain": "kava",
+          "address": "0xEB466342C4d449BC9f53A865D5Cb90586f405215",
+          "symbol": "axlUSDC",
+          "decimals": 6,
+          "transfer_fee": 1.0
+        },
+        {
           "chain": "moonbeam",
           "address": "0xCa01a1D0993565291051daFF390892518ACfAD3A",
           "symbol": "axlUSDC",
@@ -44,20 +65,6 @@
         {
           "chain": "polygon",
           "address": "0x750e4C4984a9e0f12978eA6742Bc1c5D248f40ed",
-          "symbol": "axlUSDC",
-          "decimals": 6,
-          "transfer_fee": 1.0
-        },
-        {
-          "chain": "arbitrum",
-          "address": "0xEB466342C4d449BC9f53A865D5Cb90586f405215",
-          "symbol": "axlUSDC",
-          "decimals": 6,
-          "transfer_fee": 1.0
-        },
-        {
-          "chain": "celo",
-          "address": "0xEB466342C4d449BC9f53A865D5Cb90586f405215",
           "symbol": "axlUSDC",
           "decimals": 6,
           "transfer_fee": 1.0
@@ -71,6 +78,13 @@
       "image": "/images/assets/axl.svg",
       "contracts": [
         {
+          "chain": "arbitrum",
+          "address": "0x23ee2343B892b1BB63503a4FAbc840E0e2C6810f",
+          "symbol": "wAXL",
+          "decimals": 6,
+          "transfer_fee": 1.0
+        },
+        {
           "chain": "avalanche",
           "address": "0x44c784266cf024a60e8acF2427b9857Ace194C5d",
           "symbol": "wAXL",
@@ -80,6 +94,13 @@
         {
           "chain": "binance",
           "address": "0x8b1f4432F943c465A973FeDC6d7aa50Fc96f1f65",
+          "symbol": "wAXL",
+          "decimals": 6,
+          "transfer_fee": 1.0
+        },
+        {
+          "chain": "celo",
+          "address": "0x23ee2343B892b1BB63503a4FAbc840E0e2C6810f",
           "symbol": "wAXL",
           "decimals": 6,
           "transfer_fee": 1.0
@@ -99,6 +120,13 @@
           "transfer_fee": 1.0
         },
         {
+          "chain": "kava",
+          "address": "0x23ee2343B892b1BB63503a4FAbc840E0e2C6810f",
+          "symbol": "wAXL",
+          "decimals": 6,
+          "transfer_fee": 1.0
+        },
+        {
           "chain": "moonbeam",
           "address": "0x467719aD09025FcC6cF6F8311755809d45a5E5f3",
           "symbol": "wAXL",
@@ -108,20 +136,6 @@
         {
           "chain": "polygon",
           "address": "0x6e4E624106Cb12E168E6533F8ec7c82263358940",
-          "symbol": "wAXL",
-          "decimals": 6,
-          "transfer_fee": 1.0
-        },
-        {
-          "chain": "arbitrum",
-          "address": "0x23ee2343B892b1BB63503a4FAbc840E0e2C6810f",
-          "symbol": "wAXL",
-          "decimals": 6,
-          "transfer_fee": 1.0
-        },
-        {
-          "chain": "celo",
-          "address": "0x23ee2343B892b1BB63503a4FAbc840E0e2C6810f",
           "symbol": "wAXL",
           "decimals": 6,
           "transfer_fee": 1.0
@@ -150,8 +164,22 @@
       "image": "/images/assets/dai.svg",
       "contracts": [
         {
+          "chain": "arbitrum",
+          "address": "0x5C7e299CF531eb66f2A1dF637d37AbB78e6200C7",
+          "symbol": "axlDAI",
+          "decimals": 18,
+          "transfer_fee": 1.0
+        },
+        {
           "chain": "avalanche",
           "address": "0xC5Fa5669E326DA8B2C35540257cD48811F40a36B",
+          "symbol": "axlDAI",
+          "decimals": 18,
+          "transfer_fee": 1.0
+        },
+        {
+          "chain": "celo",
+          "address": "0x5C7e299CF531eb66f2A1dF637d37AbB78e6200C7",
           "symbol": "axlDAI",
           "decimals": 18,
           "transfer_fee": 1.0
@@ -171,6 +199,13 @@
           "transfer_fee": 1.0
         },
         {
+          "chain": "kava",
+          "address": "0x5C7e299CF531eb66f2A1dF637d37AbB78e6200C7",
+          "symbol": "axlDAI",
+          "decimals": 18,
+          "transfer_fee": 1.0
+        },
+        {
           "chain": "moonbeam",
           "address": "0x14dF360966a1c4582d2b18EDbdae432EA0A27575",
           "symbol": "axlDAI",
@@ -180,20 +215,6 @@
         {
           "chain": "polygon",
           "address": "0xDDc9E2891FA11a4CC5C223145e8d14B44f3077c9",
-          "symbol": "axlDAI",
-          "decimals": 18,
-          "transfer_fee": 1.0
-        },
-        {
-          "chain": "arbitrum",
-          "address": "0x5C7e299CF531eb66f2A1dF637d37AbB78e6200C7",
-          "symbol": "axlDAI",
-          "decimals": 18,
-          "transfer_fee": 1.0
-        },
-        {
-          "chain": "celo",
-          "address": "0x5C7e299CF531eb66f2A1dF637d37AbB78e6200C7",
           "symbol": "axlDAI",
           "decimals": 18,
           "transfer_fee": 1.0
@@ -207,8 +228,22 @@
       "image": "/images/assets/usdt.svg",
       "contracts": [
         {
+          "chain": "arbitrum",
+          "address": "0x7f5373AE26c3E8FfC4c77b7255DF7eC1A9aF52a6",
+          "symbol": "axlUSDT",
+          "decimals": 6,
+          "transfer_fee": 1.0
+        },
+        {
           "chain": "avalanche",
           "address": "0xF976ba91b6bb3468C91E4f02E68B37bc64a57e66",
+          "symbol": "axlUSDT",
+          "decimals": 6,
+          "transfer_fee": 1.0
+        },
+        {
+          "chain": "celo",
+          "address": "0x7f5373AE26c3E8FfC4c77b7255DF7eC1A9aF52a6",
           "symbol": "axlUSDT",
           "decimals": 6,
           "transfer_fee": 1.0
@@ -228,6 +263,13 @@
           "transfer_fee": 1.0
         },
         {
+          "chain": "kava",
+          "address": "0x7f5373AE26c3E8FfC4c77b7255DF7eC1A9aF52a6",
+          "symbol": "axlUSDT",
+          "decimals": 6,
+          "transfer_fee": 1.0
+        },
+        {
           "chain": "moonbeam",
           "address": "0xDFd74aF792bC6D45D1803F425CE62Dd16f8Ae038",
           "symbol": "axlUSDT",
@@ -237,20 +279,6 @@
         {
           "chain": "polygon",
           "address": "0xCeED2671d8634e3ee65000EDbbEe66139b132fBf",
-          "symbol": "axlUSDT",
-          "decimals": 6,
-          "transfer_fee": 1.0
-        },
-        {
-          "chain": "arbitrum",
-          "address": "0x7f5373AE26c3E8FfC4c77b7255DF7eC1A9aF52a6",
-          "symbol": "axlUSDT",
-          "decimals": 6,
-          "transfer_fee": 1.0
-        },
-        {
-          "chain": "celo",
-          "address": "0x7f5373AE26c3E8FfC4c77b7255DF7eC1A9aF52a6",
           "symbol": "axlUSDT",
           "decimals": 6,
           "transfer_fee": 1.0
@@ -384,8 +412,22 @@
       "image": "/images/assets/atom.svg",
       "contracts": [
         {
+          "chain": "arbitrum",
+          "address": "0x06beE9E7238a331B68D83Df3B5B9B16d5DBa83ff",
+          "symbol": "axlATOM",
+          "decimals": 6,
+          "transfer_fee": 0.08
+        },
+        {
           "chain": "avalanche",
           "address": "0x80D18b1c9Ab0c9B5D6A6d5173575417457d00a12",
+          "symbol": "axlATOM",
+          "decimals": 6,
+          "transfer_fee": 0.08
+        },
+        {
+          "chain": "celo",
+          "address": "0x06beE9E7238a331B68D83Df3B5B9B16d5DBa83ff",
           "symbol": "axlATOM",
           "decimals": 6,
           "transfer_fee": 0.08
@@ -405,6 +447,13 @@
           "transfer_fee": 0.08
         },
         {
+          "chain": "kava",
+          "address": "0x06beE9E7238a331B68D83Df3B5B9B16d5DBa83ff",
+          "symbol": "axlATOM",
+          "decimals": 6,
+          "transfer_fee": 0.08
+        },
+        {
           "chain": "moonbeam",
           "address": "0x27292cf0016E5dF1d8b37306B2A98588aCbD6fCA",
           "symbol": "axlATOM",
@@ -414,20 +463,6 @@
         {
           "chain": "polygon",
           "address": "0x33F8a5029264BcFB66e39157aF3FeA3E2a8a5067",
-          "symbol": "axlATOM",
-          "decimals": 6,
-          "transfer_fee": 0.08
-        },
-        {
-          "chain": "arbitrum",
-          "address": "0x06beE9E7238a331B68D83Df3B5B9B16d5DBa83ff",
-          "symbol": "axlATOM",
-          "decimals": 6,
-          "transfer_fee": 0.08
-        },
-        {
-          "chain": "celo",
-          "address": "0x06beE9E7238a331B68D83Df3B5B9B16d5DBa83ff",
           "symbol": "axlATOM",
           "decimals": 6,
           "transfer_fee": 0.08
@@ -572,8 +607,22 @@
       "image": "/images/assets/frax.svg",
       "contracts": [
         {
+          "chain": "arbitrum",
+          "address": "0x406Cde76a3fD20e48bc1E0F60651e60Ae204B040",
+          "symbol": "axlFRAX",
+          "decimals": 18,
+          "transfer_fee": 1.0
+        },
+        {
           "chain": "avalanche",
           "address": "0x4914886dBb8aAd7A7456D471EAab10b06d42348D",
+          "symbol": "axlFRAX",
+          "decimals": 18,
+          "transfer_fee": 1.0
+        },
+        {
+          "chain": "celo",
+          "address": "0x406Cde76a3fD20e48bc1E0F60651e60Ae204B040",
           "symbol": "axlFRAX",
           "decimals": 18,
           "transfer_fee": 1.0
@@ -593,6 +642,13 @@
           "transfer_fee": 1.0
         },
         {
+          "chain": "kava",
+          "address": "0x406Cde76a3fD20e48bc1E0F60651e60Ae204B040",
+          "symbol": "axlFRAX",
+          "decimals": 18,
+          "transfer_fee": 1.0
+        },
+        {
           "chain": "moonbeam",
           "address": "0x61C82805453a989E99B544DFB7031902e9bac448",
           "symbol": "axlFRAX",
@@ -602,20 +658,6 @@
         {
           "chain": "polygon",
           "address": "0x53Adc464b488bE8C5d7269B9ABBCe8bA74195C3a",
-          "symbol": "axlFRAX",
-          "decimals": 18,
-          "transfer_fee": 1.0
-        },
-        {
-          "chain": "arbitrum",
-          "address": "0x406Cde76a3fD20e48bc1E0F60651e60Ae204B040",
-          "symbol": "axlFRAX",
-          "decimals": 18,
-          "transfer_fee": 1.0
-        },
-        {
-          "chain": "celo",
-          "address": "0x406Cde76a3fD20e48bc1E0F60651e60Ae204B040",
           "symbol": "axlFRAX",
           "decimals": 18,
           "transfer_fee": 1.0
@@ -644,8 +686,22 @@
       "image": "/images/assets/ngm.svg",
       "contracts": [
         {
+          "chain": "arbitrum",
+          "address": "0x54B1aa9386f36079fe4B39278c06eadaD457ac15",
+          "symbol": "NGM",
+          "decimals": 6,
+          "transfer_fee": 4.0
+        },
+        {
           "chain": "avalanche",
           "address": "0x5A44422beaAA38031f57720d88697105be6970BE",
+          "symbol": "NGM",
+          "decimals": 6,
+          "transfer_fee": 4.0
+        },
+        {
+          "chain": "celo",
+          "address": "0x54B1aa9386f36079fe4B39278c06eadaD457ac15",
           "symbol": "NGM",
           "decimals": 6,
           "transfer_fee": 4.0
@@ -665,6 +721,13 @@
           "transfer_fee": 4.0
         },
         {
+          "chain": "kava",
+          "address": "0x54B1aa9386f36079fe4B39278c06eadaD457ac15",
+          "symbol": "NGM",
+          "decimals": 6,
+          "transfer_fee": 4.0
+        },
+        {
           "chain": "moonbeam",
           "address": "0x08fe7A0db575c2a08d76EEcA71763E48C6e60F45",
           "symbol": "NGM",
@@ -674,20 +737,6 @@
         {
           "chain": "polygon",
           "address": "0xC8d5A4E04387EBdaa2c0FBB6858F246116431e9f",
-          "symbol": "NGM",
-          "decimals": 6,
-          "transfer_fee": 4.0
-        },
-        {
-          "chain": "arbitrum",
-          "address": "0x54B1aa9386f36079fe4B39278c06eadaD457ac15",
-          "symbol": "NGM",
-          "decimals": 6,
-          "transfer_fee": 4.0
-        },
-        {
-          "chain": "celo",
-          "address": "0x54B1aa9386f36079fe4B39278c06eadaD457ac15",
           "symbol": "NGM",
           "decimals": 6,
           "transfer_fee": 4.0
@@ -701,8 +750,22 @@
       "image": "/images/assets/eeur.svg",
       "contracts": [
         {
+          "chain": "arbitrum",
+          "address": "0xEeD07F7ef719f69f7D0A50aF2f50bA2d959A3839",
+          "symbol": "EEUR",
+          "decimals": 6,
+          "transfer_fee": 1.0
+        },
+        {
           "chain": "avalanche",
           "address": "0xE1d70994Be12b73E76889412b284A8F19b0DE56d",
+          "symbol": "EEUR",
+          "decimals": 6,
+          "transfer_fee": 1.0
+        },
+        {
+          "chain": "celo",
+          "address": "0xEeD07F7ef719f69f7D0A50aF2f50bA2d959A3839",
           "symbol": "EEUR",
           "decimals": 6,
           "transfer_fee": 1.0
@@ -722,6 +785,13 @@
           "transfer_fee": 1.0
         },
         {
+          "chain": "kava",
+          "address": "0xEeD07F7ef719f69f7D0A50aF2f50bA2d959A3839",
+          "symbol": "EEUR",
+          "decimals": 6,
+          "transfer_fee": 1.0
+        },
+        {
           "chain": "moonbeam",
           "address": "0xDd26a5c8Ae5b60Bb14aEcED892A052CA48A2e915",
           "symbol": "EEUR",
@@ -731,20 +801,6 @@
         {
           "chain": "polygon",
           "address": "0x8CD51880C0a5dbde37dDdFce8d5B772Fc9007495",
-          "symbol": "EEUR",
-          "decimals": 6,
-          "transfer_fee": 1.0
-        },
-        {
-          "chain": "arbitrum",
-          "address": "0xEeD07F7ef719f69f7D0A50aF2f50bA2d959A3839",
-          "symbol": "EEUR",
-          "decimals": 6,
-          "transfer_fee": 1.0
-        },
-        {
-          "chain": "celo",
-          "address": "0xEeD07F7ef719f69f7D0A50aF2f50bA2d959A3839",
           "symbol": "EEUR",
           "decimals": 6,
           "transfer_fee": 1.0
