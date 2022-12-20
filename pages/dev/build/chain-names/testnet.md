@@ -5,11 +5,14 @@
 The following values are legal arguments for token transfers and General Message Passing calls such as `callContract` and `callContractWithToken`.
 The contract call approval at the Axelar gateway and contracts implementing `IAxelarExecutable` contracts will receive precisely these values for the source chain.
 
+- `arbitrum`
 - `aurora`
 - `Avalanche`
 - `binance`
+- `celo`
 - `ethereum-2`
 - `Fantom`
+- `kava`
 - `Moonbeam`
 - `Polygon`
 
@@ -18,11 +21,12 @@ The contract call approval at the Axelar gateway and contracts implementing `IAx
 The following values are legal arguments for token transfers:
 
 - `Axelarnet`
+- `burnt`
 - `kujira`
-- `osmosis-4`
 - `sei`
 - `fetch`
 - `aura`
 - `evmos`
-- `comdex`
+- `comdex-2`
 - `terra-3`
+- `xpla`
