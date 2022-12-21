@@ -20,8 +20,6 @@ IMPORTANT NOTE: When making your deposit, please ensure that the amount is **gre
 - Alternatively, they can be programmatically queried in the SDK's [AxelarQueryAPI](../axelarjs-sdk/axelar-query-api#gettransferfee).
 </Callout>
 
-
-
 3. Axelar relayers observe the deposit transaction on the source chain and complete it on the destination chain, assuming the amount exceeds the requisite fee.
 4. Watch your tokens arrive on the destination chain.
 
@@ -72,7 +70,7 @@ async function main() {
   });
 
   const fee = await axelarQuery.getTransferFee(
-    CHAINS.TESTNET.OSMOSIS,
+    CHAINS.TESTNET.KUJIRA,
     CHAINS.TESTNET.AVALANCHE,
     "uausdc",
     1000000
@@ -99,21 +97,21 @@ async getDepositAddress(
 ): Promise<string> {}
 ```
 
-Example: Cosmos to EVM (Osmosis to Avalanche):
+Example: Cosmos to EVM (Kujira to Avalanche):
 
 ```tsx
 const sdk = new AxelarAssetTransfer({
-  environment: "testnet"
+  environment: "testnet",
 });
 const depositAddress = await sdk.getDepositAddress(
-  "osmosis", // source chain
+  "kujira", // source chain
   "avalanche", // destination chain
   "0xF16DfB26e1FEc993E085092563ECFAEaDa7eD7fD", // destination address
   "uausdc" // denom of asset. See note (2) below
 );
 ```
 
-Example: EVM to Cosmos (Avalanche to Osmosis):
+Example: EVM to Cosmos (Avalanche to Kujira):
 
 ```tsx
 const sdk = new AxelarAssetTransfer({
@@ -122,16 +120,16 @@ const sdk = new AxelarAssetTransfer({
 });
 const depositAddress = await sdk.getDepositAddress(
   "avalanche", // source chain
-  "osmosis", // destination chain
-  "osmo1x3z2vepjd7fhe30epncxjrk0lehq7xdqe8ltsn", // destination address
+  "kujira", // destination chain
+  "kujira1tck82gz5v5rzc74hmf8j9vyjcs3nnnyc6dgc3c", // destination address
   "uausdc" // denom of asset. See note (2) below
 );
 ```
 
-Notes: 
+Notes:
 
-(1) The destination address format is validated based on the destination chain. Make sure the destination address is a valid address on the destination chain. For instance, Osmosis addresses begin with “osmo,” etc.
+(1) The destination address format is validated based on the destination chain. Make sure the destination address is a valid address on the destination chain. For instance, Kujira addresses begin with “kujira”, etc.
 
 Once the deposit address has been generated, the user can make a token transfer (on blockchain) to the deposit address. The transfer will be picked up by the Axelar network and relayed to the destination chain.
 
-(2) For all the assets that Axelar supports natively, the network identifies the asset by a `denom`. If you are accustomed to the `symbol` typically used on EVM chains, you will have to convert that `symbol` to a `denom`. The SDK has an API method you can use to convert symbol to denom: [getDenomFromSymbol](./axelar-query-api#getdenomfromsymbol) 
+(2) For all the assets that Axelar supports natively, the network identifies the asset by a `denom`. If you are accustomed to the `symbol` typically used on EVM chains, you will have to convert that `symbol` to a `denom`. The SDK has an API method you can use to convert symbol to denom: [getDenomFromSymbol](./axelar-query-api#getdenomfromsymbol)
