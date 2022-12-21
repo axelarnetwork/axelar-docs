@@ -121,7 +121,7 @@ const sdk = new AxelarAssetTransfer({
 const depositAddress = await sdk.getDepositAddress(
   "avalanche", // source chain
   "kujira", // destination chain
-  "osmo1x3z2vepjd7fhe30epncxjrk0lehq7xdqe8ltsn", // destination address
+  "kujira1tck82gz5v5rzc74hmf8j9vyjcs3nnnyc6dgc3c", // destination address
   "uausdc" // denom of asset. See note (2) below
 );
 ```
