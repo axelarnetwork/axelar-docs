@@ -161,6 +161,16 @@
       "channel_id": "channel-11"
     },
     {
+      "from": "terraclassic",
+      "to": "axelarnet",
+      "channel_id": "channel-19"
+    },
+    {
+      "from": "axelarnet",
+      "to": "terraclassic",
+      "channel_id": "channel-0"
+    },
+    {
       "from": "umee",
       "to": "axelarnet",
       "channel_id": "channel-33"
@@ -182,16 +192,6 @@
     }
   ],
   "testnet": [
-    {
-      "from": "aura",
-      "to": "axelarnet",
-      "channel_id": "channel-5"
-    },
-    {
-      "from": "axelarnet",
-      "to": "aura",
-      "channel_id": "channel-48"
-    },
     {
       "from": "comdex",
       "to": "axelarnet",
@@ -271,6 +271,26 @@
       "from": "axelarnet",
       "to": "terra",
       "channel_id": "channel-84"
+    },
+    {
+      "from": "burnt",
+      "to": "axelarnet",
+      "channel_id": "channel-1"
+    },
+    {
+      "from": "axelarnet",
+      "to": "burnt",
+      "channel_id": "channel-109"
+    },
+    {
+      "from": "xpla",
+      "to": "axelarnet",
+      "channel_id": "channel-0"
+    },
+    {
+      "from": "axelarnet",
+      "to": "xpla",
+      "channel_id": "channel-108"
     }
   ]
 }

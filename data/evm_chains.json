@@ -136,6 +136,74 @@
         }
       ],
       "image": "/images/chains/moonbeam.svg"
+    },
+    {
+      "id": "arbitrum",
+      "name": "Arbitrum",
+      "chain_id": 42161,
+      "network_id": "arbitrum",
+      "provider_params": [
+        {
+          "chainId": "0xA4B1",
+          "chainName": "Arbitrum",
+          "rpcUrls": [
+            "https://arb1.arbitrum.io/rpc",
+            "https://rpc.ankr.com/arbitrum"
+          ],
+          "nativeCurrency": {
+            "name": "Ethereum",
+            "symbol": "ETH",
+            "decimals": 18
+          },
+          "blockExplorerUrls": ["https://arbiscan.io"]
+        }
+      ],
+      "image": "/images/chains/arbitrum.svg"
+    },
+    {
+      "id": "celo",
+      "name": "Celo",
+      "chain_id": 42220,
+      "network_id": "celo",
+      "provider_params": [
+        {
+          "chainId": "0xA4EC",
+          "chainName": "Celo",
+          "rpcUrls": [
+            "https://forno.celo.org",
+            "https://rpc.ankr.com/celo"
+          ],
+          "nativeCurrency": {
+            "name": "Celo",
+            "symbol": "CELO",
+            "decimals": 18
+          },
+          "blockExplorerUrls": ["https://celoscan.io/"]
+        }
+      ],
+      "image": "/images/chains/celo.svg"
+    },
+    {
+      "id": "kava",
+      "name": "Kava",
+      "chain_id": 2222,
+      "network_id": "kava",
+      "provider_params": [
+        {
+          "chainId": "0x8AE",
+          "chainName": "Kava",
+          "rpcUrls": [
+            "https://evm.kava.io"
+          ],
+          "nativeCurrency": {
+            "name": "Kava",
+            "symbol": "KAVA",
+            "decimals": 18
+          },
+          "blockExplorerUrls": ["https://explorer.kava.io/"]
+        }
+      ],
+      "image": "/images/chains/kava.svg"
     }
   ],
   "testnet": [

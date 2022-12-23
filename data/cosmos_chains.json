@@ -103,6 +103,12 @@
       "image": "/images/chains/terra.svg"
     },
     {
+      "id": "terraclassic",
+      "name": "Terra Classic",
+      "network_id": "terra",
+      "image": "/images/chains/terraclassic.svg"
+    },
+    {
       "id": "umee",
       "name": "Umee",
       "network_id": "umee",
@@ -116,12 +122,6 @@
     }
   ],
   "testnet": [
-    {
-      "id": "aura",
-      "name": "Aura",
-      "network_id": "aura",
-      "image": "/images/chains/aura.svg"
-    },
     {
       "id": "axelarnet",
       "name": "Axelar",
@@ -175,6 +175,18 @@
       "name": "Terra",
       "network_id": "terra-3",
       "image": "/images/chains/terra.svg"
+    },
+    {
+      "id": "burnt",
+      "name": "Burnt",
+      "network_id": "burnt",
+      "image": "/images/chains/burnt.svg"
+    },
+    {
+      "id": "xpla",
+      "name": "Xpla",
+      "network_id": "xpla",
+      "image": "/images/chains/xpla.svg"
     }
   ]
 }

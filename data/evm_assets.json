@@ -7,6 +7,13 @@
       "image": "/images/assets/usdc.svg",
       "contracts": [
         {
+          "chain": "arbitrum",
+          "address": "0xEB466342C4d449BC9f53A865D5Cb90586f405215",
+          "symbol": "axlUSDC",
+          "decimals": 6,
+          "transfer_fee": 1.0
+        },
+        {
           "chain": "avalanche",
           "address": "0xfaB550568C688d5D8A52C7d794cb93Edc26eC0eC",
           "symbol": "axlUSDC",
@@ -21,6 +28,13 @@
           "transfer_fee": 1.0
         },
         {
+          "chain": "celo",
+          "address": "0xEB466342C4d449BC9f53A865D5Cb90586f405215",
+          "symbol": "axlUSDC",
+          "decimals": 6,
+          "transfer_fee": 1.0
+        },
+        {
           "chain": "ethereum",
           "address": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
           "symbol": "USDC",
@@ -30,6 +44,13 @@
         {
           "chain": "fantom",
           "address": "0x1B6382DBDEa11d97f24495C9A90b7c88469134a4",
+          "symbol": "axlUSDC",
+          "decimals": 6,
+          "transfer_fee": 1.0
+        },
+        {
+          "chain": "kava",
+          "address": "0xEB466342C4d449BC9f53A865D5Cb90586f405215",
           "symbol": "axlUSDC",
           "decimals": 6,
           "transfer_fee": 1.0
@@ -57,6 +78,13 @@
       "image": "/images/assets/axl.svg",
       "contracts": [
         {
+          "chain": "arbitrum",
+          "address": "0x23ee2343B892b1BB63503a4FAbc840E0e2C6810f",
+          "symbol": "wAXL",
+          "decimals": 6,
+          "transfer_fee": 1.0
+        },
+        {
           "chain": "avalanche",
           "address": "0x44c784266cf024a60e8acF2427b9857Ace194C5d",
           "symbol": "wAXL",
@@ -71,6 +99,13 @@
           "transfer_fee": 1.0
         },
         {
+          "chain": "celo",
+          "address": "0x23ee2343B892b1BB63503a4FAbc840E0e2C6810f",
+          "symbol": "wAXL",
+          "decimals": 6,
+          "transfer_fee": 1.0
+        },
+        {
           "chain": "ethereum",
           "address": "0x467719aD09025FcC6cF6F8311755809d45a5E5f3",
           "symbol": "wAXL",
@@ -80,6 +115,13 @@
         {
           "chain": "fantom",
           "address": "0x8b1f4432F943c465A973FeDC6d7aa50Fc96f1f65",
+          "symbol": "wAXL",
+          "decimals": 6,
+          "transfer_fee": 1.0
+        },
+        {
+          "chain": "kava",
+          "address": "0x23ee2343B892b1BB63503a4FAbc840E0e2C6810f",
           "symbol": "wAXL",
           "decimals": 6,
           "transfer_fee": 1.0
@@ -122,8 +164,22 @@
       "image": "/images/assets/dai.svg",
       "contracts": [
         {
+          "chain": "arbitrum",
+          "address": "0x5C7e299CF531eb66f2A1dF637d37AbB78e6200C7",
+          "symbol": "axlDAI",
+          "decimals": 18,
+          "transfer_fee": 1.0
+        },
+        {
           "chain": "avalanche",
           "address": "0xC5Fa5669E326DA8B2C35540257cD48811F40a36B",
+          "symbol": "axlDAI",
+          "decimals": 18,
+          "transfer_fee": 1.0
+        },
+        {
+          "chain": "celo",
+          "address": "0x5C7e299CF531eb66f2A1dF637d37AbB78e6200C7",
           "symbol": "axlDAI",
           "decimals": 18,
           "transfer_fee": 1.0
@@ -138,6 +194,13 @@
         {
           "chain": "fantom",
           "address": "0xD5d5350F42CB484036A1C1aF5F2DF77eAFadcAFF",
+          "symbol": "axlDAI",
+          "decimals": 18,
+          "transfer_fee": 1.0
+        },
+        {
+          "chain": "kava",
+          "address": "0x5C7e299CF531eb66f2A1dF637d37AbB78e6200C7",
           "symbol": "axlDAI",
           "decimals": 18,
           "transfer_fee": 1.0
@@ -165,8 +228,22 @@
       "image": "/images/assets/usdt.svg",
       "contracts": [
         {
+          "chain": "arbitrum",
+          "address": "0x7f5373AE26c3E8FfC4c77b7255DF7eC1A9aF52a6",
+          "symbol": "axlUSDT",
+          "decimals": 6,
+          "transfer_fee": 1.0
+        },
+        {
           "chain": "avalanche",
           "address": "0xF976ba91b6bb3468C91E4f02E68B37bc64a57e66",
+          "symbol": "axlUSDT",
+          "decimals": 6,
+          "transfer_fee": 1.0
+        },
+        {
+          "chain": "celo",
+          "address": "0x7f5373AE26c3E8FfC4c77b7255DF7eC1A9aF52a6",
           "symbol": "axlUSDT",
           "decimals": 6,
           "transfer_fee": 1.0
@@ -186,6 +263,13 @@
           "transfer_fee": 1.0
         },
         {
+          "chain": "kava",
+          "address": "0x7f5373AE26c3E8FfC4c77b7255DF7eC1A9aF52a6",
+          "symbol": "axlUSDT",
+          "decimals": 6,
+          "transfer_fee": 1.0
+        },
+        {
           "chain": "moonbeam",
           "address": "0xDFd74aF792bC6D45D1803F425CE62Dd16f8Ae038",
           "symbol": "axlUSDT",
@@ -198,6 +282,21 @@
           "symbol": "axlUSDT",
           "decimals": 6,
           "transfer_fee": 1.0
+        }
+      ]
+    },
+    {
+      "id": "busd-wei",
+      "name": "BUSD - Binance USD",
+      "symbol": "BUSD",
+      "image": "/images/assets/busd.svg",
+      "contracts": [
+        {
+          "chain": "ethereum",
+          "address": "0x4Fabb145d64652a948d72533023f6E7A623C7C53",
+          "symbol": "BUSD",
+          "decimals": 18,
+          "transfer_fee": 10.0
         }
       ]
     },
@@ -313,8 +412,22 @@
       "image": "/images/assets/atom.svg",
       "contracts": [
         {
+          "chain": "arbitrum",
+          "address": "0x06beE9E7238a331B68D83Df3B5B9B16d5DBa83ff",
+          "symbol": "axlATOM",
+          "decimals": 6,
+          "transfer_fee": 0.08
+        },
+        {
           "chain": "avalanche",
           "address": "0x80D18b1c9Ab0c9B5D6A6d5173575417457d00a12",
+          "symbol": "axlATOM",
+          "decimals": 6,
+          "transfer_fee": 0.08
+        },
+        {
+          "chain": "celo",
+          "address": "0x06beE9E7238a331B68D83Df3B5B9B16d5DBa83ff",
           "symbol": "axlATOM",
           "decimals": 6,
           "transfer_fee": 0.08
@@ -329,6 +442,13 @@
         {
           "chain": "fantom",
           "address": "0x3bB68cb55Fc9C22511467c18E42D14E8c959c4dA",
+          "symbol": "axlATOM",
+          "decimals": 6,
+          "transfer_fee": 0.08
+        },
+        {
+          "chain": "kava",
+          "address": "0x06beE9E7238a331B68D83Df3B5B9B16d5DBa83ff",
           "symbol": "axlATOM",
           "decimals": 6,
           "transfer_fee": 0.08
@@ -350,88 +470,88 @@
       ]
     },
     {
-      "id": "ungm",
-      "name": "NGM - e-Money NGM staking token",
-      "symbol": "NGM",
-      "image": "/images/assets/ngm.svg",
+      "id": "uluna",
+      "name": "LUNC - Axelar Wrapped LUNC",
+      "symbol": "LUNC",
+      "image": "/images/assets/lunc.svg",
       "contracts": [
         {
           "chain": "avalanche",
-          "address": "0x5A44422beaAA38031f57720d88697105be6970BE",
-          "symbol": "NGM",
+          "address": "0x120AD3e5A7c796349e591F1570D9f7980F4eA9cb",
+          "symbol": "LUNC",
           "decimals": 6,
-          "transfer_fee": 4.0
+          "transfer_fee": 7000.0
         },
         {
           "chain": "ethereum",
-          "address": "0x08fe7A0db575c2a08d76EEcA71763E48C6e60F45",
-          "symbol": "NGM",
+          "address": "0x31DAB3430f3081dfF3Ccd80F17AD98583437B213",
+          "symbol": "LUNC",
           "decimals": 6,
-          "transfer_fee": 40.0
+          "transfer_fee": 70000.0
         },
         {
           "chain": "fantom",
-          "address": "0xE549Caf5f0c3e80b8738CB03ae4fBb4c15b0DD86",
-          "symbol": "NGM",
+          "address": "0x5e3C572A97D898Fe359a2Cea31c7D46ba5386895",
+          "symbol": "LUNC",
           "decimals": 6,
-          "transfer_fee": 4.0
+          "transfer_fee": 7000.0
         },
         {
           "chain": "moonbeam",
-          "address": "0x08fe7A0db575c2a08d76EEcA71763E48C6e60F45",
-          "symbol": "NGM",
+          "address": "0x31DAB3430f3081dfF3Ccd80F17AD98583437B213",
+          "symbol": "LUNC",
           "decimals": 6,
-          "transfer_fee": 4.0
+          "transfer_fee": 7000.0
         },
         {
           "chain": "polygon",
-          "address": "0xC8d5A4E04387EBdaa2c0FBB6858F246116431e9f",
-          "symbol": "NGM",
+          "address": "0xa17927fB75E9faEA10C08259902d0468b3DEad88",
+          "symbol": "LUNC",
           "decimals": 6,
-          "transfer_fee": 4.0
+          "transfer_fee": 7000.0
         }
       ]
     },
     {
-      "id": "eeur",
-      "name": "EEUR - e-Money EUR stablecoin",
-      "symbol": "EEUR",
-      "image": "/images/assets/eeur.svg",
+      "id": "uusd",
+      "name": "USTC - Axelar Wrapped USTC",
+      "symbol": "USTC",
+      "image": "/images/assets/ustc.svg",
       "contracts": [
         {
           "chain": "avalanche",
-          "address": "0xE1d70994Be12b73E76889412b284A8F19b0DE56d",
-          "symbol": "EEUR",
+          "address": "0x260Bbf5698121EB85e7a74f2E45E16Ce762EbE11",
+          "symbol": "USTC",
           "decimals": 6,
-          "transfer_fee": 1.0
+          "transfer_fee": 50.0
         },
         {
           "chain": "ethereum",
-          "address": "0xDd26a5c8Ae5b60Bb14aEcED892A052CA48A2e915",
-          "symbol": "EEUR",
+          "address": "0x085416975fe14C2A731a97eC38B9bF8135231F62",
+          "symbol": "USTC",
           "decimals": 6,
-          "transfer_fee": 10.0
+          "transfer_fee": 500.0
         },
         {
           "chain": "fantom",
-          "address": "0x4000aB030f3615d1616b4C71E7129BbE3f1f9C55",
-          "symbol": "EEUR",
+          "address": "0x2B9d3F168905067D88d93F094C938BACEe02b0cB",
+          "symbol": "USTC",
           "decimals": 6,
-          "transfer_fee": 1.0
+          "transfer_fee": 50.0
         },
         {
           "chain": "moonbeam",
-          "address": "0xDd26a5c8Ae5b60Bb14aEcED892A052CA48A2e915",
-          "symbol": "EEUR",
+          "address": "0x085416975fe14C2A731a97eC38B9bF8135231F62",
+          "symbol": "USTC",
           "decimals": 6,
-          "transfer_fee": 1.0
+          "transfer_fee": 50.0
         },
         {
           "chain": "polygon",
-          "address": "0x8CD51880C0a5dbde37dDdFce8d5B772Fc9007495",
-          "symbol": "EEUR",
+          "address": "0xeDDc6eDe8F3AF9B4971e1Fa9639314905458bE87",
+          "symbol": "USTC",
           "decimals": 6,
-          "transfer_fee": 1.0
+          "transfer_fee": 50.0
         }
       ]
     },
@@ -487,8 +607,22 @@
       "image": "/images/assets/frax.svg",
       "contracts": [
         {
+          "chain": "arbitrum",
+          "address": "0x406Cde76a3fD20e48bc1E0F60651e60Ae204B040",
+          "symbol": "axlFRAX",
+          "decimals": 18,
+          "transfer_fee": 1.0
+        },
+        {
           "chain": "avalanche",
           "address": "0x4914886dBb8aAd7A7456D471EAab10b06d42348D",
+          "symbol": "axlFRAX",
+          "decimals": 18,
+          "transfer_fee": 1.0
+        },
+        {
+          "chain": "celo",
+          "address": "0x406Cde76a3fD20e48bc1E0F60651e60Ae204B040",
           "symbol": "axlFRAX",
           "decimals": 18,
           "transfer_fee": 1.0
@@ -508,6 +642,13 @@
           "transfer_fee": 1.0
         },
         {
+          "chain": "kava",
+          "address": "0x406Cde76a3fD20e48bc1E0F60651e60Ae204B040",
+          "symbol": "axlFRAX",
+          "decimals": 18,
+          "transfer_fee": 1.0
+        },
+        {
           "chain": "moonbeam",
           "address": "0x61C82805453a989E99B544DFB7031902e9bac448",
           "symbol": "axlFRAX",
@@ -519,6 +660,149 @@
           "address": "0x53Adc464b488bE8C5d7269B9ABBCe8bA74195C3a",
           "symbol": "axlFRAX",
           "decimals": 18,
+          "transfer_fee": 1.0
+        }
+      ]
+    },
+    {
+      "id": "mkr-wei",
+      "name": "MKR - Maker",
+      "symbol": "MKR",
+      "image": "/images/assets/mkr.svg",
+      "contracts": [
+        {
+          "chain": "ethereum",
+          "address": "0x9f8F72aA9304c8B593d555F12eF6589cC3A579A2",
+          "symbol": "MKR",
+          "decimals": 18,
+          "transfer_fee": 0.01
+        }
+      ]
+    },
+    {
+      "id": "ungm",
+      "name": "NGM - e-Money NGM staking token",
+      "symbol": "NGM",
+      "image": "/images/assets/ngm.svg",
+      "contracts": [
+        {
+          "chain": "arbitrum",
+          "address": "0x54B1aa9386f36079fe4B39278c06eadaD457ac15",
+          "symbol": "NGM",
+          "decimals": 6,
+          "transfer_fee": 4.0
+        },
+        {
+          "chain": "avalanche",
+          "address": "0x5A44422beaAA38031f57720d88697105be6970BE",
+          "symbol": "NGM",
+          "decimals": 6,
+          "transfer_fee": 4.0
+        },
+        {
+          "chain": "celo",
+          "address": "0x54B1aa9386f36079fe4B39278c06eadaD457ac15",
+          "symbol": "NGM",
+          "decimals": 6,
+          "transfer_fee": 4.0
+        },
+        {
+          "chain": "ethereum",
+          "address": "0x08fe7A0db575c2a08d76EEcA71763E48C6e60F45",
+          "symbol": "NGM",
+          "decimals": 6,
+          "transfer_fee": 40.0
+        },
+        {
+          "chain": "fantom",
+          "address": "0xE549Caf5f0c3e80b8738CB03ae4fBb4c15b0DD86",
+          "symbol": "NGM",
+          "decimals": 6,
+          "transfer_fee": 4.0
+        },
+        {
+          "chain": "kava",
+          "address": "0x54B1aa9386f36079fe4B39278c06eadaD457ac15",
+          "symbol": "NGM",
+          "decimals": 6,
+          "transfer_fee": 4.0
+        },
+        {
+          "chain": "moonbeam",
+          "address": "0x08fe7A0db575c2a08d76EEcA71763E48C6e60F45",
+          "symbol": "NGM",
+          "decimals": 6,
+          "transfer_fee": 4.0
+        },
+        {
+          "chain": "polygon",
+          "address": "0xC8d5A4E04387EBdaa2c0FBB6858F246116431e9f",
+          "symbol": "NGM",
+          "decimals": 6,
+          "transfer_fee": 4.0
+        }
+      ]
+    },
+    {
+      "id": "eeur",
+      "name": "EEUR - e-Money EUR stablecoin",
+      "symbol": "EEUR",
+      "image": "/images/assets/eeur.svg",
+      "contracts": [
+        {
+          "chain": "arbitrum",
+          "address": "0xEeD07F7ef719f69f7D0A50aF2f50bA2d959A3839",
+          "symbol": "EEUR",
+          "decimals": 6,
+          "transfer_fee": 1.0
+        },
+        {
+          "chain": "avalanche",
+          "address": "0xE1d70994Be12b73E76889412b284A8F19b0DE56d",
+          "symbol": "EEUR",
+          "decimals": 6,
+          "transfer_fee": 1.0
+        },
+        {
+          "chain": "celo",
+          "address": "0xEeD07F7ef719f69f7D0A50aF2f50bA2d959A3839",
+          "symbol": "EEUR",
+          "decimals": 6,
+          "transfer_fee": 1.0
+        },
+        {
+          "chain": "ethereum",
+          "address": "0xDd26a5c8Ae5b60Bb14aEcED892A052CA48A2e915",
+          "symbol": "EEUR",
+          "decimals": 6,
+          "transfer_fee": 10.0
+        },
+        {
+          "chain": "fantom",
+          "address": "0x4000aB030f3615d1616b4C71E7129BbE3f1f9C55",
+          "symbol": "EEUR",
+          "decimals": 6,
+          "transfer_fee": 1.0
+        },
+        {
+          "chain": "kava",
+          "address": "0xEeD07F7ef719f69f7D0A50aF2f50bA2d959A3839",
+          "symbol": "EEUR",
+          "decimals": 6,
+          "transfer_fee": 1.0
+        },
+        {
+          "chain": "moonbeam",
+          "address": "0xDd26a5c8Ae5b60Bb14aEcED892A052CA48A2e915",
+          "symbol": "EEUR",
+          "decimals": 6,
+          "transfer_fee": 1.0
+        },
+        {
+          "chain": "polygon",
+          "address": "0x8CD51880C0a5dbde37dDdFce8d5B772Fc9007495",
+          "symbol": "EEUR",
+          "decimals": 6,
           "transfer_fee": 1.0
         }
       ]
@@ -595,21 +879,6 @@
           "symbol": "XCN",
           "decimals": 18,
           "transfer_fee": 100.0
-        }
-      ]
-    },
-    {
-      "id": "mkr-wei",
-      "name": "MKR - Maker",
-      "symbol": "MKR",
-      "image": "/images/assets/mkr.svg",
-      "contracts": [
-        {
-          "chain": "ethereum",
-          "address": "0x9f8F72aA9304c8B593d555F12eF6589cC3A579A2",
-          "symbol": "MKR",
-          "decimals": 18,
-          "transfer_fee": 0.01
         }
       ]
     }
