@@ -193,14 +193,24 @@
   ],
   "testnet": [
     {
+      "from": "acrechain",
+      "to": "axelarnet",
+      "channel_id": "channel-0"
+    },
+    {
+      "from": "axelarnet",
+      "to": "acrechain",
+      "channel_id": "channel-123"
+    },
+    {
       "from": "comdex",
       "to": "axelarnet",
-      "channel_id": "channel-18"
+      "channel_id": "channel-2"
     },
     {
       "from": "axelarnet",
       "to": "comdex",
-      "channel_id": "channel-62"
+      "channel_id": "channel-125"
     },
     {
       "from": "evmos",
