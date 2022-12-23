@@ -76,7 +76,7 @@ When you perform these actions you should be able to connect from Aurora Node to
 ### 7. Create SSH tunnel between Aurora Node and Axelar Main Node
 On the Aurora server please run the following command to create a tunnel to forwarding ports:
 ```
-ssh -f -N root@X.X.X.X -R 8545:`docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}:8545{{end}}' endpoint`
+ssh -f -N root@X.X.X.X -R 10080:`docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}:10080{{end}}' endpoint`
 ```
 Please note `X.X.X.X` this is IP address of your Axelar Main Node
 
@@ -84,8 +84,8 @@ Please note `X.X.X.X` this is IP address of your Axelar Main Node
 On the Axelar Node please run the following command to make sure that port is listening:
 ```
 netstat -atnp | grep 8545
-tcp        0      0 0.0.0.0:8545            0.0.0.0:*               LISTEN      2306635/sshd: root
-tcp6       0      0 :::8545                 :::*                    LISTEN      2306635/sshd: root
+tcp        0      0      127.0.0.1:10080            0.0.0.0:*               LISTEN      2306635/sshd: root
+tcp6       0      0      ::1:10080                  :::*                    LISTEN      2306635/sshd: root
 ```
 
 ### 9. Create a script to run it automatically after reboot
@@ -100,7 +100,7 @@ nano /root/work/tunnel.ssh
 ```
 and add the following line into it:
 ```
-ssh -f -N root@X.X.X.X -R 8545:`docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}:8545{{end}}' endpoint`
+ssh -f -N root@X.X.X.X -R 10080:`docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}:10080{{end}}' endpoint`
 ```
 Please note `X.X.X.X` this is IP address of your Axelar Main Node
 
@@ -120,5 +120,5 @@ so when the Aurora server will be rebooted the SSH tunnel will be created automa
 ### 10. Connect your Aurora to Axelar
 In order for Axelar Network to connect to your Aurora node, your rpc_addr should be exposed in this format:
 
-`"http://127.0.0.1:8545"`
+`"http://127.0.0.1:10080"`
 
