@@ -6,7 +6,7 @@
       "symbol": "USDC",
       "image": "/images/assets/usdc.svg",
       "decimals": 6,
-      "transfer_fee": 0.5
+      "transfer_fee": 0.125
     },
     {
       "id": "uaxl",
@@ -14,7 +14,7 @@
       "symbol": "AXL",
       "image": "/images/assets/axl.svg",
       "decimals": 6,
-      "transfer_fee": 0.5
+      "transfer_fee": 0.25
     },
     {
       "id": "weth-wei",
@@ -22,7 +22,7 @@
       "symbol": "WETH",
       "image": "/images/assets/weth.svg",
       "decimals": 18,
-      "transfer_fee": 0.0004
+      "transfer_fee": 0.0001
     },
     {
       "id": "dai-wei",
@@ -30,7 +30,7 @@
       "symbol": "DAI",
       "image": "/images/assets/dai.svg",
       "decimals": 18,
-      "transfer_fee": 0.5
+      "transfer_fee": 0.125
     },
     {
       "id": "uusdt",
@@ -38,7 +38,7 @@
       "symbol": "USDT",
       "image": "/images/assets/usdt.svg",
       "decimals": 6,
-      "transfer_fee": 0.5
+      "transfer_fee": 0.125
     },
     {
       "id": "busd-wei",
@@ -46,7 +46,7 @@
       "symbol": "BUSD",
       "image": "/images/assets/busd.svg",
       "decimals": 18,
-      "transfer_fee": 0.5
+      "transfer_fee": 0.125
     },
     {
       "id": "dot-planck",
@@ -54,7 +54,7 @@
       "symbol": "DOT",
       "image": "/images/assets/dot.svg",
       "decimals": 10,
-      "transfer_fee": 0.07
+      "transfer_fee": 0.017
     },
     {
       "id": "wavax-wei",
@@ -62,7 +62,7 @@
       "symbol": "WAVAX",
       "image": "/images/assets/wavax.svg",
       "decimals": 18,
-      "transfer_fee": 0.03
+      "transfer_fee": 0.0083
     },
     {
       "id": "wglmr-wei",
@@ -70,7 +70,7 @@
       "symbol": "WGLMR",
       "image": "/images/assets/wglmr.svg",
       "decimals": 18,
-      "transfer_fee": 0.9
+      "transfer_fee": 0.24
     },
     {
       "id": "wmatic-wei",
@@ -78,7 +78,7 @@
       "symbol": "WMATIC",
       "image": "/images/assets/wmatic.svg",
       "decimals": 18,
-      "transfer_fee": 0.6
+      "transfer_fee": 0.15
     },
     {
       "id": "wbtc-satoshi",
@@ -86,7 +86,7 @@
       "symbol": "WBTC",
       "image": "/images/assets/wbtc.svg",
       "decimals": 8,
-      "transfer_fee": 3e-05
+      "transfer_fee": 7.4e-06
     },
     {
       "id": "wbnb-wei",
@@ -94,7 +94,7 @@
       "symbol": "WBNB",
       "image": "/images/assets/wbnb.svg",
       "decimals": 18,
-      "transfer_fee": 0.002
+      "transfer_fee": 0.00043
     },
     {
       "id": "wftm-wei",
@@ -102,7 +102,7 @@
       "symbol": "WFTM",
       "image": "/images/assets/wftm.svg",
       "decimals": 18,
-      "transfer_fee": 2.0
+      "transfer_fee": 0.45
     },
     {
       "id": "uatom",
@@ -110,7 +110,7 @@
       "symbol": "ATOM",
       "image": "/images/assets/atom.svg",
       "decimals": 6,
-      "transfer_fee": 0.04
+      "transfer_fee": 0.01
     },
     {
       "id": "uluna",
@@ -118,7 +118,7 @@
       "symbol": "LUNC",
       "image": "/images/assets/lunc.svg",
       "decimals": 6,
-      "transfer_fee": 3000.0
+      "transfer_fee": 830.0
     },
     {
       "id": "uusd",
@@ -126,7 +126,7 @@
       "symbol": "USTC",
       "image": "/images/assets/ustc.svg",
       "decimals": 6,
-      "transfer_fee": 20.0
+      "transfer_fee": 6.2
     },
     {
       "id": "rai-wei",
@@ -134,7 +134,7 @@
       "symbol": "RAI",
       "image": "/images/assets/rai.svg",
       "decimals": 18,
-      "transfer_fee": 0.2
+      "transfer_fee": 0.042
     },
     {
       "id": "link-wei",
@@ -142,7 +142,7 @@
       "symbol": "LINK",
       "image": "/images/assets/link.svg",
       "decimals": 18,
-      "transfer_fee": 0.08
+      "transfer_fee": 0.019
     },
     {
       "id": "aave-wei",
@@ -150,7 +150,7 @@
       "symbol": "AAVE",
       "image": "/images/assets/aave.svg",
       "decimals": 18,
-      "transfer_fee": 0.008
+      "transfer_fee": 0.002
     },
     {
       "id": "frax-wei",
@@ -158,7 +158,7 @@
       "symbol": "FRAX",
       "image": "/images/assets/frax.svg",
       "decimals": 18,
-      "transfer_fee": 0.5
+      "transfer_fee": 0.125
     },
     {
       "id": "mkr-wei",
@@ -166,7 +166,7 @@
       "symbol": "MKR",
       "image": "/images/assets/mkr.svg",
       "decimals": 18,
-      "transfer_fee": 0.0006
+      "transfer_fee": 0.00016
     },
     {
       "id": "ungm",
@@ -174,7 +174,7 @@
       "symbol": "NGM",
       "image": "/images/assets/ngm.svg",
       "decimals": 6,
-      "transfer_fee": 2.0
+      "transfer_fee": 0.5
     },
     {
       "id": "eeur",
@@ -182,7 +182,7 @@
       "symbol": "EEUR",
       "image": "/images/assets/eeur.svg",
       "decimals": 6,
-      "transfer_fee": 0.5
+      "transfer_fee": 0.125
     },
     {
       "id": "ape-wei",
@@ -190,7 +190,7 @@
       "symbol": "APE",
       "image": "/images/assets/ape.svg",
       "decimals": 18,
-      "transfer_fee": 0.1
+      "transfer_fee": 0.024
     },
     {
       "id": "uni-wei",
@@ -198,7 +198,7 @@
       "symbol": "UNI",
       "image": "/images/assets/uni.svg",
       "decimals": 18,
-      "transfer_fee": 0.1
+      "transfer_fee": 0.025
     },
     {
       "id": "shib-wei",
@@ -206,7 +206,7 @@
       "symbol": "SHIB",
       "image": "/images/assets/shib.svg",
       "decimals": 18,
-      "transfer_fee": 50000.0
+      "transfer_fee": 12000.0
     },
     {
       "id": "axs-wei",
@@ -214,7 +214,7 @@
       "symbol": "AXS",
       "image": "/images/assets/axs.svg",
       "decimals": 18,
-      "transfer_fee": 0.03
+      "transfer_fee": 0.0083
     },
     {
       "id": "xcn-wei",
@@ -222,7 +222,7 @@
       "symbol": "XCN",
       "image": "/images/assets/xcn.svg",
       "decimals": 18,
-      "transfer_fee": 6.0
+      "transfer_fee": 1.6
     }
   ],
   "testnet": [
