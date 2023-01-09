@@ -173,7 +173,7 @@
     {
       "id": "osmosis",
       "name": "Osmosis",
-      "network_id": "osmosis-4",
+      "network_id": "osmosis-5",
       "image": "/images/chains/osmosis.svg"
     },
     {
