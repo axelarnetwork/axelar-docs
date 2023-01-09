@@ -1,13 +1,19 @@
-const { createSecureHeaders } = require("next-secure-headers");
+import withNextra from "nextra";
+import { createSecureHeaders } from "next-secure-headers";
+import remarkGfm from "remark-gfm";
 
-const withNextra = require("nextra")({
+/** @type {import('nextra').LoaderOptions} */
+const options = {
   theme: "nextra-theme-docs",
   themeConfig: "./theme.config.js",
   unstable_flexsearch: true,
   unstable_staticImage: true,
-});
+  locales: ["en"],
+  defaultLocale: "en",
+};
+const nextra = withNextra(options);
 
-module.exports = withNextra({
+export default nextra({
   headers() {
     return [
       {
