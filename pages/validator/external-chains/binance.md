@@ -55,7 +55,7 @@ unzip mainnet.zip
 ```
 mv geth_linux /usr/bin/geth
 chmod +x /usr/bin/geth
-rm -rf testnet.zip
+rm -rf mainnet.zip
 ```
 ## 4. Configure config.toml file
 ```
@@ -65,11 +65,16 @@ Inside the ``config.toml`` found line ``HTTPHost = "127.0.0.1"`` and change IP f
 
 Scroll down and delete following lines:
 ```
-[Node.LogConfig]
-FileRoot = ""
-FilePath = "bsc.log"
-MaxBytesSize = 10485760
-Level = "info"
+[Node]
+IPCPath = "geth.ipc"
+HTTPHost = "0.0.0.0"
+NoUSB = true
+InsecureUnlockAllowed = false
+HTTPPort = 8545
+HTTPVirtualHosts = ["*"]
+HTTPModules = ["eth", "net", "web3", "txpool", "parlia"]
+WSPort = 8546
+WSModules = ["net", "web3", "eth"]
 ```
 Save it by command ``CTRL+X,Y``
 
