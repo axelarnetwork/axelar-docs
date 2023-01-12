@@ -23,7 +23,11 @@ sudo apt-get install wget jq unzip -y
 ```
 
 # BSC geth
+
+Check the appropriate version for the network accordingly [in their docs](https://docs.bnbchain.org/docs/validator/fullnode/) or choose the [latest release](https://github.com/bnb-chain/bsc/releases)
+
 ```bash
+# This is an example - check their docs and release page to opt for the right version
 BSC_GETH_RELEASE=v1.1.18_hf
 ```
 ```bash
