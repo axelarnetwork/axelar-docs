@@ -1,149 +1,240 @@
-# You need server with following requierements
+# Binance
+import Callout from 'nextra-theme-docs/callout'
+import Markdown from 'markdown-to-jsx'
+import Tabs from '../../../components/tabs'
+import CodeBlock from '../../../components/code-block'
+-------------
 
-2CPU/8GBRAM/200++GB SSD
+Instructions to set up your Avalanche node.
 
-## 1. Upgrade your server
-```
-sudo apt update && sudo apt upgrade -y
-```
-```
-sudo apt install make clang pkg-config libssl-dev libclang-dev build-essential git curl ntp jq llvm tmux htop screen unzip -y
-```
-Install Go 
-```
-sudo rm `pwd`/go*
-```
-```
-sudo wget "https://go.dev/dl/$(curl 'https://go.dev/VERSION?m=text').linux-amd64.tar.gz"
-```
-```
-sudo rm -rf /usr/local/go && sudo tar -C /usr/local -xzf go*.linux-amd64.tar.gz
-```
-```
-cat <<EOF >> ~/.profile
-export GOROOT=/usr/local/go
-export GOPATH=$HOME/go
-export GO111MODULE=on
-export PATH=$PATH:/usr/local/go/bin:$HOME/go/bin
-EOF
-source ~/.profile
-go version
-sudo rm `pwd`/go*
-```
-## 2. Install BSC tesnet node
-```
-git clone https://github.com/bnb-chain/bsc
-cd bsc
-make geth
-```
-## 3. Download the config files
+## Requirements
 
-You can download the pre-build binaries from [release page](https://github.com/bnb-chain/bsc/releases/latest) or follow the instructions bellow
+- [Setup your Axelar validator](/validator/setup)
+- Minimum hardware requirements: 16 AWS vCPU+, 64GB RAM, 2TB+ free storage space.
+- MacOS or Ubuntu 20.04 (tested on 20.04)
+- [Official Documentation](https://docs.bnbchain.org/docs/validator/fullnode/)
+
+
+## Prerequisites
+```bash
+sudo apt-get install wget jq unzip -y
 ```
-wget https://github.com/bnb-chain/bsc/releases/latest/download/geth_linux
+
+# BSC geth
+```bash
+BSC_GETH_RELEASE=v1.1.18_hf
 ```
- # Testnet
+```bash
+# verify correct version
+echo $BSC_GETH_RELEASE
+
+# create a temp dir for binaries
+cd $HOME
+mkdir binaries && cd binaries
+
+# if you are on linux amd
+wget https://github.com/bnb-chain/bsc/releases/download/$BSC_GETH_RELEASE/geth_linux
+mv geth_linux geth
+chmod +x *
+sudo mv * /usr/bin/
+geth version
+cd $HOME
 ```
-wget https://github.com/bnb-chain/bsc/releases/latest/download/testnet.zip
-unzip testnet.zip
-```
- # Mainnet
-```
-wget https://github.com/bnb-chain/bsc/releases/latest/download/mainnet.zip
+
+
+
+<Tabs tabs={[
+{
+title: "Mainnet",
+content: <CodeBlock language="bash">
+{`mkdir -p $HOME/.bsc/config
+cd $HOME/.bsc/config
+wget https://github.com/bnb-chain/bsc/releases/download/$BSC_GETH_RELEASE/mainnet.zip
 unzip mainnet.zip
-```
-```
-mv geth_linux /usr/bin/geth
-chmod +x /usr/bin/geth
-rm -rf testnet.zip
-```
-## 4. Configure config.toml file
-```
-nano config.toml
-```
-Inside the ``config.toml`` found line ``HTTPHost = "127.0.0.1"`` and change IP from ``127.0.0.1`` on your IP address.
+rm mainnet.zip
+`}
+</CodeBlock>
+},
+{ title: "Testnet", content: <CodeBlock language="bash">
+{`mkdir $HOME/.bsc/config
+cd $HOME/.bsc/config
+wget https://github.com/binance-chain/bsc/releases/download/$BSC_GETH_RELEASE/testnet.zip
+unzip testnet.zip
+rm testnet.zip
+`}
+</CodeBlock>
+}
+]} />
 
-Scroll down and delete following lines:
-```
-[Node.LogConfig]
-FileRoot = ""
-FilePath = "bsc.log"
-MaxBytesSize = 10485760
-Level = "info"
-```
-Save it by command ``CTRL+X,Y``
 
-## 5. Write state genesis localy
+
+
+## Initialize the node or sync from snapshot
+
+#### 1. If you want to sync from genesis
+```bash
+cd $HOME
+geth --datadir $HOME/.bsc init genesis.json
 ```
-geth --datadir node init genesis.json
-```
-## 6. Configure systemd service file
-```
-tee /etc/systemd/system/bscd.service > /dev/null <<EOF
+#### 2. If you want to sync from snapshot
+You follow the instructions  (here)[https://github.com/bnb-chain/bsc-snapshots] to sync from snapshot
+
+## Create Service
+```bash
+sudo tee /etc/systemd/system/geth.service > /dev/null <<EOF
 [Unit]
-Description=BSC
-After=network-online.target
+Description=Geth node
+After=online.target
+
 [Service]
-User=root
-ExecStart=/usr/bin/geth --config root/bsc/config.toml --datadir root/bsc/node --ws --ws.origins '*'
-Restart=always
+Type=simple
+User=root 
+ExecStart=/usr/bin/geth --config $HOME/.bsc/config/config.toml --cache 8000 --rpc.allow-unprotected-txs --txlookuplimit 0 --datadir $HOME/.bsc --http --http.vhosts "*" --http.addr 0.0.0.0 --ws --ws.origins '*' --ws.addr 0.0.0.0 --http.port 8545
+Restart=on-failure
 RestartSec=3
-LimitNOFILE=10000
+LimitNOFILE=4096
+
 [Install]
 WantedBy=multi-user.target
 EOF
 ```
-```
-systemctl daemon-reload
-systemctl start bscd
-```
-Checkec that node start synching
-```
-journalctl -u bscd -f -n 100
-```
-## 7. Synch status
 
-Once your BSC node is fully synced, you can run a cURL request to see the status of your node: Please change ``YOUR_IP_ADDRESS`` on your IP.
+By default it will log the logs in `$HOME/.bsc/bsc.log` if you want to use journalctl to view logs, comment out the log setting in config
+```bash
+sed -i '/Node.LogConfig/s/^/#/' $HOME/.bsc/config/config.toml
+sed -i '/FilePath/s/^/#/' $HOME/.bsc/config/config.toml
+sed -i '/MaxBytesSize/s/^/#/' $HOME/.bsc/config/config.toml
+sed -i '/Level/s/^/#/' $HOME/.bsc/config/config.toml
+sed -i '/FileRoot/s/^/#/' $HOME/.bsc/config/config.toml
 ```
-curl -H "Content-Type: application/json" -d '{"id":1, "jsonrpc":"2.0", "method": "eth_syncing", "params":[]}' YOUR_IP_ADDRESS:8575
+# Start the service
+```bash
+sudo systemctl daemon-reload
+sudo systemctl enable geth
+sudo systemctl restart geth
 ```
-If the node is successfully synced, the output from above will print ``{"jsonrpc":"2.0","id":1,"result":false}``
+## Check logs
 
-## 8. Connect your BSC to Axelar
+```bash
+# change log settings to persistent if not already
+sed -i 's/#Storage=auto/Storage=persistent/g' /etc/systemd/journald.conf
+sudo systemctl restart systemd-journald
+journalctl -u geth.service -f -n 100 -o cat
+```
 
-Axelar Network will be connecting to the EVM compatible ``Binance``, so your rpc_addr should be exposed in this format:
+Logs should appear like this
 
-``http://IP:PORT``
+```bash
+INFO [01-12|07:22:26.423] Downloader queue stats                   receiptTasks=118 blockTasks=34418 itemSize=658.90B throttle=8192
+INFO [01-12|07:22:26.464] Imported new block receipts              count=91   elapsed=39.135ms  number=80616      hash=f2b5af..d57e5c age=2y4mo3w size=39.74KiB
+INFO [01-12|07:22:26.474] Imported new block receipts              count=6    elapsed=9.733ms   number=80622      hash=f79d09..1c21f6 age=2y4mo3w size=7.06KiB
+INFO [01-12|07:22:32.668] State sync in progress                   synced=0.40% state=1.41GiB   accounts=699,027@129.75MiB slots=5,819,860@1.19GiB   codes=14583@102.87MiB eta=4h55m52.376s
+INFO [01-12|07:22:40.829] State sync in progress                   synced=0.42% state=1.50GiB   accounts=728,900@136.92MiB slots=6,179,853@1.27GiB   codes=14847@104.99MiB eta=5h17m21.796s
+INFO [01-12|07:22:48.941] State sync in progress                   synced=0.46% state=1.59GiB   accounts=778,792@148.89MiB slots=6,498,586@1.33GiB   codes=15810@112.04MiB eta=5h20m22.013s
+INFO [01-12|07:22:56.983] State sync in progress                   synced=0.51% state=1.67GiB   accounts=848,671@165.66MiB slots=6,789,621@1.39GiB   codes=17191@122.32MiB eta=5h9m44.302s
+INFO [01-12|07:23:04.983] State sync in progress                   synced=0.56% state=1.77GiB   accounts=918,383@182.40MiB slots=7,140,091@1.46GiB   codes=18095@129.50MiB eta=5h8m46.202s
+```
 
-#for Testnet
+## Verify
 
-Example: ``http://5.168.135.185:8575``
+#### Method 1:
+```bash
+YOUR_IP=$(curl -4 ifconfig.co)
+curl -X POST $YOUR_IP:8545 -H "Content-Type: application/json" --data '{"jsonrpc":"2.0","method":"eth_syncing","params":[],"id":1}' | jq
+```
+If you get something like this in response of the above rpc call, your node is setup correctly
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "result": {
+    "currentBlock": "0x10bcec",
+    "healedBytecodeBytes": "0x0",
+    "healedBytecodes": "0x0",
+    "healedTrienodeBytes": "0x0",
+    "healedTrienodes": "0x0",
+    "healingBytecode": "0x0",
+    "healingTrienodes": "0x0",
+    "highestBlock": "0x1792276",
+    "startingBlock": "0x1233f",
+    "syncedAccountBytes": "0x422a06f3",
+    "syncedAccounts": "0x5b14c0",
+    "syncedBytecodeBytes": "0x26c0e4d8",
+    "syncedBytecodes": "0x13cfd",
+    "syncedStorage": "0x38195bc",
+    "syncedStorageBytes": "0x2ef128d1b"
+  }
+}
+```
+Wait for `"result"` to become `false` before using it in vald config
 
+```json
+{"jsonrpc":"2.0","id":1,"result":false}
+```
 
-#for Mainnet
+#### Method 2:
+You can also check your status by connect to geth console
+```bash
+geth attach http://localhost:8545
+eth.syncing
+```
 
-Example: ``http://5.168.135.185:8545``
+If you get something like this in response, your node is setup correctly
+```json
+{
+  currentBlock: 24000,
+  healedBytecodeBytes: 0,
+  healedBytecodes: 0,
+  healedTrienodeBytes: 0,
+  healedTrienodes: 0,
+  healingBytecode: 0,
+  healingTrienodes: 0,
+  highestBlock: 23846000,
+  startingBlock: 0,
+  syncedAccountBytes: 0,
+  syncedAccounts: 0,
+  syncedBytecodeBytes: 0,
+  syncedBytecodes: 0,
+  syncedStorage: 0,
+  syncedStorageBytes: 0
+}
+```
 
-## 9. If a new update is out
-If a new update has been released, then you can update with the following commands.
+Wait for it to become `false` before using it in vald config
+
+```bash
+eth.syncing
+false
 ```
-systemctl stop bscd
-mkdir temp
-cd temp
+
+## Endpoint
+
+```bash
+echo "${YOUR_IP}:8545"
 ```
-Check the latest [release page](https://github.com/bnb-chain/bsc/releases/latest).
-```
-wget https://github.com/bnb-chain/bsc/releases/latest/download/geth_linux
-```
-```
-mv geth_linux /usr/bin/geth
-chmod +x /usr/bin/geth
-```
-```
-cd ~
-systemctl start bscd
-```
-Check that your BSC node work correctly
-```
-journalctl -u bscd -f -n 100
-```
+
+### Configure vald
+
+In order for `vald` to connect to your Avalanche node, your `rpc_addr` should be exposed in
+vald's `config.toml`
+
+<Tabs tabs={[
+{
+title: "Mainnet",
+content: <CodeBlock language="yaml">
+{`[[axelar_bridge_evm]]
+name = "binance"
+rpc_addr = "http://IP:PORT"
+start-with-bridge = true`}
+</CodeBlock>
+},
+{
+title: "Testnet",
+content: <CodeBlock language="yaml">
+{`[[axelar_bridge_evm]]
+name = "binance"
+rpc_addr = "http://IP:PORT"
+start-with-bridge = true`}
+</CodeBlock>
+}
+]} />
