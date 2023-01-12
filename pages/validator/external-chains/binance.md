@@ -83,7 +83,7 @@ cd $HOME
 geth --datadir $HOME/.bsc init genesis.json
 ```
 #### 2. If you want to sync from snapshot
-You follow the instructions  (here)[https://github.com/bnb-chain/bsc-snapshots] to sync from snapshot
+You follow the instructions  [here][https://github.com/bnb-chain/bsc-snapshots] to sync from snapshot)
 
 ## Create Service
 ```bash
