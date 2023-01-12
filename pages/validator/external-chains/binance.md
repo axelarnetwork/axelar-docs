@@ -1,9 +1,11 @@
 # Binance
+-------------
+
 import Callout from 'nextra-theme-docs/callout'
 import Markdown from 'markdown-to-jsx'
 import Tabs from '../../../components/tabs'
 import CodeBlock from '../../../components/code-block'
--------------
+
 
 Instructions to set up your Avalanche node.
 
