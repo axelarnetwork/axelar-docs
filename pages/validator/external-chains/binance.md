@@ -43,6 +43,7 @@ wget https://github.com/bnb-chain/bsc/releases/download/$BSC_GETH_RELEASE/geth_l
 mv geth_linux geth
 chmod +x *
 sudo mv * /usr/bin/
+# verify version
 geth version
 cd $HOME
 ```
