@@ -217,7 +217,7 @@ echo "${YOUR_IP}:8545"
 
 ### Configure vald
 
-In order for `vald` to connect to your Binance node, your `rpc_addr` should be exposed in
+In order for `vald` to connect to your Binance Smart Chain node, your `rpc_addr` should be exposed in
 vald's `config.toml`
 
 <Tabs tabs={[
