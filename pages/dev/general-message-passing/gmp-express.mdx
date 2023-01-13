@@ -1,0 +1,63 @@
+# GMP Express (Beta)
+
+import { Callout } from 'nextra-theme-docs'
+
+GMP Express is the fastest way to send messages and tokens, building on the foundation of Axelar's General Message Passing (GMP) for [messages](./gmp-messages) and [tokens](./gmp-tokens-with-messages). Full end-to-end GMP messages can sometimes take many minutes to execute on the destination chain because they must wait for full finality and network resolution, but with GMP Express you can take advantage of faster message and token delivery.
+
+Transactions sent with GMP Express will still pass through the Axelar network, but while this is happening the GMP Express Service will call the target contract on the destination chain. GMP Express will temporarily lend any sent tokens, to be paid back upon resolution by the full network.
+
+By leveraging GMP Express, a theoretical Ethereum to Moonbeam GMP transaction time can be reduced from around 17 minutes down to around 1 minute.
+
+## How to use GMP Express
+<Callout>
+For a full code example, check out our [examples repository](https://github.com/axelarnetwork/axelar-examples/tree/main/examples/evm/call-contract-with-token-express).
+</Callout>
+
+Using GMP Express closely matches the APIs and mental model of [using GMP](./gmp-tokens-with-messages). There are three steps to take to upgrade any normal GMP `callContractWithToken` calls into GMP Express calls.
+
+1. When paying the gas for your message, call `payNativeGasForExpressCallWithToken` instead of `payNativeGasForContractCallWithToken`.
+1. On the destination contract that is being called, inherit from `ExpressExecutable` instead of `AxelarExecutable`
+1. [Deploy your Smart Contract via bytecode](https://github.com/axelarnetwork/axelar-examples/blob/main/examples/evm/call-contract-with-token-express/index.js#L19-L26) sent to the GMP Express Service's `deployExpressExecutable` method.
+
+By deploying your Smart Contract via the GMP ExpressService rather than directly to the blockchain, the GMP Express Service is able to proxy execution requests such that when full Axelar Network resolution of the request is completed, the token loan will automatically be repaid to the service.
+
+
+
+## Behind the scenes
+Behind the scenes GMP Express messages follow two paths in parallel.
+
+* The Axelar GMP Express service will pick up transactions and execute them on the destination chain, supplying any sent tokens as a loan. This bypasses the standard Relayer for initial delivery. 
+
+* The transaction will be picked up by Axelar Network as usual, voted on, approved, and executed on the destination chain as usual. When funds are minted or released on the destination chain, they are automatically used to repay the GMP Express loan.
+
+To fully understand the difference, let's compare how GMP normally works with the additional steps taken by GMP Express.
+
+### Standard GMP Process
+For usual GMP calls to an `AxelarExecutable`, we have multiple steps that take some time:
+1. `NativeGasPaidForContractCallWithToken` event is emitted by the GasService on the source chain
+1. `ContractCallWithToken` event is emitted by the Gateway on the source chain
+1. After required confirmation height, the event is detected by relayers and delivered to Axelar network.
+1. Event confirmed by validators and voted on. 
+1. A unique command ID is generated for the transaction
+1. Command IDs are batched and then broadcasted to the destination chain
+1. GMP approval command is sent to the gateway on the destination chain.
+1. Destination contract `executeWithToken` function is called and the execution is validated with the gateway.
+
+### GMP Express Process
+For the faster GMP Express call we add a second path that skips some validation steps to speed things up:
+1. `NativeGasPaidForExpressContractCallWithToken` event is emitted by the Gas Service on the source chain.
+1. `ContractCallWithToken` event is emitted by the Gateway on the source chain.
+1. The GMP Express service will detect the event and verify several conditions:
+    1. The microservice knows to invoke `expressExecuteWithToken` before  `executeWithToken` because the right method is called at the gas service and `NativeGasPaidForExpressContractCallWithToken` was emitted (instead of `NativeGasPaidForContractCallWithToken`) .
+    1. The amount is below a configured maximum.
+    1. The amount is under of what currently available at Axelar GMP Express Service (all funds might be already used by other executions).
+    1. The contract was configured in the Axelar Service Portal (Mainnet only)
+1. After a configured minimum amount of confirmations on the source chain our microservice initiates the execution. 
+    1. The microservice will call the `AxelarGMPExpressService` contract on the destination chain that will call the dApp’s destination contract (which must implement an `AxelarExpressExecutable` interface). 
+    1. Axelar's GMP Express Service will lend the necessary token to the `AxelarExpressExecutable` contract and will call `executeWithToken` method.
+1. After some time, the Axelar network will finish processing the transaction and GMP approval will arrives at the destination gateway.
+    1. `executeWithToken` is called by the standard relayer but no action is performed as execution is already complete.
+    1. The lent token is returned back to the `AxelarGMPExpressService` automatically
+
+## Cost
+GMP Express calls will cost more than standard GMP calls because they will still follow the full GMP path in addition to the express execution. While heavily dependent on the involved chains, your contract complexity and payload size, we expect express messages to generally cost more than standard calls.

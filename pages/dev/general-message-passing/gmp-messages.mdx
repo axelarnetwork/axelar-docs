@@ -56,3 +56,8 @@ function _execute(
     string memory _message = abi.decode(payload, (string));
 }
 ```
+
+
+<Callout emoji="ℹ️">
+Transactions can take some time (more than 15 minutes for for calls initiated on Ethereum) due to the finality rules of the involved chains. If you need faster delivery, check out [GMP Express](./gmp-express).
+</Callout>
