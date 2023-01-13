@@ -6,7 +6,7 @@ import { Callout } from 'nextra-theme-docs'
 To call chain B from chain A and send some tokens along the way, the user needs to call `callContractWithToken` on the gateway of chain A, specifying:
 
 - The destination chain, which must be an EVM chain from [Chain names](./chain-names).
-- The destination contract address, which must implement the `IAxelarExecutable` interface defined in [IAxelarExecutable.sol](https://github.com/axelarnetwork/axelar-cgp-solidity/blob/main/contracts/interfaces/IAxelarExecutable.sol).
+- The destination contract address, which must inherit from `AxelarExecutable` defined in [AxelarExecutable.sol](https://github.com/axelarnetwork/axelar-gmp-sdk-solidity/blob/main/contracts/executables/AxelarExecutable.sol).
 - The payload `bytes` to pass to the destination contract.
 - The symbol of the token to transfer, which must be a supported asset ([Mainnet](../build/contract-addresses/mainnet) | [Testnet](../build/contract-addresses/testnet)).
 - The amount of the token to transfer.
@@ -23,7 +23,7 @@ function callContractWithToken(
 ) external;
 ```
 
-`IAxelarExecutable` has an `_executeWithToken` function that will be triggered by the Axelar network after the `callContractWithToken` function has been executed. You can write any custom logic there.
+`AxelarExecutable` has an `executeWithToken` function that will be triggered by the Axelar network on the destination chain after the `callContractWithToken` function has been executed on the source chain. This will validate the contract call and then invoke *your* `_executeWithToken` method, where you should write any custom logic.
 
 The destination contract will be authorized to transfer the ERC-20 identified by the `tokenSymbol`.
 
