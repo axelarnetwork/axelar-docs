@@ -19,7 +19,7 @@ Instructions to set up your Avalanche node.
 
 ## Prerequisites
 ```bash
-sudo apt-get install wget jq unzip -y
+sudo apt-get install wget jq unzip aria2 lz4 -y
 ```
 
 # BSC geth
@@ -83,8 +83,22 @@ rm testnet.zip
 cd $HOME
 geth --datadir $HOME/.bsc init genesis.json
 ```
-#### 2. If you want to sync from snapshot
-You follow the instructions  [here][https://github.com/bnb-chain/bsc-snapshots] to sync from snapshot)
+#### 2. If you want to sync from snapshot - Mainnet Only
+You find the snapshot links  [here](https://github.com/bnb-chain/bsc-snapshots) or [here](https://github.com/48Club/bsc-snapshots#download) to sync from snapshot
+
+```bash
+# change the url to latest snapshot available: you can find it in the links shared above
+GETH_SNAPSHOT_URL=https://snapshots.48.club/geth.24761776.tar.lz4
+```
+```bash
+cd $HOME/.bsc/
+aria2c -s14 -x14 -k100M $GETH_SNAPSHOT_URL -o geth.tar.lz4
+# check checksum: it will take time to calculate checksum
+openssl sha256 geth.tar.lz4
+# uncompress the file
+lz4 -cd geth.tar.lz4 | tar xf -
+rm geth.tar.lz4
+```
 
 ## Create Service
 ```bash
@@ -96,7 +110,7 @@ After=online.target
 [Service]
 Type=simple
 User=root 
-ExecStart=/usr/bin/geth --config $HOME/.bsc/config/config.toml --cache 8000 --rpc.allow-unprotected-txs --txlookuplimit 0 --datadir $HOME/.bsc --http --http.vhosts "*" --http.addr 0.0.0.0 --ws --ws.origins '*' --ws.addr 0.0.0.0 --http.port 8545
+ExecStart=/usr/bin/geth --config $HOME/.bsc/config/config.toml --txlookuplimit=0 --syncmode=full --tries-verify-mode=none --pruneancient=true --diffblock=5000 --cache 8000 --rpc.allow-unprotected-txs --datadir $HOME/.bsc --http --http.vhosts "*" --http.addr 0.0.0.0 --ws --ws.origins '*' --ws.addr 0.0.0.0 --http.port 8545
 Restart=on-failure
 RestartSec=3
 LimitNOFILE=4096
@@ -131,6 +145,7 @@ journalctl -u geth.service -f -n 100 -o cat
 
 Logs should appear like this
 
+#### If you are syncing from genesis
 ```bash
 INFO [01-12|07:22:26.423] Downloader queue stats                   receiptTasks=118 blockTasks=34418 itemSize=658.90B throttle=8192
 INFO [01-12|07:22:26.464] Imported new block receipts              count=91   elapsed=39.135ms  number=80616      hash=f2b5af..d57e5c age=2y4mo3w size=39.74KiB
@@ -140,6 +155,14 @@ INFO [01-12|07:22:40.829] State sync in progress                   synced=0.42% 
 INFO [01-12|07:22:48.941] State sync in progress                   synced=0.46% state=1.59GiB   accounts=778,792@148.89MiB slots=6,498,586@1.33GiB   codes=15810@112.04MiB eta=5h20m22.013s
 INFO [01-12|07:22:56.983] State sync in progress                   synced=0.51% state=1.67GiB   accounts=848,671@165.66MiB slots=6,789,621@1.39GiB   codes=17191@122.32MiB eta=5h9m44.302s
 INFO [01-12|07:23:04.983] State sync in progress                   synced=0.56% state=1.77GiB   accounts=918,383@182.40MiB slots=7,140,091@1.46GiB   codes=18095@129.50MiB eta=5h8m46.202s
+```
+
+#### If you are syncing from snapshot
+```bash
+INFO [01-14|05:21:12.351] Initialising Ethereum protocol           network=56 dbversion=8
+INFO [01-14|05:21:12.353] Loaded most recent local header          number=24,761,776 hash=794f37..9792a8 td=49,216,905 age=7h20m3s
+INFO [01-14|05:21:12.353] Loaded most recent local full block      number=24,761,776 hash=794f37..9792a8 td=49,216,905 age=7h20m3s
+INFO [01-14|05:21:12.353] Loaded most recent local fast block      number=24,761,776 hash=794f37..9792a8 td=49,216,905 age=7h20m3s
 ```
 
 ## Verify
