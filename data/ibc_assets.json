@@ -6,7 +6,7 @@
       "symbol": "USDC",
       "image": "/images/assets/usdc.svg",
       "decimals": 6,
-      "transfer_fee": 0.125
+      "transfer_fee": 0.5
     },
     {
       "id": "uaxl",
@@ -14,15 +14,15 @@
       "symbol": "AXL",
       "image": "/images/assets/axl.svg",
       "decimals": 6,
-      "transfer_fee": 0.25
+      "transfer_fee": 1.0
     },
     {
-      "id": "weth-wei",
-      "name": "WETH - Wrapped Ether",
-      "symbol": "WETH",
-      "image": "/images/assets/weth.svg",
+      "id": "eth",
+      "name": "ETH - Ethereum",
+      "symbol": "ETH",
+      "image": "/images/assets/eth.svg",
       "decimals": 18,
-      "transfer_fee": 0.0001
+      "transfer_fee": 0.00042
     },
     {
       "id": "dai-wei",
@@ -30,7 +30,7 @@
       "symbol": "DAI",
       "image": "/images/assets/dai.svg",
       "decimals": 18,
-      "transfer_fee": 0.125
+      "transfer_fee": 0.5
     },
     {
       "id": "uusdt",
@@ -38,7 +38,7 @@
       "symbol": "USDT",
       "image": "/images/assets/usdt.svg",
       "decimals": 6,
-      "transfer_fee": 0.125
+      "transfer_fee": 0.5
     },
     {
       "id": "busd-wei",
@@ -46,39 +46,7 @@
       "symbol": "BUSD",
       "image": "/images/assets/busd.svg",
       "decimals": 18,
-      "transfer_fee": 0.125
-    },
-    {
-      "id": "dot-planck",
-      "name": "DOT - xcDOT",
-      "symbol": "DOT",
-      "image": "/images/assets/dot.svg",
-      "decimals": 10,
-      "transfer_fee": 0.017
-    },
-    {
-      "id": "wavax-wei",
-      "name": "WAVAX - Wrapped AVAX",
-      "symbol": "WAVAX",
-      "image": "/images/assets/wavax.svg",
-      "decimals": 18,
-      "transfer_fee": 0.0083
-    },
-    {
-      "id": "wglmr-wei",
-      "name": "WGLMR - Wrapped GLMR",
-      "symbol": "WGLMR",
-      "image": "/images/assets/wglmr.svg",
-      "decimals": 18,
-      "transfer_fee": 0.24
-    },
-    {
-      "id": "wmatic-wei",
-      "name": "WMATIC - Wrapped Matic",
-      "symbol": "WMATIC",
-      "image": "/images/assets/wmatic.svg",
-      "decimals": 18,
-      "transfer_fee": 0.15
+      "transfer_fee": 0.5
     },
     {
       "id": "wbtc-satoshi",
@@ -86,7 +54,79 @@
       "symbol": "WBTC",
       "image": "/images/assets/wbtc.svg",
       "decimals": 8,
-      "transfer_fee": 7.4e-06
+      "transfer_fee": 2.9e-05
+    },
+    {
+      "id": "matic",
+      "name": "MATIC - Polygon",
+      "symbol": "MATIC",
+      "image": "/images/assets/matic.svg",
+      "decimals": 18,
+      "transfer_fee": 0.6
+    },
+    {
+      "id": "dot-planck",
+      "name": "DOT - xcDOT",
+      "symbol": "DOT",
+      "image": "/images/assets/dot.svg",
+      "decimals": 10,
+      "transfer_fee": 0.067
+    },
+    {
+      "id": "avax",
+      "name": "AVAX - Avalanche",
+      "symbol": "AVAX",
+      "image": "/images/assets/avax.svg",
+      "decimals": 18,
+      "transfer_fee": 0.033
+    },
+    {
+      "id": "bnb",
+      "name": "BNB - Binance",
+      "symbol": "BNB",
+      "image": "/images/assets/bnb.svg",
+      "decimals": 18,
+      "transfer_fee": 0.0017
+    },
+    {
+      "id": "ftm",
+      "name": "FTM - Fantom",
+      "symbol": "FTM",
+      "image": "/images/assets/ftm.svg",
+      "decimals": 18,
+      "transfer_fee": 1.8
+    },
+    {
+      "id": "weth-wei",
+      "name": "WETH - Wrapped Ether",
+      "symbol": "WETH",
+      "image": "/images/assets/weth.svg",
+      "decimals": 18,
+      "transfer_fee": 0.00042
+    },
+    {
+      "id": "wmatic-wei",
+      "name": "WMATIC - Wrapped Matic",
+      "symbol": "WMATIC",
+      "image": "/images/assets/wmatic.svg",
+      "decimals": 18,
+      "transfer_fee": 0.6
+    },
+    {
+      "id": "wavax-wei",
+      "name": "WAVAX - Wrapped AVAX",
+      "symbol": "WAVAX",
+      "image": "/images/assets/wavax.svg",
+      "decimals": 18,
+      "transfer_fee": 0.033
+    },
+    {
+      "id": "wglmr-wei",
+      "name": "WGLMR - Wrapped GLMR",
+      "symbol": "WGLMR",
+      "image": "/images/assets/wglmr.svg",
+      "decimals": 18,
+      "transfer_fee": 0.94
     },
     {
       "id": "wbnb-wei",
@@ -94,7 +134,7 @@
       "symbol": "WBNB",
       "image": "/images/assets/wbnb.svg",
       "decimals": 18,
-      "transfer_fee": 0.00043
+      "transfer_fee": 0.0017
     },
     {
       "id": "wftm-wei",
@@ -102,7 +142,7 @@
       "symbol": "WFTM",
       "image": "/images/assets/wftm.svg",
       "decimals": 18,
-      "transfer_fee": 0.45
+      "transfer_fee": 1.8
     },
     {
       "id": "uatom",
@@ -110,7 +150,7 @@
       "symbol": "ATOM",
       "image": "/images/assets/atom.svg",
       "decimals": 6,
-      "transfer_fee": 0.01
+      "transfer_fee": 0.042
     },
     {
       "id": "uluna",
@@ -118,7 +158,7 @@
       "symbol": "LUNC",
       "image": "/images/assets/lunc.svg",
       "decimals": 6,
-      "transfer_fee": 830.0
+      "transfer_fee": 3300.0
     },
     {
       "id": "uusd",
@@ -126,7 +166,7 @@
       "symbol": "USTC",
       "image": "/images/assets/ustc.svg",
       "decimals": 6,
-      "transfer_fee": 6.2
+      "transfer_fee": 25.0
     },
     {
       "id": "rai-wei",
@@ -134,7 +174,7 @@
       "symbol": "RAI",
       "image": "/images/assets/rai.svg",
       "decimals": 18,
-      "transfer_fee": 0.042
+      "transfer_fee": 0.17
     },
     {
       "id": "link-wei",
@@ -142,7 +182,7 @@
       "symbol": "LINK",
       "image": "/images/assets/link.svg",
       "decimals": 18,
-      "transfer_fee": 0.019
+      "transfer_fee": 0.077
     },
     {
       "id": "aave-wei",
@@ -150,7 +190,7 @@
       "symbol": "AAVE",
       "image": "/images/assets/aave.svg",
       "decimals": 18,
-      "transfer_fee": 0.002
+      "transfer_fee": 0.0079
     },
     {
       "id": "frax-wei",
@@ -158,7 +198,7 @@
       "symbol": "FRAX",
       "image": "/images/assets/frax.svg",
       "decimals": 18,
-      "transfer_fee": 0.125
+      "transfer_fee": 0.5
     },
     {
       "id": "mkr-wei",
@@ -166,7 +206,7 @@
       "symbol": "MKR",
       "image": "/images/assets/mkr.svg",
       "decimals": 18,
-      "transfer_fee": 0.00016
+      "transfer_fee": 0.00062
     },
     {
       "id": "ungm",
@@ -174,7 +214,7 @@
       "symbol": "NGM",
       "image": "/images/assets/ngm.svg",
       "decimals": 6,
-      "transfer_fee": 0.5
+      "transfer_fee": 2.0
     },
     {
       "id": "eeur",
@@ -182,7 +222,7 @@
       "symbol": "EEUR",
       "image": "/images/assets/eeur.svg",
       "decimals": 6,
-      "transfer_fee": 0.125
+      "transfer_fee": 0.5
     },
     {
       "id": "ape-wei",
@@ -190,7 +230,7 @@
       "symbol": "APE",
       "image": "/images/assets/ape.svg",
       "decimals": 18,
-      "transfer_fee": 0.024
+      "transfer_fee": 0.096
     },
     {
       "id": "uni-wei",
@@ -198,7 +238,7 @@
       "symbol": "UNI",
       "image": "/images/assets/uni.svg",
       "decimals": 18,
-      "transfer_fee": 0.025
+      "transfer_fee": 0.1
     },
     {
       "id": "shib-wei",
@@ -206,7 +246,7 @@
       "symbol": "SHIB",
       "image": "/images/assets/shib.svg",
       "decimals": 18,
-      "transfer_fee": 12000.0
+      "transfer_fee": 50000.0
     },
     {
       "id": "axs-wei",
@@ -214,7 +254,7 @@
       "symbol": "AXS",
       "image": "/images/assets/axs.svg",
       "decimals": 18,
-      "transfer_fee": 0.0083
+      "transfer_fee": 0.033
     },
     {
       "id": "xcn-wei",
@@ -222,10 +262,18 @@
       "symbol": "XCN",
       "image": "/images/assets/xcn.svg",
       "decimals": 18,
-      "transfer_fee": 1.6
+      "transfer_fee": 6.2
     }
   ],
   "testnet": [
+    {
+      "id": "uausdc",
+      "name": "aUSDC - USD coin",
+      "symbol": "aUSDC",
+      "image": "/images/assets/ausdc.svg",
+      "decimals": 6,
+      "transfer_fee": 0.05
+    },
     {
       "id": "uaxl",
       "name": "AXL - Axelar",
@@ -235,18 +283,42 @@
       "transfer_fee": 0.05
     },
     {
-      "id": "wmatic-wei",
-      "name": "WMATIC - Wrapped Matic",
-      "symbol": "WMATIC",
-      "image": "/images/assets/wmatic.svg",
+      "id": "eth",
+      "name": "ETH - ethereum",
+      "symbol": "ETH",
+      "image": "/images/assets/eth.svg",
+      "decimals": 18,
+      "transfer_fee": 3e-05
+    },
+    {
+      "id": "matic",
+      "name": "MATIC - polygon",
+      "symbol": "MATIC",
+      "image": "/images/assets/matic.svg",
       "decimals": 18,
       "transfer_fee": 0.03
     },
     {
-      "id": "wftm-wei",
-      "name": "WFTM - Wrapped FTM",
-      "symbol": "WFTM",
-      "image": "/images/assets/wftm.svg",
+      "id": "avax",
+      "name": "AVAX - avalanche",
+      "symbol": "AVAX",
+      "image": "/images/assets/avax.svg",
+      "decimals": 18,
+      "transfer_fee": 0.0007
+    },
+    {
+      "id": "bnb",
+      "name": "BNB - binance",
+      "symbol": "BNB",
+      "image": "/images/assets/bnb.svg",
+      "decimals": 18,
+      "transfer_fee": 0.0002
+    },
+    {
+      "id": "ftm",
+      "name": "FTM - fantom",
+      "symbol": "FTM",
+      "image": "/images/assets/ftm.svg",
       "decimals": 18,
       "transfer_fee": 0.04
     },
@@ -259,6 +331,14 @@
       "transfer_fee": 3e-05
     },
     {
+      "id": "wmatic-wei",
+      "name": "WMATIC - Wrapped Matic",
+      "symbol": "WMATIC",
+      "image": "/images/assets/wmatic.svg",
+      "decimals": 18,
+      "transfer_fee": 0.03
+    },
+    {
       "id": "wavax-wei",
       "name": "WAVAX - Wrapped AVAX",
       "symbol": "WAVAX",
@@ -267,20 +347,12 @@
       "transfer_fee": 0.0007
     },
     {
-      "id": "wdev-wei",
-      "name": "WDEV - Wrapped DEV",
-      "symbol": "WDEV",
-      "image": "/images/assets/wdev.svg",
+      "id": "wftm-wei",
+      "name": "WFTM - Wrapped FTM",
+      "symbol": "WFTM",
+      "image": "/images/assets/wftm.svg",
       "decimals": 18,
-      "transfer_fee": 0.02
-    },
-    {
-      "id": "uausdc",
-      "name": "aUSDC - USD coin",
-      "symbol": "aUSDC",
-      "image": "/images/assets/ausdc.svg",
-      "decimals": 6,
-      "transfer_fee": 0.05
+      "transfer_fee": 0.04
     },
     {
       "id": "wbnb-wei",
@@ -289,6 +361,14 @@
       "image": "/images/assets/wbnb.svg",
       "decimals": 18,
       "transfer_fee": 0.0002
+    },
+    {
+      "id": "wdev-wei",
+      "name": "WDEV - Wrapped DEV",
+      "symbol": "WDEV",
+      "image": "/images/assets/wdev.svg",
+      "decimals": 18,
+      "transfer_fee": 0.02
     }
   ]
 }
