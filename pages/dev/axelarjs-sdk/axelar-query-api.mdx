@@ -7,7 +7,7 @@ This module is a nice-to-have of common queries made into the Axelar network and
 Install the AxelarJS SDK:
 
 ```bash
-npm i @axelar-network/axelarjs-sdk@alpha
+npm i @axelar-network/axelarjs-sdk
 ```
 
 Instantiate the `AxelarQueryAPI` module:
