@@ -156,9 +156,6 @@
           "value": "axelar-grpc.chainode.tech"
         },
         {
-          "value": "axelar-grpcweb.chainode.tech"
-        },
-        {
           "value": "axelar-grpc.polkachu.com:15190"
         },
         {
@@ -171,13 +168,21 @@
           "value": "axelar-grpc.quantnode.tech:9090"
         },
         {
-          "value": "axelar-grpcweb.quantnode.tech:9091"
-        },
-        {
           "value": "grpc-axelar.stakerun.com:9090"
-        },
+        }
+      ]
+    },
+    {
+      "name": "gRPC-Web endpoints",
+      "value": [
         {
           "value": "https://axelar-grpcweb.quantnode.tech"
+        },
+        {
+          "value": "https://axelar-grpcweb.quantnode.tech:9091"
+        },
+        {
+          "value": "https://axelar-grpcweb.chainode.tech"
         },
         {
           "value": "https://axelar-grpc.4sv.io"
@@ -347,12 +352,17 @@
         },
         {
           "value": "axelartest-grpc.quantnode.tech:9090"
-        },
-        {
-          "value": "axelartest-grpcweb.quantnode.tech:9091"
-        },
+        }
+      ]
+    },
+    {
+      "name": "gRPC-Web endpoints",
+      "value": [
         {
           "value": "https://axelartest-grpcweb.quantnode.tech"
+        },
+        {
+          "value": "https://axelartest-grpcweb.quantnode.tech:9091"
         }
       ]
     },
