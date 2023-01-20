@@ -57,6 +57,10 @@
         {
           "title": "Swagger",
           "value": "https://lcd-axelar.imperator.co/static/swagger/"
+        },
+        {
+          "title": "Swagger",
+          "value": "https://lcd-axelar.stakerun.com/static/swagger/"
         }
       ]
     },
@@ -98,6 +102,9 @@
         },
         {
           "value": "https://axelar-rpc.validatrium.club"
+        },
+        {
+          "value": "https://rpc-axelar.stakerun.com"
         }
       ]
     },
@@ -133,6 +140,9 @@
         },
         {
           "value": "https://axelar-api.validatrium.club"
+        },
+        {
+          "value": "https://lcd-axelar.stakerun.com"
         }
       ]
     },
@@ -164,6 +174,9 @@
           "value": "axelar-grpcweb.quantnode.tech:9091"
         },
         {
+          "value": "grpc-axelar.stakerun.com:9090"
+        },
+        {
           "value": "https://axelar-grpcweb.quantnode.tech"
         },
         {
@@ -171,6 +184,9 @@
         },
         {
           "value": "https://axelar-grpc.quickapi.com"
+        },
+        {
+          "value": "https://web-grpc-axelar.stakerun.com"
         }
       ]
     },
@@ -197,6 +213,12 @@
         },
         {
           "value": "https://axelararchive-grpc.quickapi.com"
+        },
+        {
+          "value": "https://archive-rpc-axelar.stakerun.com"
+        },
+        {
+          "value": "https://archive-lcd-axelar.stakerun.com"
         }
       ]
     },
@@ -205,6 +227,9 @@
       "value": [
         {
           "value": "ws://rpc-axelar.imperator.co/wss"
+        },
+        {
+          "value": "wss://rpc-axelar.stakerun.com/websocket"
         }
       ]
     }
