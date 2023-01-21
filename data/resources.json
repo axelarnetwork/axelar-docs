@@ -156,6 +156,12 @@
           "value": "axelar-grpc.chainode.tech"
         },
         {
+          "value": "axelar-grpc.4sv.io"
+        },
+        {
+          "value": "axelar-grpc.quickapi.com"
+        },
+        {
           "value": "axelar-grpc.polkachu.com:15190"
         },
         {
@@ -183,12 +189,6 @@
         },
         {
           "value": "https://axelar-grpcweb.chainode.tech"
-        },
-        {
-          "value": "https://axelar-grpc.4sv.io"
-        },
-        {
-          "value": "https://axelar-grpc.quickapi.com"
         },
         {
           "value": "https://web-grpc-axelar.stakerun.com"
