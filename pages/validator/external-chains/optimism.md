@@ -347,11 +347,29 @@ You can use a [hex to number convertor](https://www.binaryhexconverter.com/hex-t
 #### Method 2:
 You can also check your status by connecting to geth console
 
-```bash
+<Tabs tabs={[
+{
+title: "Mainnet",
+content: <CodeBlock language="yaml">
+{`
+docker exec -it simple-optimism-node-l2geth-1 geth attach http://localhost:8545
+eth.blockNumber
+400040 # it will show you the latest block
+`}
+</CodeBlock>
+},
+{
+title: "Testnet",
+content: <CodeBlock language="yaml">
+{`
 docker exec -it simple-optimism-node-op-geth-1 geth attach http://localhost:8545
 eth.blockNumber
 400040 # it will show you the latest block
-```
+`}
+</CodeBlock>
+}
+]} />
+
 You can compare the block height on your node with explorer ([mainnet](https://optimistic.etherscan.io) or [testnet](https://goerli-optimism.etherscan.io)), use your RPC only when it has caught up with the latest block height
 
 ## Endpoint
