@@ -17,14 +17,6 @@
       "transfer_fee": 0.2
     },
     {
-      "id": "eth",
-      "name": "ETH - Ethereum",
-      "symbol": "ETH",
-      "image": "/images/assets/eth.svg",
-      "decimals": 18,
-      "transfer_fee": 8.3e-05
-    },
-    {
       "id": "dai-wei",
       "name": "DAI - Dai Stablecoin",
       "symbol": "DAI",
@@ -57,44 +49,12 @@
       "transfer_fee": 5.9e-06
     },
     {
-      "id": "matic",
-      "name": "MATIC - Polygon",
-      "symbol": "MATIC",
-      "image": "/images/assets/matic.svg",
-      "decimals": 18,
-      "transfer_fee": 0.12
-    },
-    {
       "id": "dot-planck",
       "name": "DOT - xcDOT",
       "symbol": "DOT",
       "image": "/images/assets/dot.svg",
       "decimals": 10,
       "transfer_fee": 0.013
-    },
-    {
-      "id": "avax",
-      "name": "AVAX - Avalanche",
-      "symbol": "AVAX",
-      "image": "/images/assets/avax.svg",
-      "decimals": 18,
-      "transfer_fee": 0.0067
-    },
-    {
-      "id": "bnb",
-      "name": "BNB - Binance",
-      "symbol": "BNB",
-      "image": "/images/assets/bnb.svg",
-      "decimals": 18,
-      "transfer_fee": 0.00034
-    },
-    {
-      "id": "ftm",
-      "name": "FTM - Fantom",
-      "symbol": "FTM",
-      "image": "/images/assets/ftm.svg",
-      "decimals": 18,
-      "transfer_fee": 0.36
     },
     {
       "id": "weth-wei",
@@ -281,46 +241,6 @@
       "image": "/images/assets/axl.svg",
       "decimals": 6,
       "transfer_fee": 0.05
-    },
-    {
-      "id": "eth",
-      "name": "ETH - ethereum",
-      "symbol": "ETH",
-      "image": "/images/assets/eth.svg",
-      "decimals": 18,
-      "transfer_fee": 3e-05
-    },
-    {
-      "id": "matic",
-      "name": "MATIC - polygon",
-      "symbol": "MATIC",
-      "image": "/images/assets/matic.svg",
-      "decimals": 18,
-      "transfer_fee": 0.03
-    },
-    {
-      "id": "avax",
-      "name": "AVAX - avalanche",
-      "symbol": "AVAX",
-      "image": "/images/assets/avax.svg",
-      "decimals": 18,
-      "transfer_fee": 0.0007
-    },
-    {
-      "id": "bnb",
-      "name": "BNB - binance",
-      "symbol": "BNB",
-      "image": "/images/assets/bnb.svg",
-      "decimals": 18,
-      "transfer_fee": 0.0002
-    },
-    {
-      "id": "ftm",
-      "name": "FTM - fantom",
-      "symbol": "FTM",
-      "image": "/images/assets/ftm.svg",
-      "decimals": 18,
-      "transfer_fee": 0.04
     },
     {
       "id": "eth-wei",
