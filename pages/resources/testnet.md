@@ -10,8 +10,8 @@ import EVMAssets from '../../components/evm/assets'
 
 | Variable              | Value     |
 | --------------------- | --------- |
-| `axelar-core` version | `v0.29.1` |
-| `vald` version        | `v0.29.1` |
+| `axelar-core` version | `v0.31.1` |
+| `vald` version        | `v0.31.1` |
 | `tofnd` version       | `v0.10.1` |
 
 ## EVM contract addresses
