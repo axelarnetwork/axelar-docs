@@ -116,11 +116,11 @@ Transfer any Axelar-supported asset from a cosmos-based chain to a destination c
 Example acceptance criteria: 
 `I want to send axlUSDC on Osmosis and receive the equivalent ERC-20 version on Avalanche.`
 
-```tsx
+```ts
 const sdk = new AxelarAssetTransfer({ environment: "testnet" });
 
-const fromChain = "osmosis-5", 
-  toChain = "avalanche",
+const fromChain = CHAINS.TESTNET.OSMOSIS, 
+  toChain = CHAINS.TESTNET.AVALANCHE,
   destinationAddress = "0xF16DfB26e1FEc993E085092563ECFAEaDa7eD7fD",
   asset: "uausdc";  // denom of asset. See note (2) below
 
@@ -141,11 +141,11 @@ Transfer any Axelar-supported ERC-20 asset from an EVM chain to any destination 
 Example acceptance criteria: 
 `I want to send axlUSDC on Avalanche and receive axlUSDC on Osmosis.`
 
-```tsx
+```ts
 const sdk = new AxelarAssetTransfer({ environment: "testnet" });
 
-const fromChain = "avalanche", 
-  toChain = "osmosis-5",
+const fromChain = CHAINS.TESTNET.AVALANCHE, 
+  toChain = CHAINS.TESTNET.OSMOSIS,
   destinationAddress = "osmo1x3z2vepjd7fhe30epncxjrk0lehq7xdqe8ltsn",
   asset: "uausdc";
 
@@ -168,11 +168,11 @@ Also known as "wrap", transfer the native asset of an EVM chain to any destinati
 Example acceptance criteria: 
 `I want to send AVAX on Avalanche and receive the equivalent ERC-20 version on Polygon.`
 
-```tsx
+```ts
 const sdk = new AxelarAssetTransfer({ environment: "testnet" });
 
-const fromChain = "avalanche", 
-  toChain = "polygon",
+const fromChain = CHAINS.TESTNET.AVALANCHE, 
+  toChain = CHAINS.TESTNET.POLYGON,
   destinationAddress = "0xF16DfB26e1FEc993E085092563ECFAEaDa7eD7fD",
   asset: "AVAX"
 
@@ -195,11 +195,11 @@ Two scenarios below
 Example acceptance criteria: 
 `I want to send WAVAX on Polygon and receive WAVAX on Avalanche.`
 
-```tsx
+```ts
 const sdk = new AxelarAssetTransfer({ environment: "testnet" });
 
-const fromChain = "polygon", 
-  toChain = "avalanche",
+const fromChain = CHAINS.TESTNET.POLYGON, 
+  toChain = CHAINS.TESTNET.AVALANCHE,
   destinationAddress = "0xF16DfB26e1FEc993E085092563ECFAEaDa7eD7fD",
   asset: "wavax-wei"
 
@@ -217,11 +217,11 @@ const depositAddress = await sdk.getDepositAddress({
 Example acceptance criteria: 
 `I want to send WAVAX on Polygon and receive AVAX on Avalanche.`
 
-```tsx
+```ts
 const sdk = new AxelarAssetTransfer({ environment: "testnet" });
 
-const fromChain = "polygon", 
-  toChain = "avalanche",
+const fromChain = CHAINS.TESTNET.POLYGON, 
+  toChain = CHAINS.TESTNET.AVALANCHE,
   destinationAddress = "0xF16DfB26e1FEc993E085092563ECFAEaDa7eD7fD",
   asset: "wavax-wei"
 
