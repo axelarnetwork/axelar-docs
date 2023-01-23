@@ -27,7 +27,7 @@ IMPORTANT NOTE: When making your deposit, please ensure that the amount is **gre
 
 To help you write clean code, you can use the `Environment` and `CHAINS` constants.
 
-Most methods in the sdk require you to work with chain ids instead of chain names. **Chain ids are unique per Environment** and are _specific to Axelar_. For instance, Ethereum will have a chain id of `ethereum` on mainnet but `ethereum-2` on testnet. In the same way Osmosis will be `osmosis` on mainnet but `osmosis-5` on tesnet. However some chains will have no difference between the chain names and chain ids.
+Most methods in the sdk require you to work with chain ids instead of chain names. **Chain ids are unique per Environment** and are _specific to Axelar_. For instance, Ethereum will have a chain id of `ethereum` on mainnet but `ethereum-2` on testnet. In the same way Osmosis will be `osmosis` on mainnet but `osmosis-4` on tesnet. However some chains will have no difference between the chain names and chain ids.
 
 To find the chain ids we support you can check the resources section. You can find the **testnet chain information** [here](/resources/testnet) and **mainnet chain information** [there](/resources/mainnet)
 
@@ -70,7 +70,7 @@ async function main() {
   });
 
   const fee = await axelarQuery.getTransferFee(
-    CHAINS.TESTNET.KUJIRA,
+    CHAINS.TESTNET.OSMOSIS,
     CHAINS.TESTNET.AVALANCHE,
     "uausdc",
     1000000
@@ -81,11 +81,11 @@ async function main() {
 main();
 ```
 
-### 5. Generate a deposit address using the SDK
+### 5. Generate a deposit address
 
+> When making your deposit, please ensure that the amount is greater than the cross-chain relayer gas fee. The relayer gas fee can be calculated with `getTransferFee` function above.
 
-* Call `getDepositAddress`
-* See accompanying notes at the bottom of this page for important information on method parameters
+The `AxelarAssetTransfer` class exposes the `getDepositAddress` function. With this function, you can create a **deposit address**. Here is the function signature 👇
 
 ```tsx
 interface GetDepositAddressParams {
