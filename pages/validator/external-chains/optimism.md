@@ -46,8 +46,8 @@ cp .env.example .env
 }
 ]} />
 
+## Set environment variables
 
-## Set variables
 <Tabs tabs={[
 {
 title: "Mainnet",
@@ -350,7 +350,7 @@ You can also check your status by connecting to geth console
 <Tabs tabs={[
 {
 title: "Mainnet",
-content: <CodeBlock language="yaml">
+content: <CodeBlock language="bash">
 {`
 docker exec -it simple-optimism-node-l2geth-1 geth attach http://localhost:8545
 eth.blockNumber
@@ -360,11 +360,11 @@ eth.blockNumber
 },
 {
 title: "Testnet",
-content: <CodeBlock language="yaml">
+content: <CodeBlock language="bash">
 {`
 docker exec -it simple-optimism-node-op-geth-1 geth attach http://localhost:8545
 eth.blockNumber
-400040 # it will show you the latest block
+4000400 # it will show you the latest block
 `}
 </CodeBlock>
 }
