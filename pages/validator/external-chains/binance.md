@@ -7,7 +7,7 @@ import Tabs from '../../../components/tabs'
 import CodeBlock from '../../../components/code-block'
 
 
-Instructions to set up your Avalanche node.
+Instructions to set up your Binance node.
 
 ## Requirements
 
@@ -101,6 +101,9 @@ rm geth.tar.lz4
 ```
 
 ## Create Service
+
+Note: The following settings will allow your node to be accessed publicly from any machine, adjust the flags according if you don't prefer that.
+
 ```bash
 sudo tee /etc/systemd/system/geth.service > /dev/null <<EOF
 [Unit]
