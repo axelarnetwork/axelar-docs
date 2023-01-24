@@ -70,7 +70,7 @@ async function main() {
   });
 
   const fee = await axelarQuery.getTransferFee(
-    CHAINS.TESTNET.KUJIRA,
+    CHAINS.TESTNET.OSMOSIS,
     CHAINS.TESTNET.AVALANCHE,
     "uausdc",
     1000000
@@ -81,55 +81,169 @@ async function main() {
 main();
 ```
 
-### 5. Generate a deposit address using the SDK
+### 5. Generate a deposit address
 
-Call `getDepositAddress`:
+> When making your deposit, please ensure that the amount is greater than the cross-chain relayer gas fee. The relayer gas fee can be calculated with `getTransferFee` function above.
+
+The `AxelarAssetTransfer` class exposes the `getDepositAddress` function. With this function, you can create a **deposit address**. Here is the function signature 👇
 
 ```tsx
-async getDepositAddress(
-  fromChain: string, // source chain
-  toChain: string, // destination chain
-  destinationAddress: string, // destination address to transfer the token to
-  asset: string, // denom of asset. See note (2) below
+interface GetDepositAddressParams {
+  fromChain: string; // See note (3) below
+  toChain: string; // See note (3) below
+  destinationAddress: string; // See note (1) below
+  asset: string; // denom of asset. See note (2) below
   options?: {
-    _traceId: string;
+    shouldUnwrapIntoNative?: boolean;
+    refundAddress?: string; // optional. See note (4) below
+  };
+}
+
+async getDepositAddress({
+  fromChain, toChain, destinationAddress, asset
+}: GetDepositAddressParams): Promise<string> {}
+```
+
+#### EXAMPLES
+All possible use cases are covered in the scenarios below
+
+##### 1. Send tokens from a Cosmos-based chain
+
+Transfer any Axelar-supported asset from a cosmos-based chain to a destination chain. 
+* Destination chains can be either an EVM chain or cosmos-based chain
+* When sending to an EVM chain, the asset will arrive as an ERC-20 asset
+
+Example acceptance criteria: 
+`I want to send axlUSDC on Osmosis and receive the equivalent ERC-20 version on Avalanche.`
+
+```ts
+const sdk = new AxelarAssetTransfer({ environment: "testnet" });
+
+const fromChain = CHAINS.TESTNET.OSMOSIS, 
+  toChain = CHAINS.TESTNET.AVALANCHE,
+  destinationAddress = "0xF16DfB26e1FEc993E085092563ECFAEaDa7eD7fD",
+  asset: "uausdc";  // denom of asset. See note (2) below
+
+const depositAddress = await sdk.getDepositAddress({
+  fromChain, 
+  toChain, 
+  destinationAddress, 
+  asset
+});
+```
+
+##### 2. Send ERC-20 tokens from a EVM chain
+
+Transfer any Axelar-supported ERC-20 asset from an EVM chain to any destination chain.
+* Destination chains can be either an EVM chain or cosmos-based chain
+* When sending to an EVM chain, the asset will arrive as an ERC-20 asset
+
+Example acceptance criteria: 
+`I want to send axlUSDC on Avalanche and receive axlUSDC on Osmosis.`
+
+```ts
+const sdk = new AxelarAssetTransfer({ environment: "testnet" });
+
+const fromChain = CHAINS.TESTNET.AVALANCHE, 
+  toChain = CHAINS.TESTNET.OSMOSIS,
+  destinationAddress = "osmo1x3z2vepjd7fhe30epncxjrk0lehq7xdqe8ltsn",
+  asset: "uausdc";
+
+const depositAddress = await sdk.getDepositAddress({
+  fromChain, 
+  toChain, 
+  destinationAddress, 
+  asset
+});
+
+```
+
+##### 3. Send native tokens from a EVM chain
+
+Also known as "wrap", transfer the native asset of an EVM chain to any destination chain.
+* Destination chains can be either an EVM chain or cosmos-based chain
+* When sending to an EVM chain, the asset will arrive as an ERC-20 "wrapped" asset
+* The only difference here vs. case (1) above is that the specified asset is the native asset of the source EVM chain. 
+
+Example acceptance criteria: 
+`I want to send AVAX on Avalanche and receive the equivalent ERC-20 version on Polygon.`
+
+```ts
+const sdk = new AxelarAssetTransfer({ environment: "testnet" });
+
+const fromChain = CHAINS.TESTNET.AVALANCHE, 
+  toChain = CHAINS.TESTNET.POLYGON,
+  destinationAddress = "0xF16DfB26e1FEc993E085092563ECFAEaDa7eD7fD",
+  asset: "AVAX"
+
+const depositAddress = await sdk.getDepositAddress({
+  fromChain, 
+  toChain, 
+  destinationAddress, 
+  asset
+});
+```
+
+##### 4. Send a wrapped native token from an EVM chain back to its home EVM chain, e.g. "UNWRAP"
+
+Also known as "wrap", transfer a wrapped native token from an EVM chain back to its home EVM chain
+* The destination chain must be the native chain on the wrapped native asset
+* You can specify an optional parameter in the configs for `GetDepositAddressParams` whether you want to receive the asset in the form of native tokens on the destination chain OR its ERC-20 equivalent. 
+
+Two scenarios below
+
+Example acceptance criteria: 
+`I want to send WAVAX on Polygon and receive WAVAX on Avalanche.`
+
+```ts
+const sdk = new AxelarAssetTransfer({ environment: "testnet" });
+
+const fromChain = CHAINS.TESTNET.POLYGON, 
+  toChain = CHAINS.TESTNET.AVALANCHE,
+  destinationAddress = "0xF16DfB26e1FEc993E085092563ECFAEaDa7eD7fD",
+  asset: "wavax-wei"
+
+const depositAddress = await sdk.getDepositAddress({
+  fromChain, 
+  toChain, 
+  destinationAddress, 
+  asset,
+  options: {
+    shouldUnwrapIntoNative: false
   }
-): Promise<string> {}
-```
-
-Example: Cosmos to EVM (Kujira to Avalanche):
-
-```tsx
-const sdk = new AxelarAssetTransfer({
-  environment: "testnet",
 });
-const depositAddress = await sdk.getDepositAddress(
-  "kujira", // source chain
-  "avalanche", // destination chain
-  "0xF16DfB26e1FEc993E085092563ECFAEaDa7eD7fD", // destination address
-  "uausdc" // denom of asset. See note (2) below
-);
 ```
 
-Example: EVM to Cosmos (Avalanche to Kujira):
+Example acceptance criteria: 
+`I want to send WAVAX on Polygon and receive AVAX on Avalanche.`
 
-```tsx
-const sdk = new AxelarAssetTransfer({
-  environment: "testnet",
-  auth: "local",
+```ts
+const sdk = new AxelarAssetTransfer({ environment: "testnet" });
+
+const fromChain = CHAINS.TESTNET.POLYGON, 
+  toChain = CHAINS.TESTNET.AVALANCHE,
+  destinationAddress = "0xF16DfB26e1FEc993E085092563ECFAEaDa7eD7fD",
+  asset: "wavax-wei"
+
+const depositAddress = await sdk.getDepositAddress({
+  fromChain, 
+  toChain, 
+  destinationAddress, 
+  asset,
+  options: {
+    shouldUnwrapIntoNative: true
+  }
 });
-const depositAddress = await sdk.getDepositAddress(
-  "avalanche", // source chain
-  "kujira", // destination chain
-  "kujira1tck82gz5v5rzc74hmf8j9vyjcs3nnnyc6dgc3c", // destination address
-  "uausdc" // denom of asset. See note (2) below
-);
 ```
 
-Notes:
+##### Notes
 
 (1) The destination address format is validated based on the destination chain. Make sure the destination address is a valid address on the destination chain. For instance, Kujira addresses begin with “kujira”, etc.
 
 Once the deposit address has been generated, the user can make a token transfer (on blockchain) to the deposit address. The transfer will be picked up by the Axelar network and relayed to the destination chain.
 
-(2) For all the assets that Axelar supports natively, the network identifies the asset by a `denom`. If you are accustomed to the `symbol` typically used on EVM chains, you will have to convert that `symbol` to a `denom`. The SDK has an API method you can use to convert symbol to denom: [getDenomFromSymbol](./axelar-query-api#getdenomfromsymbol)
+(2) For all the assets that Axelar supports natively, the network identifies the asset by a `denom`. If you are accustomed to the `symbol` typically used on EVM chains, you will have to convert that `symbol` to a `denom`. The SDK has an API method you can use to convert symbol to denom: [getDenomFromSymbol](./axelar-query-api#getdenomfromsymbol) 
+
+(3) Chain IDs (as recognized by Axelar) must be used here. For example, in testnet, the chain ID for `Osmosis` is `osmosis-5`. 
+
+(4) Refund address is an optional parameter. It specifies the address on a source chain where tokens erroneously deposited into a deposit address can be refunded. For example, if a deposit address was generated to send USDC, but the user mistakenly deposits WAVAX. If no address is specified, the API defaults the parameter to the Gas Receiver contract that can refund on the user's behalf. At the moment, the refundAddress parameter is only compatible for use cases 3 and 4 above, wrap and unwrap cases, respectively.
