@@ -52,14 +52,12 @@
       ]
     },
     {
-      "name": "REST API",
+      "name": "REST API | Swagger",
       "value": [
         {
-          "title": "Swagger",
           "value": "https://lcd-axelar.imperator.co/static/swagger/"
         },
         {
-          "title": "Swagger",
           "value": "https://lcd-axelar.stakerun.com/static/swagger/"
         }
       ]
@@ -284,10 +282,10 @@
       ]
     },
     {
-      "name": "REST API",
+      "name": "REST API | Swagger",
       "value": [
         {
-          "title": "Swagger",
+          "title": "Swagger-UI",
           "value": "https://lcd-axelar-testnet.imperator.co/static/swagger/"
         }
       ]
@@ -360,9 +358,6 @@
       "value": [
         {
           "value": "https://axelartest-grpcweb.quantnode.tech"
-        },
-        {
-          "value": "https://axelartest-grpcweb.quantnode.tech:9091"
         }
       ]
     },
