@@ -90,7 +90,7 @@ content: <CodeBlock language="bash">
 NETWORK_NAME=mainnet
 NODE_TYPE=full
 BEDROCK_SOURCE=download
-OP_NODE__RPC_ENDPOINT=YOUR_GOERLI_ETH_NODE
+OP_NODE__RPC_ENDPOINT=YOUR_MAINNET_ETH_NODE
 OP_NODE__RPC_TYPE=basic
 `}
 </CodeBlock>
