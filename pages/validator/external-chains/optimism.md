@@ -1,6 +1,4 @@
 # Optimism
------------
-
 import Markdown from 'markdown-to-jsx'
 import Tabs from '../../../components/tabs'
 import CodeBlock from '../../../components/code-block'
@@ -61,8 +59,7 @@ OP_NODE__RPC_TYPE=
 {
 title: "Testnet",
 content: <CodeBlock language="bash">
-{`
-# only goerli is supported for now
+{`# only goerli is supported for now
 NETWORK_NAME=goerli
 # can be full or archive
 NODE_TYPE=full
@@ -86,8 +83,7 @@ OP_NODE__RPC_TYPE=
 {
 title: "Mainnet",
 content: <CodeBlock language="bash">
-{`
-NETWORK_NAME=mainnet
+{`NETWORK_NAME=mainnet
 NODE_TYPE=full
 BEDROCK_SOURCE=download
 OP_NODE__RPC_ENDPOINT=YOUR_MAINNET_ETH_NODE
@@ -98,8 +94,7 @@ OP_NODE__RPC_TYPE=basic
 {
 title: "Testnet",
 content: <CodeBlock language="bash">
-{`
-NETWORK_NAME=goerli
+{`NETWORK_NAME=goerli
 NODE_TYPE=full
 BEDROCK_SOURCE=download
 OP_NODE__RPC_ENDPOINT=YOUR_GOERLI_ETH_NODE
@@ -108,7 +103,6 @@ OP_NODE__RPC_TYPE=basic
 </CodeBlock>
 }
 ]} />
-
 
 ## Update variables in the config
 
@@ -127,7 +121,6 @@ docker compose up -d
 
 This should show an output like this:
 ```bash
-                                                                                                                 37.0s
    ⠿ f77177d712f8 Pull complete                                                                                                                             37.1s
    ⠿ 0fdadfebeb9e Pull complete                                                                                                                             37.2s                                                                                                                           40.5s
    ⠿ e653eb58405d Pull complete                                                                                                                             40.7s
