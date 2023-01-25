@@ -32,7 +32,6 @@ See below for details. Read this entire article before you begin supporting exte
   - [Ethereum](./ethereum)
   - [Fantom](./fantom)
   - [Moonbeam](./moonbeam)
-  - [Moonbeam](./moonbeam)
   - [Polygon](./polygon)
   - [Celo](./celo)
   - [Optimism](./optimism)

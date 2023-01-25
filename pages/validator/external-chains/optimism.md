@@ -76,7 +76,7 @@ NETWORK_NAME=goerli
 NODE_TYPE=full
 # only download option is available for now
 BEDROCK_SOURCE=download
-# L1 node that the op-node will get chain data from - if you are using third party - make sure it will not get rate limited
+# L1 node that the op-node will get chain data from - please use your own ETH node
 OP_NODE__RPC_ENDPOINT=
 # Use basic for OP_NODE__RPC_TYPE if you are using your own node in OP_NODE__RPC_ENDPOINT
 # Other options are: alchemy, quicknode, infura, parity, nethermind, debug_geth, erigon
@@ -89,7 +89,7 @@ OP_NODE__RPC_TYPE=
 ]} />
 
 #### Example Variables
-These examples include 3rd party RPCs and are just to give you an idea, if you decide to use them, remember to make sure you are not getting rate limited when syncing
+
 <Tabs tabs={[
 {
 title: "Mainnet",
@@ -99,8 +99,8 @@ NETWORK_NAME=mainnet
 NODE_TYPE=full
 SYNC_SOURCE=l1
 HEALTHCHECK__REFERENCE_RPC_PROVIDER=https://mainnet.optimism.io
-FAULT_DETECTOR__L1_RPC_PROVIDER=https://mainnet.infura.io/v3/your_infura_key
-DATA_TRANSPORT_LAYER__RPC_ENDPOINT=https://mainnet.infura.io/v3/your_infura_key
+FAULT_DETECTOR__L1_RPC_PROVIDER=YOUR_MAINNET_ETH_NODE
+DATA_TRANSPORT_LAYER__RPC_ENDPOINT=YOUR_MAINNET_ETH_NODE
 `}
 </CodeBlock>
 },
@@ -111,8 +111,8 @@ content: <CodeBlock language="bash">
 NETWORK_NAME=goerli
 NODE_TYPE=full
 BEDROCK_SOURCE=download
-OP_NODE__RPC_ENDPOINT=https://goerli.infura.io/v3/your_infura_key
-OP_NODE__RPC_TYPE=infura
+OP_NODE__RPC_ENDPOINT=YOUR_GOERLI_ETH_NODE
+OP_NODE__RPC_TYPE=basic
 `}
 </CodeBlock>
 }
@@ -390,7 +390,6 @@ content: <CodeBlock language="yaml">
 {`
 [[axelar_bridge_evm]]
 name = "optimism"
-l1_chain_name = "Ethereum"
 rpc_addr = "http://IP:PORT"
 start-with-bridge = true
 `}
@@ -402,7 +401,6 @@ content: <CodeBlock language="yaml">
 {`
 [[axelar_bridge_evm]]
 name = "optimism"
-l1_chain_name = "ethereum-2"
 rpc_addr = "http://IP:PORT"
 start-with-bridge = true
 `}
