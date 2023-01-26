@@ -47,8 +47,7 @@ BEDROCK_SOURCE=download
 # Your Ethereum RPC node endpoint. As an L2, your Optimism node will verify tx finality by
 # querying your own Ethereum RPC node.
 OP_NODE__RPC_ENDPOINT=
-OP_NODE__RPC_TYPE=basic
-`}
+OP_NODE__RPC_TYPE=basic`}
 </CodeBlock>
 },
 {
@@ -61,8 +60,7 @@ BEDROCK_SOURCE=download
 # Your Ethereum RPC node endpoint. As an L2, your Optimism node will verify tx finality by
 # querying your own Ethereum RPC node.
 OP_NODE__RPC_ENDPOINT=
-OP_NODE__RPC_TYPE=basic
-`}
+OP_NODE__RPC_TYPE=basic`}
 </CodeBlock>
 }
 ]} />
@@ -185,23 +183,19 @@ vald's `config.toml`
 {
 title: "Mainnet",
 content: <CodeBlock language="yaml">
-{`
-[[axelar_bridge_evm]]
+{`[[axelar_bridge_evm]]
 name = "optimism"
 rpc_addr = "http://IP:PORT"
-start-with-bridge = true
-`}
+start-with-bridge = true`}
 </CodeBlock>
 },
 {
 title: "Testnet",
 content: <CodeBlock language="yaml">
-{`
-[[axelar_bridge_evm]]
+{`[[axelar_bridge_evm]]
 name = "optimism"
 rpc_addr = "http://IP:PORT"
-start-with-bridge = true
-`}
+start-with-bridge = true`}
 </CodeBlock>
 }
 ]} />
