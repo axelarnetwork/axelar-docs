@@ -1,4 +1,5 @@
 # Optimism
+
 import Markdown from 'markdown-to-jsx'
 import Tabs from '../../../components/tabs'
 import CodeBlock from '../../../components/code-block'
@@ -18,8 +19,8 @@ Instructions to set up your Optimism node.
 - MacOS or Ubuntu 20.04 (tested on 20.04)
 - [Official Documentation](https://community.optimism.io/docs/developers/build/run-a-node/#)
 
-
 ## Prerequisites
+
 ```bash
 sudo apt-get install jq -y
 snap install docker 
@@ -41,18 +42,12 @@ Set the following config options in `simple-optimism-node/.env`:
 title: "Mainnet",
 content: <CodeBlock language="bash">
 {`NETWORK_NAME=mainnet
-# can be full or archive
 NODE_TYPE=full
-# only download option is available for now
 BEDROCK_SOURCE=download
-# L1 node that the op-node will get chain data from - please use your own ETH node
+# Your Ethereum RPC node endpoint. As an L2, your Optimism node will verify tx finality by
+# querying your own Ethereum RPC node.
 OP_NODE__RPC_ENDPOINT=
-# Use basic for OP_NODE__RPC_TYPE if you are using your own node in OP_NODE__RPC_ENDPOINT
-# Other options are: alchemy, quicknode, infura, parity, nethermind, debug_geth, erigon
-# Depending upon which provider you are using in OP_NODE__RPC_ENDPOINT, mentioning the right
-# OP_NODE__RPC_TYPE will optimize the process
-OP_NODE__RPC_TYPE=
-`}
+OP_NODE__RPC_TYPE=basic`}
 </CodeBlock>
 },
 {
@@ -60,62 +55,23 @@ title: "Testnet",
 content: <CodeBlock language="bash">
 {`# only goerli is supported for now
 NETWORK_NAME=goerli
-# can be full or archive
 NODE_TYPE=full
-# only download option is available for now
 BEDROCK_SOURCE=download
-# L1 node that the op-node will get chain data from - please use your own ETH node
+# Your Ethereum RPC node endpoint. As an L2, your Optimism node will verify tx finality by
+# querying your own Ethereum RPC node.
 OP_NODE__RPC_ENDPOINT=
-# Use basic for OP_NODE__RPC_TYPE if you are using your own node in OP_NODE__RPC_ENDPOINT
-# Other options are: alchemy, quicknode, infura, parity, nethermind, debug_geth, erigon
-# Depending upon which provider you are using in OP_NODE__RPC_ENDPOINT, mentioning the right
-# OP_NODE__RPC_TYPE will optimize the process
-OP_NODE__RPC_TYPE=
-`}
+OP_NODE__RPC_TYPE=basic`}
 </CodeBlock>
 }
 ]} />
 
-#### Example Variables
-
-<Tabs tabs={[
-{
-title: "Mainnet",
-content: <CodeBlock language="bash">
-{`NETWORK_NAME=mainnet
-NODE_TYPE=full
-BEDROCK_SOURCE=download
-OP_NODE__RPC_ENDPOINT=YOUR_MAINNET_ETH_NODE
-OP_NODE__RPC_TYPE=basic
-`}
-</CodeBlock>
-},
-{
-title: "Testnet",
-content: <CodeBlock language="bash">
-{`NETWORK_NAME=goerli
-NODE_TYPE=full
-BEDROCK_SOURCE=download
-OP_NODE__RPC_ENDPOINT=YOUR_GOERLI_ETH_NODE
-OP_NODE__RPC_TYPE=basic
-`}
-</CodeBlock>
-}
-]} />
-
-## Run Docker Compose Up
+## Start the node
 ```bash
 docker compose up -d
 ```
 
 This should show an output like this:
 ```bash
-   ⠿ f77177d712f8 Pull complete                                                                                                                             37.1s
-   ⠿ 0fdadfebeb9e Pull complete                                                                                                                             37.2s                                                                                                                           40.5s
-   ⠿ e653eb58405d Pull complete                                                                                                                             40.7s
-   ⠿ 9811a384d9bd Pull complete                                                                                                                             40.8s
-   ⠹ 860a57ef97cb Extracting [=======================>                           ]    166MB/355.3MB                                                         94.3s
-   ⠹ a4c5d9f0fbe0 Download complete                                                                                                                         94.3s                                                                                                            94.3s                                                                                                                                    97.4s
    ⠿ b08a0a826235 Pull complete                                                                                                                             90.5s
    ⠦ d71d159599c3 Downloading [>                                                  ]  6.232kB/487.2kB                                                        91.6s
    ⠦ 5cfc4241bcf3 Waiting                                                                                                                                   91.6s
@@ -138,7 +94,6 @@ simple-optimism-node-op-geth-1    "/bin/sh -c '/script…"   op-geth            
 simple-optimism-node-op-node-1    "/bin/sh -c '/script…"   op-node             running             
 simple-optimism-node-torrent-1    "/init"                  torrent             running             0.0.0.0:6881->6881/tcp, 0.0.0.0:6881->6881/udp, :::6881->6881/tcp, :::6881->6881/udp
 ```
-
 
 ## Check logs
 
@@ -185,16 +140,14 @@ simple-optimism-node-op-node-1  | INFO [01-22|07:50:13.466] Sync progress       
 simple-optimism-node-op-node-1  | INFO [01-22|07:50:14.332] Received signed execution payload from p2p id=15c90f..5c92ac:4472873 peer=16Uiu2HAm4hA3Jd2hPnstG3yBUvLULV9dVZgtxmD23iH3wP2ZfYHN
 ```
 
-## Verify
+## Verify node sync status
 
 #### Method 1:
 ```bash
-YOUR_IP=$(curl -4 ifconfig.co)
-curl -X POST $YOUR_IP:9991 -H "Content-Type: application/json" --data '{"jsonrpc":"2.0","method":"eth_blockNumber","params":[],"id":1}' | jq
-
+curl -X POST $(curl -4 ifconfig.co):9991 -H "Content-Type: application/json" --data '{"jsonrpc":"2.0","method":"eth_blockNumber","params":[],"id":1}' | jq
 ```
-If you get something like this in response of the above rpc call, your node is setup correctly
 
+If you get something like this in response to the above rpc call, your node is setup correctly
 ```json
 {
   "jsonrpc": "2.0",
@@ -204,54 +157,48 @@ If you get something like this in response of the above rpc call, your node is s
 ```
 You can use a [hex to number convertor](https://www.binaryhexconverter.com/hex-to-decimal-converter) to get the block height
 
-
 #### Method 2:
 You can also check your status by connecting to geth console
 
 ```bash
 docker exec -it simple-optimism-node-op-geth-1 geth attach http://localhost:8545
-eth.blockNumber
+> eth.blockNumber
 20000000 # it will show you the latest block - number here is just an example
 ```
 
-You can compare the block height on your node with explorer ([mainnet](https://optimistic.etherscan.io) or [testnet](https://goerli-optimism.etherscan.io)), use your RPC only when it has caught up with the latest block height
+You can compare the block height on your node with explorer ([mainnet](https://optimistic.etherscan.io) or [testnet](https://goerli-optimism.etherscan.io)),
+use your RPC node only when it has caught up with the latest block height.
 
-## Endpoint
+## RPC Endpoint
 
 ```bash
-echo "${YOUR_IP}:9991"
+echo "$(curl -4 ifconfig.co):9991"
 ```
 
 ### Configure vald
 
 In order for `vald` to connect to your Optimism node, your `rpc_addr` should be exposed in
 vald's `config.toml`
-
 <Tabs tabs={[
 {
 title: "Mainnet",
 content: <CodeBlock language="yaml">
-{`
-[[axelar_bridge_evm]]
+{`[[axelar_bridge_evm]]
 name = "optimism"
 rpc_addr = "http://IP:PORT"
-start-with-bridge = true
-`}
+start-with-bridge = true`}
 </CodeBlock>
 },
 {
 title: "Testnet",
 content: <CodeBlock language="yaml">
-{`
-[[axelar_bridge_evm]]
+{`[[axelar_bridge_evm]]
 name = "optimism"
 rpc_addr = "http://IP:PORT"
-start-with-bridge = true
-`}
+start-with-bridge = true`}
 </CodeBlock>
 }
 ]} />
-
 
 ## Common Node Operations
 
@@ -279,4 +226,3 @@ To stop and wipe out everything
 ```bash
 docker compose down -v
 ```
-
