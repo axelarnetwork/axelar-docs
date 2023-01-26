@@ -104,16 +104,6 @@ OP_NODE__RPC_TYPE=basic
 }
 ]} />
 
-## Update variables in the config
-
-```bash
-sed -i "s/NETWORK_NAME *=.*/NETWORK_NAME=$NETWORK_NAME/g" $HOME/simple-optimism-node/.env
-sed -i "s/NODE_TYPE *=.*/NODE_TYPE=$NODE_TYPE/g" $HOME/simple-optimism-node/.env
-sed -i "s/BEDROCK_SOURCE *=.*/BEDROCK_SOURCE=$BEDROCK_SOURCE/g" $HOME/simple-optimism-node/.env
-sed -i "s%OP_NODE__RPC_ENDPOINT *=.*%OP_NODE__RPC_ENDPOINT=$OP_NODE__RPC_ENDPOINT%g" $HOME/simple-optimism-node/.env
-sed -i "s/OP_NODE__RPC_TYPE *=.*/OP_NODE__RPC_TYPE=$OP_NODE__RPC_TYPE/g" $HOME/simple-optimism-node/.env
-```
-
 ## Run Docker Compose Up
 ```bash
 docker compose up -d
