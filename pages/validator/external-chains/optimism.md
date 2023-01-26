@@ -40,8 +40,7 @@ Set the following config options in `simple-optimism-node/.env`:
 {
 title: "Mainnet",
 content: <CodeBlock language="bash">
-{`
-NETWORK_NAME=mainnet
+{`NETWORK_NAME=mainnet
 # can be full or archive
 NODE_TYPE=full
 # only download option is available for now
