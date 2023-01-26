@@ -33,9 +33,9 @@ cd simple-optimism-node
 cp .env.example .env
 ```
 
-## Set environment variables
+## Set node config
 
-
+Set the following config options in `simple-optimism-node/.env`:
 <Tabs tabs={[
 {
 title: "Mainnet",
