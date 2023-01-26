@@ -25,16 +25,22 @@ const sdk = new AxelarQueryAPI({
 This is a useful query for GMP transactions, when invoking `callContract` or `callContractWithToken` to get an estimate of the appropriate gas payment to be made to the gas receiver on the source chain.
 
 ```ts
-// (Optional) An estimated gas amount required to execute `executeWithToken` function. The default value is 700000 which sufficients for most transaction.
-const estimateGasUsed = 400000;
-
-// Returns avax amount to pay gas
-const gasFee = await sdk.estimateGasFee(
-  EvmChain.AVALANCHE,
-  EvmChain.FANTOM,
-  GasToken.AVAX,
-  estimateGasUsed
-);
+  /**
+   * Calculate estimated gas amount to pay for the gas receiver contract.
+   * @param sourceChainId
+   * @param destinationChainId
+   * @param sourceChainTokenSymbol
+   * @param gasLimit (Optional) An estimated gas amount required to execute `executeWithToken` function. The default value is 700000 which should be sufficient for most transactions.
+   * @param gasMultiplier (Optional) A multiplier used to create a buffer above the calculated gas fee, to account for potential slippage throughout tx execution, e.g. 1.1 = 10% buffer. supports up to 3 decimal places
+   * @returns
+   */
+  public async estimateGasFee(
+    sourceChainId: EvmChain | string,
+    destinationChainId: EvmChain | string,
+    sourceChainTokenSymbol: GasToken | string,
+    gasLimit: number = DEFAULT_ESTIMATED_GAS,
+    gasMultiplier = 1.1
+  ): Promise<string> 
 ```
 
 #### getTransferFee
