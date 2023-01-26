@@ -223,6 +223,22 @@
       "image": "/images/assets/xcn.svg",
       "decimals": 18,
       "transfer_fee": 1.2
+    },
+    {
+      "id": "polygon-uusdc",
+      "name": "USDC - Polygon USDC",
+      "symbol": "USDC",
+      "image": "/images/assets/usdc.svg",
+      "decimals": 6,
+      "transfer_fee": 0.1
+    },
+    {
+      "id": "avalanche-uusdc",
+      "name": "USDC - Avalanche USDC",
+      "symbol": "USDC",
+      "image": "/images/assets/usdc.svg",
+      "decimals": 6,
+      "transfer_fee": 0.1
     }
   ],
   "testnet": [

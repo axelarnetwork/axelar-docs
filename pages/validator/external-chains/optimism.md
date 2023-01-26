@@ -1,6 +1,4 @@
 # Optimism
------------
-
 import Markdown from 'markdown-to-jsx'
 import Tabs from '../../../components/tabs'
 import CodeBlock from '../../../components/code-block'
@@ -35,15 +33,14 @@ cd simple-optimism-node
 cp .env.example .env
 ```
 
-## Set environment variables
+## Set node config
 
-
+Set the following config options in `simple-optimism-node/.env`:
 <Tabs tabs={[
 {
 title: "Mainnet",
 content: <CodeBlock language="bash">
-{`
-NETWORK_NAME=mainnet
+{`NETWORK_NAME=mainnet
 # can be full or archive
 NODE_TYPE=full
 # only download option is available for now
@@ -61,8 +58,7 @@ OP_NODE__RPC_TYPE=
 {
 title: "Testnet",
 content: <CodeBlock language="bash">
-{`
-# only goerli is supported for now
+{`# only goerli is supported for now
 NETWORK_NAME=goerli
 # can be full or archive
 NODE_TYPE=full
@@ -86,8 +82,7 @@ OP_NODE__RPC_TYPE=
 {
 title: "Mainnet",
 content: <CodeBlock language="bash">
-{`
-NETWORK_NAME=mainnet
+{`NETWORK_NAME=mainnet
 NODE_TYPE=full
 BEDROCK_SOURCE=download
 OP_NODE__RPC_ENDPOINT=YOUR_MAINNET_ETH_NODE
@@ -98,8 +93,7 @@ OP_NODE__RPC_TYPE=basic
 {
 title: "Testnet",
 content: <CodeBlock language="bash">
-{`
-NETWORK_NAME=goerli
+{`NETWORK_NAME=goerli
 NODE_TYPE=full
 BEDROCK_SOURCE=download
 OP_NODE__RPC_ENDPOINT=YOUR_GOERLI_ETH_NODE
@@ -109,17 +103,6 @@ OP_NODE__RPC_TYPE=basic
 }
 ]} />
 
-
-## Update variables in the config
-
-```bash
-sed -i "s/NETWORK_NAME *=.*/NETWORK_NAME=$NETWORK_NAME/g" $HOME/simple-optimism-node/.env
-sed -i "s/NODE_TYPE *=.*/NODE_TYPE=$NODE_TYPE/g" $HOME/simple-optimism-node/.env
-sed -i "s/BEDROCK_SOURCE *=.*/BEDROCK_SOURCE=$BEDROCK_SOURCE/g" $HOME/simple-optimism-node/.env
-sed -i "s%OP_NODE__RPC_ENDPOINT *=.*%OP_NODE__RPC_ENDPOINT=$OP_NODE__RPC_ENDPOINT%g" $HOME/simple-optimism-node/.env
-sed -i "s/OP_NODE__RPC_TYPE *=.*/OP_NODE__RPC_TYPE=$OP_NODE__RPC_TYPE/g" $HOME/simple-optimism-node/.env
-```
-
 ## Run Docker Compose Up
 ```bash
 docker compose up -d
@@ -127,7 +110,6 @@ docker compose up -d
 
 This should show an output like this:
 ```bash
-                                                                                                                 37.0s
    ⠿ f77177d712f8 Pull complete                                                                                                                             37.1s
    ⠿ 0fdadfebeb9e Pull complete                                                                                                                             37.2s                                                                                                                           40.5s
    ⠿ e653eb58405d Pull complete                                                                                                                             40.7s
