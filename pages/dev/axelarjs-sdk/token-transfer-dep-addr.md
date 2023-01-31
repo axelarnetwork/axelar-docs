@@ -174,7 +174,7 @@ const sdk = new AxelarAssetTransfer({ environment: "testnet" });
 const fromChain = CHAINS.TESTNET.AVALANCHE, 
   toChain = CHAINS.TESTNET.POLYGON,
   destinationAddress = "0xF16DfB26e1FEc993E085092563ECFAEaDa7eD7fD",
-  asset: "AVAX"
+  asset: "avax"
 
 const depositAddress = await sdk.getDepositAddress({
   fromChain, 
