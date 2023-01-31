@@ -2,13 +2,13 @@ import DevNav from '../../../components/index/dev-nav'
 
 # Start building on Axelar
 
-Developer tools allow you to build on the right platform for your use case so your dApp can access users, assets, and applications across all Axelar-connected ecosystems. 
+Developer tools allow you to build on the right platform for your use case so your dApp can access users, assets, and applications across all Axelar-connected ecosystems.
 
 As a dApp developer, you can leverage the Axelar application-development layer for cross-chain communication and focus on building the functionality that differentiates your dApp.
 
 ## Local development environment
 
-By building the (Hello World)[./hello-world] dApp, you already configured your local development environment.
+By building the [Hello World](../hello-world.md) dApp, you already configured your local development environment.
 
 ## Cross-chain functions
 
@@ -16,7 +16,7 @@ Build your dApp to support the basic cross-chain functions:
 
 - Transfer tokens
 
-- Send messages using [General Message Passing (GMP)](./gmp-overview)
+- Send messages using [General Message Passing (GMP)](./../gmp-overview.md)
 
 ### Transfer tokens
 
@@ -42,7 +42,7 @@ To transfer tokens, choose the cross-chain token transfer path that is appropria
 
 Send a cross-chain message to call any function on any other connected chain. Send a message using the GMP contract call that is appropriate for your use case.
 
-- [callContract](./gmp-messages.md)
+- [callContract](gmp-messages.md)
 
   Use the `callContract` function to call a contract on chain B from chain A.
 
