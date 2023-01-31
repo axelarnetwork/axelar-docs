@@ -48,8 +48,10 @@ enum GMPStatus {
   SRC_GATEWAY_CALLED = "source_gateway_called",
   DEST_GATEWAY_APPROVED = "destination_gateway_approved",
   DEST_EXECUTED = "destination_executed",
-  DEST_ERROR = "error",
-  ERROR_FETCHING_STATUS = "error_fetching_status",
+  DEST_EXECUTE_ERROR = "destination_execute_error",
+  DEST_EXECUTING = "executing",
+  UNKNOWN_ERROR = "unknown_error",
+  CANNOT_FETCH_STATUS = "cannot_fetch_status"
 }
 interface GasPaidInfo {
   status: GasPaidStatus;
@@ -100,7 +102,7 @@ export interface ApproveGatewayResponse {
 }
 ```
 
-When in this state, there are two options to remediate (below). 
+If `success == false` in the response above, there are two options to remediate (below). 
 
 ### Execute manually OR increase gas payment
 

@@ -881,6 +881,36 @@
           "transfer_fee": 130.0
         }
       ]
+    },
+    {
+      "id": "polygon-uusdc",
+      "name": "USDC - Polygon USDC",
+      "symbol": "USDC",
+      "image": "/images/assets/usdc.svg",
+      "contracts": [
+        {
+          "chain": "polygon",
+          "address": "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174",
+          "symbol": "USDC",
+          "decimals": 6,
+          "transfer_fee": 1.5
+        }
+      ]
+    },
+    {
+      "id": "avalanche-uusdc",
+      "name": "USDC - Avalanche USDC",
+      "symbol": "USDC",
+      "image": "/images/assets/usdc.svg",
+      "contracts": [
+        {
+          "chain": "avalanche",
+          "address": "0xB97EF9Ef8734C71904D8002F8b6Bc66Dd9c48a6E",
+          "symbol": "USDC",
+          "decimals": 6,
+          "transfer_fee": 1.5
+        }
+      ]
     }
   ],
   "testnet": [

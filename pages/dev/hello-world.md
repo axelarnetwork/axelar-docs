@@ -22,6 +22,7 @@ git clone https://github.com/axelarnetwork/axelar-local-gmp-examples.git
 Build contracts and tests:
 
 ```bash
+cd axelar-local-gmp-examples
 npm ci
 npm run build
 ```

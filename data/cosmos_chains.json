@@ -1,6 +1,12 @@
 {
   "mainnet": [
     {
+      "id": "acrechain",
+      "name": "Acrechain",
+      "network_id": "acre",
+      "image": "/images/chains/acrechain.svg"
+    },
+    {
       "id": "agoric",
       "name": "Agoric",
       "network_id": "agoric",
@@ -113,6 +119,12 @@
       "name": "Umee",
       "network_id": "umee",
       "image": "/images/chains/umee.svg"
+    },
+    {
+      "id": "xpla",
+      "name": "XPLA",
+      "network_id": "xpla",
+      "image": "/images/chains/xpla.svg"
     },
     {
       "id": "emoney",
