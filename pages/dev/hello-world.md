@@ -4,22 +4,45 @@ What better way to start than to lead by example? And a simple one we're all fam
 
 ## One-time setup
 
-Install [nodejs](https://nodejs.org/en/download/). Run `node -v` to check your installation.
+Complete these steps to verify that your local development environment meets the prerequisites.
 
-Version 16 is required. If needed, you can switch your node version via
+### Runtime environment
 
-```bash
-sudo npm i -g n
-sudo n v16.15.0
+Install the [Node.js](https://nodejs.org/en/download/) JavaScript runtime environment version 16.
+
+To verify the installed version, use the `node -v` command:
+
+```sh
+node -v
 ```
 
-Clone this repo:
+The expected output is `v16.x.x` for any supported Node.js version 16 (v16.0.0 and later).
+
+If your installed version is different:
+
+1. Download and install [Node.js version 16](https://nodejs.org/en/download/releases/) for your environment.
+
+2. Install the npm package manager as a global package:
+
+    ```sh
+    sudo npm install -g n
+    ```
+
+3. Switch to use a supported Node.js version. For example, switch to use v16.15.0:
+
+    ```sh
+    sudo n v16.15.0
+    ```
+### Clone the examples repository
+
+Clone this repository:
 
 ```bash
 git clone https://github.com/axelarnetwork/axelar-local-gmp-examples.git
 ```
+### Build the contracts and tests
 
-Build contracts and tests:
+To build the contracts and tests provided in the examples repository:
 
 ```bash
 cd axelar-local-gmp-examples
@@ -27,23 +50,33 @@ npm ci
 npm run build
 ```
 
-## Set up deployer key
+## Set up the deployer key
 
 ```bash
 cp .env.example .env
 ```
 
-Then update to your own private key.
+Then update the examples to use your own private key.
 
 ## Deploy and run "Hello World"
 
-In order to run the examples against the local emulator, cd to the root directory (`axelar-local-gmp-examples`) in a separate terminal window and run:
-```bash
-node scripts/createLocal
-```
-Leave this terminal open for the duration of the example.
+To run the examples against the local emulator:
 
-Run the "Call Contract" example. The application sends a message - "Hello World" - from a source to a destination chain using the `callContract` function.
+1. In a separate terminal window, change to the root directory:
+
+    ```bash
+    cd axelar-local-gmp-examples
+    ```
+
+1. To create the local examples, run:
+
+    ```bash
+    node scripts/createLocal
+    ```
+
+    Leave this terminal window open for the duration of the example.
+
+2. Run the Call Contract example so the application sends the "Hello World" message from a source to a destination chain using the `callContract` function.
 
 #### 1. Deploy locally
 
@@ -109,5 +142,5 @@ The full transaction flow was:
     - Invoked `setRemoteValue` on the deployed Moonbeam smart contract. This method first pays the gas receiver on Moonbeam the estimated gas cost, then calls `callContractWithToken` on the Moonbeam Gateway contract.
 4. After some time, the relay services detect the gas paid on Moonbeam and executes the smart contract on Avalanche, invoking the `_execute` method that updated the value to the message parameter.
 
-## Ready to [build](./build/getting-started)?
+## Ready to [build](./build/start-building.md)?
 ## Want to learn more about [General Message Passing](./gmp-overview)?
