@@ -52,9 +52,9 @@ Send a cross-chain message to call any function on any other connected chain. Se
 
 ## Helpful resources
 
-- View Axelar network status and cross-chain activities on the (Axelarscan)[https://www.axelarscan.io/] cross-chain block explorer.
+- View Axelar network status and cross-chain activities on the [Axelarscan](https://www.axelarscan.io/) cross-chain block explorer.
 
-- (How General Message Passing (GMP) works)[https://axelar.network/blog/general-message-passing-and-how-can-it-change-web3]
+- [How General Message Passing (GMP) works](https://axelar.network/blog/general-message-passing-and-how-can-it-change-web3)
 
 Use the suite of tools and kick-starter examples in the Axelar developer ecosystem:
 
