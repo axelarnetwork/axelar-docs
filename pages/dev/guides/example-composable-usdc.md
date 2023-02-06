@@ -530,4 +530,4 @@ Axelar delivers secure cross-chain communication. That means dApp users can inte
 
 Axelar has raised capital from top-tier investors, including Binance, Coinbase, Dragonfly Capital and Polychain Capital. Partners include major proof-of-stake blockchains, such as Avalanche, Cosmos, Ethereum, Polkadot and others. Axelar’s team includes experts in distributed systems/cryptography and MIT/Google/Consensys alumni; the co-founders, Sergey Gorbunov and Georgios Vlachos, were founding team members at Algorand.
 
-More about Axelar: [Website](https://axelar.network) | [GitHub](https://github.com/axelarnetwork/axelar-local-gmp-examples) | [Discord](https://discord.com/invite/aRZ3Ra6f7D) | [Twitter](https://twitter.com/axelarcore).
+More about Axelar: [Website](https://axelar.network) | [GitHub](https://github.com/axelarnetwork/axelar-examples) | [Discord](https://discord.com/invite/aRZ3Ra6f7D) | [Twitter](https://twitter.com/axelarcore).

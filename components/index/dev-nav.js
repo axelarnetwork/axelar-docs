@@ -7,7 +7,7 @@ import { HiArrowNarrowRight } from "react-icons/hi";
 const items = [
   {
     title: "5-min starter examples",
-    description: "A curated list of representative examples in our axelar-local-gmp-examples repo",
+    description: "A curated list of representative examples in our axelar-examples repo",
     icon: (
       <AiFillDatabase size={24} />
     ),
