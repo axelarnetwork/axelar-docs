@@ -1,6 +1,16 @@
 {
   "mainnet": [
     {
+      "from": "acrechain",
+      "to": "axelarnet",
+      "channel_id": "channel-5"
+    },
+    {
+      "from": "axelarnet",
+      "to": "acrechain",
+      "channel_id": "channel-51"
+    },
+    {
       "from": "agoric",
       "to": "axelarnet",
       "channel_id": "channel-9"
@@ -179,6 +189,16 @@
       "from": "axelarnet",
       "to": "umee",
       "channel_id": "channel-36"
+    },
+    {
+      "from": "xpla",
+      "to": "axelarnet",
+      "channel_id": "channel-0"
+    },
+    {
+      "from": "axelarnet",
+      "to": "xpla",
+      "channel_id": "channel-49"
     },
     {
       "from": "emoney",

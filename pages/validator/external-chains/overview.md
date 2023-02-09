@@ -35,6 +35,7 @@ See below for details. Read this entire article before you begin supporting exte
   - [Polygon](./polygon)
   - [Celo](./celo)
   - [Arbitrum](./arbitrum)
+  - [Optimism](./optimism)
   - [Kava](./kava)
   - [Heroes of NFT](./hero)
 - Cosmos chains
