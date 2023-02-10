@@ -17,35 +17,29 @@ Each example is self-contained and generally follows the same steps for deployme
 
 Say hello to your first dApp on Axelar. The dApp sends a message -- "Hello World" -- from a source to a destination chain using the `callContract` function.
 
-[Source code](https://github.com/axelarnetwork/axelar-examples/tree/main/examples/call-contract) | [Deploy instructions](https://github.com/axelarnetwork/axelar-examples#call-contract)
+[Source code](https://github.com/axelarnetwork/axelar-examples/tree/main/examples/evm/call-contract) | [Deploy instructions](https://github.com/axelarnetwork/axelar-examples#call-contract)
 
 ## Airdrop
 
 Send axlUSDC from a source chain to a list of recipients on a destination chain using the `callContractWithToken` function. Each recipient will receive an equal portion of the total tokens sent.
 
-[Source code](https://github.com/axelarnetwork/axelar-examples/tree/main/examples/call-contract-with-token) | [Deploy instructions](https://github.com/axelarnetwork/axelar-examples#call-contract-with-token)
+[Source code](https://github.com/axelarnetwork/axelar-examples/tree/main/examples/evm/call-contract-with-token) | [Deploy instructions](https://github.com/axelarnetwork/axelar-examples#call-contract-with-token)
 
 ## Mint tokens and send cross-chain
 
 Mints some amount of ERC-20 tokens at a source chain and sends it using the `callContract` function to a destination chain. Tokens are burned on the source-chain contract and minted on the destination-chain contract. 
 
-[Source code](https://github.com/axelarnetwork/axelar-examples/tree/main/examples/cross-chain-token) | [Deploy instructions](https://github.com/axelarnetwork/axelar-examples#cross-chain-token)
+[Source code](https://github.com/axelarnetwork/axelar-examples/tree/main/examples/evm/cross-chain-token) | [Deploy instructions](https://github.com/axelarnetwork/axelar-examples#cross-chain-token)
 
 ## NFT linker
 
 Send an NFT on a source chain to a recipient on a destination chain using the `callContract` function. If the source chain is where the NFT was originally created, the NFT gets locked in the contract and minted on the destination chain; in the reverse direction, the NFT is burned and transferred to its final recipient on the destination (/original home) chain.
 
-[Source code](https://github.com/axelarnetwork/axelar-examples/tree/main/examples/nft-linker) | [Deploy instructions](https://github.com/axelarnetwork/axelar-examples#nft-linker)
+[Source code](https://github.com/axelarnetwork/axelar-examples/tree/main/examples/evm/nft-linker) | [Deploy instructions](https://github.com/axelarnetwork/axelar-examples#nft-linker)
 
-
-## Nonced execution
-
-This is a useful way of implementing ordered execution with nonces for messages that are sent cross-chain. Examples for usage with the `callContract` and the `callContractWithToken` functions are provided. 
-
-[Source code](https://github.com/axelarnetwork/axelar-examples/tree/main/examples/nonced-execution) | [Deploy instructions](https://github.com/axelarnetwork/axelar-examples#nonced-execution)
 
 ## Two-way example: send back
 
 A two-way example using `callContract` in both directions where a message is sent from a source chain to a destination chain, and an "executed" acknowledgement is sent back to the source chain.
 
-[Source code](https://github.com/axelarnetwork/axelar-examples/tree/main/examples/send-ack) | [Deploy instructions](https://github.com/axelarnetwork/axelar-examples#send-ack)
+[Source code](https://github.com/axelarnetwork/axelar-examples/tree/main/examples/evm/send-ack) | [Deploy instructions](https://github.com/axelarnetwork/axelar-examples#send-ack)
