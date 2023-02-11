@@ -39,7 +39,7 @@ Then update to your own private key.
 
 In order to run the examples against the local emulator, cd to the root directory (`axelar-examples`) in a separate terminal window and run:
 ```bash
-node scripts/createLocal
+node scripts/start
 ```
 Leave this terminal open for the duration of the example.
 
