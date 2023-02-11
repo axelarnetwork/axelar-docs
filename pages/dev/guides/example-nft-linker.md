@@ -1,6 +1,6 @@
 # Example: NFT linker
 
-The [axelar-examples](https://github.com/axelarnetwork/axelar-examples) repo contains an example, [NFT linker](https://github.com/axelarnetwork/axelar-examples/tree/main/examples/nft-linker), covering cross-chain transfers of ERC-721 non-fungible tokens.
+The [axelar-examples](https://github.com/axelarnetwork/axelar-examples) repo contains an example, [NFT linker](https://github.com/axelarnetwork/axelar-examples/tree/main/examples/evm/nft-linker), covering cross-chain transfers of ERC-721 non-fungible tokens.
 
 See the accompanying [video](https://www.youtube.com/watch?v=pAxuQ7PIl8g):
 
