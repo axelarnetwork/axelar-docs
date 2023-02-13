@@ -7,6 +7,10 @@
     "title": "Network",
     "type": "doc"
   },
+  "axlusdc": {
+    "title": "axlUSDC",
+    "type": "doc"
+  },
   "validators": {
     "title": "Registering external chains for validators",
     "type": "doc"

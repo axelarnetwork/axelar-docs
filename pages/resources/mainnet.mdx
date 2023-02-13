@@ -25,6 +25,7 @@ import EVMAssets from '../../components/evm/assets'
 
 <div className="space-y-1 mt-4">
   ### Assets
+  Learn more about [wrapped assets like axlUSDC](/learn/axlusdc).
   <EVMAssets environment="mainnet" />
 </div>
 
