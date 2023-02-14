@@ -29,7 +29,7 @@ snap install docker
 ## Clone Repo
 
 ```bash
-git clone https://github.com/ethereum-optimism/simple-optimism-node.git
+git clone https://github.com/smartcontracts/simple-optimism-node.git
 cd simple-optimism-node
 cp .env.example .env
 ```
