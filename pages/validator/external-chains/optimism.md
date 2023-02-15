@@ -17,7 +17,7 @@ Instructions to set up your Optimism node.
 - [Setup your Axelar validator](/validator/setup)
 - Minimum hardware requirements: 8 AWS vCPU+, 16GB RAM, 80GB+ free storage space.
 - MacOS or Ubuntu 20.04 (tested on 20.04)
-- [Official Documentation](https://community.optimism.io/docs/developers/build/run-a-node/#)
+- [Official Documentation](https://community.optimism.io/docs/developers/bedrock/node-operator-guide/#)
 
 ## Prerequisites
 
@@ -29,7 +29,7 @@ snap install docker
 ## Clone Repo
 
 ```bash
-git clone https://github.com/ethereum-optimism/simple-optimism-node.git
+git clone https://github.com/smartcontracts/simple-optimism-node.git
 cd simple-optimism-node
 cp .env.example .env
 ```
