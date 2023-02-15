@@ -361,7 +361,7 @@
         {
           "chain": "fantom",
           "address": "0x879e73005C36d9a549fFb9846851fe5d1d91b681",
-          "symbol": "axlWAVAX",
+          "symbol": "axlAVAX",
           "decimals": 18,
           "transfer_fee": 0.1
         }
