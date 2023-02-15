@@ -406,7 +406,7 @@
         {
           "chain": "avalanche",
           "address": "0xbB72a453a9280864C330Fa23fFABff73991119A0",
-          "symbol": "axlWFTM",
+          "symbol": "axlFTM",
           "decimals": 18,
           "transfer_fee": 5.4
         },
