@@ -409,6 +409,26 @@
       "image": "/images/chains/arbitrum.svg"
     },
     {
+      "id": "optimism",
+      "name": "Optimism",
+      "chain_id": 420,
+      "network_id": "optimism",
+      "provider_params": [
+        {
+          "chainId": "0x1A4",
+          "chainName": "Optimism Goerli Testnet",
+          "rpcUrls": ["https://goerli.optimism.io"],
+          "nativeCurrency": {
+            "name": "Ethereum",
+            "symbol": "ETH",
+            "decimals": 18
+          },
+          "blockExplorerUrls": ["https://goerli-optimism.etherscan.io/"]
+        }
+      ],
+      "image": "/images/chains/optimism.svg"
+    },
+    {
       "id": "kava",
       "name": "Kava",
       "chain_id": "2221",
