@@ -1,0 +1,14 @@
+{
+  "config-node": "Node configuration",
+  "join": "Quick sync (recommended)",
+  "join-old": {
+    "display": "hidden"
+  },
+  "join-genesis": "Genesis sync",
+  "join-genesis-old": {
+    "display": "hidden"
+  },
+  "basic": "Basic node management",
+  "config-cli": "CLI configuration",
+  "keyring": "Keyring backend"
+}

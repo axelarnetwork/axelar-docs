@@ -5,7 +5,7 @@ import { HiArrowNarrowRight } from "react-icons/hi";
 const items = [
   {
     title: "Developer",
-    description: "Use Axelar gateway contracts to call any EVM contract on any chain",
+    description: "Use Solidity or JavaScript to send tokens and interact with smart contracts across chains.",
     icon: (
       <RiCodeFill size={24} />
     ),
@@ -55,7 +55,7 @@ export default () => {
         const link = (
           <div className="flex items-center text-blue-500 dark:text-blue-600 space-x-1.5">
             <span>
-              Documentation
+              Get Started
             </span>
             <HiArrowNarrowRight size={16} className="mt-0.5" />
           </div>

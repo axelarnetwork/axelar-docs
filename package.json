@@ -2,6 +2,10 @@
   "name": "axelar-docs",
   "version": "1.0.0",
   "description": "Resources & Documentation for Axelar Network",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/axelarnetwork/axelar-docs"
+  },
   "main": "index.js",
   "scripts": {
     "dev": "next",
@@ -22,8 +26,8 @@
     "markdown-to-jsx": "^7.1.7",
     "next": "^12.3.1",
     "next-secure-headers": "^2.2.0",
-    "nextra": "2.0.0-alpha.48",
-    "nextra-theme-docs": "2.0.0-alpha.48",
+    "nextra": "^2.2.14",
+    "nextra-theme-docs": "^2.2.14",
     "postcss-flexbugs-fixes": "^5.0.2",
     "postcss-import": "^15.0.0",
     "postcss-preset-env": "^7.8.2",
