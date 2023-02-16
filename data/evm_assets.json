@@ -357,6 +357,13 @@
           "symbol": "WAVAX",
           "decimals": 18,
           "transfer_fee": 0.1
+        },
+        {
+          "chain": "fantom",
+          "address": "0x879e73005C36d9a549fFb9846851fe5d1d91b681",
+          "symbol": "axlAVAX",
+          "decimals": 18,
+          "transfer_fee": 0.1
         }
       ]
     },
@@ -396,6 +403,13 @@
       "symbol": "WFTM",
       "image": "/images/assets/wftm.svg",
       "contracts": [
+        {
+          "chain": "avalanche",
+          "address": "0xbB72a453a9280864C330Fa23fFABff73991119A0",
+          "symbol": "axlFTM",
+          "decimals": 18,
+          "transfer_fee": 5.4
+        },
         {
           "chain": "fantom",
           "address": "0x21be370D5312f44cB42ce377BC9b8a0cEF1A4C83",
@@ -582,21 +596,6 @@
           "symbol": "LINK",
           "decimals": 18,
           "transfer_fee": 1.6
-        }
-      ]
-    },
-    {
-      "id": "aave-wei",
-      "name": "AAVE - Aave Token",
-      "symbol": "AAVE",
-      "image": "/images/assets/aave.svg",
-      "contracts": [
-        {
-          "chain": "ethereum",
-          "address": "0x7Fc66500c84A76Ad7e9c93437bFc5Ac33E2DDaE9",
-          "symbol": "AAVE",
-          "decimals": 18,
-          "transfer_fee": 0.165
         }
       ]
     },
@@ -808,21 +807,6 @@
       ]
     },
     {
-      "id": "ape-wei",
-      "name": "APE - ApeCoin",
-      "symbol": "APE",
-      "image": "/images/assets/ape.svg",
-      "contracts": [
-        {
-          "chain": "ethereum",
-          "address": "0x4d224452801ACEd8B2F0aebE155379bb5D594381",
-          "symbol": "APE",
-          "decimals": 18,
-          "transfer_fee": 2.0
-        }
-      ]
-    },
-    {
       "id": "uni-wei",
       "name": "UNI - Uniswap",
       "symbol": "UNI",
@@ -849,36 +833,6 @@
           "symbol": "SHIB",
           "decimals": 18,
           "transfer_fee": 1040000.0
-        }
-      ]
-    },
-    {
-      "id": "axs-wei",
-      "name": "AXS - Axie Infinity Shard",
-      "symbol": "AXS",
-      "image": "/images/assets/axs.svg",
-      "contracts": [
-        {
-          "chain": "ethereum",
-          "address": "0xBB0E17EF65F82Ab018d8EDd776e8DD940327B28b",
-          "symbol": "AXS",
-          "decimals": 18,
-          "transfer_fee": 0.693
-        }
-      ]
-    },
-    {
-      "id": "xcn-wei",
-      "name": "XCN - Chain",
-      "symbol": "XCN",
-      "image": "/images/assets/xcn.svg",
-      "contracts": [
-        {
-          "chain": "ethereum",
-          "address": "0xA2cd3D43c775978A96BdBf12d733D5A1ED94fb18",
-          "symbol": "XCN",
-          "decimals": 18,
-          "transfer_fee": 130.0
         }
       ]
     },
@@ -920,6 +874,13 @@
       "symbol": "aUSDC",
       "image": "/images/assets/ausdc.svg",
       "contracts": [
+        {
+          "chain": "optimism",
+          "address": "0x254d06f33bDc5b8ee05b2ea472107E300226659A",
+          "symbol": "aUSDC",
+          "decimals": 6,
+          "transfer_fee": 0.1
+        },
         {
           "chain": "arbitrum",
           "address": "0x254d06f33bDc5b8ee05b2ea472107E300226659A",
@@ -998,6 +959,13 @@
       "symbol": "AXL",
       "image": "/images/assets/axl.svg",
       "contracts": [
+        {
+          "chain": "optimism",
+          "address": "0x23ee2343B892b1BB63503a4FAbc840E0e2C6810f",
+          "symbol": "wAXL",
+          "decimals": 6,
+          "transfer_fee": 0.1
+        },
         {
           "chain": "arbitrum",
           "address": "0x23ee2343B892b1BB63503a4FAbc840E0e2C6810f",
@@ -1141,6 +1109,13 @@
       "image": "/images/assets/wmatic.svg",
       "contracts": [
         {
+          "chain": "optimism",
+          "address": "0x21ba4f6aEdA155DD77Cc33Fb93646910543F0380",
+          "symbol": "WMATIC",
+          "decimals": 18,
+          "transfer_fee": 0.07
+        },
+        {
           "chain": "arbitrum",
           "address": "0x21ba4f6aEdA155DD77Cc33Fb93646910543F0380",
           "symbol": "WMATIC",
@@ -1218,6 +1193,13 @@
       "symbol": "WAVAX",
       "image": "/images/assets/wavax.svg",
       "contracts": [
+        {
+          "chain": "optimism",
+          "address": "0x2a87806561C550ba2dA9677c5323413E6e539740",
+          "symbol": "WAVAX",
+          "decimals": 18,
+          "transfer_fee": 0.001
+        },
         {
           "chain": "arbitrum",
           "address": "0x2a87806561C550ba2dA9677c5323413E6e539740",
@@ -1297,6 +1279,13 @@
       "image": "/images/assets/wftm.svg",
       "contracts": [
         {
+          "chain": "optimism",
+          "address": "0x594D8b81eC765410536ab59E98091700b99508D8",
+          "symbol": "WFTM",
+          "decimals": 18,
+          "transfer_fee": 0.08
+        },
+        {
           "chain": "arbitrum",
           "address": "0x594D8b81eC765410536ab59E98091700b99508D8",
           "symbol": "WFTM",
@@ -1375,6 +1364,13 @@
       "image": "/images/assets/wbnb.svg",
       "contracts": [
         {
+          "chain": "optimism",
+          "address": "0xA9A2D8F279ABC436a18DBB1df3FB233039935D0A",
+          "symbol": "WBNB",
+          "decimals": 18,
+          "transfer_fee": 0.0003
+        },
+        {
           "chain": "arbitrum",
           "address": "0xA9A2D8F279ABC436a18DBB1df3FB233039935D0A",
           "symbol": "WBNB",
@@ -1452,6 +1448,13 @@
       "symbol": "WDEV",
       "image": "/images/assets/wdev.svg",
       "contracts": [
+        {
+          "chain": "optimism",
+          "address": "0x4B13D583F45Aa01fb2bE18a7AAfE14DE183B1Ac9",
+          "symbol": "WDEV",
+          "decimals": 18,
+          "transfer_fee": 0.04
+        },
         {
           "chain": "arbitrum",
           "address": "0x4B13D583F45Aa01fb2bE18a7AAfE14DE183B1Ac9",
