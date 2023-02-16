@@ -283,6 +283,16 @@
       "channel_id": "channel-19"
     },
     {
+      "from": "odin",
+      "to": "axelarnet",
+      "channel_id": "channel-5"
+    },
+    {
+      "from": "axelarnet",
+      "to": "odin",
+      "channel_id": "channel-162"
+    },
+    {
       "from": "osmosis",
       "to": "axelarnet",
       "channel_id": "channel-1946"
