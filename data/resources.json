@@ -267,10 +267,6 @@
         {
           "title": "Mintscan",
           "value": "https://testnet.mintscan.io/axelar-testnet"
-        },
-        {
-          "title": "Big Dipper",
-          "value": "https://axelar-testnet.chainode.tech"
         }
       ]
     },
