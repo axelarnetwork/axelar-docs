@@ -52,11 +52,23 @@
       ]
     },
     {
-      "name": "REST API",
+      "name": "REST API docs",
       "value": [
         {
-          "title": "Swagger",
+          "title": "Swagger 1",
           "value": "https://lcd-axelar.imperator.co/static/swagger/"
+        },
+        {
+          "title": "Swagger 2",
+          "value": "https://lcd-axelar.stakerun.com/static/swagger/"
+        },
+        {
+          "title": "OpenAPI 1",
+          "value": "https://lcd-axelar.imperator.co/static/openapi/"
+        },
+        {
+          "title": "OpenAPI 2",
+          "value": "https://lcd-axelar.stakerun.com/static/openapi/"
         }
       ]
     },
@@ -98,6 +110,9 @@
         },
         {
           "value": "https://axelar-rpc.validatrium.club"
+        },
+        {
+          "value": "https://rpc-axelar.stakerun.com"
         }
       ]
     },
@@ -133,6 +148,9 @@
         },
         {
           "value": "https://axelar-api.validatrium.club"
+        },
+        {
+          "value": "https://lcd-axelar.stakerun.com"
         }
       ]
     },
@@ -146,7 +164,10 @@
           "value": "axelar-grpc.chainode.tech"
         },
         {
-          "value": "axelar-grpcweb.chainode.tech"
+          "value": "axelar-grpc.4sv.io"
+        },
+        {
+          "value": "axelar-grpc.quickapi.com"
         },
         {
           "value": "axelar-grpc.polkachu.com:15190"
@@ -161,16 +182,24 @@
           "value": "axelar-grpc.quantnode.tech:9090"
         },
         {
-          "value": "axelar-grpcweb.quantnode.tech:9091"
-        },
+          "value": "grpc-axelar.stakerun.com:9090"
+        }
+      ]
+    },
+    {
+      "name": "gRPC-Web endpoints",
+      "value": [
         {
           "value": "https://axelar-grpcweb.quantnode.tech"
         },
         {
-          "value": "https://axelar-grpc.4sv.io"
+          "value": "https://axelar-grpcweb.quantnode.tech:9091"
         },
         {
-          "value": "https://axelar-grpc.quickapi.com"
+          "value": "https://axelar-grpcweb.chainode.tech"
+        },
+        {
+          "value": "https://web-grpc-axelar.stakerun.com"
         }
       ]
     },
@@ -197,6 +226,12 @@
         },
         {
           "value": "https://axelararchive-grpc.quickapi.com"
+        },
+        {
+          "value": "https://archive-rpc-axelar.stakerun.com"
+        },
+        {
+          "value": "https://archive-lcd-axelar.stakerun.com"
         }
       ]
     },
@@ -205,6 +240,9 @@
       "value": [
         {
           "value": "ws://rpc-axelar.imperator.co/wss"
+        },
+        {
+          "value": "wss://rpc-axelar.stakerun.com/websocket"
         }
       ]
     }
@@ -229,10 +267,6 @@
         {
           "title": "Mintscan",
           "value": "https://testnet.mintscan.io/axelar-testnet"
-        },
-        {
-          "title": "Big Dipper",
-          "value": "https://axelar-testnet.chainode.tech"
         }
       ]
     },
@@ -254,11 +288,15 @@
       ]
     },
     {
-      "name": "REST API",
+      "name": "REST API docs",
       "value": [
         {
           "title": "Swagger",
           "value": "https://lcd-axelar-testnet.imperator.co/static/swagger/"
+        },
+        {
+          "title": "OpenAPI",
+          "value": "https://lcd-axelar-testnet.imperator.co/static/openapi/"
         }
       ]
     },
@@ -322,10 +360,12 @@
         },
         {
           "value": "axelartest-grpc.quantnode.tech:9090"
-        },
-        {
-          "value": "axelartest-grpcweb.quantnode.tech:9091"
-        },
+        }
+      ]
+    },
+    {
+      "name": "gRPC-Web endpoints",
+      "value": [
         {
           "value": "https://axelartest-grpcweb.quantnode.tech"
         }
