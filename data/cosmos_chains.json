@@ -183,6 +183,12 @@
       "image": "/images/chains/kujira.svg"
     },
     {
+      "id": "odin",
+      "name": "Odin",
+      "network_id": "odin",
+      "image": "/images/chains/odin.svg"
+    },
+    {
       "id": "osmosis",
       "name": "Osmosis",
       "network_id": "osmosis-5",
