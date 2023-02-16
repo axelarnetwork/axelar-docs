@@ -52,13 +52,23 @@
       ]
     },
     {
-      "name": "REST API | Swagger",
+      "name": "REST API docs",
       "value": [
         {
+          "title": "Swagger 1",
           "value": "https://lcd-axelar.imperator.co/static/swagger/"
         },
         {
+          "title": "Swagger 2",
           "value": "https://lcd-axelar.stakerun.com/static/swagger/"
+        },
+        {
+          "title": "OpenAPI 1",
+          "value": "https://lcd-axelar.imperator.co/static/openapi/"
+        },
+        {
+          "title": "OpenAPI 2",
+          "value": "https://lcd-axelar.stakerun.com/static/openapi/"
         }
       ]
     },
@@ -282,11 +292,15 @@
       ]
     },
     {
-      "name": "REST API | Swagger",
+      "name": "REST API docs",
       "value": [
         {
-          "title": "Swagger-UI",
+          "title": "Swagger",
           "value": "https://lcd-axelar-testnet.imperator.co/static/swagger/"
+        },
+        {
+          "title": "OpenAPI",
+          "value": "https://lcd-axelar-testnet.imperator.co/static/openapi/"
         }
       ]
     },
