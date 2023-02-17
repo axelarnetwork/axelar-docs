@@ -18,13 +18,40 @@ You may wish to redirect log output to a file (your command will be launched in 
 ```bash
 $AXELARD_HOME/bin/axelard start --home $AXELARD_HOME >> $AXELARD_HOME/logs/axelard.log 2>&1 &
 ```
-
 View your logs in real time:
 
 ```bash
 tail -f $AXELARD_HOME/logs/axelard.log
 ```
+You can run node as a service, to be sure that the node will be running even if the server is restarted
+```bash
+sudo tee /etc/systemd/system/axelard.service  > /dev/null <<EOF
+[Unit]
+Description=Axelar Node
+After=network.target
 
+[Service]
+Type=simple
+User=root
+ExecStart=$AXELARD_HOME/bin/axelard start --home $AXELARD_HOME
+Restart=always
+RestartSec=3
+LimitNOFILE=10000
+
+[Install]
+WantedBy=multi-user.target
+EOF
+```
+```
+sudo -S systemctl daemon-reload
+sudo -S systemctl enable axelard
+sudo -S systemctl start axelard
+```
+If you chose to create a service for a node, you can check the logs like this
+
+```bash
+sudo journalctl -fu axelard -o cat
+```
 ## Test whether your blockchain is downloaded
 
 Eventually your Axelar node will download the entire Axelar blockchain and exit `catching_up` mode. At that time your logs will show a new block added to the blockchain every 5 seconds.
@@ -49,6 +76,11 @@ Stop your currently running Axelar node:
 pkill -f "axelard start"
 ```
 
+Stop if you run node as service
+
+```bash
+sudo -S systemctl stop axelard
+```
 ## Check your Axelar node status
 
 ```bash
