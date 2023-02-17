@@ -101,12 +101,12 @@ In order to restore tofnd's private key and your key shares, you can use `join/l
     ```
     axelard q tss recover $(axelard keys show validator --bech val -a) btc-master btc-secondary --output json > recovery.json
     ```
-    after attaching to your validator container (see section [Recover Data](#Recovery_Data)).
+    after attaching to your validator container (see section [Recover Data](#recovery-data)).
 
 ### Running tofnd as binary
 
 If you are running a tofnd binary, follow the steps below:
-1. Create your recovery json file from your vald process (see section [Recovery Data](#Recovery_Data))
+1. Create your recovery json file from your vald process (see section [Recovery Data](#recovery-data))
 2. Copy the json recovery file to `~/.axelar_testnet/.vald/recovery.json`
 3. Navigate to the directory of your tofnd binary.
 4. Create a folder under the name `.tofnd/`.

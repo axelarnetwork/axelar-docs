@@ -46,4 +46,4 @@ To do this:
 
 All of the recovery methods above can be done programmatically through our SDK. The benefit of this would be if you would like to incorporate these recovery features above in your application directly. In fact, Axelarscan makes use of all of these methods written into the SDK. 
 
-See SDK docs for [the full transaction recovery API](/dev/axelarjs-sdk/tx-status-query-recovery#query-and-recover-gmp-transactions).
+See SDK docs for [the full transaction recovery API](/dev/axelarjs-sdk/tx-status-query-recovery#query-transaction-status-by-txhash).
