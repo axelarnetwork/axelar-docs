@@ -6,7 +6,9 @@ Query the current slashing parameters
 
 Query genesis parameters for the slashing module:
 
-`$ <appd> query slashing params`
+```bash
+$ <appd> query slashing params
+```
 
 ```
 axelard query slashing params [flags]

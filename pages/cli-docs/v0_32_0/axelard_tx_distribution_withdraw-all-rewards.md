@@ -8,7 +8,10 @@ Withdraw all rewards for a single delegator.
 Note that if you use this command with --broadcast-mode=sync or --broadcast-mode=async, the max-msgs flag will automatically be set to 0.
 
 Example:
-`$ <appd> tx distribution withdraw-all-rewards --from mykey`
+
+```bash
+$ <appd> tx distribution withdraw-all-rewards --from mykey
+```
 
 ```
 axelard tx distribution withdraw-all-rewards [flags]

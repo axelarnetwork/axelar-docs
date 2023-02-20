@@ -7,7 +7,10 @@ Funds the community pool with the specified amount
 Funds the community pool with the specified amount
 
 Example:
-`$ <appd> tx distribution fund-community-pool 100uatom --from mykey`
+
+```bash
+$ <appd> tx distribution fund-community-pool 100uatom --from mykey
+```
 
 ```
 axelard tx distribution fund-community-pool [amount] [flags]

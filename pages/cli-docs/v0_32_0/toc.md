@@ -13,10 +13,10 @@
   - [health-check](/cli-docs/v0_32_0/axelard_health-check) -
   - [init \[moniker\]](/cli-docs/v0_32_0/axelard_init) - Initialize private validator, p2p, genesis, and application configuration files
   - [keys](/cli-docs/v0_32_0/axelard_keys) - Manage your application's keys
-    - [add `<name>`](/cli-docs/v0_32_0/axelard_keys_add) - Add an encrypted private key (either newly generated or recovered), encrypt it, and save to `<name>` file
+    - [add `<name>](/cli-docs/v0_32_0/axelard_keys_add) - Add an encrypted private key (either newly generated or recovered), encrypt it, and save to <name>` file
     - [delete `<name>`...](/cli-docs/v0_32_0/axelard_keys_delete) - Delete the given keys
     - [export `<name>`](/cli-docs/v0_32_0/axelard_keys_export) - Export private keys
-    - [import `<name> <keyfile>`](/cli-docs/v0_32_0/axelard_keys_import) - Import private keys into the local keybase
+    - [import `<name> \<keyfile>`](/cli-docs/v0_32_0/axelard_keys_import) - Import private keys into the local keybase
     - [list](/cli-docs/v0_32_0/axelard_keys_list) - List all keys
     - [migrate `<old_home_dir>`](/cli-docs/v0_32_0/axelard_keys_migrate) - Migrate keys from the legacy (db-based) Keybase
     - [mnemonic](/cli-docs/v0_32_0/axelard_keys_mnemonic) - Compute the bip39 mnemonic for some input entropy

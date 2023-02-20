@@ -8,7 +8,10 @@ Submit a vote for an active proposal. You can
 find the proposal-id by running "`<appd>` query gov proposals".
 
 Example:
-`$ <appd> tx gov vote 1 yes --from mykey`
+
+```bash
+$ <appd> tx gov vote 1 yes --from mykey
+```
 
 ```
 axelard tx gov vote [proposal-id] [option] [flags]

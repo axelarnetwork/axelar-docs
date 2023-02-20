@@ -8,7 +8,10 @@ Query details for a proposal. You can find the
 proposal-id by running "`<appd>` query gov proposals".
 
 Example:
-`$ <appd> query gov proposal 1`
+
+```bash
+$ <appd> query gov proposal 1
+```
 
 ```
 axelard query gov proposal [proposal-id] [flags]

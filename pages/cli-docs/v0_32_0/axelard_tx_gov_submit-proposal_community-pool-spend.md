@@ -8,17 +8,20 @@ Submit a community pool spend proposal along with an initial deposit.
 The proposal details must be supplied via a JSON file.
 
 Example:
-`$ <appd> tx gov submit-proposal community-pool-spend <path/to/proposal.json> --from=\<key_or_address>`
+
+```bash
+$ <appd> tx gov submit-proposal community-pool-spend `<path/to/proposal.json> --from=\<key_or_address>`
+```
 
 Where proposal.json contains:
 
-```
+```json
 {
-    "title": "Community Pool Spend",
-    "description": "Pay me some Atoms!",
-    "recipient": "axelar1s5afhd6gxevu37mkqcvvsj8qeylhn0rz46zdlq",
-    "amount": "1000stake",
-    "deposit": "1000stake"
+  "title": "Community Pool Spend",
+  "description": "Pay me some Atoms!",
+  "recipient": "axelar1s5afhd6gxevu37mkqcvvsj8qeylhn0rz46zdlq",
+  "amount": "1000stake",
+  "deposit": "1000stake"
 }
 ```
 

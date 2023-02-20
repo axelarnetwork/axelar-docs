@@ -8,22 +8,27 @@ Submit a proposal along with an initial deposit.
 Proposal title, description, type and deposit can be given directly or through a proposal JSON file.
 
 Example:
-`$ <appd> tx gov submit-proposal --proposal="path/to/proposal.json" --from mykey`
+
+```bash
+$ <appd> tx gov submit-proposal --proposal="path/to/proposal.json" --from mykey
+```
 
 Where proposal.json contains:
 
-```
+```json
 {
-    "title": "Test Proposal",
-    "description": "My awesome proposal",
-    "type": "Text",
-    "deposit": "10test"
+  "title": "Test Proposal",
+  "description": "My awesome proposal",
+  "type": "Text",
+  "deposit": "10test"
 }
 ```
 
 Which is equivalent to:
 
-`$ <appd> tx gov submit-proposal --title="Test Proposal" --description="My awesome proposal" --type="Text" --deposit="10test" --from mykey`
+```bash
+$ <appd> tx gov submit-proposal --title="Test Proposal" --description="My awesome proposal" --type="Text" --deposit="10test" --from mykey
+```
 
 ```
 axelard tx gov submit-proposal [flags]

@@ -8,7 +8,10 @@ Submit a vote for an active proposal. You can
 find the proposal-id by running "`<appd>` query gov proposals".
 
 Example:
-`$ <appd> tx gov weighted-vote 1 yes=0.6,no=0.3,abstain=0.05,no_with_veto=0.05 --from mykey`
+
+```bash
+$ <appd> tx gov weighted-vote 1 yes=0.6,no=0.3,abstain=0.05,no_with_veto=0.05 --from mykey
+```
 
 ```
 axelard tx gov weighted-vote [proposal-id] [weighted-options] [flags]

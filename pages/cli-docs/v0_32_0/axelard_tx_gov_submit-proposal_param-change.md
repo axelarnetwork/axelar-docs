@@ -17,11 +17,16 @@ Proper vetting of a parameter change proposal should prevent this from happening
 regardless.
 
 Example:
-`$ <appd> tx gov submit-proposal param-change <path/to/proposal.json> --from=\<key_or_address>`
+
+```bash
+$ <appd> tx gov submit-proposal param-change `<path/to/proposal.json> --from=\<key_or_address>`
+```
 
 Where proposal.json contains:
 
-```
+```json
+
+
 {
 "title": "Staking Param Change",
 "description": "Update max validators",
@@ -31,10 +36,12 @@ Where proposal.json contains:
 "key": "MaxValidators",
 "value": 105
 }
+
+```
+
 \],
 "deposit": "1000stake"
 }
-```
 
 ```
 axelard tx gov submit-proposal param-change [proposal-file] [flags]

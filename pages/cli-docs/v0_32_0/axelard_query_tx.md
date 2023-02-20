@@ -5,9 +5,18 @@ Query for a transaction by hash, "`<addr>/<seq>`" combination or comma-separated
 ### Synopsis
 
 Example:
-`$ <appd> query tx <hash>`
-`$ <appd> query tx --type=acc_seq <addr>/<sequence>`
-`$ <appd> query tx --type=signature <sig1_base64>,\<sig2_base64...>`
+
+```bash
+$ <appd> query tx `<hash>`
+```
+
+```bash
+$ <appd> query tx --type=acc_seq `<addr>/<sequence>`
+```
+
+```bash
+$ <appd> query tx --type=signature `<sig1_base64>,\<sig2_base64...>`
+```
 
 ```
 axelard query tx --type=[hash|acc_seq|signature] [hash|acc_seq|signature] [flags]

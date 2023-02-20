@@ -6,7 +6,9 @@ Query signing information of all validators
 
 signing infos of validators:
 
-`$ <appd> query slashing signing-infos`
+```bash
+$ <appd> query slashing signing-infos
+```
 
 ```
 axelard query slashing signing-infos [flags]

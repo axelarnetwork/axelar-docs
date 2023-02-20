@@ -8,7 +8,10 @@ Submit a deposit for an active proposal. You can
 find the proposal-id by running "`<appd>` query gov proposals".
 
 Example:
-`$ <appd> tx gov deposit 1 10stake --from mykey`
+
+```bash
+$ <appd> tx gov deposit 1 10stake --from mykey
+```
 
 ```
 axelard tx gov deposit [proposal-id] [deposit] [flags]

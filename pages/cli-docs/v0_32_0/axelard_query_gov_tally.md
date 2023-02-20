@@ -8,7 +8,10 @@ Query tally of votes on a proposal. You can find
 the proposal-id by running "`<appd>` query gov proposals".
 
 Example:
-`$ <appd> query gov tally 1`
+
+```bash
+$ <appd> query gov tally 1
+```
 
 ```
 axelard query gov tally [proposal-id] [flags]
