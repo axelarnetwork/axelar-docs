@@ -29,7 +29,7 @@ TOFND_RELEASE=v0.10.1`}
 {
 title: "Testnet",
 content: <CodeBlock language="bash">
-{`AXELARD_RELEASE=v0.32.1
+{`AXELARD_RELEASE=v0.32.2
 TOFND_RELEASE=v0.10.1`}
 </CodeBlock>
 },
