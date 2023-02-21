@@ -7,7 +7,8 @@
     "dev": "next",
     "debug": "NODE_OPTIONS='--inspect' next",
     "start": "next start",
-    "build": "next build"
+    "build": "next build",
+    "update-docs": "zx ./scripts/update-cli-docs.mjs"
   },
   "author": "Axelar Network",
   "license": "MIT",
@@ -37,7 +38,12 @@
   },
   "devDependencies": {
     "autoprefixer": "^10.4.12",
+    "degit": "^2.8.4",
     "postcss": "^8.4.16",
-    "tailwindcss": "^3.1.8"
+    "prettier": "^2.8.4",
+    "replace-in-file": "^6.3.5",
+    "semver": "^7.3.8",
+    "tailwindcss": "^3.1.8",
+    "zx": "^7.1.1"
   }
 }
