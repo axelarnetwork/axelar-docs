@@ -8,7 +8,7 @@ const REPO = "axelarnetwork/axelar-core";
 
 $.verbose = false;
 
-const maxVersions = 5;
+const maxVersions = 3;
 
 const latestTags = await spinner(
   `fetching latest ${maxVersions} tags from ${REPO}`,
