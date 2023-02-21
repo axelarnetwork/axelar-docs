@@ -2,149 +2,167 @@ import { $ } from "zx";
 import replaceInFile from "replace-in-file";
 
 import { spinner } from "zx/experimental";
-import { fetchLatestTagForRepo } from "./utils.mjs";
+import { fetchLatestTags } from "./utils.mjs";
 
 const REPO = "axelarnetwork/axelar-core";
 
-console.log("Fetching latest tag for axelar-core repo...");
+$.verbose = false;
 
-let TARGET_TAG = process.env.TAG;
+const maxVersions = 5;
 
-if (!TARGET_TAG) {
-  const latestTag = await spinner("Fetching latest tag", () =>
-    fetchLatestTagForRepo(REPO)
-  );
-  console.log("Latest tag for axelar-core repo:", latestTag);
-  TARGET_TAG = latestTag;
+const latestTags = await spinner(
+  `fetching latest ${maxVersions} tags from ${REPO}`,
+  () =>
+    fetchLatestTags({
+      limit: maxVersions,
+      repository: REPO,
+    })
+);
+
+console.log("latest tags:", latestTags.join(", "));
+
+for (const tag of latestTags) {
+  await generateDocsForTag(tag);
 }
 
-const SNAKE_TAG = TARGET_TAG.replace(/\./g, "_");
+await generateMetaFile(latestTags);
 
-const GIT_PATH_DOCS = `axelarnetwork/axelar-core/docs/cli#${TARGET_TAG}`;
-
-const OUTPUT_DIR = `pages/cli-docs/${SNAKE_TAG}`;
-
-await spinner(
-  "Downloading docs from axelar-core repo",
-  () => $`rm -rf pages/cli-docs/* && degit ${GIT_PATH_DOCS} ${OUTPUT_DIR}`
-);
-
-const META_JSON_CONTENT = JSON.stringify(
-  {
-    [SNAKE_TAG]: TARGET_TAG,
-  },
-  null,
-  2
-);
-
-await $`echo ${META_JSON_CONTENT} > pages/cli-docs/meta.json`;
-
-console.log("meta.json updated");
-
-// Cleanup .md files
-
-async function prettify() {
-  return await spinner(
-    "formatting files",
-    () => $`prettier --write pages/cli-docs/`
+async function generateMetaFile(tags = []) {
+  const jsonContent = JSON.stringify(
+    tags.reduce((acc, tag) => ({ ...acc, [tag.replace(/\./g, "_")]: tag }), {}),
+    null,
+    2
   );
+
+  await $`echo ${jsonContent} > pages/cli-docs/meta.json`;
 }
 
-await prettify();
+async function generateDocsForTag(tag = "0") {
+  const snakefiedTag = tag.replace(/\./g, "_");
+  const releasePath = `axelarnetwork/axelar-core/docs/cli#${tag}`;
+  const outDir = `pages/cli-docs/${snakefiedTag}`;
 
-// # # change links (vscode)
+  // color green
+  const spinnerPrefix = `[cli-docs(${tag})]:`;
 
-// find and replace in all files under OUTPUT_DIR
+  await $`rm -rf ${outDir}`;
 
-/**
- * find: axelard([a-z-_]*).md
- * replace: /cli-docs/${SNAKE_TAG}/$0
- */
-await spinner("Fixing axelard links", () =>
-  replaceInFile({
-    files: `${OUTPUT_DIR}/**/*.md`,
-    from: /axelard([a-z-_]*).md/g,
-    to: (match) => `/cli-docs/${SNAKE_TAG}/${match}`,
-    encoding: "utf-8",
-  })
-);
+  const spinnerMessage = (m = "") => [spinnerPrefix, m].join(" ");
 
-/**
- * find: .md
- * replace: ""
- */
-await spinner("Fixing remaining .md links", () =>
-  replaceInFile({
-    files: `${OUTPUT_DIR}/**/*.md`,
-    from: /\.md/g,
-    to: "",
-    encoding: "utf-8",
-  })
-);
+  await spinner(
+    spinnerMessage("downloading docs from axelar-core"),
+    () => $`degit ${releasePath} ${outDir}`
+  );
 
-/**
- * replace $ code lines with backticks
- * find: \$ <(.*)
- * replace: ```$0```
- */
-await spinner("Fixing $ code lines", () =>
-  replaceInFile({
-    files: `${OUTPUT_DIR}/**/*.md`,
-    from: /\$ <(.*)/g,
-    to: (match) => `\`\`\`bash\n${match}\n\`\`\``,
-    encoding: "utf-8",
-  })
-);
+  // Cleanup .md files
 
-/**
- * replace tags by tags + simple backticks
- *
- * find: (?<!(\$\s))<(.)*>
- * replace: `$0`
- */
-await spinner("Fixing tags", () =>
-  replaceInFile({
-    files: `${OUTPUT_DIR}/**/*.md`,
-    from: /(?<!(\$ ))<(.)*>/g,
-    to: (match) => `\`${match}\``,
-    encoding: "utf-8",
-  })
-);
+  async function prettify() {
+    return await spinner(
+      spinnerMessage("prettifying .md files"),
+      () => $`prettier --write ${outDir}/**/*.md`
+    );
+  }
 
-// run prettier again to fix the backticks
+  await prettify();
 
-await prettify();
+  /**
+   * fix malformed links
+   *
+   * find: axelard([a-z-_]*).md
+   * replace: /cli-docs/${snakeTag}/$0
+   */
+  await spinner(spinnerMessage("Fixing malformed links"), () =>
+    replaceInFile({
+      files: `${outDir}/**/*.md`,
+      from: /axelard([a-z-_]*).md/g,
+      to: (match) => `/cli-docs/${snakefiedTag}/${match}`,
+      encoding: "utf-8",
+    })
+  );
 
-/**
- * replace json snippets by json snippets + simple backticks
- */
-await spinner("Fixing json snippets", () =>
-  replaceInFile({
-    files: `${OUTPUT_DIR}/**/*.md`,
-    from: /(?<!\`\`\`)(\s*{\s*[\s\S]*?\s*}\s*)(?!\`\`\`)/g,
-    to: (match) => `\n\`\`\`json\n${match}\n\`\`\`\n`,
-    encoding: "utf-8",
-  })
-);
+  /**
+   * fix remaining malformed links
+   *
+   * find: .md
+   * replace: ""
+   */
+  await spinner(spinnerMessage("Fixing remaining malformed links"), () =>
+    replaceInFile({
+      files: `${outDir}/**/*.md`,
+      from: /\.md/g,
+      to: "",
+      encoding: "utf-8",
+    })
+  );
 
-// run prettier again to fix the backticks
-await prettify();
+  /**
+   * replace $ code lines with backticks
+   * find: \$ <(.*)
+   * replace: ```$0```
+   */
+  await spinner(spinnerMessage("Fixing code lines with backticks"), () =>
+    replaceInFile({
+      files: `${outDir}/**/*.md`,
+      from: /\$ <(.*)/g,
+      to: (match) => `\`\`\`bash\n${match}\n\`\`\``,
+      encoding: "utf-8",
+    })
+  );
 
-/**
- * fix malformed inline tags
- *
- * find: \\\`<(.*)>
- * replace: \`<$1>\`
- */
-await spinner("Fixing inline tags", () =>
-  replaceInFile({
-    files: `${OUTPUT_DIR}/**/*.md`,
-    from: /\\\`<(.*)>`/g,
-    to: (_, e) => `\`<${e}>\``,
+  /**
+   * replace tags by tags + simple backticks
+   *
+   * find: (?<!(\$\s))<(.)*>
+   * replace: `$0`
+   */
+  await spinner(spinnerMessage("Fixing tags with simple backticks"), () =>
+    replaceInFile({
+      files: `${outDir}/**/*.md`,
+      from: /(?<!(\$ ))<(.)*>/g,
+      to: (match) => `\`${match}\``,
+      encoding: "utf-8",
+    })
+  );
 
-    encoding: "utf-8",
-  })
-);
+  // run prettier again to fix the backticks
 
-// run prettier again to fix the backticks
-await prettify();
+  await prettify();
+
+  /**
+   * replace json snippets by json snippets + simple backticks
+   */
+  await spinner(
+    spinnerMessage("Fixing json snippets with simple backticks"),
+    () =>
+      replaceInFile({
+        files: `${outDir}/**/*.md`,
+        from: /(?<!\`\`\`)(\s*{\s*[\s\S]*?\s*}\s*)(?!\`\`\`)/g,
+        to: (match) => `\n\`\`\`json\n${match}\n\`\`\`\n`,
+        encoding: "utf-8",
+      })
+  );
+
+  // run prettier again to fix the backticks
+  await prettify();
+
+  /**
+   * fix malformed inline tags
+   *
+   * find: \\\`<(.*)>
+   * replace: \`<$1>\`
+   */
+  await spinner(
+    spinnerMessage("Fixing malformed inline tags with simple backticks"),
+    () =>
+      replaceInFile({
+        files: `${outDir}/**/*.md`,
+        from: /\\\`<(.*)>`/g,
+        to: (_, e) => `\`<${e}>\``,
+
+        encoding: "utf-8",
+      })
+  );
+
+  // run prettier again to fix the backticks
+  await prettify();
+}
