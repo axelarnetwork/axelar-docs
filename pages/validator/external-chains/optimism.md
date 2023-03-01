@@ -23,7 +23,7 @@ Instructions to set up your Optimism node.
 
 ```bash
 sudo apt-get install jq -y
-snap install docker 
+snap install docker
 ```
 
 ## Clone Repo
@@ -91,7 +91,7 @@ You should see these 4 services running
 NAME                              COMMAND                  SERVICE             STATUS              PORTS
 simple-optimism-node-influxdb-1   "/entrypoint.sh infl…"   influxdb            running             0.0.0.0:8086->8086/tcp, :::8086->8086/tcp
 simple-optimism-node-op-geth-1    "/bin/sh -c '/script…"   op-geth             running             0.0.0.0:9991-9992->8545-8546/tcp, :::9991-9992->8545-8546/tcp
-simple-optimism-node-op-node-1    "/bin/sh -c '/script…"   op-node             running             
+simple-optimism-node-op-node-1    "/bin/sh -c '/script…"   op-node             running
 simple-optimism-node-torrent-1    "/init"                  torrent             running             0.0.0.0:6881->6881/tcp, 0.0.0.0:6881->6881/udp, :::6881->6881/tcp, :::6881->6881/udp
 ```
 
