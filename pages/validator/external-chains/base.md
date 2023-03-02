@@ -25,19 +25,26 @@ Instructions to set up your Base (Coinbase L2) node.
 ```bash
 sudo apt-get install jq -y
 snap install docker
+
 ```
 
 ## Configure and start node
 
-1. In `docker-compose.yml`, set `OP_NODE_L1_ETH_RPC` to your own Goerli L1 RPC node. Using your own Goerli node is required to guarantee decentralization for validation.
+1. Clone the Base repo
 
-2. Run:
+```bash
+git clone https://github.com/base-org/node
+```
+
+2. In `docker-compose.yml`, set `OP_NODE_L1_ETH_RPC` to your own Goerli L1 RPC node. Using your own Goerli node is required to guarantee decentralization for validation.
+
+3. Run:
 
 ```bash
 docker compose up
 ```
 
-3. You should now be able to `curl` your Base node:
+4. You should now be able to `curl` your Base node:
 
 ```bash
 curl -d '{"id":0,"jsonrpc":"2.0","method":"eth_getBlockByNumber","params":["latest",false]}' \
