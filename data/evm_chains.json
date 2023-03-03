@@ -468,49 +468,5 @@
       ],
       "image": "/images/chains/kava.svg"
     }
-  ],
-  "testnet-2": [
-    {
-      "id": "ethereum",
-      "name": "Ethereum Ropsten",
-      "chain_id": 3,
-      "network_id": "Ethereum",
-      "provider_params": [
-        {
-          "chainId": "0x3",
-          "chainName": "Ethereum Ropsten",
-          "rpcUrls": [
-            "https://ropsten.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161"
-          ],
-          "nativeCurrency": {
-            "name": "Ethereum",
-            "symbol": "ETH",
-            "decimals": 18
-          },
-          "blockExplorerUrls": ["https://ropsten.etherscan.io"]
-        }
-      ],
-      "image": "/images/chains/ethereum.svg"
-    },
-    {
-      "id": "avalanche",
-      "name": "Avalanche",
-      "chain_id": 43113,
-      "network_id": "Avalanche",
-      "provider_params": [
-        {
-          "chainId": "0xa869",
-          "chainName": "Avalanche Fuji",
-          "rpcUrls": ["https://api.avax-test.network/ext/bc/C/rpc"],
-          "nativeCurrency": {
-            "name": "Avalanche",
-            "symbol": "AVAX",
-            "decimals": 18
-          },
-          "blockExplorerUrls": ["https://testnet.snowtrace.io"]
-        }
-      ],
-      "image": "/images/chains/avalanche.svg"
-    }
   ]
 }
