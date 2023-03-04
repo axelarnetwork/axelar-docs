@@ -297,6 +297,13 @@
           "symbol": "WBTC",
           "decimals": 8,
           "transfer_fee": 0.000612
+        },
+        {
+          "chain": "kava",
+          "address": "0x1a35EE4640b0A3B87705B0A4B45D227Ba60Ca2ad",
+          "symbol": "axlWBTC",
+          "decimals": 8,
+          "transfer_fee": 8.8e-05
         }
       ]
     },
@@ -327,6 +334,13 @@
           "symbol": "WETH",
           "decimals": 18,
           "transfer_fee": 0.00867
+        },
+        {
+          "chain": "kava",
+          "address": "0xb829b68f57CC546dA7E5806A929e53bE32a4625D",
+          "symbol": "axlETH",
+          "decimals": 18,
+          "transfer_fee": 0.0012
         }
       ]
     },

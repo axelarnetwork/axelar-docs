@@ -145,14 +145,6 @@
       "transfer_fee": 0.015
     },
     {
-      "id": "aave-wei",
-      "name": "AAVE - Aave Token",
-      "symbol": "AAVE",
-      "image": "/images/assets/aave.svg",
-      "decimals": 18,
-      "transfer_fee": 0.0016
-    },
-    {
       "id": "frax-wei",
       "name": "FRAX - Frax",
       "symbol": "FRAX",
@@ -185,14 +177,6 @@
       "transfer_fee": 0.1
     },
     {
-      "id": "ape-wei",
-      "name": "APE - ApeCoin",
-      "symbol": "APE",
-      "image": "/images/assets/ape.svg",
-      "decimals": 18,
-      "transfer_fee": 0.019
-    },
-    {
       "id": "uni-wei",
       "name": "UNI - Uniswap",
       "symbol": "UNI",
@@ -207,22 +191,6 @@
       "image": "/images/assets/shib.svg",
       "decimals": 18,
       "transfer_fee": 10000.0
-    },
-    {
-      "id": "axs-wei",
-      "name": "AXS - Axie Infinity Shard",
-      "symbol": "AXS",
-      "image": "/images/assets/axs.svg",
-      "decimals": 18,
-      "transfer_fee": 0.0067
-    },
-    {
-      "id": "xcn-wei",
-      "name": "XCN - Chain",
-      "symbol": "XCN",
-      "image": "/images/assets/xcn.svg",
-      "decimals": 18,
-      "transfer_fee": 1.2
     },
     {
       "id": "polygon-uusdc",
