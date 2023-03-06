@@ -14,12 +14,10 @@ Set up your Arbitrum Mainnet & Goerli Testnet RPC node
 - MacOS or Ubuntu 20.04+
 - [Official Documentation](https://developer.offchainlabs.com/node-running/running-a-node)
 
-
 ## Steps
 1. Install Docker
 2. Install Arbitrum image
 3. Configure vald
-
 
 ### Install docker
 
@@ -30,28 +28,31 @@ curl -fsSL https://get.docker.com -o get-docker.sh && sh get-docker.sh
 
 ### Install Arbitrum node
 
+Get the latest arbitrum version/docker image to use from the [official docs](https://developer.offchainlabs.com/node-running/running-a-node). It should look something like `offchainlabs/nitro-node:vx.y.z-commit`.
+
 ```bash
 mkdir -p $HOME/data/arbitrum
 chmod -fR 777 $HOME/data/arbitrum
 ```
+
 Now, you will see this flag in the command below `--l1.url <YOUR_ETH_RPC_URL>` this means that your arbitrum node needs a synced Ethereum node.
-Please provide the RPC URL of a synced Ethereum node with this flag.
+Please provide the RPC URL of your synced [Ethereum node](ethereum/) with this flag.
 
 <Callout type="error" emoji="⚠️">
-  Please avoid using 3rd party providers like alchemy, infura etc. These providers have a specific request limit, and your node can throw 100s of thousands of requests while trying to sync.
+  Please use your own Ethereum node instead of using 3rd party providers like alchemy, infura etc. for decentralization/security. Third-party providers also have a specific request limit, and your node can throw 100s of thousands of requests while trying to sync.
 </Callout>
 
 <Tabs tabs={[
 {
 title: "Mainnet",
 content: <CodeBlock language="bash">
-{`docker run --rm -it -d -v /path/to/data/arbitrum:/home/user/.arbitrum -p 0.0.0.0:8547:8547 -p 0.0.0.0:8548:8548 offchainlabs/nitro-node:v2.0.7-10b845c --l1.url <YOUR_ETH_RPC_URL> --l2.chain-id=42161 --http.api=net,web3,eth,debug --http.corsdomain=* --http.addr=0.0.0.0 --http.vhosts=* --init.url="https://snapshot.arbitrum.io/mainnet/nitro.tar"`}
+{`docker run --rm -it -d -v /path/to/data/arbitrum:/home/user/.arbitrum -p 0.0.0.0:8547:8547 -p 0.0.0.0:8548:8548 <LATEST_DOCKER_IMAGE> --l1.url <YOUR_ETH_RPC_URL> --l2.chain-id=42161 --http.api=net,web3,eth,debug --http.corsdomain=* --http.addr=0.0.0.0 --http.vhosts=* --init.url="https://snapshot.arbitrum.io/mainnet/nitro.tar"`}
 </CodeBlock>
 },
 {
 title: "Goerli Testnet",
 content: <CodeBlock language="bash">
-{`docker run --rm -it -d -v /path/to/data/arbitrum:/home/user/.arbitrum -p 0.0.0.0:8547:8547 -p 0.0.0.0:8548:8548 offchainlabs/nitro-node:v2.0.7-10b845c --l1.url <YOUR_GOERLI_ETH_RPC_URL> --l2.chain-id=421613 --http.api=net,web3,eth,debug --http.corsdomain=* --http.addr=0.0.0.0 --http.vhosts=*`}
+{`docker run --rm -it -d -v /path/to/data/arbitrum:/home/user/.arbitrum -p 0.0.0.0:8547:8547 -p 0.0.0.0:8548:8548 <LATEST_DOCKER_IMAGE> --l1.url <YOUR_GOERLI_ETH_RPC_URL> --l2.chain-id=421613 --http.api=net,web3,eth,debug --http.corsdomain=* --http.addr=0.0.0.0 --http.vhosts=*`}
 </CodeBlock>
 }
 ]} />
@@ -81,14 +82,12 @@ If you are testing it remotely, please replace `localhost` with the IP or URL of
 In order for `vald` to connect to your Arbitrum node, your `rpc_addr` should be exposed in
 vald's `config.toml`
 
-
 <Tabs tabs={[
 {
 title: "Mainnet",
 content: <CodeBlock language="yaml">
 {`[[axelar_bridge_evm]]
 name = "arbitrum"
-l1_chain_name = "Ethereum"
 rpc_addr = "http://IP:PORT"
 start-with-bridge = true`}
 </CodeBlock>
@@ -98,7 +97,6 @@ title: "Goerli Testnet",
 content: <CodeBlock language="yaml">
 {`[[axelar_bridge_evm]]
 name = "arbitrum"
-l1_chain_name = "ethereum-2"
 rpc_addr = "http://IP:PORT"
 start-with-bridge = true`}
 </CodeBlock>

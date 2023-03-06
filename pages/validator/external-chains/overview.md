@@ -26,24 +26,22 @@ See below for details. Read this entire article before you begin supporting exte
 ## External chains you can support on Axelar
 
 - EVM-compatible chains
-  - [Aurora](./aurora)
+  - [Arbitrum](./arbitrum)
   - [Avalanche](./avalanche)
   - [Binance](./binance)
+  - [Celo](./celo)
   - [Ethereum](./ethereum)
   - [Fantom](./fantom)
-  - [Moonbeam](./moonbeam)
-  - [Polygon](./polygon)
-  - [Celo](./celo)
-  - [Arbitrum](./arbitrum)
-  - [Optimism](./optimism)
   - [Kava](./kava)
-  - [Heroes of NFT](./hero)
+  - [Moonbeam](./moonbeam)
+  - [Optimism](./optimism)
+  - [Polygon](./polygon)
 - Cosmos chains
   - Nothing to do. All Cosmos chains are automatically supported by default.
 
 ## Add external chain info to your validator's configuration
 
-In the ` .axelar_testnet ` repo edit the file `config/config.toml`: set the `rpc_addr` and `start-with-bridge` entries corresponding to the external chain you wish to connect.
+Edit your `vald` config `$AXELARD_HOME/config.toml`: set the `rpc_addr` and `start-with-bridge` entries corresponding to the external chain you wish to connect.
 
 Your `config.toml` file should already contain a snippet like the following:
 
