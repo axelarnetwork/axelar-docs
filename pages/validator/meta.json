@@ -1,9 +1,0 @@
-{
-  "setup": "Setup",
-  "external-chains": "Support external chains",
-  "operations": "Operations",
-  "troubleshoot": {
-    "title": "Troubleshoot",
-    "hidden": true
-  }
-}
