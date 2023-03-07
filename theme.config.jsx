@@ -24,6 +24,9 @@ export default {
   docsRepositoryBase:
     "https://github.com/axelarnetwork/axelar-docs/blob/main/pages",
   sidebar: { defaultMenuCollapseLevel: 1 },
+  useNextSeoProps() {
+    return { titleTemplate: "%s | Axelar" };
+  },
   logo: () => {
     const { locale } = useRouter();
     return (
