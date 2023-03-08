@@ -22,7 +22,7 @@ export default {
     link: 'https://github.com/axelarnetwork'
   },
   docsRepositoryBase:
-    "https://github.com/axelarnetwork/axelar-docs/blob/main/pages",
+    "https://github.com/axelarnetwork/axelar-docs/blob/main",
   sidebar: { defaultMenuCollapseLevel: 1 },
   useNextSeoProps() {
     return { titleTemplate: "%s | Axelar" };
