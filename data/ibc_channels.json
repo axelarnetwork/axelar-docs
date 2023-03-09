@@ -31,6 +31,16 @@
       "channel_id": "channel-23"
     },
     {
+      "from": "carbon",
+      "to": "axelarnet",
+      "channel_id": "channel-7"
+    },
+    {
+      "from": "axelarnet",
+      "to": "carbon",
+      "channel_id": "channel-37"
+    },
+    {
       "from": "comdex",
       "to": "axelarnet",
       "channel_id": "channel-34"
@@ -159,6 +169,16 @@
       "from": "axelarnet",
       "to": "stargaze",
       "channel_id": "channel-18"
+    },
+    {
+      "from": "stride",
+      "to": "axelarnet",
+      "channel_id": "channel-69"
+    },
+    {
+      "from": "axelarnet",
+      "to": "stride",
+      "channel_id": "channel-64"
     },
     {
       "from": "terra",
@@ -311,6 +331,16 @@
       "from": "axelarnet",
       "to": "persistence",
       "channel_id": "channel-97"
+    },
+    {
+      "from": "secret",
+      "to": "axelarnet",
+      "channel_id": "channel-73"
+    },
+    {
+      "from": "axelarnet",
+      "to": "secret",
+      "channel_id": "channel-168"
     },
     {
       "from": "sei",
