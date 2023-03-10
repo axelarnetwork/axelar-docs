@@ -19,11 +19,11 @@ Start your Axelar node and download the blockchain.
   - Install [`jq`](https://stedolan.github.io/jq/download/).
   - Install `lz4`: [MacOS](https://formulae.brew.sh/formula/lz4) | [Ubuntu](https://snapcraft.io/install/lz4/ubuntu)
   - Increase the maximum number of open files on your system. Example: `ulimit -n 16384`. You may wish to add this command to your shell profile so that you don't need to execute it next time you restart your machine.
-- You have configured your environment for `axelard` CLI commands as per [Configure your environment](config).
+- You have configured your environment for `axelard` CLI commands as per [Configure your environment](/node/config-node).
 
 ## Choose a keyring password
 
-Your Axelar keyring is encrypted with a password you choose. Learn more about keyring passwords at [Keyring backend](keyring.md).
+Your Axelar keyring is encrypted with a password you choose. Learn more about keyring passwords at [Keyring backend](/node/keyring.md).
 
 In what follows you will execute a shell script `node.sh` to join the Axelar network. Your keyring password is supplied to `node.sh` via a `KEYRING_PASSWORD` environment variable. The script `node.sh` enforces an 8-character minimum for your keyring password.
 
