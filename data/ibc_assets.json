@@ -105,6 +105,22 @@
       "transfer_fee": 0.36
     },
     {
+      "id": "stuatom",
+      "name": "stATOM - Stride Staked Atom",
+      "symbol": "stATOM",
+      "image": "/images/assets/statom.svg",
+      "decimals": 6,
+      "transfer_fee": 0.0083
+    },
+    {
+      "id": "ustrd",
+      "name": "STRD - Stride",
+      "symbol": "STRD",
+      "image": "/images/assets/strd.svg",
+      "decimals": 6,
+      "transfer_fee": 0.2
+    },
+    {
       "id": "uatom",
       "name": "ATOM - Cosmoshub staking ATOM",
       "symbol": "ATOM",
