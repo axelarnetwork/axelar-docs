@@ -38,7 +38,7 @@ Use a web wallet such as Keplr. See [Transfer Terra assets to EVM chains using S
 ### IBC from the terminal
 
 You need shell access to a Terra node with at least `{AMOUNT}` balance of UST tokens in an account called `terra-validator`.
-Get `{TERRA_TO_AXELAR_CHANNEL_ID}` from [Testnet resources](/resources/testnet) or [Mainnet resources](resources/mainnet).
+Get `{TERRA_TO_AXELAR_CHANNEL_ID}` from [Testnet resources](/resources/testnet) or [Mainnet resources](/resources/mainnet).
 
 ```bash
 terrad tx ibc-transfer transfer transfer {TERRA_TO_AXELAR_CHANNEL_ID} {AXELAR_TEMP_ADDR} --packet-timeout-timestamp 0 --packet-timeout-height "0-20000" {AMOUNT}uusd --gas-prices 0.15uusd --from terra-validator -y -b block

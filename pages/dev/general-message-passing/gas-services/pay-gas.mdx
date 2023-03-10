@@ -2,8 +2,8 @@
 
 * [Overview](/dev/gas-services/pay-gas#overview)
 * [Example](/dev/gas-services/pay-gas#example)
-* [Alternative gas payment methods for callContract](/dev/gas-services/pay-gas#alternatives-for-paying-gas-for-callcontract)
-* [Alternative gas payment methods for callContractWithToken](/dev/gas-services/pay-gas#alternatives-for-paying-gas-for-callcontractwithtoken)
+* [Alternative gas payment methods for callContract](/dev/gas-services/pay-gas#alternative-gas-payment-methods-for-callcontract)
+* [Alternative gas payment methods for callContractWithToken](/dev/gas-services/pay-gas#alternative-gas-payment-methods-for-callcontractwithtoken)
 * [Two-way Call](/dev/gas-services/pay-gas#two-way-call)
 ## Overview 
 Axelar gas services provide methods to pay the relayer gas fee for both `callContract` and `callContractWithToken`. The fee can be paid in the native token of the source chain or any token supported by Axelar network. An application that wants Axelar to automatically execute contract calls on the destination chain needs to do three things:

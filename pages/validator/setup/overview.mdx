@@ -14,7 +14,7 @@ Convert your existing Axelar node into a validator by staking AXL tokens and att
 MOVE:
 
 - Your Axelar node has an account named `validator` that you control. Let `{VALIDATOR_ADDR}` denote the address of your `validator` account.
-- Backup your `validator` secret mnemonic and your Tendermint consensus secret key as per [Quick sync](../node/join).
+- Backup your `validator` secret mnemonic and your Tendermint consensus secret key as per [Quick sync](/node/join).
 
 ## Steps to become a validator
 

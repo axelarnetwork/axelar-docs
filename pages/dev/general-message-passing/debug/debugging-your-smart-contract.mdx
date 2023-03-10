@@ -6,7 +6,7 @@ Here are some tools that may help you to investigate and address misbehavior in 
 
 ## Tenderly
 
-[Tenderly](tenderly.co) is a powerful debugging tool for simulating smart contracts. It can be used for debugging the verified smart contract with a [breakpoint](https://en.wikipedia.org/wiki/Breakpoint). Tenderly also has other useful features for smart contract development, such as forking, transaction monitoring, etc. See their full documentation [here](https://docs.tenderly.co/).
+[Tenderly](https://tenderly.co/) is a powerful debugging tool for simulating smart contracts. It can be used for debugging the verified smart contract with a [breakpoint](https://en.wikipedia.org/wiki/Breakpoint). Tenderly also has other useful features for smart contract development, such as forking, transaction monitoring, etc. See their full documentation [here](https://docs.tenderly.co/).
 
 Note that your contract must be verified at the block explorer or Tenderly (you can follow the guide [here](https://docs.tenderly.co/monitoring/verifying-a-smart-contract)). Also, the networks it supports are limited. [Here](https://docs.tenderly.co/supported-networks-and-languages) is a list of all the networks Tenderly supports.
 
