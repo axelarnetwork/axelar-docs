@@ -434,6 +434,134 @@
       ]
     },
     {
+      "id": "stuatom",
+      "name": "stATOM - Stride Staked Atom",
+      "symbol": "stATOM",
+      "image": "/images/assets/statom.svg",
+      "contracts": [
+        {
+          "chain": "arbitrum",
+          "address": "0x7ba861c07d40e3341B901Fd6F418e96E0132E25b",
+          "symbol": "stATOM",
+          "decimals": 6,
+          "transfer_fee": 0.12
+        },
+        {
+          "chain": "avalanche",
+          "address": "0x2fFFE7f113FDB41fc8Ffd3B67E7b7eFA2b3a030d",
+          "symbol": "stATOM",
+          "decimals": 6,
+          "transfer_fee": 0.12
+        },
+        {
+          "chain": "binance",
+          "address": "0x4Bd3231E7eFc193F13a89b23ED6970776a91CF63",
+          "symbol": "stATOM",
+          "decimals": 6,
+          "transfer_fee": 0.12
+        },
+        {
+          "chain": "celo",
+          "address": "0x7ba861c07d40e3341B901Fd6F418e96E0132E25b",
+          "symbol": "stATOM",
+          "decimals": 6,
+          "transfer_fee": 0.12
+        },
+        {
+          "chain": "ethereum",
+          "address": "0x2924894E7886C6B9018179946EE389bb06534021",
+          "symbol": "stATOM",
+          "decimals": 6,
+          "transfer_fee": 0.867
+        },
+        {
+          "chain": "fantom",
+          "address": "0x4Bd3231E7eFc193F13a89b23ED6970776a91CF63",
+          "symbol": "stATOM",
+          "decimals": 6,
+          "transfer_fee": 0.12
+        },
+        {
+          "chain": "moonbeam",
+          "address": "0x2924894E7886C6B9018179946EE389bb06534021",
+          "symbol": "stATOM",
+          "decimals": 6,
+          "transfer_fee": 0.12
+        },
+        {
+          "chain": "polygon",
+          "address": "0x9132ab3B9EcA438184588b8887CeD9dE0FCA19AE",
+          "symbol": "stATOM",
+          "decimals": 6,
+          "transfer_fee": 0.12
+        }
+      ]
+    },
+    {
+      "id": "ustrd",
+      "name": "STRD - Stride",
+      "symbol": "STRD",
+      "image": "/images/assets/strd.svg",
+      "contracts": [
+        {
+          "chain": "arbitrum",
+          "address": "0x05931D5e2F7E1C1A710c9c1dCdD94e413652376F",
+          "symbol": "STRD",
+          "decimals": 6,
+          "transfer_fee": 3.0
+        },
+        {
+          "chain": "avalanche",
+          "address": "0x24562dd9D02f7ECE43B947e61E313778273F140b",
+          "symbol": "STRD",
+          "decimals": 6,
+          "transfer_fee": 3.0
+        },
+        {
+          "chain": "binance",
+          "address": "0x922946A8A2FAE7a8b4506bd54Ea361482Eff95dD",
+          "symbol": "STRD",
+          "decimals": 6,
+          "transfer_fee": 3.0
+        },
+        {
+          "chain": "celo",
+          "address": "0x05931D5e2F7E1C1A710c9c1dCdD94e413652376F",
+          "symbol": "STRD",
+          "decimals": 6,
+          "transfer_fee": 3.0
+        },
+        {
+          "chain": "ethereum",
+          "address": "0x85eBBf7253295d37C5FC98bE5Aac87CA4378c2e2",
+          "symbol": "STRD",
+          "decimals": 6,
+          "transfer_fee": 20.8
+        },
+        {
+          "chain": "fantom",
+          "address": "0x922946A8A2FAE7a8b4506bd54Ea361482Eff95dD",
+          "symbol": "STRD",
+          "decimals": 6,
+          "transfer_fee": 3.0
+        },
+        {
+          "chain": "moonbeam",
+          "address": "0x85eBBf7253295d37C5FC98bE5Aac87CA4378c2e2",
+          "symbol": "STRD",
+          "decimals": 6,
+          "transfer_fee": 3.0
+        },
+        {
+          "chain": "polygon",
+          "address": "0x1D9b7C028e5018c7057c6F57366a1350c9CeADE5",
+          "symbol": "STRD",
+          "decimals": 6,
+          "transfer_fee": 3.0
+        }
+      ]
+    },
+    {
       "id": "uatom",
       "name": "ATOM - Cosmoshub staking ATOM",
       "symbol": "ATOM",
