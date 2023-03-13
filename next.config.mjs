@@ -119,6 +119,16 @@ export default nextra({
         destination: "/dev/build/5-min-starter-examples",
         permanent: true,
       },
+      {
+        source: "/dev/build/contract-addresses/mainnet",
+        destination: "/dev/reference/mainnet-contract-addresses",
+        permanent: true,
+      },
+      {
+        source: "/dev/build/contract-addresses/testnet",
+        destination: "/dev/reference/testnet-contract-addresses",
+        permanent: true,
+      },
       /* This one doesn't work and I have no idea why
       http://localhost:3000/dev/build/chain-names/mainnet always redirects to
       http://localhost:3000/dev/reference/chain-names/mainnet
