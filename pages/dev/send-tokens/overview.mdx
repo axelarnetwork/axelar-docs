@@ -1,9 +1,10 @@
 # Send tokens cross-chain
 
-There are two ways to send tokens cross-chain with Axelar:
+There are three ways to transfer tokens cross-chain with Axelar:
 
-- Call `sendToken` on an Axelar gateway EVM contract.
-- Get a deposit address using the [AxelarJS SDK](../axelarjs-sdk/token-transfer-dep-addr).
+1. Call `sendToken` on an Axelar gateway EVM contract.
+1. Get a deposit address using the [AxelarJS SDK](../axelarjs-sdk/token-transfer-dep-addr).
+1. For tokens not [natively supported](/dev/reference/mainnet-contract-addresses#assets), build your own [Interchain Token](interchain-tokens).
 
 ## Call `sendToken`
 
