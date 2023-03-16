@@ -429,6 +429,26 @@
       "image": "/images/chains/optimism.svg"
     },
     {
+      "id": "base",
+      "name": "Base",
+      "chain_id": 84531,
+      "network_id": "base",
+      "provider_params": [
+        {
+          "chainId": "0x14a33",
+          "chainName": "Base Goerli Testnet",
+          "rpcUrls": ["https://goerli.base.org"],
+          "nativeCurrency": {
+            "name": "Ether",
+            "symbol": "ETH",
+            "decimals": 18
+          },
+          "blockExplorerUrls": ["https://goerli.basescan.org"]
+        }
+      ],
+      "image": "/images/chains/base.svg"
+    },
+    {
       "id": "kava",
       "name": "Kava",
       "chain_id": "2221",

@@ -25,6 +25,12 @@
       "image": "/images/chains/axelar.svg"
     },
     {
+      "id": "carbon",
+      "name": "Carbon",
+      "network_id": "carbon",
+      "image": "/images/chains/carbon.svg"
+    },
+    {
       "id": "comdex",
       "name": "Comdex",
       "network_id": "comdex",
@@ -101,6 +107,12 @@
       "name": "Stargaze",
       "network_id": "stargaze",
       "image": "/images/chains/stargaze.svg"
+    },
+    {
+      "id": "stride",
+      "name": "Stride",
+      "network_id": "stride",
+      "image": "/images/chains/stride.svg"
     },
     {
       "id": "terra",
@@ -199,6 +211,12 @@
       "name": "Persistence",
       "network_id": "persistence",
       "image": "/images/chains/persistence.svg"
+    },
+    {
+      "id": "secret",
+      "name": "Secret",
+      "network_id": "secret-snip",
+      "image": "/images/chains/secret.svg"
     },
     {
       "id": "sei",
