@@ -1017,6 +1017,13 @@
       "image": "/images/assets/ausdc.svg",
       "contracts": [
         {
+          "chain": "base",
+          "address": "0x254d06f33bDc5b8ee05b2ea472107E300226659A",
+          "symbol": "aUSDC",
+          "decimals": 6,
+          "transfer_fee": 0.1
+        },
+        {
           "chain": "optimism",
           "address": "0x254d06f33bDc5b8ee05b2ea472107E300226659A",
           "symbol": "aUSDC",
@@ -1102,6 +1109,13 @@
       "image": "/images/assets/axl.svg",
       "contracts": [
         {
+          "chain": "base",
+          "address": "0x23ee2343B892b1BB63503a4FAbc840E0e2C6810f",
+          "symbol": "wAXL",
+          "decimals": 6,
+          "transfer_fee": 0.1
+        },
+        {
           "chain": "optimism",
           "address": "0x23ee2343B892b1BB63503a4FAbc840E0e2C6810f",
           "symbol": "wAXL",
@@ -1181,6 +1195,21 @@
       ]
     },
     {
+      "id": "celo-wei",
+      "name": "CELO - Celo native asset",
+      "symbol": "CELO",
+      "image": "/images/assets/celo.svg",
+      "contracts": [
+        {
+          "chain": "celo",
+          "address": "0xF194afDf50B03e69Bd7D057c1Aa9e10c9954E4C9",
+          "symbol": "CELO",
+          "decimals": 18,
+          "transfer_fee": 0.1
+        }
+      ]
+    },
+    {
       "id": "eth-wei",
       "name": "WETH - Wrapped Ether",
       "symbol": "WETH",
@@ -1250,6 +1279,13 @@
       "symbol": "WMATIC",
       "image": "/images/assets/wmatic.svg",
       "contracts": [
+        {
+          "chain": "base",
+          "address": "0x21ba4f6aEdA155DD77Cc33Fb93646910543F0380",
+          "symbol": "WMATIC",
+          "decimals": 18,
+          "transfer_fee": 0.07
+        },
         {
           "chain": "optimism",
           "address": "0x21ba4f6aEdA155DD77Cc33Fb93646910543F0380",
@@ -1336,6 +1372,13 @@
       "image": "/images/assets/wavax.svg",
       "contracts": [
         {
+          "chain": "base",
+          "address": "0x2a87806561C550ba2dA9677c5323413E6e539740",
+          "symbol": "WAVAX",
+          "decimals": 18,
+          "transfer_fee": 0.001
+        },
+        {
           "chain": "optimism",
           "address": "0x2a87806561C550ba2dA9677c5323413E6e539740",
           "symbol": "WAVAX",
@@ -1420,6 +1463,13 @@
       "symbol": "WFTM",
       "image": "/images/assets/wftm.svg",
       "contracts": [
+        {
+          "chain": "base",
+          "address": "0x594D8b81eC765410536ab59E98091700b99508D8",
+          "symbol": "WFTM",
+          "decimals": 18,
+          "transfer_fee": 0.08
+        },
         {
           "chain": "optimism",
           "address": "0x594D8b81eC765410536ab59E98091700b99508D8",
@@ -1506,6 +1556,13 @@
       "image": "/images/assets/wbnb.svg",
       "contracts": [
         {
+          "chain": "base",
+          "address": "0xA9A2D8F279ABC436a18DBB1df3FB233039935D0A",
+          "symbol": "WBNB",
+          "decimals": 18,
+          "transfer_fee": 0.0003
+        },
+        {
           "chain": "optimism",
           "address": "0xA9A2D8F279ABC436a18DBB1df3FB233039935D0A",
           "symbol": "WBNB",
@@ -1590,6 +1647,13 @@
       "symbol": "WDEV",
       "image": "/images/assets/wdev.svg",
       "contracts": [
+        {
+          "chain": "base",
+          "address": "0x4B13D583F45Aa01fb2bE18a7AAfE14DE183B1Ac9",
+          "symbol": "WDEV",
+          "decimals": 18,
+          "transfer_fee": 0.04
+        },
         {
           "chain": "optimism",
           "address": "0x4B13D583F45Aa01fb2bE18a7AAfE14DE183B1Ac9",

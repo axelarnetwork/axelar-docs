@@ -243,6 +243,14 @@
       "transfer_fee": 0.05
     },
     {
+      "id": "celo-wei",
+      "name": "CELO - Celo native asset",
+      "symbol": "CELO",
+      "image": "/images/assets/celo.svg",
+      "decimals": 18,
+      "transfer_fee": 0.07
+    },
+    {
       "id": "eth-wei",
       "name": "WETH - Wrapped Ether",
       "symbol": "WETH",
