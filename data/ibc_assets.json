@@ -46,7 +46,7 @@
       "symbol": "WBTC",
       "image": "/images/assets/wbtc.svg",
       "decimals": 8,
-      "transfer_fee": 5.9e-06
+      "transfer_fee": 4.2e-06
     },
     {
       "id": "dot-planck",
@@ -54,7 +54,7 @@
       "symbol": "DOT",
       "image": "/images/assets/dot.svg",
       "decimals": 10,
-      "transfer_fee": 0.013
+      "transfer_fee": 0.018
     },
     {
       "id": "weth-wei",
@@ -62,7 +62,7 @@
       "symbol": "WETH",
       "image": "/images/assets/weth.svg",
       "decimals": 18,
-      "transfer_fee": 8.3e-05
+      "transfer_fee": 6.2e-05
     },
     {
       "id": "wmatic-wei",
@@ -70,7 +70,7 @@
       "symbol": "WMATIC",
       "image": "/images/assets/wmatic.svg",
       "decimals": 18,
-      "transfer_fee": 0.12
+      "transfer_fee": 0.091
     },
     {
       "id": "wavax-wei",
@@ -94,7 +94,7 @@
       "symbol": "WBNB",
       "image": "/images/assets/wbnb.svg",
       "decimals": 18,
-      "transfer_fee": 0.00034
+      "transfer_fee": 0.00033
     },
     {
       "id": "wftm-wei",
@@ -134,7 +134,7 @@
       "symbol": "LUNC",
       "image": "/images/assets/lunc.svg",
       "decimals": 6,
-      "transfer_fee": 670.0
+      "transfer_fee": 1000.0
     },
     {
       "id": "uusd",
@@ -150,7 +150,7 @@
       "symbol": "RAI",
       "image": "/images/assets/rai.svg",
       "decimals": 18,
-      "transfer_fee": 0.033
+      "transfer_fee": 0.036
     },
     {
       "id": "link-wei",
@@ -174,7 +174,7 @@
       "symbol": "MKR",
       "image": "/images/assets/mkr.svg",
       "decimals": 18,
-      "transfer_fee": 0.00012
+      "transfer_fee": 0.00013
     },
     {
       "id": "ungm",
@@ -182,7 +182,7 @@
       "symbol": "NGM",
       "image": "/images/assets/ngm.svg",
       "decimals": 6,
-      "transfer_fee": 0.4
+      "transfer_fee": 5.0
     },
     {
       "id": "eeur",
@@ -241,6 +241,14 @@
       "image": "/images/assets/axl.svg",
       "decimals": 6,
       "transfer_fee": 0.05
+    },
+    {
+      "id": "celo-wei",
+      "name": "CELO - Celo native asset",
+      "symbol": "CELO",
+      "image": "/images/assets/celo.svg",
+      "decimals": 18,
+      "transfer_fee": 0.07
     },
     {
       "id": "eth-wei",
