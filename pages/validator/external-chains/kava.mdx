@@ -138,6 +138,22 @@ minimum-gas-prices = "0.025ukava;1000000000akava"
 
 Do the rest of the port configuration as desired; The EVM configuration and ports can be found in the app.toml under ection "EVM Configuration"
 
+### Pruning configuration
+
+Need to keep the state & blocks for the last 1 month. 
+
+```bash
+pruning="custom"
+pruning_keep_recent="410000"
+pruning_keep_every="0"
+pruning_interval=""
+
+sed -i -e "s/^pruning *=.*/pruning = \"$pruning\"/" $HOME/.kava/config/app.toml
+sed -i -e "s/^pruning-keep-recent *=.*/pruning-keep-recent = \"$pruning_keep_recent\"/" $HOME/.kava/config/app.toml
+sed -i -e "s/^pruning-keep-every *=.*/pruning-keep-every = \"$pruning_keep_every\"/" $HOME/.kava/config/app.toml
+sed -i -e "s/^pruning-interval *=.*/pruning-interval = \"$pruning_interval\"/" $HOME/.kava/config/app.toml
+```
+
 ## State sync script
 
 <Tabs tabs={[
