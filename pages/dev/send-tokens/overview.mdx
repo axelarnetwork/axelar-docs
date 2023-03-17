@@ -21,7 +21,7 @@ Use `sendToken` if:
 
 #### 1. Locate the Axelar Gateway contract on the source chain
 
-Axelar Gateways are application-layer smart contracts established on source and destination chains. They send and receive payloads, and monitor state. Find a list of Gateway addresses for the chains we support: [Mainnet](../build/contract-addresses/mainnet) | [Testnet](../build/contract-addresses/testnet).
+Axelar Gateways are application-layer smart contracts established on source and destination chains. They send and receive payloads, and monitor state. Find a list of Gateway addresses for the chains we support: [Mainnet](../reference/mainnet-contract-addresses) | [Testnet](../reference/testnet-contract-addresses).
 
 An Axelar Gateway implements the `IAxelarGateway` interface, which has a public method called `sendToken`:
 
@@ -44,7 +44,7 @@ function approve(address spender, uint256 amount) external returns (bool);
 
 Here, `spender` is the Gateway address on the source chain.
 
-Find a list of assets, their names and their addresses: [Mainnet](../build/contract-addresses/mainnet) | [Testnet](../build/contract-addresses/testnet).
+Find a list of assets, their names and their addresses: [Mainnet](../reference/mainnet-contract-addresses) | [Testnet](../reference/testnet-contract-addresses).
 
 #### 3. Execute sendToken on the Gateway
 

@@ -116,7 +116,7 @@ export default nextra({
       },
       {
         source: "/dev/gmp/examples",
-        destination: "/dev/build/5-min-starter-examples",
+        destination: "/dev/general-message-passing/examples",
         permanent: true,
       },
       {
@@ -140,7 +140,7 @@ export default nextra({
         permanent: true,
       },
       {
-        source: "/dev/buid/tokens",
+        source: "/dev/build/tokens",
         destination: "/dev/send-tokens/overview",
         permanent: true,
       },
@@ -155,56 +155,142 @@ export default nextra({
         permanent: true,
       },
       {
-        source: '/dev/axelar-sandbox/:path(.*)',
-        destination: '/dev/general-message-passing/axelar-sandbox/:path',
+        source: "/dev/axelar-sandbox/:path(.*)",
+        destination: "/dev/general-message-passing/axelar-sandbox/:path",
         permanent: true,
       },
       {
-        source: '/dev/build/5-min-starter-examples',
-        destination: '/dev/general-message-passing/examples',
+        source: "/dev/build/5-min-starter-examples",
+        destination: "/dev/general-message-passing/examples",
         permanent: true,
       },
       {
-        source: '/dev/build/:path(.*)',
-        destination: '/dev/general-message-passing/:path',
-        permanent: true,
-      },
-      {
-        source: '/dev/debug/:path(.*)',
-        destination: '/dev/general-message-passing/debug/:path',
-        permanent: true,
-      },
-      {
-        source: '/dev/gas-services/:path(.*)',
-        destination: '/dev/general-message-passing/gas-services/:path',
-        permanent: true,
-      },
-      {
-        source: '/dev/guides/:path(.*)',
-        destination: '/dev/general-message-passing/:path',
-        permanent: true,
-      },
-      {
-        source: '/dev/monitor-recover/:path(.*)',
-        destination: '/dev/general-message-passing/:path',
-        permanent: true,
-      },
-      {
-        source: '/dev/hello-world',
-        destination: '/dev/general-message-passing/local-dev',
-        permanent: true,
-      },
-      {
-        source: '/dev/gmp-overview',
-        destination: '/dev/general-message-passing/overview',
-        permanent: true,
-      },
-      {
-        source: '/dev/general-message-passing',
-        destination: '/dev/general-message-passing/overview',
+        source: "/dev/build/tokens",
+        destination: "/dev/send-tokens/overview",
         permanent: true,
       },
 
+      {
+        source: "/dev/build/:path(.*)",
+        destination: "/dev/general-message-passing/:path",
+        permanent: true,
+      },
+      {
+        source: "/dev/debug/:path(.*)",
+        destination: "/dev/general-message-passing/debug/:path",
+        permanent: true,
+      },
+      {
+        source: "/dev/gas-services/:path(.*)",
+        destination: "/dev/general-message-passing/gas-services/:path",
+        permanent: true,
+      },
+      {
+        source: "/dev/hello-world",
+        destination: "/dev/general-message-passing/local-dev",
+        permanent: true,
+      },
+      {
+        source: "/dev/gmp-overview",
+        destination: "/dev/general-message-passing/overview",
+        permanent: true,
+      },
+      {
+        source: "/dev/general-message-passing",
+        destination: "/dev/general-message-passing/overview",
+        permanent: true,
+      },
+      /* Added 2023-03-15 based on real world incoming links from GA */
+      {
+        source: "/dev/general-message-passing/build/chain-names",
+        destination: "/dev/reference/mainnet-chain-names",
+        permanent: true,
+      },
+      {
+        source: "/dev/general-message-passing/build/contract-addresses/mainnet",
+        destination: "/dev/reference/mainnet-contract-addresses",
+        permanent: true,
+      },
+      {
+        source: "/dev/general-message-passing/build/contract-addresses/testnet",
+        destination: "/dev/reference/testnet-contract-addresses",
+        permanent: true,
+      },
+      {
+        source: "/dev/general-message-passing/chain-names",
+        destination: "/dev/reference/mainnet-chain-names",
+        permanent: true,
+      },
+      {
+        source: "/dev/general-message-passing/chain-names/testnet",
+        destination: "/dev/reference/testnet-chain-names",
+        permanent: true,
+      },
+      {
+        source: "/dev/general-message-passing/contract-addresses/mainnet",
+        destination: "/dev/reference/mainnet-contract-addresses",
+        permanent: true,
+      },
+      {
+        source: "/dev/general-message-passing/contract-addresses/testnet",
+        destination: "/dev/reference/testnet-contract-addresses",
+        permanent: true,
+      },
+      {
+        source: "/dev/general-message-passing/example-airdrop",
+        destination: "/dev/general-message-passing/examples#airdrop",
+        permanent: true,
+      },
+      {
+        source: "/dev/guides/example-airdrop",
+        destination: "/dev/general-message-passing/examples#airdrop",
+        permanent: true,
+      },
+      {
+        source: "/dev/general-message-passing/example-nft-linker",
+        destination: "/dev/general-message-passing/examples#nft-linker",
+        permanent: true,
+      },
+      {
+        source: "/dev/guides/example-nft-linker",
+        destination: "/dev/general-message-passing/examples#nft-linker",
+        permanent: true,
+      },
+      {
+        source: "/dev/guides/example-composable-usdc",
+        destination: "/dev/general-message-passing/example-composable-usdc",
+        permanent: true,
+      },
+      {
+        source: "/dev/general-message-passing/getting-started",
+        destination: "/dev/intro",
+        permanent: true,
+      },
+      {
+        source: "/dev/general-message-passing/monitor-recover/monitoring",
+        destination: "/dev/general-message-passing/monitoring",
+        permanent: true,
+      },
+      {
+        source: "/dev/general-message-passing/monitor-recover/recovery",
+        destination: "/dev/general-message-passing/recovery",
+        permanent: true,
+      },
+      {
+        source: "/dev/general-message-passing/tokens",
+        destination: "/dev/send-tokens/overview",
+        permanent: true,
+      },
+      {
+        source: "/dev/guides/video-guides",
+        destination: "https://www.youtube.com/watch?v=PWXmsP_a-ck",
+        permanent: true,
+      },
+      {
+        source: "/dev/general-message-passing/video-guides",
+        destination: "https://www.youtube.com/watch?v=PWXmsP_a-ck",
+        permanent: true,
+      },
     ];
   },
 });
