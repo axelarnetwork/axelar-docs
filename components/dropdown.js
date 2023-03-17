@@ -95,7 +95,7 @@ export default ({
       {({ open }) => (
         <>
           <div>
-            <Menu.Button className="inline-flex justify-center w-full px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-300 rounded-md shadow-sm dark:bg-dark hover:bg-gray-50 dark:hover:bg-gray-900 dark:border-gray-700 focus:outline-none dark:text-gray-100">
+            <Menu.Button className="inline-flex justify-center w-full px-4 py-2 text-sm font-medium text-gray-900 bg-white dark:bg-black border border-gray-300  rounded-md shadow-sm hover:bg-gray-50 dark:hover:bg-gray-900 dark:border-gray-700 focus:outline-none dark:text-gray-100">
               {selectedData ? (
                 <div className="flex items-center space-x-2">
                   {selectedData.image && (
@@ -138,7 +138,7 @@ export default ({
           >
             <Menu.Items
               style={{ maxHeight: "50vh" }}
-              className={`bg-white w-48 overflow-y-auto min-w-max dark:bg-dark absolute z-10 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none origin-top-${align} ${align}-0 mt-2`}
+              className={`bg-white dark:bg-black dark:border dark:border-grey-300 w-48 overflow-y-auto min-w-max dark:bg-dark absolute z-10 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none origin-top-${align} ${align}-0 mt-2`}
             >
               <div className="py-1">
                 {hasAllOptions && (
