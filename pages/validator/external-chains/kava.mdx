@@ -146,7 +146,7 @@ Need to keep the state & blocks for the last 1 month.
 pruning="custom"
 pruning_keep_recent="410000"
 pruning_keep_every="0"
-pruning_interval=""
+pruning_interval="1000"
 
 sed -i -e "s/^pruning *=.*/pruning = \"$pruning\"/" $HOME/.kava/config/app.toml
 sed -i -e "s/^pruning-keep-recent *=.*/pruning-keep-recent = \"$pruning_keep_recent\"/" $HOME/.kava/config/app.toml
