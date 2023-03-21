@@ -138,6 +138,22 @@ minimum-gas-prices = "0.025ukava;1000000000akava"
 
 Do the rest of the port configuration as desired; The EVM configuration and ports can be found in the app.toml under ection "EVM Configuration"
 
+### Pruning configuration
+
+To allow validators to retrieve and verify cross chain messages from users, the state of the network needs to be kept around at the block height. While most cross-chain messages will be picked up right away, some might not be due to various reasons (insufficient gas, off-chain services were down etc.). So, we require validators to keep 1 month of Kava chain history to support this. Please use the following pruning config for your node.
+
+```bash
+pruning="custom"
+pruning_keep_recent="410000"
+pruning_keep_every="0"
+pruning_interval="1000"
+
+sed -i -e "s/^pruning *=.*/pruning = \"$pruning\"/" $HOME/.kava/config/app.toml
+sed -i -e "s/^pruning-keep-recent *=.*/pruning-keep-recent = \"$pruning_keep_recent\"/" $HOME/.kava/config/app.toml
+sed -i -e "s/^pruning-keep-every *=.*/pruning-keep-every = \"$pruning_keep_every\"/" $HOME/.kava/config/app.toml
+sed -i -e "s/^pruning-interval *=.*/pruning-interval = \"$pruning_interval\"/" $HOME/.kava/config/app.toml
+```
+
 ## State sync script
 
 <Tabs tabs={[
