@@ -1,0 +1,88 @@
+# Axelar VM Architecture
+
+import { Callout } from 'nextra-theme-docs'
+
+This is a introduction to the architecture of the Axelar VM, first [introduced at the Interop Summit](https://axelar.network/blog/axelar-virtual-machine-future-of-interoperability). The Axelar VM is under active development, and will be released as parts are available to enable innovation across the industry. 
+
+There are three main groups that will benefit from the Axelar VM:
+* **Developers** - Think Interchain and more easily take your dApps further
+* **Integrators** - Connect your blockchain or tech stack to the Axelar Network
+* **Users** - Improved abstractions will make using web3 technologies simpler, safer, and easier
+
+## Foundation
+The Foundation of the Axelar VM is the ability to deploy and run smart contracts written in [CosmWasm](https://book.cosmwasm.com/). 
+
+<Callout emoji="💡">
+  Developers interested in trying out smart contract support on the Axelar Blockchain can give it a try on the [Axelar Wasm Devnet](https://bright-ambert-2bd.notion.site/Axelar-Devnet-885a966bf4764151a7e4c1fde68a04a2).
+</Callout>
+
+dApps built using CosmWasm are executed by the Axelar Network's [validators](https://axelarscan.io/validators), and are part of the state of the blockchain, creating an application layer on top of the existing consensus layer. Enterprising developers can use this application layer to begin to write connections to external infrastructure.
+
+## Interchain Amplifier
+The magic of this foundation of smart contracts manifests most strongly when integrators are able to plug new connections directly into the Axelar Network, allowing new paths, new chains, and more configurability for cross chain communication.
+
+We're designing paths for any integrator to create modules (contracts) deployed on Axelar that act as gateways to other ecosystems.
+
+### How Axelar previously integrated with blockchains
+To understand the future of our Interchain Amplifier, it can be helpful to understand how Axelar got to where we are today.
+
+Axelar has 30+ blockchain integrations that allow a combination of [message passing](/dev/general-message-passing/overview) and [token transfers](/dev/send-tokens/overview). Each of these blockchains requires implementation of technologies from several different parts of the stack. Today, Axelar validators execute code as part of the Axelar Node Software's consensus layer, requiring a full network upgrade (including downtime) for every modification or addition of a new chain.
+
+### Integrating a Target Chain with the Interchain Amplifier
+There are several required components that you must build to integrate with the Interchain Amplifier. These components are spread across the Axelar Blockchain, the integration target, and code executed by validators.
+
+1. **Target Chain Gateway** - On each chain connected to Axelar, a gateway is deployed. This gateway is capable of receiving incoming messages and token transfers. The gateway natively knows how to lock, burn, mint, and release tokens as appropriate, and how to emit events that can be consumed externally. This gateway has knowledge of the Axelar validator set and is capable of receiving incoming approvals and verifying the signatures from those validators. This gateway must be built in the native language of the integration target (eg Solidity for EVM Chains).
+1. **Validator Companion Process**
+    Each Validator wishing to support a chain integration needs to run a local process or worker (currently [vald](/validator/setup/config)) capable of connecting to RPC endpoints for that chain.  They use these connections to independently verify the truth of transactions that have been reported. These processes could be written in any language, but are commonly written in Go. It may be possible in the future to skip the companion process entirely in favor of a light client on the gateway capable of verifying transactions via technologies such as Zero Knowledge Proofs, if supported by the target chain.
+    Validators must also run a sentinel process (or use the one we've already built) to monitor the Axelar Gateway and respond to voting requests).
+1. **Axelar Gateway** - Validators of Axelar submit votes and sign transactions on the Axelar Blockchain via a gateway on Axelar. This gateway was historically written in Go as part of the Axelar node software, but will be able to be built with CosmWasm on top of the Axelar VM.
+1. **Relayers**
+    The final pieces necessary for a chain to become fully integrated into the Interchain Amplifier are relayers. Relayers are code that can live anywhere on the internet and be built in any language, but are responsible for submitting signed approvals from the Axelar Network onto the target chain, and for initializing execution of transactions. 
+    Relayers can be responsible for [collecting payment]() and using that payment for execution costs.
+
+For all of this to work, Axelar will supply:
+* The Axelar Blockchain & Axelar VM - The place for building decentralized, secure interchain consensus.
+* 30+ existing integrations - Axelar is already where most developers and dApps live today, connecting and enabling.
+* Router Contract - A default hub (smart contract on Axelar) that lets you send and receive messages from your integration to other integrations.
+* Example code, tools, helpful primitives, and base contracts.
+
+
+
+
+
+
+
+
+
+## Interchain Maestro
+Interchain Maestro is Axelar's vision for building once, running everywhere. 
+
+The first product released as part of Interchain Maestro is the ability for developers to create [Interchain Tokens](/dev/send-tokens/interchain-tokens) that can be leveraged and moved between any blockchain supported by the network.
+
+In the future, we'll be releasing more products and services that make it easer to deploy and maintain complex Interchain applications, such as tools for performing smart contract updates across many blockchains simultaneously.
+
+## Example Use Case: Custom Blockchain Integration
+Let's imagine you have your own blockchain that you would like integrated into the Axelar Network. There are several steps you'll need to follow to complete your integration.
+
+1. Build a Gateway within your blockchain
+1. Build a Gateway on Axelar
+1. Build or configure Axelar's Companion Processes
+1. Build Relayers to submit and execute transactions
+
+
+## Roadmap
+The Axelar VM is being actively developed. The plan for rollout is still under discussion but will likely follow the following stages:
+
+* v0.1 Architecture Documentation - (**TODAY**) Early architectural guidance for what it will look like
+* v0.2 Early Examples - We'll provide example code for pieces of this architecture, alpha-quality APIs that you can build against
+* v0.3 Final Testnet APIs - You'll be able to plug into Interchain Amplifier in a testnet environment
+* v1.0 Mainnet Release - You'll be able to plug into the Interchain Amplifier with the Axelar Mainnet
+
+
+#### v0.1 - What you can do today
+Today you should start getting up to speed on 
+* TOFNd
+* Sentinels
+* EVM-JSON RPC spec
+* getTransactionByHash
+* make sure you use ECDSA signing curve

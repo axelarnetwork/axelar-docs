@@ -40,5 +40,8 @@
   "cli-docs": {
     "title": "CLI Docs",
     "type": "doc"
+  },
+  "axelar-vm": {
+    "title": "Axelar VM"
   }
 }
