@@ -65,16 +65,6 @@ KEYRING_PASSWORD=my-secret-password ./scripts/node.sh -a v0.13.6
 </CodeBlock>
 Your Axelar node will initialize your data folder `~/.axelar_testnet`
 </div>
-},
-{
-title: "Testnet-2",
-content: <div>
-Launch a new Axelar testnet node with version `0.17.0` of axelar-core:
-<CodeBlock language="bash">
-KEYRING_PASSWORD=my-secret-password ./scripts/node.sh -a v0.17.0
-</CodeBlock>
-Your Axelar node will initialize your data folder `~/.axelar_testnet-2`
-</div>
 }
 ]} />
 
@@ -98,12 +88,6 @@ title: "Testnet",
 content: <CodeBlock>
 {"~/.axelar_testnet/validator.txt"}
 </CodeBlock>
-},
-{
-title: "Testnet-2",
-content: <CodeBlock>
-{"~/.axelar_testnet-2/validator.txt"}
-</CodeBlock>
 }
 ]} />
 
@@ -120,12 +104,6 @@ content: <CodeBlock>
 title: "Testnet",
 content: <CodeBlock>
 {"~/.axelar_testnet/.core/config/priv_validator_key.json"}
-</CodeBlock>
-},
-{
-title: "Testnet-2",
-content: <CodeBlock>
-{"~/.axelar_testnet-2/.core/config/priv_validator_key.json"}
 </CodeBlock>
 }
 ]} />
@@ -148,12 +126,6 @@ title: "Testnet",
 content: <CodeBlock language="bash">
 {"tail -f ~/.axelar_testnet/logs/axelard.log"}
 </CodeBlock>
-},
-{
-title: "Testnet-2",
-content: <CodeBlock language="bash">
-{"tail -f ~/.axelar_testnet-2/logs/axelard.log"}
-</CodeBlock>
 }
 ]} />
 
@@ -169,10 +141,6 @@ content: <MarkdownPath src="/md/mainnet/upgrade-path.md" />
 {
 title: "Testnet",
 content: <MarkdownPath src="/md/testnet/upgrade-path.md" />
-},
-{
-title: "Testnet-2",
-content: <MarkdownPath src="/md/testnet-2/upgrade-path.md" />
 }
 ]} />
 
@@ -195,12 +163,6 @@ content: <CodeBlock language="bash">
 title: "Testnet",
 content: <CodeBlock language="bash">
 {"KEYRING_PASSWORD=my-secret-password ./scripts/node.sh -a {CORE_VERSION} -n testnet"}
-</CodeBlock>
-},
-{
-title: "Testnet-2",
-content: <CodeBlock language="bash">
-{"KEYRING_PASSWORD=my-secret-password ./scripts/node.sh -a {CORE_VERSION} -n testnet-2"}
 </CodeBlock>
 }
 ]} />

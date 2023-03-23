@@ -1,7 +1,6 @@
 {
   "mainnet": "Mainnet",
   "testnet": "Testnet",
-  "testnet-2": "Testnet-2",
   "satellite": "Satellite",
   "metamask": "Set up Metamask",
   "keplr": "Add Network to Keplr Wallet",

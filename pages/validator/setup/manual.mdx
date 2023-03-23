@@ -16,7 +16,6 @@ Check the appropriate version for the network accordingly:
 
 - [Mainnet](/resources/mainnet)
 - [Testnet](/resources/testnet)
-- [Testnet-2](/resources/testnet-2)
 
 <Tabs tabs={[
 {
@@ -30,13 +29,6 @@ TOFND_RELEASE=v0.10.1`}
 title: "Testnet",
 content: <CodeBlock language="bash">
 {`AXELARD_RELEASE=v0.32.2
-TOFND_RELEASE=v0.10.1`}
-</CodeBlock>
-},
-{
-title: "Testnet-2",
-content: <CodeBlock language="bash">
-{`AXELARD_RELEASE=v0.17.3
 TOFND_RELEASE=v0.10.1`}
 </CodeBlock>
 }
@@ -107,12 +99,6 @@ title: "Testnet",
 content: <CodeBlock language="bash">
 {"echo export CHAIN_ID=axelar-testnet-lisbon-3 >> $HOME/.profile"}
 </CodeBlock>
-},
-{
-title: "Testnet-2",
-content: <CodeBlock language="bash">
-{"echo export CHAIN_ID=axelar-testnet-casablanca-1 >> $HOME/.profile"}
-</CodeBlock>
 }
 ]} />
 
@@ -169,17 +155,6 @@ wget https://raw.githubusercontent.com/axelarnetwork/axelarate-community/main/re
 # set external ip to your config.json file
 sed -i.bak 's/external_address = \"\"/external_address = \"'"$(curl -4 ifconfig.co)"':26656\"/g' $HOME/.axelar/config/config.toml`}
 </CodeBlock>
-},
-{ title: "Testnet-2", content: <CodeBlock language="bash">
-{`axelard init $MONIKER --chain-id $CHAIN_ID
-wget https://raw.githubusercontent.com/axelarnetwork/axelarate-community/main/configuration/config.toml -O $HOME/.axelar/config/config.toml
-wget https://raw.githubusercontent.com/axelarnetwork/axelarate-community/main/configuration/app.toml -O $HOME/.axelar/config/app.toml
-wget https://raw.githubusercontent.com/axelarnetwork/axelarate-community/main/resources/testnet-2/genesis.json -O $HOME/.axelar/config/genesis.json
-wget https://raw.githubusercontent.com/axelarnetwork/axelarate-community/main/resources/testnet-2/seeds.toml -O $HOME/.axelar/config/seeds.toml
-
-# set external ip to your config.json file
-sed -i.bak 's/external_address = ""/external_address = "'"$(curl -4 ifconfig.co)"':26656"/g' $HOME/.axelar/config/config.toml`}
-</CodeBlock>
 }
 ]} />
 
@@ -205,14 +180,6 @@ cd $HOME/.axelar/
 wget -O - $URL | lz4 -d | tar -xvf -
 cd $HOME`}
 </CodeBlock>
-},
-{ title: "Testnet-2", content: <CodeBlock language="bash">
-{`axelard tendermint unsafe-reset-all
-URL="https://snapshots.bitszn.com/snapshots/axelar/axelar.tar"
-echo $URL
-cd $HOME/.axelar/data
-wget -O - $URL | tar -xvf -
-cd $HOME`} </CodeBlock>
 }
 ]} />
 
