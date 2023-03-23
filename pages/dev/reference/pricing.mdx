@@ -1,0 +1,32 @@
+# Axelar Pricing
+
+Transactions using Axelar often have a source chain, Axelar, and destination chains costs associated with them. To simplify this, Axelar has two general solutions to this problem. The first, for asset transfers, is to take a portion of the assets being transferred. The second is to use a chain-agnostic gas relaying service where gas is paid in the native source chain currency.
+
+## `sendToken` and `getDepositAddress` (token transfers) 
+Prices are fixed based on the source chain, destination chain, and address. You can query these directly on the Axelar network.
+
+Whether you are transferring 10 axlUSDC or 10,000,000 axlUSDC, the cost is the same.
+
+Asset transfers were designed this way to give users a `one click` experience. Users aren't required to submit multiple blockchain transactions approving payments in addition to the transactions for sending the tokens.
+
+## callContract (General Message Passing)
+Every transaction is made up of 3 types of costs, all of which are paid in a single transaction in the chain's native currency. All costs can be seen on [Axelarscan](https://axelarscan.io) by looking at a specific transaction, [from Moonbeam to BNB Chain for example](https://axelarscan.io/gmp/0x598d35609919bc6c0737ae229af56b2135ccf5c1b031e1bd8d45f4ec4190e5a4:65).
+
+Costs are charged in the source chain's native currency, and are based on current conversion rates for the gas used by Axelar and the destination chain.
+
+
+1. **Base Fee** - The base fee for any transaction is fixed based on the chains involved, but covers three components of the transaction
+    * Validator confirmation voting on the Axelar Network
+    * Relaying of approval on the destination chain
+    * Costs related to delivering any possible refund on the destination chain
+1. **Execution Fee** - The execution fee is variable depending on the chains involved, and the complexity of your `_execute` method.
+
+
+## callContractWithToken
+Fees for `callContractWithToken` are almost identical to those of `callContract`, but have an increased execution cost due to the additional gas cost of minting/releasing tokens.
+
+## callContractWithTokenExpress
+Fees for GMP express include all of the same fees as `callContractWithToken`, plus an additional fee to cover relayer risk.
+
+## Interchain Tokens
+Under the hood, creating an [Interchain Token](/dev/send-tokens/interchain-tokens) uses `callContract``, so users are responsible for the gas on the source chain to register the token, plus the addition of a `callContract` to each destination chain where the token is being registered.
