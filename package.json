@@ -22,6 +22,7 @@
     "@reach/skip-nav": "^0.17.0",
     "@redux-devtools/extension": "^3.2.3",
     "@typeform/embed-react": "^1.21.0",
+    "harbor-ui-widget": "0.2.8",
     "lodash": "^4.17.21",
     "markdown-to-jsx": "^7.1.7",
     "next": "^12.3.1",

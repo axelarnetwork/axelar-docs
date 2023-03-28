@@ -4,5 +4,6 @@
   "satellite": "Satellite",
   "metamask": "Set up Metamask",
   "keplr": "Add Network to Keplr Wallet",
-  "wrapped-tokens": "Wrap/unwrap tokens"
+  "wrapped-tokens": "Wrap/unwrap tokens",
+  "widget": "Widget"
 }
