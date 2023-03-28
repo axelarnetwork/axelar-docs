@@ -141,6 +141,16 @@
       "channel_id": "channel-3"
     },
     {
+      "from": "persistence",
+      "to": "axelarnet",
+      "channel_id": "channel-51"
+    },
+    {
+      "from": "axelarnet",
+      "to": "persistence",
+      "channel_id": "channel-42"
+    },
+    {
       "from": "regen",
       "to": "axelarnet",
       "channel_id": "channel-48"
