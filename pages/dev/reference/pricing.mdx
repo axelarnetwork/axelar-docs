@@ -1,19 +1,23 @@
 # Axelar Pricing
 
-Transactions using Axelar often have a source chain, Axelar, and destination chains costs associated with them. To simplify this, Axelar has two general solutions to this problem. The first, for asset transfers, is to take a portion of the assets being transferred. The second is to use a chain-agnostic gas relaying service where gas is paid in the native source chain currency.
+Transactions using Axelar often have a source chain, Axelar, and destination chains costs associated with them. To simplify this, Axelar has two general solutions to this problem. The first, for asset transfers, is to take a portion of the assets being transferred. The second is to use a chain-agnostic gas relaying service where gas is paid on the source chain in its native currency.
 
-## `sendToken` and `getDepositAddress` (token transfers) 
-Prices are fixed based on the source chain, destination chain, and address. You can query these directly on the Axelar network.
+## Token transfers via `sendToken` or `getDepositAddress`
+Prices are fixed based on the source chain, destination chain, and asset. You can query these directly on the Axelar network to refer to the `Resources` tab under the `Cross-chain relayer gas fee` section. 
 
-Whether you are transferring 10 axlUSDC or 10,000,000 axlUSDC, the cost is the same.
+Whether you are transferring 10 axlUSDC or 10,000,000 axlUSDC, the cost is the same. The amount sent in a transaction must exceed the cost of the fee; it otherwise remains in the queue until the aggregate amount exceeds the fee.
 
-Asset transfers were designed this way to give users a `one click` experience. Users aren't required to submit multiple blockchain transactions approving payments in addition to the transactions for sending the tokens.
+Asset transfers were designed this way to give users a `one click` experience. This simplified UX makes it so that users are not required to submit multiple blockchain transactions approving payments in addition to the transactions for sending the tokens.
 
 ## callContract (General Message Passing)
-Every transaction is made up of 3 types of costs, all of which are paid in a single transaction in the chain's native currency. All costs can be seen on [Axelarscan](https://axelarscan.io) by looking at a specific transaction, [from Moonbeam to BNB Chain for example](https://axelarscan.io/gmp/0x598d35609919bc6c0737ae229af56b2135ccf5c1b031e1bd8d45f4ec4190e5a4:65).
+Every cross-chain transaction transaction is made up of 3 types of costs, due to:
+1. initiating the transaction on the source chain,
+2. processing the transaction through the Axelar blockchain, and
+3. relaying to the gateway contract on the destination chain + executing the final transaction on the destination smart contract
 
-Costs are charged in the source chain's native currency, and are based on current conversion rates for the gas used by Axelar and the destination chain.
+All costs can be seen on [Axelarscan](https://axelarscan.io) by looking at a specific transaction, [from Moonbeam to BNB Chain for example](https://axelarscan.io/gmp/0x598d35609919bc6c0737ae229af56b2135ccf5c1b031e1bd8d45f4ec4190e5a4:65).
 
+Axelar's gas services allow the user/dApp to pay all of these costs in a single transaction on the source chain in its native currency. The cost is based on current conversion rates for the gas used by Axelar and the destination chain.
 
 1. **Base Fee** - The base fee for any transaction is fixed based on the chains involved, but covers three components of the transaction
     * Validator confirmation voting on the Axelar Network
@@ -21,8 +25,14 @@ Costs are charged in the source chain's native currency, and are based on curren
     * Costs related to delivering any possible refund on the destination chain
 1. **Execution Fee** - The execution fee is variable depending on the chains involved, and the complexity of your `_execute` method.
 
+The `estimateGasFee` method in the [AxelarQueryAPI](../axelarjs-sdk/axelar-query-api#estimategasfee) calculates this total cost for you.
 
-## callContractWithToken
+### Special Considerations
+**Volatility of gas prices** - 
+
+**Round trip transactions (two-way calls)** - 
+
+## callContractWithToken (General Message Passing)
 Fees for `callContractWithToken` are almost identical to those of `callContract`, but have an increased execution cost due to the additional gas cost of minting/releasing tokens.
 
 ## callContractWithTokenExpress
