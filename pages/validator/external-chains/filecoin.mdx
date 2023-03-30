@@ -1,0 +1,201 @@
+# Filecoin
+
+import { Callout } from 'nextra-theme-docs'
+import CodeBlock from '../../../components/code-block'
+import Tabs from '../../../components/tabs'
+
+Set up your Filecoin Mainnet or Testnet Hyperspace node.
+
+## Prerequisites
+
+- [Setup your Axelar validator](/validator/setup)
+- Minimum hardware requirements: 8-core CPU and 32 GiB RAM. Models with support for Intel SHA Extensions (AMD since Zen microarchitecture or Intel since Ice Lake) will significantly speed things up.
+- MacOS or Linux
+- Build-essential packages
+- Golang
+- [Official Documentation Testnet Hyperspace](https://kb.factor8.io/docs/filecoin/testnets/hyperspace)
+- [Official Documentation](https://lotus.filecoin.io/lotus/install/linux/)
+
+## Install required dependencies
+
+In order to build `lotus`, you first need to install all of the required dependencies.
+
+### 1. Build lotus from source
+
+You can view the official documentation for details on how to build lotus from source [here](https://lotus.filecoin.io/lotus/install/linux/#building-from-source). Instructions below are for Ubuntu.
+
+Install dependencies
+
+```bash
+sudo apt update
+sudo apt install mesa-opencl-icd ocl-icd-opencl-dev gcc git bzr jq pkg-config curl clang build-essential hwloc libhwloc-dev wget -y && sudo apt upgrade -y
+```
+
+Install Rustup
+
+```bash
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+```
+
+
+Install Golang
+
+```bash
+wget -c https://golang.org/dl/go1.19.7.linux-amd64.tar.gz -O - | sudo tar -xz -C /usr/local
+echo 'export PATH=$PATH:/usr/local/go/bin' >> ~/.bashrc && source ~/.bashrc
+```
+
+Clone the lotus repository
+
+```bash
+git clone https://github.com/filecoin-project/lotus.git
+cd lotus/
+```
+
+Checkout the correct release and build the daemon
+
+<Tabs tabs={[
+{
+title: "Mainnet",
+content: <CodeBlock language="bash">
+git checkout releases
+export RUSTFLAGS="-C target-cpu=native -g"
+export FFI_BUILD_FROM_SOURCE=1
+make clean all
+sudo make install
+</CodeBlock>
+},
+{
+title: "Alfajores Testnet",
+content: <CodeBlock language="bash">
+git checkout v1.20.3-hyperspace-nv21-rpc-p01
+export RUSTFLAGS="-C target-cpu=native -g"
+export FFI_BUILD_FROM_SOURCE=1
+make clean hyperspacenet
+sudo make install
+</CodeBlock>
+}
+]} />
+
+
+### 2. Starting the Daemon
+
+For systemd service files, the makefile provides a template that can be installed.
+
+Download the latest pruned snapshot.
+
+```bash
+wget https://snapshots.hyperspace.yoga/hyperspace-latest-pruned.car
+```
+
+For systemd service files, the makefile provides a template that can be installed.
+
+```bash
+make install-daemon-service
+make install-miner-service
+```
+
+Peek at the systemd file to make sure there are no configurations that you wish to change e.g logs destination and format etc.
+
+```bash
+cat /etc/systemd/system/lotus-daemon.service
+```
+
+By default the data will reside in `~/.lotus` and the logs will be in `/var/log/lotus/daemon.log`.
+
+Import the snapshot
+
+```bash
+lotus daemon --import-snapshot path/to/1419120_2022_10_24T18_00_00Z.car --halt-after-import
+```
+
+There are some configurations that you need to change in the `config.toml` file. First you need to enable the EthRPC.
+
+```toml
+[Fevm]
+  # EnableEthRPC enables eth_ rpc, and enables storing a mapping of eth transaction hashes to filecoin message Cids.
+  # This will also enable the RealTimeFilterAPI and HistoricFilterAPI by default, but they can be disabled by config options above.
+  #
+  # type: bool
+  # env var: LOTUS_FEVM_ENABLEETHRPC
+  EnableEthRPC = true
+```
+
+You also need to adjust the SplitStore parameters to enable the `SplitStore` feature. You can read more on this [here](https://docs.filecoin.io/mine/lotus/splitstore/).
+
+```toml
+[Chainstore]
+  # type: bool
+  # env var: LOTUS_CHAINSTORE_ENABLESPLITSTORE
+  EnableSplitstore = true
+```
+
+Start the daemon
+
+```bash
+sudo systemctl start lotus-daemon
+```
+
+Tail the logs to see if the daemon is syncing
+
+```bash
+tail -F /var/log/lotus/daemon.log
+```
+
+You should eventually (approx 5-10 minutes) see something like this in the logs:
+
+```logs
+{"level":"info","ts":"2023-03-30T01:29:02.455Z","logger":"chain","caller":"chain/sync.go:625","msg":"block validation","took":0.030020629,"height":"2301","age":6221912.455308664}
+{"level":"info","ts":"2023-03-30T01:29:02.487Z","logger":"chain","caller":"chain/sync.go:625","msg":"block validation","took":0.029449958,"height":"2302","age":6221882.487074932}
+{"level":"info","ts":"2023-03-30T01:29:02.488Z","logger":"chain","caller":"chain/sync.go:625","msg":"block validation","took":0.031201571,"height":"2302","age":6221882.488814413}
+{"level":"info","ts":"2023-03-30T01:29:02.519Z","logger":"chain","caller":"chain/sync.go:625","msg":"block validation","took":0.02858384,"height":"2303","age":6221852.519261811}
+{"level":"info","ts":"2023-03-30T01:29:02.520Z","logger":"chain","caller":"chain/sync.go:625","msg":"block validation","took":0.030298414,"height":"2303","age":6221852.520997515}
+{"level":"info","ts":"2023-03-30T01:29:02.550Z","logger":"chain","caller":"chain/sync.go:625","msg":"block validation","took":0.027933658,"height":"2304","age":6221822.550828792}
+{"level":"info","ts":"2023-03-30T01:29:02.552Z","logger":"chain","caller":"chain/sync.go:625","msg":"block validation","took":0.029913401,"height":"2304","age":6221822.552771758}
+{"level":"info","ts":"2023-03-30T01:29:02.583Z","logger":"chain","caller":"chain/sync.go:625","msg":"block validation","took":0.028520766,"height":"2305","age":6221792.583270292}
+{"level":"info","ts":"2023-03-30T01:29:02.585Z","logger":"chain","caller":"chain/sync.go:625","msg":"block validation","took":0.030328811,"height":"2305","age":6221792.585082853}
+```
+
+You can also run the following command to wait on the status of your node, you will have to wait a few minutes before this command runs:
+
+```bash
+lotus sync wait
+```
+
+
+### 3. Test your Filecoin RPC connection
+
+Once the node is running you can test the RPC.
+
+```bash
+curl -X POST 'http://localhost:1234' \
+  -H 'Content-Type: application/json' \
+  --data '{"jsonrpc":"2.0","id":1,"method":"Filecoin.ChainHead","params":[]}' \
+  | jq
+```
+
+Once your node is fully synced, you can run a cURL request to see the status of your node:
+
+```bash
+curl --location --request POST 'http://localhost:1234' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+  "jsonrpc":"2.0",
+  "method":"eth_blockNumber",
+  "params":[],
+  "id":1
+}' | jq
+```
+
+If the node is successfully synced, the output from above will print `{"jsonrpc":"2.0","id":1,"result":false}`
+
+### EVM RPC endpoint URL
+
+In order for Axelar Network to connect to your Filecoin node, your `rpc_addr` should be exposed in this format:
+
+```bash
+http://IP:PORT
+```
+
+Example:
+`http://192.168.192.168:18545`
