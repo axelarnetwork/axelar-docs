@@ -168,7 +168,7 @@ lotus sync wait
 Once the node is running you can test the RPC.
 
 ```bash
-curl -X POST 'http://localhost:1234' \
+curl -X POST 'http://localhost:1234/rpc/v1' \
   -H 'Content-Type: application/json' \
   --data '{"jsonrpc":"2.0","id":1,"method":"Filecoin.ChainHead","params":[]}' \
   | jq
@@ -177,7 +177,7 @@ curl -X POST 'http://localhost:1234' \
 Once your node is fully synced, you can run a cURL request to see the status of your node:
 
 ```bash
-curl --location --request POST 'http://localhost:1234' \
+curl --location --request POST 'http://localhost:1234/rpc/v1' \
 --header 'Content-Type: application/json' \
 --data-raw '{
   "jsonrpc":"2.0",
