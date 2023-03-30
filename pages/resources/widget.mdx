@@ -1,0 +1,88 @@
+# Widget
+
+import Harbor from "harbor-ui-widget";
+
+## What is Axelar Widget
+
+Below is a widget, [powered by Harbor](https://goharbor.xyz), that allows you to:
+
+- [Start the Testnet](#starting-the-testnet)
+- [Restart the Testnet](#restarting-the-testnet)
+- [Download smart contract ABIs](#downloading-smart-contract-abis)
+- [Copy smart contract addresses](#copy-smart-contract-addresses)
+- [Copy chain endpoints](#copy-chain-endpoints)
+- [Copy off-chain actor endpoints](#copy-off-chain-actor-endpoints)
+- [View logs](#view-logs)
+
+All within a private, production-ready, Testnet containing the Axelar protocol that you can share between team members. Try it below!
+
+## Try it
+
+<>
+  <Harbor
+    projectKey="xyuFZj7T5rBLuXFS3Ngc5B"
+    userKey="Rpof7jVwSpCwqmz5qBNsiC"
+    projectId="cf67fc31-2ebd-4b88-a97f-ea235350cdfb"
+    title="Axelar Testnet"
+    email="axelar@goharbor.xyz"
+  />
+</>
+
+## Overview of functions
+
+### Starting the Testnet
+
+Seeing the widget for the first time will show you a Testnet that isn't running yet:
+
+![widget](/images/start_testnet.png)
+
+Clicking the `Start Testnet` button will start your Testnet. This will take around 2-3 minutes:
+
+![widget](/images/started_testnet.png)
+
+The Testnets you create with this widget will only run for 2 hours. If you'd like to create longer-running Testnets, [sign up with Harbor](https://live.goharbor.com).
+
+### Restarting the Testnet
+
+Once a Testnet has successfully started, the `Start Testnet` button will be replaced by a `Restart Testnet` button.
+
+![widget](/images/restarted_testnet.png)
+
+Click it to restart the Testnet. You should restart the Testnet if you'd like to update your Testnet configuration or recover from an issue.
+
+![widget](/images/restarting_testnet.png)
+
+During the restart process, the chains and actor instances will restart as well. All previous transactions in the chain would be nullified, while the state of the actor would also be restarted.
+
+### Downloading smart contract ABIs
+
+Under the chain section, click on the three dots of a smart contract cell, then click `Download ABI` to download its ABI.
+
+![info](/images/harbor_info.png)
+
+### Copy smart contract addresses
+
+Under the chain section, click on the three dots of a smart contract cell, then click the clipboard icon to copy the smart contract's address.
+
+![info](/images/harbor_info.png)
+
+### Copy chain endpoints
+
+Under the chain section, click on the clipboard icon on the top right corner to copy the endpoint of a chain.
+
+![chain](/images/blockchain.png)
+
+### Copy off-chain actor endpoints
+
+Under the off-chain actor section, click on the copy icon on the top right corner to copy the endpoint of a chain.
+
+![logs](/images/log.png)
+
+### View logs
+
+Under either the off-chain actor or chain section, click on the `View logs` button to see the logs. The logs will take a few seconds to load.
+
+![logs](/images/harbor_log_click.png)
+![logs](/images/harbor_logs.png)
+
+- [For writing tests using Axelar, click here.](https://docs.goharbor.com/docs/bridges/tests/axelar)
