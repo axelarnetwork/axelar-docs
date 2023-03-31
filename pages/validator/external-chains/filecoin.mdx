@@ -25,10 +25,9 @@ In order to build `lotus`, you first need to install all of the required depende
 You can view the official documentation for details on how to build lotus from source [here](https://lotus.filecoin.io/lotus/install/linux/#building-from-source). Instructions below are for Ubuntu.
 
 Install dependencies
-
 ```bash
 sudo apt update
-sudo apt install mesa-opencl-icd ocl-icd-opencl-dev gcc git bzr jq pkg-config curl clang build-essential hwloc libhwloc-dev wget -y && sudo apt upgrade -y
+sudo apt install mesa-opencl-icd ocl-icd-opencl-dev gcc git bzr jq pkg-config curl clang build-essential hwloc libhwloc-dev wget aria2 -y && sudo apt upgrade -y
 ```
 
 Install Rustup
@@ -37,9 +36,9 @@ Install Rustup
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 ```
 
-
 Install Golang
 
+You must compile the lotus daemon with the [required](https://lotus.filecoin.io/lotus/install/linux/#go) Go version.
 ```bash
 wget -c https://golang.org/dl/go1.19.7.linux-amd64.tar.gz -O - | sudo tar -xz -C /usr/local
 echo 'export PATH=$PATH:/usr/local/go/bin' >> ~/.bashrc && source ~/.bashrc
@@ -52,31 +51,34 @@ git clone https://github.com/filecoin-project/lotus.git
 cd lotus/
 ```
 
-Checkout the correct release and build the daemon
+If you have an AMD Zen or Intel Ice Lake CPU (i.e 10th gen Intel Core/3rd gen Xeon or later),
+enable [FFI optimizations](https://lotus.filecoin.io/lotus/install/linux/#native-filecoin-ffi) by setting the env vars below.
+
+```bash
+export RUSTFLAGS="-C target-cpu=native -g"
+export FFI_BUILD_FROM_SOURCE=1
+```
+
+Checkout the correct release and build the daemon.
 
 <Tabs tabs={[
 {
 title: "Mainnet",
 content: <CodeBlock language="bash">
 git checkout releases
-export RUSTFLAGS="-C target-cpu=native -g"
-export FFI_BUILD_FROM_SOURCE=1
 make clean all
 sudo make install
 </CodeBlock>
 },
 {
-title: "Alfajores Testnet",
+title: "Testnet",
 content: <CodeBlock language="bash">
 git checkout v1.20.3-hyperspace-nv21-rpc-p01
-export RUSTFLAGS="-C target-cpu=native -g"
-export FFI_BUILD_FROM_SOURCE=1
 make clean hyperspacenet
 sudo make install
 </CodeBlock>
 }
 ]} />
-
 
 ### 2. Starting the Daemon
 
@@ -84,15 +86,25 @@ For systemd service files, the makefile provides a template that can be installe
 
 Download the latest pruned snapshot.
 
-```bash
-wget https://snapshots.hyperspace.yoga/hyperspace-latest-pruned.car
-```
+<Tabs tabs={[
+{
+title: "Mainnet",
+content: <CodeBlock language="bash">
+aria2c -x5 https://snapshots.mainnet.filops.net/minimal/latest.zst
+</CodeBlock>
+},
+{
+title: "Testnet",
+content: <CodeBlock language="bash">
+aria2c -x5 https://snapshots.hyperspace.yoga/hyperspace-latest-pruned.car
+</CodeBlock>
+}
+]} />
 
 For systemd service files, the makefile provides a template that can be installed.
 
 ```bash
 make install-daemon-service
-make install-miner-service
 ```
 
 Peek at the systemd file to make sure there are no configurations that you wish to change e.g lotus home path, logs destination and format etc.
@@ -106,7 +118,7 @@ By default the data will reside in `~/.lotus` and the logs will be in `/var/log/
 Import the snapshot
 
 ```bash
-lotus daemon --import-snapshot path/to/1419120_2022_10_24T18_00_00Z.car --halt-after-import
+lotus daemon --import-snapshot path/to/snapshot.car --halt-after-import
 ```
 
 There are some configurations that you need to change in the `config.toml` file. First you need to enable the EthRPC.
@@ -122,12 +134,21 @@ There are some configurations that you need to change in the `config.toml` file.
 ```
 
 You also need to adjust the SplitStore parameters to enable the `SplitStore` feature. You can read more on this [here](https://docs.filecoin.io/mine/lotus/splitstore/).
+`ColdStoreType` needs to be set to `messages` to allow querying FEVM transactions.
 
 ```toml
 [Chainstore]
   # type: bool
   # env var: LOTUS_CHAINSTORE_ENABLESPLITSTORE
   EnableSplitstore = true
+
+[Chainstore.Splitstore]
+  # ColdStoreType specifies the type of the coldstore.
+  # It can be "messages" (default) to store only messages, "universal" to store all chain state or "discard" for discarding cold blocks.
+  #
+  # type: string
+  # env var: LOTUS_CHAINSTORE_SPLITSTORE_COLDSTORETYPE
+  ColdStoreType = "messages"
 ```
 
 Start the daemon
@@ -162,7 +183,6 @@ You can also run the following command to wait on the status of your node, you w
 lotus sync wait
 ```
 
-
 ### 3. Test your Filecoin RPC connection
 
 Once the node is running you can test the RPC.
@@ -189,13 +209,28 @@ curl --location --request POST 'http://localhost:1234/rpc/v1' \
 
 If the node is successfully synced, the output from above will print `{"jsonrpc":"2.0","id":1,"result":false}`
 
-### EVM RPC endpoint URL
+### Configure vald
 
-In order for Axelar Network to connect to your Filecoin node, your `rpc_addr` should be exposed in this format:
+In order for `vald` to connect to your Filecoin node, your `rpc_addr` should be exposed in
+vald's `config.toml`
 
-```bash
-http://IP:PORT
-```
-
-Example:
-`http://192.168.192.168:18545`
+<Tabs tabs={[
+{
+title: "Mainnet",
+content: <CodeBlock language="yaml">
+{`[[axelar_bridge_evm]]
+name = "filecoin"
+rpc_addr = "http://127.0.0.1:1234/rpc/v1"
+start-with-bridge = true`}
+</CodeBlock>
+},
+{
+title: "Testnet",
+content: <CodeBlock language="yaml">
+{`[[axelar_bridge_evm]]
+name = "filecoin"
+rpc_addr = "http://127.0.0.1:1234/rpc/v1"
+start-with-bridge = true`}
+</CodeBlock>
+}
+]} />
