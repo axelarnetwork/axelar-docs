@@ -194,7 +194,7 @@ curl -X POST 'http://localhost:1234/rpc/v1' \
   | jq
 ```
 
-Once your node is fully synced, you can run a cURL request to see the status of your node:
+Once your node is fully synced, query the latest block number using the following EVM query:
 
 ```bash
 curl --location --request POST 'http://localhost:1234/rpc/v1' \
@@ -207,7 +207,11 @@ curl --location --request POST 'http://localhost:1234/rpc/v1' \
 }' | jq
 ```
 
-If the node is successfully synced, the output from above will print `{"jsonrpc":"2.0","id":1,"result":false}`
+Verify that the block number matches the latest block number on the explorer.
+
+[Mainnet Explorer](https://filfox.info/en/tipset)
+
+[Testnet Explorer](https://hyperspace.filfox.info/en/tipset)
 
 ### Configure vald
 
@@ -220,7 +224,7 @@ title: "Mainnet",
 content: <CodeBlock language="yaml">
 {`[[axelar_bridge_evm]]
 name = "filecoin"
-rpc_addr = "http://127.0.0.1:1234/rpc/v1"
+rpc_addr = "http://localhost:1234/rpc/v1"
 start-with-bridge = true`}
 </CodeBlock>
 },
@@ -229,7 +233,7 @@ title: "Testnet",
 content: <CodeBlock language="yaml">
 {`[[axelar_bridge_evm]]
 name = "filecoin"
-rpc_addr = "http://127.0.0.1:1234/rpc/v1"
+rpc_addr = "http://localhost:1234/rpc/v1"
 start-with-bridge = true`}
 </CodeBlock>
 }
