@@ -101,27 +101,13 @@ aria2c -x5 https://snapshots.hyperspace.yoga/hyperspace-latest-pruned.car
 }
 ]} />
 
-For systemd service files, the makefile provides a template that can be installed.
-
-```bash
-make install-daemon-service
-```
-
-Peek at the systemd file to make sure there are no configurations that you wish to change e.g lotus home path, logs destination and format etc.
-
-```bash
-cat /etc/systemd/system/lotus-daemon.service
-```
-
-By default the data will reside in `~/.lotus` and the logs will be in `/var/log/lotus/daemon.log`.
-
 Import the snapshot
 
 ```bash
 lotus daemon --import-snapshot path/to/snapshot.car --halt-after-import
 ```
 
-There are some configurations that you need to change in the `config.toml` file. First you need to enable the EthRPC.
+Modify the lotus config file `~/.lotus/config.toml`. First, enable the Eth RPC needed by vald.
 
 ```toml
 [Fevm]
@@ -133,7 +119,7 @@ There are some configurations that you need to change in the `config.toml` file.
   EnableEthRPC = true
 ```
 
-You also need to adjust the SplitStore parameters to enable the `SplitStore` feature. You can read more on this [here](https://docs.filecoin.io/mine/lotus/splitstore/).
+You also need to enable the `SplitStore` feature to reduce disk usage. You can read more on this [here](https://docs.filecoin.io/mine/lotus/splitstore/).
 `ColdStoreType` needs to be set to `messages` to allow querying FEVM transactions.
 
 ```toml
@@ -151,10 +137,24 @@ You also need to adjust the SplitStore parameters to enable the `SplitStore` fea
   ColdStoreType = "messages"
 ```
 
+For systemd service files, the makefile provides a template that can be installed.
+
+```bash
+make install-daemon-service
+```
+
+In the generated systemd file `/etc/systemd/system/lotus-daemon.service`, under `[Service]`,
+set the `LOTUS_PATH` env variable to the config folder (e.g. `/home/ubuntu/.lotus`).
+
+```yaml
+[Service]
+Environment=LOTUS_PATH="/path/to/.lotus"
+```
+
 Start the daemon
 
 ```bash
-sudo systemctl start lotus-daemon # using sudo might result is data being stored in /root/.lotus
+sudo systemctl start lotus-daemon
 ```
 
 Tail the logs to see if the daemon is syncing
