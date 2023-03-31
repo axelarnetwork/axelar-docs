@@ -5,7 +5,7 @@ import { Callout } from 'nextra-theme-docs'
 Instructions for `2023-April-3` testnet upgrade to axelar-core `v0.33.0`, vald `v0.33.0`, and tofnd `v0.10.1`.
 Release can be found [here](https://github.com/axelarnetwork/axelar-core/releases/tag/v0.33.0).
 
-Upgrade height `6939100` [countdown](https://testnet.mintscan.io/axelar-testnet/blocks/6939100)
+Upgrade height `6939420` [countdown](https://testnet.mintscan.io/axelar-testnet/blocks/6939420)
 
 1. If you're a validator or have delegated to one, please vote for the upgrade proposal via
 
@@ -13,7 +13,7 @@ Upgrade height `6939100` [countdown](https://testnet.mintscan.io/axelar-testnet/
 axelard tx gov vote 46 yes --from validator
 ```
 
-2. Wait for the proposed upgrade block, `6939100`. Your node will panic at that block height with a log: `{"level":"error","module":"consensus","err":"UPGRADE \"v0.33\" NEEDED at height: ",`. Stop your node after chain halt.
+2. Wait for the proposed upgrade block, `6939420`. Your node will panic at that block height with a log: `{"level":"error","module":"consensus","err":"UPGRADE \"v0.33\" NEEDED at height: ",`. Stop your node after chain halt.
 
 ```bash
 pkill -f 'axelard start'
