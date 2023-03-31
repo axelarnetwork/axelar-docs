@@ -66,7 +66,9 @@ Checkout the correct release and build the daemon.
 title: "Mainnet",
 content: <CodeBlock language="bash">
 git checkout releases
+
 make clean all
+
 sudo make install
 </CodeBlock>
 },
@@ -74,7 +76,9 @@ sudo make install
 title: "Testnet",
 content: <CodeBlock language="bash">
 git checkout v1.20.3-hyperspace-nv21-rpc-p01
+
 make clean hyperspacenet
+
 sudo make install
 </CodeBlock>
 }
