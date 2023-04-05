@@ -33,10 +33,6 @@ content: <MarkdownPath src="/md/mainnet/upgrade-path.md" />
 {
 title: "Testnet",
 content: <MarkdownPath src="/md/testnet/upgrade-path.md" />
-},
-{
-title: "Testnet-2",
-content: <MarkdownPath src="/md/testnet-2/upgrade-path.md" />
 }
 ]} />
 
@@ -46,7 +42,7 @@ First, you have to change directory to "axelarate-community" repository.
 cd axelarate-community
 ```
 
-To run setup-node.sh you have to specify the network (mainnet, testnet, testnet-2) and the axelard core version you want to use.
+To run setup-node.sh you have to specify the network (mainnet, testnet) and the axelard core version you want to use.
 You must follow the upgrade path as specified in the table above (it is different for each network).
 setup-node.sh will download axelard binary version you specified in "$AXELARD_HOME/bin" folder and create a symbolic link.
 
@@ -66,12 +62,6 @@ content: <CodeBlock language="bash">
 title: "Testnet",
 content: <CodeBlock language="bash">
 {"./scripts/setup-node.sh -n testnet -a v0.13.6"}
-</CodeBlock>
-},
-{
-title: "Testnet-2",
-content: <CodeBlock language="bash">
-{"./scripts/setup-node.sh -n testnet-2 -a v0.17.3"}
 </CodeBlock>
 }
 ]} />

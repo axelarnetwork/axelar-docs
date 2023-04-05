@@ -291,6 +291,14 @@
       "transfer_fee": 0.0002
     },
     {
+      "id": "wfil-wei",
+      "name": "WFIL - Wrapped FIL",
+      "symbol": "WFIL",
+      "image": "/images/assets/wfil.svg",
+      "decimals": 18,
+      "transfer_fee": 0.01
+    },
+    {
       "id": "wdev-wei",
       "name": "WDEV - Wrapped DEV",
       "symbol": "WDEV",

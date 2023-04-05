@@ -18,7 +18,9 @@
             "symbol": "ETH",
             "decimals": 18
           },
-          "blockExplorerUrls": ["https://etherscan.io"]
+          "blockExplorerUrls": [
+            "https://etherscan.io"
+          ]
         }
       ],
       "image": "/images/chains/ethereum.svg"
@@ -32,13 +34,18 @@
         {
           "chainId": "0x38",
           "chainName": "BNB Chain",
-          "rpcUrls": ["https://rpc.ankr.com/bsc", "https://bscrpc.com"],
+          "rpcUrls": [
+            "https://rpc.ankr.com/bsc",
+            "https://bscrpc.com"
+          ],
           "nativeCurrency": {
             "name": "BNB",
             "symbol": "BNB",
             "decimals": 18
           },
-          "blockExplorerUrls": ["https://bscscan.com"]
+          "blockExplorerUrls": [
+            "https://bscscan.com"
+          ]
         }
       ],
       "image": "/images/chains/binance.svg"
@@ -62,7 +69,9 @@
             "symbol": "MATIC",
             "decimals": 18
           },
-          "blockExplorerUrls": ["https://polygonscan.com"]
+          "blockExplorerUrls": [
+            "https://polygonscan.com"
+          ]
         }
       ],
       "image": "/images/chains/polygon.svg"
@@ -85,7 +94,9 @@
             "symbol": "AVAX",
             "decimals": 18
           },
-          "blockExplorerUrls": ["https://snowtrace.io"]
+          "blockExplorerUrls": [
+            "https://snowtrace.io"
+          ]
         }
       ],
       "image": "/images/chains/avalanche.svg"
@@ -109,7 +120,9 @@
             "symbol": "FTM",
             "decimals": 18
           },
-          "blockExplorerUrls": ["https://ftmscan.com"]
+          "blockExplorerUrls": [
+            "https://ftmscan.com"
+          ]
         }
       ],
       "image": "/images/chains/fantom.svg"
@@ -132,7 +145,9 @@
             "symbol": "GLMR",
             "decimals": 18
           },
-          "blockExplorerUrls": ["https://moonscan.io"]
+          "blockExplorerUrls": [
+            "https://moonscan.io"
+          ]
         }
       ],
       "image": "/images/chains/moonbeam.svg"
@@ -155,7 +170,9 @@
             "symbol": "ETH",
             "decimals": 18
           },
-          "blockExplorerUrls": ["https://arbiscan.io"]
+          "blockExplorerUrls": [
+            "https://arbiscan.io"
+          ]
         }
       ],
       "image": "/images/chains/arbitrum.svg"
@@ -178,7 +195,9 @@
             "symbol": "CELO",
             "decimals": 18
           },
-          "blockExplorerUrls": ["https://celoscan.io/"]
+          "blockExplorerUrls": [
+            "https://celoscan.io/"
+          ]
         }
       ],
       "image": "/images/chains/celo.svg"
@@ -200,7 +219,9 @@
             "symbol": "KAVA",
             "decimals": 18
           },
-          "blockExplorerUrls": ["https://explorer.kava.io/"]
+          "blockExplorerUrls": [
+            "https://explorer.kava.io/"
+          ]
         }
       ],
       "image": "/images/chains/kava.svg"
@@ -225,7 +246,9 @@
             "symbol": "ETH",
             "decimals": 18
           },
-          "blockExplorerUrls": ["https://goerli.etherscan.io"]
+          "blockExplorerUrls": [
+            "https://goerli.etherscan.io"
+          ]
         }
       ],
       "image": "/images/chains/ethereum.svg"
@@ -249,7 +272,9 @@
             "symbol": "BNB",
             "decimals": 18
           },
-          "blockExplorerUrls": ["https://testnet.bscscan.com"]
+          "blockExplorerUrls": [
+            "https://testnet.bscscan.com"
+          ]
         }
       ],
       "image": "/images/chains/binance.svg"
@@ -273,7 +298,9 @@
             "symbol": "MATIC",
             "decimals": 18
           },
-          "blockExplorerUrls": ["https://mumbai.polygonscan.com"]
+          "blockExplorerUrls": [
+            "https://mumbai.polygonscan.com"
+          ]
         }
       ],
       "image": "/images/chains/polygon.svg"
@@ -296,7 +323,9 @@
             "symbol": "AVAX",
             "decimals": 18
           },
-          "blockExplorerUrls": ["https://testnet.snowtrace.io"]
+          "blockExplorerUrls": [
+            "https://testnet.snowtrace.io"
+          ]
         }
       ],
       "image": "/images/chains/avalanche.svg"
@@ -319,7 +348,9 @@
             "symbol": "FTM",
             "decimals": 18
           },
-          "blockExplorerUrls": ["https://testnet.ftmscan.com"]
+          "blockExplorerUrls": [
+            "https://testnet.ftmscan.com"
+          ]
         }
       ],
       "image": "/images/chains/fantom.svg"
@@ -343,7 +374,9 @@
             "symbol": "DEV",
             "decimals": 18
           },
-          "blockExplorerUrls": ["https://moonbase.moonscan.io"]
+          "blockExplorerUrls": [
+            "https://moonbase.moonscan.io"
+          ]
         }
       ],
       "image": "/images/chains/moonbase.png"
@@ -357,13 +390,17 @@
         {
           "chainId": "0x4e454153",
           "chainName": "Aurora Testnet",
-          "rpcUrls": ["https://testnet.aurora.dev"],
+          "rpcUrls": [
+            "https://testnet.aurora.dev"
+          ],
           "nativeCurrency": {
             "name": "Ethereum",
             "symbol": "ETH",
             "decimals": 18
           },
-          "blockExplorerUrls": ["https://testnet.aurorascan.dev"]
+          "blockExplorerUrls": [
+            "https://testnet.aurorascan.dev"
+          ]
         }
       ],
       "image": "/images/chains/aurora.svg"
@@ -377,13 +414,17 @@
         {
           "chainId": "0xAEF3",
           "chainName": "Celo Alfajores Testnet",
-          "rpcUrls": ["https://alfajores-forno.celo-testnet.org"],
+          "rpcUrls": [
+            "https://alfajores-forno.celo-testnet.org"
+          ],
           "nativeCurrency": {
             "name": "Celo",
             "symbol": "CELO",
             "decimals": 18
           },
-          "blockExplorerUrls": ["https://alfajores.celoscan.io/"]
+          "blockExplorerUrls": [
+            "https://alfajores.celoscan.io/"
+          ]
         }
       ],
       "image": "/images/chains/celo.svg"
@@ -397,13 +438,17 @@
         {
           "chainId": "0x66EED",
           "chainName": "Arbitrum Goerli Testnet",
-          "rpcUrls": ["https://goerli-rollup.arbitrum.io/rpc"],
+          "rpcUrls": [
+            "https://goerli-rollup.arbitrum.io/rpc"
+          ],
           "nativeCurrency": {
             "name": "Ethereum",
             "symbol": "ETH",
             "decimals": 18
           },
-          "blockExplorerUrls": ["https://goerli.arbiscan.io/"]
+          "blockExplorerUrls": [
+            "https://goerli.arbiscan.io/"
+          ]
         }
       ],
       "image": "/images/chains/arbitrum.svg"
@@ -417,13 +462,17 @@
         {
           "chainId": "0x1A4",
           "chainName": "Optimism Goerli Testnet",
-          "rpcUrls": ["https://goerli.optimism.io"],
+          "rpcUrls": [
+            "https://goerli.optimism.io"
+          ],
           "nativeCurrency": {
             "name": "Ethereum",
             "symbol": "ETH",
             "decimals": 18
           },
-          "blockExplorerUrls": ["https://goerli-optimism.etherscan.io/"]
+          "blockExplorerUrls": [
+            "https://goerli-optimism.etherscan.io/"
+          ]
         }
       ],
       "image": "/images/chains/optimism.svg"
@@ -437,16 +486,45 @@
         {
           "chainId": "0x14a33",
           "chainName": "Base Goerli Testnet",
-          "rpcUrls": ["https://goerli.base.org"],
+          "rpcUrls": [
+            "https://goerli.base.org"
+          ],
           "nativeCurrency": {
             "name": "Ether",
             "symbol": "ETH",
             "decimals": 18
           },
-          "blockExplorerUrls": ["https://goerli.basescan.org"]
+          "blockExplorerUrls": [
+            "https://goerli.basescan.org"
+          ]
         }
       ],
       "image": "/images/chains/base.svg"
+    },
+    {
+      "id": "filecoin",
+      "name": "Filecoin",
+      "chain_id": 3141,
+      "network_id": "filecoin",
+      "provider_params": [
+        {
+          "chainId": "0xC45",
+          "chainName": "Filecoin Hyperspace Testnet",
+          "rpcUrls": [
+            "https://api.hyperspace.node.glif.io/rpc/v1",
+            "https://rpc.ankr.com/filecoin_testnet"
+          ],
+          "nativeCurrency": {
+            "name": "Filecoin",
+            "symbol": "FIL",
+            "decimals": 18
+          },
+          "blockExplorerUrls": [
+            "https://hyperspace.filfox.info"
+          ]
+        }
+      ],
+      "image": "/images/chains/filecoin.svg"
     },
     {
       "id": "kava",
@@ -457,60 +535,20 @@
         {
           "chainId": "0x8AD",
           "chainName": "Kava EVM",
-          "rpcUrls": ["https://evm.testnet.kava.io"],
+          "rpcUrls": [
+            "https://evm.testnet.kava.io"
+          ],
           "nativeCurrency": {
             "name": "Kava",
             "symbol": "KAVA",
             "decimals": 18
           },
-          "blockExplorerUrls": ["https://explorer.testnet.kava.io/"]
+          "blockExplorerUrls": [
+            "https://explorer.testnet.kava.io/"
+          ]
         }
       ],
       "image": "/images/chains/kava.svg"
-    }
-  ],
-  "testnet-2": [
-    {
-      "id": "ethereum",
-      "name": "Ethereum Ropsten",
-      "chain_id": 3,
-      "network_id": "Ethereum",
-      "provider_params": [
-        {
-          "chainId": "0x3",
-          "chainName": "Ethereum Ropsten",
-          "rpcUrls": [
-            "https://ropsten.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161"
-          ],
-          "nativeCurrency": {
-            "name": "Ethereum",
-            "symbol": "ETH",
-            "decimals": 18
-          },
-          "blockExplorerUrls": ["https://ropsten.etherscan.io"]
-        }
-      ],
-      "image": "/images/chains/ethereum.svg"
-    },
-    {
-      "id": "avalanche",
-      "name": "Avalanche",
-      "chain_id": 43113,
-      "network_id": "Avalanche",
-      "provider_params": [
-        {
-          "chainId": "0xa869",
-          "chainName": "Avalanche Fuji",
-          "rpcUrls": ["https://api.avax-test.network/ext/bc/C/rpc"],
-          "nativeCurrency": {
-            "name": "Avalanche",
-            "symbol": "AVAX",
-            "decimals": 18
-          },
-          "blockExplorerUrls": ["https://testnet.snowtrace.io"]
-        }
-      ],
-      "image": "/images/chains/avalanche.svg"
     }
   ]
 }

@@ -93,16 +93,10 @@
     {
       "id": "kava",
       "address": "0xC8D18F85cB0Cee5C95eC29c69DeaF6cea972349c"
-    }
-  ],
-  "testnet-2": [
-    {
-      "id": "ethereum",
-      "address": "0xC0a29A0F494748bDae4a5FD0402e5c36Cc5B25c4"
     },
     {
-      "id": "avalanche",
-      "address": "0xA8315e133184a68E2ad547FD229df59B0868C254"
+      "id": "filecoin",
+      "address": "0xe432150cce91c13a887f7D836923d5597adD8E31"
     }
   ]
 }
