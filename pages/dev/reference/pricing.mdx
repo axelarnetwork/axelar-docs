@@ -1,9 +1,10 @@
 # Axelar Pricing
 
 Transactions using Axelar often have costs associated on each of their source chain, the Axelar network, and their destination chain. Whether for token transfers or General Message Passing, every cross-chain transaction is made up of 3 types of costs:
-1. initiating the transaction on the source chain,
-2. processing the transaction through the Axelar blockchain, and
-3. relaying to the gateway contract on the destination chain + executing the final transaction on the destination smart contract
+1. Initiating the transaction on the source chain,
+2. Processing the transaction through the Axelar blockchain
+3. Relaying to the gateway contract on the destination chain
+4. Executing the destination smart contract with the payload
 
 To simplify paying for transaction pricing through the pipeline, Axelar has two general solutions to this problem. 
 * For token transfers, a fixed "relayer fee" is deducted from the amount of assets being transferred cross-chain. 
