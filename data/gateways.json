@@ -5,6 +5,10 @@
       "address": "0x4F4495243837681061C4743b74B3eEdf548D56A5"
     },
     {
+      "id": "polygon",
+      "address": "0x6f015F16De9fC8791b234eF68D486d2bF203FBA8"
+    },
+    {
       "id": "binance",
       "address": "0x304acf330bbE08d1e512eefaa92F6a57871fD895"
     },
@@ -13,20 +17,12 @@
       "address": "0x5029C0EFf6C34351a0CEc334542cDb22c7928f78"
     },
     {
-      "id": "polygon",
-      "address": "0x6f015F16De9fC8791b234eF68D486d2bF203FBA8"
-    },
-    {
       "id": "fantom",
       "address": "0x304acf330bbE08d1e512eefaa92F6a57871fD895"
     },
     {
       "id": "moonbeam",
       "address": "0x4F4495243837681061C4743b74B3eEdf548D56A5"
-    },
-    {
-      "id": "aurora",
-      "address": "0x304acf330bbE08d1e512eefaa92F6a57871fD895"
     },
     {
       "id": "arbitrum",
@@ -39,6 +35,14 @@
     {
       "id": "kava",
       "address": "0xe432150cce91c13a887f7D836923d5597adD8E31"
+    },
+    {
+      "id": "filecoin",
+      "address": "0xe432150cce91c13a887f7D836923d5597adD8E31"
+    },
+    {
+      "id": "aurora",
+      "address": "0x304acf330bbE08d1e512eefaa92F6a57871fD895"
     }
   ],
   "testnet": [
