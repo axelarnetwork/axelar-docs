@@ -54,6 +54,12 @@ The gas service will automate any "two-way calls" (i.e. sending GMP transactions
 
 The `estimateGasFee` method can be used (yet again) to determine the amount of gas required for the round trip. The method needs to be called twice, once for the gas cost for Chain A >> B, then again for the gas cost for Chain B >> A, and the total cost would be the sum of the two estimations. Note: the gas cost estimation is direction-dependent and can be very different for the outbound and return trip directions.
 
+**HANDLING ERRORS**
+
+Transactions may intermittently stall on their way from a source chain to a destination chain. Common root causes for stalled transactions included: 1 - failure to send a valid transaction from the source chain into the Axelar network for processing; 2 - insufficient gas payments paid by the user;  3 - transaction revert on the destination chain. 
+
+Every transaction can be seen on Axelarscan with a detailed view of where transactions get "stuck", so one can start there to debug such circumstances. Axelarscan and the AxelarJS SDK expose two approaches to recover stalled transactions: 1. manual execution of the transaction on the destination chain, or 2. add gas for transactions. More details can be found [here](../general-message-passing/debug/error-debugging) for debugging and [here](../general-message-passing/recovery) and recovery.
+
 ## callContractWithToken (General Message Passing)
 Fees for `callContractWithToken` are almost identical to those of `callContract`, but have an increased execution cost due to the additional gas cost of minting/releasing tokens.
 
