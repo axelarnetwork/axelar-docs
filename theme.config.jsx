@@ -104,6 +104,12 @@ export default {
       </>
     );
   },
+  banner: {
+    key: '2023q2-survey',
+    text: <a href="https://haz8ao8c4f2.typeform.com/to/kSR1YgCH" target="_blank">
+      Help Axelar by taking our <strong>2 minute developer survey</strong>!
+    </a>
+  },
   footer: {
     component: (
       <footer className="bg-gray-100 dark:bg-neutral-900">
