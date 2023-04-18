@@ -209,6 +209,14 @@
       "transfer_fee": 10000.0
     },
     {
+      "id": "wfil-wei",
+      "name": "WFIL - Wrapped FIL",
+      "symbol": "WFIL",
+      "image": "/images/assets/wfil.svg",
+      "decimals": 18,
+      "transfer_fee": 0.02
+    },
+    {
       "id": "polygon-uusdc",
       "name": "USDC - Polygon USDC",
       "symbol": "USDC",
@@ -289,6 +297,14 @@
       "image": "/images/assets/wbnb.svg",
       "decimals": 18,
       "transfer_fee": 0.0002
+    },
+    {
+      "id": "wfil-wei",
+      "name": "WFIL - Wrapped FIL",
+      "symbol": "WFIL",
+      "image": "/images/assets/wfil.svg",
+      "decimals": 18,
+      "transfer_fee": 0.01
     },
     {
       "id": "wdev-wei",
