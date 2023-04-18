@@ -26,8 +26,8 @@ This is a useful query for GMP transactions, when invoking `callContract` or `ca
 
 IMPORTANT NOTES:
 
-* You must ensure the correct gasLimit is used for your gas estimation. The (optional) gasLimit parameter can be used here to override the defaukt 700K gas limit that is used. 
-* The minGasPrice and gasMultipler parameters can be adjusted to enhance execution certainty of cross-chain transactions.
+* You must ensure the correct `gasLimit` is used for your gas estimation. The (optional) `gasLimit` parameter can be used here to override the default 700K gas limit that is used. 
+* The `minGasPrice` and `gasMultipler` parameters can be adjusted to enhance execution certainty of cross-chain transactions.
 * The response to the method gives a single value (in `wei`) of the total estimated gas required for the cross-chain call. In the GMPParams parameter, there is an option to show a full breakdown of fees instead by specifying `true` for `showDetailedFees`. If you do this, you will have to add the individual components of the fees yourself, 
   e.g. `(baseFee + executionFeeWithMultiplier)` for regular way GMP calls, or `(baseFee + executionFeeWithMultiplier + expressFee)` for GMP Express calls
 ```ts
