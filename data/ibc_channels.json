@@ -335,12 +335,12 @@
     {
       "from": "osmosis",
       "to": "axelarnet",
-      "channel_id": "channel-1946"
+      "channel_id": "channel-3"
     },
     {
       "from": "axelarnet",
       "to": "osmosis",
-      "channel_id": "channel-135"
+      "channel_id": "channel-227"
     },
     {
       "from": "persistence",
