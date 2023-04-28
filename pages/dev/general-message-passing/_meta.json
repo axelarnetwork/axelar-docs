@@ -10,5 +10,5 @@
     "monitoring": "Monitoring",
     "solidity-utilities": "Solidity Utilities",
     "axelar-sandbox": "Sandbox",
-    "example-composable-usdc": { "display": "hidden"}
+    "example-usdc-cctp": "USDC CCTP"
 }
