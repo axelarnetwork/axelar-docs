@@ -57,6 +57,86 @@
       "transfer_fee": 0.018
     },
     {
+      "id": "wsteth-wei",
+      "name": "wstETH - Wrapped liquid staked Ether 2.0",
+      "symbol": "wstETH",
+      "image": "/images/assets/wsteth.svg",
+      "decimals": 18,
+      "transfer_fee": 5.7e-05
+    },
+    {
+      "id": "uosmo",
+      "name": "OSMO - Axelar Wrapped OSMO",
+      "symbol": "OSMO",
+      "image": "/images/assets/osmo.svg",
+      "decimals": 6,
+      "transfer_fee": 0.12
+    },
+    {
+      "id": "cusd-wei",
+      "name": "cUSD - Celo Dollar",
+      "symbol": "cUSD",
+      "image": "/images/assets/cusd.svg",
+      "decimals": 18,
+      "transfer_fee": 0.1
+    },
+    {
+      "id": "ukuji",
+      "name": "KUJI - Kujira native asset",
+      "symbol": "KUJI",
+      "image": "/images/assets/kuji.svg",
+      "decimals": 6,
+      "transfer_fee": 0.2
+    },
+    {
+      "id": "cbeth-wei",
+      "name": "cbETH - Coinbase Wrapped Staked ETH",
+      "symbol": "cbETH",
+      "image": "/images/assets/cbeth.svg",
+      "decimals": 18,
+      "transfer_fee": 6.2e-05
+    },
+    {
+      "id": "frxeth-wei",
+      "name": "frxETH - Frax Ether",
+      "symbol": "frxETH",
+      "image": "/images/assets/frxeth.svg",
+      "decimals": 18,
+      "transfer_fee": 6.2e-05
+    },
+    {
+      "id": "reth-wei",
+      "name": "rETH - Rocket Pool ETH",
+      "symbol": "rETH",
+      "image": "/images/assets/reth.svg",
+      "decimals": 18,
+      "transfer_fee": 5.7e-05
+    },
+    {
+      "id": "arb-wei",
+      "name": "ARB - Arbitrum",
+      "symbol": "ARB",
+      "image": "/images/assets/arb.svg",
+      "decimals": 18,
+      "transfer_fee": 0.076
+    },
+    {
+      "id": "stuatom",
+      "name": "stATOM - Stride Staked Atom",
+      "symbol": "stATOM",
+      "image": "/images/assets/statom.svg",
+      "decimals": 6,
+      "transfer_fee": 0.0083
+    },
+    {
+      "id": "ustrd",
+      "name": "STRD - Stride",
+      "symbol": "STRD",
+      "image": "/images/assets/strd.svg",
+      "decimals": 6,
+      "transfer_fee": 0.2
+    },
+    {
       "id": "weth-wei",
       "name": "WETH - Wrapped Ether",
       "symbol": "WETH",
@@ -103,22 +183,6 @@
       "image": "/images/assets/wftm.svg",
       "decimals": 18,
       "transfer_fee": 0.36
-    },
-    {
-      "id": "stuatom",
-      "name": "stATOM - Stride Staked Atom",
-      "symbol": "stATOM",
-      "image": "/images/assets/statom.svg",
-      "decimals": 6,
-      "transfer_fee": 0.0083
-    },
-    {
-      "id": "ustrd",
-      "name": "STRD - Stride",
-      "symbol": "STRD",
-      "image": "/images/assets/strd.svg",
-      "decimals": 6,
-      "transfer_fee": 0.2
     },
     {
       "id": "uatom",
@@ -207,6 +271,14 @@
       "image": "/images/assets/shib.svg",
       "decimals": 18,
       "transfer_fee": 10000.0
+    },
+    {
+      "id": "wfil-wei",
+      "name": "WFIL - Wrapped FIL",
+      "symbol": "WFIL",
+      "image": "/images/assets/wfil.svg",
+      "decimals": 18,
+      "transfer_fee": 0.02
     },
     {
       "id": "polygon-uusdc",
