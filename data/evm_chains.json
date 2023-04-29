@@ -203,6 +203,31 @@
       "image": "/images/chains/celo.svg"
     },
     {
+      "id": "filecoin",
+      "name": "Filecoin",
+      "chain_id": 314,
+      "network_id": "filecoin",
+      "provider_params": [
+        {
+          "chainId": "0x13A",
+          "chainName": "Filecoin",
+          "rpcUrls": [
+            "https://rpc.ankr.com/filecoin",
+            "https://api.node.glif.io/rpc/v1"
+          ],
+          "nativeCurrency": {
+            "name": "Filecoin",
+            "symbol": "FIL",
+            "decimals": 18
+          },
+          "blockExplorerUrls": [
+            "https://filfox.info"
+          ]
+        }
+      ],
+      "image": "/images/chains/filecoin.svg"
+    },
+    {
       "id": "kava",
       "name": "Kava",
       "chain_id": 2222,

@@ -171,6 +171,16 @@
       "channel_id": "channel-12"
     },
     {
+      "from": "secret-snip",
+      "to": "axelarnet",
+      "channel_id": "channel-61"
+    },
+    {
+      "from": "axelarnet",
+      "to": "secret-snip",
+      "channel_id": "channel-69"
+    },
+    {
       "from": "stargaze",
       "to": "axelarnet",
       "channel_id": "channel-50"
@@ -325,12 +335,12 @@
     {
       "from": "osmosis",
       "to": "axelarnet",
-      "channel_id": "channel-1946"
+      "channel_id": "channel-3"
     },
     {
       "from": "axelarnet",
       "to": "osmosis",
-      "channel_id": "channel-135"
+      "channel_id": "channel-227"
     },
     {
       "from": "persistence",
@@ -345,12 +355,12 @@
     {
       "from": "secret",
       "to": "axelarnet",
-      "channel_id": "channel-73"
+      "channel_id": "channel-182"
     },
     {
       "from": "axelarnet",
       "to": "secret",
-      "channel_id": "channel-168"
+      "channel_id": "channel-201"
     },
     {
       "from": "sei",

@@ -24,7 +24,34 @@ const sdk = new AxelarQueryAPI({
 
 This is a useful query for GMP transactions, when invoking `callContract` or `callContractWithToken` to get an estimate of the appropriate gas payment to be made to the gas receiver on the source chain.
 
+IMPORTANT NOTES:
+
+* You must ensure the correct `gasLimit` is used for your gas estimation. The (optional) `gasLimit` parameter can be used here to override the default 700K gas limit that is used. 
+* The `minGasPrice` and `gasMultipler` parameters can be adjusted to enhance execution certainty of cross-chain transactions.
+* The response to the method gives a single value (in `wei`) of the total estimated gas required for the cross-chain call. In the GMPParams parameter, there is an option to show a full breakdown of fees instead by specifying `true` for `showDetailedFees`. If you do this, you will have to add the individual components of the fees yourself, 
+  e.g. `(baseFee + executionFeeWithMultiplier)` for regular way GMP calls, or `(baseFee + executionFeeWithMultiplier + expressFee)` for GMP Express calls
 ```ts
+
+  interface GMPParams {
+    showDetailedFees: boolean;
+    transferAmount: number; // In terms of symbol, not unit denom, e.g. use 1 for 1 axlUSDC, not 1000000
+    destinationContractAddress: string;
+    sourceContractAddress: string;
+    tokenSymbol: string;
+  }
+  export interface AxelarQueryAPIFeeResponse {
+    expressFee: string;
+    baseFee: string;
+    executionFee: string;
+    executionFeeWithMultiplier: string;
+    gasMultiplier: number;
+    gasLimit: number;
+    srcGasPrice: string;
+    minGasPrice: string;
+    apiResponse: any;
+    isExpressSupported: boolean;
+  }
+
   /**
    * Calculate estimated gas amount to pay for the gas receiver contract.
    * @param sourceChainId
@@ -32,6 +59,8 @@ This is a useful query for GMP transactions, when invoking `callContract` or `ca
    * @param sourceChainTokenSymbol
    * @param gasLimit (Optional) An estimated gas amount required to execute `executeWithToken` function. The default value is 700000 which should be sufficient for most transactions.
    * @param gasMultiplier (Optional) A multiplier used to create a buffer above the calculated gas fee, to account for potential slippage throughout tx execution, e.g. 1.1 = 10% buffer. supports up to 3 decimal places
+   * @param minGasPrice (Optional) A minimum value, in wei, for the gas price on the destination chain that is used to override the estimated gas price if it falls below this specified value.
+   * @param gmpParams (Optional) Additional parameters for GMP transactions, including the ability to see a detailed view of the fee response
    * @returns
    */
   public async estimateGasFee(
@@ -39,8 +68,10 @@ This is a useful query for GMP transactions, when invoking `callContract` or `ca
     destinationChainId: EvmChain | string,
     sourceChainTokenSymbol: GasToken | string,
     gasLimit: number = DEFAULT_ESTIMATED_GAS,
-    gasMultiplier = 1.1
-  ): Promise<string> 
+    gasMultiplier = 1.1,
+    minGasPrice = "0",
+    gmpParams?: GMPParams
+  ): Promise<string | AxelarQueryAPIFeeResponse> 
 ```
 
 #### getTransferFee
