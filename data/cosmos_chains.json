@@ -91,6 +91,12 @@
       "image": "/images/chains/osmosis.svg"
     },
     {
+      "id": "persistence",
+      "name": "Persistence",
+      "network_id": "persistence",
+      "image": "/images/chains/persistence.svg"
+    },
+    {
       "id": "regen",
       "name": "Regen",
       "network_id": "regen",
@@ -101,6 +107,12 @@
       "name": "Secret",
       "network_id": "secret",
       "image": "/images/chains/secret.svg"
+    },
+    {
+      "id": "secret-snip",
+      "name": "Secret-SNIP",
+      "network_id": "secret-snip",
+      "image": "/images/chains/secret-snip.svg"
     },
     {
       "id": "stargaze",
@@ -203,7 +215,7 @@
     {
       "id": "osmosis",
       "name": "Osmosis",
-      "network_id": "osmosis-5",
+      "network_id": "osmosis-6",
       "image": "/images/chains/osmosis.svg"
     },
     {
@@ -215,7 +227,7 @@
     {
       "id": "secret",
       "name": "Secret",
-      "network_id": "secret-snip",
+      "network_id": "secret-snip-2",
       "image": "/images/chains/secret.svg"
     },
     {
