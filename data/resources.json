@@ -35,6 +35,10 @@
         {
           "title": "Ping.Pub",
           "value": "https://ping.pub/axelar"
+        },
+        {
+          "title": "ScanRun (beta)",
+          "value": "https://scanrun.io/axelar"
         }
       ]
     },
@@ -267,6 +271,10 @@
         {
           "title": "Mintscan",
           "value": "https://testnet.mintscan.io/axelar-testnet"
+        },
+        {
+          "title": "ScanRun",
+          "value": "https://scanrun.io/axelar-testnet"
         }
       ]
     },
