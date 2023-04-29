@@ -8,7 +8,7 @@ Creating a cross-chain dApp will often require the same contract to be deployed 
 Furthermore, it is useful to know each address of this contract on each chain, either to know where to send remote contract calls, or where to trust remote contract calls from -- often both.
 If we can guarantee that the contracts in question will be deployed at the same address on each network, then the above is trivial.
 This can be achieved by deploying each contract from the same address with the same nonce at each network, or by using [`create2`](https://eips.ethereum.org/EIPS/eip-1014).
-For this purpose, we deployed [`ConstAddressDeployer`](https://github.com/axelarnetwork/axelar-utils-solidity/blob/main/contracts/ConstAddressDeployer.sol) at
+For this purpose, we deployed [`ConstAddressDeployer`](https://github.com/axelarnetwork/axelar-gmp-sdk-solidity/blob/main/contracts/deploy/ConstAddressDeployer.sol) at
 `0x98b2920d53612483f91f12ed7754e51b4a77919e` on every EVM testnet and mainnet that is supported by Axelar.
 We plan on deploying it on future supported testnets and mainnets, too.
 
