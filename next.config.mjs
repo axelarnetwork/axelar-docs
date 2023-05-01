@@ -151,7 +151,7 @@ export default nextra({
       },
       {
         source: "/dev/guides/example-usdc",
-        destination: "/dev/guides/example-composable-usdc",
+        destination: "/dev/general-message-passing/example-usdc-cctp",
         permanent: true,
       },
       {
@@ -258,7 +258,7 @@ export default nextra({
       },
       {
         source: "/dev/guides/example-composable-usdc",
-        destination: "/dev/general-message-passing/example-composable-usdc",
+        destination: "/dev/general-message-passing/example-usdc-cctp",
         permanent: true,
       },
       {
