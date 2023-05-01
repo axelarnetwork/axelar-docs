@@ -291,6 +291,11 @@ export default nextra({
         destination: "https://www.youtube.com/watch?v=PWXmsP_a-ck",
         permanent: true,
       },
+      {
+        source: "/dev/general-message-passing/example-composable-usdc",
+        destination: "/dev/general-message-passing/example-usdc-cctp",
+        permanent: true,
+      },
     ];
   },
 });

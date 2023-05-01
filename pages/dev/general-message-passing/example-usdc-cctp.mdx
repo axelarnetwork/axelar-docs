@@ -1,0 +1,382 @@
+# Cross Chain Swaps with Circle's CCTP and Axelar
+
+Circle has created [CCTP](https://developers.circle.com/stablecoin/docs/cctp-getting-started) to natively transfer USDC across [supported blockchains](https://developers.circle.com/stablecoin/docs/cctp-protocol-contract).  In this tutorial, we’ll learn how to build a cross-chain USDC dApp using Circle’s Cross-Chain Transfer Protocol (CCTP) and Axelar’s General Message Passing (GMP).
+
+With this approach, your users will be able to issue a single transaction with a GMP payload. On the backend, the application takes care of USDC bridging, plus any other action that the user wishes — as indicated in the payload. Axelar services, also working on the backend, can handle conversion and payment for destination-chain gas fees, so the user only has to transact once, using one gas token.
+
+In this example, we will build a cross-chain swap dApp. It converts a native token from one chain to another chain, using native USDC as a routing asset. For example: send ETH to a contract on Ethereum and receive AVAX on Avalanche, or vice versa.
+
+There are two parts we have to learn to achieve this:
+
+1. Sending a native USDC token cross-chain.
+2. Sending a swap payload cross-chain.
+
+## Part 1: Sending a native USDC token cross-chain
+
+There are three components from Circle that we’ll use in this part:
+
+1. **MessageTransmitter** contract – to mint USDC at the destination chain.
+2. **CircleBridge** contract  – to burn USDC at the source chain.
+3. **Attestation API** – to retrieve attestation to be used for minting USDC at the destination chain.
+
+Let’s take a look at how to implement this step-by-step:
+
+1. Burn the given amount of **USDC** by calling the function `depositForBurn`at the `TokenMessenger` contract. The example Solidity code is below. At this step, the contract does nothing except provide a function to burn the **USDC** in `_depositForBurn` function.
+
+CrosschainNativeSwap.sol
+
+```solidity
+// SPDX-License-Identifier: MIT
+pragma solidity 0.8.9;
+
+import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import {SafeERC20} from "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
+import {ITokenMessenger} from "./ITokenMessenger.sol";
+import "./StringAddressUtils.sol";
+
+contract CrosschainNativeSwap is AxelarExecutable, Ownable {
+    IERC20 public usdc;
+    ITokenMessenger public tokenMessenger;
+
+    // mapping chain name => domain number;
+    mapping(string => uint32) public circleDestinationDomains;
+
+    constructor(
+        address usdc_,
+        address tokenMessenger_
+    ) AxelarExecutable(gateway_) Ownable() {
+        usdc = IERC20(usdc_);
+        circleDestinationDomains["ethereum"] = 0;
+        circleDestinationDomains["avalanche"] = 1;
+    }
+
+    function _sendViaCCTP(
+        uint256 amount,
+        string memory destinationChain,
+        address recipient
+    ) private isValidChain(destinationChain) {
+        IERC20(address(usdc)).approve(address(tokenMessenger), amount);
+
+        tokenMessenger.depositForBurn(
+            amount,
+            this.circleDestinationDomains(destinationChain),
+            bytes32(uint256(uint160(recipient))),
+            address(usdc)
+        );
+    }
+
+}
+```
+
+ITokenMessenger.sol
+
+```solidity
+// SPDX-License-Identifier: UNLICENSED
+pragma solidity ^0.8.9;
+
+interface ITokenMessenger {
+    // this event will be emitted when `depositForBurn` function is called.
+    event MessageSent(bytes message);
+
+    /**
+    * @param _amount amount of tokens to burn
+    * @param _destinationDomain destination domain
+    * @param _mintRecipient address of mint recipient on destination domain
+    * @param _burnToken address of contract to burn deposited tokens, on local
+    domain
+    * @return _nonce uint64, unique nonce for each burn
+    */
+    function depositForBurn(
+        uint256 _amount,
+        uint32 _destinationDomain,
+        bytes32 _mintRecipient,
+        address _burnToken
+    ) external returns (uint64 _nonce);
+}
+```
+
+That's it for the initial contract using CCTP. We'll continue to add our business logic. Let's try to integrate this with Axelar network to complete our cross-chain swap dApp.
+
+## Part 2: Sending a swap payload cross-chain
+
+In this part, we’ll add logic in our contract to send a payload cross-chain with Axelar network.
+
+1. Upgrade our contract to include business logic and integrate with Axelar network.
+
+CrosschainNativeSwap.sol
+
+```solidity
+// SPDX-License-Identifier: MIT
+pragma solidity 0.8.9;
+
+import {IAxelarGasService} from "@axelar-network/axelar-cgp-solidity/contracts/interfaces/IAxelarGasService.sol";
+import {IAxelarGateway} from "@axelar-network/axelar-cgp-solidity/contracts/interfaces/IAxelarGateway.sol";
+import {AxelarExecutable} from "@axelar-network/axelar-gmp-sdk-solidity/contracts/executable/AxelarExecutable.sol";
+import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
+import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import {SafeERC20} from "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
+import {ITokenMessenger} from "./ITokenMessenger.sol";
+import "./StringAddressUtils.sol";
+
+contract CrosschainNativeSwap is AxelarExecutable, Ownable {
+    IERC20 public usdc;
+    ITokenMessenger public tokenMessenger;
+    IAxelarGasService immutable gasReceiver;
+
+    // mapping chain name => domain number;
+    mapping(string => uint32) public circleDestinationDomains;
+    // mapping destination chain name => destination contract address
+    mapping(string => address) public siblings;
+
+    error InvalidTrade();
+    error InsufficientInput();
+    error TradeFailed();
+
+    event SwapSuccess(bytes32 indexed traceId, uint256 amount, bytes tradeData);
+
+    event SwapFailed(
+        bytes32 indexed traceId,
+        uint256 amount,
+        address refundAddress
+    );
+
+    event SwapPending(
+        bytes32 indexed traceId,
+        bytes32 indexed payloadHash,
+        uint256 amount,
+        string destinationChain,
+        bytes payload
+    );
+
+    constructor(
+        address usdc_,
+        address gasReceiver_,
+        address gateway_,
+        address tokenMessenger_
+    ) AxelarExecutable(gateway_) Ownable() {
+        usdc = IERC20(usdc_);
+        tokenMessenger = ITokenMessenger(tokenMessenger_);
+        gasReceiver = IAxelarGasService(gasReceiver_);
+        circleDestinationDomains["ethereum"] = 0;
+        circleDestinationDomains["avalanche"] = 1;
+    }
+
+    modifier isValidChain(string memory destinationChain) {
+        require(siblings[destinationChain] != address(0), "Invalid chain");
+        _;
+    }
+
+    // Set address for this contract that deployed at another chain
+    function addSibling(
+        string memory chain_,
+        address address_
+    ) external onlyOwner {
+        siblings[chain_] = address_;
+    }
+
+    /**
+     * @dev Swap native token to USDC, burn it, and send swap payload to AxelarGateway contract
+     * @param destinationChain Name of the destination chain
+     * @param srcTradeData Trade data for the first swap
+     * @param destTradeData Trade data for the second swap
+     * @param traceId Trace ID of the swap
+     * @param fallbackRecipient Recipient address to receive USDC token if the swap fails
+     * @param inputPos Position of the input token in destTradeData
+     */
+    function nativeTradeSendTrade(
+        string memory destinationChain,
+        bytes memory srcTradeData,
+        bytes memory destTradeData,
+        bytes32 traceId,
+        address fallbackRecipient,
+        uint16 inputPos
+    ) external payable isValidChain(destinationChain) {
+        // Swap native token to USDC
+        (uint256 nativeSwapAmount, uint256 usdcAmount) = _swapNativeToUsdc(
+            srcTradeData
+        );
+
+        // Burns a specified amount of USDC tokens by calling `depositForBurn` function in Circle's TokenMessenger contract
+        _sendViaCCTP(
+            usdcAmount,
+            destinationChain,
+            this.siblings(destinationChain)
+        );
+
+        // encode the payload to send to the sibling contract
+        bytes memory payload = abi.encode(
+            destTradeData,
+            usdcAmount,
+            traceId,
+            fallbackRecipient,
+            inputPos
+        );
+
+        // Pay gas to AxelarGasReceiver contract with native token to execute the sibling contract at the destination chain
+        _payGasAndCallContract(
+            destinationChain,
+            payload,
+            msg.value - nativeSwapAmount
+        );
+
+        emit SwapPending(
+            traceId,
+            keccak256(payload),
+            usdcAmount,
+            destinationChain,
+            payload
+        );
+    }
+
+    function _payGasAndCallContract(
+        string memory destinationChain,
+        bytes memory payload,
+        uint256 fee
+    ) private {
+        gasReceiver.payNativeGasForContractCall{value: fee}(
+            address(this),
+            destinationChain,
+            AddressToString.toString(this.siblings(destinationChain)),
+            payload,
+            msg.sender
+        );
+
+        // Send all information to AxelarGateway contract.
+        gateway.callContract(
+            destinationChain,
+            AddressToString.toString(this.siblings(destinationChain)),
+            payload
+        );
+    }
+
+    function _sendViaCCTP(
+        uint256 amount,
+        string memory destinationChain,
+        address recipient
+    ) private isValidChain(destinationChain) {
+        IERC20(address(usdc)).approve(address(tokenMessenger), amount);
+
+        tokenMessenger.depositForBurn(
+            amount,
+            this.circleDestinationDomains(destinationChain),
+            bytes32(uint256(uint160(recipient))),
+            address(usdc)
+        );
+    }
+
+    function _swapNativeToUsdc(
+        bytes memory tradeData
+    ) private returns (uint256 amount, uint256 burnAmount) {
+        // Calculate remaining usdc token in the contract
+        uint256 preTradeBalance = IERC20(address(usdc)).balanceOf(
+            address(this)
+        );
+
+        (uint256 nativeAmountIn, address router, bytes memory data) = abi
+            .decode(tradeData, (uint256, address, bytes));
+
+        // Swap native token to USDC
+        (bool success, ) = router.call{value: nativeAmountIn}(data);
+
+        // Revert if trade failed
+        require(success, "TRADE_FAILED");
+
+        // Calculate amount of USDC token swapped. This is the amount to be burned at the source chain.
+        uint256 usdcAmount = IERC20(address(usdc)).balanceOf(address(this)) -
+            preTradeBalance;
+
+        // Return amount of native token swapped and amount of USDC token to be burned
+        return (nativeAmountIn, usdcAmount);
+    }
+
+    function _refund(
+        bytes32 traceId,
+        uint256 amount,
+        address recipient
+    ) internal {
+        SafeERC20.safeTransfer(IERC20(address(usdc)), recipient, amount);
+        emit SwapFailed(traceId, amount, recipient);
+    }
+
+    // This function will be called by Axelar Executor service.
+    function _execute(
+        string memory /*sourceChain*/,
+        string memory /*sourceAddress*/,
+        bytes calldata payload
+    ) internal override {
+        // Decode payload
+        (
+            bytes memory tradeData,
+            uint256 usdcAmount,
+            bytes32 traceId,
+            address fallbackRecipient,
+            uint16 inputPos
+        ) = abi.decode(payload, (bytes, uint256, bytes32, address, uint16));
+
+        // This code inserts the usdcAmount into the tradeData bytes at a specific location, in order to properly position the data.
+        assembly {
+            mstore(add(tradeData, inputPos), usdcAmount)
+        }
+
+        (address srcToken, , address router, bytes memory data) = abi.decode(
+            tradeData,
+            (address, uint256, address, bytes)
+        );
+
+        // Approve USDC to the router contract
+        IERC20(srcToken).approve(router, usdcAmount);
+
+        // Swap USDC to native token
+        (bool swapSuccess, ) = router.call(data);
+
+        // If swap failed, refund USDC to the user at the destination chain.
+        if (!swapSuccess)
+            return _refund(traceId, usdcAmount, fallbackRecipient);
+
+        // Emit success event so that our application can be notified.
+        emit SwapSuccess(traceId, usdcAmount, tradeData);
+    }
+}
+```
+
+There’s a lot of new code added here. Let’s try to understand it, step by step:
+
+**Step 1** — Add the `gasReceiver` variable and initialize it in the constructor. This handles destination-chain gas token conversion and fee payment, so the user need not transact more than once.
+
+**Step 2** — Add the  `siblings` variable and related functions so the admin can define connected contract addresses on the other chains.
+
+**Step 3** — Add the `nativeTradeSendTrade` function. The client will send a transaction to call this function. This is the most important function in our contract. Here are the implementation details:
+
+- Swap native token to USDC with low-level contract call.
+- Send the USDC to the destination chain via CCTP
+- Construct the swap payload to send to the **AxelarGateway** contract. The payload will be relayed by Axelar Relayer service to the destination contract. The destination contract address is defined by `addSibling` function.
+- Pay gas to the **AxelarGasService** contract with the native token. The required amount will be calculated off-chain by using [AxelarJS-SDK](https://docs.axelar.dev/dev/axelarjs-sdk/intro) on the client side. See more information about it [here](https://docs.axelar.dev/dev/axelarjs-sdk/axelar-query-api#estimategasfee).
+- Send `destinationChain`, `destinationContractAddress`and `payload` to the **AxelarGateway** contract.
+
+**Step 4** — Upgrade a contract to extend **AxelarExecutable** interface and override `_execute` function, so the contract can be called by Axelar Executor service at the destination chain. 
+- The function decodes `payload` to retrieve all information it needs for swap.
+- We correct the amount in `tradeData` bytes before the swap.
+- Approve USDC to the router contract and call the swap function, and refund if it fails.
+
+And we’re done! Here is the [demo](https://www.youtube.com/watch?v=RyQkEcM1nKE) that communicates with the completed contract.
+<br />
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/RyQkEcM1nKE" title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
+
+### Resources
+
+- CrosschainNativeSwap contract: [link](https://github.com/axelarnetwork/crosschain-usdc-demo/blob/main/hardhat/contracts/CrosschainNativeSwap.sol)
+- Running Crosschain USDC Example with Hardhat: [link](https://github.com/axelarnetwork/crosschain-usdc-demo/tree/main/hardhat)
+- Axelar Cross-chain USDC Demo: [link](https://circle-crosschain-usdc.vercel.app/)
+
+### About Circle
+
+Circle is a global financial technology firm that enables businesses of all sizes to harness the power of digital currencies and public blockchains for payments, commerce and financial applications worldwide. Circle is the issuer of USD Coin (USDC), one of the fastest growing dollar digital currencies powering always-on internet-native commerce and payments. Today, Circle's transactional services, business accounts, and platform APIs are giving rise to a new generation of financial services and commerce applications that hold the promise of raising global economic prosperity for all through the frictionless exchange of financial value. Additionally, Circle operates SeedInvest, a leading startup fundraising platform in the U.S. Learn more at [https://circle.com](https://c212.net/c/link/?t=0&l=en&o=3502185-1&h=961378907&u=https%3A%2F%2Fcircle.com%2F&a=https%3A%2F%2Fcircle.com).
+
+### About Axelar
+
+Axelar delivers secure cross-chain communication. That means dApp users can interact with any asset, any application, on any chain, with one click. You can think of it as Stripe for Web3. Developers interact with a simple API atop a permissionless network that routes messages and ensures network security via proof-of-stake consensus.
+
+Axelar has raised capital from top-tier investors, including Binance, Coinbase, Dragonfly Capital and Polychain Capital. Partners include major proof-of-stake blockchains, such as Avalanche, Cosmos, Ethereum, Polkadot and others. Axelar’s team includes experts in distributed systems/cryptography and MIT/Google/Consensys alumni; the co-founders, Sergey Gorbunov and Georgios Vlachos, were founding team members at Algorand.
+
+More about Axelar: [Website](https://axelar.network) | [GitHub](https://github.com/axelarnetwork/axelar-examples) | [Discord](https://discord.com/invite/aRZ3Ra6f7D) | [Twitter](https://twitter.com/axelarcore).
