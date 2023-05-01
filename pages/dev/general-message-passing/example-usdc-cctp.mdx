@@ -353,7 +353,7 @@ There’s a lot of new code added here. Let’s try to understand it, step by st
 - Pay gas to the **AxelarGasService** contract with the native token. The required amount will be calculated off-chain by using [AxelarJS-SDK](https://docs.axelar.dev/dev/axelarjs-sdk/intro) on the client side. See more information about it [here](https://docs.axelar.dev/dev/axelarjs-sdk/axelar-query-api#estimategasfee).
 - Send `destinationChain`, `destinationContractAddress`and `payload` to the **AxelarGateway** contract.
 
-**Step 4** Upgrade a contract to extend **AxelarExecutable** interface and override `_execute` function, so the contract can be called by Axelar Executor service at the destination chain. 
+**Step 4** — Upgrade a contract to extend **AxelarExecutable** interface and override `_execute` function, so the contract can be called by Axelar Executor service at the destination chain. 
 - The function decodes `payload` to retrieve all information it needs for swap.
 - We correct the amount in `tradeData` bytes before the swap.
 - Approve USDC to the router contract and call the swap function, and refund if it fails.
