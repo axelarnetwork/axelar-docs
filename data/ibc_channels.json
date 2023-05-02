@@ -181,6 +181,16 @@
       "channel_id": "channel-69"
     },
     {
+      "from": "sommelier",
+      "to": "axelarnet",
+      "channel_id": "channel-5"
+    },
+    {
+      "from": "axelarnet",
+      "to": "sommelier",
+      "channel_id": "channel-72"
+    },
+    {
       "from": "stargaze",
       "to": "axelarnet",
       "channel_id": "channel-50"
