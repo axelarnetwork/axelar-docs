@@ -809,6 +809,21 @@
       ]
     },
     {
+      "id": "usomm",
+      "name": "SOMM - Axelar Wrapped SOMM",
+      "symbol": "SOMM",
+      "image": "/images/assets/somm.svg",
+      "contracts": [
+        {
+          "chain": "arbitrum",
+          "address": "0x4e914bbDCDE0f455A8aC9d59d3bF739c46287Ed2",
+          "symbol": "axlSOMM",
+          "decimals": 6,
+          "transfer_fee": 10.0
+        }
+      ]
+    },
+    {
       "id": "uluna",
       "name": "LUNC - Axelar Wrapped LUNC",
       "symbol": "LUNC",

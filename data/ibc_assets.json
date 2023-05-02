@@ -193,6 +193,14 @@
       "transfer_fee": 0.0083
     },
     {
+      "id": "usomm",
+      "name": "SOMM - Axelar Wrapped SOMM",
+      "symbol": "SOMM",
+      "image": "/images/assets/somm.svg",
+      "decimals": 6,
+      "transfer_fee": 0.67
+    },
+    {
       "id": "uluna",
       "name": "LUNC - Axelar Wrapped LUNC",
       "symbol": "LUNC",
