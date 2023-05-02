@@ -10,5 +10,6 @@
     "monitoring": "Monitoring",
     "solidity-utilities": "Solidity Utilities",
     "axelar-sandbox": "Sandbox",
+    "cosmos-gmp": "Cosmos GMP",
     "example-usdc-cctp": "USDC CCTP"
 }
