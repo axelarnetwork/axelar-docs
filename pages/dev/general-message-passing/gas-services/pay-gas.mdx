@@ -66,22 +66,7 @@ After sending a transaction out, our Executor Service will do the following:
 - Execute the specified contract call, specifying the `gasLimit` defined above.
 
 ## Alternative gas payment methods for `callContract`
-There are two available methods to pay gas for relaying `callContract`. You can choose the one that fits your application design.
-
-### payGasForContractcall
-This method receives any tokens for the relayer fee. The paid gas for this method must be in tokens Axelar supports. See the list of supported assets for the chains we support: [Mainnet](../../reference/mainnet-contract-addresses) | [Testnet](../../reference/testnet-contract-addresses).
-
-```solidity
-function payGasForContractCall(
-    address sender,
-    string calldata destinationChain,
-    string calldata destinationAddress,
-    bytes calldata payload,
-    address gasToken,
-    uint256 gasFeeAmount,
-    address refundAddress
-) external;
-```
+You can pay gas for relaying `callContract` using the following method.
 
 ### payNativeGasForContractCall
 This method accepts the native tokens of the source chain.
