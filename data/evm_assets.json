@@ -440,17 +440,17 @@
       ]
     },
     {
-      "id": "frxeth-wei",
-      "name": "frxETH - Frax Ether",
-      "symbol": "frxETH",
-      "image": "/images/assets/frxeth.svg",
+      "id": "sfrxeth-wei",
+      "name": "sfrxETH - Staked Frax Ether",
+      "symbol": "sfrxETH",
+      "image": "/images/assets/sfrxeth.svg",
       "contracts": [
         {
           "chain": "ethereum",
-          "address": "0x5E8422345238F34275888049021821E8E08CAa1f",
-          "symbol": "frxETH",
+          "address": "0xac3E018457B222d93114458476f3E3416Abbe38F",
+          "symbol": "sfrxETH",
           "decimals": 18,
-          "transfer_fee": 0.019
+          "transfer_fee": 0.017
         }
       ]
     },
@@ -817,6 +817,13 @@
         {
           "chain": "arbitrum",
           "address": "0x4e914bbDCDE0f455A8aC9d59d3bF739c46287Ed2",
+          "symbol": "axlSOMM",
+          "decimals": 6,
+          "transfer_fee": 10.0
+        },
+        {
+          "chain": "avalanche",
+          "address": "0x421CC964D5A3FEf29c6839c54C40E9d1D554aFA4",
           "symbol": "axlSOMM",
           "decimals": 6,
           "transfer_fee": 10.0
