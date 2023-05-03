@@ -115,6 +115,12 @@
       "image": "/images/chains/secret-snip.svg"
     },
     {
+      "id": "sommelier",
+      "name": "Sommelier",
+      "network_id": "sommelier",
+      "image": "/images/chains/sommelier.svg"
+    },
+    {
       "id": "stargaze",
       "name": "Stargaze",
       "network_id": "stargaze",

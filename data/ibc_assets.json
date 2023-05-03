@@ -97,12 +97,12 @@
       "transfer_fee": 6.2e-05
     },
     {
-      "id": "frxeth-wei",
-      "name": "frxETH - Frax Ether",
-      "symbol": "frxETH",
-      "image": "/images/assets/frxeth.svg",
+      "id": "sfrxeth-wei",
+      "name": "sfrxETH - Staked Frax Ether",
+      "symbol": "sfrxETH",
+      "image": "/images/assets/sfrxeth.svg",
       "decimals": 18,
-      "transfer_fee": 6.2e-05
+      "transfer_fee": 5.7e-05
     },
     {
       "id": "reth-wei",
@@ -191,6 +191,14 @@
       "image": "/images/assets/atom.svg",
       "decimals": 6,
       "transfer_fee": 0.0083
+    },
+    {
+      "id": "usomm",
+      "name": "SOMM - Axelar Wrapped SOMM",
+      "symbol": "SOMM",
+      "image": "/images/assets/somm.svg",
+      "decimals": 6,
+      "transfer_fee": 0.67
     },
     {
       "id": "uluna",
