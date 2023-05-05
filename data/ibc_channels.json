@@ -333,6 +333,16 @@
       "channel_id": "channel-19"
     },
     {
+      "from": "neutron",
+      "to": "axelarnet",
+      "channel_id": "channel-8"
+    },
+    {
+      "from": "axelarnet",
+      "to": "neutron",
+      "channel_id": "channel-237"
+    },
+    {
       "from": "odin",
       "to": "axelarnet",
       "channel_id": "channel-5"
