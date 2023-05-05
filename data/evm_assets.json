@@ -299,21 +299,6 @@
       ]
     },
     {
-      "id": "busd-wei",
-      "name": "BUSD - Binance USD",
-      "symbol": "BUSD",
-      "image": "/images/assets/busd.svg",
-      "contracts": [
-        {
-          "chain": "ethereum",
-          "address": "0x4Fabb145d64652a948d72533023f6E7A623C7C53",
-          "symbol": "BUSD",
-          "decimals": 18,
-          "transfer_fee": 30.0
-        }
-      ]
-    },
-    {
       "id": "wbtc-satoshi",
       "name": "WBTC - Wrapped BTC",
       "symbol": "WBTC",
@@ -350,6 +335,21 @@
       ]
     },
     {
+      "id": "pepe-wei",
+      "name": "PEPE - Pepe",
+      "symbol": "PEPE",
+      "image": "/images/assets/pepe.svg",
+      "contracts": [
+        {
+          "chain": "ethereum",
+          "address": "0x6982508145454Ce325dDbE47a25d4ec3d2311933",
+          "symbol": "PEPE",
+          "decimals": 18,
+          "transfer_fee": 10000000.0
+        }
+      ]
+    },
+    {
       "id": "dot-planck",
       "name": "DOT - xcDOT",
       "symbol": "DOT",
@@ -361,6 +361,21 @@
           "symbol": "Wrapped DOT",
           "decimals": 10,
           "transfer_fee": 0.27
+        }
+      ]
+    },
+    {
+      "id": "busd-wei",
+      "name": "BUSD - Binance USD",
+      "symbol": "BUSD",
+      "image": "/images/assets/busd.svg",
+      "contracts": [
+        {
+          "chain": "ethereum",
+          "address": "0x4Fabb145d64652a948d72533023f6E7A623C7C53",
+          "symbol": "BUSD",
+          "decimals": 18,
+          "transfer_fee": 30.0
         }
       ]
     },

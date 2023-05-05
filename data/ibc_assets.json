@@ -33,14 +33,6 @@
       "transfer_fee": 0.1
     },
     {
-      "id": "busd-wei",
-      "name": "BUSD - Binance USD",
-      "symbol": "BUSD",
-      "image": "/images/assets/busd.svg",
-      "decimals": 18,
-      "transfer_fee": 0.1
-    },
-    {
       "id": "wbtc-satoshi",
       "name": "WBTC - Wrapped BTC",
       "symbol": "WBTC",
@@ -49,12 +41,28 @@
       "transfer_fee": 4.2e-06
     },
     {
+      "id": "pepe-wei",
+      "name": "PEPE - Pepe",
+      "symbol": "PEPE",
+      "image": "/images/assets/pepe.svg",
+      "decimals": 18,
+      "transfer_fee": 33000.0
+    },
+    {
       "id": "dot-planck",
       "name": "DOT - xcDOT",
       "symbol": "DOT",
       "image": "/images/assets/dot.svg",
       "decimals": 10,
       "transfer_fee": 0.018
+    },
+    {
+      "id": "busd-wei",
+      "name": "BUSD - Binance USD",
+      "symbol": "BUSD",
+      "image": "/images/assets/busd.svg",
+      "decimals": 18,
+      "transfer_fee": 0.1
     },
     {
       "id": "wsteth-wei",
