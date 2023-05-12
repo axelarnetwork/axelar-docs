@@ -296,6 +296,46 @@ export default nextra({
         destination: "/dev/general-message-passing/example-usdc-cctp",
         permanent: true,
       },
+      {
+        source: "/dev/monitor-recover/recovery#manually-execute-a-transfer",
+        destination: "/dev/general-message-passing/recovery#manually-execute-a-transfer",
+        permanent: true,
+      },
+      {
+        source: "/dev/monitor-recover/monitoring",
+        destination: "/dev/general-message-passing/monitoring",
+        permanent: true,
+      },
+      {
+        source: "/dev/monitor-recover/recovery#increase-gas-payment-to-the-gas-receiver-on-the-source-chain",
+        destination: "/dev/general-message-passing/recovery#increase-gas-payment-to-the-gas-receiver-on-the-source-chain",
+        permanent: true,
+      },
+      {
+        source: "/dev/monitor-recover/recovery#increase-gas-payment-to-the-gas-receiver-on-the-source-chain",
+        destination: "/dev/general-message-passing/recovery#increase-gas-payment-to-the-gas-receiver-on-the-source-chain",
+        permanent: true,
+      },
+      {
+        source: "/dev/monitor-recover/monitoring",
+        destination: "/dev/general-message-passing/monitoring",
+        permanent: true,
+      },
+      {
+        source: "/dev/monitor-recover/recovery",
+        destination: "/dev/general-message-passing/recovery",
+        permanent: true,
+      },
+      {
+        source: "/general-message-passing/overview",
+        destination: "/dev/general-message-passing/overview",
+        permanent: true,
+      },
+      {
+        source: "/dev/gmp",
+        destination: "/dev/general-message-passing/overview",
+        permanent: true,
+      }
     ];
   },
 });
