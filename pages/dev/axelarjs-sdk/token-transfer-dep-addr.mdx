@@ -122,7 +122,7 @@ const sdk = new AxelarAssetTransfer({ environment: "testnet" });
 const fromChain = CHAINS.TESTNET.OSMOSIS, 
   toChain = CHAINS.TESTNET.AVALANCHE,
   destinationAddress = "0xF16DfB26e1FEc993E085092563ECFAEaDa7eD7fD",
-  asset: "uausdc";  // denom of asset. See note (2) below
+  asset = "uausdc";  // denom of asset. See note (2) below
 
 const depositAddress = await sdk.getDepositAddress({
   fromChain, 
@@ -147,7 +147,7 @@ const sdk = new AxelarAssetTransfer({ environment: "testnet" });
 const fromChain = CHAINS.TESTNET.AVALANCHE, 
   toChain = CHAINS.TESTNET.OSMOSIS,
   destinationAddress = "osmo1x3z2vepjd7fhe30epncxjrk0lehq7xdqe8ltsn",
-  asset: "uausdc";
+  asset = "uausdc";
 
 const depositAddress = await sdk.getDepositAddress({
   fromChain, 
@@ -174,7 +174,7 @@ const sdk = new AxelarAssetTransfer({ environment: "testnet" });
 const fromChain = CHAINS.TESTNET.AVALANCHE, 
   toChain = CHAINS.TESTNET.POLYGON,
   destinationAddress = "0xF16DfB26e1FEc993E085092563ECFAEaDa7eD7fD",
-  asset: "avax"
+  asset = "avax"
 
 const depositAddress = await sdk.getDepositAddress({
   fromChain, 
@@ -201,7 +201,7 @@ const sdk = new AxelarAssetTransfer({ environment: "testnet" });
 const fromChain = CHAINS.TESTNET.POLYGON, 
   toChain = CHAINS.TESTNET.AVALANCHE,
   destinationAddress = "0xF16DfB26e1FEc993E085092563ECFAEaDa7eD7fD",
-  asset: "wavax-wei"
+  asset = "wavax-wei"
 
 const depositAddress = await sdk.getDepositAddress({
   fromChain, 
@@ -223,7 +223,7 @@ const sdk = new AxelarAssetTransfer({ environment: "testnet" });
 const fromChain = CHAINS.TESTNET.POLYGON, 
   toChain = CHAINS.TESTNET.AVALANCHE,
   destinationAddress = "0xF16DfB26e1FEc993E085092563ECFAEaDa7eD7fD",
-  asset: "wavax-wei"
+  asset = "wavax-wei"
 
 const depositAddress = await sdk.getDepositAddress({
   fromChain, 
