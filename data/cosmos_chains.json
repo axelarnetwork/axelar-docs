@@ -85,6 +85,12 @@
       "image": "/images/chains/kujira.svg"
     },
     {
+      "id": "neutron",
+      "name": "Neutron",
+      "network_id": "neutron",
+      "image": "/images/chains/neutron.svg"
+    },
+    {
       "id": "osmosis",
       "name": "Osmosis",
       "network_id": "osmosis",
@@ -95,12 +101,6 @@
       "name": "Persistence",
       "network_id": "persistence",
       "image": "/images/chains/persistence.svg"
-    },
-    {
-      "id": "regen",
-      "name": "Regen",
-      "network_id": "regen",
-      "image": "/images/chains/regen.svg"
     },
     {
       "id": "secret",
