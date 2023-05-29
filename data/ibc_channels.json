@@ -161,6 +161,16 @@
       "channel_id": "channel-42"
     },
     {
+      "from": "regen",
+      "to": "axelarnet",
+      "channel_id": "channel-48"
+    },
+    {
+      "from": "axelarnet",
+      "to": "regen",
+      "channel_id": "channel-29"
+    },
+    {
       "from": "secret",
       "to": "axelarnet",
       "channel_id": "channel-20"
