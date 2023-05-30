@@ -527,6 +527,30 @@
       "image": "/images/chains/base.svg"
     },
     {
+      "id": "linea",
+      "name": "Linea",
+      "chain_id": 59140,
+      "network_id": "linea",
+      "provider_params": [
+        {
+          "chainId": "0xe704",
+          "chainName": "Linea Testnet",
+          "rpcUrls": [
+            "https://rpc.goerli.linea.build"
+          ],
+          "nativeCurrency": {
+            "name": "Ether",
+            "symbol": "ETH",
+            "decimals": 18
+          },
+          "blockExplorerUrls": [
+            "https://explorer.goerli.linea.build"
+          ]
+        }
+      ],
+      "image": "/images/chains/linea.svg"
+    },
+    {
       "id": "filecoin",
       "name": "Filecoin",
       "chain_id": 3141,

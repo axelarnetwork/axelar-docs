@@ -46,7 +46,7 @@
       "symbol": "PEPE",
       "image": "/images/assets/pepe.svg",
       "decimals": 18,
-      "transfer_fee": 33000.0
+      "transfer_fee": 50000.0
     },
     {
       "id": "dot-planck",

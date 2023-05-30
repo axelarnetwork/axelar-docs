@@ -85,6 +85,12 @@
       "image": "/images/chains/kujira.svg"
     },
     {
+      "id": "neutron",
+      "name": "Neutron",
+      "network_id": "neutron",
+      "image": "/images/chains/neutron.svg"
+    },
+    {
       "id": "osmosis",
       "name": "Osmosis",
       "network_id": "osmosis",
