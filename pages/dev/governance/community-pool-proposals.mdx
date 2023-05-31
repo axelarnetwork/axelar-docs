@@ -17,15 +17,15 @@ Once a Governance Forum proposal has been live for the required temperature chec
 ### Prerequisites
 
 * You must have [axelard](/node/config-node#download-binaries-and-initialize-configuration)
-* You must have an account with at least **2,000AXL** balance
-* You must choose an [RPC endpoint](/resources), run an Axelar node
+* You must have an account with at least **2,000AXL** balance or find a community member that can fund the 2000 AXL deposit on your behalf within 1 hour of posting a proposal.
+* You must choose an [RPC endpoint](/resources) or run an Axelar node
 
 
 ### Create a local wallet
 If you don't already have a local wallet, you can create one.
 
 ```bash
-# create an account named `wallet`
+# create an account named `wallet` and save the generated mnemonic
 $ axelard keys add wallet 
 # enter passphrase
 
@@ -39,7 +39,7 @@ $ axelard tx bank send [account_with_fund_address] [wallet_address] 2000000000ua
 ```
 
 ### Submit a proposal
-Now that you have a account named `wallet` with 2,000AXL, you can submit a proposal on-chain.
+Now that you have a account named `wallet` with 2,000AXL, you can submit a proposal on-chain. Access the Axelar's RPC providers [here](/resources)
 
 ```bash
 $ axelard tx gov submit-proposal community-pool-spend <file> --from wallet --node <RPC Endpoint> --gas auto --gas-adjustment 1.2
