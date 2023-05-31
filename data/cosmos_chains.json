@@ -103,6 +103,12 @@
       "image": "/images/chains/persistence.svg"
     },
     {
+      "id": "regen",
+      "name": "Regen",
+      "network_id": "regen",
+      "image": "/images/chains/regen.svg"
+    },
+    {
       "id": "secret",
       "name": "Secret",
       "network_id": "secret",

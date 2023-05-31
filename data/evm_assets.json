@@ -1236,6 +1236,13 @@
           "transfer_fee": 0.1
         },
         {
+          "chain": "linea",
+          "address": "0x254d06f33bDc5b8ee05b2ea472107E300226659A",
+          "symbol": "aUSDC",
+          "decimals": 6,
+          "transfer_fee": 0.1
+        },
+        {
           "chain": "optimism",
           "address": "0x254d06f33bDc5b8ee05b2ea472107E300226659A",
           "symbol": "aUSDC",
@@ -1329,6 +1336,13 @@
         },
         {
           "chain": "filecoin",
+          "address": "0x23ee2343B892b1BB63503a4FAbc840E0e2C6810f",
+          "symbol": "wAXL",
+          "decimals": 6,
+          "transfer_fee": 0.1
+        },
+        {
+          "chain": "linea",
           "address": "0x23ee2343B892b1BB63503a4FAbc840E0e2C6810f",
           "symbol": "wAXL",
           "decimals": 6,
@@ -1435,7 +1449,35 @@
       "image": "/images/assets/weth.svg",
       "contracts": [
         {
+          "chain": "base",
+          "address": "0xeA700DCe55e72C4C08b97AcFc7dF214EC30F4a64",
+          "symbol": "axlWETH",
+          "decimals": 18,
+          "transfer_fee": 7e-05
+        },
+        {
           "chain": "filecoin",
+          "address": "0xeA700DCe55e72C4C08b97AcFc7dF214EC30F4a64",
+          "symbol": "axlWETH",
+          "decimals": 18,
+          "transfer_fee": 7e-05
+        },
+        {
+          "chain": "linea",
+          "address": "0xeA700DCe55e72C4C08b97AcFc7dF214EC30F4a64",
+          "symbol": "axlWETH",
+          "decimals": 18,
+          "transfer_fee": 7e-05
+        },
+        {
+          "chain": "optimism",
+          "address": "0xeA700DCe55e72C4C08b97AcFc7dF214EC30F4a64",
+          "symbol": "axlWETH",
+          "decimals": 18,
+          "transfer_fee": 7e-05
+        },
+        {
+          "chain": "arbitrum",
           "address": "0xeA700DCe55e72C4C08b97AcFc7dF214EC30F4a64",
           "symbol": "axlWETH",
           "decimals": 18,
@@ -1514,6 +1556,13 @@
         },
         {
           "chain": "filecoin",
+          "address": "0x21ba4f6aEdA155DD77Cc33Fb93646910543F0380",
+          "symbol": "WMATIC",
+          "decimals": 18,
+          "transfer_fee": 0.07
+        },
+        {
+          "chain": "linea",
           "address": "0x21ba4f6aEdA155DD77Cc33Fb93646910543F0380",
           "symbol": "WMATIC",
           "decimals": 18,
@@ -1612,6 +1661,13 @@
           "transfer_fee": 0.001
         },
         {
+          "chain": "linea",
+          "address": "0x2a87806561C550ba2dA9677c5323413E6e539740",
+          "symbol": "WAVAX",
+          "decimals": 18,
+          "transfer_fee": 0.001
+        },
+        {
           "chain": "optimism",
           "address": "0x2a87806561C550ba2dA9677c5323413E6e539740",
           "symbol": "WAVAX",
@@ -1698,6 +1754,13 @@
         },
         {
           "chain": "filecoin",
+          "address": "0x594D8b81eC765410536ab59E98091700b99508D8",
+          "symbol": "WFTM",
+          "decimals": 18,
+          "transfer_fee": 0.08
+        },
+        {
+          "chain": "linea",
           "address": "0x594D8b81eC765410536ab59E98091700b99508D8",
           "symbol": "WFTM",
           "decimals": 18,
@@ -1796,6 +1859,13 @@
           "transfer_fee": 0.0003
         },
         {
+          "chain": "linea",
+          "address": "0xA9A2D8F279ABC436a18DBB1df3FB233039935D0A",
+          "symbol": "WBNB",
+          "decimals": 18,
+          "transfer_fee": 0.0003
+        },
+        {
           "chain": "optimism",
           "address": "0xA9A2D8F279ABC436a18DBB1df3FB233039935D0A",
           "symbol": "WBNB",
@@ -1888,6 +1958,13 @@
           "transfer_fee": 0.02
         },
         {
+          "chain": "linea",
+          "address": "0x6Bf48cac8a850fA48b893f754AeD54A19a505A6F",
+          "symbol": "WFIL",
+          "decimals": 18,
+          "transfer_fee": 0.02
+        },
+        {
           "chain": "optimism",
           "address": "0x6Bf48cac8a850fA48b893f754AeD54A19a505A6F",
           "symbol": "WFIL",
@@ -1974,6 +2051,13 @@
         },
         {
           "chain": "filecoin",
+          "address": "0x4B13D583F45Aa01fb2bE18a7AAfE14DE183B1Ac9",
+          "symbol": "WDEV",
+          "decimals": 18,
+          "transfer_fee": 0.04
+        },
+        {
+          "chain": "linea",
           "address": "0x4B13D583F45Aa01fb2bE18a7AAfE14DE183B1Ac9",
           "symbol": "WDEV",
           "decimals": 18,
