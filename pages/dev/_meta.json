@@ -2,7 +2,6 @@
   "intro": "Introduction",
   "send-tokens": "Send Tokens",
   "general-message-passing":"General Message Passing",
-  "governance": "Governance",
   "axelarjs-sdk": "JavaScript SDK",
   "reference": "Reference"
 }
