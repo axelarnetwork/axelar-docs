@@ -1,4 +1,4 @@
-**Server requierements**
+**Server requirements**
 
 - 2 CPU cores
 - 8 GB RAM
