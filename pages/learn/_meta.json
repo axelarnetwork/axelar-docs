@@ -22,5 +22,6 @@
   "cli": {
     "title": "CLI",
     "type": "doc"
-  }
+  },
+  "get-started-axelar-examples":"Get Started with Axelar Examples"
 }

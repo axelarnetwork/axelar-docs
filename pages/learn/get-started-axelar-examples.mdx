@@ -1,0 +1,127 @@
+# Getting Started with Axelar Examples
+
+[Axelar](https://axelar.network/) delivers a secure cross-chain communication for Web3, enabling you to build Interchain dApps that grow beyond a single chain.
+
+In this guide, you will learn how to use the [Axelar Examples Repo](https://github.com/axelarnetwork/axelar-examples), and send a message from the Ethereum to Avalanche Chain.
+
+## Prerequisites
+
+You will need to have knowledge of the following to get started;
+
+- Smart contracts (Solidity)
+- [Hardhat](https://hardhat.org/tutorial)
+
+> For a quick intro into the Axelar ecosystem, see the [hello world](/dev/general-message-passing/local-dev) guide to quickly learn how to setup, and deploy your contracts or skip to the section on [Creating cross-chain dApps using the examples-web collection](#Creating-cross-chain-dapps-using-the-examples-web-collection).
+
+## Setup
+
+To get started, clone the [repo](https://github.com/axelarnetwork/axelar-examples), set environment variables, print wallet balances and run a local chains. To do this, follow the setup instructions in the [Axelar Examples README](https://github.com/axelarnetwork/axelar-examples#readme).
+
+> Note: When you run the command `npm run check-balance local`, you may get the error: ENOENT: no such file or directory, open '/axelar-examples/chain-config/local.json'. This is because the `local.json` file is not missing at the time of running that balance. 
+> - Possible FIX: Specify the testnet `npm run check-balance testnet`. Note that if no environment is specified, this will print balances of the wallet for testnet.
+
+## Creating cross-chain dapps using the examples-web collection
+
+The examples-web is a comprehensive collection of end-to-end examples, note that all examples have been packaged together, making it simple to set up and run them all in one place. In this section, we will use the examples in the  examples-web section, to [send a message from one chain to another](#Sending-a-message-to-another-chain).
+
+Before you begin, make sure you've set up your environment variables at the root directory. See section on [setting environment variables]([#Set-environment-variables](https://github.com/axelarnetwork/axelar-examples#set-environment-variables)) for instructions.
+
+1. Navigate to the [root](https://github.com/axelarnetwork/axelar-examples/tree/main) directory
+2. Run `npm run start` to start the local chains.
+3. Navigate to the `examples-web` directory.
+4. Run `npm ci` to install dependencies.
+5. Run `npm run setup` to copy the private key and mnemonic from the `.env` file at the root directory to the `.env` file in the `examples-web` directory.
+6. Run `npm run deploy` to compile all smart contracts, generate types for smart contract functions, and deploy to the local network.
+
+```shell
+npm run deploy
+...
+
+Deployed example contracts on Ethereum
+callContract: 0x2f107F1bCcd252EBEFb5C542BF1Fba36F87bb95f
+
+Deployed example contracts on Avalanche
+callContract: 0x2f107F1bCcd252EBEFb5C542BF1Fba36F87bb95f
+```
+
+7. Run `npm run dev` to start the web application server.
+
+```
+npm run dev
+
+ready - started server on 0.0.0.0:3000, url: http://localhost:3000
+```
+8. Open http://localhost:3000 in your web browser to view the examples demo.
+
+![web-examples-landing](/images/learn/web-examples-landing.png)
+
+### Sending a message to another chain
+
+Here, we are going to send a message from one chain to another using `MessageSender.sol` and `MessageReceiver.sol`.
+
+![web-examples-call-contracts](/images/learn/web-examples-call-contract.png)
+
+The `MessageSender` contract is a contract that allows users to send messages to other chains.
+
+```
+ontract MessageSender {
+    IAxelarGateway immutable gateway;
+    IAxelarGasService immutable gasService;
+
+    constructor(address _gateway, address _gasReceiver) {
+        gateway = IAxelarGateway(_gateway);
+        gasService = IAxelarGasService(_gasReceiver);
+    }
+}
+
+```
+
+[See full contract](https://github.com/axelarnetwork/axelar-examples/blob/ccf12705003980e36438a6cf110ffe78b4230aeb/examples-web/contracts/call-contract-with-token/contracts/MessageSender.sol)
+
+> In the sendMessage() function, the user specifies the destination chain, destination address, and value of the message which is encoded by the contract into an object. The contract then calls the `gateway.callContract()` function to send the message to the specified destination chain and address.
+The `gateway.callContract()` function is a function provided by the Axelar Gateway contract. This function allows users to call contracts on other chains.
+For more information. See [Call a contract on chain B from chain A](https://docs.axelar.dev/dev/general-message-passing/gmp-messages).
+
+The `MessageReceiver` contract is a contract that receives messages from other chains.
+
+```solidity
+contract MessageReceiver is AxelarExecutable {
+    string public message = 'no data';
+    string public sourceChain;
+
+    constructor(address gateway_, address _gasReceiver)
+        AxelarExecutable(gateway_)
+    {}
+
+    event Executed(address indexed _from, string _value);
+}
+```
+
+See [full contract](https://github.com/axelarnetwork/axelar-examples/blob/ccf12705003980e36438a6cf110ffe78b4230aeb/examples-web/contracts/call-contract-with-token/contracts/MessageReceiver.sol)
+
+> The contract has a `message`, `sourceChain`, `Executed`, `_execute()` properties. The _execute() function decodes the message using the abi.decode(). 
+The _execute() function then stores the decoded message in the message variable, and then emit the Executed event.
+
+#### Interacting with the UI
+
+Here, we will send a message to from the Ethereum chain to Avalanche chain using the examples-web UI.
+
+**Step 1: Click on the view button on the card "send a message to another chain"**
+
+![web-examples-landing](/images/learn/web-examples-landing-view.png)
+
+**Step 2: Enter the message and click the send button**
+
+Enter the message you would like to send to the Avalanche chain and click the send button.
+
+![send_from_ethereum](/images/learn/send-message.png)
+
+**Step 3: Refresh the contract on the Avalanche chain**
+
+Click on refresh contract button, and you will see the message sent from the Ethereum chain on the Avalanche chain.
+
+![refresh contract](/images/learn/send-message-refresh-contract.png)
+
+## Conclusion
+
+Congratulations, we have successfully setup our `axelar-examples` environment, printed wallet balances, ran a local network, and used an example in the `examples-web` to send messages from the Ethereum chain to the Avalanche chain.
