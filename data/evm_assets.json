@@ -70,6 +70,13 @@
           "transfer_fee": 1.5
         },
         {
+          "chain": "optimism",
+          "address": "0xEB466342C4d449BC9f53A865D5Cb90586f405215",
+          "symbol": "axlUSDC",
+          "decimals": 6,
+          "transfer_fee": 4.0
+        },
+        {
           "chain": "polygon",
           "address": "0x750e4C4984a9e0f12978eA6742Bc1c5D248f40ed",
           "symbol": "axlUSDC",
@@ -148,6 +155,13 @@
           "transfer_fee": 3.0
         },
         {
+          "chain": "optimism",
+          "address": "0x23ee2343B892b1BB63503a4FAbc840E0e2C6810f",
+          "symbol": "wAXL",
+          "decimals": 6,
+          "transfer_fee": 8.0
+        },
+        {
           "chain": "polygon",
           "address": "0x6e4E624106Cb12E168E6533F8ec7c82263358940",
           "symbol": "wAXL",
@@ -219,6 +233,13 @@
           "transfer_fee": 1.5
         },
         {
+          "chain": "optimism",
+          "address": "0x5C7e299CF531eb66f2A1dF637d37AbB78e6200C7",
+          "symbol": "axlDAI",
+          "decimals": 18,
+          "transfer_fee": 4.0
+        },
+        {
           "chain": "polygon",
           "address": "0xDDc9E2891FA11a4CC5C223145e8d14B44f3077c9",
           "symbol": "axlDAI",
@@ -288,6 +309,13 @@
           "symbol": "axlUSDT",
           "decimals": 6,
           "transfer_fee": 1.5
+        },
+        {
+          "chain": "optimism",
+          "address": "0x7f5373AE26c3E8FfC4c77b7255DF7eC1A9aF52a6",
+          "symbol": "axlUSDT",
+          "decimals": 6,
+          "transfer_fee": 4.0
         },
         {
           "chain": "polygon",
@@ -464,6 +492,13 @@
           "symbol": "KUJI",
           "decimals": 6,
           "transfer_fee": 8.0
+        },
+        {
+          "chain": "optimism",
+          "address": "0x3A18dcC9745eDcD1Ef33ecB93b0b6eBA5671e7Ca",
+          "symbol": "KUJI",
+          "decimals": 6,
+          "transfer_fee": 8.0
         }
       ]
     },
@@ -605,6 +640,13 @@
           "transfer_fee": 0.12
         },
         {
+          "chain": "optimism",
+          "address": "0x7ba861c07d40e3341B901Fd6F418e96E0132E25b",
+          "symbol": "stATOM",
+          "decimals": 6,
+          "transfer_fee": 0.33
+        },
+        {
           "chain": "polygon",
           "address": "0x9132ab3B9EcA438184588b8887CeD9dE0FCA19AE",
           "symbol": "stATOM",
@@ -667,6 +709,13 @@
           "symbol": "STRD",
           "decimals": 6,
           "transfer_fee": 3.0
+        },
+        {
+          "chain": "optimism",
+          "address": "0x05931D5e2F7E1C1A710c9c1dCdD94e413652376F",
+          "symbol": "STRD",
+          "decimals": 6,
+          "transfer_fee": 8.0
         },
         {
           "chain": "polygon",
@@ -1081,6 +1130,13 @@
           "transfer_fee": 1.5
         },
         {
+          "chain": "optimism",
+          "address": "0x406Cde76a3fD20e48bc1E0F60651e60Ae204B040",
+          "symbol": "axlFRAX",
+          "decimals": 18,
+          "transfer_fee": 4.0
+        },
+        {
           "chain": "polygon",
           "address": "0x53Adc464b488bE8C5d7269B9ABBCe8bA74195C3a",
           "symbol": "axlFRAX",
@@ -1202,6 +1258,13 @@
           "symbol": "axlFIL",
           "decimals": 18,
           "transfer_fee": 0.3
+        },
+        {
+          "chain": "optimism",
+          "address": "0x5E2Cf56A562b1bDD32ec26315063074ADC420C73",
+          "symbol": "axlFIL",
+          "decimals": 18,
+          "transfer_fee": 0.8
         },
         {
           "chain": "polygon",
