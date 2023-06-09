@@ -109,12 +109,6 @@
       "image": "/images/chains/regen.svg"
     },
     {
-      "id": "secret",
-      "name": "Secret",
-      "network_id": "secret",
-      "image": "/images/chains/secret.svg"
-    },
-    {
       "id": "secret-snip",
       "name": "Secret-SNIP",
       "network_id": "secret-snip",
@@ -195,12 +189,6 @@
       "image": "/images/chains/burnt.svg"
     },
     {
-      "id": "comdex",
-      "name": "Comdex",
-      "network_id": "comdex-2",
-      "image": "/images/chains/comdex.svg"
-    },
-    {
       "id": "evmos",
       "name": "Evmos",
       "network_id": "evmos",
@@ -251,7 +239,7 @@
     {
       "id": "sei",
       "name": "Sei",
-      "network_id": "sei",
+      "network_id": "sei-2",
       "image": "/images/chains/sei.svg"
     },
     {

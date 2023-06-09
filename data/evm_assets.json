@@ -528,6 +528,28 @@
       ]
     },
     {
+      "id": "mpx-wei",
+      "name": "MPX - MPX",
+      "symbol": "MPX",
+      "image": "/images/assets/mpx.svg",
+      "contracts": [
+        {
+          "chain": "binance",
+          "address": "0x94C6B279b5df54b335aE51866d6E2A56BF5Ef9b7",
+          "symbol": "MPX",
+          "decimals": 18,
+          "transfer_fee": 11.0
+        },
+        {
+          "chain": "fantom",
+          "address": "0x66eEd5FF1701E6ed8470DC391F05e27B1d0657eb",
+          "symbol": "MPX",
+          "decimals": 18,
+          "transfer_fee": 11.0
+        }
+      ]
+    },
+    {
       "id": "stuatom",
       "name": "stATOM - Stride Staked Atom",
       "symbol": "stATOM",
@@ -841,6 +863,13 @@
           "symbol": "axlATOM",
           "decimals": 6,
           "transfer_fee": 0.12
+        },
+        {
+          "chain": "optimism",
+          "address": "0x06beE9E7238a331B68D83Df3B5B9B16d5DBa83ff",
+          "symbol": "axlATOM",
+          "decimals": 6,
+          "transfer_fee": 0.33
         },
         {
           "chain": "polygon",
