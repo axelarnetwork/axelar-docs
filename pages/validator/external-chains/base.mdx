@@ -1,10 +1,9 @@
 # Base
 
 import Markdown from 'markdown-to-jsx'
-import Tabs from '../../../components/tabs'
 import { Callout } from 'nextra-theme-docs'
 import CodeBlock from '../../../components/code-block'
-import { NextraTab, NextraTabs } from 'nextra-theme-docs'
+import { Tabs, Tab } from 'nextra-theme-docs'
 
 Instructions to set up your Base (Coinbase L2) node.
 
@@ -69,14 +68,15 @@ Since Base uses the Optimism stack, you can review the [Optimism Instructions](/
 In order for `vald` to connect to your Base node, your Base RPC should be exposed in
 vald's `config.toml`
 
-<Tabs tabs={[
-{
-title: "Testnet",
-content: <CodeBlock language="bash">
-{`[[axelar_bridge_evm]]
-name = "base"
-rpc_addr = "http://IP:PORT"
-start-with-bridge = true`}
-</CodeBlock>
-}
-]} />
+
+<Tabs items={['Testnet']}>
+  <Tab>
+  ```bash
+  [[axelar_bridge_evm]]
+
+  name = "base"
+  rpc_addr = "http://IP:PORT"
+  start-with-bridge = true
+  ```
+  </Tab>
+</Tabs>

@@ -3,8 +3,7 @@
 import Markdown from 'markdown-to-jsx'
 import Tabs from '../../../components/tabs'
 import CodeBlock from '../../../components/code-block'
-import { NextraTab, NextraTabs } from 'nextra-theme-docs'
-import { Callout } from 'nextra-theme-docs'
+import { Tabs as NextraTabs, Tab as NextraTab, Callout } from 'nextra-theme-docs'
 
 Instructions to set up your Optimism node.
 
@@ -179,26 +178,25 @@ use your RPC node only when it has caught up with the latest block height.
 
 In order for `vald` to connect to your Optimism node, your `rpc_addr` should be exposed in
 vald's `config.toml`
-<Tabs tabs={[
-{
-title: "Mainnet",
-content: <CodeBlock language="bash">
-{`[[axelar_bridge_evm]]
-name = "optimism"
-rpc_addr = "http://IP:PORT"
-start-with-bridge = true`}
-</CodeBlock>
-},
-{
-title: "Testnet",
-content: <CodeBlock language="bash">
-{`[[axelar_bridge_evm]]
-name = "optimism"
-rpc_addr = "http://IP:PORT"
-start-with-bridge = true`}
-</CodeBlock>
-}
-]} />
+
+<NextraTabs items={['Mainnet', 'Testnet']}>
+  <NextraTab>
+  ```bash
+  [[axelar_bridge_evm]]
+  name = "optimism"
+  rpc_addr = "http://IP:PORT"
+  start-with-bridge = true
+  ```
+  </NextraTab>
+  <NextraTab>
+  ```bash
+  [[axelar_bridge_evm]]
+  name = "optimism"
+  rpc_addr = "http://IP:PORT"
+  start-with-bridge = true
+  ```
+  </NextraTab>
+</NextraTabs>
 
 ### Common Node Operations
 
