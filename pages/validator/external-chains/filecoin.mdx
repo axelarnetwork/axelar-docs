@@ -3,6 +3,7 @@
 import { Callout } from 'nextra-theme-docs'
 import CodeBlock from '../../../components/code-block'
 import Tabs from '../../../components/tabs'
+import { Tabs as NextraTabs, Tab as NextraTab } from 'nextra-theme-docs'
 
 Set up your Filecoin Mainnet or Testnet Hyperspace node.
 
@@ -226,23 +227,22 @@ Verify that the block number matches the latest block number on the explorer.
 In order for `vald` to connect to your Filecoin node, your `rpc_addr` should be exposed in
 vald's `config.toml`
 
-<Tabs tabs={[
-{
-title: "Mainnet",
-content: <CodeBlock language="bash">
-{`[[axelar_bridge_evm]]
-name = "filecoin"
-rpc_addr = "http://localhost:1234/rpc/v1"
-start-with-bridge = true`}
-</CodeBlock>
-},
-{
-title: "Testnet",
-content: <CodeBlock language="bash">
-{`[[axelar_bridge_evm]]
-name = "filecoin"
-rpc_addr = "http://localhost:1234/rpc/v1"
-start-with-bridge = true`}
-</CodeBlock>
-}
-]} />
+
+<NextraTabs items={['Mainnet', 'Testnet']}>
+  <NextraTab>
+  ```bash
+  [[axelar_bridge_evm]]
+  name = "filecoin"
+  rpc_addr = "http://localhost:1234/rpc/v1"
+  start-with-bridge = true
+  ```
+  </NextraTab>
+  <NextraTab>
+  ```bash
+  [[axelar_bridge_evm]]
+  name = "filecoin"
+  rpc_addr = "http://localhost:1234/rpc/v1"
+  start-with-bridge = true
+  ```
+  </NextraTab>
+</NextraTabs>

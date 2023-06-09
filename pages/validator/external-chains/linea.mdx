@@ -2,7 +2,7 @@
 
 import { Callout } from 'nextra-theme-docs'
 import CodeBlock from '../../../components/code-block'
-import Tabs from '../../../components/tabs'
+import { Tabs, Tab } from 'nextra-theme-docs'
 
 Set up your Linea Testnet RPC node
 
@@ -36,14 +36,14 @@ curl -X POST --url [rpc] \
 In order for `vald` to connect to your Linea node, your `rpc_addr` should be exposed in
 vald's `config.toml`
 
-<Tabs tabs={[
-{
-title: "Testnet",
-content: <CodeBlock language="bash">
-{`[[axelar_bridge_evm]]
-name = "linea"
-rpc_addr = "http://IP:PORT"
-start-with-bridge = true`}
-</CodeBlock>
-}
-]} />
+
+<Tabs items={['Testnet']}>
+  <Tab>
+  ```bash
+  [[axelar_bridge_evm]]
+  name = "linea"
+  rpc_addr = "http://IP:PORT"
+  start-with-bridge = true
+  ```
+  </Tab>
+</Tabs>

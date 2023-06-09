@@ -4,6 +4,7 @@ import { Callout } from 'nextra-theme-docs'
 import Markdown from 'markdown-to-jsx'
 import Tabs from '../../../components/tabs'
 import CodeBlock from '../../../components/code-block'
+import { Tabs as NextraTabs, Tab as NextraTab } from 'nextra-theme-docs'
 
 Instructions to set up your Binance node.
 
@@ -253,24 +254,23 @@ vald's `config.toml`
   Mainnet config requires `finality_override` to be set to be compatible with BSC Luban upgrade.
 </Callout>
 
-<Tabs tabs={[
-{
-title: "Mainnet",
-content: <CodeBlock language="bash">
-{`[[axelar_bridge_evm]]
-name = "binance"
-rpc_addr = "http://IP:PORT"
-start-with-bridge = true
-finality_override = "confirmation"`}
-</CodeBlock>
-},
-{
-title: "Testnet",
-content: <CodeBlock language="bash">
-{`[[axelar_bridge_evm]]
-name = "binance"
-rpc_addr = "http://IP:PORT"
-start-with-bridge = true`}
-</CodeBlock>
-}
-]} />
+
+<NextraTabs items={['Mainnet', 'Testnet']}>
+  <NextraTab>
+  ```bash
+  [[axelar_bridge_evm]]
+  name = "binance"
+  rpc_addr = "http://IP:PORT"
+  start-with-bridge = true
+  finality_override = "confirmation"
+  ```
+  </NextraTab>
+  <NextraTab>
+  ```bash
+  [[axelar_bridge_evm]]
+  name = "binance"
+  rpc_addr = "http://IP:PORT"
+  start-with-bridge = true
+  ```
+  </NextraTab>
+</NextraTabs>

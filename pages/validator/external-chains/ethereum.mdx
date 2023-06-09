@@ -3,6 +3,7 @@
 import { Callout } from 'nextra-theme-docs'
 import CodeBlock from '../../../components/code-block'
 import Tabs from '../../../components/tabs'
+import { Tabs as NextraTabs, Tab as NextraTab } from 'nextra-theme-docs'
 
 Set up your Ethereum Mainnet or Goerli Testnet RPC node
 
@@ -148,26 +149,25 @@ vald's `config.toml`
   Goerli testnet chain name is `ethereum-2`
 </Callout>
 
-<Tabs tabs={[
-{
-title: "Mainnet",
-content: <CodeBlock language="bash">
-{`[[axelar_bridge_evm]]
-name = "Ethereum"
-rpc_addr = "http://IP:PORT"
-start-with-bridge = true`}
-</CodeBlock>
-},
-{
-title: "Goerli Testnet",
-content: <CodeBlock language="bash">
-{`[[axelar_bridge_evm]]
-name = "ethereum-2"
-rpc_addr = "http://IP:PORT"
-start-with-bridge = true`}
-</CodeBlock>
-}
-]} />
+
+<NextraTabs items={['Mainnet', 'Goerli Testnet']}>
+  <NextraTab>
+  ```bash
+  [[axelar_bridge_evm]]
+  name = "Ethereum"
+  rpc_addr = "http://IP:PORT"
+  start-with-bridge = true
+  ```
+  </NextraTab>
+  <NextraTab>
+  ```bash
+  [[axelar_bridge_evm]]
+  name = "ethereum-2"
+  rpc_addr = "http://IP:PORT"
+  start-with-bridge = true
+  ```
+  </NextraTab>
+</NextraTabs>
 
 
 ### Upgrade geth
