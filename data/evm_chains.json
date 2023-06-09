@@ -102,6 +102,55 @@
       "image": "/images/chains/avalanche.svg"
     },
     {
+      "id": "arbitrum",
+      "name": "Arbitrum",
+      "chain_id": 42161,
+      "network_id": "arbitrum",
+      "provider_params": [
+        {
+          "chainId": "0xA4B1",
+          "chainName": "Arbitrum",
+          "rpcUrls": [
+            "https://arb1.arbitrum.io/rpc",
+            "https://rpc.ankr.com/arbitrum"
+          ],
+          "nativeCurrency": {
+            "name": "Ethereum",
+            "symbol": "ETH",
+            "decimals": 18
+          },
+          "blockExplorerUrls": [
+            "https://arbiscan.io"
+          ]
+        }
+      ],
+      "image": "/images/chains/arbitrum.svg"
+    },
+    {
+      "id": "optimism",
+      "name": "Optimism",
+      "chain_id": 10,
+      "network_id": "optimism",
+      "provider_params": [
+        {
+          "chainId": "0xA",
+          "chainName": "Optimism",
+          "rpcUrls": [
+            "https://mainnet.optimism.io"
+          ],
+          "nativeCurrency": {
+            "name": "Ethereum",
+            "symbol": "ETH",
+            "decimals": 18
+          },
+          "blockExplorerUrls": [
+            "https://optimistic.etherscan.io"
+          ]
+        }
+      ],
+      "image": "/images/chains/optimism.svg"
+    },
+    {
       "id": "fantom",
       "name": "Fantom",
       "chain_id": 250,
@@ -151,31 +200,6 @@
         }
       ],
       "image": "/images/chains/moonbeam.svg"
-    },
-    {
-      "id": "arbitrum",
-      "name": "Arbitrum",
-      "chain_id": 42161,
-      "network_id": "arbitrum",
-      "provider_params": [
-        {
-          "chainId": "0xA4B1",
-          "chainName": "Arbitrum",
-          "rpcUrls": [
-            "https://arb1.arbitrum.io/rpc",
-            "https://rpc.ankr.com/arbitrum"
-          ],
-          "nativeCurrency": {
-            "name": "Ethereum",
-            "symbol": "ETH",
-            "decimals": 18
-          },
-          "blockExplorerUrls": [
-            "https://arbiscan.io"
-          ]
-        }
-      ],
-      "image": "/images/chains/arbitrum.svg"
     },
     {
       "id": "celo",
