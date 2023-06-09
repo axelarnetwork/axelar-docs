@@ -142,9 +142,15 @@ simple-optimism-node-op-node-1  | INFO [01-22|07:50:14.332] Received signed exec
 
 ## Verify node sync status
 
+### RPC Endpoint
+
+```bash
+echo "$(curl -4 ifconfig.co):9991"
+```
+
 #### Method 1:
 ```bash
-curl -X POST $(curl -4 ifconfig.co):9991 -H "Content-Type: application/json" --data '{"jsonrpc":"2.0","method":"eth_blockNumber","params":[],"id":1}' | jq
+curl -X POST [rpc] -H "Content-Type: application/json" --data '{"jsonrpc":"2.0","method":"eth_blockNumber","params":[],"id":1}' | jq
 ```
 
 If you get something like this in response to the above rpc call, your node is setup correctly
@@ -169,20 +175,14 @@ docker exec -it simple-optimism-node-op-geth-1 geth attach http://localhost:8545
 You can compare the block height on your node with explorer ([mainnet](https://optimistic.etherscan.io) or [testnet](https://goerli-optimism.etherscan.io)),
 use your RPC node only when it has caught up with the latest block height.
 
-## RPC Endpoint
-
-```bash
-echo "$(curl -4 ifconfig.co):9991"
-```
-
-### Configure vald
+## Configure vald
 
 In order for `vald` to connect to your Optimism node, your `rpc_addr` should be exposed in
 vald's `config.toml`
 <Tabs tabs={[
 {
 title: "Mainnet",
-content: <CodeBlock language="yaml">
+content: <CodeBlock language="bash">
 {`[[axelar_bridge_evm]]
 name = "optimism"
 rpc_addr = "http://IP:PORT"
@@ -191,7 +191,7 @@ start-with-bridge = true`}
 },
 {
 title: "Testnet",
-content: <CodeBlock language="yaml">
+content: <CodeBlock language="bash">
 {`[[axelar_bridge_evm]]
 name = "optimism"
 rpc_addr = "http://IP:PORT"
@@ -200,7 +200,7 @@ start-with-bridge = true`}
 }
 ]} />
 
-## Common Node Operations
+### Common Node Operations
 
 First `cd` into the directory
 ```bash
