@@ -129,6 +129,14 @@
       "transfer_fee": 0.076
     },
     {
+      "id": "mpx-wei",
+      "name": "MPX - MPX",
+      "symbol": "MPX",
+      "image": "/images/assets/mpx.svg",
+      "decimals": 18,
+      "transfer_fee": 0.71
+    },
+    {
       "id": "stuatom",
       "name": "stATOM - Stride Staked Atom",
       "symbol": "stATOM",
