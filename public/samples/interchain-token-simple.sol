@@ -7,7 +7,5 @@ contract InterchainToken is ERC20 {
     constructor() ERC20("MyInterchainToken", "MITKN") {
         // Mint 1000 tokens to the creator
         _mint(msg.sender, 1000 * 10 ** 18);
-        // Mint 1000 tokens to the contract to make sending easier
-        _mint(address(this),1000 * 10 ** 18);
     }
 }
