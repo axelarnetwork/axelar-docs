@@ -2,7 +2,8 @@
 
 import { Callout } from 'nextra-theme-docs'
 import CodeBlock from '../../../components/code-block'
-import { Tabs, Tab } from 'nextra-theme-docs'
+import Tabs from '../../../components/tabs'
+import { Tabs as NextraTabs, Tab as NextraTab } from 'nextra-theme-docs'
 
 This guide presents you the Kava Node setup for both Testnet and Mainnet, as well as the integration with Axelar Network.
 
@@ -186,8 +187,8 @@ sudo systemctl start kvd
 In order for `vald` to connect to your RPC node, it should be exposed in
 vald's `config.toml`.
 
-<Tabs items={['Mainnet', 'Testnet']}>
-  <Tab>
+<NextraTabs items={['Mainnet', 'Testnet']}>
+  <NextraTab>
   ```bash
   [[axelar_bridge_evm]]
 
@@ -195,8 +196,8 @@ vald's `config.toml`.
   rpc_addr = "http://IP:PORT"
   start-with-bridge = true
   ```
-  </Tab>
-  <Tab>
+  </NextraTab>
+  <NextraTab>
   ```bash
   [[axelar_bridge_evm]]
 
@@ -204,5 +205,5 @@ vald's `config.toml`.
   rpc_addr = "http://IP:PORT"
   start-with-bridge = true
   ```
-  </Tab>
-</Tabs>
+  </NextraTab>
+</NextraTabs>
