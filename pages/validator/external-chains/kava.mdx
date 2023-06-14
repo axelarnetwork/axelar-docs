@@ -11,40 +11,16 @@ This guide presents you the Kava Node setup for both Testnet and Mainnet, as wel
 
 - [Setup your Axelar validator](/validator/setup)
 - Minimum hardware requirements: 4 core CPU , 8GB RAM
-- MacOS or Ubuntu 18.04+
+- MacOS or Ubuntu
 - Build-essential packages
-- Golang 1.17+
+- Golang
 - [Official Documentation](https://docs.kava.io/docs/participate/validator-node/)
-
-## Install Go
-```bash
-# First remove existing old Go installation
-sudo rm -rf /usr/local/go
-
-# Download and verify go
-curl -O https://dl.google.com/go/go1.18.7.linux-amd64.tar.gz
-sha256sum --check <<EOF
-6c967efc22152ce3124fc35cdf50fc686870120c5fd2107234d05d450a6105d8  $HOME/go1.18.7.linux-amd64.tar.gz
-EOF
-
-# install
-sudo tar -xvf go1.18.7.linux-amd64.tar.gz
-sudo mv go /usr/local
-
-# Update environment variables to include go
-cat <<'EOF' >>$HOME/.profile
-export GOROOT=/usr/local/go
-export GOPATH=$HOME/go
-export GO111MODULE=on
-export PATH=$PATH:/usr/local/go/bin:$HOME/go/bin
-EOF
-source $HOME/.profile
-
-# Verify that Go is installed:
-go version
-```
+- [GitHub](https://github.com/Kava-Labs/kava)
 
 ## Install Kava
+
+[Install](https://go.dev/doc/install) the appropriate Golang version (found on their GitHub, linked above).
+
 ```bash
 git clone https://github.com/Kava-Labs/kava
 cd kava
@@ -54,13 +30,13 @@ cd kava
 {
 title: "Mainnet",
 content: <CodeBlock language="bash">
-git checkout v0.19.0
+git checkout [release tag]
 </CodeBlock>
 },
 {
 title: "Testnet",
 content: <CodeBlock language="bash">
-git checkout v0.19.5-testnet
+git checkout [release tag]
 </CodeBlock>
 }
 ]} />
@@ -72,9 +48,9 @@ make install
 kava version --long
 ```
 
-## Initialize Kava Node and create necessary toml files
+## Setup Kava Node
 
-Initialize Kava
+### Initialize Kava config
 <Tabs tabs={[
 {
 title: "Mainnet",
@@ -96,8 +72,7 @@ cd $HOME/.kava/config
 rm genesis.json
 ```
 
-Download Genesis File
-
+### Set up the Genesis file
 <Tabs tabs={[
 {
 title: "Mainnet",
@@ -113,9 +88,7 @@ wget https://raw.githubusercontent.com/Kava-Labs/kava-testnets/master/16000/gene
 }
 ]} />
 
-
-Edit your config.toml file and add the following persistent peers.
-
+Edit `$HOME/.kava/config/config.toml` to add the following persistent peers.
 
 <NextraTabs items={['Mainnet', 'Testnet']}>
   <NextraTab>
@@ -140,21 +113,15 @@ Do the rest of the port configuration as desired; The EVM configuration and port
 
 ### Pruning configuration
 
-To allow validators to retrieve and verify cross chain messages from users, the state of the network needs to be kept around at the block height. While most cross-chain messages will be picked up right away, some might not be due to various reasons (insufficient gas, off-chain services were down etc.). So, we require validators to keep 1 month of Kava chain history to support this. Please use the following pruning config for your node.
-
-```bash
-pruning="custom"
-pruning_keep_recent="410000"
-pruning_keep_every="0"
-pruning_interval="1000"
-
-sed -i -e "s/^pruning *=.*/pruning = \"$pruning\"/" $HOME/.kava/config/app.toml
-sed -i -e "s/^pruning-keep-recent *=.*/pruning-keep-recent = \"$pruning_keep_recent\"/" $HOME/.kava/config/app.toml
-sed -i -e "s/^pruning-keep-every *=.*/pruning-keep-every = \"$pruning_keep_every\"/" $HOME/.kava/config/app.toml
-sed -i -e "s/^pruning-interval *=.*/pruning-interval = \"$pruning_interval\"/" $HOME/.kava/config/app.toml
+For the purposes of Axelar, Kava RPC nodes can be kept fully pruned.
+Update the pruning config in `$HOME/.kava/config/app.toml` as below
+```yaml
+pruning="everything"
 ```
 
-## State sync script
+### State sync script
+
+Create a state sync script `statesync.sh` with the following code and replace the RPC var for the appropriate network.
 
 <Tabs tabs={[
 {
@@ -172,15 +139,9 @@ https://kava-testnet.chainode.tech:443
 ]} />
 
 ```bash
-# create state sync script
-nano statesync.sh
-```
-
-Add the content below and change the RPC var for desired network
-```bash
 #!/bin/bash
 
-RPC="https://kava-testnet.chainode.tech:443"
+RPC="RPC"
 
 LATEST_HEIGHT=$(curl -s $RPC/block | jq -r .result.block.header.height); \
 BLOCK_HEIGHT=$((LATEST_HEIGHT - 1000)); \
@@ -192,18 +153,13 @@ s|^(trust_height[[:space:]]+=[[:space:]]+).*$|\1$BLOCK_HEIGHT| ; \
 s|^(trust_hash[[:space:]]+=[[:space:]]+).*$|\1\"$TRUST_HASH\"|" $HOME/.kava/config/config.toml
 ```
 
-Assign the correct access rights
+Run the script with appropriate permissions.
 ```bash
 chmod 700 statesync.sh
-```
-
-Execute the script
-```bash
 ./statesync.sh
 ```
 
-
-## Start Kava Node with systemd
+### Configure systemd
 ```bash
 sudo tee <<EOF >/dev/null /etc/systemd/system/kvd.service
 [Unit]
@@ -213,7 +169,7 @@ After=network-online.target
 [Service]
 User=<your_user>
 ExecStart=/home/<your_user>/go/bin/kava start
-Restart=on-failure
+Restart=always
 RestartSec=3
 LimitNOFILE=16384
 
@@ -226,6 +182,28 @@ sudo systemctl daemon-reload
 sudo systemctl start kvd
 ```
 
-## Kava EVM Endpoint integration with Axelar
+## Configure vald
 
-Once the Kava Node is fully synced you can use the EVM RPC endpoint for the integration with Axelar Network.
+In order for `vald` to connect to your RPC node, it should be exposed in
+vald's `config.toml`.
+
+<Tabs items={['Mainnet', 'Testnet']}>
+  <Tab>
+  ```bash
+  [[axelar_bridge_evm]]
+
+  name = "kava"
+  rpc_addr = "http://IP:PORT"
+  start-with-bridge = true
+  ```
+  </Tab>
+  <Tab>
+  ```bash
+  [[axelar_bridge_evm]]
+
+  name = "kava"
+  rpc_addr = "http://IP:PORT"
+  start-with-bridge = true
+  ```
+  </Tab>
+</Tabs>
