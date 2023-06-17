@@ -49,6 +49,14 @@
       "transfer_fee": 50000.0
     },
     {
+      "id": "wmai-wei",
+      "name": "WMAI - Wrapped MAI",
+      "symbol": "WMAI",
+      "image": "/images/assets/wmai.svg",
+      "decimals": 18,
+      "transfer_fee": 0.1
+    },
+    {
       "id": "dot-planck",
       "name": "DOT - xcDOT",
       "symbol": "DOT",
@@ -71,6 +79,14 @@
       "image": "/images/assets/wsteth.svg",
       "decimals": 18,
       "transfer_fee": 5.7e-05
+    },
+    {
+      "id": "ern-wei",
+      "name": "ERN - Ethos Reserve Note",
+      "symbol": "ERN",
+      "image": "/images/assets/ern.svg",
+      "decimals": 18,
+      "transfer_fee": 0.1
     },
     {
       "id": "uosmo",
@@ -135,6 +151,14 @@
       "image": "/images/assets/mpx.svg",
       "decimals": 18,
       "transfer_fee": 0.71
+    },
+    {
+      "id": "uumee",
+      "name": "UMEE - Umee native token",
+      "symbol": "UMEE",
+      "image": "/images/assets/umee.svg",
+      "decimals": 6,
+      "transfer_fee": 25.0
     },
     {
       "id": "stuatom",
