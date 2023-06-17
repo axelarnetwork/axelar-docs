@@ -31,6 +31,16 @@
       "channel_id": "channel-23"
     },
     {
+      "from": "aura",
+      "to": "axelarnet",
+      "channel_id": "channel-4"
+    },
+    {
+      "from": "axelarnet",
+      "to": "aura",
+      "channel_id": "channel-104"
+    },
+    {
       "from": "carbon",
       "to": "axelarnet",
       "channel_id": "channel-7"
@@ -159,6 +169,16 @@
       "from": "axelarnet",
       "to": "persistence",
       "channel_id": "channel-42"
+    },
+    {
+      "from": "rebus",
+      "to": "axelarnet",
+      "channel_id": "channel-9"
+    },
+    {
+      "from": "axelarnet",
+      "to": "rebus",
+      "channel_id": "channel-73"
     },
     {
       "from": "regen",

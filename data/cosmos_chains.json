@@ -19,6 +19,12 @@
       "image": "/images/chains/assetmantle.svg"
     },
     {
+      "id": "aura",
+      "name": "Aura",
+      "network_id": "aura",
+      "image": "/images/chains/aura.svg"
+    },
+    {
       "id": "axelarnet",
       "name": "Axelar",
       "network_id": "axelarnet",
@@ -101,6 +107,12 @@
       "name": "Persistence",
       "network_id": "persistence",
       "image": "/images/chains/persistence.svg"
+    },
+    {
+      "id": "rebus",
+      "name": "Rebus",
+      "network_id": "rebus",
+      "image": "/images/chains/rebus.svg"
     },
     {
       "id": "regen",

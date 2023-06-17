@@ -145,6 +145,14 @@
       "transfer_fee": 0.0083
     },
     {
+      "id": "stkbnb-wei",
+      "name": "stkBNB - Staked BNB",
+      "symbol": "stkBNB",
+      "image": "/images/assets/stkbnb.svg",
+      "decimals": 18,
+      "transfer_fee": 0.00043
+    },
+    {
       "id": "ustrd",
       "name": "STRD - Stride",
       "symbol": "STRD",
@@ -319,6 +327,22 @@
       "image": "/images/assets/usdc.svg",
       "decimals": 6,
       "transfer_fee": 0.1
+    },
+    {
+      "id": "yieldusd-wei",
+      "name": "YieldUSD - Real Yield USD",
+      "symbol": "YieldUSD",
+      "image": "/images/assets/yieldusd.svg",
+      "decimals": 18,
+      "transfer_fee": 0.1
+    },
+    {
+      "id": "yieldeth-wei",
+      "name": "YieldETH - Real Yield ETH",
+      "symbol": "YieldETH",
+      "image": "/images/assets/yieldeth.svg",
+      "decimals": 18,
+      "transfer_fee": 6.2e-05
     }
   ],
   "testnet": [
