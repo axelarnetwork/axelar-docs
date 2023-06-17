@@ -269,16 +269,6 @@
       "from": "axelarnet",
       "to": "xpla",
       "channel_id": "channel-49"
-    },
-    {
-      "from": "emoney",
-      "to": "axelarnet",
-      "channel_id": "channel-26"
-    },
-    {
-      "from": "axelarnet",
-      "to": "emoney",
-      "channel_id": "channel-6"
     }
   ],
   "testnet": [

@@ -167,12 +167,6 @@
       "name": "XPLA",
       "network_id": "xpla",
       "image": "/images/chains/xpla.svg"
-    },
-    {
-      "id": "emoney",
-      "name": "e-Money",
-      "network_id": "e-money",
-      "image": "/images/chains/emoney.svg"
     }
   ],
   "testnet": [

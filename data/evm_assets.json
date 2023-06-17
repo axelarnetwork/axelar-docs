@@ -406,6 +406,91 @@
       ]
     },
     {
+      "id": "wmai-wei",
+      "name": "WMAI - Wrapped MAI",
+      "symbol": "WMAI",
+      "image": "/images/assets/wmai.svg",
+      "contracts": [
+        {
+          "chain": "arbitrum",
+          "address": "0x88DfaAABaf06f3a41D2606EA98BC8edA109AbeBb",
+          "symbol": "axlWMAI",
+          "decimals": 18,
+          "transfer_fee": 2.0
+        },
+        {
+          "chain": "avalanche",
+          "address": "0xd889657E1570c5bedD3fa846aB7865a86aAa338a",
+          "symbol": "axlWMAI",
+          "decimals": 18,
+          "transfer_fee": 1.5
+        },
+        {
+          "chain": "binance",
+          "address": "0x501e3d716A72E11E1e22eDcf0365556b357DA0c9",
+          "symbol": "axlWMAI",
+          "decimals": 18,
+          "transfer_fee": 1.5
+        },
+        {
+          "chain": "celo",
+          "address": "0x88DfaAABaf06f3a41D2606EA98BC8edA109AbeBb",
+          "symbol": "axlWMAI",
+          "decimals": 18,
+          "transfer_fee": 1.5
+        },
+        {
+          "chain": "ethereum",
+          "address": "0x05770332D4410b6D7f07Fd497E4c00F8F7bFb74A",
+          "symbol": "WMAI",
+          "decimals": 18,
+          "transfer_fee": 20.0
+        },
+        {
+          "chain": "fantom",
+          "address": "0x501e3d716A72E11E1e22eDcf0365556b357DA0c9",
+          "symbol": "axlWMAI",
+          "decimals": 18,
+          "transfer_fee": 1.5
+        },
+        {
+          "chain": "filecoin",
+          "address": "0x88DfaAABaf06f3a41D2606EA98BC8edA109AbeBb",
+          "symbol": "axlWMAI",
+          "decimals": 18,
+          "transfer_fee": 1.5
+        },
+        {
+          "chain": "kava",
+          "address": "0x88DfaAABaf06f3a41D2606EA98BC8edA109AbeBb",
+          "symbol": "axlWMAI",
+          "decimals": 18,
+          "transfer_fee": 1.5
+        },
+        {
+          "chain": "moonbeam",
+          "address": "0xbFE3Acdca835bB60A6B51Ee6B947779A02eCE911",
+          "symbol": "axlWMAI",
+          "decimals": 18,
+          "transfer_fee": 1.5
+        },
+        {
+          "chain": "optimism",
+          "address": "0x88DfaAABaf06f3a41D2606EA98BC8edA109AbeBb",
+          "symbol": "axlWMAI",
+          "decimals": 18,
+          "transfer_fee": 2.0
+        },
+        {
+          "chain": "polygon",
+          "address": "0x08aD99fB3f9f262853B54613249B4064901BD358",
+          "symbol": "axlWMAI",
+          "decimals": 18,
+          "transfer_fee": 1.5
+        }
+      ]
+    },
+    {
       "id": "dot-planck",
       "name": "DOT - xcDOT",
       "symbol": "DOT",
@@ -447,6 +532,63 @@
           "symbol": "wstETH",
           "decimals": 18,
           "transfer_fee": 0.011
+        }
+      ]
+    },
+    {
+      "id": "ern-wei",
+      "name": "ERN - Ethos Reserve Note",
+      "symbol": "ERN",
+      "image": "/images/assets/ern.svg",
+      "contracts": [
+        {
+          "chain": "arbitrum",
+          "address": "0xa334884bF6b0A066d553D19e507315E839409e62",
+          "symbol": "ERN",
+          "decimals": 18,
+          "transfer_fee": 2.0
+        },
+        {
+          "chain": "avalanche",
+          "address": "0x08d58F06DDfA9b99AE651f68232014BE3914C5cd",
+          "symbol": "ERN",
+          "decimals": 18,
+          "transfer_fee": 1.5
+        },
+        {
+          "chain": "binance",
+          "address": "0xce1E3cc1950D2aAEb47dE04DE2dec2Dc86380E0A",
+          "symbol": "ERN",
+          "decimals": 18,
+          "transfer_fee": 1.5
+        },
+        {
+          "chain": "ethereum",
+          "address": "0x91A69021b0BaeF3445E51726458a0CE601471846",
+          "symbol": "ERN",
+          "decimals": 18,
+          "transfer_fee": 20.0
+        },
+        {
+          "chain": "fantom",
+          "address": "0xce1E3cc1950D2aAEb47dE04DE2dec2Dc86380E0A",
+          "symbol": "ERN",
+          "decimals": 18,
+          "transfer_fee": 1.5
+        },
+        {
+          "chain": "optimism",
+          "address": "0xc5b001DC33727F8F26880B184090D3E252470D45",
+          "symbol": "ERN",
+          "decimals": 18,
+          "transfer_fee": 2.0
+        },
+        {
+          "chain": "polygon",
+          "address": "0xC3a9a54c043f348027fffAac0F2F996123A19bF4",
+          "symbol": "ERN",
+          "decimals": 18,
+          "transfer_fee": 1.5
         }
       ]
     },
@@ -581,6 +723,21 @@
           "symbol": "MPX",
           "decimals": 18,
           "transfer_fee": 11.0
+        }
+      ]
+    },
+    {
+      "id": "uumee",
+      "name": "UMEE - Umee native token",
+      "symbol": "UMEE",
+      "image": "/images/assets/umee.svg",
+      "contracts": [
+        {
+          "chain": "ethereum",
+          "address": "0x923e030f951A2401426a3407a9bcc7EB715d9a0b",
+          "symbol": "UMEE",
+          "decimals": 6,
+          "transfer_fee": 5000.0
         }
       ]
     },
