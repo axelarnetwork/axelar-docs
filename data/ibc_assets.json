@@ -49,6 +49,14 @@
       "transfer_fee": 50000.0
     },
     {
+      "id": "wmai-wei",
+      "name": "WMAI - Wrapped MAI",
+      "symbol": "WMAI",
+      "image": "/images/assets/wmai.svg",
+      "decimals": 18,
+      "transfer_fee": 0.1
+    },
+    {
       "id": "dot-planck",
       "name": "DOT - xcDOT",
       "symbol": "DOT",
@@ -71,6 +79,14 @@
       "image": "/images/assets/wsteth.svg",
       "decimals": 18,
       "transfer_fee": 5.7e-05
+    },
+    {
+      "id": "ern-wei",
+      "name": "ERN - Ethos Reserve Note",
+      "symbol": "ERN",
+      "image": "/images/assets/ern.svg",
+      "decimals": 18,
+      "transfer_fee": 0.1
     },
     {
       "id": "uosmo",
@@ -137,12 +153,28 @@
       "transfer_fee": 0.71
     },
     {
+      "id": "uumee",
+      "name": "UMEE - Umee native token",
+      "symbol": "UMEE",
+      "image": "/images/assets/umee.svg",
+      "decimals": 6,
+      "transfer_fee": 25.0
+    },
+    {
       "id": "stuatom",
       "name": "stATOM - Stride Staked Atom",
       "symbol": "stATOM",
       "image": "/images/assets/statom.svg",
       "decimals": 6,
       "transfer_fee": 0.0083
+    },
+    {
+      "id": "stkbnb-wei",
+      "name": "stkBNB - Staked BNB",
+      "symbol": "stkBNB",
+      "image": "/images/assets/stkbnb.svg",
+      "decimals": 18,
+      "transfer_fee": 0.00043
     },
     {
       "id": "ustrd",
@@ -319,6 +351,22 @@
       "image": "/images/assets/usdc.svg",
       "decimals": 6,
       "transfer_fee": 0.1
+    },
+    {
+      "id": "yieldusd-wei",
+      "name": "YieldUSD - Real Yield USD",
+      "symbol": "YieldUSD",
+      "image": "/images/assets/yieldusd.svg",
+      "decimals": 18,
+      "transfer_fee": 0.1
+    },
+    {
+      "id": "yieldeth-wei",
+      "name": "YieldETH - Real Yield ETH",
+      "symbol": "YieldETH",
+      "image": "/images/assets/yieldeth.svg",
+      "decimals": 18,
+      "transfer_fee": 6.2e-05
     }
   ],
   "testnet": [
