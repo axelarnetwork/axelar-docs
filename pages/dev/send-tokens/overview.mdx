@@ -44,7 +44,7 @@ function approve(address spender, uint256 amount) external returns (bool);
 
 Here, `spender` is the Gateway address on the source chain.
 
-Find a list of assets, their names and their addresses: [Mainnet](../reference/mainnet-contract-addresses) | [Testnet](../reference/testnet-contract-addresses).
+Find a list of assets, their names and their addresses: [Mainnet](../reference/mainnet-contract-addresses) | [Testnet](../reference/testnet-contract-addresses). Note that for the same asset denom, the ERC20 symbol could be different on different chains (e.g. `USDC` on Ethereum is linked to `axlUSDC` on Avalanche).
 
 #### 3. Execute sendToken on the Gateway
 
@@ -54,7 +54,7 @@ Call `sendToken` on the Gateway contract of the source chain. Example:
 sendToken(
     "avalanche", // destination chain name
     "0xF16DfB26e1FEc993E085092563ECFAEaDa7eD7fD", // some destination wallet address (should be your own)
-    "USDC", // asset symbol
+    "axlUSDC", // asset symbol, can be differ by chain, see above
     100000000 // amount (in atomic units)
 )
 ```
