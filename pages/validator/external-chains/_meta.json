@@ -12,5 +12,6 @@
   "linea": "Linea",
   "moonbeam": "Moonbeam",
   "optimism": "Optimism",
-  "polygon": "Polygon"
+  "polygon": "Polygon",
+  "polygon-zkevm": "Polygon ZkEVM"
 }
