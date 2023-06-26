@@ -211,7 +211,7 @@ use your RPC node only when it has caught up with the latest block height.
 
 ## Configure vald
 
-In order for `vald` to connect to your Optimism node, your `rpc_addr` should be exposed in
+In order for `vald` to connect to your Zk EVM node, your `rpc_addr` should be exposed in
 vald's `config.toml`
 
 <NextraTabs items={['Mainnet', 'Testnet']}>
@@ -234,12 +234,7 @@ vald's `config.toml`
 </NextraTabs>
 
 ### Common Node Operations
-```bash
-# run
-sudo docker-compose --env-file $ZKEVM_CONFIG_DIR/.env -f $ZKEVM_DIR/$ZKEVM_NET/docker-compose.yml down
-```
 
-First `cd` into the directory
 
 To start
 ```bash
