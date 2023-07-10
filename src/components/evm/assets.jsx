@@ -157,6 +157,7 @@ export default ({ environment = "mainnet" }) => {
                               {address && (
                                 <Copy
                                   value={address}
+                                  hide={true}
                                   size={20}
                                 />
                               )}

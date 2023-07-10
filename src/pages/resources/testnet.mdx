@@ -16,7 +16,7 @@ import UpgradePathTestnet from '/src/upgrade-path-testnet.md'
 ## EVM contract addresses
 
 <div className="space-y-1 mt-4">
-  <EVMChains environment="testnet" />
+  <EVMChains client:only environment="testnet" />
 
 `Constant Address Deployer`: `0x98b2920d53612483f91f12ed7754e51b4a77919e`
 
@@ -24,12 +24,12 @@ import UpgradePathTestnet from '/src/upgrade-path-testnet.md'
 
 <div className="space-y-1 mt-4">
   ### Assets
-  <EVMAssets environment="testnet" />
+  <EVMAssets client:only environment="testnet" />
 </div>
 
 <div className="space-y-1 mt-4">
   ## IBC Channels
-  <IBCChannels environment="testnet" />
+  <IBCChannels client:only environment="testnet" />
 </div>
 
 ## Cross-chain relayer gas fee
@@ -46,7 +46,7 @@ The relayer gas fee amount depends only on:
 </Callout>
 
 <div className="space-y-1 mt-4">
-  <TransferFeeCalculator environment="testnet" />
+  <TransferFeeCalculator client:only environment="testnet" />
 </div>
 
 The current gas relayer fee is also available via node query:

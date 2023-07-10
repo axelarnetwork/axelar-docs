@@ -4,6 +4,7 @@ import "../styles/main.scss";
 const { title, description, image, hidden } = Astro.props.frontmatter || Astro.props;
 
 const shownTitle = title ? title + ` | Axelar Documentation` : 'Axelar Documentation';
+const shownDescription = description || 'The Axelar Documentation tells you how to get started and be successful using Axelar. Axelar allows developers to build interchain dApps that connect to any blockchain. ';
 ---
 <!DOCTYPE html>
 <html lang="en">
@@ -15,11 +16,12 @@ const shownTitle = title ? title + ` | Axelar Documentation` : 'Axelar Documenta
     <title>{shownTitle}</title>
     <meta content="shownTitle" property="og:title">
     <meta content="shownTitle" property="twitter:title">
-    {description && 
-      <meta content="{{description}}" name="description">
-      <meta content="{{description}}" property="og:description">
-      <meta content="{{description}}" property="twitter:description">
+    {shownDescription && 
+      <meta content="{{shownDescription}}" name="description">
+      <meta content="{{shownDescription}}" property="og:description">
+      <meta content="{{shownDescription}}" property="twitter:description">
     }
+    
     
 
     {image &&

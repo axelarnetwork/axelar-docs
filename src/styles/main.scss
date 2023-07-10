@@ -246,6 +246,9 @@ tab-item.bleed {
   border: 0px;
   padding: 16px;
 }
+.resources td>.flex {
+  flex-direction: column;
+}
 
 .toast {
   position: fixed;
