@@ -2,8 +2,15 @@
 const section = Astro.url.pathname?.match(/\/([^\/]*)\//)?.[1];
 ---
 
+<div class="mobile nav-header">
+    <a href="/dev/intro">Developers</a>
+    <a href="/node/config-node">Node Operators</a>
+    <a href="/validator/setup/overview">Validators</a>
+    <hr>
+</div>
+
 {
-    section == "dev"  && (
+    section == "dev" && (
         <div>
             <div class="nav-header">Developers</div>
             <a href="/dev/intro">Introduction</a>
@@ -56,24 +63,44 @@ const section = Astro.url.pathname?.match(/\/([^\/]*)\//)?.[1];
                 </div>
                 <a href="/dev/general-message-passing/recovery">Recovery</a>
                 <a href="/dev/general-message-passing/monitoring">Monitoring</a>
-                <a href="/dev/general-message-passing/solidity-utilities">Solidity Utilities</a>
-                <a href="/dev/general-message-passing/axelar-sandbox/intro">Sandbox</a>
+                <a href="/dev/general-message-passing/solidity-utilities">
+                    Solidity Utilities
+                </a>
+                <a href="/dev/general-message-passing/axelar-sandbox/intro">
+                    Sandbox
+                </a>
                 <a href="/dev/general-message-passing/cosmos-gmp">Cosmos GMP</a>
-                <a href="/dev/general-message-passing/example-usdc-cctp">USDC CCTP</a>
+                <a href="/dev/general-message-passing/example-usdc-cctp">
+                    USDC CCTP
+                </a>
             </div>
             <span>AxelarJS SDK</span>
             <div class="group">
                 <a href="/dev/axelarjs-sdk/intro">Introduction</a>
-                <a href="/dev/axelarjs-sdk/token-transfer-dep-addr">Token Transfer via Deposit Address</a>
-                <a href="/dev/axelarjs-sdk/tx-status-query-recovery">GMP transaction status and recovery</a>
-                <a href="/dev/axelarjs-sdk/axelar-query-api">Axelar Query API</a>
+                <a href="/dev/axelarjs-sdk/token-transfer-dep-addr">
+                    Token Transfer via Deposit Address
+                </a>
+                <a href="/dev/axelarjs-sdk/tx-status-query-recovery">
+                    GMP transaction status and recovery
+                </a>
+                <a href="/dev/axelarjs-sdk/axelar-query-api">
+                    Axelar Query API
+                </a>
             </div>
             <span>Reference</span>
             <div class="group">
-                <a href="/dev/reference/mainnet-chain-names">Mainnet Chain Names</a>
-                <a href="/dev/reference/mainnet-contract-addresses">Mainnet Contract Addresses</a>
-                <a href="/dev/reference/testnet-chain-names">Testnet Chain Names</a>
-                <a href="/dev/reference/testnet-contract-addresses">Testnet Contract Addresses</a>
+                <a href="/dev/reference/mainnet-chain-names">
+                    Mainnet Chain Names
+                </a>
+                <a href="/dev/reference/mainnet-contract-addresses">
+                    Mainnet Contract Addresses
+                </a>
+                <a href="/dev/reference/testnet-chain-names">
+                    Testnet Chain Names
+                </a>
+                <a href="/dev/reference/testnet-contract-addresses">
+                    Testnet Contract Addresses
+                </a>
                 <a href="/dev/reference/pricing">Transaction Pricing</a>
             </div>
         </div>
@@ -106,10 +133,16 @@ const section = Astro.url.pathname?.match(/\/([^\/]*)\//)?.[1];
             <span>Setup</span>
             <div class="group">
                 <a href="/validator/setup/overview">Overview</a>
-                <a href="/validator/setup/config">Configure companion processes</a>
+                <a href="/validator/setup/config">
+                    Configure companion processes
+                </a>
                 <a href="/validator/setup/backup">Create and backup accounts</a>
-                <a href="/validator/setup/vald-tofnd">Launch companion processes</a>
-                <a href="/validator/setup/register-broadcaster">Register broadcaster proxy</a>
+                <a href="/validator/setup/vald-tofnd">
+                    Launch companion processes
+                </a>
+                <a href="/validator/setup/register-broadcaster">
+                    Register broadcaster proxy
+                </a>
                 <a href="/validator/setup/stake-axl">Stake AXL tokens</a>
                 <a href="/validator/setup/health-check">Health check</a>
                 <a href="/validator/setup/manual">Manual setup</a>
@@ -135,7 +168,9 @@ const section = Astro.url.pathname?.match(/\/([^\/]*)\//)?.[1];
             </div>
             <span>Operations</span>
             <div class="group">
-                <a href="/validators/operations/mnemonic-rotation">Rotating mnemonics</a>
+                <a href="/validators/operations/mnemonic-rotation">
+                    Rotating mnemonics
+                </a>
                 <a href="/validators/operations/monitoring">Monitoring</a>
             </div>
             <span>Troubleshoot</span>
@@ -156,20 +191,21 @@ const section = Astro.url.pathname?.match(/\/([^\/]*)\//)?.[1];
     )
 }
 {
-    (!section) && (
+    !section && (
         <div>
             <div class="nav-header">Docs</div>
         </div>
     )
 }
 <div>
-    { section != "resources" && (<span>Resources</span>)
-    }
+    {section != "resources" && <span>Resources</span>}
     <div class="group">
         <a href="/resources/">Resources</a>
         <a href="/resources/mainnet">Mainnet</a>
         <a href="/resources/testnet">Testnet</a>
-        <a href="/resources/governance/community-pool-proposals">Community Pool Proposals</a>
+        <a href="/resources/governance/community-pool-proposals"
+            >Community Pool Proposals</a
+        >
         <a href="/resources/satellite">Satellite</a>
         <a href="/resources/metamask">Metamask</a>
         <a href="/resources/keplr">Add Network to Keplr Wallet</a>
@@ -181,7 +217,9 @@ const section = Astro.url.pathname?.match(/\/([^\/]*)\//)?.[1];
     <div class="group">
         <a href="/learn/network/flow">Crosschain Message Flow</a>
         <a href="/learn/axlusdc">axlUSDC</a>
-        <a href="/learn/validators">Registering external chains for validators</a>
+        <a href="/learn/validators"
+            >Registering external chains for validators</a
+        >
         <a href="/learn/security">Security Overview</a>
 
         <span>CLI</span>
@@ -192,7 +230,5 @@ const section = Astro.url.pathname?.match(/\/([^\/]*)\//)?.[1];
             <a href="/learn/cli/axl-to-evm">Send AXL to an EVM chain</a>
             <a href="/learn/cli/axl-from-evm">Redeem AXL from an EVM chain</a>
         </div>
-
-
-
+    </div>
 </div>
