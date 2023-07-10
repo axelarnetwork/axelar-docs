@@ -1,3 +1,3 @@
 document.getElementById("menu").addEventListener("click", function () {
-  document.querySelector("ul.nav").classList.toggle("show");
+  document.querySelector(".sideNav").classList.toggle("show");
 });

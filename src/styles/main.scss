@@ -64,6 +64,9 @@ h3 {
 p {
   margin: 1rem 0;
 }
+img {
+  max-width:100%;
+}
 nav {
   height: 64px;
   display: flex;
@@ -332,10 +335,10 @@ tab-item.bleed {
     justify-content: right;
     display: flex;
   }
-  ul.nav {
+  .sideNav {
     display: none;
   }
-  ul.nav.show {
+  .sideNav.show {
     position: absolute;
     display: block;
     background-color: #CCC;
