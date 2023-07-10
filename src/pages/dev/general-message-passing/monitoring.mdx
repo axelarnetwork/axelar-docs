@@ -18,7 +18,7 @@ Each GMP call comprises five statuses, as described below.
 - **CONTRACT CALL** provides the contract call (`callContract` or `callContractWithToken`) information, including the transaction hash, the block height on the source chain, the gateway address, etc.
 - **GAS PAID** displays the information of gas prepaid to Axelar Gas Receiver contract.
 - **CALL APPROVED** displays the information of the call approval. This section will be updated once the GMP call is approved by the Axelar network.
-- **EXECUTED** informs the executed result whether it is successful or not. If you see an error message in this section, we suggest following this [guide](/dev/debug/error-debugging) to find the root cause and recover the transfer.
+- **EXECUTED** informs the executed result whether it is successful or not. If you see an error message in this section, we suggest following this [guide](/dev/general-message-passing/debug/error-debugging) to find the root cause and recover the transfer.
 - **GAS REFUNDED** provides the refund information (if any), including the amount of gas paid, the amount of gas used, the refund amount, etc.
 
 import { Callout } from "/src/components/callout"

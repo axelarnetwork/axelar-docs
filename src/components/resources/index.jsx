@@ -60,14 +60,6 @@ export default ({
                                     >
                                       <a
                                         href={value}
-                                        target={is_external ?
-                                          '_blank' :
-                                          undefined
-                                        }
-                                        rel={is_external ?
-                                          'noopener noreferrer' :
-                                          undefined
-                                        }
                                         className="bg-slate-100 dark:bg-slate-800 rounded-xl text-sm font-medium py-1 px-2.5"
                                       >
                                         {
