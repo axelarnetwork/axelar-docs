@@ -103,6 +103,50 @@ const section = Astro.url.pathname?.match(/\/([^\/]*)\//)?.[1];
     section == "validator" && (
         <div>
             <div class="nav-header">Validators</div>
+            <span>Setup</span>
+            <div class="group">
+                <a href="/validator/setup/overview">Overview</a>
+                <a href="/validator/setup/config">Configure companion processes</a>
+                <a href="/validator/setup/backup">Create and backup accounts</a>
+                <a href="/validator/setup/vald-tofnd">Launch companion processes</a>
+                <a href="/validator/setup/register-broadcaster">Register broadcaster proxy</a>
+                <a href="/validator/setup/stake-axl">Stake AXL tokens</a>
+                <a href="/validator/setup/health-check">Health check</a>
+                <a href="/validator/setup/manual">Manual setup</a>
+            </div>
+            <span>Support External Chains</span>
+            <div class="group">
+                <a href="/validator/external-chains/overview">Overview</a>
+                <a href="/validator/external-chains/arbitrum">Arbitrum</a>
+                <a href="/validator/external-chains/avalanche">Avalanche</a>
+                <a href="/validator/external-chains/base">Base</a>
+                <a href="/validator/external-chains/binance">Binance</a>
+                <a href="/validator/external-chains/celo">Celo</a>
+                <a href="/validator/external-chains/ethereum">Ethereum</a>
+                <a href="/validator/external-chains/fantom">Fantom</a>
+                <a href="/validator/external-chains/filecoin">Filecoin</a>
+                <a href="/validator/external-chains/kava">Kava</a>
+                <a href="/validator/external-chains/linea">Linea</a>
+                <a href="/validator/external-chains/moonbeam">Moonbeam</a>
+                <a href="/validator/external-chains/optimism">Optimism</a>
+                <a href="/validator/external-chains/polygon">Polygon</a>
+                <a href="/validator/external-chains/aurora">Aurora</a>
+                <a href="/validator/external-chains/hero">Hero</a>
+            </div>
+            <span>Operations</span>
+            <div class="group">
+                <a href="/validators/operations/mnemonic-rotation">Rotating mnemonics</a>
+                <a href="/validators/operations/monitoring">Monitoring</a>
+            </div>
+            <span>Troubleshoot</span>
+            <div class="group">
+                <a href=""></a>
+                <a href=""></a>
+                <a href=""></a>
+                <a href=""></a>
+                <a href=""></a>
+                <a href=""></a>
+            </div>
         </div>
     )
 }
