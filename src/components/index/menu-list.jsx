@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { RiCodeFill, RiRadarFill, RiSettings4Fill, RiServerFill } from "react-icons/ri";
 
 const items = [
   {
@@ -77,25 +76,12 @@ export default () => {
         );
 
         return (
-          external ?
             <a
               key={i}
               href={url}
-              target="_blank"
-              rel="noopenner noreferrer"
-              className="no-underline text-black dark:text-white"
             >
-              {element}
-            </a>
-            :
-            <Link
-              key={i}
-              href={url}
-            >
-              <a className="no-underline text-black dark:text-white">
                 {element}
-              </a>
-            </Link>
+            </a>
         );
       })}
     </div>
