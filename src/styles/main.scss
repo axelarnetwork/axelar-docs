@@ -309,3 +309,41 @@ tab-item.bleed {
 .items-center {
   align-items: center;
 }
+
+.desktop-nav {
+  display:flex;align-items:center;flex-grow:1;
+
+}
+
+
+/* Mobile styles */
+@media (max-width: 650px) {
+  #page {
+    padding: 8px;
+  }
+  .mobile {
+    display: block;
+  }
+  .nomobile {
+    display: none;
+  }
+  #menu {
+    flex-grow: 1;
+    justify-content: right;
+    display: flex;
+  }
+  ul.nav {
+    display: none;
+  }
+  ul.nav.show {
+    position: absolute;
+    display: block;
+    background-color: #CCC;
+    top: 64px;
+    left: 8px;
+    width: calc(100% - 16px);
+    padding: 32px;
+    border: 1px solid rgb(229, 231, 235);
+    border-radius: 6px;
+  }
+}

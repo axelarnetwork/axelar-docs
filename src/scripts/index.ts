@@ -4,6 +4,7 @@ import { addCopy } from "./copy";
 import "./search";
 import "./prism.js";
 import "./active";
+import "./menu";
 import {showToast } from  "./toast";
 
 window['showToast'] = showToast;
