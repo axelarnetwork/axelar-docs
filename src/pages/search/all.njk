@@ -1,0 +1,21 @@
+---
+permalink: search/all.json
+eleventyExcludeFromCollections: true
+layout: none
+---
+
+{%- set posts = collections.all -%}
+[
+{%- for post in posts -%}
+  {
+    "title": "{{ post.data.title | default(" ") }}",
+    "date": "{{ page.date }}",
+    "url": "{{ post.url }}",
+    "content": {{ post.templateContent | algExcerpt | jsonify }},
+    "_tags": [{%- for tag in post.data.tags -%}"{{ tag }}"{%- if not loop.last -%},{% endif %}{% endfor %}]
+  }{% if not loop.last %},{% endif %}
+{% endfor %}
+]
+{# 
+ZZZ:
+// "content": {{ post.templateContent }}, #}

@@ -1,0 +1,102 @@
+---
+import Section from "../layouts/Section.astro";
+const title = "What is Axelar?";
+
+const cards = [
+  {
+    title: "Developer",
+    description:
+      "Use Solidity or JavaScript to send tokens and interact with smart contracts across chains.",
+    url: "/dev/intro",
+  },
+  {
+    title: "Satellite user",
+    description:
+      "Satellite is a web app built on top of the Axelar network. Use it to transfer assets from one chain to another.",
+    url: "/resources/satellite",
+  },
+  {
+    title: "Node operator",
+    description: "Learn how to run a node on the Axelar network",
+    url: "/node/join",
+  },
+  {
+    title: "Validator",
+    description: "Axelar validators facilitate cross-chain connections",
+    url: "/validator/setup/overview",
+  },
+];
+---
+
+<Section title={title}>
+  Axelar delivers secure cross-chain communication for Web3, enabling you to
+  build Interchain dApps that grow beyond a single chain. <em>Secure</em> means Axelar
+  is built on proof-of-stake, the battle-tested approach used by Ethereum, Polygon,
+  Cosmos, and more. <em>Cross-chain communication</em> means you can build a complete
+  experience for your users that lets them interact with any asset, any application,
+  on any chain with one click.
+
+  <style>
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      grid-template-rows: repeat(2, 1fr);
+      grid-column-gap: 16px;
+      grid-row-gap: 16px;
+      grid-auto-flow: row;
+      margin-top: 32px;
+    }
+    .card {
+      border: 1px solid #ccc;
+      margin-right: 16px;
+      display: flex;
+      flex-direction: column;
+      background-color: #fff;
+    }
+    .card:hover {
+      box-shadow: 0 0 10px #ddd;
+    }
+    .card div:nth-child(1) {
+      font-weight: bold;
+    }
+    .card div:nth-child(2) {
+      flex-grow: 1;
+    }
+    .card {
+      padding: 16px;
+    }
+  </style>
+
+  <div class="card-grid">
+    {
+      cards.map((card) => (
+        <div class="card">
+          <div>
+            {card.icon} {card.title}
+          </div>
+          <div>{card.description}</div>
+          <a href={card.url}>
+            Get Started{" "}
+            <svg
+              stroke="currentColor"
+              fill="currentColor"
+              stroke-width="0"
+              viewBox="0 0 20 20"
+              class="mt-0.5"
+              height="16"
+              width="16"
+              xmlns="http://www.w3.org/2000/svg"
+               style="vertical-align:middle;"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z"
+                clip-rule="evenodd"
+              />
+            </svg>
+          </a>
+        </div>
+      ))
+    }
+  </div>
+</Section>

@@ -1,0 +1,195 @@
+# Old instructions: Quick sync (recommended)
+
+import { Callout } from "/src/components/callout"
+
+Start your Axelar node and download the blockchain.
+
+<Callout emoji="💡">
+  Tip: These instructions synchronize your Axelar node quickly by downloading a recent snapshot of the blockchain. If instead you prefer to synchronize your Axelar node using the Axelar peer-to-peer network then see [Genesis sync](./join-genesis)
+</Callout>
+
+## Prerequisites
+
+- **Operating system:** MacOS or Ubuntu (tested on 18.04)
+- **Hardware:** 4 cores, 8-16GB RAM, 512 GB drive, arm64 or amd64. Recommended 6-8 cores, 16-32 GB RAM, 1 TB+ drive.
+- **Software:**
+  - Install [`jq`](https://stedolan.github.io/jq/download/).
+  - Install `lz4`: [MacOS](https://formulae.brew.sh/formula/lz4) | [Ubuntu](https://snapcraft.io/install/lz4/ubuntu)
+  - Increase the maximum number of open files on your system. Example: `ulimit -n 16384`. You may wish to add this command to your shell profile so that you don't need to execute it next time you restart your machine.
+- You have configured your environment for `axelard` CLI commands as per [Configure your environment](/node/config-node).
+
+## Choose a keyring password
+
+Your Axelar keyring is encrypted with a password you choose. Learn more about keyring passwords at [Keyring backend](/node/keyring.md).
+
+In what follows you will execute a shell script `node.sh` to join the Axelar network. Your keyring password is supplied to `node.sh` via a `KEYRING_PASSWORD` environment variable. The script `node.sh` enforces an 8-character minimum for your keyring password.
+
+## Join the Axelar network
+
+Clone the [`axelerate-community`](https://github.com/axelarnetwork/axelarate-community) repo:
+
+```bash
+git clone https://github.com/axelarnetwork/axelarate-community.git
+cd axelarate-community
+```
+
+<tabs>
+<tab-item title="Mainnet">
+ <div>
+Launch a new Axelar mainnet node with version `0.10.7` of axelar-core:
+<pre><code>./scripts/node.sh -a v0.10.7 -n mainnet</code></pre>
+Your Axelar node will initialize your data folder `~/.axelar`
+
+</div>
+
+</tab-item>
+<tab-item title="Testnet">
+ <div>
+Launch a new Axelar testnet node with version `0.13.6` of axelar-core:
+<pre><code>./scripts/node.sh -a v0.13.6 -n testnet</code></pre>
+Your Axelar node will initialize your data folder `~/.axelar_testnet`
+</div>
+
+</tab-item>
+</tabs>
+
+To recover your secret keys from mnemonics, use `-t path_to_tendermint_key -m path_to_validator_mnemonic -r` (`-r` is to reset the chain). These flags work only on a completely fresh state.
+
+Then your Axelar node will begin downloading blocks in the blockchain one-by-one.
+
+## Backup your secret keys
+
+BACKUP and DELETE the `validator` account secret mnemonic:
+
+<tabs>
+<tab-item title="Mainnet">
+ <pre><code>~/.axelar/validator.txt</code></pre>
+
+</tab-item>
+<tab-item title="Testnet">
+ <pre><code>~/.axelar_testnet/validator.txt</code></pre>
+
+</tab-item>
+</tabs>
+
+BACKUP but do NOT DELETE the Tendermint consensus secret key (this is needed on node restarts):
+
+<tabs>
+<tab-item title="Mainnet">
+ <pre><code>~/.axelar/.core/config/priv_validator_key.json</code></pre>
+
+</tab-item>
+<tab-item title="Testnet">
+ <pre><code>~/.axelar_testnet/.core/config/priv_validator_key.json</code></pre>
+
+</tab-item>
+</tabs>
+
+## View logs
+
+View the streaming logs for your Axelar node:
+
+In a new terminal window:
+
+<tabs>
+<tab-item title="Mainnet">
+ <pre><code>tail -f ~/.axelar/logs/axelard.log</code></pre>
+
+</tab-item>
+<tab-item title="Testnet">
+ <pre><code>tail -f ~/.axelar_testnet/logs/axelard.log</code></pre>
+
+</tab-item>
+</tabs>
+
+You should see log messages for each block in the blockchain that your node downloads.
+
+## Stop your node, delete your blockchain data
+
+You will not download the entire blockchain in this way. Instead you will stop your node and swap in a recent snapshot of the entire blockchain.
+
+Stop your currently running Axelar node:
+
+```bash
+kill -9 $(pgrep -f "axelard start")
+```
+
+Delete your `data` directory:
+
+<tabs>
+<tab-item title="Mainnet">
+ <pre><code>rm -r ~/.axelar/.core/data</code></pre>
+
+</tab-item>
+<tab-item title="Testnet">
+ <pre><code>rm -r ~/.axelar_testnet/.core/data</code></pre>
+
+</tab-item>
+</tabs>
+
+# Download the latest Axelar blockchain snapshot
+
+Download the latest Axelar blockchain snapshot for your chosen network (testnet or mainnet) from a provider:
+
+- [quicksync.io](https://quicksync.io/networks/axelar.html)
+- [staketab.com](https://cosmos-snap.staketab.com/axelar/) | [instructions](https://github.com/staketab/nginx-cosmos-snap/blob/main/docs/axelar.md)
+
+The following instructions assume you downloaded the `default` snapshot from `quicksync.io`.
+
+Let `{SNAPSHOT_FILE}` denote the file name of the snapshot you downloaded. Example file names:
+
+- **Testnet:** `axelartestnet-lisbon-2-default.20220207.2240.tar.lz4`
+- **Mainnet:** `axelar-dojo-1-default.20220207.2210.tar.lz4`
+
+Decompress the downloaded snapshot into your `data` directory:
+
+<tabs>
+<tab-item title="Mainnet">
+ <pre><code>lz4 -dc --no-sparse \{SNAPSHOT_FILE
+ | tar xfC - ~/.axelar/.core</code></pre>
+</tab-item>
+<tab-item title="Testnet">
+ <pre><code>lz4 -dc --no-sparse \{SNAPSHOT_FILE
+ | tar xfC - ~/.axelar_testnet/.core</code></pre>
+</tab-item>
+</tabs>
+
+## Resume your node
+
+Resume your Axelar node with the latest version of axelar-core:
+
+<tabs>
+<tab-item title="Mainnet">
+ <pre><code>./scripts/node.sh -n mainnet</code></pre>
+
+</tab-item>
+<tab-item title="Testnet">
+ <pre><code>./scripts/node.sh -n testnet</code></pre>
+
+</tab-item>
+</tabs>
+
+Your Axelar node will launch and resume downloading the blockchain. You should see log messages for new blocks.
+
+## Test whether your blockchain is downloaded
+
+Eventually your Axelar node will download the entire Axelar blockchain and exit `catching_up` mode. At that time your logs will show a new block added to the blockchain every 5 seconds.
+
+You can test whether your Axelar node has exited `catching_up` mode:
+
+```bash
+curl localhost:26657/status | jq '.result.sync_info'
+```
+
+Look for the field `catching_up`:
+
+- `true`: you are still downloading the blockchain.
+- `false`: you have finished downloading the blockchain.
+
+## Next steps
+
+Congratulations! You joined the Axelar network and downloaded the blockchain.
+
+Learn what you can do with Axelar:
+
+- [Basic node management](./basic)
