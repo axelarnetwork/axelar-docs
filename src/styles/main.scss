@@ -108,11 +108,14 @@ main {
 }
 #search {
   flex-grow: 1;
-  height: 32px;
-  border-radius: 8px;
-  border: 0px solid #fff;
-  background-color: #f2f2f2;
+}
+#search input {
   padding: 8px;
+  height: 32px;
+  background-color: #f2f2f2;
+  border: 0px solid #fff;
+  border-radius: 8px;
+  width:80%;
 }
 ol li,
 ul li {

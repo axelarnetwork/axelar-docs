@@ -11,7 +11,7 @@ const search = instantsearch({
   indexName: "documentation",
   searchClient,
   insights: true,
-  searchFunction: require3,
+  onStateChange: stateChange,
 });
 
 search.addWidgets([
@@ -41,18 +41,15 @@ search.addWidgets([
 
 search.start();
 
-function require3(helper) {
-  if (helper.state.query) {
-    const search_string = helper.state.query;
+function stateChange(context) {
+  const query = context.uiState.documentation.query || "";
+  const search_string = query;
 
-    if (search_string.length < 3) {
-      document.querySelector("#search-results").classList.remove("show");
+  if (search_string.length < 3) {
+    document.querySelector("#search-results").classList.remove("show");
 
-      return false;
-    } else {
-      console.log("had more than 3 chars, let us search!");
-      document.querySelector("#search-results").classList.add("show");
-    }
-    helper.search();
+    return false;
+  } else {
+    document.querySelector("#search-results").classList.add("show");
   }
 }
