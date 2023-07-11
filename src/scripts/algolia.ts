@@ -1,3 +1,6 @@
+// DEPRECATED 2023-07
+
+
 import fs from "fs";
 import path from "path";
 import matter from "gray-matter";
