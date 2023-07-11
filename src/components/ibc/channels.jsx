@@ -30,7 +30,7 @@ export default ({ environment = "mainnet" }) => {
     });
 
   return (
-    <div className="grid grid-flow-row grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+    <div className="ibc-channels grid grid-flow-row grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
       {pairs.map((p, i) => {
         const {
           chain_data,
