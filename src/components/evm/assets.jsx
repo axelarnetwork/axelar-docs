@@ -30,7 +30,7 @@ export default ({ environment = "mainnet" }) => {
   }).filter(a => !chainData || equals_ignore_case(a.chain, chainData.id)) || []);
 
   return (
-    <div className="space-y-3">
+    <div className="asset-list">
       <div className="flex flex-wrap items-center justify-start space-x-3">
         <Dropdown
           environment={environment}
@@ -90,7 +90,7 @@ export default ({ environment = "mainnet" }) => {
                 className="border-none border-b"
               >
                 {COLUMNS.map((c, j) => (
-                  <th
+                  <td
                     key={j}
                     scope="col"
                     className={`${i % 2 === 0 ? "bg-transparent" : "bg-gray-50 dark:bg-black"} ${i === assets.length - 1 ? j === 0 ? "rounded-bl-lg" : j === COLUMNS.length - 1 ? "rounded-br-lg" : "" : ""} border-none whitespace-nowrap py-3 px-4 ${c.className || ""}`}
@@ -171,7 +171,7 @@ export default ({ environment = "mainnet" }) => {
                               :
                               null
                     }
-                  </th>
+                  </td>
                 ))}
               </tr>
             );

@@ -180,8 +180,6 @@ tabs ul {
   margin-bottom: 4px;
   margin-left: -16px;
 }
-tabs li.active {
-}
 tabs tab-item {
   border: 1px solid grey;
   padding: 16px;
@@ -233,6 +231,26 @@ tab-item.bleed {
   padding: 0px;
 }
 
+table {
+  border-collapse: collapse;
+}
+table td,table th {
+  border: 1px solid rgb(209, 213, 219);
+  padding:16px;
+  line-height:24px;
+}
+table th {
+  background-color: rgb(237, 237, 237);
+  font-weight: bold;
+}
+
+table tr:nth-child(3n+2) {
+  background-color: rgb(243, 244, 246);
+}
+astro-island button {
+  border: none;
+}
+
 .resources {
   width: 100%;
   border-collapse: collapse;
@@ -240,6 +258,9 @@ tab-item.bleed {
 
 .resources tr:nth-child(odd) {
   background-color: #f2f2f2;
+}
+.resources tr:nth-child(even) {
+  background-color: white;
 }
 // remove table cell borders from td
 .resources td {
@@ -338,6 +359,11 @@ tab-item.bleed {
 }
 .ais-SearchBox-input {
   width: calc(100% - 16px);
+}
+.asset-list button {
+  border: 1px solid grey;
+  height:32px;
+  border-radius:3px;
 }
 
 .mobile {
