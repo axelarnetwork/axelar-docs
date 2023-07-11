@@ -10,7 +10,11 @@ const searchClient = algoliasearch(
 const search = instantsearch({
   indexName: "documentation",
   searchClient,
-  insights: true,
+  insights: {
+    insightsInitParams: {
+      useCookie: true,
+    },
+  },
   onStateChange: stateChange,
 });
 
