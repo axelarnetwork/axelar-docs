@@ -41,12 +41,12 @@
       "transfer_fee": 4.2e-06
     },
     {
-      "id": "pepe-wei",
-      "name": "PEPE - Pepe",
-      "symbol": "PEPE",
-      "image": "/images/assets/pepe.svg",
+      "id": "weth-wei",
+      "name": "WETH - Wrapped Ether",
+      "symbol": "WETH",
+      "image": "/images/assets/weth.svg",
       "decimals": 18,
-      "transfer_fee": 50000.0
+      "transfer_fee": 6.2e-05
     },
     {
       "id": "wmai-wei",
@@ -185,14 +185,6 @@
       "transfer_fee": 0.2
     },
     {
-      "id": "weth-wei",
-      "name": "WETH - Wrapped Ether",
-      "symbol": "WETH",
-      "image": "/images/assets/weth.svg",
-      "decimals": 18,
-      "transfer_fee": 6.2e-05
-    },
-    {
       "id": "wmatic-wei",
       "name": "WMATIC - Wrapped Matic",
       "symbol": "WMATIC",
@@ -247,6 +239,14 @@
       "image": "/images/assets/somm.svg",
       "decimals": 6,
       "transfer_fee": 0.67
+    },
+    {
+      "id": "pepe-wei",
+      "name": "PEPE - Pepe",
+      "symbol": "PEPE",
+      "image": "/images/assets/pepe.svg",
+      "decimals": 18,
+      "transfer_fee": 50000.0
     },
     {
       "id": "uluna",
