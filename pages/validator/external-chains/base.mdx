@@ -31,33 +31,26 @@ snap install docker
 git clone https://github.com/base-org/node
 ```
 
-2. In `docker-compose.yml`, set `OP_NODE_L1_ETH_RPC` to your own Ethereum L1 RPC node. Using your own Ethereum node is required to guarantee decentralization and security for validation.
+2. In `.env.*`, set `OP_NODE_L1_ETH_RPC` to your own Ethereum L1 RPC node. Using your own Ethereum node is required to guarantee decentralization and security for validation.
 
-3. When pointing to your own Ethereum RPC node, you can enable `OP_NODE_L1_TRUST_RPC=true` in the config for fast sync and allow Erigon support.
+3. In `docker-compose.yml`, uncomment the right `.env.*` depending on whether you're syncing mainnet or goerli testnet.
 
-4. Run:
+4. When pointing to your own Ethereum RPC node, you can enable `OP_NODE_L1_TRUST_RPC=true` in the config for fast sync and allow Erigon support.
+
+5. Run:
 
 ```bash
 docker compose up --build
 ```
 
-5. You should now be able to `curl` your Base node:
+6. You should now be able to `curl` your Base node:
 
 ```bash
 curl -d '{"id":0,"jsonrpc":"2.0","method":"eth_getBlockByNumber","params":["latest",false]}' \
   -H "Content-Type: application/json" http://localhost:8545
 ```
 
-Sync speed depends on your L1 node, as the majority of the chain is derived from data submitted to the L1. You can check your syncing status using the `optimism_syncStatus` RPC on the `op-node` container. Example:
-
-```bash
-echo Latest synced block behind by: \
-$((($( date +%s )-\
-$( curl -d '{"id":0,"jsonrpc":"2.0","method":"optimism_syncStatus"}' -H "Content-Type: application/json" http://localhost:7545 |
-   jq -r .result.unsafe_l2.timestamp))/60)) minutes
-```
-
-You can check the latest block against the [explorer](https://basescan.org/).
+You can check the latest block against the [explorer](https://basescan.org/) to determine sync status.
 
 Since Base uses the Optimism stack, you can review the [Optimism Instructions](/validator/external-chains/optimism) for more details on expected log output and helpful rpc queries.
 
