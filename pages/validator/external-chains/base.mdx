@@ -7,16 +7,13 @@ import { Tabs, Tab } from 'nextra-theme-docs'
 
 Instructions to set up your Base (Coinbase L2) node.
 
-<Callout type="info" emoji="ℹ️">
-  Note: Mainnet for base is not available yet. Instructions will be added after launch.
-</Callout>
-
 ## Requirements
 
 - [Setup your Axelar validator](/validator/setup)
 - Minimum hardware requirements: 16GB RAM, 100GB+ free storage space.
 - MacOS or Ubuntu 20.04 (tested on 20.04)
-- [Official Documentation](https://docs.base.org/guides/run-a-base-goerli-node)
+- [Official Documentation](https://docs.base.org/guides/run-a-base-node)
+- [Base GitHub](https://github.com/base-org/node)
 
 
 ## Prerequisites
@@ -24,7 +21,6 @@ Instructions to set up your Base (Coinbase L2) node.
 ```bash
 sudo apt-get install jq -y
 snap install docker
-
 ```
 
 ## Configure and start node
@@ -35,15 +31,17 @@ snap install docker
 git clone https://github.com/base-org/node
 ```
 
-2. In `docker-compose.yml`, set `OP_NODE_L1_ETH_RPC` to your own Goerli L1 RPC node. Using your own Goerli node is required to guarantee decentralization for validation.
+2. In `docker-compose.yml`, set `OP_NODE_L1_ETH_RPC` to your own Ethereum L1 RPC node. Using your own Ethereum node is required to guarantee decentralization and security for validation.
 
-3. Run:
+3. When pointing to your own Ethereum RPC node, you can enable `OP_NODE_L1_TRUST_RPC=true` in the config for fast sync and allow Erigon support.
+
+4. Run:
 
 ```bash
-docker compose up
+docker compose up --build
 ```
 
-4. You should now be able to `curl` your Base node:
+5. You should now be able to `curl` your Base node:
 
 ```bash
 curl -d '{"id":0,"jsonrpc":"2.0","method":"eth_getBlockByNumber","params":["latest",false]}' \
@@ -59,7 +57,7 @@ $( curl -d '{"id":0,"jsonrpc":"2.0","method":"optimism_syncStatus"}' -H "Content
    jq -r .result.unsafe_l2.timestamp))/60)) minutes
 ```
 
-You can check the latest block against the [explorer](https://goerli.basescan.org/).
+You can check the latest block against the [explorer](https://basescan.org/).
 
 Since Base uses the Optimism stack, you can review the [Optimism Instructions](/validator/external-chains/optimism) for more details on expected log output and helpful rpc queries.
 
@@ -69,7 +67,16 @@ In order for `vald` to connect to your Base node, your Base RPC should be expose
 vald's `config.toml`
 
 
-<Tabs items={['Testnet']}>
+<Tabs items={['Mainnet', 'Testnet']}>
+  <Tab>
+  ```bash
+  [[axelar_bridge_evm]]
+
+  name = "base"
+  rpc_addr = "http://IP:PORT"
+  start-with-bridge = true
+  ```
+  </Tab>
   <Tab>
   ```bash
   [[axelar_bridge_evm]]
