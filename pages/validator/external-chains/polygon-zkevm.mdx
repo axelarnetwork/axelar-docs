@@ -70,9 +70,9 @@ cp $ZKEVM_DIR/$ZKEVM_NET/example.env $ZKEVM_CONFIG_DIR/.env
 ```
 
 ## Set node config
-Define variable to set
+Update the variables in `$ZKEVM_CONFIG_DIR/.env`
 ```bash
-# your network could be either mainnet or tetsnet, we defined this earlier
+# your network could be either mainnet or testnet, we defined this earlier
 ZKEVM_NETWORK=$ZKEVM_NET
 # L1 node rpc
 ZKEVM_NODE_ETHERMAN_URL="your_ETH_rpc"
@@ -81,20 +81,9 @@ ZKEVM_NODE_STATEDB_DATA_DIR="$HOME/.zkevm/data/statedb"
 # ZKEVM NODE POOLDB DATA_ DIR, we created this earlier
 ZKEVM_NODE_POOLDB_DATA_DIR="$HOME/.zkevm/data/pooldb"
 ```
-Using sed commands to update the variables, be sure you know what you are updating
-```bash
-# Update ZKEVM_NETWORK variable
-sed -i 's@ZKEVM_NETWORK = "[^"]*"@ZKEVM_NETWORK = "'"${ZKEVM_NETWORK}"'"@' "$ZKEVM_CONFIG_DIR/.env"
-
-# Update ZKEVM_NODE_ETHERMAN_URL variable
-sed -i 's@ZKEVM_NODE_ETHERMAN_URL = "[^"]*"@ZKEVM_NODE_ETHERMAN_URL = "'"${ZKEVM_NODE_ETHERMAN_URL}"'"@' "$ZKEVM_CONFIG_DIR/.env"
-
-# Update ZKEVM_NODE_STATEDB_DATA_DIR variable
-sed -i 's@ZKEVM_NODE_STATEDB_DATA_DIR = "[^"]*"@ZKEVM_NODE_STATEDB_DATA_DIR = "'"${ZKEVM_NODE_STATEDB_DATA_DIR}"'"@' "$ZKEVM_CONFIG_DIR/.env"
-
-# Update ZKEVM_NODE_POOLDB_DATA_DIR variable
-sed -i 's@ZKEVM_NODE_POOLDB_DATA_DIR = "[^"]*"@ZKEVM_NODE_POOLDB_DATA_DIR = "'"${ZKEVM_NODE_POOLDB_DATA_DIR}"'"@' "$ZKEVM_CONFIG_DIR/.env"
-```
+<Callout type="info" emoji="ℹ️">
+    Note: ZKEVM_NODE_ETHERMAN_URL must point to the validator's ethereum rpc node for security
+</Callout>
 
 ## Optional
 We will need to use directories defined earlier when we want to pass config and env file to docker-compose, it would be nice to persist them across sessions
