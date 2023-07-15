@@ -126,6 +126,7 @@ docker-compose --env-file $ZKEVM_CONFIG_DIR/.env -f $ZKEVM_DIR/$ZKEVM_NET/docker
 You should see the following containers running
 ```bash
 docker-compose --env-file $ZKEVM_CONFIG_DIR/.env -f $ZKEVM_DIR/$ZKEVM_NET/docker-compose.yml ps
+
 NAME                IMAGE                                      COMMAND                  SERVICE             CREATED             STATUS                    PORTS
 zkevm-pool-db       postgres                                   "docker-entrypoint.s…"   zkevm-pool-db       12 minutes ago      Up 12 minutes (healthy)   0.0.0.0:5433->5432/tcp, :::5433->5432/tcp
 zkevm-prover        hermeznetwork/zkevm-prover:v1.1.4-fork.4   "zkProver -c /usr/sr…"   zkevm-prover        12 minutes ago      Up 12 minutes             0.0.0.0:50061->50061/tcp, :::50061->50061/tcp, 0.0.0.0:50071->50071/tcp, :::50071->50071/tcp
