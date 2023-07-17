@@ -1,7 +1,6 @@
 {
   "startup": "Start-up issues",
   "missed-to-many-blocks": "Missed too many blocks",
-  "recovery": "Recover from secret data",
   "unjail": "Unjail your validator",
   "leave": "Leave the network"
 }
