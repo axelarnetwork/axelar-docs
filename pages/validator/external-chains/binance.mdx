@@ -111,9 +111,9 @@ After=online.target
 
 [Service]
 Type=simple
-User=root 
+User=$USER
 ExecStart=/usr/bin/geth --config $HOME/.bsc/config/config.toml --txlookuplimit=0 --syncmode=full --tries-verify-mode=none --pruneancient=true --diffblock=5000 --cache 8000 --rpc.allow-unprotected-txs --datadir $HOME/.bsc --http --http.vhosts "*" --http.addr 0.0.0.0 --ws --ws.origins '*' --ws.addr 0.0.0.0 --http.port 8545
-Restart=on-failure
+Restart=always
 RestartSec=3
 LimitNOFILE=4096
 
