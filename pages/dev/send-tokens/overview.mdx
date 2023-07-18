@@ -2,18 +2,17 @@
 
 There are three ways to transfer tokens cross-chain with Axelar:
 
-1. Call `sendToken` on an Axelar gateway EVM contract.
+1. Call `sendToken` from any source chain.
 1. Get a deposit address using the [AxelarJS SDK](../axelarjs-sdk/token-transfer-dep-addr).
 1. For tokens not [natively supported](/dev/reference/mainnet-contract-addresses#assets), build your own [Interchain Token](interchain-tokens).
 
 ## Call `sendToken`
 
-Use `sendToken` if:
+`sendToken` is an API method that allows you to send any token supported directly on the Axelar network to any recipient on a destination chain. 
 
-- Your dApp transfers EVM-to-X where X is one of EVM, Cosmos.
-- Your dApp uses smart contracts.
+The underlying mechanics work slightly differently, depending on whether the origin chain is an EVM chain or a Cosmos-based chain:
 
-### Overview
+### `sendToken` from an EVM Source Chain
 
 1. Locate the Axelar Gateway contract on the source chain.
 2. Execute approve on the source chain (ERC-20).
@@ -44,7 +43,7 @@ function approve(address spender, uint256 amount) external returns (bool);
 
 Here, `spender` is the Gateway address on the source chain.
 
-Find a list of assets, their names and their addresses: [Mainnet](../reference/mainnet-contract-addresses) | [Testnet](../reference/testnet-contract-addresses).
+Find a list of assets, their names and their addresses: [Mainnet](../reference/mainnet-contract-addresses) | [Testnet](../reference/testnet-contract-addresses). Note that for the same asset denom, the ERC20 symbol could be different on different chains (e.g. `USDC` on Ethereum is linked to `axlUSDC` on Avalanche).
 
 #### 3. Execute sendToken on the Gateway
 
@@ -54,12 +53,105 @@ Call `sendToken` on the Gateway contract of the source chain. Example:
 sendToken(
     "avalanche", // destination chain name
     "0xF16DfB26e1FEc993E085092563ECFAEaDa7eD7fD", // some destination wallet address (should be your own)
-    "USDC", // asset symbol
+    "axlUSDC", // asset symbol, can be differ by chain, see above
     100000000 // amount (in atomic units)
 )
 ```
 
 Watch for the tokens to appear at the destination address on the destination chain.
+
+### `sendToken` from a Cosmos-based Source Chain
+
+From any Cosmos-based source chain, `sendToken` is a simple IBC transfer of any asset supported on the Axelar network where the message:
+* is sent to the designated admin address on Axelar for receiving GMP (General-Message-Passing) messages -  `axelar1dv4u5k73pzqrxlzujxg3qp8kvc3pje7jtdvu72npnt5zhq05ejcsn5qme5`
+* includes a `memo` field with the following payload:
+
+```typescript
+    {
+      destination_chain,
+      destination_address,
+      payload: null,
+      type: 3, // corresponds to the `sendToken` command on Axelar
+    }
+```
+
+### Using AxelarJS SDK for `sendToken`
+
+In `v0.13.0`+ Axelar's JS SDK abstracts the invocations above in a one-line JS code that can be called directly from any frontend dApp. Example implementations below:
+
+#### Example: Invoking `sendToken` using the JS SDK from an EVM chain
+
+```typescript
+import { AxelarAssetTransfer, CHAINS, Environment, SendTokenParams } from "@axelar-network/axelarjs-sdk";
+import { ethers, Wallet } from "ethers";
+
+const api = new AxelarAssetTransfer({ environment: Environment.TESTNET });
+
+const getSigner = () => {
+  const privateKey = PRIVATE_KEY;
+  return new Wallet(privateKey);
+};
+
+async function test() {
+  const provider = new ethers.providers.JsonRpcProvider(
+    "https://api.avax-test.network/ext/bc/C/rpc"
+  );
+  const signer = getSigner().connect(provider);
+  const requestOptions: SendTokenParams = {
+    fromChain: CHAINS.TESTNET.AVALANCHE,
+    toChain: CHAINS.TESTNET.OSMOSIS,
+    destinationAddress: "osmo1x3z2vepjd7fhe30epncxjrk0lehq7xdqe8ltsn",
+    asset: { symbol: "aUSDC" },
+    amountInAtomicUnits: "5000000",
+    options: {
+      evmSendTokenOptions: {
+        signer,
+        provider,
+        txOptions: null as any,
+        approveSendForMe: true,
+      },
+    },
+  };
+  return api.sendToken(requestOptions);
+}
+```
+
+#### Example: Invoking `sendToken` using the JS SDK from a Cosmos-based chain
+
+```typescript
+
+import { AxelarAssetTransfer, CHAINS, Environment, SendTokenParams } from "@axelar-network/axelarjs-sdk";
+import { DirectSecp256k1HdWallet } from "@cosmjs/proto-signing";
+
+const api = new AxelarAssetTransfer({ environment: Environment.TESTNET });
+
+const getSigner = async () => {
+  const mnemonic = MNEMONIC;
+  return DirectSecp256k1HdWallet.fromMnemonic(mnemonic, { prefix: "osmo" });
+};
+
+async function test() {
+  const offlineSigner = await getSigner();
+  const requestOptions: SendTokenParams = {
+    fromChain: CHAINS.TESTNET.OSMOSIS,
+    toChain: CHAINS.TESTNET.AVALANCHE,
+    destinationAddress: "0xB8Cd93C83A974649D76B1c19f311f639e62272BC",
+    asset: { denom: "ibc/6F34E1BD664C36CE49ACC28E60D62559A5F96C4F9A6CCE4FC5A67B2852E24CFE" }, //aUSDC
+    amountInAtomicUnits: "1000000",
+    options: {
+      cosmosSendTokenOptions: {
+        cosmosDirectSigner: offlineSigner,
+        rpcUrl: "https://rpc.osmotest5.osmosis.zone",
+        fee: {
+            gas: "250000",
+            amount: [{ denom: "uosmo", amount: "30000" }],
+        },
+      },
+    },
+  };
+  return api.sendToken(requestOptions);
+}
+```
 
 ## Get a deposit address
 Use a deposit address if:
