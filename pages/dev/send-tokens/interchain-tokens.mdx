@@ -1,7 +1,7 @@
 import { Callout } from 'nextra-theme-docs'
 
 # Interchain Tokens
-<Callout>Interchain Tokens have received a major update as of July 2023 with many new features! Read on to learn about all of the new capabilities.</Callout>
+<Callout>Interchain Tokens have received a major update as of July 2023 with many new features! Read on to learn about all of the new capabilities and check out the [Interchain Portal](https://testnet.interchain.axelar.dev).</Callout>
 
 Axelar has [several ways](overview) to send [supported native tokens](/resources/testnet#assets), but what if you want have your own [ERC-20](https://ethereum.org/developers/docs/standards/tokens/erc-20/) token available on multiple chains? Axelar can help with Interchain Tokens!
 
@@ -17,7 +17,7 @@ Depending on whether or not you have an existing ERC-20 token, there are two mai
 ### Standardized Tokens
 The simplest type of Interchain Token is to create a brand new [Standardized](#standardized) ERC-20 that is available on multiple chains.
 
-The first step is to visit the [Interchain Token Portal](https://testnet.interchain.axelar.dev). Connect your wallet, select a source network where you have funds and choose to deploy a new ERC-20 token. Make sure to choose an initial supply, or choose the advanced option to allow later minting. You can then choose any additional chains for your new token. 
+The first step is to visit the [Interchain Portal](https://testnet.interchain.axelar.dev). Connect your wallet, select a source network where you have funds and choose to deploy a new ERC-20 token. Make sure to choose an initial supply, or choose the advanced option to allow later minting. You can then choose any additional chains for your new token. 
 
 Congratulations! You now have an ERC-20 token available on multiple chains. You can interact with your token on any chain identically, as they are all ERC-20 tokens. You can send, transfer, approve, and use all of the methods you are used to. Additionally, each of these tokens is a [Standardized Interchain Token](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/interfaces/IStandardizedToken.sol) and has an `interchainTransfer` method allowing you to transfer it between blockchains.
 
