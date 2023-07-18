@@ -7,19 +7,18 @@ import {Tabs as NextraTabs, Tab as NextraTab, Callout} from 'nextra-theme-docs'
 
 Instructions to set up your Linea node.
 
-## Requirements
+### Requirements
 - [Setup your Axelar validator](/validator/setup)
 - Minimum hardware requirements: 4 cores, 16GB RAM, 100GB Disk
 -  Ubuntu 22.04, Docker(tested on 22.04)
 - [Official Documentation](https://docs.linea.build/build-on-linea/run-a-node)
 
-## Prerequisites
+### Prerequisites
 ```bash
 sudo apt-get install jq -y
 ```
 
-
-# Get geth
+### Install geth
 
 Check the appropriate version for the network accordingly [in their docs](https://docs.linea.build/build-on-linea/run-a-node)
 
@@ -46,8 +45,7 @@ geth version
 cd $HOME
 ```
 
-
-# Get config
+### Download genesis file
 
 <NextraTabs items={['Mainnet', 'Testnet']}>
     <NextraTab>
@@ -60,14 +58,14 @@ cd $HOME
     <NextraTab>
         ```bash
         mkdir $HOME/.linea/config
-        cd $HOME/.bsc/config
+        cd $HOME/.linea/config
         wget -O genesis.json https://docs.linea.build/files/l2-genesis-uat.json
         ```
     </NextraTab>
 </NextraTabs>
 
 
-## Initialize the node
+### Initialize the node
 ```bash
 cd $HOME
 mkdir -p $HOME/.linea/data
@@ -92,7 +90,8 @@ INFO [07-16|15:48:00.914] Writing custom genesis block
 INFO [07-16|15:48:00.931] Persisted trie from memory database      nodes=356 size=50.85KiB time="747.265µs" gcnodes=0 gcsize=0.00B gctime=0s livenodes=0 livesize=0.00B
 INFO [07-16|15:48:00.936] Successfully wrote genesis state         database=lightchaindata                        hash=b6762a..0ffbc6
 ```
-## Create Service
+
+### Setup systemd
 
 Set the necessary variables
 
@@ -111,10 +110,14 @@ Set the necessary variables
     </NextraTab>
 </NextraTabs>
 
-Note: The following settings will allow your node to be accessed publicly from any machine, adjust the flags according if you don't prefer that.
+Create the systemd service file `/etc/systemd/system/geth-linea.service`
 
-```bash
-sudo tee /etc/systemd/system/geth.service > /dev/null <<EOF
+<Callout emoji="📝">
+    The following settings will allow your node to be accessed publicly from any machine,
+    so update the IP address from 0.0.0.0 to your vald machine.
+</Callout>
+
+```ini
 [Unit]
 Description=Geth node
 After=online.target
@@ -147,22 +150,23 @@ LimitNOFILE=4096
 
 [Install]
 WantedBy=multi-user.target
-EOF
 ```
 
-# Start the service
+### Start the service
+
 ```bash
 sudo systemctl daemon-reload
-sudo systemctl enable geth
-sudo systemctl restart geth
+sudo systemctl enable geth-linea
+sudo systemctl restart geth-linea
 ```
-## Check logs
+
+### Check logs
 
 ```bash
 # change log settings to persistent if not already
 sed -i 's/#Storage=auto/Storage=persistent/g' /etc/systemd/journald.conf
 sudo systemctl restart systemd-journald
-journalctl -u geth.service -f -n 100 -o cat
+journalctl -u geth-linea.service -f -n 100 -o cat
 ```
 
 Logs should appear like this
@@ -171,18 +175,17 @@ INFO [07-16|15:59:06.904] Imported new chain segment               number=730 ha
 INFO [07-16|15:59:07.113] Imported new chain segment               number=858 hash=f81d81..7bf36a blocks=128 txs=133 mgas=17.657  elapsed=183.688ms mgasps=96.126  age=1d16h40m dirty=1.17MiB
 INFO [07-16|15:59:07.364] Imported new chain segment               number=986 hash=4a154d..315f98 blocks=128 txs=204 mgas=32.286  elapsed=202.001ms mgasps=159.830 age=1d12h53m dirty=1.23MiB
 INFO [07-16|15:59:07.580] Imported new chain segment               number=1114 hash=92b77b..1c2b95 blocks=128 txs=178 mgas=45.001  elapsed=183.949ms mgasps=244.637 age=1d7h33m  dirty=1.24MiB
-INFO [07-16|15:59:07.796] Imported new chain segment               number=1242 hash=e1523a..7d2934 blocks=128 txs=181 mgas=33.075  elapsed=165.718ms mgasps=199.586 age=1d1h14m  dirty=1.24MiB
-INFO [07-16|15:59:08.099] Imported new chain segment               number=1370 hash=b366fb..df1ea0 blocks=128 txs=178 mgas=43.552  elapsed=234.743ms mgasps=185.532 age=6h8m11s  dirty=1.25MiB
-INFO [07-16|15:59:08.227] Imported new chain segment               number=1458 hash=0ce138..cc7b6a blocks=88  txs=98  mgas=63.532  elapsed=127.501ms mgasps=498.285 age=3m10s    dirty=1.25MiB
-INFO [07-16|15:59:10.324] Imported new chain segment               number=1460 hash=6647bc..11c091 blocks=2   txs=5   mgas=9.769   elapsed=5.067ms   mgasps=1927.627 age=2m48s    dirty=1.26MiB
 ```
 
-## Verify
+### Verify RPC
 
-#### Method 1:
+The Linea RPC is
 ```bash
-YOUR_IP=$(curl -4 ifconfig.co)
-curl -X POST $YOUR_IP:8545 -H "Content-Type: application/json" --data '{"jsonrpc":"2.0","method":"eth_syncing","params":[],"id":1}' | jq
+RPC=$(curl -4 ifconfig.co):8545
+```
+
+```bash
+curl -X POST $RPC -H "Content-Type: application/json" --data '{"jsonrpc":"2.0","method":"eth_syncing","params":[],"id":1}' | jq
 ```
 If you get something like this in response of the above rpc call, your node is setup correctly
 ```json
@@ -214,52 +217,10 @@ Wait for `"result"` to become `false` before using it in vald config
 {"jsonrpc":"2.0","id":1,"result":false}
 ```
 
-#### Method 2:
-You can also check your status by connect to geth console
-```bash
-geth attach http://localhost:8545
-eth.syncing
-```
-
-If you get something like this in response, your node is setup correctly
-```json
-{
-  currentBlock: 24000,
-  healedBytecodeBytes: 0,
-  healedBytecodes: 0,
-  healedTrienodeBytes: 0,
-  healedTrienodes: 0,
-  healingBytecode: 0,
-  healingTrienodes: 0,
-  highestBlock: 23846000,
-  startingBlock: 0,
-  syncedAccountBytes: 0,
-  syncedAccounts: 0,
-  syncedBytecodeBytes: 0,
-  syncedBytecodes: 0,
-  syncedStorage: 0,
-  syncedStorageBytes: 0
-}
-```
-
-Wait for it to become `false` before using it in vald config
-
-```bash
-eth.syncing
-false
-```
-
-## Endpoint
-
-```bash
-echo "${YOUR_IP}:8545"
-```
-
 ### Configure vald
 
 In order for `vald` to connect to your Linea node, your `rpc_addr` should be exposed in
 vald's `config.toml`
-
 
 <NextraTabs items={['Mainnet', 'Testnet']}>
     <NextraTab>
