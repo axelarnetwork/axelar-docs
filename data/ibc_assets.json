@@ -81,6 +81,14 @@
       "transfer_fee": 5.7e-05
     },
     {
+      "id": "lqdr-wei",
+      "name": "Lqdr - LqdrV2",
+      "symbol": "Lqdr",
+      "image": "/images/assets/lqdr.svg",
+      "decimals": 18,
+      "transfer_fee": 0.25
+    },
+    {
       "id": "ern-wei",
       "name": "ERN - Ethos Reserve Note",
       "symbol": "ERN",
