@@ -33,7 +33,7 @@ To find the chain ids we support you can check the resources section. You can fi
 
 ### 2. Install the AxelarJs SDK
 
-The AxelarJS SDK is an `npm` dependency that helps to make requests to the Axelar network. The SDK is essentially a wrapper around various API endpoints. One of the endpoints allows you to generate a deposit address. Alternately, you can create a deposit address using the [CLI instead of the SDK](../../learn/cli).
+The AxelarJS SDK is an `npm` dependency that helps to make requests to the Axelar network. The SDK is essentially a wrapper around various API endpoints. One of the endpoints allows you to generate a deposit address. Alternatively, you can create a deposit address using the [CLI instead of the SDK](../../learn/cli).
 
 ```bash
 npm i @axelar-network/axelarjs-sdk
@@ -134,7 +134,7 @@ const depositAddress = await sdk.getDepositAddress({
 });
 ```
 
-##### 2. Send ERC-20 tokens from a EVM chain
+##### 2. Send ERC-20 tokens from an EVM chain
 
 Transfer any Axelar-supported ERC-20 asset from an EVM chain to any destination chain.
 * Destination chains can be either an EVM chain or cosmos-based chain
@@ -248,4 +248,4 @@ Once the deposit address has been generated, the user can make a token transfer 
 
 (3) Chain IDs (as recognized by Axelar) must be used here. For example, in testnet, the chain ID for `Osmosis` is `osmosis-5`. 
 
-(4) Refund address is an optional parameter. It specifies the address on a source chain where tokens erroneously deposited into a deposit address can be refunded. For example, if a deposit address was generated to send USDC, but the user mistakenly deposits WAVAX. If no address is specified, the API defaults the parameter to the Gas Receiver contract that can refund on the user's behalf. At the moment, the refundAddress parameter is only compatible for use cases 3 and 4 above, wrap and unwrap cases, respectively.
+(4) Refund address is an optional parameter. It specifies the address on a source chain where tokens erroneously deposited into a deposit address can be refunded. For example, if a deposit address was generated to send USDC, but the user mistakenly deposits WAVAX. If no address is specified, the API defaults the parameter to the Gas Receiver contract that can refund on the user's behalf. At the moment, the refundAddress parameter is only compatible with use cases 3 and 4 above, wrap and unwrap cases, respectively.
