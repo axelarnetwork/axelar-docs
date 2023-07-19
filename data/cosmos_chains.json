@@ -259,6 +259,12 @@
       "name": "Xpla",
       "network_id": "xpla",
       "image": "/images/chains/xpla.svg"
+    },
+    {
+      "id": "ixo",
+      "name": "ixo",
+      "network_id": "impacthub",
+      "image": "/images/chains/ixo.svg"
     }
   ]
 }
