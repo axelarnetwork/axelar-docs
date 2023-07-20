@@ -46,7 +46,7 @@
     "postcss": "^8.4.16",
     "prettier": "^2.8.4",
     "replace-in-file": "^6.3.5",
-    "semver": "^7.3.8",
+    "semver": "^7.5.2",
     "tailwindcss": "^3.1.8",
     "zx": "^7.1.1"
   }
