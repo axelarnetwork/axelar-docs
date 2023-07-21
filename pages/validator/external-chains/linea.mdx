@@ -118,6 +118,7 @@ Create the systemd service file `/etc/systemd/system/geth-linea.service`
 </Callout>
 
 ```ini
+sudo tee <<EOF >/dev/null /etc/systemd/system/geth-linea.service
 [Unit]
 Description=Geth node
 After=online.target
@@ -150,6 +151,7 @@ LimitNOFILE=4096
 
 [Install]
 WantedBy=multi-user.target
+EOF
 ```
 
 ### Start the service
@@ -181,7 +183,7 @@ INFO [07-16|15:59:07.580] Imported new chain segment               number=1114 h
 
 The Linea RPC is
 ```bash
-RPC=$(curl -4 ifconfig.co):8545
+RPC=$(curl -4 ifconfig.me):8545
 ```
 
 ```bash
