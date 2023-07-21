@@ -81,30 +81,20 @@ start-with-bridge = false
 name = "Polygon"
 rpc_addr = ""
 start-with-bridge = false
-
-[[axelar_bridge_evm]]
-name = "binance"
-rpc_addr = ""
-start-with-bridge = false
-
-[[axelar_bridge_evm]]
-name = "aurora"
-rpc_addr = ""
-start-with-bridge = false
 ```
 
-### Example: Aurora
+### Example: Ethereum
 
-Edit the `Aurora` entry::
+Edit the `Ethereum` entry::
 
 ```toml
 [[axelar_bridge_evm]]
-name = "aurora"
-rpc_addr = "http://69.100.6.9:10080"
+name = "ethereum"
+rpc_addr = "http://ip:port"
 start-with-bridge = true
 ```
 
-Substitute your Ethereum RPC address for `my_ethereum_host`. Be sure to set `start-with-bridge` to `true`.
+Be sure to set `start-with-bridge` to `true`.
 
 ## Restart your companion processes
 
@@ -142,7 +132,6 @@ You should see something like:
 2021-11-25T01:25:54Z INF Successfully connected to EVM bridge for chain Moonbeam module=vald
 2021-11-25T01:25:54Z INF Successfully connected to EVM bridge for chain Polygon module=vald
 2021-11-25T01:25:54Z INF Successfully connected to EVM bridge for chain Binance module=vald
-2021-11-25T01:25:54Z INF Successfully connected to EVM bridge for chain Aurora module=vald`}
 </CodeBlock>
 
 ## Register as a maintainer of external chains
@@ -155,7 +144,7 @@ running into sequence mismatch errors due to concurrent signing.
 Example:
 
 ```bash
-axelard tx nexus register-chain-maintainer avalanche ethereum fantom moonbeam polygon binance aurora --from broadcaster --chain-id $AXELARD_CHAIN_ID --home $AXELARD_HOME --gas auto --gas-adjustment 1.4
+axelard tx nexus register-chain-maintainer avalanche ethereum fantom moonbeam polygon --from broadcaster --chain-id $AXELARD_CHAIN_ID --home $AXELARD_HOME --gas auto --gas-adjustment 1.4
 ```
 
 <Callout type="warning" emoji="⚠️">
