@@ -25,10 +25,6 @@
       "address": "0x2d5d7d31F671F86C782533cc367F14109a082712"
     },
     {
-      "id": "aurora",
-      "address": "0x2d5d7d31F671F86C782533cc367F14109a082712"
-    },
-    {
       "id": "arbitrum",
       "address": "0x2d5d7d31F671F86C782533cc367F14109a082712"
     },
@@ -85,10 +81,6 @@
     {
       "id": "moonbeam",
       "address": "0xbE406F0189A0B4cf3A05C286473D23791Dd44Cc6"
-    },
-    {
-      "id": "aurora",
-      "address": "0xA2C84547Db9732B27D45c06218DDAEFcc71e452D"
     },
     {
       "id": "celo",
