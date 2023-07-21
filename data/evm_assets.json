@@ -881,6 +881,21 @@
       ]
     },
     {
+      "id": "wdoge-wei",
+      "name": "WDOGE - Wrapped DOGE",
+      "symbol": "WDOGE",
+      "image": "/images/assets/wdoge.svg",
+      "contracts": [
+        {
+          "chain": "ethereum",
+          "address": "0x8aa9381b2544b48c26f3b850F6e07E2c5161EB3e",
+          "symbol": "WDOGE",
+          "decimals": 8,
+          "transfer_fee": 860.0
+        }
+      ]
+    },
+    {
       "id": "uosmo",
       "name": "OSMO - Axelar Wrapped OSMO",
       "symbol": "OSMO",

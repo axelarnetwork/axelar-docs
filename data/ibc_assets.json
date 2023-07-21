@@ -97,6 +97,14 @@
       "transfer_fee": 0.1
     },
     {
+      "id": "wdoge-wei",
+      "name": "WDOGE - Wrapped DOGE",
+      "symbol": "WDOGE",
+      "image": "/images/assets/wdoge.svg",
+      "decimals": 8,
+      "transfer_fee": 1.4
+    },
+    {
       "id": "uosmo",
       "name": "OSMO - Axelar Wrapped OSMO",
       "symbol": "OSMO",
