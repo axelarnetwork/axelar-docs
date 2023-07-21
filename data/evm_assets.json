@@ -1755,13 +1755,6 @@
           "transfer_fee": 0.1
         },
         {
-          "chain": "aurora",
-          "address": "0xFfB4749710EC6286b3A0dC2F24165DA622dA2ff5",
-          "symbol": "aUSDC",
-          "decimals": 6,
-          "transfer_fee": 0.1
-        },
-        {
           "chain": "avalanche",
           "address": "0x57F1c63497AEe0bE305B8852b354CEc793da43bB",
           "symbol": "aUSDC",
@@ -1856,13 +1849,6 @@
         {
           "chain": "arbitrum",
           "address": "0x23ee2343B892b1BB63503a4FAbc840E0e2C6810f",
-          "symbol": "wAXL",
-          "decimals": 6,
-          "transfer_fee": 0.1
-        },
-        {
-          "chain": "aurora",
-          "address": "0x1AA14c03783e3C31b14615a83a58E1eAF98Bf596",
           "symbol": "wAXL",
           "decimals": 6,
           "transfer_fee": 0.1

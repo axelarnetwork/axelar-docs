@@ -670,30 +670,6 @@
         }
       ],
       "image": "/images/chains/kava.svg"
-    },
-    {
-      "id": "aurora",
-      "name": "Aurora",
-      "chain_id": 1313161555,
-      "network_id": "aurora",
-      "provider_params": [
-        {
-          "chainId": "0x4e454153",
-          "chainName": "Aurora Testnet",
-          "rpcUrls": [
-            "https://testnet.aurora.dev"
-          ],
-          "nativeCurrency": {
-            "name": "Ethereum",
-            "symbol": "ETH",
-            "decimals": 18
-          },
-          "blockExplorerUrls": [
-            "https://testnet.aurorascan.dev"
-          ]
-        }
-      ],
-      "image": "/images/chains/aurora.svg"
     }
   ]
 }
