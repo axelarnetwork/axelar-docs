@@ -45,8 +45,12 @@
       "address": "0xe432150cce91c13a887f7D836923d5597adD8E31"
     },
     {
-      "id": "aurora",
-      "address": "0x304acf330bbE08d1e512eefaa92F6a57871fD895"
+      "id": "linea",
+      "address": "0xe432150cce91c13a887f7D836923d5597adD8E31"
+    },
+    {
+      "id": "base",
+      "address": "0xe432150cce91c13a887f7D836923d5597adD8E31"
     }
   ],
   "testnet": [
@@ -79,10 +83,6 @@
       "address": "0x5769D84DD62a6fD969856c75c7D321b84d455929"
     },
     {
-      "id": "aurora",
-      "address": "0x304acf330bbE08d1e512eefaa92F6a57871fD895"
-    },
-    {
       "id": "arbitrum",
       "address": "0xe432150cce91c13a887f7D836923d5597adD8E31"
     },
@@ -104,11 +104,15 @@
     },
     {
       "id": "filecoin",
-      "address": "0xe432150cce91c13a887f7D836923d5597adD8E31"
+      "address": "0x999117D44220F33e0441fbAb2A5aDB8FF485c54D"
     },
     {
       "id": "linea",
       "address": "0xe432150cce91c13a887f7D836923d5597adD8E31"
+    },
+    {
+      "id": "polygon-zkevm",
+      "address": "0x999117D44220F33e0441fbAb2A5aDB8FF485c54D"
     }
   ]
 }

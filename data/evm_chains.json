@@ -151,6 +151,54 @@
       "image": "/images/chains/optimism.svg"
     },
     {
+      "id": "base",
+      "name": "Base",
+      "chain_id": 8453,
+      "network_id": "base",
+      "provider_params": [
+        {
+          "chainId": "0x2105",
+          "chainName": "Base",
+          "rpcUrls": [
+            "https://developer-access-mainnet.base.org"
+          ],
+          "nativeCurrency": {
+            "name": "Ether",
+            "symbol": "ETH",
+            "decimals": 18
+          },
+          "blockExplorerUrls": [
+            "https://basescan.org"
+          ]
+        }
+      ],
+      "image": "/images/chains/base.svg"
+    },
+    {
+      "id": "linea",
+      "name": "Linea",
+      "chain_id": 59144,
+      "network_id": "linea",
+      "provider_params": [
+        {
+          "chainId": "0xe708",
+          "chainName": "Linea",
+          "rpcUrls": [
+            "https://rpc.linea.build"
+          ],
+          "nativeCurrency": {
+            "name": "Ether",
+            "symbol": "ETH",
+            "decimals": 18
+          },
+          "blockExplorerUrls": [
+            "https://lineascan.build"
+          ]
+        }
+      ],
+      "image": "/images/chains/linea.svg"
+    },
+    {
       "id": "fantom",
       "name": "Fantom",
       "chain_id": 250,
@@ -431,30 +479,6 @@
       "image": "/images/chains/moonbase.png"
     },
     {
-      "id": "aurora",
-      "name": "Aurora",
-      "chain_id": 1313161555,
-      "network_id": "aurora",
-      "provider_params": [
-        {
-          "chainId": "0x4e454153",
-          "chainName": "Aurora Testnet",
-          "rpcUrls": [
-            "https://testnet.aurora.dev"
-          ],
-          "nativeCurrency": {
-            "name": "Ethereum",
-            "symbol": "ETH",
-            "decimals": 18
-          },
-          "blockExplorerUrls": [
-            "https://testnet.aurorascan.dev"
-          ]
-        }
-      ],
-      "image": "/images/chains/aurora.svg"
-    },
-    {
       "id": "celo",
       "name": "Celo",
       "chain_id": 44787,
@@ -568,23 +592,47 @@
             "decimals": 18
           },
           "blockExplorerUrls": [
-            "https://explorer.goerli.linea.build"
+            "https://goerli.lineascan.build"
           ]
         }
       ],
       "image": "/images/chains/linea.svg"
     },
     {
-      "id": "filecoin",
-      "name": "Filecoin",
-      "chain_id": 3141,
-      "network_id": "filecoin",
+      "id": "polygon-zkevm",
+      "name": "Polygon zkEVM",
+      "chain_id": 1442,
+      "network_id": "polygon-zkevm",
       "provider_params": [
         {
-          "chainId": "0xC45",
-          "chainName": "Filecoin Hyperspace Testnet",
+          "chainId": "0x5A2",
+          "chainName": "Polygon zkEVM Testnet",
           "rpcUrls": [
-            "https://api.hyperspace.node.glif.io/rpc/v1",
+            "https://rpc.public.zkevm-test.net"
+          ],
+          "nativeCurrency": {
+            "name": "Ether",
+            "symbol": "ETH",
+            "decimals": 18
+          },
+          "blockExplorerUrls": [
+            "https://testnet-zkevm.polygonscan.com"
+          ]
+        }
+      ],
+      "image": "/images/chains/polygon.svg"
+    },
+    {
+      "id": "filecoin",
+      "name": "Filecoin",
+      "chain_id": 314159,
+      "network_id": "filecoin-2",
+      "provider_params": [
+        {
+          "chainId": "0x4cb2f",
+          "chainName": "Filecoin Calibration Testnet",
+          "rpcUrls": [
+            "https://api.calibration.node.glif.io/rpc/v1",
             "https://rpc.ankr.com/filecoin_testnet"
           ],
           "nativeCurrency": {
@@ -593,7 +641,7 @@
             "decimals": 18
           },
           "blockExplorerUrls": [
-            "https://hyperspace.filfox.info"
+            "https://calibration.filfox.info"
           ]
         }
       ],
