@@ -61,7 +61,7 @@ $ axelard tx gov submit-proposal community-pool-spend <file> --from wallet --cha
 
 ```
 
-Once the proposal passes or fails (without `NoWithVeto`), the deposit will be refunded. To deposit AXL, follow the [deposit process](https://docs.axelar.dev/cli-docs/v0_31_3/axelard_tx_gov_deposit).
+Once the proposal reaches quorum and passes or fails (without `NoWithVeto`), the deposit will be refunded. To deposit AXL, follow the [deposit process](https://docs.axelar.dev/cli-docs/v0_31_3/axelard_tx_gov_deposit). Without quorum it will not be refunded.
 
 
 ## General Proposal Information
@@ -69,6 +69,8 @@ Once the proposal passes or fails (without `NoWithVeto`), the deposit will be re
 ### Voting Period
 
 24 hours for all mainnet proposals.
+
+The Axelar Network currently requires a 33.4% quorum of staked tokens (query with `./axelard q gov params`). If a proposal does not reach quorum, it will fail and **the deposit will not be refunded**.
 
 ### Proposal Types
 
