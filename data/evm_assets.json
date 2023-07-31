@@ -715,11 +715,25 @@
       "image": "/images/assets/busd.svg",
       "contracts": [
         {
+          "chain": "base",
+          "address": "0x4D84E25cEa9447581867fE9f2329B972f532Da2c",
+          "symbol": "axlBUSD",
+          "decimals": 18,
+          "transfer_fee": 2.0
+        },
+        {
           "chain": "ethereum",
           "address": "0x4Fabb145d64652a948d72533023f6E7A623C7C53",
           "symbol": "BUSD",
           "decimals": 18,
           "transfer_fee": 60.0
+        },
+        {
+          "chain": "linea",
+          "address": "0x4D84E25cEa9447581867fE9f2329B972f532Da2c",
+          "symbol": "axlBUSD",
+          "decimals": 18,
+          "transfer_fee": 1.5
         }
       ]
     },
@@ -1004,6 +1018,20 @@
           "symbol": "ARB",
           "decimals": 18,
           "transfer_fee": 1.5
+        },
+        {
+          "chain": "base",
+          "address": "0x87b6c94c435F6e49789ad34FAf0d048F2D9043a2",
+          "symbol": "axlARB",
+          "decimals": 18,
+          "transfer_fee": 1.5
+        },
+        {
+          "chain": "linea",
+          "address": "0x87b6c94c435F6e49789ad34FAf0d048F2D9043a2",
+          "symbol": "axlARB",
+          "decimals": 18,
+          "transfer_fee": 1.1
         }
       ]
     },
@@ -1236,11 +1264,25 @@
       "image": "/images/assets/wmatic.svg",
       "contracts": [
         {
+          "chain": "base",
+          "address": "0xE3ce47AC96d8502824627d7cBCFDA49414beDa9C",
+          "symbol": "axlMATIC",
+          "decimals": 18,
+          "transfer_fee": 2.9
+        },
+        {
+          "chain": "linea",
+          "address": "0xE3ce47AC96d8502824627d7cBCFDA49414beDa9C",
+          "symbol": "axlMATIC",
+          "decimals": 18,
+          "transfer_fee": 2.1
+        },
+        {
           "chain": "polygon",
           "address": "0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270",
           "symbol": "WMATIC",
           "decimals": 18,
-          "transfer_fee": 1.4
+          "transfer_fee": 2.1
         }
       ]
     },
@@ -1255,14 +1297,28 @@
           "address": "0xB31f66AA3C1e785363F0875A1B74E27b85FD66c7",
           "symbol": "WAVAX",
           "decimals": 18,
-          "transfer_fee": 0.1
+          "transfer_fee": 0.15
+        },
+        {
+          "chain": "base",
+          "address": "0x6E76A241Ae6fcaD51C064Ac70fe6e676502b91c5",
+          "symbol": "axlAVAX",
+          "decimals": 18,
+          "transfer_fee": 0.2
         },
         {
           "chain": "fantom",
           "address": "0x879e73005C36d9a549fFb9846851fe5d1d91b681",
           "symbol": "axlAVAX",
           "decimals": 18,
-          "transfer_fee": 0.1
+          "transfer_fee": 0.15
+        },
+        {
+          "chain": "linea",
+          "address": "0x6E76A241Ae6fcaD51C064Ac70fe6e676502b91c5",
+          "symbol": "axlAVAX",
+          "decimals": 18,
+          "transfer_fee": 0.15
         }
       ]
     },
@@ -1288,11 +1344,25 @@
       "image": "/images/assets/wbnb.svg",
       "contracts": [
         {
+          "chain": "base",
+          "address": "0x23A6486099f740B7688A0bb7AED7C912015cA2F0",
+          "symbol": "axlBNB",
+          "decimals": 18,
+          "transfer_fee": 0.008
+        },
+        {
           "chain": "binance",
           "address": "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
           "symbol": "WBNB",
           "decimals": 18,
-          "transfer_fee": 0.005
+          "transfer_fee": 0.006
+        },
+        {
+          "chain": "linea",
+          "address": "0x23A6486099f740B7688A0bb7AED7C912015cA2F0",
+          "symbol": "axlBNB",
+          "decimals": 18,
+          "transfer_fee": 0.006
         }
       ]
     },
@@ -1358,6 +1428,13 @@
           "symbol": "axlATOM",
           "decimals": 6,
           "transfer_fee": 0.17
+        },
+        {
+          "chain": "binance",
+          "address": "0x3966001bEb78FD309665EA78FF8a4dA2E7E13180",
+          "symbol": "axlATOM",
+          "decimals": 6,
+          "transfer_fee": 0.12
         },
         {
           "chain": "celo",

@@ -206,7 +206,7 @@
       "symbol": "WMATIC",
       "image": "/images/assets/wmatic.svg",
       "decimals": 18,
-      "transfer_fee": 0.091
+      "transfer_fee": 0.14
     },
     {
       "id": "wavax-wei",
@@ -214,7 +214,7 @@
       "symbol": "WAVAX",
       "image": "/images/assets/wavax.svg",
       "decimals": 18,
-      "transfer_fee": 0.0067
+      "transfer_fee": 0.01
     },
     {
       "id": "wglmr-wei",
@@ -230,7 +230,7 @@
       "symbol": "WBNB",
       "image": "/images/assets/wbnb.svg",
       "decimals": 18,
-      "transfer_fee": 0.00033
+      "transfer_fee": 0.0004
     },
     {
       "id": "wftm-wei",
@@ -311,22 +311,6 @@
       "image": "/images/assets/mkr.svg",
       "decimals": 18,
       "transfer_fee": 0.00013
-    },
-    {
-      "id": "ungm",
-      "name": "NGM - e-Money NGM staking token",
-      "symbol": "NGM",
-      "image": "/images/assets/ngm.svg",
-      "decimals": 6,
-      "transfer_fee": 5.0
-    },
-    {
-      "id": "eeur",
-      "name": "EEUR - e-Money EUR stablecoin",
-      "symbol": "EEUR",
-      "image": "/images/assets/eeur.svg",
-      "decimals": 6,
-      "transfer_fee": 0.1
     },
     {
       "id": "uni-wei",
