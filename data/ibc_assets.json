@@ -169,6 +169,14 @@
       "transfer_fee": 0.71
     },
     {
+      "id": "hzn-wei",
+      "name": "HZN - Horizon",
+      "symbol": "HZN",
+      "image": "/images/assets/hzn.svg",
+      "decimals": 18,
+      "transfer_fee": 1.0
+    },
+    {
       "id": "uumee",
       "name": "UMEE - Umee native token",
       "symbol": "UMEE",

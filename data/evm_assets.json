@@ -1042,6 +1042,13 @@
       "image": "/images/assets/mpx.svg",
       "contracts": [
         {
+          "chain": "base",
+          "address": "0xa5325A8EBBbdb12CAF6b76218a7375a71f9f3b41",
+          "symbol": "MPX",
+          "decimals": 18,
+          "transfer_fee": 14.0
+        },
+        {
           "chain": "binance",
           "address": "0x94C6B279b5df54b335aE51866d6E2A56BF5Ef9b7",
           "symbol": "MPX",
@@ -1054,6 +1061,35 @@
           "symbol": "MPX",
           "decimals": 18,
           "transfer_fee": 11.0
+        },
+        {
+          "chain": "linea",
+          "address": "0xa5325A8EBBbdb12CAF6b76218a7375a71f9f3b41",
+          "symbol": "MPX",
+          "decimals": 18,
+          "transfer_fee": 11.0
+        }
+      ]
+    },
+    {
+      "id": "hzn-wei",
+      "name": "HZN - Horizon",
+      "symbol": "HZN",
+      "image": "/images/assets/hzn.svg",
+      "contracts": [
+        {
+          "chain": "base",
+          "address": "0x081AD949deFe648774C3B8deBe0E4F28a80716dc",
+          "symbol": "HZN",
+          "decimals": 18,
+          "transfer_fee": 20.0
+        },
+        {
+          "chain": "linea",
+          "address": "0x0B1A02A7309dFbfAD1Cd4adC096582C87e8A3Ac1",
+          "symbol": "HZN",
+          "decimals": 18,
+          "transfer_fee": 15.0
         }
       ]
     },
