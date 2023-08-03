@@ -1,9 +1,6 @@
 # Polygon zkEVM
 
-import Markdown from 'markdown-to-jsx'
-import Tabs from '../../../components/tabs'
-import CodeBlock from '../../../components/code-block'
-import {Tabs as NextraTabs, Tab as NextraTab, Callout} from 'nextra-theme-docs'
+import { Callout } from "/src/components/callout"
 
 Instructions to set up your Polygon ZkEVM node.
 
@@ -42,20 +39,18 @@ mkdir -p ~/.zkevm/data/pooldb
 # Get network configurations
 Storing directory paths to variables to reuse
 
-<Tabs tabs={[
-    {
-        title: "Mainnet",
-        content: <CodeBlock language="bash">
-            {`ZKEVM_NET=mainnet`}
-        </CodeBlock>
-    },
-    {
-        title: "Testnet",
-        content: <CodeBlock language="bash">
-            {`ZKEVM_NET=testnet`}
-        </CodeBlock>
-    }
-]}/>
+<tabs>
+<tab-item title="Mainnet" class="bleed">
+```bash
+ZKEVM_NET=mainnet
+```
+</tab-item>
+<tab-item title="Testnet" class="bleed">
+```bash
+ZKEVM_NET=testnet
+```
+</tab-item>
+</tabs>
 
 ```bash
 ZKEVM_DIR=~/.zkevm
@@ -199,24 +194,24 @@ use your RPC node only when it has caught up with the latest block height.
 In order for `vald` to connect to your Zk EVM node, your `rpc_addr` should be exposed in
 vald's `config.toml`
 
-<NextraTabs items={['Mainnet', 'Testnet']}>
-    <NextraTab>
-        ```bash
-        [[axelar_bridge_evm]]
-        name = "polygon-zkevm"
-        rpc_addr = "http://IP:PORT"
-        start-with-bridge = true
-        ```
-    </NextraTab>
-    <NextraTab>
-        ```bash
-        [[axelar_bridge_evm]]
-        name = "polygon-zkevm"
-        rpc_addr = "http://IP:PORT"
-        start-with-bridge = true
-        ```
-    </NextraTab>
-</NextraTabs>
+<tabs >
+<tab-item title="Mainnet" class="bleed">
+```bash
+[[axelar_bridge_evm]]
+name = "polygon-zkevm"
+rpc_addr = "http://IP:PORT"
+start-with-bridge = true
+```
+</tab-item>
+<tab-item title="Testnet" class="bleed">
+```bash
+[[axelar_bridge_evm]]
+name = "polygon-zkevm"
+rpc_addr = "http://IP:PORT"
+start-with-bridge = true
+```
+</tab-item>
+</tabs>
 
 ### Common Node Operations
 
