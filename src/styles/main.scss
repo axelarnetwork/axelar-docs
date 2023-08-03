@@ -22,6 +22,13 @@ a {
 a:hover {
   color: grey;
 }
+button {
+  font-family: "Noto Sans", Arial, sans-serif;
+  font-size: 16px;
+  &:hover {
+    cursor: pointer;
+  }
+}
 article a,
 article a:hover {
   color: rgb(33, 100, 207);
@@ -67,6 +74,7 @@ p {
 img {
   max-width: 100%;
 }
+
 nav {
   height: 64px;
   display: flex;
@@ -115,7 +123,7 @@ main {
   background-color: #f2f2f2;
   border: 0px solid #fff;
   border-radius: 8px;
-  width:80%;
+  width: 80%;
 }
 ol li,
 ul li {
@@ -236,19 +244,37 @@ tab-item.bleed {
 
 table {
   border-collapse: collapse;
-}
-table td,table th {
-  border: 1px solid rgb(209, 213, 219);
-  padding:16px;
-  line-height:24px;
-}
-table th {
-  background-color: rgb(237, 237, 237);
-  font-weight: bold;
-}
+  margin-top: 8px;
 
-table tr:nth-child(3n+2) {
-  background-color: rgb(243, 244, 246);
+  thead th:first-child {
+    border-radius: 8px 0 0 0;
+    border: 0px solid transparent;
+  }
+  thead th:last-child {
+    border-radius: 0 8px 0 0;
+    border: 0px solid transparent;
+  }
+  td,
+  th {
+    border: 1px solid transparent;
+    padding: 16px;
+    line-height: 24px;
+  }
+  th {
+    background-color: rgb(243, 244, 246);
+    font-weight: bold;
+    font-size: 14px;
+    text-transform: uppercase;
+    color: rgb(51, 65, 85);
+  }
+
+  tr {
+    border-bottom: 2px solid rgb(229, 231, 235);
+  }
+
+  tr:nth-child(2n + 2) {
+    background-color: rgb(249, 250, 251);
+  }
 }
 astro-island button {
   border: none;
@@ -275,24 +301,22 @@ astro-island button {
 }
 
 .ibc-channels {
-  grid-template-columns: repeat(3,minmax(0,1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 1rem;
   grid-auto-flow: row;
   display: grid;
 }
 .ibc-channels .border {
-  border:1px solid rgb(229, 231, 235)
-  ;
-  border-radius:8px;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  padding:8px;
+  border: 1px solid rgb(229, 231, 235);
+  border-radius: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px;
 }
-.ibc-channels .border>* {
-  font-size:0.8em;
+.ibc-channels .border > * {
+  font-size: 0.8em;
 }
-
 
 .toast {
   position: fixed;
@@ -341,6 +365,7 @@ astro-island button {
   grid-auto-flow: row;
   display: grid;
 }
+/* Temporary Tailwind CSS */
 .flex {
   display: flex;
 }
@@ -359,6 +384,8 @@ astro-island button {
 .items-center {
   align-items: center;
 }
+
+/* End temporary tailwind CSS */
 
 .desktop-nav {
   display: flex;
@@ -383,10 +410,95 @@ astro-island button {
 .ais-SearchBox-input {
   width: calc(100% - 16px);
 }
-.asset-list button {
-  border: 1px solid grey;
-  height:32px;
-  border-radius:3px;
+.chain-icon img,
+.asset-icon img {
+  margin-right: 4px;
+}
+.dropdown {
+  position: relative;
+  font-size: 14px;
+
+  &:not(:last-child) {
+    margin-right: 8px;
+  }
+
+  button {
+    background-color: white;
+    padding: 8px 16px;
+    border-radius: 6px;
+    border: 1px solid rgb(209, 213, 219);
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 40px;
+    min-width: 140px;
+
+    &:hover {
+      background-color: rgb(249, 250, 251);
+    }
+
+    span {
+      font-weight: 700;
+    }
+    img {
+      margin-right: 8px;
+    }
+    svg.toggle {
+      margin: 0 0 0 8px;
+      width: 20px;
+      height: 20px;
+    }
+  }
+
+  .dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 12rem;
+    margin-top: 4px;
+    background-color: white;
+    border-radius: 6px;
+    border: 1px solid rgb(209, 213, 219);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    overflow: auto;
+    max-height: 0;
+    transition: max-height 0.2s ease-in-out;
+
+    & div:first-child {
+      padding: 8px 16px;
+      font-weight: bold;
+    }
+
+    & .dropdown-menu-item {
+      padding: 8px 16px;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      &:hover {
+        background-color: rgb(243, 244, 246);
+      }
+      img {
+        margin-right: 8px;
+      }
+      &:not(:first-child):hover {
+        cursor: pointer;
+      }
+    }
+  }
+}
+.add-to-metamask {
+  padding: 6px 8px;
+  background-color: rgb(243, 244, 246);
+  border: 0px solid transparent;
+  border-radius: 8px;
+  &:hover {
+    background-color: rgb(229, 231, 235);
+  }
 }
 
 .mobile {

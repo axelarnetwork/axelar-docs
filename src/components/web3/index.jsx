@@ -125,7 +125,7 @@ export default ({
           }
         }
       }}
-      className={`min-w-max bg-gray-100 dark:bg-gray-900 ${
+      className={`add-to-metamask min-w-max bg-gray-100 dark:bg-gray-900 ${
         at_chain
           ? ""
           : "hover:bg-gray-200 dark:hover:bg-gray-800 cursor-pointer"

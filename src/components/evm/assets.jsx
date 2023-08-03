@@ -96,7 +96,7 @@ export default ({ environment = "mainnet" }) => {
                     className={`${i % 2 === 0 ? "bg-transparent" : "bg-gray-50 dark:bg-black"} ${i === assets.length - 1 ? j === 0 ? "rounded-bl-lg" : j === COLUMNS.length - 1 ? "rounded-br-lg" : "" : ""} border-none whitespace-nowrap py-3 px-4 ${c.className || ""}`}
                   >
                     {c.id === "asset" ?
-                      <div className="min-w-max flex items-center space-x-2">
+                      <div className="asset-icon min-w-max flex items-center space-x-2">
                         {image && (
                           <img
                             src={image}
@@ -112,7 +112,7 @@ export default ({ environment = "mainnet" }) => {
                       </div>
                       :
                       c.id === "chain" ?
-                        <div className="min-w-max flex items-center space-x-2.5">
+                        <div className="chain-icon min-w-max flex items-center space-x-2.5">
                           {chain_data?.image && (
                             <img
                               src={chain_data.image}
