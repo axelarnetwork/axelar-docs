@@ -394,6 +394,8 @@ astro-island button {
 }
 #search-results {
   display: none;
+  z-index: 5;
+  padding:32px;
 }
 #search-results.show {
   display: block;

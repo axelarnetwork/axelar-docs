@@ -34,8 +34,8 @@ search.addWidgets([
               sendEvent("click", hit, "Search result clicked");
             }}"
           >
-            <h2>${components.Highlight({ hit, attribute: "title" })}</h2>
-            <p>${components.Snippet({ hit, attribute: "url" })}</p>
+            <div style="font-weight:bold;">${components.Highlight({ hit, attribute: "title" })}</div>
+            <div>${components.Snippet({ hit, attribute: "contents" })}</div>
           </a>
         `;
       },
@@ -45,15 +45,17 @@ search.addWidgets([
 
 search.start();
 
-function stateChange(context) {
-  const query = context.uiState.documentation.query || "";
+function stateChange({ uiState, setUiState }) {
+  const query = uiState.documentation.query || "";
+  console.log("query is",query);
   const search_string = query;
 
   if (search_string.length < 3) {
-    document.querySelector("#search-results").classList.remove("show");
+    document.querySelector("#search-results")?.classList.remove("show");
 
     return false;
   } else {
-    document.querySelector("#search-results").classList.add("show");
+    document.querySelector("#search-results")?.classList.add("show");
   }
+  setUiState(uiState);
 }
