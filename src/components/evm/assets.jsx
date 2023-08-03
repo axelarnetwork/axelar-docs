@@ -2,7 +2,7 @@ import { useState } from "react";
 
 import Dropdown from "../dropdown";
 import AddToken from "../web3";
-import Copy from "../static-copy";
+import Copy from "../copy";
 import { ellipse, equals_ignore_case } from "../../utils";
 import evm_chains from "../../data/evm_chains.json";
 import evm_assets from "../../data/evm_assets.json";

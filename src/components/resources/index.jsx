@@ -1,4 +1,4 @@
-import Copy from "../static-copy";
+import Copy from "../copy";
 import resources from "../../data/resources.json";
 
 const COLUMNS = [

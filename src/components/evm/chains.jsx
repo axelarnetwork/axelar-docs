@@ -65,6 +65,7 @@ export default ({ environment = "mainnet" }) => {
                 <div className="flex items-center text-sm space-x-1">
                   <Copy
                     size={18}
+                    title={network_id}
                     value={network_id}
                   />
                 </div>
