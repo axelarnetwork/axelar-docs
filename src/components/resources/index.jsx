@@ -1,4 +1,4 @@
-import Copy from "../copy";
+import Copy from "../static-copy";
 import resources from "../../data/resources.json";
 
 const COLUMNS = [
@@ -68,7 +68,7 @@ export default ({
                                         }
                                       </a>
                                       {
-                                        !title &&
+                                        
                                         (
                                           <Copy
                                             size={20}
