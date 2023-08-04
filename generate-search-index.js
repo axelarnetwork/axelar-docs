@@ -5,6 +5,9 @@ import crypto from "crypto";
 import matter from "gray-matter";
 import { remark } from "remark";
 import remarkMdx from "remark-mdx";
+// Using strip because stripping via remarkMdx rendering wasn't working
+import strip from 'strip-markdown'
+import { exit } from "process";
 
 const client = algoliasearch("ECUG3H1E0M", process.env.ALGOLIA_KEY);
 
@@ -40,21 +43,41 @@ function walk(dir) {
       const fileContents = fs.readFileSync(filepath, "utf-8");
 
       console.log("about to parse", filepath);
-      let data, contents;
+
+      // Get rid of frontmatter
+      let data, content;
       try {
-        ({ data, contents } = matter(fileContents));
+        ({ data, content } = matter(fileContents));
       } catch (e) {
         // couldn't parse the greymatter, oh well
+        content = fileContents;
       }
-      if (filepath.indexOf(".mdx") > -1) {
-        const mdxOutput = remark().use(remarkMdx).processSync(fileContents);
 
-        console.log("mdx rendered to:", String(mdxOutput));
-        contents = stripTags(String(mdxOutput));
+      
+
+      // Get rid of markdown
+      if (filepath.indexOf(".mdx") > -1 || filepath.indexOf(".md") > -1) {
+        content = String(remark().use(strip).processSync(content));
+        // console.log("rendering from", fileContents.substring(0,1000));
+        // console.log("current content:",content);
+
+        // Remove imports
+        content = content.replace(/^import.*from.*;?$/g, "");
       }
-      if (contents) {
-        contents = contents.substring(0, 8000);
+
+      // Get rid of HTML
+      if (filepath.indexOf(".astro" > -1)) {
+        content = stripTags(content);
       }
+
+      // Fix newlines
+      content = content.replace(/\n/g, " ");
+
+
+      // Shorten to fit in Algolia Index
+      if (content) {
+        content = content.substring(0, 8000);
+      }      
 
       let title = data?.title;
       const pattern = /^# (.*)$/;
@@ -73,6 +96,7 @@ function walk(dir) {
         }
       }
 
+
       sitemap.push({
         url: url,
         lastmod: mtime,
@@ -81,7 +105,7 @@ function walk(dir) {
         frontmatter: {
           ...data,
         },
-        contents: contents,
+        contents: content,
       });
     }
   }
@@ -92,9 +116,8 @@ walk("src/pages");
 console.dir(sitemap, { maxArrayLength: null });
 
 try {
-  //   if (true) exit;
   index
-    .saveObjects(sitemap, {})
+    .replaceAllObjects(sitemap, {})
     .then(({ objectIDs }) => {
       console.log("saved search index", objectIDs);
     })
@@ -106,6 +129,9 @@ try {
 }
 
 function stripTags(html) {
+  if(!html || !html.replace) {
+    return html;
+  }
   // Create a regular expression to match all HTML tags.
   const regex = /<[^>]+>/g;
 

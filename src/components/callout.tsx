@@ -2,7 +2,7 @@ import React from 'react'
 
 interface CalloutProps {
     children: any;
-    type?: ''|'warning'|'error';
+    type: ''|'warning'|'error';
     emoji?: string;
 };
 // https://www.notion.so/Callout-blocks-5b2638247b54447eb2e21145f97194b0
