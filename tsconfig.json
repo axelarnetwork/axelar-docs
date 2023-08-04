@@ -4,5 +4,6 @@
     "jsx": "react-jsx",
     "jsxImportSource": "react",
     "noImplicitAny": false,
+    "module": "ESNext",
   }
 }
