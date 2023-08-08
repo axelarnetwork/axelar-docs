@@ -1470,6 +1470,13 @@
       "image": "/images/assets/orbs.svg",
       "contracts": [
         {
+          "chain": "arbitrum",
+          "address": "0xf3C091ed43de9c270593445163a41A876A0bb3dd",
+          "symbol": "ORBS",
+          "decimals": 18,
+          "transfer_fee": 80.0
+        },
+        {
           "chain": "avalanche",
           "address": "0x3Ab1C9aDb065F3FcA0059652Cd7A52B05C98f9a9",
           "symbol": "ORBS",
