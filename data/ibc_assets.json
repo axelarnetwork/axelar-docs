@@ -177,6 +177,78 @@
       "transfer_fee": 1.0
     },
     {
+      "id": "oath-wei",
+      "name": "OATH - Oath Token",
+      "symbol": "OATH",
+      "image": "/images/assets/oath.svg",
+      "decimals": 18,
+      "transfer_fee": 2.5
+    },
+    {
+      "id": "pols-wei",
+      "name": "POLS - PolkastarterToken",
+      "symbol": "POLS",
+      "image": "/images/assets/pols.svg",
+      "decimals": 18,
+      "transfer_fee": 0.33
+    },
+    {
+      "id": "ring-wei",
+      "name": "RING - OneRing",
+      "symbol": "RING",
+      "image": "/images/assets/ring.svg",
+      "decimals": 18,
+      "transfer_fee": 33.0
+    },
+    {
+      "id": "zyb-wei",
+      "name": "ZYB - Zyber Token",
+      "symbol": "ZYB",
+      "image": "/images/assets/zyb.svg",
+      "decimals": 18,
+      "transfer_fee": 1.2
+    },
+    {
+      "id": "knc-wei",
+      "name": "KNC - Kyber Network Crystal v2",
+      "symbol": "KNC",
+      "image": "/images/assets/knc.svg",
+      "decimals": 18,
+      "transfer_fee": 0.17
+    },
+    {
+      "id": "orbs-wei",
+      "name": "ORBS - Orbs",
+      "symbol": "ORBS",
+      "image": "/images/assets/orbs.svg",
+      "decimals": 18,
+      "transfer_fee": 4.0
+    },
+    {
+      "id": "gdx-wei",
+      "name": "GDX - Gridex",
+      "symbol": "GDX",
+      "image": "/images/assets/gdx.svg",
+      "decimals": 18,
+      "transfer_fee": 5.0
+    },
+    {
+      "id": "deus-wei",
+      "name": "DEUS - DEUS",
+      "symbol": "DEUS",
+      "image": "/images/assets/deus.svg",
+      "decimals": 18,
+      "transfer_fee": 0.004
+    },
+    {
+      "id": "sonne-wei",
+      "name": "SONNE - Sonne",
+      "symbol": "SONNE",
+      "image": "/images/assets/sonne.svg",
+      "decimals": 18,
+      "transfer_fee": 0.67
+    },
+    {
       "id": "uumee",
       "name": "UMEE - Umee native token",
       "symbol": "UMEE",
