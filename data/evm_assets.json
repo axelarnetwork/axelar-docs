@@ -916,6 +916,84 @@
       ]
     },
     {
+      "id": "stern-wei",
+      "name": "stERN - Staked ERN Vault",
+      "symbol": "stERN",
+      "image": "/images/assets/stern.svg",
+      "contracts": [
+        {
+          "chain": "arbitrum",
+          "address": "0xf7A0dd3317535eC4f4d29ADF9d620B3d8D5D5069",
+          "symbol": "stERN",
+          "decimals": 18,
+          "transfer_fee": 2.0
+        },
+        {
+          "chain": "avalanche",
+          "address": "0x232Fe66f42ac4d0DF191Ec9f34e30224BBF15C3F",
+          "symbol": "stERN",
+          "decimals": 18,
+          "transfer_fee": 1.5
+        },
+        {
+          "chain": "base",
+          "address": "0xf7A0dd3317535eC4f4d29ADF9d620B3d8D5D5069",
+          "symbol": "stERN",
+          "decimals": 18,
+          "transfer_fee": 2.0
+        },
+        {
+          "chain": "binance",
+          "address": "0x34A279Ece38f260a28C8872f416319e9B6Aa428e",
+          "symbol": "stERN",
+          "decimals": 18,
+          "transfer_fee": 1.5
+        },
+        {
+          "chain": "ethereum",
+          "address": "0xeA0cFDC2667bE69ED724c8069d358502fF41cA18",
+          "symbol": "stERN",
+          "decimals": 18,
+          "transfer_fee": 60.0
+        },
+        {
+          "chain": "fantom",
+          "address": "0x34A279Ece38f260a28C8872f416319e9B6Aa428e",
+          "symbol": "stERN",
+          "decimals": 18,
+          "transfer_fee": 1.5
+        },
+        {
+          "chain": "kava",
+          "address": "0xf7A0dd3317535eC4f4d29ADF9d620B3d8D5D5069",
+          "symbol": "stERN",
+          "decimals": 18,
+          "transfer_fee": 1.5
+        },
+        {
+          "chain": "linea",
+          "address": "0xf7A0dd3317535eC4f4d29ADF9d620B3d8D5D5069",
+          "symbol": "stERN",
+          "decimals": 18,
+          "transfer_fee": 1.5
+        },
+        {
+          "chain": "optimism",
+          "address": "0x3eE6107d9C93955acBb3f39871D32B02F82B78AB",
+          "symbol": "stERN",
+          "decimals": 18,
+          "transfer_fee": 2.0
+        },
+        {
+          "chain": "polygon",
+          "address": "0x281c4746c902A322B9A951F07893AC51a7221Acc",
+          "symbol": "stERN",
+          "decimals": 18,
+          "transfer_fee": 1.5
+        }
+      ]
+    },
+    {
       "id": "wdoge-wei",
       "name": "WDOGE - Wrapped DOGE",
       "symbol": "WDOGE",
@@ -1435,11 +1513,25 @@
           "transfer_fee": 100.0
         },
         {
+          "chain": "base",
+          "address": "0x91c415FEcD651F11D24aC4b72Ed08dbEb9868D43",
+          "symbol": "GDX",
+          "decimals": 18,
+          "transfer_fee": 100.0
+        },
+        {
           "chain": "ethereum",
           "address": "0x89901994b5Ed81cbbcBC4E5A7e0cC4e7F58e5458",
           "symbol": "GDX",
           "decimals": 18,
           "transfer_fee": 3000.0
+        },
+        {
+          "chain": "linea",
+          "address": "0x91c415FEcD651F11D24aC4b72Ed08dbEb9868D43",
+          "symbol": "GDX",
+          "decimals": 18,
+          "transfer_fee": 75.0
         },
         {
           "chain": "optimism",

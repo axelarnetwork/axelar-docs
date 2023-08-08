@@ -97,6 +97,14 @@
       "transfer_fee": 0.1
     },
     {
+      "id": "stern-wei",
+      "name": "stERN - Staked ERN Vault",
+      "symbol": "stERN",
+      "image": "/images/assets/stern.svg",
+      "decimals": 18,
+      "transfer_fee": 0.1
+    },
+    {
       "id": "wdoge-wei",
       "name": "WDOGE - Wrapped DOGE",
       "symbol": "WDOGE",
