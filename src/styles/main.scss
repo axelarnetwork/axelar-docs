@@ -89,6 +89,13 @@ nav a {
   text-decoration: none;
   color: black;
 }
+.site-logo,.site-logo.active {
+  color: black;
+  background-color: transparent;
+  text-decoration: none;
+  font-size: 34px;
+  font-weight: bold;
+}
 ol,
 ul {
   padding-left: 16px;
@@ -399,7 +406,7 @@ astro-island button {
   font-weight: inherit;
 }
 .desktop-nav .active:hover {
-  color:grey;
+  color: grey;
 }
 #search-results {
   display: none;
@@ -545,5 +552,23 @@ astro-island button {
     padding: 32px;
     border: 1px solid rgb(229, 231, 235);
     border-radius: 6px;
+  }
+}
+
+body.dark {
+  color: rgb(226, 232, 240);
+  background-color: rgb(17, 17, 17);
+  a {
+    color: white;
+  }
+  h1,h2,h3,h4,h5 {
+    color: rgb(241, 245, 249);
+  }
+  .site-logo,.site-logo.active {
+    color: white;
+  }
+  footer {
+    background-color: rgb(23, 23, 23);
+    color: rgb(226, 232, 240);
   }
 }
