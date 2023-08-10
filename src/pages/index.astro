@@ -30,6 +30,24 @@ const cards = [
     icon: `<svg style="margin-right:8px;"  stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="24" width="24" xmlns="http://www.w3.org/2000/svg"><g><path fill="none" d="M0 0h24v24H0z"></path><path d="M4 3h16a1 1 0 0 1 1 1v7H3V4a1 1 0 0 1 1-1zM3 13h18v7a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1v-7zm4 3v2h3v-2H7zM7 6v2h3V6H7z"></path></g></svg>`,
   },
 ];
+
+const learnMoreCards = [
+  {
+    title: "About Axelar",
+    url: "/learn",
+    icon: `<svg style="margin-right:8px;" id="b" data-name="Layer 2" xmlns="http://www.w3.org/2000/svg" stroke="currentColor" fill="currentColor" width="24" height="24" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 141.596 140.816">  <defs>    <filter id="d" data-name="drop-shadow-1" filterUnits="userSpaceOnUse">      <feOffset dx="0" dy="0"/>      <feGaussianBlur result="e" stdDeviation="1.491"/>      <feFlood flood-color="#000" flood-opacity=".13"/>      <feComposite in2="e" operator="in"/>      <feComposite in="SourceGraphic"/>    </filter>  </defs>  <g id="c" data-name="Layer 1">    <path d="M79.026,59.29L122.249,16.306,105.851,0l-35.023,34.83L35.805,0,19.408,16.306,62.63,59.29c2.264,2.251,5.231,3.377,8.198,3.377s5.934-1.125,8.198-3.377Zm62.57,45.919l-35.023-34.83,35.023-34.831-16.397-16.306-43.221,42.984c-4.527,4.503-4.527,11.803,0,16.306l43.221,42.984,16.397-16.306h0Zm-70.828,.777l35.023,34.83,16.396-16.306-43.221-42.984c-4.529-4.503-11.868-4.503-16.397,0L19.348,124.51l16.397,16.306,35.023-34.83h0Zm-11.15-27.395c2.175-2.163,3.396-5.095,3.396-8.153s-1.221-5.991-3.396-8.153L16.397,19.301,0,35.608l35.023,34.83L0,105.269l16.397,16.306,43.222-42.984h0Z" filter="url(#d)"/>  </g></svg>`,
+  },
+  {
+    title: "Whitepaper",
+    url: "/axelar_whitepaper.pdf",
+    icon: `<svg style="margin-right:8px;" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 16 16" height="24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M9.293 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.707A1 1 0 0 0 13.707 4L10 .293A1 1 0 0 0 9.293 0zM9.5 3.5v-2l3 3h-2a1 1 0 0 1-1-1zM4.5 9a.5.5 0 0 1 0-1h7a.5.5 0 0 1 0 1h-7zM4 10.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zm.5 2.5a.5.5 0 0 1 0-1h4a.5.5 0 0 1 0 1h-4z"></path></svg>`,
+  },
+  {
+    title: "Resources",
+    url: "/resources",
+    icon: `<svg style="margin-right:8px;" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 16 16" height="24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="m14.12 10.163 1.715.858c.22.11.22.424 0 .534L8.267 15.34a.598.598 0 0 1-.534 0L.165 11.555a.299.299 0 0 1 0-.534l1.716-.858 5.317 2.659c.505.252 1.1.252 1.604 0l5.317-2.66zM7.733.063a.598.598 0 0 1 .534 0l7.568 3.784a.3.3 0 0 1 0 .535L8.267 8.165a.598.598 0 0 1-.534 0L.165 4.382a.299.299 0 0 1 0-.535L7.733.063z"></path><path d="m14.12 6.576 1.715.858c.22.11.22.424 0 .534l-7.568 3.784a.598.598 0 0 1-.534 0L.165 7.968a.299.299 0 0 1 0-.534l1.716-.858 5.317 2.659c.505.252 1.1.252 1.604 0l5.317-2.659z"></path></svg>`,
+  },
+];
 ---
 
 <Section title={title}>
@@ -89,7 +107,7 @@ const cards = [
       cards.map((card) => (
         <a class="card" href={card.url}>
           <div>
-            <Fragment set:html={card.icon}/> {card.title}
+            <Fragment set:html={card.icon} /> {card.title}
           </div>
           <div>{card.description}</div>
           <span>
@@ -115,5 +133,19 @@ const cards = [
         </a>
       ))
     }
+  </div>
+  <div>
+    <h2>Learn more about Axelar</h2>
+    <div style="display:flex; ;">
+      {
+        learnMoreCards.map((card) => (
+          <a href={card.url} class="card" style="width:auto;padding:16px 32px 16px 16px;">
+            <div>
+              <Fragment set:html={card.icon} /> {card.title}
+            </div>
+          </a>
+        ))
+      }
+    </div>
   </div>
 </Section>
