@@ -116,6 +116,9 @@ main {
   max-width: $page-width;
   margin: 0px auto;
 }
+main {
+  min-height: calc(100vh - 360px - 64px);
+}
 #search {
   flex-grow: 1;
 }
@@ -293,6 +296,9 @@ astro-island button {
 }
 .resources td > .flex {
   flex-direction: column;
+  justify-content: left;
+}
+.resources td > div {
 }
 
 .ibc-channels {
@@ -390,7 +396,7 @@ astro-island button {
 #search-results {
   display: none;
   z-index: 5;
-  padding:32px;
+  padding: 32px;
 }
 #search-results.show {
   display: block;

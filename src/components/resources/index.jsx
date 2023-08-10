@@ -43,7 +43,7 @@ export default ({
                           className={`${i % 2 === 0 ? "bg-transparent" : "bg-gray-50 dark:bg-black"} ${i === _resources.length - 1 ? j === 0 ? "rounded-bl-lg" : j === COLUMNS.length - 1 ? "rounded-br-lg" : "" : ""} border-none whitespace-nowrap py-3 px-4 ${className || ""}`}
                         >
                           {id === 'value' ?
-                            <div className="flex flex-wrap items-center">
+                            <div className="flex flex-wrap">
                               {(data || [])
                                 .map((v, k) => {
                                   const {
@@ -56,7 +56,7 @@ export default ({
                                   return (
                                     <div
                                       key={k}
-                                      className="flex items-center space-x-0.5 mb-2.5 mr-2.5"
+                                      className="flex space-x-0.5 mb-2.5 mr-2.5"
                                     >
                                       <a
                                         href={value}
