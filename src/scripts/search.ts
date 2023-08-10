@@ -1,61 +1,69 @@
-import algoliasearch from "algoliasearch/lite";
-import instantsearch from "instantsearch.js";
-import { searchBox, hits } from "instantsearch.js/es/widgets";
+const loadSearch = async () => {
+  const algoliasearch = (await import("algoliasearch/lite")).default;
+  const instantsearch = (await import("instantsearch.js")).default;
+  const { searchBox, hits } = await import("instantsearch.js/es/widgets");
 
-const searchClient = algoliasearch(
-  "ECUG3H1E0M",
-  "79f21d06bc68b25fa46dda5e23318a3f"
-);
+  console.log(algoliasearch);
 
-const search = instantsearch({
-  indexName: "documentation",
-  searchClient,
-  insights: {
-    insightsInitParams: {
-      useCookie: true,
-    },
-  },
-  onStateChange: stateChange,
-});
+  const searchClient = algoliasearch(
+    "ECUG3H1E0M",
+    "79f21d06bc68b25fa46dda5e23318a3f"
+  );
 
-search.addWidgets([
-  searchBox({
-    container: "#search",
-  }),
-
-  hits({
-    container: "#search-results",
-    templates: {
-      item(hit, { html, components, sendEvent }) {
-        return html`
-          <a
-            href="${hit.url}"
-            onClick="${() => {
-              sendEvent("click", hit, "Search result clicked");
-            }}"
-          >
-            <div style="font-weight:bold;">${components.Highlight({ hit, attribute: "title" })}</div>
-            <div>${components.Snippet({ hit, attribute: "contents" })}</div>
-          </a>
-        `;
+  const search = instantsearch({
+    indexName: "documentation",
+    searchClient,
+    insights: {
+      insightsInitParams: {
+        useCookie: true,
       },
     },
-  }),
-]);
+    onStateChange: stateChange,
+  });
 
-search.start();
+  search.addWidgets([
+    searchBox({
+      container: "#search",
+    }),
 
-function stateChange({ uiState, setUiState }) {
-  const query = uiState.documentation.query || "";
-  console.log("query is",query);
-  const search_string = query;
+    hits({
+      container: "#search-results",
+      templates: {
+        item(hit, { html, components, sendEvent }) {
+          return html`
+            <a
+              href="${hit.url}"
+              onClick="${() => {
+                sendEvent("click", hit, "Search result clicked");
+              }}"
+            >
+              <div style="font-weight:bold;">
+                ${components.Highlight({ hit, attribute: "title" })}
+              </div>
+              <div>${components.Snippet({ hit, attribute: "contents" })}</div>
+            </a>
+          `;
+        },
+      },
+    }),
+  ]);
 
-  if (search_string.length < 3) {
-    document.querySelector("#search-results")?.classList.remove("show");
+  search.start();
 
-    return false;
-  } else {
-    document.querySelector("#search-results")?.classList.add("show");
+  function stateChange({ uiState, setUiState }) {
+    const query = uiState.documentation.query || "";
+    console.log("query is", query);
+    const search_string = query;
+
+    if (search_string.length < 3) {
+      document.querySelector("#search-results")?.classList.remove("show");
+
+      return false;
+    } else {
+      document.querySelector("#search-results")?.classList.add("show");
+    }
+    setUiState(uiState);
   }
-  setUiState(uiState);
-}
+};
+
+document.getElementById("search")?.addEventListener("click", loadSearch);
