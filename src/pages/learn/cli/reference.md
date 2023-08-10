@@ -1,5 +1,5 @@
 # Axelar CLI reference
-In addition to the Axelar-specific CLI features mentioned in the [CLI Introduction](./introduction), Axelar also offers the same basic set of CLI commands as any other Cosmos SDK project.
+In addition to the Axelar-specific CLI features mentioned in the [CLI Introduction](./), Axelar also offers the same basic set of CLI commands as any other Cosmos SDK project.
 
 
 ## Complete Axelar CLI reference
