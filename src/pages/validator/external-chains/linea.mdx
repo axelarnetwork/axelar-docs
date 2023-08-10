@@ -1,0 +1,245 @@
+# Linea
+
+import { Callout } from "/src/components/callout";
+
+Instructions to set up your Linea node.
+
+### Requirements
+
+- [Setup your Axelar validator](/validator/setup)
+- Minimum hardware requirements: 4 cores, 16GB RAM, 100GB Disk
+- Ubuntu 22.04, Docker(tested on 22.04)
+- [Official Documentation](https://docs.linea.build/build-on-linea/run-a-node)
+
+### Prerequisites
+
+```bash
+sudo apt-get install jq -y
+```
+
+### Install geth
+
+Check the appropriate version for the network accordingly [in their docs](https://docs.linea.build/build-on-linea/run-a-node)
+
+```bash
+# This is an example - check their docs and release page to opt for the right version
+GETH_RELEASE=1.12.0-e501b3b0
+```
+
+```bash
+# verify correct version
+echo $GETH_RELEASE
+
+# create a temp dir for binaries
+cd $HOME
+mkdir binaries && cd binaries
+
+# if you are on linux amd
+wget https://gethstore.blob.core.windows.net/builds/geth-linux-amd64-$GETH_RELEASE.tar.gz
+tar -xvf geth-linux-amd64-$GETH_RELEASE.tar.gz
+cd geth-linux-amd64-$GETH_RELEASE
+chmod +x geth
+sudo mv geth /usr/bin/
+# verify version
+geth version
+cd $HOME
+```
+
+### Download genesis file
+
+<tabs>
+  <tab-item title="Mainnet" class="bleed">
+    ```bash 
+    mkdir -p $HOME/.linea/config cd $HOME/.linea/config wget -O
+    genesis.json https://docs.linea.build/files/genesis.json
+    ```
+  </tab-item>
+  <tab-item title="Testnet" class="bleed">
+    ```bash
+    mkdir $HOME/.linea/config cd $HOME/.linea/config wget -O
+    genesis.json https://docs.linea.build/files/l2-genesis-uat.json
+    ```
+  </tab-item>
+</tabs>
+
+### Initialize the node
+
+```bash
+cd $HOME
+mkdir -p $HOME/.linea/data
+geth --datadir $HOME/.linea/data init $HOME/.linea/config/genesis.json
+```
+
+It should give an output similar to this
+
+```bash
+INFO [07-16|15:48:00.683] Maximum peer count                       ETH=50 LES=0 total=50
+INFO [07-16|15:48:00.685] Smartcard socket not found, disabling    err="stat /run/pcscd/pcscd.comm: no such file or directory"
+INFO [07-16|15:48:00.690] Set global gas cap                       cap=50,000,000
+INFO [07-16|15:48:00.690] Initializing the KZG library             backend=gokzg
+INFO [07-16|15:48:00.799] Defaulting to pebble as the backing database
+INFO [07-16|15:48:00.799] Allocated cache and file handles         database=$HOME/.linea/data/geth/chaindata cache=16.00MiB handles=16
+INFO [07-16|15:48:00.847] Opened ancient database                  database=$HOME/.linea/data/geth/chaindata/ancient/chain readonly=false
+INFO [07-16|15:48:00.847] Writing custom genesis block
+INFO [07-16|15:48:00.861] Persisted trie from memory database      nodes=356 size=50.85KiB time="761.943µs" gcnodes=0 gcsize=0.00B gctime=0s livenodes=0 livesize=0.00B
+INFO [07-16|15:48:00.867] Successfully wrote genesis state         database=chaindata                        hash=b6762a..0ffbc6
+INFO [07-16|15:48:00.867] Defaulting to pebble as the backing database
+INFO [07-16|15:48:00.867] Allocated cache and file handles         database=$HOME/.linea/data/geth/lightchaindata cache=16.00MiB handles=16
+INFO [07-16|15:48:00.914] Opened ancient database                  database=$HOME/.linea/data/geth/lightchaindata/ancient/chain readonly=false
+INFO [07-16|15:48:00.914] Writing custom genesis block
+INFO [07-16|15:48:00.931] Persisted trie from memory database      nodes=356 size=50.85KiB time="747.265µs" gcnodes=0 gcsize=0.00B gctime=0s livenodes=0 livesize=0.00B
+INFO [07-16|15:48:00.936] Successfully wrote genesis state         database=lightchaindata                        hash=b6762a..0ffbc6
+```
+
+### Setup systemd
+
+Set the necessary variables
+
+<tabs>
+  <tab-item title="Mainnet" class="bleed">
+    ```bash
+    NETWORK_ID="59144"
+    BOOTNODES="enode://ca2f06aa93728e2883ff02b0c2076329e475fe667a48035b4f77711ea41a73cf6cb2ff232804c49538ad77794185d83295b57ddd2be79eefc50a9dd5c48bbb2e@3.128.49.168:30303"
+    ```
+  </tab-item>
+  <tab-item title="Testnet" class="bleed">
+    ```bash
+    NETWORK_ID="59140"
+    BOOTNODES="enode://db471f0bad1da4f5e48042d0411bc38d5a245cf30ff76191e454c9ff2e27e57d45009b9c6e50d582c44332b05f2d747a8e995aa20399e80c22b1abb069332dde@3.17.183.45:30303,enode://1b10ff18e0d5055111af8cffe083d8d123ebede1dd5d81b3f8ce069ead6f0e70ec3217a0fa163bebaf1cd87b78e8f630182d703e1aebde93996dd5f67fa89389@18.117.161.184:30303,enode://25a42af9d7573a6299b54bb3c2d6566e59079ab1b94b4d42aa44325252d85f45f0bfe8b40dd476a4ee30c7007b61ab34375875ffa668b73eccc9c32640b17e48@3.20.238.193:30303,enode://3dfed9020ade850dca85d2855d42bfb431d1dbfdaec529ad66773bff434e473c071849dddf9cd43f9c529777a384bf5293463baecd4aea7623e575877fd30024@3.18.97.19:30303,enode://68848179e1bfe737045d19734db8f83ce3f85739d551a1e4c4661486380f69677316445375323172e5fcdbd5e26ccbb94306b647b7ac0468de9e9e775a0fbed6@18.190.156.63:30303"
+    ```
+  </tab-item>
+</tabs>
+
+Create the systemd service file `/etc/systemd/system/geth-linea.service`
+
+<Callout emoji="📝">
+  The following settings will allow your node to be accessed publicly from any
+  machine, so update the IP address from 0.0.0.0 to your vald machine.
+</Callout>
+
+```ini
+sudo tee /etc/systemd/system/geth-linea.service &>/dev/null <<EOF
+[Unit]
+Description=Geth node
+After=online.target
+
+[Service]
+Type=simple
+User=$USER
+ExecStart=/usr/bin/geth \
+--datadir $HOME/.linea/data \
+--networkid $NETWORK_ID \
+--miner.gasprice 1000000000 \
+--miner.gaslimit '0x3A2C940' \
+--rpc.allow-unprotected-txs \
+--txpool.accountqueue 50000 \
+--txpool.globalqueue 50000 \
+--txpool.globalslots 50000 \
+--txpool.pricelimit 1000000000 \
+--rpc.txfeecap 100 \
+--gpo.maxprice 100000000000000 \
+--txpool.nolocals \
+--http --http.addr "0.0.0.0" --http.port 8545 --http.corsdomain '*' --http.api 'web3,eth,txpool,net' --http.vhosts='*' \
+--ws --ws.addr "0.0.0.0" --ws.port 8546 --ws.origins '*' --ws.api 'eth,net,web3,txpool' \
+--bootnodes $BOOTNODES \
+--syncmode full \
+--metrics --pprof --pprof.addr "0.0.0.0" --pprof.port 9545 \
+--verbosity 3
+Restart=always
+RestartSec=3
+LimitNOFILE=4096
+
+[Install]
+WantedBy=multi-user.target
+EOF
+```
+
+### Start the service
+
+```bash
+sudo systemctl daemon-reload
+sudo systemctl enable geth-linea
+sudo systemctl restart geth-linea
+```
+
+### Check logs
+
+```bash
+# change log settings to persistent if not already
+sed -i 's/#Storage=auto/Storage=persistent/g' /etc/systemd/journald.conf
+sudo systemctl restart systemd-journald
+journalctl -u geth-linea.service -f -n 100 -o cat
+```
+
+Logs should appear like this
+
+```bash
+INFO [07-16|15:59:06.904] Imported new chain segment               number=730 hash=e63dd9..478f65 blocks=128 txs=150 mgas=132.120 elapsed=205.694ms mgasps=642.312 age=1d19h51m dirty=1.04MiB
+INFO [07-16|15:59:07.113] Imported new chain segment               number=858 hash=f81d81..7bf36a blocks=128 txs=133 mgas=17.657  elapsed=183.688ms mgasps=96.126  age=1d16h40m dirty=1.17MiB
+INFO [07-16|15:59:07.364] Imported new chain segment               number=986 hash=4a154d..315f98 blocks=128 txs=204 mgas=32.286  elapsed=202.001ms mgasps=159.830 age=1d12h53m dirty=1.23MiB
+INFO [07-16|15:59:07.580] Imported new chain segment               number=1114 hash=92b77b..1c2b95 blocks=128 txs=178 mgas=45.001  elapsed=183.949ms mgasps=244.637 age=1d7h33m  dirty=1.24MiB
+```
+
+### Verify RPC
+
+The Linea RPC is
+
+```bash
+RPC=$(curl -4 ifconfig.me):8545
+```
+
+```bash
+curl -X POST $RPC -H "Content-Type: application/json" --data '{"jsonrpc":"2.0","method":"eth_syncing","params":[],"id":1}' | jq
+```
+
+If you get something like this in response of the above rpc call, your node is setup correctly
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "result": {
+    "currentBlock": "0x10bcec",
+    "healedBytecodeBytes": "0x0",
+    "healedBytecodes": "0x0",
+    "healedTrienodeBytes": "0x0",
+    "healedTrienodes": "0x0",
+    "healingBytecode": "0x0",
+    "healingTrienodes": "0x0",
+    "highestBlock": "0x1792276",
+    "startingBlock": "0x1233f",
+    "syncedAccountBytes": "0x422a06f3",
+    "syncedAccounts": "0x5b14c0",
+    "syncedBytecodeBytes": "0x26c0e4d8",
+    "syncedBytecodes": "0x13cfd",
+    "syncedStorage": "0x38195bc",
+    "syncedStorageBytes": "0x2ef128d1b"
+  }
+}
+```
+
+Wait for `"result"` to become `false` before using it in vald config
+
+```json
+{ "jsonrpc": "2.0", "id": 1, "result": false }
+```
+
+### Configure vald
+
+In order for `vald` to connect to your Linea node, your `rpc_addr` should be exposed in
+vald's `config.toml`
+
+<tabs>
+  <tab-item title="Mainnet" class="bleed">
+```bash
+[[axelar_bridge_evm]] name = "linea" rpc_addr = "http://IP:PORT"
+start-with-bridge = true
+```
+  </tab-item>
+  <tab-item title="Testnet" class="bleed">
+```bash 
+[[axelar_bridge_evm]] name = "linea" rpc_addr = "http://IP:PORT"
+start-with-bridge = true
+```
+  </tab-item>
+</tabs>
