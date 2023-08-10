@@ -391,6 +391,11 @@ astro-island button {
   align-items: center;
   flex-grow: 1;
 }
+.desktop-nav .active {
+  border-bottom:1px solid blue;
+  background-color:inherit;
+  color:inherit;
+}
 #search-results {
   display: none;
   z-index: 5;
