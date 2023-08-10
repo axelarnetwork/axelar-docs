@@ -89,7 +89,8 @@ nav a {
   text-decoration: none;
   color: black;
 }
-.site-logo,.site-logo.active {
+.site-logo,
+.site-logo.active {
   color: black;
   background-color: transparent;
   text-decoration: none;
@@ -289,12 +290,12 @@ astro-island button {
   border-collapse: collapse;
 }
 
-.resources tr:nth-child(odd) {
-  background-color: #f2f2f2;
-}
-.resources tr:nth-child(even) {
-  background-color: white;
-}
+// .resources tr:nth-child(odd) {
+//   background-color: #f2f2f2;
+// }
+// .resources tr:nth-child(even) {
+//   background-color: white;
+// }
 // remove table cell borders from td
 .resources td {
   border: 0px;
@@ -556,19 +557,69 @@ astro-island button {
 }
 
 body.dark {
-  color: rgb(226, 232, 240);
+  color: rgb(246, 252, 260);
   background-color: rgb(17, 17, 17);
   a {
     color: white;
   }
-  h1,h2,h3,h4,h5 {
+  a.active,
+  tabs li.active {
+    color: rgb(108, 175, 220);
+    background-color: #0f1e29;
+  }
+  h1,
+  h2,
+  h3,
+  h4,
+  h5 {
     color: rgb(241, 245, 249);
   }
-  .site-logo,.site-logo.active {
+  .site-logo,
+  .site-logo.active {
     color: white;
   }
   footer {
     background-color: rgb(23, 23, 23);
     color: rgb(226, 232, 240);
+  }
+  .sideNav * {
+    color: rgb(225, 225, 225);
+  }
+  .sideNav a:hover {
+    background-color: #1b1c1d;
+    color: rgb(249, 250, 251);
+  }
+  table {
+    th {
+      background-color: rgb(58, 58, 58);
+      color: rgb(203, 221, 246);
+    }
+
+    tr {
+      border-bottom: 2px solid rgb(48, 48, 49);
+    }
+
+    tr:nth-child(2n + 2) {
+      background-color: #1d1f22;
+    }
+  }
+  .ais-SearchBox-form,
+  .ais-SearchBox-form input {
+    background-color: #1d1f22;
+    border-color: rgb(48, 48, 49);
+    color: white;
+  }
+  .ais-Hits-item {
+    background: #1d1f22;
+  }
+  #search-results.show {
+    background-color: transparent;
+    top: 32px;
+    border-width: 0;
+  }
+  .ais-Hits {
+    border: 3px solid rgb(105, 105, 105);
+    border-radius: 16px;
+    background: #1d1f22;
   }
 }
