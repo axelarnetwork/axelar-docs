@@ -1,5 +1,6 @@
 $page-width: 1400px;
-$font: Noto Sans,ui-sans-serif,sans-serif,system-ui,-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,;
+$font: Noto Sans, ui-sans-serif, sans-serif, system-ui, -apple-system,
+  BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial;
 $nav-size: 64px;
 
 * {
@@ -392,9 +393,13 @@ astro-island button {
   flex-grow: 1;
 }
 .desktop-nav .active {
-  border-bottom:1px solid blue;
-  background-color:inherit;
-  color:inherit;
+  border-bottom: 1px solid blue;
+  background-color: inherit;
+  color: inherit;
+  font-weight: inherit;
+}
+.desktop-nav .active:hover {
+  color:grey;
 }
 #search-results {
   display: none;
