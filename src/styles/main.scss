@@ -1,19 +1,17 @@
 $page-width: 1400px;
+$font: Noto Sans,ui-sans-serif,sans-serif,system-ui,-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,;
+$nav-size: 64px;
 
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
-// @font-face {
-//   // src: url("/fonts/NotoSans/NotoSans-Regular.ttf") format("truetype");
-//   font-display: swap;
-// }
 body {
   font-size: 16px;
-  font-family: "ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,Noto Sans,sans-serif";
-  // font-family: "Noto Sans", Arial, sans-serif;
+  font-family: $font;
   line-height: 28px;
+  color: rgb(51, 65, 85);
 }
 a {
   text-decoration: none;
@@ -23,8 +21,7 @@ a:hover {
   color: grey;
 }
 button {
-  // font-family: "Noto Sans", Arial, sans-serif;
-  font-family: "ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,Noto Sans,sans-serif";
+  font-family: $font;
 
   font-size: 16px;
   &:hover {
@@ -54,6 +51,7 @@ h2,
 h3,
 h4,
 h5 {
+  color: rgb(15, 23, 42);
   line-height: 1.2em;
   &:hover .anchor-icon {
     opacity: 1;
@@ -78,7 +76,7 @@ img {
 }
 
 nav {
-  height: 64px;
+  height: $nav-size;
   display: flex;
   align-items: center;
   border-bottom: 1px solid #e1e1e1;
@@ -117,7 +115,7 @@ main {
   margin: 0px auto;
 }
 main {
-  min-height: calc(100vh - 360px - 64px);
+  min-height: calc(100vh - 360px - $nav-size - 32px);
 }
 #search {
   flex-grow: 1;
