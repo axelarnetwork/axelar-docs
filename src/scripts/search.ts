@@ -21,18 +21,28 @@ const loadSearch = async () => {
     onStateChange: stateChange,
   });
 
+  let timerId = 0;
+  let debounceTime = 300;
+
   search.addWidgets([
     searchBox({
       container: "#search",
+      // Debounce the search for 300ms
+      queryHook(query, refine) {
+        clearTimeout(timerId)
+        timerId = window.setTimeout(() => refine(query), debounceTime)
+      },
     }),
 
     hits({
       container: "#search-results",
       templates: {
         item(hit, { html, components, sendEvent }) {
+          // Link directly to matched content
+          const matched = null;// = hit._highlightResult?.contents?.matchedWords[0];
           return html`
             <a
-              href="${hit.url}"
+              href="${hit.url + (matched ? '#:~:text=' + encodeURIComponent(matched) : '')}"
               onClick="${() => {
                 sendEvent("click", hit, "Search result clicked");
               }}"
