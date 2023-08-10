@@ -22,19 +22,19 @@ const shownDescription = description || 'The Axelar Documentation tells you how 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="img/png" href="/images/favicon.png"/>
     <title>{shownTitle}</title>
-    <meta content="shownTitle" property="og:title">
-    <meta content="shownTitle" property="twitter:title">
+    <meta content={shownTitle} property="og:title">
+    <meta content={shownTitle} property="twitter:title">
     {shownDescription && 
-      <meta content="{{shownDescription}}" name="description">
-      <meta content="{{shownDescription}}" property="og:description">
-      <meta content="{{shownDescription}}" property="twitter:description">
+      <meta content={shownDescription} name="description">
+      <meta content={shownDescription} property="og:description">
+      <meta content={shownDescription} property="twitter:description">
     }
     
     
 
     {image &&
-      <meta content="{image}}" property="og:image">
-      <meta content="{image}}" property="twitter:image">
+      <meta content={image} property="og:image">
+      <meta content={image} property="twitter:image">
     }
 
     <meta content="website" property="og:type">
