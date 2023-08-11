@@ -21,6 +21,16 @@
       "channel_id": "channel-41"
     },
     {
+      "from": "archway",
+      "to": "axelarnet",
+      "channel_id": "channel-13"
+    },
+    {
+      "from": "axelarnet",
+      "to": "archway",
+      "channel_id": "channel-111"
+    },
+    {
       "from": "assetmantle",
       "to": "axelarnet",
       "channel_id": "channel-10"
@@ -295,12 +305,12 @@
     {
       "from": "burnt",
       "to": "axelarnet",
-      "channel_id": "channel-1"
+      "channel_id": "channel-5"
     },
     {
       "from": "axelarnet",
       "to": "burnt",
-      "channel_id": "channel-109"
+      "channel_id": "channel-283"
     },
     {
       "from": "evmos",
@@ -321,6 +331,16 @@
       "from": "axelarnet",
       "to": "fetch",
       "channel_id": "channel-25"
+    },
+    {
+      "from": "ixo",
+      "to": "axelarnet",
+      "channel_id": "channel-9"
+    },
+    {
+      "from": "axelarnet",
+      "to": "ixo",
+      "channel_id": "channel-271"
     },
     {
       "from": "kujira",
@@ -411,16 +431,6 @@
       "from": "axelarnet",
       "to": "xpla",
       "channel_id": "channel-108"
-    },
-    {
-      "from": "ixo",
-      "to": "axelarnet",
-      "channel_id": "channel-9"
-    },
-    {
-      "from": "axelarnet",
-      "to": "ixo",
-      "channel_id": "channel-271"
     }
   ]
 }

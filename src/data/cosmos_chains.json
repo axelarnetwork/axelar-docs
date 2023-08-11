@@ -13,6 +13,12 @@
       "image": "/images/chains/agoric.svg"
     },
     {
+      "id": "archway",
+      "name": "Archway",
+      "network_id": "archway",
+      "image": "/images/chains/archway.svg"
+    },
+    {
       "id": "assetmantle",
       "name": "AssetMantle",
       "network_id": "assetmantle",
@@ -191,7 +197,7 @@
     {
       "id": "burnt",
       "name": "Burnt",
-      "network_id": "burnt",
+      "network_id": "burnt-2",
       "image": "/images/chains/burnt.svg"
     },
     {
@@ -205,6 +211,12 @@
       "name": "Fetch",
       "network_id": "fetch",
       "image": "/images/chains/fetch.svg"
+    },
+    {
+      "id": "ixo",
+      "name": "IXO",
+      "network_id": "impacthub",
+      "image": "/images/chains/ixo.svg"
     },
     {
       "id": "kujira",
@@ -259,12 +271,6 @@
       "name": "Xpla",
       "network_id": "xpla",
       "image": "/images/chains/xpla.svg"
-    },
-    {
-      "id": "ixo",
-      "name": "ixo",
-      "network_id": "impacthub",
-      "image": "/images/chains/ixo.svg"
     }
   ]
 }
