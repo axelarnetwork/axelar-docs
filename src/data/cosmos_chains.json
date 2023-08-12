@@ -73,6 +73,12 @@
       "image": "/images/chains/fetch.svg"
     },
     {
+      "id": "ixo",
+      "name": "IXO",
+      "network_id": "ixo",
+      "image": "/images/chains/ixo.svg"
+    },
+    {
       "id": "injective",
       "name": "Injective",
       "network_id": "injective",
@@ -113,6 +119,12 @@
       "name": "Persistence",
       "network_id": "persistence",
       "image": "/images/chains/persistence.svg"
+    },
+    {
+      "id": "provenance",
+      "name": "Provenance",
+      "network_id": "provenance",
+      "image": "/images/chains/provenance.svg"
     },
     {
       "id": "rebus",

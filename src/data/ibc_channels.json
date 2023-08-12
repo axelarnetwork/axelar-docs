@@ -111,6 +111,16 @@
       "channel_id": "channel-21"
     },
     {
+      "from": "ixo",
+      "to": "axelarnet",
+      "channel_id": "channel-23"
+    },
+    {
+      "from": "axelarnet",
+      "to": "ixo",
+      "channel_id": "channel-114"
+    },
+    {
       "from": "injective",
       "to": "axelarnet",
       "channel_id": "channel-84"
@@ -179,6 +189,16 @@
       "from": "axelarnet",
       "to": "persistence",
       "channel_id": "channel-42"
+    },
+    {
+      "from": "provenance",
+      "to": "axelarnet",
+      "channel_id": "channel-9"
+    },
+    {
+      "from": "axelarnet",
+      "to": "provenance",
+      "channel_id": "channel-116"
     },
     {
       "from": "rebus",
