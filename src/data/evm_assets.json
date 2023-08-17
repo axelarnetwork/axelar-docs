@@ -1171,6 +1171,50 @@
       ]
     },
     {
+      "id": "vela-wei",
+      "name": "VELA - VelaToken",
+      "symbol": "VELA",
+      "image": "/images/assets/vela.svg",
+      "contracts": [
+        {
+          "chain": "arbitrum",
+          "address": "0x088cd8f5eF3652623c22D48b1605DCfE860Cd704",
+          "symbol": "VELA",
+          "decimals": 18,
+          "transfer_fee": 2.0
+        },
+        {
+          "chain": "base",
+          "address": "0x5A76A56ad937335168b30dF3AA1327277421C6Ae",
+          "symbol": "VELA",
+          "decimals": 18,
+          "transfer_fee": 2.0
+        }
+      ]
+    },
+    {
+      "id": "arx-wei",
+      "name": "ARX - ArbiDex Token",
+      "symbol": "ARX",
+      "image": "/images/assets/arx.svg",
+      "contracts": [
+        {
+          "chain": "arbitrum",
+          "address": "0xD5954c3084a1cCd70B4dA011E67760B8e78aeE84",
+          "symbol": "ARX",
+          "decimals": 18,
+          "transfer_fee": 8.0
+        },
+        {
+          "chain": "base",
+          "address": "0x58Ed4FD0C3d930b674BA50a293f03ef6cD7dE7a3",
+          "symbol": "ARX",
+          "decimals": 18,
+          "transfer_fee": 8.0
+        }
+      ]
+    },
+    {
       "id": "hzn-wei",
       "name": "HZN - Horizon",
       "symbol": "HZN",
