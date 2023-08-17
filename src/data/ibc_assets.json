@@ -177,6 +177,22 @@
       "transfer_fee": 0.71
     },
     {
+      "id": "vela-wei",
+      "name": "VELA - VelaToken",
+      "symbol": "VELA",
+      "image": "/images/assets/vela.svg",
+      "decimals": 18,
+      "transfer_fee": 0.1
+    },
+    {
+      "id": "arx-wei",
+      "name": "ARX - ArbiDex Token",
+      "symbol": "ARX",
+      "image": "/images/assets/arx.svg",
+      "decimals": 18,
+      "transfer_fee": 0.4
+    },
+    {
       "id": "hzn-wei",
       "name": "HZN - Horizon",
       "symbol": "HZN",
