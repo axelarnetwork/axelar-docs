@@ -491,6 +491,14 @@
       "transfer_fee": 0.05
     },
     {
+      "id": "wsteth-wei",
+      "name": "wstETH - Wrapped liquid staked Ether 2.0",
+      "symbol": "wstETH",
+      "image": "/images/assets/wsteth.svg",
+      "decimals": 18,
+      "transfer_fee": 3e-05
+    },
+    {
       "id": "celo-wei",
       "name": "CELO - Celo native asset",
       "symbol": "CELO",
