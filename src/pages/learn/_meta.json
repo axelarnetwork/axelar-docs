@@ -22,9 +22,5 @@
   "cli": {
     "title": "CLI",
     "type": "doc"
-  },
-  "finality": {
-    "title": "Finality",
-    "type": "doc"
   }
 }
