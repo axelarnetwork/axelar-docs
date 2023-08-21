@@ -1,7 +1,10 @@
+@import 'dark.scss';
+
 $page-width: 1400px;
 $font: Noto Sans, ui-sans-serif, sans-serif, system-ui, -apple-system,
   BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial;
 $nav-size: 64px;
+
 
 * {
   margin: 0;
@@ -217,19 +220,29 @@ h1 .anchor-icon {
   margin-left: 8px;
 }
 
+
+body pre[class*=language-] {
+  border-width: 1px;
+}
+
 .callout {
   display: flex;
   align-items: center;
   border-radius: 4px;
   margin: 16px 0;
+  padding-right:32px;
+  ;
 }
 .callout.warning {
   background-color: rgb(255, 247, 237);
   color: rgb(154, 52, 18);
+  border:1px solid #ffedd5;
 }
 .callout.error {
   background-color: rgb(254, 226, 226);
   color: rgb(185, 28, 28);
+  border:1px solid #ffedd5;
+
 }
 .copy-capable {
   display: inline;
@@ -524,6 +537,20 @@ astro-island button {
   display: none;
 }
 
+.copy {
+  cursor: pointer;
+}
+.copy:hover {
+  opacity: 0.8
+}
+
+.lightButton {
+  display:none;
+}
+.darkButton {
+  display:block;
+}
+
 /* Mobile styles */
 @media (max-width: 650px) {
   #page {
@@ -554,72 +581,6 @@ astro-island button {
     border: 1px solid rgb(229, 231, 235);
     border-radius: 6px;
   }
+  
 }
 
-body.dark {
-  color: rgb(246, 252, 260);
-  background-color: rgb(17, 17, 17);
-  a {
-    color: white;
-  }
-  a.active,
-  tabs li.active {
-    color: rgb(108, 175, 220);
-    background-color: #0f1e29;
-  }
-  h1,
-  h2,
-  h3,
-  h4,
-  h5 {
-    color: rgb(241, 245, 249);
-  }
-  .site-logo,
-  .site-logo.active {
-    color: white;
-  }
-  footer {
-    background-color: rgb(23, 23, 23);
-    color: rgb(226, 232, 240);
-  }
-  .sideNav * {
-    color: rgb(225, 225, 225);
-  }
-  .sideNav a:hover {
-    background-color: #1b1c1d;
-    color: rgb(249, 250, 251);
-  }
-  table {
-    th {
-      background-color: rgb(58, 58, 58);
-      color: rgb(203, 221, 246);
-    }
-
-    tr {
-      border-bottom: 2px solid rgb(48, 48, 49);
-    }
-
-    tr:nth-child(2n + 2) {
-      background-color: #1d1f22;
-    }
-  }
-  .ais-SearchBox-form,
-  .ais-SearchBox-form input {
-    background-color: #1d1f22;
-    border-color: rgb(48, 48, 49);
-    color: white;
-  }
-  .ais-Hits-item {
-    background: #1d1f22;
-  }
-  #search-results.show {
-    background-color: transparent;
-    top: 32px;
-    border-width: 0;
-  }
-  .ais-Hits {
-    border: 3px solid rgb(105, 105, 105);
-    border-radius: 16px;
-    background: #1d1f22;
-  }
-}
