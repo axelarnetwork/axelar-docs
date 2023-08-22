@@ -1,9 +1,0 @@
-{
-  "mainnet": "Mainnet",
-  "testnet": "Testnet",
-  "governance": "Governance",
-  "satellite": "Satellite",
-  "metamask": "Set up Metamask",
-  "keplr": "Add Network to Keplr Wallet",
-  "wrapped-tokens": "Wrap/unwrap tokens"
-}
