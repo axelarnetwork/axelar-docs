@@ -19,12 +19,6 @@
       "image": "/images/chains/archway.svg"
     },
     {
-      "id": "assetmantle",
-      "name": "AssetMantle",
-      "network_id": "assetmantle",
-      "image": "/images/chains/assetmantle.svg"
-    },
-    {
       "id": "aura",
       "name": "Aura",
       "network_id": "aura",
@@ -271,6 +265,12 @@
       "name": "Sei",
       "network_id": "sei-2",
       "image": "/images/chains/sei.svg"
+    },
+    {
+      "id": "teritori",
+      "name": "Teritori",
+      "network_id": "teritori",
+      "image": "/images/chains/teritori.svg"
     },
     {
       "id": "terra",
