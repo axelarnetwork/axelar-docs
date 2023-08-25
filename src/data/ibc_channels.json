@@ -31,16 +31,6 @@
       "channel_id": "channel-111"
     },
     {
-      "from": "assetmantle",
-      "to": "axelarnet",
-      "channel_id": "channel-10"
-    },
-    {
-      "from": "axelarnet",
-      "to": "assetmantle",
-      "channel_id": "channel-23"
-    },
-    {
       "from": "aura",
       "to": "axelarnet",
       "channel_id": "channel-4"
@@ -431,6 +421,16 @@
       "from": "axelarnet",
       "to": "sei",
       "channel_id": "channel-257"
+    },
+    {
+      "from": "teritori",
+      "to": "axelarnet",
+      "channel_id": "channel-36"
+    },
+    {
+      "from": "axelarnet",
+      "to": "teritori",
+      "channel_id": "channel-294"
     },
     {
       "from": "terra",
