@@ -113,6 +113,10 @@
     {
       "id": "polygon-zkevm",
       "address": "0x999117D44220F33e0441fbAb2A5aDB8FF485c54D"
+    },
+    {
+      "id": "mantle",
+      "address": "0xe432150cce91c13a887f7D836923d5597adD8E31"
     }
   ]
 }
