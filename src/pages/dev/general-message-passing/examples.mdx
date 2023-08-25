@@ -10,11 +10,14 @@ The [axelar-examples](https://github.com/axelarnetwork/axelar-examples/) repo ha
 <Callout emoji="ℹ️">
   NOTE: Due to recent Solidity language upgrades, the
   <a href="https://www.zaryabs.com/push0-opcode/">`PUSH0`</a> opcode is now generated
-  in some of the example contracts upon compilation. This opcode is currently only
-  available on the Ethereum blockchain and its testnets. Any EVM blockchain that
-  is not Ethereum may throw an error on deployment if the examples contracts being
-  used are running Solidity version `0.8.20` or higher. To avoid any errors on non
-  Ethereum chains make sure your Solidity code is running version `0.8.19` or below.
+  in some of the example contracts upon compilation with the <a href="https://ethereum.org/bg/history/#shanghai">
+    Shanghai version
+  </a> of the EVM. This opcode is currently only available on the Ethereum blockchain
+  and its testnets. Any EVM blockchain that is not Ethereum may throw an error on
+  deployment if the examples contracts being used are running Solidity version `0.8.20`
+  or higher. To avoid any errors on non-Ethereum chains, either make sure your Solidity
+  code is running version `0.8.19` or below, or if you choose to run `0.8.20`, rollback
+  your EVM version to London instead of Shanghai.
 </Callout>
 
 ## "Hello World!"
