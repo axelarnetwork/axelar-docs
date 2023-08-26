@@ -1,5 +1,7 @@
 # Mantle
-Instructions to set up your Mantle node.
+
+Set up your Mantle RPC node
+
 ## Requirements
 
 - [Setup your Axelar validator](/validator/setup)
@@ -8,6 +10,7 @@ Instructions to set up your Mantle node.
 - [Official Documentation](https://github.com/mantlenetworkio/networks/blob/main/run-node-mainnet.md)
 
 ## Prerequisites
+
 Install docker
 ```bash
 sudo apt update
@@ -16,31 +19,35 @@ sudo apt-get install jq -y
 snap install docker
 ```
 
-## Clone Repo
+### Download configs
 
 ```bash
 git clone https://github.com/mantlenetworkio/networks.git mantlenetworks
 cd mantlenetworks
 ```
 
-## Set node config
+### Update node config
 
 <tabs>
     <tab-item title="Mainnet">
         Set the following config options in `docker-compose-mainnet.yml`:
         ```bash
-        ETH1_HTTP=your_l1_mainnet_node
+        ETH1_HTTP=your_ethereum_mainnet_l1_node
         ```
     </tab-item>
     <tab-item title="Testnet">
         Set the following config options in `docker-compose.yml`:
         ```bash
-        ETH1_HTTP=your_l1_goerli_node
+        ETH1_HTTP=your_ethereum_goerli_l1_node
         ```
     </tab-item>
 </tabs>
 
-## Start the node
+<Callout type="info" emoji="ℹ️">
+  Note: Make sure to set `ETH1_HTTP` to your own Ethereum RPC node for security.
+</Callout>
+
+### Start the node
 
 <tabs>
     <tab-item title="Mainnet">
@@ -55,17 +62,14 @@ cd mantlenetworks
     </tab-item>
 </tabs>
 
-This should show an output like this:
+An output similar to the following will be shown:
 ```bash
 [+] Running 6/6
- ✔ replica 5 layers [⣿⣿⣿⣿⣿]      0B/0B      Pulled                                                                                                     0.8s
-   ✔ 0cdfa0c98ed7 Pull complete                                                                                                                        0.2s
-   ✔ da01580fbcc6 Pull complete                                                                                                                        0.2s
-   ✔ 84538b0ffca1 Pull complete                                                                                                                        0.5s
-   ✔ 4f4fb700ef54 Pull complete                                                                                                                        0.5s
-   ✔ 235efed51b63 Pull complete                                                                                                                        0.5s
+ ✔ replica 5 layers [⣿⣿⣿⣿⣿]      0B/0B      Pulled
+   ✔ 0cdfa0c98ed7 Pull complete
+   ✔ da01580fbcc6 Pull complete
 [+] Running 1/1
- ✔ Container mantlenetworks-replica-1  Started                                                                                                         0.3s                                                                                                                                97.4s
+ ✔ Container mantlenetworks-replica-1  Started
 ```
 
 After it is done, verify by listing the services and their status
@@ -78,8 +82,6 @@ You should see these 4 services running
 NAME                       IMAGE                                  COMMAND             SERVICE             CREATED             STATUS              PORTS
 mantlenetworks-replica-1   mantlenetworkio/l2geth:v0.4.2-beta.1   "sh ./geth.sh"      replica             22 seconds ago      Up 21 seconds       0.0.0.0:8545-8546->8545-8546/tcp, :::8545-8546->8545-8546/tcp, 8547/tcp
 ```
-
-## Check logs
 
 #### Verify replica logs
 
@@ -123,11 +125,9 @@ mantlenetworks-replica-1  | INFO [08-25|09:06:27.732] CheckUpgrade              
 mantlenetworks-replica-1  | INFO [08-25|09:06:27.732] New block                                index=774   l1-timestamp=1688541409 l1-blocknumber=17626078 tx-hash=0x6033b2b5f286100e30222e8182da1787b54a82dafa1372aa597f59c25ec57754 queue-orign=sequencer gas=21000   fees=1.05e-06      elapsed=696.63µs
 ```
 
+### Verify node sync status
 
-## Verify node sync status
-
-### RPC Endpoint
-
+RPC Endpoint
 ```bash
 echo "$(curl -4 ifconfig.co):8545"
 ```
@@ -159,7 +159,7 @@ docker exec -it mantlenetworks-replica-1 geth attach http://localhost:8545
 You can compare the block height on your node with explorer ([mainnet](https://explorer.mantle.xyz) or [testnet](https://explorer.testnet.mantle.xyz)),
 use your RPC node only when it has caught up with the latest block height.
 
-## Configure vald
+### Configure vald
 
 In order for `vald` to connect to your mantle node, your `rpc_addr` should be exposed in
 vald's `config.toml`
