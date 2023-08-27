@@ -1,0 +1,221 @@
+# Mantle
+
+import { Callout } from "/src/components/callout"
+
+Set up your Mantle RPC node
+
+## Requirements
+
+- [Setup your Axelar validator](/validator/setup)
+- Minimum hardware requirements: 8 AWS vCPU+, 16GB RAM, 500GB+ SSD free storage space.
+- MacOS or Ubuntu 22.04 (tested on 22.04)
+- [Official Documentation](https://github.com/mantlenetworkio/networks/blob/main/run-node-mainnet.md)
+
+## Prerequisites
+
+Install docker
+```bash
+sudo apt update
+sudo apt install snapd
+sudo apt-get install jq -y
+snap install docker
+```
+
+### Download configs
+
+```bash
+git clone https://github.com/mantlenetworkio/networks.git mantlenetworks
+cd mantlenetworks
+```
+
+### Update node config
+
+<tabs>
+    <tab-item title="Mainnet">
+        Set the following config options in `docker-compose-mainnet.yml`:
+        ```bash
+        ETH1_HTTP=your_ethereum_mainnet_l1_node
+        ```
+    </tab-item>
+    <tab-item title="Testnet">
+        Set the following config options in `docker-compose.yml`:
+        ```bash
+        ETH1_HTTP=your_ethereum_goerli_l1_node
+        ```
+    </tab-item>
+</tabs>
+
+<Callout type="info" emoji="ℹ️">
+  Note: Make sure to set `ETH1_HTTP` to your own Ethereum RPC node for security.
+</Callout>
+
+### Start the node
+
+<tabs>
+    <tab-item title="Mainnet">
+        ```bash
+        docker compose -f docker-compose-mainnet.yml up -d
+        ```
+    </tab-item>
+    <tab-item title="Testnet">
+        ```bash
+        docker compose -f docker-compose.yml up -d
+        ```
+    </tab-item>
+</tabs>
+
+An output similar to the following will be shown:
+```bash
+[+] Running 6/6
+ ✔ replica 5 layers [⣿⣿⣿⣿⣿]      0B/0B      Pulled
+   ✔ 0cdfa0c98ed7 Pull complete
+   ✔ da01580fbcc6 Pull complete
+[+] Running 1/1
+ ✔ Container mantlenetworks-replica-1  Started
+```
+
+After it is done, verify by listing the services and their status
+```bash
+docker compose ps
+```
+
+You should see these 4 services running
+```bash
+NAME                       IMAGE                                  COMMAND             SERVICE             CREATED             STATUS              PORTS
+mantlenetworks-replica-1   mantlenetworkio/l2geth:v0.4.2-beta.1   "sh ./geth.sh"      replica             22 seconds ago      Up 21 seconds       0.0.0.0:8545-8546->8545-8546/tcp, :::8545-8546->8545-8546/tcp, 8547/tcp
+```
+
+#### Verify replica logs
+
+```bash
+docker compose logs replica -f
+```
+
+```bash
+mantlenetworks-replica-1  | INFO [08-25|08:09:31.739] Initialising Ethereum protocol           versions="[64 63]" network=5000 dbversion=<nil>
+mantlenetworks-replica-1  | WARN [08-25|08:09:31.739] Upgrade blockchain database version      from=<nil> to=7
+mantlenetworks-replica-1  | INFO [08-25|08:09:31.739] Loaded most recent local header          number=0 hash=0a0eb3…fcd013 td=1 age=54y5mo4d
+mantlenetworks-replica-1  | INFO [08-25|08:09:31.739] Loaded most recent local full block      number=0 hash=0a0eb3…fcd013 td=1 age=54y5mo4d
+mantlenetworks-replica-1  | INFO [08-25|08:09:31.739] Loaded most recent local fast block      number=0 hash=0a0eb3…fcd013 td=1 age=54y5mo4d
+mantlenetworks-replica-1  | INFO [08-25|08:09:31.739] Regenerated local transaction journal    transactions=0 accounts=0
+mantlenetworks-replica-1  | INFO [08-25|08:09:31.739] Running in verifier mode                 sync-backend=l2
+mantlenetworks-replica-1  | INFO [08-25|08:09:31.739] Configured rollup client                 url=https://dtl.mantle.xyz chain-id=5000 ctc-deploy-height=8
+mantlenetworks-replica-1  | INFO [08-25|08:09:32.884] Connected to upstream service
+mantlenetworks-replica-1  | INFO [08-25|08:09:33.122] Initializing initial BVM Context         ctc-deploy-height=8
+```
+Wait for it to Initialize, it will take some time
+After a while you will see it syncing blocks
+
+```bash
+mantlenetworks-replica-1  | INFO [08-25|09:06:26.998] Set L2 Gas Price                         gasprice=50000000
+mantlenetworks-replica-1  | INFO [08-25|09:06:26.998] Set L1 Gas Price                         gasprice=99152775920848
+mantlenetworks-replica-1  | INFO [08-25|09:06:26.998] Set batch overhead                       overhead=2750
+mantlenetworks-replica-1  | INFO [08-25|09:06:26.998] Set scalar                               scalar=1
+mantlenetworks-replica-1  | INFO [08-25|09:06:26.998] Set isBurning                            isBurning=0
+mantlenetworks-replica-1  | INFO [08-25|09:06:26.998] Set charge                               charge=1
+mantlenetworks-replica-1  | INFO [08-25|09:06:26.998] Set sccAddress                           sccAddress=0x89E9D387555AF0cDE22cb98833Bae40d640AD7fa
+mantlenetworks-replica-1  | INFO [08-25|09:06:26.998] Set daSwitch                             daSwitch=1
+mantlenetworks-replica-1  | INFO [08-25|09:06:26.998] Set DA Gas Price                         daGasprice=0
+mantlenetworks-replica-1  | INFO [08-25|09:06:27.232] indexed transaction                      index=772   next=772
+mantlenetworks-replica-1  | INFO [08-25|09:06:27.232] CheckUpgrade                             chain id=5000
+mantlenetworks-replica-1  | INFO [08-25|09:06:27.232] New block                                index=772   l1-timestamp=1688541389 l1-blocknumber=17626077 tx-hash=0xc121ea888cc25c9af532173a15d74922d528c1f8207c4ee723c4985552910f63 queue-orign=sequencer gas=21000   fees=1.05e-06      elapsed=680.829µs
+mantlenetworks-replica-1  | INFO [08-25|09:06:27.496] indexed transaction                      index=773   next=773
+mantlenetworks-replica-1  | INFO [08-25|09:06:27.497] CheckUpgrade                             chain id=5000
+mantlenetworks-replica-1  | INFO [08-25|09:06:27.497] New block                                index=773   l1-timestamp=1688541401 l1-blocknumber=17626078 tx-hash=0x826d78982f02dc17e666aa96c63caae912e5fd97c63d3723fc744fd0cf321ff7 queue-orign=sequencer gas=21000   fees=1.05e-06      elapsed=661.142µs
+mantlenetworks-replica-1  | INFO [08-25|09:06:27.732] indexed transaction                      index=774   next=774
+mantlenetworks-replica-1  | INFO [08-25|09:06:27.732] CheckUpgrade                             chain id=5000
+mantlenetworks-replica-1  | INFO [08-25|09:06:27.732] New block                                index=774   l1-timestamp=1688541409 l1-blocknumber=17626078 tx-hash=0x6033b2b5f286100e30222e8182da1787b54a82dafa1372aa597f59c25ec57754 queue-orign=sequencer gas=21000   fees=1.05e-06      elapsed=696.63µs
+```
+
+### Verify node sync status
+
+RPC Endpoint
+```bash
+echo "$(curl -4 ifconfig.co):8545"
+```
+
+#### Method 1:
+```bash
+curl -X POST [rpc] -H "Content-Type: application/json" --data '{"jsonrpc":"2.0","method":"eth_blockNumber","params":[],"id":1}' | jq
+```
+
+If you get something like this in response to the above rpc call, your node is setup correctly
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "result": "0x4e4c"
+}
+```
+You can use a [hex to number convertor](https://www.binaryhexconverter.com/hex-to-decimal-converter) to get the block height
+
+#### Method 2:
+You can also check your status by connecting to geth console
+
+```bash
+docker exec -it mantlenetworks-replica-1 geth attach http://localhost:8545
+> eth.blockNumber
+1209 # it will show you the latest block - number here is just an example
+```
+
+You can compare the block height on your node with explorer ([mainnet](https://explorer.mantle.xyz) or [testnet](https://explorer.testnet.mantle.xyz)),
+use your RPC node only when it has caught up with the latest block height.
+
+### Configure vald
+
+In order for `vald` to connect to your mantle node, your `rpc_addr` should be exposed in
+vald's `config.toml`
+
+<tabs>
+    <tab-item title="Mainnet">
+        ```bash
+        [[axelar_bridge_evm]]
+        name = "mantle"
+        rpc_addr = "http://IP:PORT"
+        start-with-bridge = true
+        ```
+    </tab-item>
+    <tab-item title="Testnet">
+        ```bash
+        [[axelar_bridge_evm]]
+        name = "mantle"
+        rpc_addr = "http://IP:PORT"
+        start-with-bridge = true
+        ```
+    </tab-item>
+</tabs>
+
+### Common Node Operations
+
+First `cd` into the directory
+```bash
+cd $HOME/mantlenetworks/
+```
+
+To start
+<tabs>
+    <tab-item title="Mainnet">
+        ```bash
+        docker compose -f docker-compose-mainnet.yml up -d
+        ```
+    </tab-item>
+    <tab-item title="Testnet">
+        ```bash
+        docker compose -f docker-compose.yml up -d
+        ```
+    </tab-item>
+</tabs>
+To stop
+```bash
+docker compose down
+```
+
+To update
+```bash
+docker compose pull
+```
+
+To stop and wipe out everything
+```bash
+docker compose down -v
+```
