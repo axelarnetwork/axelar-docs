@@ -1,7 +1,5 @@
 # Binance
 
-import { Callout } from "/src/components/callout"
-
 Instructions to set up your Binance node.
 
 ## Requirements
@@ -246,11 +244,6 @@ echo "${YOUR_IP}:8545"
 
 In order for `vald` to connect to your Binance Smart Chain node, your `rpc_addr` should be exposed in
 vald's `config.toml`
-
-<Callout emoji="📝">
-  Mainnet config requires `finality_override` to be set to be compatible with BSC Luban upgrade.
-</Callout>
-
 
 <tabs>
   <tab-item title="Mainnet">
