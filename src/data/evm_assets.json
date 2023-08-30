@@ -774,6 +774,28 @@
       ]
     },
     {
+      "id": "ueuroc",
+      "name": "EUROC - Euro Coin",
+      "symbol": "EUROC",
+      "image": "/images/assets/euroc.svg",
+      "contracts": [
+        {
+          "chain": "celo",
+          "address": "0x061cc5a2C863E0C1Cb404006D559dB18A34C762d",
+          "symbol": "axlEUROC",
+          "decimals": 6,
+          "transfer_fee": 1.5
+        },
+        {
+          "chain": "ethereum",
+          "address": "0x1aBaEA1f7C830bD89Acc67eC4af516284b1bC33c",
+          "symbol": "EUROC",
+          "decimals": 6,
+          "transfer_fee": 30.0
+        }
+      ]
+    },
+    {
       "id": "lqdr-wei",
       "name": "Lqdr - LqdrV2",
       "symbol": "Lqdr",
