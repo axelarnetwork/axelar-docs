@@ -1,7 +1,5 @@
 # Binance
 
-import { Callout } from "/src/components/callout"
-
 Instructions to set up your Binance node.
 
 ## Requirements
@@ -23,7 +21,7 @@ Check the appropriate version for the network accordingly [in their docs](https:
 
 ```bash
 # This is an example - check their docs and release page to opt for the right version
-BSC_GETH_RELEASE=v1.1.18_hf
+BSC_GETH_RELEASE=vx.y.z
 ```
 ```bash
 # verify correct version
@@ -247,11 +245,6 @@ echo "${YOUR_IP}:8545"
 In order for `vald` to connect to your Binance Smart Chain node, your `rpc_addr` should be exposed in
 vald's `config.toml`
 
-<Callout emoji="📝">
-  Mainnet config requires `finality_override` to be set to be compatible with BSC Luban upgrade.
-</Callout>
-
-
 <tabs>
   <tab-item title="Mainnet">
   ```bash
@@ -259,7 +252,6 @@ vald's `config.toml`
   name = "binance"
   rpc_addr = "http://IP:PORT"
   start-with-bridge = true
-  finality_override = "confirmation"
   ```
   </tab-item>
   <tab-item title="Testnet">
