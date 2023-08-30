@@ -81,6 +81,14 @@
       "transfer_fee": 5.7e-05
     },
     {
+      "id": "ueuroc",
+      "name": "EUROC - Euro Coin",
+      "symbol": "EUROC",
+      "image": "/images/assets/euroc.svg",
+      "decimals": 6,
+      "transfer_fee": 0.1
+    },
+    {
       "id": "lqdr-wei",
       "name": "Lqdr - LqdrV2",
       "symbol": "Lqdr",
