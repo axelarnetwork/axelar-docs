@@ -77,6 +77,13 @@
           "transfer_fee": 1.5
         },
         {
+          "chain": "mantle",
+          "address": "0xEB466342C4d449BC9f53A865D5Cb90586f405215",
+          "symbol": "axlUSDC",
+          "decimals": 6,
+          "transfer_fee": 1.5
+        },
+        {
           "chain": "moonbeam",
           "address": "0xCa01a1D0993565291051daFF390892518ACfAD3A",
           "symbol": "axlUSDC",
@@ -170,6 +177,13 @@
         },
         {
           "chain": "linea",
+          "address": "0x23ee2343B892b1BB63503a4FAbc840E0e2C6810f",
+          "symbol": "wAXL",
+          "decimals": 6,
+          "transfer_fee": 3.0
+        },
+        {
+          "chain": "mantle",
           "address": "0x23ee2343B892b1BB63503a4FAbc840E0e2C6810f",
           "symbol": "wAXL",
           "decimals": 6,
@@ -275,6 +289,13 @@
           "transfer_fee": 1.5
         },
         {
+          "chain": "mantle",
+          "address": "0x5C7e299CF531eb66f2A1dF637d37AbB78e6200C7",
+          "symbol": "axlDAI",
+          "decimals": 18,
+          "transfer_fee": 1.5
+        },
+        {
           "chain": "moonbeam",
           "address": "0x14dF360966a1c4582d2b18EDbdae432EA0A27575",
           "symbol": "axlDAI",
@@ -368,6 +389,13 @@
         },
         {
           "chain": "linea",
+          "address": "0x7f5373AE26c3E8FfC4c77b7255DF7eC1A9aF52a6",
+          "symbol": "axlUSDT",
+          "decimals": 6,
+          "transfer_fee": 1.5
+        },
+        {
+          "chain": "mantle",
           "address": "0x7f5373AE26c3E8FfC4c77b7255DF7eC1A9aF52a6",
           "symbol": "axlUSDT",
           "decimals": 6,
@@ -473,6 +501,13 @@
           "transfer_fee": 6.2e-05
         },
         {
+          "chain": "mantle",
+          "address": "0x1a35EE4640b0A3B87705B0A4B45D227Ba60Ca2ad",
+          "symbol": "axlWBTC",
+          "decimals": 8,
+          "transfer_fee": 6.2e-05
+        },
+        {
           "chain": "moonbeam",
           "address": "0x8e9a09bc94689c157Cd7f6aB5d4577ED6f44Ba1E",
           "symbol": "axlWBTC",
@@ -572,6 +607,13 @@
           "transfer_fee": 0.00094
         },
         {
+          "chain": "mantle",
+          "address": "0xb829b68f57CC546dA7E5806A929e53bE32a4625D",
+          "symbol": "axlETH",
+          "decimals": 18,
+          "transfer_fee": 0.00094
+        },
+        {
           "chain": "moonbeam",
           "address": "0x85a8B472d116585E2cc10eB1e0e3E3127E1f5D3f",
           "symbol": "axlETH",
@@ -665,6 +707,13 @@
         },
         {
           "chain": "linea",
+          "address": "0x88DfaAABaf06f3a41D2606EA98BC8edA109AbeBb",
+          "symbol": "axlWMAI",
+          "decimals": 18,
+          "transfer_fee": 1.5
+        },
+        {
+          "chain": "mantle",
           "address": "0x88DfaAABaf06f3a41D2606EA98BC8edA109AbeBb",
           "symbol": "axlWMAI",
           "decimals": 18,
@@ -922,6 +971,13 @@
           "transfer_fee": 1.5
         },
         {
+          "chain": "mantle",
+          "address": "0xa334884bF6b0A066d553D19e507315E839409e62",
+          "symbol": "ERN",
+          "decimals": 18,
+          "transfer_fee": 1.5
+        },
+        {
           "chain": "optimism",
           "address": "0xc5b001DC33727F8F26880B184090D3E252470D45",
           "symbol": "ERN",
@@ -994,6 +1050,13 @@
         },
         {
           "chain": "linea",
+          "address": "0xf7A0dd3317535eC4f4d29ADF9d620B3d8D5D5069",
+          "symbol": "stERN",
+          "decimals": 18,
+          "transfer_fee": 1.5
+        },
+        {
+          "chain": "mantle",
           "address": "0xf7A0dd3317535eC4f4d29ADF9d620B3d8D5D5069",
           "symbol": "stERN",
           "decimals": 18,
@@ -1335,6 +1398,13 @@
           "transfer_fee": 38.0
         },
         {
+          "chain": "mantle",
+          "address": "0x00e1724885473B63bCE08a9f0a52F35b0979e35A",
+          "symbol": "OATH",
+          "decimals": 18,
+          "transfer_fee": 38.0
+        },
+        {
           "chain": "moonbeam",
           "address": "0xd20523b39fAF1D6e9023a4D6085f87B7b0DE7926",
           "symbol": "OATH",
@@ -1501,6 +1571,13 @@
         },
         {
           "chain": "linea",
+          "address": "0xB448eC505C924944ca8B2C55EF05c299eE0781df",
+          "symbol": "axlKNC",
+          "decimals": 18,
+          "transfer_fee": 2.5
+        },
+        {
+          "chain": "mantle",
           "address": "0xB448eC505C924944ca8B2C55EF05c299eE0781df",
           "symbol": "axlKNC",
           "decimals": 18,
@@ -1772,6 +1849,13 @@
           "transfer_fee": 0.12
         },
         {
+          "chain": "mantle",
+          "address": "0x7ba861c07d40e3341B901Fd6F418e96E0132E25b",
+          "symbol": "stATOM",
+          "decimals": 6,
+          "transfer_fee": 0.12
+        },
+        {
           "chain": "moonbeam",
           "address": "0x2924894E7886C6B9018179946EE389bb06534021",
           "symbol": "stATOM",
@@ -1866,6 +1950,13 @@
         },
         {
           "chain": "linea",
+          "address": "0x05931D5e2F7E1C1A710c9c1dCdD94e413652376F",
+          "symbol": "STRD",
+          "decimals": 6,
+          "transfer_fee": 3.0
+        },
+        {
+          "chain": "mantle",
           "address": "0x05931D5e2F7E1C1A710c9c1dCdD94e413652376F",
           "symbol": "STRD",
           "decimals": 6,
@@ -2036,6 +2127,13 @@
           "symbol": "axlFTM",
           "decimals": 18,
           "transfer_fee": 5.4
+        },
+        {
+          "chain": "mantle",
+          "address": "0x64C09d32E8452CC0453D2EfeED8c9a16421b1ec8",
+          "symbol": "axlFTM",
+          "decimals": 18,
+          "transfer_fee": 5.4
         }
       ]
     },
@@ -2110,6 +2208,13 @@
         },
         {
           "chain": "linea",
+          "address": "0x06beE9E7238a331B68D83Df3B5B9B16d5DBa83ff",
+          "symbol": "axlATOM",
+          "decimals": 6,
+          "transfer_fee": 0.12
+        },
+        {
+          "chain": "mantle",
           "address": "0x06beE9E7238a331B68D83Df3B5B9B16d5DBa83ff",
           "symbol": "axlATOM",
           "decimals": 6,
@@ -2396,6 +2501,13 @@
           "transfer_fee": 1.5
         },
         {
+          "chain": "mantle",
+          "address": "0x406Cde76a3fD20e48bc1E0F60651e60Ae204B040",
+          "symbol": "axlFRAX",
+          "decimals": 18,
+          "transfer_fee": 1.5
+        },
+        {
           "chain": "moonbeam",
           "address": "0x61C82805453a989E99B544DFB7031902e9bac448",
           "symbol": "axlFRAX",
@@ -2534,6 +2646,13 @@
         },
         {
           "chain": "linea",
+          "address": "0x5E2Cf56A562b1bDD32ec26315063074ADC420C73",
+          "symbol": "axlFIL",
+          "decimals": 18,
+          "transfer_fee": 0.3
+        },
+        {
+          "chain": "mantle",
           "address": "0x5E2Cf56A562b1bDD32ec26315063074ADC420C73",
           "symbol": "axlFIL",
           "decimals": 18,
