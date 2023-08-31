@@ -32,21 +32,36 @@ cd mantlenetworks
 
 <tabs>
     <tab-item title="Mainnet">
-        Set the following config options in `docker-compose-mainnet.yml`:
+        Set the following config option in `docker-compose-mainnet.yml`:
         ```bash
         ETH1_HTTP=your_ethereum_mainnet_l1_node
         ```
     </tab-item>
     <tab-item title="Testnet">
-        Set the following config options in `docker-compose.yml`:
+        Set the following config option in `docker-compose.yml`:
         ```bash
         ETH1_HTTP=your_ethereum_goerli_l1_node
         ```
     </tab-item>
 </tabs>
 
-<Callout type="info" emoji="ℹ️">
-  Note: Make sure to set `ETH1_HTTP` to your own Ethereum RPC node for security.
+<tabs>
+    <tab-item title="Mainnet">
+        Set the following config option in [mainnet/envs/geth.env](https://github.com/mantlenetworkio/networks/blob/99344b50e3b792d91a83ba89304ef6f479585ae7/mainnet/envs/geth.env#L31):
+        ```bash
+        GCMODE=full
+        ```
+    </tab-item>
+    <tab-item title="Testnet">
+        Set the following config option in [goerli/envs/geth.env](https://github.com/mantlenetworkio/networks/blob/99344b50e3b792d91a83ba89304ef6f479585ae7/goerli/envs/geth.env#L31):
+        ```bash
+        GCMODE=full
+        ```
+    </tab-item>
+</tabs>
+
+<Callout type="warning" emoji="⚠️">
+  Make sure to set `ETH1_HTTP` above to your own Ethereum RPC node for security.
 </Callout>
 
 ### Start the node
