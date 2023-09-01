@@ -1,6 +1,6 @@
 # Cross Chain Swaps with Circle's CCTP and Axelar
 
-Circle has created [CCTP](https://developers.circle.com/stablecoin/docs/cctp-getting-started) to natively transfer USDC across [supported blockchains](https://developers.circle.com/stablecoin/docs/cctp-protocol-contract).  In this tutorial, we’ll learn how to build a cross-chain USDC dApp using Circle’s Cross-Chain Transfer Protocol (CCTP) and Axelar’s General Message Passing (GMP).
+Circle has created [CCTP](https://developers.circle.com/stablecoin/docs/cctp-getting-started) to natively transfer USDC across [supported blockchains](https://developers.circle.com/stablecoin/docs/cctp-protocol-contract). In this tutorial, we’ll learn how to build a cross-chain USDC dApp using Circle’s Cross-Chain Transfer Protocol (CCTP) and Axelar’s General Message Passing (GMP).
 
 With this approach, your users will be able to issue a single transaction with a GMP payload. On the backend, the application takes care of USDC bridging, plus any other action that the user wishes — as indicated in the payload. Axelar services, also working on the backend, can handle conversion and payment for destination-chain gas fees, so the user only has to transact once, using one gas token.
 
@@ -32,7 +32,6 @@ pragma solidity 0.8.9;
 import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import {SafeERC20} from "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import {ITokenMessenger} from "./ITokenMessenger.sol";
-import "./StringAddressUtils.sol";
 
 contract CrosschainNativeSwap is AxelarExecutable, Ownable {
     IERC20 public usdc;
@@ -116,7 +115,7 @@ import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
 import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import {SafeERC20} from "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import {ITokenMessenger} from "./ITokenMessenger.sol";
-import "./StringAddressUtils.sol";
+import { StringToAddress, AddressToString } from "@axelar-network/axelar-gmp-sdk-solidity/contracts/libs/AddressString.sol";
 
 contract CrosschainNativeSwap is AxelarExecutable, Ownable {
     IERC20 public usdc;
@@ -343,7 +342,7 @@ There’s a lot of new code added here. Let’s try to understand it, step by st
 
 **Step 1** — Add the `gasReceiver` variable and initialize it in the constructor. This handles destination-chain gas token conversion and fee payment, so the user need not transact more than once.
 
-**Step 2** — Add the  `siblings` variable and related functions so the admin can define connected contract addresses on the other chains.
+**Step 2** — Add the `siblings` variable and related functions so the admin can define connected contract addresses on the other chains.
 
 **Step 3** — Add the `nativeTradeSendTrade` function. The client will send a transaction to call this function. This is the most important function in our contract. Here are the implementation details:
 
@@ -353,15 +352,25 @@ There’s a lot of new code added here. Let’s try to understand it, step by st
 - Pay gas to the **AxelarGasService** contract with the native token. The required amount will be calculated off-chain by using [AxelarJS-SDK](https://docs.axelar.dev/dev/axelarjs-sdk/intro) on the client side. See more information about it [here](https://docs.axelar.dev/dev/axelarjs-sdk/axelar-query-api#estimategasfee).
 - Send `destinationChain`, `destinationContractAddress`and `payload` to the **AxelarGateway** contract.
 
-**Step 4** — Upgrade a contract to extend **AxelarExecutable** interface and override `_execute` function, so the contract can be called by Axelar Executor service at the destination chain. 
+**Step 4** — Upgrade a contract to extend **AxelarExecutable** interface and override `_execute` function, so the contract can be called by Axelar Executor service at the destination chain.
+
 - The function decodes `payload` to retrieve all information it needs for swap.
 - We correct the amount in `tradeData` bytes before the swap.
 - Approve USDC to the router contract and call the swap function, and refund if it fails.
 
 And we’re done! Here is the [demo](https://www.youtube.com/watch?v=RyQkEcM1nKE) that communicates with the completed contract.
+
 <br />
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/RyQkEcM1nKE" title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
+<iframe
+  width="560"
+  height="315"
+  src="https://www.youtube.com/embed/RyQkEcM1nKE"
+  title="YouTube video player"
+  frameBorder="0"
+  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+  allowFullScreen
+></iframe>
 
 ### Resources
 
