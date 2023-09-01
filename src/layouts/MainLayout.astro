@@ -51,7 +51,27 @@ const shownDescription = description || 'The Axelar Documentation tells you how 
     <link rel="stylesheet" href="/styles/prism.css"/>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/instantsearch.css@7.4.3/themes/satellite-min.css">
 
-
+      <!-- Dark mode is set here before the rendering of the page to ensure no flashing -->
+      <script is:inline>
+        const root = document.documentElement;
+        const theme = (()=>{
+            if (typeof localStorage !== 'undefined' && localStorage.getItem('theme')) {
+                return localStorage.getItem('theme');
+            }
+            if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                return 'dark';
+            }
+            return 'light';
+        }
+        )();
+        if (theme === 'light' || (theme === 'system' && !window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            root.classList.remove('dark');
+        } else {
+            root.classList.add('dark');
+        }
+        </script>
+      
+   </script>
     <script src="/src/scripts/index.ts"></script>
   </head>
   <body>

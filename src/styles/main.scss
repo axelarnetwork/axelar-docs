@@ -1,10 +1,9 @@
-@import 'dark.scss';
+@import "dark.scss";
 
 $page-width: 1400px;
 $font: Noto Sans, ui-sans-serif, sans-serif, system-ui, -apple-system,
   BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial;
 $nav-size: 64px;
-
 
 * {
   margin: 0;
@@ -17,6 +16,7 @@ body {
   line-height: 28px;
   color: rgb(51, 65, 85);
 }
+
 a {
   text-decoration: none;
   color: black;
@@ -220,9 +220,11 @@ h1 .anchor-icon {
   margin-left: 8px;
 }
 
-
-body pre[class*=language-] {
+body pre[class*="language-"] {
   border-width: 1px;
+}
+div.code-toolbar {
+  color: white;
 }
 
 .callout {
@@ -230,19 +232,17 @@ body pre[class*=language-] {
   align-items: center;
   border-radius: 4px;
   margin: 16px 0;
-  padding-right:32px;
-  ;
+  padding-right: 32px;
 }
 .callout.warning {
   background-color: rgb(255, 247, 237);
   color: rgb(154, 52, 18);
-  border:1px solid #ffedd5;
+  border: 1px solid #ffedd5;
 }
 .callout.error {
   background-color: rgb(254, 226, 226);
   color: rgb(185, 28, 28);
-  border:1px solid #ffedd5;
-
+  border: 1px solid #ffedd5;
 }
 .copy-capable {
   display: inline;
@@ -541,14 +541,14 @@ astro-island button {
   cursor: pointer;
 }
 .copy:hover {
-  opacity: 0.8
+  opacity: 0.8;
 }
 
 .lightButton {
-  display:none;
+  display: none;
 }
 .darkButton {
-  display:block;
+  display: block;
 }
 
 /* Mobile styles */
@@ -580,7 +580,6 @@ astro-island button {
     padding: 32px;
     border: 1px solid rgb(229, 231, 235);
     border-radius: 6px;
+    z-index: 5;
   }
-  
 }
-

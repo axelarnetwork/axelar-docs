@@ -6,6 +6,6 @@ import "./prism.js";
 import "./active";
 import "./menu";
 import "./dark";
-import {showToast } from  "./toast";
+import { showToast } from "./toast";
 
-window['showToast'] = showToast;
+window["showToast"] = showToast;

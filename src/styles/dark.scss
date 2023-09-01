@@ -1,4 +1,4 @@
-body.dark {
+html.dark body {
   $dark-link: #008ae6;
   $dark-line: #1f2937;
   $dark-text: #e1e1e1;
@@ -83,23 +83,24 @@ body.dark {
   .ais-Hits {
     border: 3px solid rgb(105, 105, 105);
     border-radius: 16px;
-    
+
     background: #1d1f22;
   }
   .ais-Hits a {
     color: $dark-text;
   }
   .ais-Hits-item:hover {
-    opacity:0.8;
+    opacity: 0.8;
   }
   // first hits item
-    .ais-Hits-item:first-child {
-        border-top-left-radius: 16px;
-        border-top-right-radius: 16px;
-    }  
-    .ais-Snippet-highlighted,.ais-Highlight-highlighted {
-        color: #6cafdc;
-    }
+  .ais-Hits-item:first-child {
+    border-top-left-radius: 16px;
+    border-top-right-radius: 16px;
+  }
+  .ais-Snippet-highlighted,
+  .ais-Highlight-highlighted {
+    color: #6cafdc;
+  }
   .card:hover {
     box-shadow: 0 0 10px #314158;
     border-color: #314158;
@@ -129,10 +130,13 @@ body.dark {
   pre[class*="language-"] {
     border-color: $dark-line;
   }
+  div.code-toolbar {
+    color: white;
+  }
   .lightButton {
-    display:block;
+    display: block;
   }
   .darkButton {
-    display:none;
+    display: none;
   }
 }
