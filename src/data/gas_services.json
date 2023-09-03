@@ -51,6 +51,10 @@
     {
       "id": "linea",
       "address": "0x2d5d7d31F671F86C782533cc367F14109a082712"
+    },
+    {
+      "id": "mantle",
+      "address": "0x2d5d7d31F671F86C782533cc367F14109a082712"
     }
   ],
   "testnet": [
@@ -112,6 +116,10 @@
     },
     {
       "id": "polygon-zkevm",
+      "address": "0xbE406F0189A0B4cf3A05C286473D23791Dd44Cc6"
+    },
+    {
+      "id": "mantle",
       "address": "0xbE406F0189A0B4cf3A05C286473D23791Dd44Cc6"
     }
   ]

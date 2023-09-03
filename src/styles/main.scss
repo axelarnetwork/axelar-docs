@@ -1,3 +1,5 @@
+@import "dark.scss";
+
 $page-width: 1400px;
 $font: Noto Sans, ui-sans-serif, sans-serif, system-ui, -apple-system,
   BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial;
@@ -14,6 +16,7 @@ body {
   line-height: 28px;
   color: rgb(51, 65, 85);
 }
+
 a {
   text-decoration: none;
   color: black;
@@ -88,6 +91,14 @@ nav a {
   margin: 16px;
   text-decoration: none;
   color: black;
+}
+.site-logo,
+.site-logo.active {
+  color: black;
+  background-color: transparent;
+  text-decoration: none;
+  font-size: 34px;
+  font-weight: bold;
 }
 ol,
 ul {
@@ -209,19 +220,29 @@ h1 .anchor-icon {
   margin-left: 8px;
 }
 
+body pre[class*="language-"] {
+  border-width: 1px;
+}
+div.code-toolbar {
+  color: white;
+}
+
 .callout {
   display: flex;
   align-items: center;
   border-radius: 4px;
   margin: 16px 0;
+  padding-right: 32px;
 }
 .callout.warning {
   background-color: rgb(255, 247, 237);
   color: rgb(154, 52, 18);
+  border: 1px solid #ffedd5;
 }
 .callout.error {
   background-color: rgb(254, 226, 226);
   color: rgb(185, 28, 28);
+  border: 1px solid #ffedd5;
 }
 .copy-capable {
   display: inline;
@@ -282,12 +303,12 @@ astro-island button {
   border-collapse: collapse;
 }
 
-.resources tr:nth-child(odd) {
-  background-color: #f2f2f2;
-}
-.resources tr:nth-child(even) {
-  background-color: white;
-}
+// .resources tr:nth-child(odd) {
+//   background-color: #f2f2f2;
+// }
+// .resources tr:nth-child(even) {
+//   background-color: white;
+// }
 // remove table cell borders from td
 .resources td {
   border: 0px;
@@ -399,7 +420,7 @@ astro-island button {
   font-weight: inherit;
 }
 .desktop-nav .active:hover {
-  color:grey;
+  color: grey;
 }
 #search-results {
   display: none;
@@ -516,6 +537,20 @@ astro-island button {
   display: none;
 }
 
+.copy {
+  cursor: pointer;
+}
+.copy:hover {
+  opacity: 0.8;
+}
+
+.lightButton {
+  display: none;
+}
+.darkButton {
+  display: block;
+}
+
 /* Mobile styles */
 @media (max-width: 650px) {
   #page {
@@ -545,5 +580,6 @@ astro-island button {
     padding: 32px;
     border: 1px solid rgb(229, 231, 235);
     border-radius: 6px;
+    z-index: 5;
   }
 }

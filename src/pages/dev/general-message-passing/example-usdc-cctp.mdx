@@ -1,6 +1,6 @@
 # Cross Chain Swaps with Circle's CCTP and Axelar
 
-Circle has created [CCTP](https://developers.circle.com/stablecoin/docs/cctp-getting-started) to natively transfer USDC across [supported blockchains](https://developers.circle.com/stablecoin/docs/cctp-protocol-contract).  In this tutorial, we’ll learn how to build a cross-chain USDC dApp using Circle’s Cross-Chain Transfer Protocol (CCTP) and Axelar’s General Message Passing (GMP).
+Circle has created [CCTP](https://developers.circle.com/stablecoin/docs/cctp-getting-started) to natively transfer USDC across [supported blockchains](https://developers.circle.com/stablecoin/docs/cctp-protocol-contract). In this tutorial, we’ll learn how to build a cross-chain USDC dApp using Circle’s Cross-Chain Transfer Protocol (CCTP) and Axelar’s General Message Passing (GMP).
 
 With this approach, your users will be able to issue a single transaction with a GMP payload. On the backend, the application takes care of USDC bridging, plus any other action that the user wishes — as indicated in the payload. Axelar services, also working on the backend, can handle conversion and payment for destination-chain gas fees, so the user only has to transact once, using one gas token.
 
@@ -32,7 +32,6 @@ pragma solidity 0.8.9;
 import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import {SafeERC20} from "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import {ITokenMessenger} from "./ITokenMessenger.sol";
-import "./StringAddressUtils.sol";
 
 contract CrosschainNativeSwap is AxelarExecutable, Ownable {
     IERC20 public usdc;
@@ -116,7 +115,7 @@ import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
 import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import {SafeERC20} from "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import {ITokenMessenger} from "./ITokenMessenger.sol";
-import "./StringAddressUtils.sol";
+import { StringToAddress, AddressToString } from "@axelar-network/axelar-gmp-sdk-solidity/contracts/libs/AddressString.sol";
 
 contract CrosschainNativeSwap is AxelarExecutable, Ownable {
     IERC20 public usdc;
@@ -343,7 +342,7 @@ There’s a lot of new code added here. Let’s try to understand it, step by st
 
 **Step 1** — Add the `gasReceiver` variable and initialize it in the constructor. This handles destination-chain gas token conversion and fee payment, so the user need not transact more than once.
 
-**Step 2** — Add the  `siblings` variable and related functions so the admin can define connected contract addresses on the other chains.
+**Step 2** — Add the `siblings` variable and related functions so the admin can define connected contract addresses on the other chains.
 
 **Step 3** — Add the `nativeTradeSendTrade` function. The client will send a transaction to call this function. This is the most important function in our contract. Here are the implementation details:
 
@@ -353,15 +352,25 @@ There’s a lot of new code added here. Let’s try to understand it, step by st
 - Pay gas to the **AxelarGasService** contract with the native token. The required amount will be calculated off-chain by using [AxelarJS-SDK](https://docs.axelar.dev/dev/axelarjs-sdk/intro) on the client side. See more information about it [here](https://docs.axelar.dev/dev/axelarjs-sdk/axelar-query-api#estimategasfee).
 - Send `destinationChain`, `destinationContractAddress`and `payload` to the **AxelarGateway** contract.
 
-**Step 4** — Upgrade a contract to extend **AxelarExecutable** interface and override `_execute` function, so the contract can be called by Axelar Executor service at the destination chain. 
+**Step 4** — Upgrade a contract to extend **AxelarExecutable** interface and override `_execute` function, so the contract can be called by Axelar Executor service at the destination chain.
+
 - The function decodes `payload` to retrieve all information it needs for swap.
 - We correct the amount in `tradeData` bytes before the swap.
 - Approve USDC to the router contract and call the swap function, and refund if it fails.
 
 And we’re done! Here is the [demo](https://www.youtube.com/watch?v=RyQkEcM1nKE) that communicates with the completed contract.
+
 <br />
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/RyQkEcM1nKE" title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
+<iframe
+  width="560"
+  height="315"
+  src="https://www.youtube.com/embed/RyQkEcM1nKE"
+  title="YouTube video player"
+  frameBorder="0"
+  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+  allowFullScreen
+></iframe>
 
 ### Resources
 
@@ -372,11 +381,3 @@ And we’re done! Here is the [demo](https://www.youtube.com/watch?v=RyQkEcM1nKE
 ### About Circle
 
 Circle is a global financial technology firm that enables businesses of all sizes to harness the power of digital currencies and public blockchains for payments, commerce and financial applications worldwide. Circle is the issuer of USD Coin (USDC), one of the fastest growing dollar digital currencies powering always-on internet-native commerce and payments. Today, Circle's transactional services, business accounts, and platform APIs are giving rise to a new generation of financial services and commerce applications that hold the promise of raising global economic prosperity for all through the frictionless exchange of financial value. Additionally, Circle operates SeedInvest, a leading startup fundraising platform in the U.S. Learn more at [https://circle.com](https://c212.net/c/link/?t=0&l=en&o=3502185-1&h=961378907&u=https%3A%2F%2Fcircle.com%2F&a=https%3A%2F%2Fcircle.com).
-
-### About Axelar
-
-Axelar delivers secure cross-chain communication. That means dApp users can interact with any asset, any application, on any chain, with one click. You can think of it as Stripe for Web3. Developers interact with a simple API atop a permissionless network that routes messages and ensures network security via proof-of-stake consensus.
-
-Axelar has raised capital from top-tier investors, including Binance, Coinbase, Dragonfly Capital and Polychain Capital. Partners include major proof-of-stake blockchains, such as Avalanche, Cosmos, Ethereum, Polkadot and others. Axelar’s team includes experts in distributed systems/cryptography and MIT/Google/Consensys alumni; the co-founders, Sergey Gorbunov and Georgios Vlachos, were founding team members at Algorand.
-
-More about Axelar: [Website](https://axelar.network) | [GitHub](https://github.com/axelarnetwork/axelar-examples) | [Discord](https://discord.com/invite/aRZ3Ra6f7D) | [Twitter](https://twitter.com/axelarcore).

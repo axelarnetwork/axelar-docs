@@ -199,6 +199,30 @@
       "image": "/images/chains/linea.svg"
     },
     {
+      "id": "mantle",
+      "name": "Mantle",
+      "chain_id": 5000,
+      "network_id": "mantle",
+      "provider_params": [
+        {
+          "chainId": "0x1388",
+          "chainName": "Mantle",
+          "rpcUrls": [
+            "https://rpc.mantle.xyz"
+          ],
+          "nativeCurrency": {
+            "name": "Mantle",
+            "symbol": "MNT",
+            "decimals": 18
+          },
+          "blockExplorerUrls": [
+            "https://mantlescan.org"
+          ]
+        }
+      ],
+      "image": "/images/chains/mantle.svg"
+    },
+    {
       "id": "fantom",
       "name": "Fantom",
       "chain_id": 250,
@@ -597,6 +621,30 @@
         }
       ],
       "image": "/images/chains/linea.svg"
+    },
+    {
+      "id": "mantle",
+      "name": "Mantle",
+      "chain_id": 5001,
+      "network_id": "mantle",
+      "provider_params": [
+        {
+          "chainId": "0x1389",
+          "chainName": "Mantle Testnet",
+          "rpcUrls": [
+            "https://rpc.testnet.mantle.xyz"
+          ],
+          "nativeCurrency": {
+            "name": "Mantle",
+            "symbol": "MNT",
+            "decimals": 18
+          },
+          "blockExplorerUrls": [
+            "https://testnet.mantlescan.org"
+          ]
+        }
+      ],
+      "image": "/images/chains/mantle.svg"
     },
     {
       "id": "polygon-zkevm",
