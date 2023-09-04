@@ -723,7 +723,7 @@
       "id": "centrifuge",
       "name": "Centrifuge",
       "chain_id": "2089",
-      "network_id": "kava",
+      "network_id": "centrifuge",
       "provider_params": [
         {
           "chainId": "0x829",
