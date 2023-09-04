@@ -1646,6 +1646,13 @@
           "symbol": "ORBS",
           "decimals": 18,
           "transfer_fee": 60.0
+        },
+        {
+          "chain": "kava",
+          "address": "0xf3C091ed43de9c270593445163a41A876A0bb3dd",
+          "symbol": "ORBS",
+          "decimals": 18,
+          "transfer_fee": 60.0
         }
       ]
     },
@@ -1732,6 +1739,13 @@
           "symbol": "axlDEUS",
           "decimals": 18,
           "transfer_fee": 1.2
+        },
+        {
+          "chain": "fantom",
+          "address": "0x912922e25ac79D524734d8eC0C882B035c5b356f",
+          "symbol": "axlDEUS",
+          "decimals": 18,
+          "transfer_fee": 0.06
         },
         {
           "chain": "kava",
@@ -3381,6 +3395,13 @@
       "contracts": [
         {
           "chain": "base",
+          "address": "0x594D8b81eC765410536ab59E98091700b99508D8",
+          "symbol": "WFTM",
+          "decimals": 18,
+          "transfer_fee": 0.08
+        },
+        {
+          "chain": "centrifuge",
           "address": "0x594D8b81eC765410536ab59E98091700b99508D8",
           "symbol": "WFTM",
           "decimals": 18,

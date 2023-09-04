@@ -718,6 +718,30 @@
         }
       ],
       "image": "/images/chains/kava.svg"
+    },
+    {
+      "id": "centrifuge",
+      "name": "Centrifuge",
+      "chain_id": "2089",
+      "network_id": "kava",
+      "provider_params": [
+        {
+          "chainId": "0x829",
+          "chainName": "Centrifuge Algol Testnet",
+          "rpcUrls": [
+            "https://fullnode.algol.cntrfg.com/rpc"
+          ],
+          "nativeCurrency": {
+            "name": "Algol",
+            "symbol": "ALGL",
+            "decimals": 18
+          },
+          "blockExplorerUrls": [
+            "https://polkadot.js.org/apps/?rpc=wss%3A%2F%2Ffullnode.algol.cntrfg.com%2Fpublic-ws#/explorer"
+          ]
+        }
+      ],
+      "image": "/images/chains/centrifuge.svg"
     }
   ]
 }
