@@ -62,7 +62,6 @@ const loadSearch = async () => {
 
   function stateChange({ uiState, setUiState }) {
     const query = uiState.documentation.query || "";
-    console.log("query is", query);
     const search_string = query;
 
     if (search_string.length < 3) {
