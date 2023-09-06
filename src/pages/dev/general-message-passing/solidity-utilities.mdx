@@ -8,7 +8,7 @@ Creating an interchain dApp will often require the same contract to be deployed 
 Furthermore, it is useful to know each address of this contract on each chain, either to know where to send remote contract calls, or where to trust remote contract calls from -- often both.
 If we can guarantee that the contracts in question will be deployed at the same address on each network, then the above is trivial.
 This can be achieved by deploying each contract from the same address with the same nonce at each network, or by using [`create3`](https://github.com/axelarnetwork/axelar-gmp-sdk-solidity/blob/main/contracts/deploy/Create3.sol).
-For this purpose, we deployed [`Create3 Deployer`](https://github.com/axelarnetwork/axelar-gmp-sdk-solidity/blob/main/contracts/deploy/Create3Deployer.sol) at
+For this purpose, we launched [`Create3 Deployer`](https://github.com/axelarnetwork/axelar-gmp-sdk-solidity/blob/main/contracts/deploy/Create3Deployer.sol) at
 `0xf49B10ccFB7D82C3a8749fFB1aAF3e0c936Eba36` on every EVM testnet and mainnet that is supported by Axelar.
 We plan on deploying it on future supported testnets and mainnets, too.
 
