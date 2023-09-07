@@ -1,0 +1,73 @@
+# Understanding Interchain Transaction Time
+
+There are several factors affecting the duration of a transaction from when it’s sent on the source chain to when it’s executed on the destination chain. Different blockchains are optimized in different ways in terms of their consensus mechanism, block size, and block time, which allows for certain blockchains to consistently allow for faster transactions than others. Due to the following factors blockchain transaction time can oftentimes be inconsistent even from the same source chain to the same destination chain.
+
+1. Finality
+
+   - Axelar’s _Cross-Chain Gateway Protocol_ allows it to work with different blockchains regardless of a given blockchain’s finality rules. However, due to the differing nature of finality on different blockchains, some blockchains might experience longer time to finality than others when confirming an interchain transfer on the source chain. During this process Axelar validators achieve consensus on a given source chain where the transaction is starting from. Axelar network validators can run nodes or light-clients of other chains. Axelar validators can then confirm if the transaction is finalized on the source chain where the transaction is being sent from. Cross-chain services need to wait for transactions to be finalized on the source chain to prevent the risk of the block being reorganized.
+
+1. Network Congestion
+
+   - Blockchains have a finite amount of resources available to process new transactions and the timing of your transaction can play a role when using the network. During times with high transaction volume the limited amount of miners/ validators that are maintaining the network may become overwhelmed. Increased network congestion may occur due to the following.
+     - Network upgrades: These may cause users to flood the network with transactions in response to the upgrade
+     - Data Intensive Application: Very popular applications on a blockchain may congest the network [as we saw with the Sunflower game on Polygon](https://decrypt.co/89913/nft-farming-game-clogging-up-ethereum-scaling-solution-polygon).
+     - Daily Traffic: Some times of the day are simply known to be more congested than others, though it is harder to find this data for smaller communities. [There are some patterns that have emerged for larger communities, such as Ethereum](https://coinmarketcap.com/alexandria/article/what-is-the-best-time-to-transact-on-ethereum-flipside-crypto)
+
+1. Gas Price
+   - Transactions with higher gas amounts sent over will always be prioritized by validators. If you pass in a low gas value for your transaction then it will take more time to be processed then one with higher gas passed in, especially during times of network congestion. When conducting an interchain transaction with Axelar, Axelar relayers require the average gas price over a window of time. If a transaction gets stuck then the relayer will increase the gas for the stuck transaction automatically. In the event where the relayer increases the amount of gas paid to help a stuck transaction the user will not be forwarded the cost of the increased gas to get the transaction "unstuck".
+
+## What is Blockchain Finality?
+
+Finality is a crucial concept relating to blockchain consensus. It is the state in which a given transaction can no longer be altered. In other words, as users of the blockchain we can only feel completely secure in our transaction as immutable once it is finalized. Different blockchains with different consensus mechanisms have different types of finality. The main impact for users is that even once a transaction is on-chain they still need to wait sometime (different for different chains) for their transaction to be considered finalized. The exception for this is blockchains with instant finality.
+
+## Types of Finality
+
+### Probabilistic (Eg. Polygon, Bitcoin)
+
+Probabilistic finality is commonly found in proof of work blockchains such as bitcoin and (pre-merge) p.o.w. Ethereum. In this design nodes follow the longest chain of blocks. The deeper a transaction is in the blockchain the harder it is to revert that transaction. The harder it is to revert the transaction the safer it is to assume that your transaction is immutable. Polygon, for example, also uses probabilistic finality but it underwent a [hard fork in early 2023](https://polygon.technology/blog/hardfork-incoming-upgrading-polygon-pos-chain-to-boost-performance) to remove block reorganizations to improve the time to finality. Simply put if block reorganization is non-existent less blocks need to pass for a block to be finalized.
+
+### Instant (Eg. CometBFT chains)
+
+Instant finality is when a blockchain has a finalization time immediately. An example of an instant finality implementation is CometBFT (formerly Tendermint) consensus, which powers Cosmos based blockchains. CometBFT uses a Practical Byzantine Fault Tolerance based consensus. It requires two thirds of the validator set to attest to a newly proposed block. The more validators available, the more checks the network will have to make to ensure a ⅔ consensus.
+
+### Near Instant (Eg. Avalanche, Fantom)
+
+Near instant finality is the next closest thing to instant finality. These blockchains have a sub-second finality times. Avalanche for examples implements a random sample of validators repeatedly vote either yes or no. This process repeats until a consensus is reached by the validators. Finality is achieved when a threshold of validators reach a consensus for a block that is confirmed through multiple rounds of reconfirmation.
+
+### Deterministic (Eg. Moonbeam)
+
+Moonbeam is a Polkadot parachain, which is aligned with the finality design of the Polkadot relay chain called [GRANDPA](https://github.com/w3f/consensus/blob/master/pdf/grandpa.pdf) (GHOST-based Recursive ANcestor Deriving Prefix Agreement). In this design the Moonbeam [collators](https://wiki.polkadot.network/docs/learn-collator) provide state transition proofs to the validators of the Polkadot relay chain. In Polkadot’s system validators are coming to consensus on the state of its parachains rather than blocks. In this design [validators can vote on the most recent block they think is valid and subsequently all the block’s ancestors are implicitly assumed to be valid as well in the vote](https://medium.com/polkadot-network/grandpa-block-finality-in-polkadot-an-introduction-part-1-d08a24a021b5). The algorithm then determines the best block which has a >⅔ supermajority of votes from validators, and produces a proof-of-finality. The proof-of-finality is constructed by taking the supermajority votes, and bundling them up together into a single message. In other words, when 2/3 of validators attest to a chain containing a certain block, all blocks leading up to that one are finalized at once.
+
+### Fast Finality (Eg. BNB)
+
+BNB was previously using probabilistic finality but it implemented fast finality in August of 2023 in the [BEP 126](https://forum.bnbchain.org/t/bep-126-draft-introduce-fast-finality-mechanism/123) upgrade. Before fast-finality Binance considered `⅔ _ validatorNum + 1 blocks` to be finalized (15 blocks). Now after the upgrade it considers (`⅔ _ validatorSize`) or more of the validators vote as expected. This takes about 2.5 blocks as opposed to the 15 blocks before the upgrade. This translates into a 2.5 second finality time (down from 7.5 seconds).
+
+### Fraud Proof Rollup Finality (Eg. Arbitrum)
+
+There are different types of finality when dealing with Arbitrum. Once a sequencer receives a transaction it will publish a message through its real-time feed confirming that it has processed the transaction. This counts as a soft finality of the transaction, meaning that the result of that transaction will not change from there on, as long as the Sequencer is trustworthy. For a hard finality you would wait for the Sequencer to post the batch on L1, although that may take a few minutes (in contrast with the soft finality, which is almost instant).
+
+### Casper Friendly Finality Gadget (Eg. Eth P.o.S)
+
+Post-merge Ethereum, which no longer uses proof of work uses checkpoint finality. The first block at the beginning of each [epoch](https://info.etherscan.com/epoch-in-ethereum/) (6.4 minute interval) is a checkpoint. Validators then vote on pairs of checkpoints that they consider valid. If the pair of checkpoints receives two-thirds of the staked eth vote then the more recent of the two checkpoints gets upgraded to justified. When the next pair of epochs is getting justified the previous pair gets upgraded to finalized. At the time of this writing this process takes about 15 minutes.
+
+## Common Finality Time For Interchain Transactions
+
+The following is a list of the typical time to confirmation required for finalization on each blockchain connected to Axelar. Each blockchain’s time to confirmation is a combination of the blockchain’s required time to finality plus the time Axelar requires to confirm that blockchain’s finality.
+
+This data is available on the [Axelarscan block explorer under the heading **GMP Time Spent**](https://axelarscan.io/interchain).
+| Blockchain | Finality Time | Block Time |
+| ------------ | ------------ | ------------ |
+| Ethereum | 16 minutes | 200 blocks
+| Avalanche | 3 seconds | 1 block
+| Polygon | 4:42 minutes | 128 blocks
+| BNB | 46 seconds | 15 blocks
+| Fantom | 3 seconds| 1 block
+| Kava | 45 seconds| 1 block
+| CometBFT (Formerly Tendermint) | Instant |
+| Optimism | 30 minutes | 1000000 blocks
+| Linea | 81 minutes | 400 blocks
+| Filecoin | 52 minutes | 100 blocks
+| Moonbeam | 25 seconds | 1 block
+| Celo | 12 seconds | 1 block
+| Arbitrum | 19:06 minutes | 1000000 blocks
+| Base | 24 minutes | 1000000 blocks

@@ -199,6 +199,30 @@
       "image": "/images/chains/linea.svg"
     },
     {
+      "id": "mantle",
+      "name": "Mantle",
+      "chain_id": 5000,
+      "network_id": "mantle",
+      "provider_params": [
+        {
+          "chainId": "0x1388",
+          "chainName": "Mantle",
+          "rpcUrls": [
+            "https://rpc.mantle.xyz"
+          ],
+          "nativeCurrency": {
+            "name": "Mantle",
+            "symbol": "MNT",
+            "decimals": 18
+          },
+          "blockExplorerUrls": [
+            "https://mantlescan.org"
+          ]
+        }
+      ],
+      "image": "/images/chains/mantle.svg"
+    },
+    {
       "id": "fantom",
       "name": "Fantom",
       "chain_id": 250,
@@ -599,6 +623,30 @@
       "image": "/images/chains/linea.svg"
     },
     {
+      "id": "mantle",
+      "name": "Mantle",
+      "chain_id": 5001,
+      "network_id": "mantle",
+      "provider_params": [
+        {
+          "chainId": "0x1389",
+          "chainName": "Mantle Testnet",
+          "rpcUrls": [
+            "https://rpc.testnet.mantle.xyz"
+          ],
+          "nativeCurrency": {
+            "name": "Mantle",
+            "symbol": "MNT",
+            "decimals": 18
+          },
+          "blockExplorerUrls": [
+            "https://testnet.mantlescan.org"
+          ]
+        }
+      ],
+      "image": "/images/chains/mantle.svg"
+    },
+    {
       "id": "polygon-zkevm",
       "name": "Polygon zkEVM",
       "chain_id": 1442,
@@ -670,6 +718,30 @@
         }
       ],
       "image": "/images/chains/kava.svg"
+    },
+    {
+      "id": "centrifuge",
+      "name": "Centrifuge",
+      "chain_id": "2089",
+      "network_id": "centrifuge",
+      "provider_params": [
+        {
+          "chainId": "0x829",
+          "chainName": "Centrifuge Algol Testnet",
+          "rpcUrls": [
+            "https://fullnode.algol.cntrfg.com/rpc"
+          ],
+          "nativeCurrency": {
+            "name": "Algol",
+            "symbol": "ALGL",
+            "decimals": 18
+          },
+          "blockExplorerUrls": [
+            "https://polkadot.js.org/apps/?rpc=wss%3A%2F%2Ffullnode.algol.cntrfg.com%2Fpublic-ws#/explorer"
+          ]
+        }
+      ],
+      "image": "/images/chains/centrifuge.svg"
     }
   ]
 }

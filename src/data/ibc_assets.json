@@ -81,6 +81,14 @@
       "transfer_fee": 5.7e-05
     },
     {
+      "id": "ueuroc",
+      "name": "EUROC - Euro Coin",
+      "symbol": "EUROC",
+      "image": "/images/assets/euroc.svg",
+      "decimals": 6,
+      "transfer_fee": 0.1
+    },
+    {
       "id": "lqdr-wei",
       "name": "Lqdr - LqdrV2",
       "symbol": "Lqdr",
@@ -175,6 +183,22 @@
       "image": "/images/assets/mpx.svg",
       "decimals": 18,
       "transfer_fee": 0.71
+    },
+    {
+      "id": "vext-wei",
+      "name": "VEXT - Veloce",
+      "symbol": "VEXT",
+      "image": "/images/assets/vext.svg",
+      "decimals": 18,
+      "transfer_fee": 1.4
+    },
+    {
+      "id": "ovn-wei",
+      "name": "OVN - OVN",
+      "symbol": "OVN",
+      "image": "/images/assets/ovn.svg",
+      "decimals": 18,
+      "transfer_fee": 1.0
     },
     {
       "id": "vela-wei",

@@ -47,6 +47,11 @@ const learnMoreCards = [
     url: "/resources",
     icon: `<svg style="margin-right:8px;" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 16 16" height="24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="m14.12 10.163 1.715.858c.22.11.22.424 0 .534L8.267 15.34a.598.598 0 0 1-.534 0L.165 11.555a.299.299 0 0 1 0-.534l1.716-.858 5.317 2.659c.505.252 1.1.252 1.604 0l5.317-2.66zM7.733.063a.598.598 0 0 1 .534 0l7.568 3.784a.3.3 0 0 1 0 .535L8.267 8.165a.598.598 0 0 1-.534 0L.165 4.382a.299.299 0 0 1 0-.535L7.733.063z"></path><path d="m14.12 6.576 1.715.858c.22.11.22.424 0 .534l-7.568 3.784a.598.598 0 0 1-.534 0L.165 7.968a.299.299 0 0 1 0-.534l1.716-.858 5.317 2.659c.505.252 1.1.252 1.604 0l5.317-2.659z"></path></svg>`,
   },
+  {
+    title: "Developer Newsletter",
+    url: "https://dashboard.mailerlite.com/forms/215012/95435869033334492/share",
+    icon: `<svg style="margin-right:8px;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke="currentColor" fill="currentColor"  height="24" width="24"><title>email-open</title><path d="M4,8L12,13L20,8V8L12,3L4,8V8M22,8V18A2,2 0 0,1 20,20H4A2,2 0 0,1 2,18V8C2,7.27 2.39,6.64 2.97,6.29L12,0.64L21.03,6.29C21.61,6.64 22,7.27 22,8Z" /></svg>`,
+  },
 ];
 ---
 
@@ -75,7 +80,6 @@ const learnMoreCards = [
       margin-right: 16px;
       display: flex;
       flex-direction: column;
-      background-color: #fff;
       color: inherit;
     }
     .card:hover {
@@ -100,6 +104,7 @@ const learnMoreCards = [
         flex-direction: column;
       }
     }
+
   </style>
 
   <div class="card-grid">
@@ -139,7 +144,11 @@ const learnMoreCards = [
     <div style="display:flex; ;">
       {
         learnMoreCards.map((card) => (
-          <a href={card.url} class="card" style="width:auto;padding:16px 32px 16px 16px;">
+          <a
+            href={card.url}
+            class="card"
+            style="width:auto;padding:16px 32px 16px 16px;"
+          >
             <div>
               <Fragment set:html={card.icon} /> {card.title}
             </div>
