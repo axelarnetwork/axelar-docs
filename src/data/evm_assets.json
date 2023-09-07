@@ -1256,6 +1256,71 @@
       ]
     },
     {
+      "id": "vext-wei",
+      "name": "VEXT - Veloce",
+      "symbol": "VEXT",
+      "image": "/images/assets/vext.svg",
+      "contracts": [
+        {
+          "chain": "ethereum",
+          "address": "0x593Dc8C08387c9F4C8d522B49C76dD18518F4d7e",
+          "symbol": "VEXT",
+          "decimals": 18,
+          "transfer_fee": 430.0
+        },
+        {
+          "chain": "polygon",
+          "address": "0x27842334C55c01DDFE81Bf687425F906816c5141",
+          "symbol": "VEXT",
+          "decimals": 18,
+          "transfer_fee": 21.0
+        }
+      ]
+    },
+    {
+      "id": "ovn-wei",
+      "name": "OVN - OVN",
+      "symbol": "OVN",
+      "image": "/images/assets/ovn.svg",
+      "contracts": [
+        {
+          "chain": "arbitrum",
+          "address": "0xA3d1a8DEB97B111454B294E2324EfAD13a9d8396",
+          "symbol": "OVN",
+          "decimals": 18,
+          "transfer_fee": 20.0
+        },
+        {
+          "chain": "base",
+          "address": "0xA3d1a8DEB97B111454B294E2324EfAD13a9d8396",
+          "symbol": "OVN",
+          "decimals": 18,
+          "transfer_fee": 20.0
+        },
+        {
+          "chain": "binance",
+          "address": "0x259B30C916e440FB79747cD559207FfdaBBae057",
+          "symbol": "OVN",
+          "decimals": 18,
+          "transfer_fee": 15.0
+        },
+        {
+          "chain": "linea",
+          "address": "0xA3d1a8DEB97B111454B294E2324EfAD13a9d8396",
+          "symbol": "OVN",
+          "decimals": 18,
+          "transfer_fee": 15.0
+        },
+        {
+          "chain": "optimism",
+          "address": "0x3b08fcd15280e7B5A6e404c4abb87F7C774D1B2e",
+          "symbol": "OVN",
+          "decimals": 18,
+          "transfer_fee": 20.0
+        }
+      ]
+    },
+    {
       "id": "vela-wei",
       "name": "VELA - VelaToken",
       "symbol": "VELA",
@@ -1727,6 +1792,13 @@
           "transfer_fee": 0.06
         },
         {
+          "chain": "base",
+          "address": "0xebD4A18034C78A415088DF8508f102421eD693b1",
+          "symbol": "axlDEUS",
+          "decimals": 18,
+          "transfer_fee": 0.08
+        },
+        {
           "chain": "binance",
           "address": "0x912922e25ac79D524734d8eC0C882B035c5b356f",
           "symbol": "axlDEUS",
@@ -1753,6 +1825,13 @@
           "symbol": "axlDEUS",
           "decimals": 18,
           "transfer_fee": 0.06
+        },
+        {
+          "chain": "optimism",
+          "address": "0xebD4A18034C78A415088DF8508f102421eD693b1",
+          "symbol": "axlDEUS",
+          "decimals": 18,
+          "transfer_fee": 0.08
         },
         {
           "chain": "polygon",
