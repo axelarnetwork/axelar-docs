@@ -19,4 +19,4 @@ layout: /src/layouts/None.astro
 | [v0.29.1](/resources/mainnet/upgrades/v29)      | 5030000      | 5853000        |
 | [v0.31.2](/resources/mainnet/upgrades/v31)      | 5853000      | 6895400        |
 | [v0.33.2](/resources/mainnet/upgrades/v33)      | 6895400      | 9151750        |
-| [v0.34.1](/resources/mainnet/upgrades/v33)      | 9151750      | N/A            |
+| [v0.34.1](/resources/mainnet/upgrades/v34)      | 9151750      | N/A            |
