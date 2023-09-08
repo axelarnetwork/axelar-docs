@@ -2,14 +2,14 @@
 
 import { Callout } from "/src/components/callout"
 
-Instructions for `2023-April-11` mainnet upgrade to axelar-core `v0.34.1`, vald `v0.34.1`, and tofnd `v0.10.1`.
+Instructions for `2023-Sep-13` mainnet upgrade to axelar-core `v0.34.1`, vald `v0.34.1`, and tofnd `v0.10.1`.
 
 Upgrade height `9151750` [countdown](https://www.mintscan.io/axelar/blocks/9151750)
 
 1. If you're a validator, please vote for the upgrade proposal via
 
 ```bash
-axelard tx gov vote 175 yes --from validator
+axelard tx gov vote [tbd] yes --from validator
 ```
 
 2. Wait for the proposed upgrade block, `9151750`. Your node will panic at that block height with a log: `{"level":"error","module":"consensus","err":"UPGRADE \"v0.34\" NEEDED at height: ",`. Stop your node after chain halt.
