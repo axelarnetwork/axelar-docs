@@ -1,6 +1,13 @@
 # Solidity utilities
 
-To facilitate interchain development, we have provided some Solidity utilites. These can be found [here](https://github.com/axelarnetwork/axelar-utils-solidity). Each of these is described below, along with their proposed use.
+import { Callout } from '/src/components/callout'
+
+To facilitate interchain development, we have provided some Solidity utilites. These can be found [here](https://github.com/axelarnetwork/axelar-gmp-sdk-solidity). Each of these is described below, along with their proposed use.
+
+<Callout emoji="📝">
+Note: When deploying a contract with this tool, the msg.sender in the constructor of the app's contract will be the deployer contract address and not the wallet address. So msg.sender should not be used for setting the owner etc. when using these. Instead it should be passed in as a constructor arg
+
+</Callout>
 
 ## Create3 Deployer
 
@@ -50,6 +57,27 @@ You have the option to either interact with the Solidity functionality directly,
   - The `gasLimit` allowed for contract deployment
 - `async deployCreate3AndInitContract(deployerAddress, wallet, contractJson, key, args = [], initArgs = [], gasLimit = null)`: same as above, but uses `deployAndInit` (with `initArgs`), instead of `deploy`.
 - `async getCreate3Address(deployerAddress, wallet, key)`: calculate/query the contract address by using the `deployerAddress`, `wallet`, and unique `key` used for a specific deployment
+
+## Create2 Deployer
+
+For anyone who may be using [Create2 Deployer](https://github.com/axelarnetwork/axelar-gmp-sdk-solidity/blob/main/contracts/deploy/Create2Deployer.sol) (previously called [Constant Address Deployer](https://github.com/axelarnetwork/axelar-gmp-sdk-solidity/blob/main/contracts/deploy/ConstAddressDeployer.sol)) this option remains available. This tool leverages [`create2`](https://eips.ethereum.org/EIPS/eip-1014) and is deployed at `0x98b2920d53612483f91f12ed7754e51b4a77919e` on every EVM testnet and mainnet that is supported by Axelar.
+
+`Create2 Deployer` exposes the following functions:
+
+- `deployedAddress(bytes bytecode, address sender, bytes32 salt)`: calculates the address of contracts that has been/will be deployed with a certain bytecode and salt, by a certain sender.
+- `deploy(bytes bytecode, bytes32 salt)`: deploys a contract with a certain bytecode and salt.
+- `deployAndInit(bytes bytecode, bytes32 salt, bytes init)`: deploys a contract with a certain bytecode and salt, and runs `deployedContract.call(init)` afterwards. Use in case you need constructor arguments that are not constant across chains, as different constructor arguments result in different bytecodes.
+
+The above can be used directly, but we also provide some scripts. Simply import [`create2Deployer.js`](https://github.com/axelarnetwork/axelar-gmp-sdk-solidity/blob/main/scripts/create2Deployer.js). The following functionality is available:
+
+- `async estimateGasForDeploy(contractJson, args = [])`: estimates the gas needed to deploy a contract with a certain `contractJson` and `args`
+- `async estimateGasForDeployAndInit(contractJson, args = [], initArgs = [])`: estimates the gas needed to deploy a contract with a certain `contractJson` and `args`, and to have the `init(...initArgs)` called as part of the deployment.
+- `async deployContractConstant(deployer, wallet, contractJson, key, args = [])`: uses `deployer`, an Ethers.js contract pointing to:
+  - `ConstAddressDeployer`, a `wallet` with native currency.
+  - The `contractJson` to deploy.
+  - A string `key`, which will be hashed to get the `salt`.
+  - The constructor `args` to make a deployment.
+- `async deployAndInitContractConstant(deployer, wallet, contractJson, key, args = [], initArgs = [])`: same as above, but uses `deployAndInit` (with `initArgs`), instead of `deploy`.
 
 ## String and address utilities
 
