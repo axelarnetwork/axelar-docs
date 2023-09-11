@@ -185,6 +185,22 @@
       "transfer_fee": 0.71
     },
     {
+      "id": "vext-wei",
+      "name": "VEXT - Veloce",
+      "symbol": "VEXT",
+      "image": "/images/assets/vext.svg",
+      "decimals": 18,
+      "transfer_fee": 1.4
+    },
+    {
+      "id": "ovn-wei",
+      "name": "OVN - OVN",
+      "symbol": "OVN",
+      "image": "/images/assets/ovn.svg",
+      "decimals": 18,
+      "transfer_fee": 1.0
+    },
+    {
       "id": "vela-wei",
       "name": "VELA - VelaToken",
       "symbol": "VELA",
