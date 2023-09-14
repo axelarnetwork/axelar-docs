@@ -139,6 +139,12 @@
       "image": "/images/chains/secret-snip.svg"
     },
     {
+      "id": "sei",
+      "name": "Sei",
+      "network_id": "sei",
+      "image": "/images/chains/sei.svg"
+    },
+    {
       "id": "sommelier",
       "name": "Sommelier",
       "network_id": "sommelier",

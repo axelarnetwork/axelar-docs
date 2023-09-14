@@ -1256,6 +1256,49 @@
       ]
     },
     {
+      "id": "bal-wei",
+      "name": "BAL - Balancer",
+      "symbol": "BAL",
+      "image": "/images/assets/bal.svg",
+      "contracts": [
+        {
+          "chain": "arbitrum",
+          "address": "0x11C1879227D463b60db18C17c20aE739aE8E961a",
+          "symbol": "axlBAL",
+          "decimals": 18,
+          "transfer_fee": 0.63
+        },
+        {
+          "chain": "base",
+          "address": "0x11C1879227D463b60db18C17c20aE739aE8E961a",
+          "symbol": "axlBAL",
+          "decimals": 18,
+          "transfer_fee": 0.63
+        },
+        {
+          "chain": "ethereum",
+          "address": "0xba100000625a3754423978a60c9317c58a424e3D",
+          "symbol": "BAL",
+          "decimals": 18,
+          "transfer_fee": 9.4
+        },
+        {
+          "chain": "optimism",
+          "address": "0x11C1879227D463b60db18C17c20aE739aE8E961a",
+          "symbol": "axlBAL",
+          "decimals": 18,
+          "transfer_fee": 0.63
+        },
+        {
+          "chain": "polygon",
+          "address": "0xA8e417f73D68A239cE7E7FbD73b8081BE419767B",
+          "symbol": "axlBAL",
+          "decimals": 18,
+          "transfer_fee": 0.47
+        }
+      ]
+    },
+    {
       "id": "vext-wei",
       "name": "VEXT - Veloce",
       "symbol": "VEXT",
