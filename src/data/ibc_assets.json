@@ -185,6 +185,14 @@
       "transfer_fee": 0.71
     },
     {
+      "id": "bal-wei",
+      "name": "BAL - Balancer",
+      "symbol": "BAL",
+      "image": "/images/assets/bal.svg",
+      "decimals": 18,
+      "transfer_fee": 0.031
+    },
+    {
       "id": "vext-wei",
       "name": "VEXT - Veloce",
       "symbol": "VEXT",
