@@ -1,11 +1,9 @@
 ---
+import externalChains from '../pages/validator/external-chains/_meta.json'
+
 const section = Astro.url.pathname?.match(/\/([^\/]*)\//)?.[1];
 
-const queryChains = Astro.url.pathname?.match(/\/([^\/]*)\//)?.[1];
-
-const externalChainsEndpoint = "https://lcd-axelar-testnet.imperator.co/axelar/nexus/v1beta1/chains?status=1";
-const externalChainsResponse = await fetch(externalChainsEndpoint);
-const { chains } = await externalChainsResponse.json();
+const chains = Object.values(externalChains);
 ---
 
 <div class="mobile nav-header">
@@ -155,9 +153,8 @@ const { chains } = await externalChainsResponse.json();
             </div>
             <span>Support External Chains</span>
             <div class="group">
-              {}
                 {chains.map(chain => (
-                    <a href={chain.url}>{chain}</a>
+                    <a href={`/validator/external-chains/${chain[0].toLowerCase()+chain.slice(1)}`}>{chain}</a>
                   )
                 )}
             </div>
