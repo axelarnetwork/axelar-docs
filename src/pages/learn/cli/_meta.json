@@ -1,4 +1,5 @@
 {
+  "reference": "Reference",
   "ust-to-evm": "Send UST to an EVM chain",
   "ust-from-evm": "Redeem UST from an EVM chain",
   "axl-to-evm": "Send AXL to an EVM chain",
