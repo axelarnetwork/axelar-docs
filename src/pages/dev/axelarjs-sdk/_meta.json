@@ -1,8 +1,6 @@
 {
   "introduction": { "title": "Introduction" },
   "token-transfer-dep-addr": { "title": "Token Transfer via Deposit Address" },
-  "tx-status-query-recovery": {
-    "title": "GMP transaction status and recovery"
-  },
+  "tx-status-query-recovery": { "title": "GMP transaction status and recovery" },
   "axelar-query-api": { "title": "Axelar Query API" }
 }
