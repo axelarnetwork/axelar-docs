@@ -19,6 +19,10 @@
     "title": "Axelar Security Overview",
     "type": "doc"
   },
+  "txduration": {
+    "title": "Interchain Transaction Duration",
+    "type": "doc"
+  },
   "cli": {
     "title": "CLI",
     "type": "doc"
