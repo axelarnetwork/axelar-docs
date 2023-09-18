@@ -9,17 +9,17 @@ Interchain Tokens are created and managed by our new  Interchain Token Service, 
 
 Depending on whether or not you have an existing ERC-20 token, there are two main paths available to you.
 
-1. [Create a new Interchain Token](#create-a-new-interchain-token)
+- [I want to create a new Interchain Token](#create-a-new-interchain-token)
 
-    A. [Register and create a new Interchain Token using the Interchain Token Portal](#create-a-new-interchain-token) 
+    a) [I want to register and create a new Interchain Token using the Interchain Token Portal](#create-a-new-interchain-token) 
     
-    B. [Create a new custom Interchain Tokens](#create-a-new-interchain-token)
+    b) [I want to create a new custom Interchain Token(s)](#create-a-new-interchain-token)
     
-2. [Upgrade an existing token(s)](#making-existing-tokens-interchain)
+- [I want to upgrade an existing token(s)](#making-existing-tokens-interchain)
 
-    A. [Make a token on one chain into an Interchain Token](#making-existing-tokens-interchain)
+    a) [I want to make a token on one chain into an Interchain Token](#making-existing-tokens-interchain)
     
-    B. [Link deployed tokens on multiple chains into Interchain Tokens](#making-existing-tokens-interchain)
+    b) [I want to link deployed tokens on multiple chains into Interchain Tokens](#making-existing-tokens-interchain)
 
 
 ## Create a new Interchain Token
@@ -114,7 +114,7 @@ Here is an example of deploying a remote canonical token.
 	* @param destinationChain the name of the chain to deploy the TokenManager and standardized token to.
 	* @param gasValue the amount of native tokens to be used to pay for gas for the remote deployment.
 	* At least the amount specified needs to be passed to the call
-	* @dev `gasValue` exists because this function can be part of a multi call involving multiple functions that could make remote contract calls.
+	* @dev `gasValue` exists because this function can be part of a `multicall` involving multiple functions that could make remote contract calls.
 	*/
 function deployRemoteCanonicalToken(
 	bytes32 tokenId, 
