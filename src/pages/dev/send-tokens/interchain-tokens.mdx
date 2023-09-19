@@ -11,15 +11,15 @@ Depending on whether or not you have an existing ERC-20 token, there are two mai
 
 - [I want to create a new Interchain Token](#create-a-new-interchain-token)
 
-    a) [I want to register and create a new Interchain Token using the Interchain Token Portal](#create-a-new-interchain-token) 
+    a. [I want to register and create a new Interchain Token using the Interchain Token Portal](#create-a-new-interchain-token) 
     
-    b) [I want to create a new custom Interchain Token(s)](#create-a-new-interchain-token)
+    b. [I want to create a new custom Interchain Token(s)](#create-a-new-interchain-token)
     
 - [I want to upgrade an existing token(s)](#making-existing-tokens-interchain)
 
-    a) [I want to make a token on one chain into an Interchain Token](#making-existing-tokens-interchain)
+    a. [I want to make a token on one chain into an Interchain Token](#making-existing-tokens-interchain)
     
-    b) [I want to link deployed tokens on multiple chains into Interchain Tokens](#making-existing-tokens-interchain)
+    b. [I want to link deployed tokens on multiple chains into Interchain Tokens](#making-existing-tokens-interchain)
 
 
 ## Create a new Interchain Token
@@ -37,7 +37,7 @@ The simplest type of Interchain Token is to create a brand new [standardized](..
 - Select any additional chains where you want your new token to be available
 
 
-Congratulations! You now have an ERC-20 token available on multiple chains. You can interact with your token on any chain identically, as they are all ERC-20 tokens. You can send, transfer, approve, and use all of the methods you are used to. 
+**Congratulations!** You now have an ERC-20 token available on multiple chains. You can interact with your token on any chain identically, as they are all ERC-20 tokens. You can send, transfer, approve, and use all of the methods you are used to. 
 
 Additionally, each of these tokens is a [Standardized Interchain Token](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/interfaces/IStandardizedToken.sol) and has an `interchainTransfer` method allowing you to transfer it between blockchains.
 
@@ -56,14 +56,13 @@ function interchainTransfer(
 
 If you want more features than the [standardized](../reference/glossary/#standardized) token provides, you can create a [custom](../reference/glossary/#custom) token. You may want a customized token to customize minting policies, ensure ownership or control of the token by a DAO, create rate limits, or build any other custom logic into your token.
 
-You will need to [build this token yourself](https://docs.alchemy.com/docs/how-to-create-an-erc-20-token-4-steps). Make sure your new token implements the [`IInterchainToken`](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/interfaces/IInterchainToken.sol) interface so you can offer [`interchainTransfer`](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/interfaces/IInterchainToken.sol#L20) and [`interchainTransferFrom`](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/interfaces/IInterchainToken.sol#L37) methods directly on your token. 
+- Build your [ERC-20 token](https://docs.alchemy.com/docs/how-to-create-an-erc-20-token-4-steps) and deploy it on multiple chains
 
-You can try our [sample custom token](https://remix.ethereum.org/axelarnetwork/axelar-docs/blob/main/public/samples/interchain-token-iinterchaintoken.sol) as a starting point. This token self-registers with the Interchain Token Service and can be deployed to multiple chains. 
+- Deploy a [Mint/Burn](../reference/glossary/#mintburn) [Token Manager](../reference/glossary/#token-manager) contract for each chain by calling `deployCustomTokenManager` (or `deployRemoteCustomTokenManager` for remote chains) on the Interchain Token Service
 
+- Set the [distributor](../reference/glossary/#distributor) on your token contract as the new Token Manager contract on each chain. This will give the Token Manager permission to mint and burn tokens on your behalf.
 
-Once you have designed your token, you can deploy it to multiple chains using a tool such as the [Constant Address Deployer](https://docs.axelar.dev/dev/general-message-passing/solidity-utilities#constant-address-deployer) to give it the same address everywhere. 
-
-Once the token has been deployed on multiple chains, you'll want to deploy a [Mint/Burn](../reference/glossary/#mintburn) [Token Manager](../reference/glossary/#token-manager) for each chain. You can do this by calling `deployCustomTokenManager` on the Interchain Token Service (or `deployRemoteCustomTokenManager` for remote chains) and then set the [distributor](../reference/glossary/#distributor) on your token to be the new Token Manager. This will give the Token Manager permission to mint and burn tokens on your behalf as tokens move between chains.
+Tokens can move between chains seamlessly as the Token Manager contracts will mint and burn tokens as needed.
 
 Here is an example of deploying your own Token Manager
 
@@ -154,4 +153,9 @@ The Interchain Token Service is a powerful tool for moving tokens between blockc
 
 One of the features of the TokenManager that can be configured is that of the [Operator](../reference/glossary/#operator). The Operator can manage the flow rates of tokens between chains by calling `setFlowLimit` on the Interchain Token Service. 
 
-Additionally, Interchain Tokens can be made executable. Meaning that they can be sent alongside a standard GMP message. For an example of this, see the example [InterchainTokenExecutable.sol](https://github.com/axelarnetwork/interchain-token-service/blob/example/example-flows-for-stephen/contracts/examples/InterchainTokenExecutable.sol)
+Additionally, Interchain Tokens can be made executable, which means that they can be sent alongside a standard GMP message. For an example of this, see the example [InterchainTokenExecutable.sol](https://github.com/axelarnetwork/interchain-token-service/blob/example/example-flows-for-stephen/contracts/examples/InterchainTokenExecutable.sol).
+
+
+>**Note**: If you want to build your token with the `IInterchainToken` feature yourself, make sure your token implements the [`IInterchainToken`](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/interfaces/IInterchainToken.sol) interface so you can offer [`interchainTransfer`](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/interfaces/IInterchainToken.sol#L20) and [`interchainTransferFrom`](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/interfaces/IInterchainToken.sol#L37) methods directly on your token. 
+You can try our [sample custom token](https://remix.ethereum.org/axelarnetwork/axelar-docs/blob/main/public/samples/interchain-token-iinterchaintoken.sol) as a starting point. This token self-registers with the Interchain Token Service and can be deployed to multiple chains. 
+Once you have designed your token, you can deploy it to multiple chains using a tool such as the [Constant Address Deployer](https://docs.axelar.dev/dev/general-message-passing/solidity-utilities#constant-address-deployer) to give it the same address everywhere. 
