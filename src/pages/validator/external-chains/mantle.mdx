@@ -64,6 +64,27 @@ cd mantlenetworks
     </tab-item>
 </tabs>
 
+### Download latest snapshot
+
+<tabs>
+    <tab-item title="Mainnet">
+        ```bash
+        mkdir -p ./data/geth
+        tarball="20230830-mainnet-chaindata.tar"
+        wget https://s3.ap-southeast-1.amazonaws.com/snapshot.mantle.xyz/${tarball}
+        tar vxf ${tarball} -C ./data/geth
+        ```
+        </tab-item>
+        <tab-item title="Testnet">
+        ```bash
+        mkdir -p ./data/geth
+        tarball="20230906-testnet-chaindata.tar"
+        wget https://s3.ap-southeast-1.amazonaws.com/static.testnet.mantle.xyz/${tarball}
+        tar vxf ${tarball} -C ./data/geth
+        ```
+    </tab-item>
+</tabs>
+
 ### Start the node
 
 <tabs>
