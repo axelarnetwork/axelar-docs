@@ -2,7 +2,7 @@
 
 import { Callout } from '/src/components/callout'
 
-To facilitate interchain development, we have provided some Solidity utilites. These can be found [here](https://github.com/axelarnetwork/axelar-gmp-sdk-solidity). Each of these is described below, along with their proposed use.
+To facilitate interchain development, we have provided some Solidity utilites. These can be found [here](https://github.com/axelarnetwork/axelar-gmp-sdk-solidity). Each of these is described below, along with their proposed use. To further assist with the development process the [Axelar Chain's Config](https://www.npmjs.com/package/@axelar-network/axelar-chains-config) package has been made available to provide easy access to all the relevant Axelar configurations on each blockchain Axelar is available on.
 
 <Callout emoji="📝">
 Note: When deploying a contract with this tool, the msg.sender in the constructor of the app's contract will be the deployer contract address and not the wallet address. So msg.sender should not be used for setting the owner etc. when using these. Instead it should be passed in as a constructor arg
