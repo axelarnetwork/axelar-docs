@@ -2,56 +2,115 @@
 
 import { Callout } from "/src/components/callout"
 
-Set up your Moonbeam Mainnet or Testnet (Moonbase-Alpha) node.
+Set up your Centrifuge Mainnet or Testnet (Algol) node.
 
 ## Prerequisites
 
 - [Setup your Axelar validator](/validator/setup)
 - Minimum hardware requirements: 8+ cores CPU , 16GB+ RAM, 500GB+ free storage space.
 - MacOS or Ubuntu 18.04+
-- [Official Documentation](https://docs.moonbeam.network/node-operators/networks/run-a-node/)
+- [Official Centrifuge Documentation](https://)
 
+## 1. Create a service account
+<tabs>
+<tab-item title="Centrifuge (Mainnet)">
+ <pre><code>adduser centrifuge_service --system --no-create-home</code></pre>
+ <pre><code>mkdir /var/lib/centrifuge-data</code></pre>
 
-## Install Centrifuge / Algol (Testnetwork)
+</tab-item>
+<tab-item title="Algol (Testnet)">
+ <pre><code>adduser algol_service --system --no-create-home</code></pre>
+ <pre><code>mkdir /var/lib/algol-data</code></pre>
 
-### 1. Download compiled binary
+</tab-item>
+</tabs>
 
-Download the [latest release binary](https://github.com/PureStake/moonbeam/tags) from PureState. In this tutorial, we are using `v0.23.0`
+## 2. Prepare running the `Centrifuge`-service
+## Using a docker-image
+#### Prerequisites
+- []()
 
-```bash
-wget https://github.com/PureStake/moonbeam/releases/download/v0.23.0/moonbeam
-
-```
-### 2. Create a service account and copy the binary
-
-```bash
-#For Mainnet (Moonbeam) use:
-adduser moonbeam_service --system --no-create-home
-mkdir /var/lib/moonbeam-data
-mv ./moonbeam /var/lib/moonbeam-data # assumption: ./moonbeam is your downloaded binary
-sudo chown -R moonbeam_service /var/lib/moonbeam-data
-
-#For Testnet (Moonbase Alpha) use:
-adduser moonbeam_service --system --no-create-home
-mkdir /var/lib/alphanet-data
-mv ./moonbeam /var/lib/alphanet-data # assumption: ./moonbeam is your downloaded binary
-sudo chown -R moonbeam_service /var/lib/alphanet-data
-```
-
-### 3. Create the systemd service file
-
-After the installation of `moonbeam`, we are now ready to start the node, but to ensure it is running in the background and auto-restarts in case of a server failure, we will set up a service file using systemd.
+#### Create a systemd service file
+We are now ready to start the node, but to ensure it is running in the background and auto-restarts in case of a server failure, we will set up a service file using systemd.
 
 <Callout emoji="📝">
-  Note: In the service file below you need to replace `"YOUR-NODE-NAME"` and replace `50% RAM in MB` for 50% of the actual RAM your server has (Example: `--db-cache 16000` if your server has 32GB RAM).
-
-  If you are connecting to Testnet instead (Moonbase Alpha), you will also need to change the path to `/var/lib/alphanet-data/` and add `--chain alphanet`.
+  Note: In the service file below you need to replace `"YOUR-NODE-NAME"` and replace `"50% RAM in MB>""` for 50% of the actual RAM your server has (Example: `--db-cache 16000` if your server has 32GB RAM).
 </Callout>
 
-```bash
-sudo tee <<EOF >/dev/null /etc/systemd/system/moonbeam.service
+<tabs>
+<tab-item title="Centrifuge (Mainnet)">
+<pre><code>
+sudo tee &lt&ltEOF &gt/dev/null /etc/systemd/system/centrifuge.service
 [Unit]
-Description="Moonbeam systemd service"
+Description="Centrifuge systemd service"
+After=network.target
+StartLimitIntervalSec=0
+
+
+    @Guille: NO CLUE HOW TO DEFINE A DOCKER systemd SETUP
+
+[Install]
+WantedBy=multi-user.target
+EOF
+</code></pre>
+</tab-item>
+
+<tab-item title="Algol (Testnet)">
+<pre><code>
+sudo tee &lt&ltEOF &gt/dev/null /etc/systemd/system/algol.service
+[Unit]
+Description="Algol (Centrifuge Testnet) systemd service"
+After=network.target
+StartLimitIntervalSec=0
+
+    @Guille: NO CLUE HOW TO DEFINE A DOCKER systemd SETUP
+
+[Install]
+WantedBy=multi-user.target
+EOF
+</code></pre>
+</tab-item>
+</tabs>
+
+## From Source
+#### Prerequisites
+* `cmake`
+* `libclang-dev`
+
+#### Building the binary
+<tabs>
+<tab-item title="Centrifuge (Mainnet)">
+ <pre><code> > git clone https://github.com/centrifuge/centrifuge-chain.git </code></pre>
+ <pre><code> > cd centrifuge-chain</code></pre>
+ <pre><code> > RUST_TOOLCHAIN=nightly-2022-11-14 ./scripts/install_toolchain.sh </code></pre>
+ <pre><code> > cargo build --release </code></pre>
+ <pre><code> > cp ./target/release/centrifuge-chain /var/lib/centrifuge-data </code></pre>
+
+</tab-item>
+<tab-item title="Algol (Testnet)">
+  <pre><code> > git clone https://github.com/centrifuge/centrifuge-chain.git</code></pre>
+  <pre><code> > cd centrifuge-chain</code></pre>
+  <pre><code> > RUST_TOOLCHAIN=nightly-2022-11-14 ./scripts/install_toolchain.sh</code></pre>
+  <pre><code> > cargo build --release </code></pre>
+  <pre><code> > cp ./target/release/centrifuge-chain /var/lib/algol-data </code></pre>
+  <pre><code> > cp ./res/rococo-local.json /var/lib/algol-data/relay-spec.json </code></pre>
+
+</tab-item>
+</tabs>
+
+#### Create a systemd service file
+We are now ready to start the node, but to ensure it is running in the background and auto-restarts in case of a server failure, we will set up a service file using systemd.
+
+<Callout emoji="📝">
+  Note: In the service file below you need to replace `"YOUR-NODE-NAME"` and replace `"50% RAM in MB>""` for 50% of the actual RAM your server has (Example: `--db-cache 16000` if your server has 32GB RAM).
+</Callout>
+
+<tabs>
+<tab-item title="Centrifuge (Mainnet)">
+<pre><code>
+sudo tee &lt&ltEOF &gt/dev/null /etc/systemd/system/centrifuge.service
+[Unit]
+Description="Centrifuge systemd service"
 After=network.target
 StartLimitIntervalSec=0
 
@@ -59,11 +118,11 @@ StartLimitIntervalSec=0
 Type=simple
 Restart=on-failure
 RestartSec=10
-User=moonbeam_service
-SyslogIdentifier=moonbeam
+User=centrifuge_service
+SyslogIdentifier=centrifuge
 SyslogFacility=local7
 KillSignal=SIGHUP
-ExecStart=/var/lib/moonbeam-data/moonbeam \
+ExecStart=/var/lib/centrifuge-data/centrifuge-chain \
      --port 30333 \
      --rpc-port 9933 \
      --ws-port 9944 \
@@ -73,11 +132,14 @@ ExecStart=/var/lib/moonbeam-data/moonbeam \
      --wasm-execution compiled \
      --pruning=archive \
      --state-cache-size 1 \
-     --db-cache <50% RAM in MB> \
-     --base-path /var/lib/moonbeam-data \
-     --chain moonbeam \
+     --db-cache "50% RAM in MB" \
+     --base-path /var/lib/centrifuge-data \
+     --chain centrifuge \
+     --bootnodes=/ip4/35.198.171.148/tcp/30333/ws/p2p/12D3KooWDXDwSdqi8wB1Vjjs5SVpAfk6neadvNTPAik5mQXqV7jF \
+     --bootnodes=/ip4/34.159.117.205/tcp/30333/ws/p2p/12D3KooWMspZo4aMEXWBH4UXm3gfiVkeu1AE68Y2JDdVzU723QPc \
      --name "YOUR-NODE-NAME" \
      -- \
+     --chain polkadot
      --port 30334 \
      --rpc-port 9934 \
      --ws-port 9945 \
@@ -88,39 +150,127 @@ ExecStart=/var/lib/moonbeam-data/moonbeam \
 [Install]
 WantedBy=multi-user.target
 EOF
-```
+</code></pre>
+</tab-item>
 
-### 4. Enable and start the `moonbeam` service
+<tab-item title="Algol (Testnet)">
+<pre><code>
+sudo tee &lt&ltEOF &gt/dev/null /etc/systemd/system/algol.service
+[Unit]
+Description="Algol (Centrifuge Testnet) systemd service"
+After=network.target
+StartLimitIntervalSec=0
 
-```bash
-sudo systemctl enable moonbeam.service
-sudo systemctl start moonbeam.service
-```
+[Service]
+Type=simple
+Restart=on-failure
+RestartSec=10
+User=algol_service
+SyslogIdentifier=algol(centrifuge_testnet)
+SyslogFacility=local7
+KillSignal=SIGHUP
+ExecStart=/var/lib/algol-data/centrifuge-chain \
+     --port 30333 \
+     --rpc-port 9933 \
+     --ws-port 9944 \
+     --unsafe-rpc-external \
+     --rpc-cors all \
+     --execution wasm \
+     --wasm-execution compiled \
+     --pruning=archive \
+     --state-cache-size 1 \
+     --db-cache "50% RAM in MB" \
+     --base-path /var/lib/centrifuge-data \
+     --chain algol \
+     --name "YOUR-NODE-NAME" \
+     --bootnodes=/dnsaddr/bootstrap.algol.k-f.dev/p2p/12D3KooWQt8qAmXzgdNRuVKhW1NAdfowhoGC3apycsBYhvehp1mA \
+     -- \
+     --chain /var/lib/algol-data/relay-spec.json
+     --port 30334 \
+     --rpc-port 9934 \
+     --ws-port 9945 \
+     --execution wasm \
+     --pruning=1000 \
+     --bootnodes=/dnsaddr/bootstrap-relay.algol.k-f.dev/p2p/12D3KooWK3eidgThVdjHq5q6hak81yUVdKc3FGfYSqRw6kEB1fnm \
+     --bootnodes=/dnsaddr/bootstrap-relay-2.algol.k-f.dev/p2p/12D3KooWRQqyBqsFw8gw2oqZHaiPLyw2jgCyz5jwRMmg3aWr3jP5 \
+     --name="YOUR-NODE-NAME (Embedded Relay)"
 
-If everything was set-up correctly, your Moonbeam node should now be starting the process of synchronization. This will take several hours, depending on your hardware. To check the status of the running service or to follow the logs, use:
+[Install]
+WantedBy=multi-user.target
+EOF
+</code></pre>
+</tab-item>
+</tabs>
 
-```bash
-sudo systemctl status moonbeam.service
-sudo journalctl -u moonbeam.service -f
-```
+## 3. Enable and start the `Centrifuge`-service
+Actually enable the previously generated serice and start it.
 
-## Test your Moonbeam RPC connection
+<tabs>
+<tab-item title="Centrifuge (Mainnet)">
+  <pre><code> > sudo systemctl enable centrifuge.service </code></pre>
+  <pre><code> > sudo systemctl start centrifuge.service</code></pre>
 
-Once your `Moonbeam` node is fully synced, you can run a cURL request to see the status of your node:
+</tab-item>
+<tab-item title="Algol (Testnet)">
+  <pre><code> > sudo systemctl enable algol.service </code></pre>
+  <pre><code> > sudo systemctl start algol.service</code></pre>
 
-```bash
-curl -H "Content-Type: application/json" -d '{"id":1, "jsonrpc":"2.0", "method": "eth_syncing", "params":[]}' localhost:9933
-```
+</tab-item>
+</tabs>
+
+If everything was set-up correctly, your Centrifuge node should now be starting the process of synchronization. This will take several hours, depending on your hardware. To check the status of the running service or to follow the logs, use:
+
+<tabs>
+<tab-item title="Centrifuge (Mainnet)">
+  <pre><code> > sudo systemctl status centrifuge.service </code></pre>
+  <pre><code> > sudo journalctl -u centrifuge.service -f</code></pre>
+
+</tab-item>
+<tab-item title="Algol (Testnet)">
+  <pre><code> > sudo systemctl status algol.service </code></pre>
+  <pre><code> > sudo journalctl -u algol.service -f</code></pre>
+
+</tab-item>
+</tabs>
+
+## 4. Test your RPC connection
+
+Once your node is fully synced, you can run a cURL request to see the status of your node:
+
+<tabs>
+<tab-item title="Centrifuge (Mainnet)">
+  <pre><code> > curl -H "Content-Type: application/json" -d '{{"id":1, "jsonrpc":"2.0", "method": "eth_syncing", "params":[]}}' localhost:9933 </code></pre>
+
+</tab-item>
+<tab-item title="Algol (Testnet)">
+  <pre><code> > curl -H "Content-Type: application/json" -d '{{"id":1, "jsonrpc":"2.0", "method": "eth_syncing", "params":[]}}' localhost:9933 </code></pre>
+
+</tab-item>
+</tabs>
 
 If the node is successfully synced, the output from above will print `{"jsonrpc":"2.0","result":false,"id":1}`
 
-#### EVM RPC endpoint URL
+## 5. Configure `vald`
+In order for `vald` to connect to your local node, your `rpc_addr` should be exposed in
+`vald`'s `config.toml`
 
-Axelar Network will be connecting to the EVM compatible `Moonbeam`, so your `rpc_addr` should be exposed in this format:
 
+<tabs>
+<tab-item title="Centrifuge (Mainnet)">
 ```bash
-http://IP:PORT
+[[axelar_bridge_evm]]
+name = "centrifuge"
+rpc_addr = "http://IP:PORT"
+start-with-bridge = true
 ```
+</tab-item>
 
-Example:
-`http://192.168.192.168:9933`
+<tab-item title="Algol (Testnet)">
+```bash
+[[axelar_bridge_evm]]
+name = "centrifuge"
+rpc_addr = "http://IP:PORT"
+start-with-bridge = true
+```
+</tab-item>
+</tabs>
