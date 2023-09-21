@@ -551,6 +551,10 @@ astro-island button {
   display: block;
 }
 
+.mobile {
+  display: none;
+}
+
 /* Mobile styles */
 @media (max-width: 650px) {
   #page {
