@@ -1,81 +1,152 @@
 # Centrifuge
 
-import { Callout } from "/src/components/callout"
+import { Callout } from "../../../components/callout"
 
 Set up your Centrifuge Mainnet or Testnet (Algol) node.
 
 ## Prerequisites
 
 - [Setup your Axelar validator](/validator/setup)
-- Minimum hardware requirements: 8+ cores CPU , 16GB+ RAM, 500GB+ free storage space.
-- MacOS or Ubuntu 18.04+
-- [Official Centrifuge Documentation](https://)
+- Minimum hardware requirements: 2+ cores CPU , 4GB+ RAM, 200GB+ free storage space.
+- Recommended hardware: 4+ CPU cores, 16GB RAM, 500GB SSD or faster storage.
+- Docker installed OR rustup installed
 
-## 1. Create a service account
-<tabs>
-<tab-item title="Centrifuge (Mainnet)">
- <pre><code>adduser centrifuge_service --system --no-create-home</code></pre>
- <pre><code>mkdir /var/lib/centrifuge-data</code></pre>
+## CLI arguments
+The following are the CLI arguments needed for the binary to run in a certain chain spec. You'll need this 
+regardless of the method you end up choosing later (docker or local compile)
+One argument per line for visibility
 
-</tab-item>
-<tab-item title="Algol (Testnet)">
- <pre><code>adduser algol_service --system --no-create-home</code></pre>
- <pre><code>mkdir /var/lib/algol-data</code></pre>
+### Centrifuge (mainnet)
+```
+ --unsafe-ws-external
+ --unsafe-rpc-external
+ --rpc-cors=all
+ --rpc-methods=unsafe
+ --pruning=archive
+ --chain=centrifuge
+ --parachain-id=2031
+ --bootnodes=/ip4/35.198.171.148/tcp/30333/ws/p2p/12D3KooWDXDwSdqi8wB1Vjjs5SVpAfk6neadvNTPAik5mQXqV7jF
+ --bootnodes=/ip4/34.159.117.205/tcp/30333/ws/p2p/12D3KooWMspZo4aMEXWBH4UXm3gfiVkeu1AE68Y2JDdVzU723QPc
+ --port=30333
+ --rpc-port=9933
+ --ws-port=9944
+ --base-path=/data
+ --log=main,info
+ --execution=wasm
+ --wasm-execution=compiled
+ --ws-max-connections=5000
+ --
+ --execution=wasm
+ --wasm-execution=compiled
+ --chain=polkadot
+```
+### Algol (testnet)
 
-</tab-item>
-</tabs>
+```
+ --unsafe-ws-external
+ --unsafe-rpc-external
+ --rpc-cors=all
+ --rpc-methods=unsafe
+ --pruning=archive
+ --chain=algol
+ --parachain-id=2088
+ --port=30333
+ --rpc-port=9933
+ --ws-port=9944
+ --base-path=/data
+ --log=main,info
+ --execution=wasm
+ --wasm-execution=compiled
+ --ws-max-connections=5000
+ --bootnodes=/dnsaddr/bootstrap.algol.k-f.dev/p2p/12D3KooWQt8qAmXzgdNRuVKhW1NAdfowhoGC3apycsBYhvehp1mA
+ --bootnodes=/dns4/node-7107773973489594368-0.p2p.onfinality.io/tcp/28330/ws/p2p/12D3KooWHAsVwkowLLnwd9ZRAmNFBdsvFzvB9XS8FhEufhvuvec3
+ --bootnodes=/ip4/34.141.22.46/tcp/30333/p2p/12D3KooWPdGhxLeQad8qfxr7cPrYGMW7sJhXL4rfjZMMJpWZ1nHd
+ --bootnodes=/ip4/34.141.85.156/tcp/30333/p2p/12D3KooWH8B1nrkNRvKPTuhaaXy244PZoptRzfXPQqVai3bRq4TS
+ --bootnodes=/ip4/34.141.48.250/tcp/30333/p2p/12D3KooWHsA69Fb1HkdWrwrxY3cSga3wWyHnxuk5GeYtCh59XsWB
+ --
+ --no-telemetry
+ --execution=wasm
+ --wasm-execution=compiled
+ --chain=/config/rococo-local.json
+ --bootnodes=/dnsaddr/bootstrap-relay.algol.k-f.dev/p2p/12D3KooWABjwDpbaapnTwei9ZhSLMHAWij5oZE4CsbsN8K8q4mYb
+ --bootnodes=/dnsaddr/bootstrap-relay-2.algol.k-f.dev/p2p/12D3KooWRQqyBqsFw8gw2oqZHaiPLyw2jgCyz5jwRMmg3aWr3jP5
+```
 
-## 2. Prepare running the `Centrifuge`-service
-## Using a docker-image
+## 1. Run with Docker
+You can use the container published by Centrifuge on their [DockerHub repo](https://hub.docker.com/repository/docker/centrifugeio/centrifuge-chain/tags?page=1&ordering=last_updated)
+or build your own cloning the cent-chain repository and using the [Dockerfile](https://github.com/centrifuge/centrifuge-chain/blob/main/Dockerfile) in the root of the repo (2-4h build time in an average machine)
+
+NOTE: generally, running `main-latest` will work, but it is recommended to run from the [latest release](https://github.com/centrifuge/centrifuge-chain/releases). 
+You can search for the container created by that release using the short Github commit to search in [Docker Hub](https://hub.docker.com/repository/docker/centrifugeio/centrifuge-chain/tags)
+Ex: if the commit of a release is 56fe24a you should use the docker tag [main-20230906121926-56fe24a5](https://hub.docker.com/layers/centrifugeio/centrifuge-chain/main-20230906121926-56fe24a5/images/sha256-7b97ce670f2015504e4903d2535043c5e1273d0dee63e320b74a1f157517f1d5?context=repo)
+
+Using compose is the easiest way to get the ports and settings that you need, but one can also use: `docker run --restart=always ...` to make 
+sure the container starts on every boot and restarts on failure.
+Here's a reference in the form of a compose file from which one can guess the necessary parameters if docker CLI is preferred:
+
+Some of the values below are worth double-checking, particularly:
+-  `/mnt/my_volume/data` to use your own volume/folder
+- The image tag as described above
+- `ports:` to match your own networking setup.
+
+Notice how the arguments for docker compose have an extra `- ` preceding each argument
+
+### Centrifuge docker-compose
+
+```
+version: '3'
+services:
+  centrifuge:
+    container_name: centrifuge-chain
+    image: "centrifugeio/centrifuge-chain:main-latest"
+    platform: "linux/amd64"
+    volumes:
+      - /mnt/my_volume/data:/data    
+    ports:
+      - "30355:30333"
+      - "9936:9933"
+      - "9946:9944"
+    volumes:
+      - type: bind
+        source: ./res/rococo-local.json
+        target: /chainspec.json
+        read_only: true
+    command: >
+        - --unsafe-ws-external
+        - --unsafe-rpc-external
+          ... 
+          (use the CLI args from above)
+          ...
+        - --chain=polkadot
+```
+
+### Algol docker-compose
+```
+version: '3'
+services:
+  centrifuge:
+    container_name: centrifuge-chain
+    image: "centrifugeio/centrifuge-chain:main-latest"
+    platform: "linux/amd64"
+    ports:
+      - "30333:30333"
+      - "9933:9933"
+      - "9944:9944"
+    volumes:
+      - /mnt/my_volume/data:/data
+    command: >
+        - --unsafe-ws-external
+        - --unsafe-rpc-external
+          ... 
+          (use the CLI args from above)
+          ...
+        - --chain=/config/rococo-local.json
+```
+
+## 2 Compile and run from Source
+
 #### Prerequisites
-- []()
-
-#### Create a systemd service file
-We are now ready to start the node, but to ensure it is running in the background and auto-restarts in case of a server failure, we will set up a service file using systemd.
-
-<Callout emoji="📝">
-  Note: In the service file below you need to replace `"YOUR-NODE-NAME"` and replace `"50% RAM in MB>""` for 50% of the actual RAM your server has (Example: `--db-cache 16000` if your server has 32GB RAM).
-</Callout>
-
-<tabs>
-<tab-item title="Centrifuge (Mainnet)">
-<pre><code>
-sudo tee &lt&ltEOF &gt/dev/null /etc/systemd/system/centrifuge.service
-[Unit]
-Description="Centrifuge systemd service"
-After=network.target
-StartLimitIntervalSec=0
-
-
-    @Guille: NO CLUE HOW TO DEFINE A DOCKER systemd SETUP
-
-[Install]
-WantedBy=multi-user.target
-EOF
-</code></pre>
-</tab-item>
-
-<tab-item title="Algol (Testnet)">
-<pre><code>
-sudo tee &lt&ltEOF &gt/dev/null /etc/systemd/system/algol.service
-[Unit]
-Description="Algol (Centrifuge Testnet) systemd service"
-After=network.target
-StartLimitIntervalSec=0
-
-    @Guille: NO CLUE HOW TO DEFINE A DOCKER systemd SETUP
-
-[Install]
-WantedBy=multi-user.target
-EOF
-</code></pre>
-</tab-item>
-</tabs>
-
-## From Source
-#### Prerequisites
-* `cmake`
-* `libclang-dev`
+* Packages: `cmake pkg-config libssl-dev git clang libclang-dev protobuf-compiler`
 
 #### Building the binary
 <tabs>
@@ -101,10 +172,6 @@ EOF
 #### Create a systemd service file
 We are now ready to start the node, but to ensure it is running in the background and auto-restarts in case of a server failure, we will set up a service file using systemd.
 
-<Callout emoji="📝">
-  Note: In the service file below you need to replace `"YOUR-NODE-NAME"` and replace `"50% RAM in MB>""` for 50% of the actual RAM your server has (Example: `--db-cache 16000` if your server has 32GB RAM).
-</Callout>
-
 <tabs>
 <tab-item title="Centrifuge (Mainnet)">
 <pre><code>
@@ -125,27 +192,11 @@ KillSignal=SIGHUP
 ExecStart=/var/lib/centrifuge-data/centrifuge-chain \
      --port 30333 \
      --rpc-port 9933 \
-     --ws-port 9944 \
-     --unsafe-rpc-external \
-     --rpc-cors all \
-     --execution wasm \
-     --wasm-execution compiled \
-     --pruning=archive \
-     --state-cache-size 1 \
-     --db-cache "50% RAM in MB" \
-     --base-path /var/lib/centrifuge-data \
-     --chain centrifuge \
-     --bootnodes=/ip4/35.198.171.148/tcp/30333/ws/p2p/12D3KooWDXDwSdqi8wB1Vjjs5SVpAfk6neadvNTPAik5mQXqV7jF \
-     --bootnodes=/ip4/34.159.117.205/tcp/30333/ws/p2p/12D3KooWMspZo4aMEXWBH4UXm3gfiVkeu1AE68Y2JDdVzU723QPc \
-     --name "YOUR-NODE-NAME" \
-     -- \
-     --chain polkadot
-     --port 30334 \
-     --rpc-port 9934 \
-     --ws-port 9945 \
-     --execution wasm \
-     --pruning=1000 \
-     --name="YOUR-NODE-NAME (Embedded Relay)"
+      ... 
+      (use the CLI args from above, notice the specific format here when copy/pasting)
+      ...
+     --chain polkadot \
+     --execution wasm
 
 [Install]
 WantedBy=multi-user.target
@@ -172,28 +223,11 @@ KillSignal=SIGHUP
 ExecStart=/var/lib/algol-data/centrifuge-chain \
      --port 30333 \
      --rpc-port 9933 \
-     --ws-port 9944 \
-     --unsafe-rpc-external \
-     --rpc-cors all \
-     --execution wasm \
-     --wasm-execution compiled \
-     --pruning=archive \
-     --state-cache-size 1 \
-     --db-cache "50% RAM in MB" \
-     --base-path /var/lib/centrifuge-data \
-     --chain algol \
-     --name "YOUR-NODE-NAME" \
-     --bootnodes=/dnsaddr/bootstrap.algol.k-f.dev/p2p/12D3KooWQt8qAmXzgdNRuVKhW1NAdfowhoGC3apycsBYhvehp1mA \
-     -- \
-     --chain /var/lib/algol-data/relay-spec.json
-     --port 30334 \
-     --rpc-port 9934 \
-     --ws-port 9945 \
-     --execution wasm \
-     --pruning=1000 \
+      ... 
+      (use the CLI args from above, notice the specific format here when copy/pasting)
+      ...
      --bootnodes=/dnsaddr/bootstrap-relay.algol.k-f.dev/p2p/12D3KooWK3eidgThVdjHq5q6hak81yUVdKc3FGfYSqRw6kEB1fnm \
-     --bootnodes=/dnsaddr/bootstrap-relay-2.algol.k-f.dev/p2p/12D3KooWRQqyBqsFw8gw2oqZHaiPLyw2jgCyz5jwRMmg3aWr3jP5 \
-     --name="YOUR-NODE-NAME (Embedded Relay)"
+     --bootnodes=/dnsaddr/bootstrap-relay-2.algol.k-f.dev/p2p/12D3KooWRQqyBqsFw8gw2oqZHaiPLyw2jgCyz5jwRMmg3aWr3jP5
 
 [Install]
 WantedBy=multi-user.target
