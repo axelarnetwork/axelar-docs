@@ -66,11 +66,13 @@ cd mantlenetworks
 
 ### Download latest snapshot
 
+Download the latest snapshot for a quicker sync: [Mainnet](https://github.com/mantlenetworkio/networks/blob/main/run-node-mainnet.md) | [Testnet](https://github.com/mantlenetworkio/networks/blob/main/run-node.md)
+
 <tabs>
     <tab-item title="Mainnet">
         ```bash
         mkdir -p ./data/geth
-        tarball="20230830-mainnet-chaindata.tar"
+        tarball="[latest snapshot].tar"
         wget https://s3.ap-southeast-1.amazonaws.com/snapshot.mantle.xyz/${tarball}
         tar vxf ${tarball} -C ./data/geth
         ```
@@ -78,7 +80,7 @@ cd mantlenetworks
         <tab-item title="Testnet">
         ```bash
         mkdir -p ./data/geth
-        tarball="20230906-testnet-chaindata.tar"
+        tarball="[latest snapshot].tar"
         wget https://s3.ap-southeast-1.amazonaws.com/static.testnet.mantle.xyz/${tarball}
         tar vxf ${tarball} -C ./data/geth
         ```
