@@ -93,7 +93,7 @@ Notice how the arguments for docker compose have an extra `- ` preceding each ar
 
 ### Centrifuge docker-compose
 
-```
+```Dockerfile
 version: '3'
 services:
   centrifuge:
@@ -121,7 +121,8 @@ services:
 ```
 
 ### Algol docker-compose
-```
+
+```Dockerfile
 version: '3'
 services:
   centrifuge:
@@ -148,34 +149,44 @@ services:
 #### Prerequisites
 * Packages: `cmake pkg-config libssl-dev git clang libclang-dev protobuf-compiler`
 
-#### Building the binary
+#### <br>Building the binary</br>
+
 <tabs>
+
 <tab-item title="Centrifuge (Mainnet)">
- <pre><code> > git clone https://github.com/centrifuge/centrifuge-chain.git </code></pre>
- <pre><code> > cd centrifuge-chain</code></pre>
- <pre><code> > RUST_TOOLCHAIN=nightly-2022-11-14 ./scripts/install_toolchain.sh </code></pre>
- <pre><code> > cargo build --release </code></pre>
- <pre><code> > cp ./target/release/centrifuge-chain /var/lib/centrifuge-data </code></pre>
-
+  ```bash
+  git clone https://github.com/centrifuge/centrifuge-chain.git 
+  cd centrifuge-chain
+  RUST_TOOLCHAIN=nightly-2022-11-14 ./scripts/install_toolchain.sh 
+  cargo build --release 
+  cp ./target/release/centrifuge-chain /var/lib/centrifuge-data 
+  ```
 </tab-item>
+
 <tab-item title="Algol (Testnet)">
-  <pre><code> > git clone https://github.com/centrifuge/centrifuge-chain.git</code></pre>
-  <pre><code> > cd centrifuge-chain</code></pre>
-  <pre><code> > RUST_TOOLCHAIN=nightly-2022-11-14 ./scripts/install_toolchain.sh</code></pre>
-  <pre><code> > cargo build --release </code></pre>
-  <pre><code> > cp ./target/release/centrifuge-chain /var/lib/algol-data </code></pre>
-  <pre><code> > cp ./res/rococo-local.json /var/lib/algol-data/relay-spec.json </code></pre>
-
+  ```bash
+  git clone https://github.com/centrifuge/centrifuge-chain.git
+  cd centrifuge-chain
+  RUST_TOOLCHAIN=nightly-2022-11-14 ./scripts/install_toolchain.sh
+  cargo build --release 
+  cp ./target/release/centrifuge-chain /var/lib/algol-data 
+  cp ./res/rococo-local.json /var/lib/algol-data/relay-spec.json 
+  ```
 </tab-item>
+
 </tabs>
 
-#### Create a systemd service file
+<br></br>
+### Configure systemd
+
+##### 1. Create systemd service file
 We are now ready to start the node, but to ensure it is running in the background and auto-restarts in case of a server failure, we will set up a service file using systemd.
 
 <tabs>
 <tab-item title="Centrifuge (Mainnet)">
 <pre><code>
-sudo tee &lt&ltEOF &gt/dev/null /etc/systemd/system/centrifuge.service
+```bash
+sudo tee <<EOF >/dev/null /etc/systemd/system/centrifuge.service
 [Unit]
 Description="Centrifuge systemd service"
 After=network.target
@@ -201,12 +212,14 @@ ExecStart=/var/lib/centrifuge-data/centrifuge-chain \
 [Install]
 WantedBy=multi-user.target
 EOF
+```
 </code></pre>
 </tab-item>
 
 <tab-item title="Algol (Testnet)">
 <pre><code>
-sudo tee &lt&ltEOF &gt/dev/null /etc/systemd/system/algol.service
+```bash
+sudo tee <<EOF >/dev/null /etc/systemd/system/algol.service
 [Unit]
 Description="Algol (Centrifuge Testnet) systemd service"
 After=network.target
@@ -232,23 +245,40 @@ ExecStart=/var/lib/algol-data/centrifuge-chain \
 [Install]
 WantedBy=multi-user.target
 EOF
+```
 </code></pre>
 </tab-item>
 </tabs>
+<br></br>
 
-## 3. Enable and start the `Centrifuge`-service
+##### 2. Enable and start the `Centrifuge`-service
 Actually enable the previously generated serice and start it.
 
 <tabs>
 <tab-item title="Centrifuge (Mainnet)">
-  <pre><code> > sudo systemctl enable centrifuge.service </code></pre>
-  <pre><code> > sudo systemctl start centrifuge.service</code></pre>
-
+  <pre><code>
+  ```bash 
+  sudo systemctl enable centrifuge.service 
+  ```
+  </code></pre>
+  <pre><code>
+  ```bash 
+  sudo systemctl start centrifuge.service
+  ```
+  </code></pre>
 </tab-item>
-<tab-item title="Algol (Testnet)">
-  <pre><code> > sudo systemctl enable algol.service </code></pre>
-  <pre><code> > sudo systemctl start algol.service</code></pre>
 
+<tab-item title="Algol (Testnet)">
+  <pre><code>
+  ```bash 
+  sudo systemctl enable algol.service 
+  ```
+  </code></pre>
+  <pre><code>
+  ```bash 
+  sudo systemctl start algol.service
+  ```
+  </code></pre>
 </tab-item>
 </tabs>
 
@@ -256,35 +286,58 @@ If everything was set-up correctly, your Centrifuge node should now be starting 
 
 <tabs>
 <tab-item title="Centrifuge (Mainnet)">
-  <pre><code> > sudo systemctl status centrifuge.service </code></pre>
-  <pre><code> > sudo journalctl -u centrifuge.service -f</code></pre>
-
+  <pre><code>
+  ```bash 
+  sudo systemctl status centrifuge.service 
+  ```
+  </code></pre>
+  <pre><code>
+  ```bash 
+  sudo journalctl -u centrifuge.service -f
+  ```
+  </code></pre>
 </tab-item>
-<tab-item title="Algol (Testnet)">
-  <pre><code> > sudo systemctl status algol.service </code></pre>
-  <pre><code> > sudo journalctl -u algol.service -f</code></pre>
 
+<tab-item title="Algol (Testnet)">
+  <pre><code>
+  ```bash 
+  sudo systemctl status algol.service 
+  ```
+  </code></pre>
+  <pre><code>
+  ```bash 
+  sudo journalctl -u algol.service -f
+  ```
+  </code></pre>
 </tab-item>
 </tabs>
+<br></br>
 
-## 4. Test your RPC connection
+##### 3. Test your RPC connection
 
 Once your node is fully synced, you can run a cURL request to see the status of your node:
 
 <tabs>
 <tab-item title="Centrifuge (Mainnet)">
-  <pre><code> > curl -H "Content-Type: application/json" -d '{{"id":1, "jsonrpc":"2.0", "method": "eth_syncing", "params":[]}}' localhost:9933 </code></pre>
-
+  <pre><code>
+  ```bash 
+  curl -H "Content-Type: application/json" -d '{{"id":1, "jsonrpc":"2.0", "method": "eth_syncing", "params":[]}}' localhost:9933 
+  ```
+  </code></pre>
 </tab-item>
-<tab-item title="Algol (Testnet)">
-  <pre><code> > curl -H "Content-Type: application/json" -d '{{"id":1, "jsonrpc":"2.0", "method": "eth_syncing", "params":[]}}' localhost:9933 </code></pre>
 
+<tab-item title="Algol (Testnet)">
+  <pre><code>
+  ```bash 
+  curl -H "Content-Type: application/json" -d '{{"id":1, "jsonrpc":"2.0", "method": "eth_syncing", "params":[]}}' localhost:9933  
+  ```
+  </code></pre>
 </tab-item>
 </tabs>
 
 If the node is successfully synced, the output from above will print `{"jsonrpc":"2.0","result":false,"id":1}`
 
-## 5. Configure `vald`
+### Configure `vald`
 In order for `vald` to connect to your local node, your `rpc_addr` should be exposed in
 `vald`'s `config.toml`
 
