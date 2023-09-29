@@ -2,7 +2,7 @@
 
 import { Callout } from "../../../components/callout"
 
-Set up your Centrifuge Mainnet or Testnet (Algol) node.
+Set up your Mainnet or Testnet (Algol) node.
 
 ## Prerequisites
 
@@ -16,61 +16,69 @@ The following are the CLI arguments needed for the binary to run in a certain ch
 regardless of the method you end up choosing later (docker or local compile)
 One argument per line for visibility
 
-### Centrifuge (mainnet)
-```
- --unsafe-ws-external
- --unsafe-rpc-external
- --rpc-cors=all
- --rpc-methods=unsafe
- --pruning=archive
- --chain=centrifuge
- --parachain-id=2031
- --bootnodes=/ip4/35.198.171.148/tcp/30333/ws/p2p/12D3KooWDXDwSdqi8wB1Vjjs5SVpAfk6neadvNTPAik5mQXqV7jF
- --bootnodes=/ip4/34.159.117.205/tcp/30333/ws/p2p/12D3KooWMspZo4aMEXWBH4UXm3gfiVkeu1AE68Y2JDdVzU723QPc
- --port=30333
- --rpc-port=9933
- --ws-port=9944
- --base-path=/data
- --log=main,info
- --execution=wasm
- --wasm-execution=compiled
- --ws-max-connections=5000
- --
- --execution=wasm
- --wasm-execution=compiled
- --chain=polkadot
-```
-### Algol (testnet)
+<tabs>
+<tab-item title="Mainnet">
+  <pre><code>
+  ```bash
+  --unsafe-ws-external
+  --unsafe-rpc-external
+  --rpc-cors=all
+  --rpc-methods=unsafe
+  --pruning=archive
+  --chain=centrifuge
+  --parachain-id=2031
+  --bootnodes=/ip4/35.198.171.148/tcp/30333/ws/p2p/12D3KooWDXDwSdqi8wB1Vjjs5SVpAfk6neadvNTPAik5mQXqV7jF
+  --bootnodes=/ip4/34.159.117.205/tcp/30333/ws/p2p/12D3KooWMspZo4aMEXWBH4UXm3gfiVkeu1AE68Y2JDdVzU723QPc
+  --port=30333
+  --rpc-port=9933
+  --ws-port=9944
+  --base-path=/data
+  --log=main,info
+  --execution=wasm
+  --wasm-execution=compiled
+  --ws-max-connections=5000
+  --
+  --execution=wasm
+  --wasm-execution=compiled
+  --chain=polkadot
+  ```
+  </code></pre>
+</tab-item>
 
-```
- --unsafe-ws-external
- --unsafe-rpc-external
- --rpc-cors=all
- --rpc-methods=unsafe
- --pruning=archive
- --chain=algol
- --parachain-id=2088
- --port=30333
- --rpc-port=9933
- --ws-port=9944
- --base-path=/data
- --log=main,info
- --execution=wasm
- --wasm-execution=compiled
- --ws-max-connections=5000
- --bootnodes=/dnsaddr/bootstrap.algol.k-f.dev/p2p/12D3KooWQt8qAmXzgdNRuVKhW1NAdfowhoGC3apycsBYhvehp1mA
- --bootnodes=/dns4/node-7107773973489594368-0.p2p.onfinality.io/tcp/28330/ws/p2p/12D3KooWHAsVwkowLLnwd9ZRAmNFBdsvFzvB9XS8FhEufhvuvec3
- --bootnodes=/ip4/34.141.22.46/tcp/30333/p2p/12D3KooWPdGhxLeQad8qfxr7cPrYGMW7sJhXL4rfjZMMJpWZ1nHd
- --bootnodes=/ip4/34.141.85.156/tcp/30333/p2p/12D3KooWH8B1nrkNRvKPTuhaaXy244PZoptRzfXPQqVai3bRq4TS
- --bootnodes=/ip4/34.141.48.250/tcp/30333/p2p/12D3KooWHsA69Fb1HkdWrwrxY3cSga3wWyHnxuk5GeYtCh59XsWB
- --
- --no-telemetry
- --execution=wasm
- --wasm-execution=compiled
- --chain=/config/rococo-local.json
- --bootnodes=/dnsaddr/bootstrap-relay.algol.k-f.dev/p2p/12D3KooWABjwDpbaapnTwei9ZhSLMHAWij5oZE4CsbsN8K8q4mYb
- --bootnodes=/dnsaddr/bootstrap-relay-2.algol.k-f.dev/p2p/12D3KooWRQqyBqsFw8gw2oqZHaiPLyw2jgCyz5jwRMmg3aWr3jP5
-```
+<tab-item title="Testnet">
+  <pre><code>
+  ```bash
+  --unsafe-ws-external
+  --unsafe-rpc-external
+  --rpc-cors=all
+  --rpc-methods=unsafe
+  --pruning=archive
+  --chain=algol
+  --parachain-id=2088
+  --port=30333
+  --rpc-port=9933
+  --ws-port=9944
+  --base-path=/data
+  --log=main,info
+  --execution=wasm
+  --wasm-execution=compiled
+  --ws-max-connections=5000
+  --bootnodes=/dnsaddr/bootstrap.algol.k-f.dev/p2p/12D3KooWQt8qAmXzgdNRuVKhW1NAdfowhoGC3apycsBYhvehp1mA
+  --bootnodes=/dns4/node-7107773973489594368-0.p2p.onfinality.io/tcp/28330/ws/p2p/12D3KooWHAsVwkowLLnwd9ZRAmNFBdsvFzvB9XS8FhEufhvuvec3
+  --bootnodes=/ip4/34.141.22.46/tcp/30333/p2p/12D3KooWPdGhxLeQad8qfxr7cPrYGMW7sJhXL4rfjZMMJpWZ1nHd
+  --bootnodes=/ip4/34.141.85.156/tcp/30333/p2p/12D3KooWH8B1nrkNRvKPTuhaaXy244PZoptRzfXPQqVai3bRq4TS
+  --bootnodes=/ip4/34.141.48.250/tcp/30333/p2p/12D3KooWHsA69Fb1HkdWrwrxY3cSga3wWyHnxuk5GeYtCh59XsWB
+  --
+  --no-telemetry
+  --execution=wasm
+  --wasm-execution=compiled
+  --chain=/config/rococo-local.json
+  --bootnodes=/dnsaddr/bootstrap-relay.algol.k-f.dev/p2p/12D3KooWABjwDpbaapnTwei9ZhSLMHAWij5oZE4CsbsN8K8q4mYb
+  --bootnodes=/dnsaddr/bootstrap-relay-2.algol.k-f.dev/p2p/12D3KooWRQqyBqsFw8gw2oqZHaiPLyw2jgCyz5jwRMmg3aWr3jP5
+  ```
+  </code></pre>
+</tab-item>
+</tabs>
 
 ## 1. Run with Docker
 You can use the container published by Centrifuge on their [DockerHub repo](https://hub.docker.com/repository/docker/centrifugeio/centrifuge-chain/tags?page=1&ordering=last_updated)
@@ -91,58 +99,66 @@ Some of the values below are worth double-checking, particularly:
 
 Notice how the arguments for docker compose have an extra `- ` preceding each argument
 
-### Centrifuge docker-compose
+### docker-compose
 
-```Dockerfile
-version: '3'
-services:
-  centrifuge:
-    container_name: centrifuge-chain
-    image: "centrifugeio/centrifuge-chain:main-latest"
-    platform: "linux/amd64"
-    volumes:
-      - /mnt/my_volume/data:/data    
-    ports:
-      - "30355:30333"
-      - "9936:9933"
-      - "9946:9944"
-    volumes:
-      - type: bind
-        source: ./res/rococo-local.json
-        target: /chainspec.json
-        read_only: true
-    command: >
-        - --unsafe-ws-external
-        - --unsafe-rpc-external
-          ... 
-          (use the CLI args from above)
-          ...
-        - --chain=polkadot
-```
+<tabs>
+<tab-item title="Mainnet">
+  <pre><code>
+  ```Dockerfile
+  version: '3'
+  services:
+    centrifuge:
+      container_name: centrifuge-chain
+      image: "centrifugeio/centrifuge-chain:main-latest"
+      platform: "linux/amd64"
+      volumes:
+        - /mnt/my_volume/data:/data    
+      ports:
+        - "30355:30333"
+        - "9936:9933"
+        - "9946:9944"
+      volumes:
+        - type: bind
+          source: ./res/rococo-local.json
+          target: /chainspec.json
+          read_only: true
+      command: >
+          - --unsafe-ws-external
+          - --unsafe-rpc-external
+            ... 
+            (use the CLI args from above)
+            ...
+          - --chain=polkadot
+  ```
+  </code></pre>
+</tab-item>
 
-### Algol docker-compose
-
-```Dockerfile
-version: '3'
-services:
-  centrifuge:
-    container_name: centrifuge-chain
-    image: "centrifugeio/centrifuge-chain:main-latest"
-    platform: "linux/amd64"
-    ports:
-      - "30333:30333"
-      - "9933:9933"
-      - "9944:9944"
-    volumes:
-      - /mnt/my_volume/data:/data
-    command: >
-        - --unsafe-ws-external
-        - --unsafe-rpc-external
-          ... 
-          (use the CLI args from above)
-          ...
-        - --chain=/config/rococo-local.json
-```
+<tab-item title="Testnet">
+  <pre><code>
+  ```Dockerfile
+  version: '3'
+  services:
+    centrifuge:
+      container_name: centrifuge-chain
+      image: "centrifugeio/centrifuge-chain:main-latest"
+      platform: "linux/amd64"
+      ports:
+        - "30333:30333"
+        - "9933:9933"
+        - "9944:9944"
+      volumes:
+        - /mnt/my_volume/data:/data
+      command: >
+          - --unsafe-ws-external
+          - --unsafe-rpc-external
+            ... 
+            (use the CLI args from above)
+            ...
+          - --chain=/config/rococo-local.json
+  ```
+  </code></pre>
+</tab-item>
+</tabs>
 
 ## 2 Compile and run from Source
 
@@ -153,7 +169,7 @@ services:
 
 <tabs>
 
-<tab-item title="Centrifuge (Mainnet)">
+<tab-item title="Mainnet">
   ```bash
   git clone https://github.com/centrifuge/centrifuge-chain.git 
   cd centrifuge-chain
@@ -163,7 +179,7 @@ services:
   ```
 </tab-item>
 
-<tab-item title="Algol (Testnet)">
+<tab-item title="Testnet">
   ```bash
   git clone https://github.com/centrifuge/centrifuge-chain.git
   cd centrifuge-chain
@@ -183,7 +199,7 @@ services:
 We are now ready to start the node, but to ensure it is running in the background and auto-restarts in case of a server failure, we will set up a service file using systemd.
 
 <tabs>
-<tab-item title="Centrifuge (Mainnet)">
+<tab-item title="Mainnet">
 <pre><code>
 ```bash
 sudo tee <<EOF >/dev/null /etc/systemd/system/centrifuge.service
@@ -216,7 +232,7 @@ EOF
 </code></pre>
 </tab-item>
 
-<tab-item title="Algol (Testnet)">
+<tab-item title="Testnet">
 <pre><code>
 ```bash
 sudo tee <<EOF >/dev/null /etc/systemd/system/algol.service
@@ -255,57 +271,41 @@ EOF
 Actually enable the previously generated serice and start it.
 
 <tabs>
-<tab-item title="Centrifuge (Mainnet)">
+<tab-item title="Mainnet">
   <pre><code>
   ```bash 
   sudo systemctl enable centrifuge.service 
-  ```
-  </code></pre>
-  <pre><code>
-  ```bash 
   sudo systemctl start centrifuge.service
   ```
   </code></pre>
 </tab-item>
 
-<tab-item title="Algol (Testnet)">
+<tab-item title="Testnet">
   <pre><code>
   ```bash 
   sudo systemctl enable algol.service 
-  ```
-  </code></pre>
-  <pre><code>
-  ```bash 
   sudo systemctl start algol.service
   ```
   </code></pre>
 </tab-item>
 </tabs>
 
-If everything was set-up correctly, your Centrifuge node should now be starting the process of synchronization. This will take several hours, depending on your hardware. To check the status of the running service or to follow the logs, use:
+If everything was set-up correctly, your node should now be starting the process of synchronization. This will take several hours, depending on your hardware. To check the status of the running service or to follow the logs, use:
 
 <tabs>
-<tab-item title="Centrifuge (Mainnet)">
+<tab-item title="Mainnet">
   <pre><code>
   ```bash 
   sudo systemctl status centrifuge.service 
-  ```
-  </code></pre>
-  <pre><code>
-  ```bash 
   sudo journalctl -u centrifuge.service -f
   ```
   </code></pre>
 </tab-item>
 
-<tab-item title="Algol (Testnet)">
+<tab-item title="Testnet">
   <pre><code>
   ```bash 
   sudo systemctl status algol.service 
-  ```
-  </code></pre>
-  <pre><code>
-  ```bash 
   sudo journalctl -u algol.service -f
   ```
   </code></pre>
@@ -318,7 +318,7 @@ If everything was set-up correctly, your Centrifuge node should now be starting 
 Once your node is fully synced, you can run a cURL request to see the status of your node:
 
 <tabs>
-<tab-item title="Centrifuge (Mainnet)">
+<tab-item title="Mainnet">
   <pre><code>
   ```bash 
   curl -H "Content-Type: application/json" -d '{{"id":1, "jsonrpc":"2.0", "method": "eth_syncing", "params":[]}}' localhost:9933 
@@ -326,7 +326,7 @@ Once your node is fully synced, you can run a cURL request to see the status of 
   </code></pre>
 </tab-item>
 
-<tab-item title="Algol (Testnet)">
+<tab-item title="Testnet">
   <pre><code>
   ```bash 
   curl -H "Content-Type: application/json" -d '{{"id":1, "jsonrpc":"2.0", "method": "eth_syncing", "params":[]}}' localhost:9933  
@@ -343,7 +343,7 @@ In order for `vald` to connect to your local node, your `rpc_addr` should be exp
 
 
 <tabs>
-<tab-item title="Centrifuge (Mainnet)">
+<tab-item title="Mainnet">
 ```bash
 [[axelar_bridge_evm]]
 name = "centrifuge"
@@ -352,7 +352,7 @@ start-with-bridge = true
 ```
 </tab-item>
 
-<tab-item title="Algol (Testnet)">
+<tab-item title="Testnet">
 ```bash
 [[axelar_bridge_evm]]
 name = "centrifuge"
