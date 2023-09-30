@@ -18,25 +18,16 @@ Set up your Centrifuge Mainnet or Testnet node.
 4. Configure vald
 
 ## 1. Run with Docker
+
 You can use the container published by Centrifuge on their [DockerHub repo](https://hub.docker.com/repository/docker/centrifugeio/centrifuge-chain/tags?page=1&ordering=last_updated)
 or build your own by cloning the cent-chain repository and using the [Dockerfile](https://github.com/centrifuge/centrifuge-chain/blob/main/Dockerfile) in the root of the repo (2-4h build time in an average machine)
 
-Find the [latest release](https://github.com/centrifuge/centrifuge-chain/releases) of the docker image, e.g. `centrifugeio/centrifuge-chain:main-20230906121926-56fe24a5`.
-
-Using compose is the easiest way to get the ports and settings that you need, but one can also use: `docker run --restart=always ...` to make
-sure the container starts on every boot and restarts on failure.
-Here's a reference in the form of a compose file from which one can guess the necessary parameters if docker CLI is preferred:
-
-Some of the values below are worth double-checking, particularly:
--  `/mnt/my_volume/data` to use your own volume/folder
-- The image tag as described above
-- `ports:` to match your own networking setup.
-
-Notice how the arguments for docker compose have an extra `- ` preceding each argument
+Find the [latest release](https://github.com/centrifuge/centrifuge-chain/releases) of the docker image, e.g. `centrifugeio/centrifuge-chain:main-20230906121926-xyz`.
 
 ### Create docker compose file
 
 Create a `docker-compose.yml` file with the following contents.
+Change the `ports` based on your network setup. Replace `/mnt/my_volume/data` with the volume and data folder you want to use.
 
 <tabs>
 <tab-item title="Mainnet">
@@ -60,6 +51,9 @@ Create a `docker-compose.yml` file with the following contents.
           target: /chainspec.json
           read_only: true
       command:
+      - "--port=30333"
+      - "--rpc-port=9933"
+      - "--ws-port=9944"
       - "--unsafe-ws-external"
       - "--unsafe-rpc-external"
       - "--rpc-cors=all"
@@ -67,9 +61,6 @@ Create a `docker-compose.yml` file with the following contents.
       - "--pruning=archive"
       - "--chain=centrifuge"
       - "--parachain-id=2031"
-      - "--port=30333"
-      - "--rpc-port=9933"
-      - "--ws-port=9944"
       - "--base-path=/data"
       - "--log=main,info"
       - "--execution=wasm"
@@ -101,6 +92,9 @@ Create a `docker-compose.yml` file with the following contents.
       volumes:
         - /mnt/my_volume/data:/data
       command:
+        - "--port=30333"
+        - "--rpc-port=9933"
+        - "--ws-port=9944"
         - "--unsafe-ws-external"
         - "--unsafe-rpc-external"
         - "--rpc-cors=all"
@@ -108,9 +102,6 @@ Create a `docker-compose.yml` file with the following contents.
         - "--pruning=archive"
         - "--chain=algol"
         - "--parachain-id=2088"
-        - "--port=30333"
-        - "--rpc-port=9933"
-        - "--ws-port=9944"
         - "--base-path=/data"
         - "--log=main,info"
         - "--execution=wasm"
@@ -184,6 +175,7 @@ sudo apt-get install cmake pkg-config libssl-dev git clang libclang-dev protobuf
 
 ##### 1. Create systemd service file
 We are now ready to start the node, but to ensure it is running in the background and auto-restarts in case of a server failure, we will set up a service file using systemd.
+Change the `ports` based on your network setup.
 
 <tabs>
 <tab-item title="Mainnet">
@@ -204,6 +196,9 @@ SyslogIdentifier=centrifuge
 SyslogFacility=local7
 KillSignal=SIGHUP
 ExecStart=/var/lib/centrifuge-data/centrifuge-chain \
+    --port=30333 \
+    --rpc-port=9933 \
+    --ws-port=9944 \
     --unsafe-ws-external \
     --unsafe-rpc-external \
     --rpc-cors=all \
@@ -211,9 +206,6 @@ ExecStart=/var/lib/centrifuge-data/centrifuge-chain \
     --pruning=archive \
     --chain=centrifuge \
     --parachain-id=2031 \
-    --port=30333 \
-    --rpc-port=9933 \
-    --ws-port=9944 \
     --base-path=/data \
     --log=main,info \
     --execution=wasm \
@@ -251,6 +243,9 @@ SyslogIdentifier=centrifuge_testnet
 SyslogFacility=local7
 KillSignal=SIGHUP
 ExecStart=/var/lib/algol-data/centrifuge-chain \
+    --port=30333 \
+    --rpc-port=9933 \
+    --ws-port=9944 \
     --unsafe-ws-external \
     --unsafe-rpc-external \
     --rpc-cors=all \
@@ -258,9 +253,6 @@ ExecStart=/var/lib/algol-data/centrifuge-chain \
     --pruning=archive \
     --chain=algol \
     --parachain-id=2088 \
-    --port=30333 \
-    --rpc-port=9933 \
-    --ws-port=9944 \
     --base-path=/data \
     --log=main,info \
     --execution=wasm \
