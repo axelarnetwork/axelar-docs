@@ -22,9 +22,10 @@ Instructions to set up your [Scroll](https://scroll.io) node.
 sudo apt-get update
 sudo apt-get install build-essential -y && sudo apt-get install jq -y
 ```
-[Install go](https://go.dev/doc/install)
+<br></br>
+#### [Install go](https://go.dev/doc/install)
 
-# Install Binaries
+## Install Binaries
 
 ```bash
 SCROLL_VERSION=scroll-v4.3.51
@@ -42,7 +43,7 @@ mv build/bin/geth /usr/bin/
     Note: nccc stands for “no circuit capacity checker”. This feature disables an expensive block validation rule that is not crucial on follower nodes. We recommend that you do not enable it.
 </Callout>
 
-Check version
+#### Check version
 ```bash
 geth version
 ```
@@ -82,13 +83,12 @@ EOF
 cat /etc/systemd/system/geth.service
 ```
 
-# Start the service
+## Start the service
 ```bash
 sudo systemctl enable geth.service
 sudo systemctl daemon-reload
 sudo systemctl restart geth.service
 ```
-
 
 ## Check logs
 
@@ -163,7 +163,7 @@ Wait for `"result"` to become `false` before using it in vald config
 ```json
 {"jsonrpc":"2.0","id":1,"result":false}
 ```
-
+<br></br>
 #### Method 2:
 You can also check your status by connect to geth console
 ```bash
