@@ -2,93 +2,28 @@
 
 import { Callout } from "../../../components/callout"
 
-Set up your Mainnet or Testnet (Algol) node.
+Set up your Centrifuge Mainnet or Testnet node.
 
 ## Prerequisites
 
 - [Setup your Axelar validator](/validator/setup)
-- Minimum hardware requirements: 2+ cores CPU , 4GB+ RAM, 200GB+ free storage space.
+- Minimum hardware requirements: 2+ cores CPU, 4GB+ RAM, 200GB+ free storage space.
 - Recommended hardware: 4+ CPU cores, 16GB RAM, 500GB SSD or faster storage.
-- Docker installed OR rustup installed
+- [Releases](https://github.com/centrifuge/centrifuge-chain/releases)
+- Docker OR `rustup` is installed
 
-## CLI arguments
-The following are the CLI arguments needed for the binary to run in a certain chain spec. You'll need this 
-regardless of the method you end up choosing later (docker or local compile)
-One argument per line for visibility
-
-<tabs>
-<tab-item title="Mainnet">
-  <pre><code>
-  ```bash
-  --unsafe-ws-external
-  --unsafe-rpc-external
-  --rpc-cors=all
-  --rpc-methods=unsafe
-  --pruning=archive
-  --chain=centrifuge
-  --parachain-id=2031
-  --bootnodes=/ip4/35.198.171.148/tcp/30333/ws/p2p/12D3KooWDXDwSdqi8wB1Vjjs5SVpAfk6neadvNTPAik5mQXqV7jF
-  --bootnodes=/ip4/34.159.117.205/tcp/30333/ws/p2p/12D3KooWMspZo4aMEXWBH4UXm3gfiVkeu1AE68Y2JDdVzU723QPc
-  --port=30333
-  --rpc-port=9933
-  --ws-port=9944
-  --base-path=/data
-  --log=main,info
-  --execution=wasm
-  --wasm-execution=compiled
-  --ws-max-connections=5000
-  --
-  --execution=wasm
-  --wasm-execution=compiled
-  --chain=polkadot
-  ```
-  </code></pre>
-</tab-item>
-
-<tab-item title="Testnet">
-  <pre><code>
-  ```bash
-  --unsafe-ws-external
-  --unsafe-rpc-external
-  --rpc-cors=all
-  --rpc-methods=unsafe
-  --pruning=archive
-  --chain=algol
-  --parachain-id=2088
-  --port=30333
-  --rpc-port=9933
-  --ws-port=9944
-  --base-path=/data
-  --log=main,info
-  --execution=wasm
-  --wasm-execution=compiled
-  --ws-max-connections=5000
-  --bootnodes=/dnsaddr/bootstrap.algol.k-f.dev/p2p/12D3KooWQt8qAmXzgdNRuVKhW1NAdfowhoGC3apycsBYhvehp1mA
-  --bootnodes=/dns4/node-7107773973489594368-0.p2p.onfinality.io/tcp/28330/ws/p2p/12D3KooWHAsVwkowLLnwd9ZRAmNFBdsvFzvB9XS8FhEufhvuvec3
-  --bootnodes=/ip4/34.141.22.46/tcp/30333/p2p/12D3KooWPdGhxLeQad8qfxr7cPrYGMW7sJhXL4rfjZMMJpWZ1nHd
-  --bootnodes=/ip4/34.141.85.156/tcp/30333/p2p/12D3KooWH8B1nrkNRvKPTuhaaXy244PZoptRzfXPQqVai3bRq4TS
-  --bootnodes=/ip4/34.141.48.250/tcp/30333/p2p/12D3KooWHsA69Fb1HkdWrwrxY3cSga3wWyHnxuk5GeYtCh59XsWB
-  --
-  --no-telemetry
-  --execution=wasm
-  --wasm-execution=compiled
-  --chain=/config/rococo-local.json
-  --bootnodes=/dnsaddr/bootstrap-relay.algol.k-f.dev/p2p/12D3KooWABjwDpbaapnTwei9ZhSLMHAWij5oZE4CsbsN8K8q4mYb
-  --bootnodes=/dnsaddr/bootstrap-relay-2.algol.k-f.dev/p2p/12D3KooWRQqyBqsFw8gw2oqZHaiPLyw2jgCyz5jwRMmg3aWr3jP5
-  ```
-  </code></pre>
-</tab-item>
-</tabs>
+## Steps
+1. Run with Docker
+2. Run with binaries
+4. Configure vald
 
 ## 1. Run with Docker
 You can use the container published by Centrifuge on their [DockerHub repo](https://hub.docker.com/repository/docker/centrifugeio/centrifuge-chain/tags?page=1&ordering=last_updated)
-or build your own cloning the cent-chain repository and using the [Dockerfile](https://github.com/centrifuge/centrifuge-chain/blob/main/Dockerfile) in the root of the repo (2-4h build time in an average machine)
+or build your own by cloning the cent-chain repository and using the [Dockerfile](https://github.com/centrifuge/centrifuge-chain/blob/main/Dockerfile) in the root of the repo (2-4h build time in an average machine)
 
-NOTE: generally, running `main-latest` will work, but it is recommended to run from the [latest release](https://github.com/centrifuge/centrifuge-chain/releases). 
-You can search for the container created by that release using the short Github commit to search in [Docker Hub](https://hub.docker.com/repository/docker/centrifugeio/centrifuge-chain/tags)
-Ex: if the commit of a release is 56fe24a you should use the docker tag [main-20230906121926-56fe24a5](https://hub.docker.com/layers/centrifugeio/centrifuge-chain/main-20230906121926-56fe24a5/images/sha256-7b97ce670f2015504e4903d2535043c5e1273d0dee63e320b74a1f157517f1d5?context=repo)
+Find the [latest release](https://github.com/centrifuge/centrifuge-chain/releases) of the docker image, e.g. `centrifugeio/centrifuge-chain:main-20230906121926-56fe24a5`.
 
-Using compose is the easiest way to get the ports and settings that you need, but one can also use: `docker run --restart=always ...` to make 
+Using compose is the easiest way to get the ports and settings that you need, but one can also use: `docker run --restart=always ...` to make
 sure the container starts on every boot and restarts on failure.
 Here's a reference in the form of a compose file from which one can guess the necessary parameters if docker CLI is preferred:
 
@@ -99,7 +34,9 @@ Some of the values below are worth double-checking, particularly:
 
 Notice how the arguments for docker compose have an extra `- ` preceding each argument
 
-### docker-compose
+### Create docker compose file
+
+Create a `docker-compose.yml` file with the following contents.
 
 <tabs>
 <tab-item title="Mainnet">
@@ -109,10 +46,10 @@ Notice how the arguments for docker compose have an extra `- ` preceding each ar
   services:
     centrifuge:
       container_name: centrifuge-chain
-      image: "centrifugeio/centrifuge-chain:main-latest"
+      image: "centrifugeio/centrifuge-chain:main-[latest_release]"
       platform: "linux/amd64"
       volumes:
-        - /mnt/my_volume/data:/data    
+        - /mnt/my_volume/data:/data
       ports:
         - "30355:30333"
         - "9936:9933"
@@ -122,13 +59,28 @@ Notice how the arguments for docker compose have an extra `- ` preceding each ar
           source: ./res/rococo-local.json
           target: /chainspec.json
           read_only: true
-      command: >
-          - --unsafe-ws-external
-          - --unsafe-rpc-external
-            ... 
-            (use the CLI args from above)
-            ...
-          - --chain=polkadot
+      command:
+      - "--unsafe-ws-external"
+      - "--unsafe-rpc-external"
+      - "--rpc-cors=all"
+      - "--rpc-methods=unsafe"
+      - "--pruning=archive"
+      - "--chain=centrifuge"
+      - "--parachain-id=2031"
+      - "--port=30333"
+      - "--rpc-port=9933"
+      - "--ws-port=9944"
+      - "--base-path=/data"
+      - "--log=main,info"
+      - "--execution=wasm"
+      - "--wasm-execution=compiled"
+      - "--ws-max-connections=5000"
+      - "--bootnodes=/ip4/35.198.171.148/tcp/30333/ws/p2p/12D3KooWDXDwSdqi8wB1Vjjs5SVpAfk6neadvNTPAik5mQXqV7jF"
+      - "--bootnodes=/ip4/34.159.117.205/tcp/30333/ws/p2p/12D3KooWMspZo4aMEXWBH4UXm3gfiVkeu1AE68Y2JDdVzU723QPc"
+      - "--"
+      - "--execution=wasm"
+      - "--wasm-execution=compiled"
+      - "--chain=polkadot"
   ```
   </code></pre>
 </tab-item>
@@ -140,7 +92,7 @@ Notice how the arguments for docker compose have an extra `- ` preceding each ar
   services:
     centrifuge:
       container_name: centrifuge-chain
-      image: "centrifugeio/centrifuge-chain:main-latest"
+      image: "centrifugeio/centrifuge-chain:main-[latest_release]"
       platform: "linux/amd64"
       ports:
         - "30333:30333"
@@ -148,22 +100,54 @@ Notice how the arguments for docker compose have an extra `- ` preceding each ar
         - "9944:9944"
       volumes:
         - /mnt/my_volume/data:/data
-      command: >
-          - --unsafe-ws-external
-          - --unsafe-rpc-external
-            ... 
-            (use the CLI args from above)
-            ...
-          - --chain=/config/rococo-local.json
+      command:
+        - "--unsafe-ws-external"
+        - "--unsafe-rpc-external"
+        - "--rpc-cors=all"
+        - "--rpc-methods=unsafe"
+        - "--pruning=archive"
+        - "--chain=algol"
+        - "--parachain-id=2088"
+        - "--port=30333"
+        - "--rpc-port=9933"
+        - "--ws-port=9944"
+        - "--base-path=/data"
+        - "--log=main,info"
+        - "--execution=wasm"
+        - "--wasm-execution=compiled"
+        - "--ws-max-connections=5000"
+        - "--bootnodes=/dnsaddr/bootstrap.algol.k-f.dev/p2p/12D3KooWQt8qAmXzgdNRuVKhW1NAdfowhoGC3apycsBYhvehp1mA"
+        - "--bootnodes=/dns4/node-7107773973489594368-0.p2p.onfinality.io/tcp/28330/ws/p2p/12D3KooWHAsVwkowLLnwd9ZRAmNFBdsvFzvB9XS8FhEufhvuvec3"
+        - "--bootnodes=/ip4/34.141.22.46/tcp/30333/p2p/12D3KooWPdGhxLeQad8qfxr7cPrYGMW7sJhXL4rfjZMMJpWZ1nHd"
+        - "--bootnodes=/ip4/34.141.85.156/tcp/30333/p2p/12D3KooWH8B1nrkNRvKPTuhaaXy244PZoptRzfXPQqVai3bRq4TS"
+        - "--bootnodes=/ip4/34.141.48.250/tcp/30333/p2p/12D3KooWHsA69Fb1HkdWrwrxY3cSga3wWyHnxuk5GeYtCh59XsWB"
+        - "--"
+        - "--no-telemetry"
+        - "--execution=wasm"
+        - "--wasm-execution=compiled"
+        - "--chain=/config/rococo-local.json"
+        - "--bootnodes=/dnsaddr/bootstrap-relay.algol.k-f.dev/p2p/12D3KooWABjwDpbaapnTwei9ZhSLMHAWij5oZE4CsbsN8K8q4mYb"
+        - "--bootnodes=/dnsaddr/bootstrap-relay-2.algol.k-f.dev/p2p/12D3KooWRQqyBqsFw8gw2oqZHaiPLyw2jgCyz5jwRMmg3aWr3jP5"
   ```
   </code></pre>
 </tab-item>
 </tabs>
 
-## 2 Compile and run from Source
+### Run the container
+
+Start the docker container.
+
+```bash
+docker-compose up -d
+```
+
+## 2. Run Binaries
 
 #### Prerequisites
-* Packages: `cmake pkg-config libssl-dev git clang libclang-dev protobuf-compiler`
+
+```bash
+sudo apt-get install cmake pkg-config libssl-dev git clang libclang-dev protobuf-compiler
+```
 
 #### <br>Building the binary</br>
 
@@ -171,11 +155,12 @@ Notice how the arguments for docker compose have an extra `- ` preceding each ar
 
 <tab-item title="Mainnet">
   ```bash
-  git clone https://github.com/centrifuge/centrifuge-chain.git 
+  git clone https://github.com/centrifuge/centrifuge-chain.git
+  git checkout [latest_release]
   cd centrifuge-chain
-  RUST_TOOLCHAIN=nightly-2022-11-14 ./scripts/install_toolchain.sh 
-  cargo build --release 
-  cp ./target/release/centrifuge-chain /var/lib/centrifuge-data 
+  RUST_TOOLCHAIN=nightly-2022-11-14 ./scripts/install_toolchain.sh
+  cargo build --release
+  cp ./target/release/centrifuge-chain /var/lib/centrifuge-data
   ```
 </tab-item>
 
@@ -183,16 +168,18 @@ Notice how the arguments for docker compose have an extra `- ` preceding each ar
   ```bash
   git clone https://github.com/centrifuge/centrifuge-chain.git
   cd centrifuge-chain
+  git checkout [latest_release]
   RUST_TOOLCHAIN=nightly-2022-11-14 ./scripts/install_toolchain.sh
-  cargo build --release 
-  cp ./target/release/centrifuge-chain /var/lib/algol-data 
-  cp ./res/rococo-local.json /var/lib/algol-data/relay-spec.json 
+  cargo build --release
+  cp ./target/release/centrifuge-chain /var/lib/algol-data
+  cp ./res/rococo-local.json /var/lib/algol-data/relay-spec.json
   ```
 </tab-item>
 
 </tabs>
 
 <br></br>
+
 ### Configure systemd
 
 ##### 1. Create systemd service file
@@ -210,20 +197,34 @@ StartLimitIntervalSec=0
 
 [Service]
 Type=simple
-Restart=on-failure
+Restart=always
 RestartSec=10
 User=centrifuge_service
 SyslogIdentifier=centrifuge
 SyslogFacility=local7
 KillSignal=SIGHUP
 ExecStart=/var/lib/centrifuge-data/centrifuge-chain \
-     --port 30333 \
-     --rpc-port 9933 \
-      ... 
-      (use the CLI args from above, notice the specific format here when copy/pasting)
-      ...
-     --chain polkadot \
-     --execution wasm
+    --unsafe-ws-external \
+    --unsafe-rpc-external \
+    --rpc-cors=all \
+    --rpc-methods=unsafe \
+    --pruning=archive \
+    --chain=centrifuge \
+    --parachain-id=2031 \
+    --port=30333 \
+    --rpc-port=9933 \
+    --ws-port=9944 \
+    --base-path=/data \
+    --log=main,info \
+    --execution=wasm \
+    --wasm-execution=compiled \
+    --ws-max-connections=5000 \
+    --bootnodes=/ip4/35.198.171.148/tcp/30333/ws/p2p/12D3KooWDXDwSdqi8wB1Vjjs5SVpAfk6neadvNTPAik5mQXqV7jF \
+    --bootnodes=/ip4/34.159.117.205/tcp/30333/ws/p2p/12D3KooWMspZo4aMEXWBH4UXm3gfiVkeu1AE68Y2JDdVzU723QPc \
+    -- \
+    --chain=polkadot \
+    --execution=wasm \
+    --wasm-execution=compiled
 
 [Install]
 WantedBy=multi-user.target
@@ -235,28 +236,48 @@ EOF
 <tab-item title="Testnet">
 <pre><code>
 ```bash
-sudo tee <<EOF >/dev/null /etc/systemd/system/algol.service
+sudo tee <<EOF >/dev/null /etc/systemd/system/centrifuge.service
 [Unit]
-Description="Algol (Centrifuge Testnet) systemd service"
+Description="Centrifuge Testnet systemd service"
 After=network.target
 StartLimitIntervalSec=0
 
 [Service]
 Type=simple
-Restart=on-failure
+Restart=always
 RestartSec=10
-User=algol_service
-SyslogIdentifier=algol(centrifuge_testnet)
+User=centrifuge_service
+SyslogIdentifier=centrifuge_testnet
 SyslogFacility=local7
 KillSignal=SIGHUP
 ExecStart=/var/lib/algol-data/centrifuge-chain \
-     --port 30333 \
-     --rpc-port 9933 \
-      ... 
-      (use the CLI args from above, notice the specific format here when copy/pasting)
-      ...
-     --bootnodes=/dnsaddr/bootstrap-relay.algol.k-f.dev/p2p/12D3KooWK3eidgThVdjHq5q6hak81yUVdKc3FGfYSqRw6kEB1fnm \
-     --bootnodes=/dnsaddr/bootstrap-relay-2.algol.k-f.dev/p2p/12D3KooWRQqyBqsFw8gw2oqZHaiPLyw2jgCyz5jwRMmg3aWr3jP5
+    --unsafe-ws-external \
+    --unsafe-rpc-external \
+    --rpc-cors=all \
+    --rpc-methods=unsafe \
+    --pruning=archive \
+    --chain=algol \
+    --parachain-id=2088 \
+    --port=30333 \
+    --rpc-port=9933 \
+    --ws-port=9944 \
+    --base-path=/data \
+    --log=main,info \
+    --execution=wasm \
+    --wasm-execution=compiled \
+    --ws-max-connections=5000 \
+    --bootnodes=/dnsaddr/bootstrap.algol.k-f.dev/p2p/12D3KooWQt8qAmXzgdNRuVKhW1NAdfowhoGC3apycsBYhvehp1mA \
+    --bootnodes=/dns4/node-7107773973489594368-0.p2p.onfinality.io/tcp/28330/ws/p2p/12D3KooWHAsVwkowLLnwd9ZRAmNFBdsvFzvB9XS8FhEufhvuvec3 \
+    --bootnodes=/ip4/34.141.22.46/tcp/30333/p2p/12D3KooWPdGhxLeQad8qfxr7cPrYGMW7sJhXL4rfjZMMJpWZ1nHd \
+    --bootnodes=/ip4/34.141.85.156/tcp/30333/p2p/12D3KooWH8B1nrkNRvKPTuhaaXy244PZoptRzfXPQqVai3bRq4TS \
+    --bootnodes=/ip4/34.141.48.250/tcp/30333/p2p/12D3KooWHsA69Fb1HkdWrwrxY3cSga3wWyHnxuk5GeYtCh59XsWB \
+    -- \
+    --no-telemetry \
+    --execution=wasm \
+    --wasm-execution=compiled \
+    --chain=/config/rococo-local.json \
+    --bootnodes=/dnsaddr/bootstrap-relay.algol.k-f.dev/p2p/12D3KooWABjwDpbaapnTwei9ZhSLMHAWij5oZE4CsbsN8K8q4mYb \
+    --bootnodes=/dnsaddr/bootstrap-relay-2.algol.k-f.dev/p2p/12D3KooWRQqyBqsFw8gw2oqZHaiPLyw2jgCyz5jwRMmg3aWr3jP5
 
 [Install]
 WantedBy=multi-user.target
@@ -267,80 +288,38 @@ EOF
 </tabs>
 <br></br>
 
-##### 2. Enable and start the `Centrifuge`-service
+##### 2. Start the systemd service
 Actually enable the previously generated serice and start it.
 
-<tabs>
-<tab-item title="Mainnet">
-  <pre><code>
-  ```bash 
-  sudo systemctl enable centrifuge.service 
-  sudo systemctl start centrifuge.service
-  ```
-  </code></pre>
-</tab-item>
+```bash
+sudo systemctl enable centrifuge.service
+sudo systemctl start centrifuge.service
+```
 
-<tab-item title="Testnet">
-  <pre><code>
-  ```bash 
-  sudo systemctl enable algol.service 
-  sudo systemctl start algol.service
-  ```
-  </code></pre>
-</tab-item>
-</tabs>
+If everything was set-up correctly, your node should now be starting the process of synchronization.
+This will take several hours, depending on your hardware. To check the status of the running service or to follow the logs, use:
 
-If everything was set-up correctly, your node should now be starting the process of synchronization. This will take several hours, depending on your hardware. To check the status of the running service or to follow the logs, use:
+```bash
+sudo systemctl status centrifuge.service
+sudo journalctl -u centrifuge.service -f
+```
 
-<tabs>
-<tab-item title="Mainnet">
-  <pre><code>
-  ```bash 
-  sudo systemctl status centrifuge.service 
-  sudo journalctl -u centrifuge.service -f
-  ```
-  </code></pre>
-</tab-item>
-
-<tab-item title="Testnet">
-  <pre><code>
-  ```bash 
-  sudo systemctl status algol.service 
-  sudo journalctl -u algol.service -f
-  ```
-  </code></pre>
-</tab-item>
-</tabs>
 <br></br>
 
 ##### 3. Test your RPC connection
 
 Once your node is fully synced, you can run a cURL request to see the status of your node:
 
-<tabs>
-<tab-item title="Mainnet">
-  <pre><code>
-  ```bash 
-  curl -H "Content-Type: application/json" -d '{{"id":1, "jsonrpc":"2.0", "method": "eth_syncing", "params":[]}}' localhost:9933 
-  ```
-  </code></pre>
-</tab-item>
+```bash
+curl -H "Content-Type: application/json" -d '{{"id":1, "jsonrpc":"2.0", "method": "eth_syncing", "params":[]}}' localhost:9933
+```
 
-<tab-item title="Testnet">
-  <pre><code>
-  ```bash 
-  curl -H "Content-Type: application/json" -d '{{"id":1, "jsonrpc":"2.0", "method": "eth_syncing", "params":[]}}' localhost:9933  
-  ```
-  </code></pre>
-</tab-item>
-</tabs>
-
-If the node is successfully synced, the output from above will print `{"jsonrpc":"2.0","result":false,"id":1}`
+Expected output if node is synced is `{"jsonrpc":"2.0","result":false,"id":1}`
 
 ### Configure `vald`
+
 In order for `vald` to connect to your local node, your `rpc_addr` should be exposed in
 `vald`'s `config.toml`
-
 
 <tabs>
 <tab-item title="Mainnet">
