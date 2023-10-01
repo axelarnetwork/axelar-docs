@@ -138,6 +138,9 @@ docker-compose up -d
 
 ```bash
 sudo apt-get install cmake pkg-config libssl-dev git clang libclang-dev protobuf-compiler
+adduser centrifuge_service --system --no-create-home
+mkdir /var/lib/centrifuge-data
+chown -R centrifuge_service:root /var/lib/centrifuge-data
 ```
 
 #### <br>Building the binary</br>
@@ -206,7 +209,7 @@ ExecStart=/var/lib/centrifuge-data/centrifuge-chain \
     --pruning=archive \
     --chain=centrifuge \
     --parachain-id=2031 \
-    --base-path=/data \
+    --base-path=/var/lib/centrifuge-data/ \
     --log=main,info \
     --execution=wasm \
     --wasm-execution=compiled \
