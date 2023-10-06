@@ -533,8 +533,8 @@ astro-island button {
   }
 }
 
-.mobile {
-  display: none;
+.keplr-button {
+  background-color: transparent;
 }
 
 .copy {
@@ -549,6 +549,10 @@ astro-island button {
 }
 .darkButton {
   display: block;
+}
+
+.mobile {
+  display: none;
 }
 
 /* Mobile styles */

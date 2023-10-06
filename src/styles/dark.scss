@@ -30,6 +30,7 @@ html.dark body {
   .site-logo,
   .site-logo.active {
     color: white;
+    background-color: transparent;
   }
   .desktop-nav .active {
     color: $dark-text;
@@ -138,5 +139,15 @@ html.dark body {
   }
   .darkButton {
     display: none;
+  }
+  .dropdown button {
+    background-color: #000;
+    color: #f3f4f6;
+  }
+  .dropdown .dropdown-menu {
+    background-color: black;
+  }
+  .dropdown .dropdown-menu *:hover {
+    background-color: rgb(17, 24, 39);
   }
 }

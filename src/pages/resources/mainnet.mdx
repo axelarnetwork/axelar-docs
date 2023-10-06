@@ -1,17 +1,17 @@
 # Mainnet
 
-import { Callout } from "/src/components/callout"
+import { Callout } from '/src/components/callout'
 
-import IBCChannels from "/src/components/ibc/channels";
-import TransferFeeCalculator from "/src/components/transfer-fee/calculator";
-import EVMChains from "/src/components/evm/chains";
-import EVMAssets from "/src/components/evm/assets";
-import UpgradePath from "/src/upgrade-path.md";
+import IBCChannels from '/src/components/ibc/channels'
+import TransferFeeCalculator from '/src/components/transfer-fee/calculator'
+import EVMChains from '/src/components/evm/chains'
+import EVMAssets from '/src/components/evm/assets'
+import UpgradePath from '/src/upgrade-path.md'
 
 | Variable              | Value     |
 | --------------------- | --------- |
-| `axelar-core` version | `v0.33.2` |
-| `vald` version        | `v0.33.2` |
+| `axelar-core` version | `v0.34.1` |
+| `vald` version        | `v0.34.1` |
 | `tofnd` version       | `v0.10.1` |
 
 ## EVM contract addresses
@@ -20,19 +20,20 @@ import UpgradePath from "/src/upgrade-path.md";
   
 <EVMChains client:only/>
  
-`Constant Address Deployer`: `0x98b2920d53612483f91f12ed7754e51b4a77919e`
+`Create3 Address Deployer`: `0xf49B10ccFB7D82C3a8749fFB1aAF3e0c936Eba36`
+
+`Create2 Address Deployer`: `0x98b2920d53612483f91f12ed7754e51b4a77919e`
 
 </div>
 
 <div className="space-y-1 mt-4">
-  ### Assets
-  Learn more about [wrapped assets like axlUSDC](/learn/axlusdc).
-  <EVMAssets  client:only environment="mainnet" />
+  ### Assets Learn more about [wrapped assets like axlUSDC](/learn/axlusdc).
+  <EVMAssets client:only environment="mainnet" />
 </div>
 
 <div className="space-y-1 mt-4">
   ## IBC Channels
-  <IBCChannels  client:only environment="mainnet" />
+  <IBCChannels client:only environment="mainnet" />
 </div>
 
 ## Cross-chain relayer gas fee
@@ -49,7 +50,7 @@ The relayer gas fee amount depends only on:
 </Callout>
 
 <div className="space-y-1 mt-4">
-  <TransferFeeCalculator  client:only environment="mainnet"/>
+  <TransferFeeCalculator client:only environment="mainnet" />
 </div>
 
 Example: a transfer of X USDC tokens from Avalanche to Osmosis will have a fee of 1.5 USDC (= 1 USDC for Avalanche + 0.5 USDC for Osmosis),
@@ -80,4 +81,4 @@ The gas relayer fee does not include any transaction fee assessed by the source 
 
 ## Upgrade Path
 
-<UpgradePath  />
+<UpgradePath />

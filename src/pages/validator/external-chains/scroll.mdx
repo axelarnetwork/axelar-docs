@@ -1,0 +1,222 @@
+# Scroll
+
+
+import { Callout } from "/src/components/callout"
+
+Instructions to set up your [Scroll](https://scroll.io) node.
+
+<Callout type="info" emoji="ℹ️">
+    Note: Mainnet for Scroll is not available yet. Instructions will be added after launch.
+</Callout>
+
+## Requirements
+
+- [Setup your Axelar validator](/validator/setup)
+- Minimum hardware requirements: 8vcpu 32GB RAM, 1TB+ free storage space.
+- MacOS or Ubuntu 22.04 (tested on 22.04)
+
+
+## Prerequisites
+
+```bash
+sudo apt-get update
+sudo apt-get install build-essential -y && sudo apt-get install jq -y
+```
+<br></br>
+#### [Install go](https://go.dev/doc/install)
+
+## Install Binaries
+
+```bash
+SCROLL_VERSION=scroll-v4.3.51
+```
+
+```bash
+git clone https://github.com/scroll-tech/go-ethereum l2geth-source
+cd l2geth-source
+git checkout $SCROLL_VERSION
+git branch
+make nccc_geth
+mv build/bin/geth /usr/bin/
+```
+<Callout type="info" emoji="ℹ️">
+    Note: nccc stands for “no circuit capacity checker”. This feature disables an expensive block validation rule that is not crucial on follower nodes. We recommend that you do not enable it.
+</Callout>
+
+#### Check version
+```bash
+geth version
+```
+
+## Create service
+
+You will need access to a fully-synced Sepolia RPC endpoint before running scroll node.
+```bash
+L1_ENDPOINT="your synced Ethereum Node"
+```
+Please consider opening port 30303(UDP & TCP) and enabling discovery so that other nodes can sync data from your node.
+Note: The following settings will allow your node to be accessed publicly from any machine, adjust the flags according if you don't prefer that.
+```bash
+sudo tee <<EOF >/dev/null /etc/systemd/system/geth.service
+[Unit]
+Description=geth daemon
+After=network-online.target
+
+[Service]
+User=$USER
+ExecStart=$(which geth) --scroll-sepolia \
+--datadir "./l2geth-datadir" \
+--gcmode archive --cache.noprefetch \
+--http --http.addr "0.0.0.0" --http.port 8545 --http.api "eth,net,web3,debug,scroll" \
+--l1.endpoint "$L1_ENDPOINT" --l1.confirmations "finalized" \
+--datadir $HOME/.scroll
+--http --http.vhosts "*" --http.addr 0.0.0.0 --ws --ws.origins '*' --ws.addr 0.0.0.0 --http.port 8545
+Restart=always
+RestartSec=3
+LimitNOFILE=4096
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+
+cat /etc/systemd/system/geth.service
+```
+
+## Start the service
+```bash
+sudo systemctl enable geth.service
+sudo systemctl daemon-reload
+sudo systemctl restart geth.service
+```
+
+## Check logs
+
+```bash
+# change log settings to persistent if not already
+sed -i 's/#Storage=auto/Storage=persistent/g' /etc/systemd/journald.conf
+sudo systemctl restart systemd-journald
+
+journalctl -u geth.service -f -n 100 -o cat
+```
+
+Logs should appear like this
+```bash
+INFO [09-08|09:19:52.594] Starting L1 message sync service         latestProcessedBlock=4,038,000
+WARN [09-08|09:19:52.726] Running initial sync of L1 messages before starting l2geth, this might take a while...
+
+
+INFO [09-08|09:20:02.927] Syncing L1 messages                      processed=4,046,800 confirmed=4,246,270 collected=29 progress(%)=95.302
+INFO [09-08|09:20:12.924] Syncing L1 messages                      processed=4,055,600 confirmed=4,246,270 collected=70 progress(%)=95.510
+INFO [09-08|09:20:22.891] Syncing L1 messages                      processed=4,064,400 confirmed=4,246,270 collected=91 progress(%)=95.717
+INFO [09-08|09:20:32.846] Syncing L1 messages                      processed=4,074,300 confirmed=4,246,270 collected=104 progress(%)=95.950
+INFO [09-08|09:20:42.872] Syncing L1 messages                      processed=4,083,100 confirmed=4,246,270 collected=105 progress(%)=96.157
+INFO [09-08|09:20:52.929] Syncing L1 messages                      processed=4,091,900 confirmed=4,246,270 collected=115 progress(%)=96.365
+INFO [09-08|09:22:52.844] Syncing L1 messages                      processed=4,153,800 confirmed=4,246,270 collected=324,919 progress(%)=97.822
+```
+Wait for to sync L1 messages, an
+d then it should start syncing scroll blockchain
+```bash
+INFO [09-08|09:25:25.840] L1 message initial sync completed        latestProcessedBlock=4,246,270
+INFO [09-08|09:25:25.841] created new worker                       CircuitCapacityChecker ID=4,589,695,372,138,917,397
+INFO [09-08|09:25:25.841] Gasprice oracle is ignoring threshold set threshold=2
+WARN [09-08|09:25:25.841] Error reading unclean shutdown markers   error="leveldb: not found"
+INFO [09-08|09:25:25.842] Starting peer-to-peer node               instance=Geth/v4.3.51-sepolia-b0657a7e/linux-amd64/go1.20.2
+INFO [09-08|09:25:25.842] Stored checkpoint snapshot to disk       number=0 hash=aa62d1..68592c
+INFO [09-08|09:25:25.902] New local node record                    seq=1,694,157,925,901 id=139edc25676eebb7 ip=127.0.0.1 udp=30303 tcp=30303
+INFO [09-08|09:25:25.903] Started P2P networking                   self=enode://923ac5fd77cce78a69a20952fa0b40046391838a332308a986041ad2c20c4d20bb9c406594c713bf8f3004b02883857a598557cad2306cba50035b19967558b3@127.0.0.1:30303
+INFO [09-08|09:25:25.904] IPC endpoint opened                      url=$HOME/.scroll/geth.ipc
+INFO [09-08|09:25:25.904] HTTP server started                      endpoint=[::]:8545 prefix= cors= vhosts=localhost
+INFO [09-08|09:25:27.418] New local node record                    seq=1,694,157,925,902 id=139edc25676eebb7 ip=65.108.239.113 udp=30303 tcp=30303
+INFO [09-08|09:25:35.905] Block synchronisation started
+
+INFO [09-08|09:25:40.599] Downloader queue stats                   receiptTasks=0 blockTasks=188 itemSize=65.70B throttle=8192
+INFO [09-08|09:25:40.599] Imported new chain segment               blocks=1 txs=0 mgas=0.000 elapsed="453.99µs" mgasps=0.000 number=1 hash=d69ae1..807f83 age=1mo2d1h  dirty=0.00B
+INFO [09-08|09:25:40.868] Imported new chain segment               blocks=3 txs=21 mgas=19.581 elapsed=79.813ms   mgasps=245.340 number=4 hash=8294c2..bdfb74 age=1mo2d1h  dirty=0.00B
+INFO [09-08|09:25:41.090] Imported new chain segment               blocks=11 txs=42 mgas=13.973 elapsed=115.365ms  mgasps=121.115 number=15 hash=ba47c5..c13147 age=1mo2d52m dirty=0.00B
+INFO [09-08|09:25:41.200] Imported new chain segment               blocks=22 txs=39 mgas=10.720 elapsed=110.598ms  mgasps=96.926  number=37 hash=afc4e6..d642f3 age=1mo2d36m dirty=0.00B
+INFO [09-08|09:25:41.823] Imported new chain segment               blocks=233 txs=237 mgas=15.103 elapsed=621.685ms  mgasps=24.293  number=270 hash=8c6dd0..bb850e age=1mo1d23h dirty=0.00B
+```
+
+## Verify
+
+#### Method 1:
+```bash
+curl -X POST $YOUR_IP:8545 -H "Content-Type: application/json" --data '{"jsonrpc":"2.0","method":"eth_syncing","params":[],"id":1}' | jq
+```
+If you get something like this in response of the above rpc call, your node is setup correctly
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "result": {
+    "currentBlock": "0x2d44",
+    "highestBlock": "0x8d0eb",
+    "knownStates": "0x0",
+    "pulledStates": "0x0",
+    "startingBlock": "0x0"
+  }
+}
+```
+Wait for `"result"` to become `false` before using it in vald config
+
+```json
+{"jsonrpc":"2.0","id":1,"result":false}
+```
+<br></br>
+#### Method 2:
+You can also check your status by connect to geth console
+```bash
+geth attach http://localhost:8545
+eth.syncing
+```
+
+If you get something like this in response, your node is setup correctly
+```json
+{
+  currentBlock: 14555,
+  highestBlock: 577771,
+  knownStates: 0,
+  pulledStates: 0,
+  startingBlock: 0
+}
+```
+
+Wait for it to become `false` before using it in vald config
+
+```bash
+eth.syncing
+false
+```
+
+## Endpoint
+
+```bash
+echo "${YOUR_IP}:8545"
+```
+
+### Configure vald
+
+In order for `vald` to connect to your Binance Smart Chain node, your `rpc_addr` should be exposed in
+vald's `config.toml`
+
+<tabs>
+    <tab-item title="Mainnet">
+        ```bash
+        [[axelar_bridge_evm]]
+        name = "scroll"
+        rpc_addr = "http://IP:PORT"
+        start-with-bridge = true
+        ```
+    </tab-item>
+    <tab-item title="Testnet">
+        ```bash
+        [[axelar_bridge_evm]]
+        name = "scroll"
+        rpc_addr = "http://IP:PORT"
+        start-with-bridge = true
+        ```
+    </tab-item>
+</tabs>
+
+
