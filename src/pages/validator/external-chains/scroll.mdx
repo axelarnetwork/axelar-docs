@@ -5,15 +5,12 @@ import { Callout } from "/src/components/callout"
 
 Instructions to set up your [Scroll](https://scroll.io) node.
 
-<Callout type="info" emoji="ℹ️">
-    Note: Mainnet for Scroll is not available yet. Instructions will be added after launch.
-</Callout>
-
 ## Requirements
 
 - [Setup your Axelar validator](/validator/setup)
 - Minimum hardware requirements: 8vcpu 32GB RAM, 1TB+ free storage space.
 - MacOS or Ubuntu 22.04 (tested on 22.04)
+- You will need access to a fully-synced Ethereum Mainnet RPC endpoint
 
 
 ## Prerequisites
@@ -28,7 +25,7 @@ sudo apt-get install build-essential -y && sudo apt-get install jq -y
 ## Install Binaries
 
 ```bash
-SCROLL_VERSION=scroll-v4.3.51
+SCROLL_VERSION=scroll-v4.4.17
 ```
 
 ```bash
@@ -50,38 +47,83 @@ geth version
 
 ## Create service
 
-You will need access to a fully-synced Sepolia RPC endpoint before running scroll node.
-```bash
-L1_ENDPOINT="your synced Ethereum Node"
-```
+You will need access to a fully-synced Ethereum RPC endpoint before running scroll node.
+
+<tabs>
+    <tab-item title="Mainnet">
+        ```bash
+        L1_ENDPOINT="your synced Mainnet Ethereum Node"
+        ```
+    </tab-item>
+    <tab-item title="Testnet">
+        ```bash
+        L1_ENDPOINT="your synced Sepolia Ethereum Node"
+        ```
+    </tab-item>
+</tabs>
+
 Please consider opening port 30303(UDP & TCP) and enabling discovery so that other nodes can sync data from your node.
 Note: The following settings will allow your node to be accessed publicly from any machine, adjust the flags according if you don't prefer that.
-```bash
-sudo tee <<EOF >/dev/null /etc/systemd/system/geth.service
-[Unit]
-Description=geth daemon
-After=network-online.target
 
-[Service]
-User=$USER
-ExecStart=$(which geth) --scroll-sepolia \
---datadir "./l2geth-datadir" \
---gcmode archive --cache.noprefetch \
---http --http.addr "0.0.0.0" --http.port 8545 --http.api "eth,net,web3,debug,scroll" \
---l1.endpoint "$L1_ENDPOINT" --l1.confirmations "finalized" \
---datadir $HOME/.scroll
---http --http.vhosts "*" --http.addr 0.0.0.0 --ws --ws.origins '*' --ws.addr 0.0.0.0 --http.port 8545
-Restart=always
-RestartSec=3
-LimitNOFILE=4096
+<tabs>
+    <tab-item title="Mainnet">
+        ```bash
+        sudo tee <<EOF >/dev/null /etc/systemd/system/geth.service
+        [Unit]
+        Description=geth daemon
+        After=network-online.target
 
-[Install]
-WantedBy=multi-user.target
-EOF
+        [Service]
+        User=$USER
+        ExecStart=$(which geth) --scroll \
+        --datadir "./l2geth-datadir" \
+        --gcmode archive --cache.noprefetch \
+        --http --http.addr "0.0.0.0" --http.port 8545 --http.api "eth,net,web3,debug,scroll" \
+        --l1.endpoint "$L1_ENDPOINT" --l1.confirmations "finalized" \
+        --datadir $HOME/.scroll
+        --http --http.vhosts "*" --http.addr 0.0.0.0 --ws --ws.origins '*' --ws.addr 0.0.0.0 --http.port 8545
+        Restart=always
+        RestartSec=3
+        LimitNOFILE=4096
+
+        [Install]
+        WantedBy=multi-user.target
+        EOF
 
 
-cat /etc/systemd/system/geth.service
-```
+        cat /etc/systemd/system/geth.service
+        ```
+    </tab-item>
+    <tab-item title="Testnet">
+        ```bash
+        sudo tee <<EOF >/dev/null /etc/systemd/system/geth.service
+        [Unit]
+        Description=geth daemon
+        After=network-online.target
+
+        [Service]
+        User=$USER
+        ExecStart=$(which geth) --scroll-sepolia \
+        --datadir "./l2geth-datadir" \
+        --gcmode archive --cache.noprefetch \
+        --http --http.addr "0.0.0.0" --http.port 8545 --http.api "eth,net,web3,debug,scroll" \
+        --l1.endpoint "$L1_ENDPOINT" --l1.confirmations "finalized" \
+        --datadir $HOME/.scroll
+        --http --http.vhosts "*" --http.addr 0.0.0.0 --ws --ws.origins '*' --ws.addr 0.0.0.0 --http.port 8545
+        Restart=always
+        RestartSec=3
+        LimitNOFILE=4096
+
+        [Install]
+        WantedBy=multi-user.target
+        EOF
+
+
+        cat /etc/systemd/system/geth.service
+        ```
+    </tab-item>
+</tabs>
+
 
 ## Start the service
 ```bash
@@ -114,8 +156,7 @@ INFO [09-08|09:20:42.872] Syncing L1 messages                      processed=4,0
 INFO [09-08|09:20:52.929] Syncing L1 messages                      processed=4,091,900 confirmed=4,246,270 collected=115 progress(%)=96.365
 INFO [09-08|09:22:52.844] Syncing L1 messages                      processed=4,153,800 confirmed=4,246,270 collected=324,919 progress(%)=97.822
 ```
-Wait for to sync L1 messages, an
-d then it should start syncing scroll blockchain
+Wait for to sync L1 messages, and then it should start syncing scroll blockchain
 ```bash
 INFO [09-08|09:25:25.840] L1 message initial sync completed        latestProcessedBlock=4,246,270
 INFO [09-08|09:25:25.841] created new worker                       CircuitCapacityChecker ID=4,589,695,372,138,917,397
