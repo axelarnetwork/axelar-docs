@@ -216,13 +216,29 @@ curl -H "Content-Type: application/json" -d '{"id":1, "jsonrpc":"2.0", "method":
 
 If the node is successfully synced, the output from above will print `{"jsonrpc":"2.0","id":1,"result":false}`
 
-### EVM RPC endpoint URL
+### Configure vald
 
-Axelar Network will be connecting to the EVM compatible blockchain `Bor`, so your `rpc_addr` should be exposed in this format:
+In order for `vald` to connect to your node, your `rpc_addr` should be exposed in
+vald's `config.toml`
 
-```bash
-http://IP:PORT
-```
+<tabs>
+    <tab-item title="Mainnet">
+        ```bash
+        [[axelar_bridge_evm]]
+        name = "polygon"
+        rpc_addr = "http://IP:PORT"
+        start-with-bridge = true
+        finality_override = "confirmation"
+        ```
+    </tab-item>
+    <tab-item title="Testnet">
+        ```bash
+        [[axelar_bridge_evm]]
+        name = "polygon"
+        rpc_addr = "http://IP:PORT"
+        start-with-bridge = true
+        finality_override = "confirmation"
+        ```
+    </tab-item>
+</tabs>
 
-Example:
-`http://192.168.192.168:8545`
