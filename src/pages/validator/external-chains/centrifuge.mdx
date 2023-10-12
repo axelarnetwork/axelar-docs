@@ -283,6 +283,8 @@ ExecStart=/usr/bin/centrifuge-chain \
   --database paritydb \
   --chain=kusama
 
+[Install]
+WantedBy=multi-user.target
 EOF
 ```
 </code></pre>
