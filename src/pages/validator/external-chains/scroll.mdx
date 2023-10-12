@@ -76,12 +76,12 @@ Note: The following settings will allow your node to be accessed publicly from a
         [Service]
         User=$USER
         ExecStart=$(which geth) --scroll \
-        --datadir "./l2geth-datadir" \
-        --gcmode archive --cache.noprefetch \
-        --http --http.addr "0.0.0.0" --http.port 8545 --http.api "eth,net,web3,debug,scroll" \
-        --l1.endpoint "$L1_ENDPOINT" --l1.confirmations "finalized" \
         --datadir $HOME/.scroll
-        --http --http.vhosts "*" --http.addr 0.0.0.0 --ws --ws.origins '*' --ws.addr 0.0.0.0 --http.port 8545
+        --gcmode archive --cache.noprefetch \
+        --http --http.vhosts "*" --http.addr "0.0.0.0" --http.port 8545 --http.api "eth,net,web3,debug,scroll" \
+        --l1.endpoint "$L1_ENDPOINT" --l1.confirmations "finalized" \
+        --ws --ws.origins '*' --ws.addr 0.0.0.0
+        
         Restart=always
         RestartSec=3
         LimitNOFILE=4096
