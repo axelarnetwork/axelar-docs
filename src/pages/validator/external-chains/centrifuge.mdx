@@ -12,17 +12,18 @@ Set up your Centrifuge Mainnet or Testnet node.
 - [Releases](https://github.com/centrifuge/centrifuge-chain/releases)
 - Docker OR `rustup` is installed
 
-## Steps
+## Options
 1. Run with Docker
 2. Run with binaries
-4. Configure vald
 
 ## 1. Run with Docker
 
 You can use the container published by Centrifuge on their [DockerHub repo](https://hub.docker.com/repository/docker/centrifugeio/centrifuge-chain/tags?page=1&ordering=last_updated)
 or build your own by cloning the cent-chain repository and using the [Dockerfile](https://github.com/centrifuge/centrifuge-chain/blob/main/Dockerfile) in the root of the repo (2-4h build time in an average machine)
 
-Find the [latest release](https://github.com/centrifuge/centrifuge-chain/releases) of the docker image, e.g. `centrifugeio/centrifuge-chain:main-20230906121926-xyz`.
+To find the latest release go to the [Centrifuge repository](https://github.com/centrifuge/centrifuge-chain/releases), 
+copy the Git Hash and input that hash on our [Docker Hub repository](https://hub.docker.com/repository/docker/centrifugeio/centrifuge-chain/tags?page=1&ordering=last_updated). 
+It will look like this: `centrifugeio/centrifuge-chain:main-$publish_date-$github_hash`.
 
 ### Create docker compose file
 
@@ -39,25 +40,20 @@ Change the `ports` based on your network setup. Replace `/mnt/my_volume/data` wi
       container_name: centrifuge-chain
       image: "centrifugeio/centrifuge-chain:main-[latest_release]"
       platform: "linux/amd64"
-      volumes:
-        - /mnt/my_volume/data:/data
       ports:
         - "30355:30333"
         - "9936:9933"
         - "9946:9944"
       volumes:
-        - type: bind
-          source: ./res/rococo-local.json
-          target: /chainspec.json
-          read_only: true
+        # Mount your biggest drive
+        - /mnt/my_volume/data:/data
       command:
       - "--port=30333"
       - "--rpc-port=9933"
       - "--ws-port=9944"
-      - "--unsafe-ws-external"
+      - "--ws-external"
       - "--unsafe-rpc-external"
       - "--rpc-cors=all"
-      - "--rpc-methods=unsafe"
       - "--pruning=archive"
       - "--chain=centrifuge"
       - "--parachain-id=2031"
@@ -68,6 +64,8 @@ Change the `ports` based on your network setup. Replace `/mnt/my_volume/data` wi
       - "--ws-max-connections=5000"
       - "--bootnodes=/ip4/35.198.171.148/tcp/30333/ws/p2p/12D3KooWDXDwSdqi8wB1Vjjs5SVpAfk6neadvNTPAik5mQXqV7jF"
       - "--bootnodes=/ip4/34.159.117.205/tcp/30333/ws/p2p/12D3KooWMspZo4aMEXWBH4UXm3gfiVkeu1AE68Y2JDdVzU723QPc"
+      - "--state-cache-size=1"
+      - "--name=YOUR-NODE-NAME"
       - "--"
       - "--execution=wasm"
       - "--wasm-execution=compiled"
@@ -95,7 +93,6 @@ Change the `ports` based on your network setup. Replace `/mnt/my_volume/data` wi
         - "--port=30333"
         - "--rpc-port=9933"
         - "--ws-port=9944"
-        - "--unsafe-ws-external"
         - "--unsafe-rpc-external"
         - "--rpc-cors=all"
         - "--rpc-methods=unsafe"
@@ -108,17 +105,12 @@ Change the `ports` based on your network setup. Replace `/mnt/my_volume/data` wi
         - "--wasm-execution=compiled"
         - "--ws-max-connections=5000"
         - "--bootnodes=/dnsaddr/bootstrap.algol.k-f.dev/p2p/12D3KooWQt8qAmXzgdNRuVKhW1NAdfowhoGC3apycsBYhvehp1mA"
-        - "--bootnodes=/dns4/node-7107773973489594368-0.p2p.onfinality.io/tcp/28330/ws/p2p/12D3KooWHAsVwkowLLnwd9ZRAmNFBdsvFzvB9XS8FhEufhvuvec3"
-        - "--bootnodes=/ip4/34.141.22.46/tcp/30333/p2p/12D3KooWPdGhxLeQad8qfxr7cPrYGMW7sJhXL4rfjZMMJpWZ1nHd"
-        - "--bootnodes=/ip4/34.141.85.156/tcp/30333/p2p/12D3KooWH8B1nrkNRvKPTuhaaXy244PZoptRzfXPQqVai3bRq4TS"
-        - "--bootnodes=/ip4/34.141.48.250/tcp/30333/p2p/12D3KooWHsA69Fb1HkdWrwrxY3cSga3wWyHnxuk5GeYtCh59XsWB"
         - "--"
         - "--no-telemetry"
         - "--execution=wasm"
         - "--wasm-execution=compiled"
-        - "--chain=/config/rococo-local.json"
+        - "--chain=/resources/rococo-local.json"
         - "--bootnodes=/dnsaddr/bootstrap-relay.algol.k-f.dev/p2p/12D3KooWABjwDpbaapnTwei9ZhSLMHAWij5oZE4CsbsN8K8q4mYb"
-        - "--bootnodes=/dnsaddr/bootstrap-relay-2.algol.k-f.dev/p2p/12D3KooWRQqyBqsFw8gw2oqZHaiPLyw2jgCyz5jwRMmg3aWr3jP5"
   ```
   </code></pre>
 </tab-item>
