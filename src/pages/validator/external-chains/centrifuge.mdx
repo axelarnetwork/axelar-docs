@@ -190,7 +190,7 @@ ExecStart=/var/lib/centrifuge-data/centrifuge-chain \
     --port=30333 \
     --rpc-port=9933 \
     --ws-port=9944 \
-    --unsafe-ws-external \
+    --ws-external \
     --unsafe-rpc-external \
     --rpc-cors=all \
     --rpc-methods=unsafe \
@@ -216,6 +216,12 @@ EOF
 </code></pre>
 </tab-item>
 
+You'll have to download the Relay chain spec first:
+<pre><code>
+curl -O https://github.com/centrifuge/centrifuge-chain/blob/main/res/westend-alphanet-raw-specs.json 
+mv westend-alphanet-raw-specs.json /config/
+</code></pre>
+
 <tab-item title="Testnet">
 <pre><code>
 ```bash
@@ -237,30 +243,23 @@ ExecStart=/var/lib/algol-data/centrifuge-chain \
     --port=30333 \
     --rpc-port=9933 \
     --ws-port=9944 \
-    --unsafe-ws-external \
+    --ws-external \
     --unsafe-rpc-external \
     --rpc-cors=all \
-    --rpc-methods=unsafe \
     --pruning=archive \
-    --chain=algol \
-    --parachain-id=2088 \
+    --chain=development \
+    --parachain-id=2031 \
     --base-path=/data \
     --log=main,info \
     --execution=wasm \
     --wasm-execution=compiled \
-    --ws-max-connections=5000 \
-    --bootnodes=/dnsaddr/bootstrap.algol.k-f.dev/p2p/12D3KooWQt8qAmXzgdNRuVKhW1NAdfowhoGC3apycsBYhvehp1mA \
-    --bootnodes=/dns4/node-7107773973489594368-0.p2p.onfinality.io/tcp/28330/ws/p2p/12D3KooWHAsVwkowLLnwd9ZRAmNFBdsvFzvB9XS8FhEufhvuvec3 \
-    --bootnodes=/ip4/34.141.22.46/tcp/30333/p2p/12D3KooWPdGhxLeQad8qfxr7cPrYGMW7sJhXL4rfjZMMJpWZ1nHd \
-    --bootnodes=/ip4/34.141.85.156/tcp/30333/p2p/12D3KooWH8B1nrkNRvKPTuhaaXy244PZoptRzfXPQqVai3bRq4TS \
-    --bootnodes=/ip4/34.141.48.250/tcp/30333/p2p/12D3KooWHsA69Fb1HkdWrwrxY3cSga3wWyHnxuk5GeYtCh59XsWB \
+    --bootnodes=/ip4/34.89.150.73/tcp/30333/p2p/12D3KooWHsA69Fb1HkdWrwrxY3cSga3wWyHnxuk5GeYtCh59XsWB \
+    --bootnodes=/ip4/35.198.144.90/tcp/30333/p2p/12D3KooWMJPzvEp5Jhea8eKsUDufBbAzGrn265GcaCmcnp3koPk4 \
     -- \
     --no-telemetry \
     --execution=wasm \
     --wasm-execution=compiled \
-    --chain=/config/rococo-local.json \
-    --bootnodes=/dnsaddr/bootstrap-relay.algol.k-f.dev/p2p/12D3KooWABjwDpbaapnTwei9ZhSLMHAWij5oZE4CsbsN8K8q4mYb \
-    --bootnodes=/dnsaddr/bootstrap-relay-2.algol.k-f.dev/p2p/12D3KooWRQqyBqsFw8gw2oqZHaiPLyw2jgCyz5jwRMmg3aWr3jP5
+    --chain=/config/westend-alphanet-raw-specs.json \
 
 [Install]
 WantedBy=multi-user.target
