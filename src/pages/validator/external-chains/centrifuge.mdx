@@ -92,33 +92,29 @@ Change the `ports` based on your network setup. Replace `/mnt/my_volume/data` wi
       volumes:
         - /mnt/my_volume/data:/data
       command:
-        - "--port=30333"
-        - "--rpc-port=9933"
-        - "--ws-port=9944"
-        - "--unsafe-ws-external"
-        - "--unsafe-rpc-external"
-        - "--rpc-cors=all"
-        - "--rpc-methods=unsafe"
-        - "--pruning=archive"
-        - "--chain=algol"
-        - "--parachain-id=2088"
-        - "--base-path=/data"
-        - "--log=main,info"
-        - "--execution=wasm"
-        - "--wasm-execution=compiled"
-        - "--ws-max-connections=5000"
-        - "--bootnodes=/dnsaddr/bootstrap.algol.k-f.dev/p2p/12D3KooWQt8qAmXzgdNRuVKhW1NAdfowhoGC3apycsBYhvehp1mA"
-        - "--bootnodes=/dns4/node-7107773973489594368-0.p2p.onfinality.io/tcp/28330/ws/p2p/12D3KooWHAsVwkowLLnwd9ZRAmNFBdsvFzvB9XS8FhEufhvuvec3"
-        - "--bootnodes=/ip4/34.141.22.46/tcp/30333/p2p/12D3KooWPdGhxLeQad8qfxr7cPrYGMW7sJhXL4rfjZMMJpWZ1nHd"
-        - "--bootnodes=/ip4/34.141.85.156/tcp/30333/p2p/12D3KooWH8B1nrkNRvKPTuhaaXy244PZoptRzfXPQqVai3bRq4TS"
-        - "--bootnodes=/ip4/34.141.48.250/tcp/30333/p2p/12D3KooWHsA69Fb1HkdWrwrxY3cSga3wWyHnxuk5GeYtCh59XsWB"
-        - "--"
-        - "--no-telemetry"
-        - "--execution=wasm"
-        - "--wasm-execution=compiled"
-        - "--chain=/config/rococo-local.json"
-        - "--bootnodes=/dnsaddr/bootstrap-relay.algol.k-f.dev/p2p/12D3KooWABjwDpbaapnTwei9ZhSLMHAWij5oZE4CsbsN8K8q4mYb"
-        - "--bootnodes=/dnsaddr/bootstrap-relay-2.algol.k-f.dev/p2p/12D3KooWRQqyBqsFw8gw2oqZHaiPLyw2jgCyz5jwRMmg3aWr3jP5"
+      - "--port=30333"
+      - "--rpc-port=9933"
+      - "--ws-port=9944"
+      - "--unsafe-ws-external"
+      - "--unsafe-rpc-external"
+      - "--rpc-cors=all"
+      - "--rpc-methods=unsafe"
+      - "--pruning=archive"
+      - "--chain=altair"
+      - "--parachain-id=2088"
+      - "--base-path=/data"
+      - "--log=main,info"
+      - "--execution=wasm"
+      - "--wasm-execution=compiled"
+      - "--ws-max-connections=5000"
+      - "--bootnodes=/ip4/35.198.171.148/tcp/30333/ws/p2p/12D3KooWDXDwSdqi8wB1Vjjs5SVpAfk6neadvNTPAik5mQXqV7jF"
+      - "--bootnodes=/ip4/65.108.136.39/tcp/30333/p2p/12D3KooWE5h6gyrwGDpGvVHZPpqRX7G9XyYoyyk3XwNmaQqXYo5D"
+      - "--"
+      - "--no-telemetry"
+      - "--execution=wasm"
+      - "--wasm-execution=compiled"
+      - "--chain=kusama"
+
   ```
   </code></pre>
 </tab-item>
@@ -146,24 +142,33 @@ sudo apt-get install cmake pkg-config libssl-dev git clang libclang-dev protobuf
 
 <tab-item title="Mainnet">
   ```bash
-  git clone https://github.com/centrifuge/centrifuge-chain.git
-  git checkout [latest_release]
+  git clone https://github.com/centrifuge/centrifuge-chain
   cd centrifuge-chain
-  RUST_TOOLCHAIN=nightly-2022-11-14 ./scripts/install_toolchain.sh
+  latestTag=$(curl -s https://api.github.com/repos/centrifuge/centrifuge-chain/releases/latest | grep '.tag_name'|cut -d\" -f4)
+  echo $latestTag
+  git checkout $latestTag
   cargo build --release
-  cp ./target/release/centrifuge-chain /var/lib/centrifuge-data
+  sudo chmod +x target/release/centrifuge-chain
+  sudo mkdir data
+  sudo chmod -R 777 data
+  sudo mv target/release/centrifuge-chain /usr/bin
+  cd ~
   ```
 </tab-item>
 
 <tab-item title="Testnet">
   ```bash
-  git clone https://github.com/centrifuge/centrifuge-chain.git
+  git clone https://github.com/centrifuge/centrifuge-chain
   cd centrifuge-chain
-  git checkout [latest_release]
-  RUST_TOOLCHAIN=nightly-2022-11-14 ./scripts/install_toolchain.sh
+  latestTag=$(curl -s https://api.github.com/repos/centrifuge/centrifuge-chain/releases/latest | grep '.tag_name'|cut -d\" -f4)
+  echo $latestTag
+  git checkout $latestTag
   cargo build --release
-  cp ./target/release/centrifuge-chain /var/lib/algol-data
-  cp ./res/rococo-local.json /var/lib/algol-data/relay-spec.json
+  sudo chmod +x target/release/centrifuge-chain
+  sudo mkdir data
+  sudo chmod -R 777 data
+  sudo mv target/release/centrifuge-chain /usr/bin
+  cd ~
   ```
 </tab-item>
 
@@ -238,41 +243,46 @@ StartLimitIntervalSec=0
 Type=simple
 Restart=always
 RestartSec=10
-User=centrifuge_service
+User=$USER
 SyslogIdentifier=centrifuge_testnet
 SyslogFacility=local7
 KillSignal=SIGHUP
-ExecStart=/var/lib/algol-data/centrifuge-chain \
-    --port=30333 \
-    --rpc-port=9933 \
-    --ws-port=9944 \
-    --unsafe-ws-external \
-    --unsafe-rpc-external \
-    --rpc-cors=all \
-    --rpc-methods=unsafe \
-    --pruning=archive \
-    --chain=algol \
-    --parachain-id=2088 \
-    --base-path=/data \
-    --log=main,info \
-    --execution=wasm \
-    --wasm-execution=compiled \
-    --ws-max-connections=5000 \
-    --bootnodes=/dnsaddr/bootstrap.algol.k-f.dev/p2p/12D3KooWQt8qAmXzgdNRuVKhW1NAdfowhoGC3apycsBYhvehp1mA \
-    --bootnodes=/dns4/node-7107773973489594368-0.p2p.onfinality.io/tcp/28330/ws/p2p/12D3KooWHAsVwkowLLnwd9ZRAmNFBdsvFzvB9XS8FhEufhvuvec3 \
-    --bootnodes=/ip4/34.141.22.46/tcp/30333/p2p/12D3KooWPdGhxLeQad8qfxr7cPrYGMW7sJhXL4rfjZMMJpWZ1nHd \
-    --bootnodes=/ip4/34.141.85.156/tcp/30333/p2p/12D3KooWH8B1nrkNRvKPTuhaaXy244PZoptRzfXPQqVai3bRq4TS \
-    --bootnodes=/ip4/34.141.48.250/tcp/30333/p2p/12D3KooWHsA69Fb1HkdWrwrxY3cSga3wWyHnxuk5GeYtCh59XsWB \
-    -- \
-    --no-telemetry \
-    --execution=wasm \
-    --wasm-execution=compiled \
-    --chain=/config/rococo-local.json \
-    --bootnodes=/dnsaddr/bootstrap-relay.algol.k-f.dev/p2p/12D3KooWABjwDpbaapnTwei9ZhSLMHAWij5oZE4CsbsN8K8q4mYb \
-    --bootnodes=/dnsaddr/bootstrap-relay-2.algol.k-f.dev/p2p/12D3KooWRQqyBqsFw8gw2oqZHaiPLyw2jgCyz5jwRMmg3aWr3jP5
+ExecStart=/usr/bin/centrifuge-chain \
+  --name=YOUR_NODE_NAME \
+  --base-path=/root/centrifuge-chain/data \
+  --collator \
+  --chain=altair \
+  --port 30433 \
+  --rpc-port 9934 \
+  --rpc-cors=all \
+  --ws-port 9945 \
+  --parachain-id=2088 \
+  --execution=wasm \
+  --wasm-execution=compiled \
+  --unsafe-rpc-external \
+  --unsafe-ws-external \
+  --rpc-methods=unsafe \
+  --pruning=archive \
+  --bootnodes=/ip4/35.198.171.148/tcp/30333/ws/p2p/12D3KooWDXDwSdqi8wB1Vjjs5SVpAfk6neadvNTPAik5mQXqV7jF \
+  --bootnodes=/ip4/65.108.136.39/tcp/30333/p2p/12D3KooWE5h6gyrwGDpGvVHZPpqRX7G9XyYoyyk3XwNmaQqXYo5D \
+  --log=main,info \
+  --trie-cache-size 0 \
+  --no-private-ipv4 \
+  --no-mdns \
+  -- \
+  --execution=wasm \
+  --wasm-execution=compiled \
+  --port 30434 \
+  --rpc-port 9935 \
+  --ws-port 9946 \
+  --no-private-ipv4 \
+  --no-mdns \
+  --sync fast \
+  --state-pruning 100 \
+  --blocks-pruning 100 \
+  --database paritydb \
+  --chain=kusama
 
-[Install]
-WantedBy=multi-user.target
 EOF
 ```
 </code></pre>
