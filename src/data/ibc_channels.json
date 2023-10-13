@@ -271,16 +271,6 @@
       "channel_id": "channel-11"
     },
     {
-      "from": "terraclassic",
-      "to": "axelarnet",
-      "channel_id": "channel-19"
-    },
-    {
-      "from": "axelarnet",
-      "to": "terraclassic",
-      "channel_id": "channel-0"
-    },
-    {
       "from": "umee",
       "to": "axelarnet",
       "channel_id": "channel-33"
@@ -353,6 +343,16 @@
       "channel_id": "channel-25"
     },
     {
+      "from": "haqq",
+      "to": "axelarnet",
+      "channel_id": "channel-4"
+    },
+    {
+      "from": "axelarnet",
+      "to": "haqq",
+      "channel_id": "channel-304"
+    },
+    {
       "from": "ixo",
       "to": "axelarnet",
       "channel_id": "channel-9"
@@ -415,12 +415,12 @@
     {
       "from": "secret",
       "to": "axelarnet",
-      "channel_id": "channel-182"
+      "channel_id": "channel-1"
     },
     {
       "from": "axelarnet",
       "to": "secret",
-      "channel_id": "channel-201"
+      "channel_id": "channel-285"
     },
     {
       "from": "sei",
