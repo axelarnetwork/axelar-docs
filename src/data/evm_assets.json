@@ -1785,6 +1785,13 @@
           "transfer_fee": 100.0
         },
         {
+          "chain": "binance",
+          "address": "0x4E11B45E4Ae94eE8c32760Dd3286836BDfe47524",
+          "symbol": "GDX",
+          "decimals": 18,
+          "transfer_fee": 75.0
+        },
+        {
           "chain": "ethereum",
           "address": "0x89901994b5Ed81cbbcBC4E5A7e0cC4e7F58e5458",
           "symbol": "GDX",
