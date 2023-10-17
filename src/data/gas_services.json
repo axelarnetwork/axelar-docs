@@ -55,6 +55,10 @@
     {
       "id": "mantle",
       "address": "0x2d5d7d31F671F86C782533cc367F14109a082712"
+    },
+    {
+      "id": "scroll",
+      "address": "0x2d5d7d31F671F86C782533cc367F14109a082712"
     }
   ],
   "testnet": [
