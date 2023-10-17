@@ -223,6 +223,30 @@
       "image": "/images/chains/mantle.svg"
     },
     {
+      "id": "scroll",
+      "name": "Scroll",
+      "chain_id": 534352,
+      "network_id": "scroll",
+      "provider_params": [
+        {
+          "chainId": "0x82750",
+          "chainName": "Scroll",
+          "rpcUrls": [
+            "https://rpc.scroll.io"
+          ],
+          "nativeCurrency": {
+            "name": "Ether",
+            "symbol": "ETH",
+            "decimals": 18
+          },
+          "blockExplorerUrls": [
+            "https://blockscout.scroll.io"
+          ]
+        }
+      ],
+      "image": "/images/chains/scroll.svg"
+    },
+    {
       "id": "fantom",
       "name": "Fantom",
       "chain_id": 250,
