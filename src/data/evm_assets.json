@@ -1362,6 +1362,28 @@
       ]
     },
     {
+      "id": "ktc-wei",
+      "name": "KTC - KTX Community Token",
+      "symbol": "KTC",
+      "image": "/images/assets/ktc.svg",
+      "contracts": [
+        {
+          "chain": "binance",
+          "address": "0x545356d4d69d8cD1213Ee7e339867574738751CA",
+          "symbol": "KTC",
+          "decimals": 18,
+          "transfer_fee": 3.0
+        },
+        {
+          "chain": "mantle",
+          "address": "0x01C5ED019A1Bc07d3A320a09C83C398d91f8fd5D",
+          "symbol": "KTC",
+          "decimals": 18,
+          "transfer_fee": 3.0
+        }
+      ]
+    },
+    {
       "id": "vext-wei",
       "name": "VEXT - Veloce",
       "symbol": "VEXT",
