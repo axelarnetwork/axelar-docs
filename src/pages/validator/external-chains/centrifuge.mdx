@@ -96,7 +96,7 @@ Change the `ports` based on your network setup. Replace `/mnt/my_volume/data` wi
         - "--unsafe-rpc-external"
         - "--rpc-cors=all"
         - "--pruning=archive"
-        - "--chain=development"
+        - "--chain=/resources/demo-spec-raw.json"
         - "--parachain-id=2031"
         - "--base-path=/data"
         - "--log=main,info"
@@ -153,8 +153,9 @@ sudo apt-get install cmake pkg-config libssl-dev git clang libclang-dev protobuf
   git checkout [latest_release]
   RUST_TOOLCHAIN=nightly-2022-11-14 ./scripts/install_toolchain.sh
   cargo build --release
-  cp ./target/release/centrifuge-chain /var/lib/algol-data
-  cp ./res/rococo-local.json /var/lib/algol-data/relay-spec.json
+  cp ./target/release/centrifuge-chain /var/lib/demo-data
+  cp ./res/demo-spec-raw.json /var/lib/demo-data/para-spec.json
+  cp ./res/westend-alphanet-raw-specs.json /var/lib/demo-data/relay-spec.json
   ```
 </tab-item>
 
@@ -239,7 +240,7 @@ User=centrifuge_service
 SyslogIdentifier=centrifuge_testnet
 SyslogFacility=local7
 KillSignal=SIGHUP
-ExecStart=/var/lib/algol-data/centrifuge-chain \
+ExecStart=/var/lib/demo-data/centrifuge-chain \
     --port=30333 \
     --rpc-port=9933 \
     --ws-port=9944 \
@@ -247,7 +248,7 @@ ExecStart=/var/lib/algol-data/centrifuge-chain \
     --unsafe-rpc-external \
     --rpc-cors=all \
     --pruning=archive \
-    --chain=development \
+    --chain=/config/para-spec.json \
     --parachain-id=2031 \
     --base-path=/data \
     --log=main,info \
@@ -259,7 +260,7 @@ ExecStart=/var/lib/algol-data/centrifuge-chain \
     --no-telemetry \
     --execution=wasm \
     --wasm-execution=compiled \
-    --chain=/config/westend-alphanet-raw-specs.json \
+    --chain=/config/relay-spec.json \
 
 [Install]
 WantedBy=multi-user.target
@@ -271,7 +272,7 @@ EOF
 <br></br>
 
 ##### 2. Start the systemd service
-Actually enable the previously generated serice and start it.
+Actually enable the previously generated service and start it.
 
 ```bash
 sudo systemctl enable centrifuge.service
