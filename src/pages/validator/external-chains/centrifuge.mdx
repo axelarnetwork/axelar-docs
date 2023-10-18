@@ -19,16 +19,20 @@ Set up your Centrifuge Mainnet or Testnet node.
 ## 1. Run with Docker
 
 You can use the container published by Centrifuge on their [DockerHub repo](https://hub.docker.com/repository/docker/centrifugeio/centrifuge-chain/tags?page=1&ordering=last_updated)
-or build your own by cloning the cent-chain repository and using the [Dockerfile](https://github.com/centrifuge/centrifuge-chain/blob/main/Dockerfile) in the root of the repo (2-4h build time in an average machine)
+or be fully trustless either by cloning the [cent-chain repository(https://github.com/centrifuge/centrifuge-chain/)]
+and using the [Dockerfile](https://github.com/centrifuge/centrifuge-chain/blob/main/Dockerfile) (2-4h build time in an average machine)
+
 
 To find the latest release go to the [Centrifuge repository](https://github.com/centrifuge/centrifuge-chain/releases), 
-copy the Git Hash and input that hash on our [Docker Hub repository](https://hub.docker.com/repository/docker/centrifugeio/centrifuge-chain/tags?page=1&ordering=last_updated). 
-It will look like this: `centrifugeio/centrifuge-chain:main-$publish_date-$github_hash`.
+and look for the listed Docker Image for the latest release or use `main-latest`. 
+
+More images in the official [Docker Hub repository](https://hub.docker.com/repository/docker/centrifugeio/centrifuge-chain/tags?page=1&ordering=last_updated). 
 
 ### Create docker compose file
 
 Create a `docker-compose.yml` file with the following contents.
-Change the `ports` based on your network setup. Replace `/mnt/my_volume/data` with the volume and data folder you want to use.
+Change the `ports` based on your network setup. 
+Replace `/mnt/my_volume/data` with the volume and/or data folder you want to use.
 
 <tabs>
 <tab-item title="Mainnet">
@@ -38,8 +42,10 @@ Change the `ports` based on your network setup. Replace `/mnt/my_volume/data` wi
   services:
     centrifuge:
       container_name: centrifuge-chain
-      image: "centrifugeio/centrifuge-chain:main-[latest_release]"
+      image: "centrifugeio/centrifuge-chain:main-latest"
       platform: "linux/amd64"
+      restart: on-failure
+
       ports:
         - "30355:30333"
         - "9936:9933"
@@ -81,7 +87,7 @@ Change the `ports` based on your network setup. Replace `/mnt/my_volume/data` wi
   services:
     centrifuge:
       container_name: centrifuge-chain
-      image: "centrifugeio/centrifuge-chain:main-[latest_release]"
+      image: "centrifugeio/centrifuge-chain:main-latest"
       platform: "linux/amd64"
       ports:
         - "30333:30333"
@@ -117,51 +123,50 @@ Change the `ports` based on your network setup. Replace `/mnt/my_volume/data` wi
 
 ### Run the container
 
-Start the docker container.
-
 ```bash
-docker-compose up -d
+docker-compose pull --policy always && docker-compose up -d
 ```
 
-## 2. Run Binaries
-
-#### Prerequisites
-
-```bash
-sudo apt-get install cmake pkg-config libssl-dev git clang libclang-dev protobuf-compiler
-```
-
-#### <br>Building the binary</br>
+## 2. Get or build binaries
 
 <tabs>
-
-<tab-item title="Mainnet">
+<tab-item title="Build your own (Ubuntu)">
   ```bash
-  git clone https://github.com/centrifuge/centrifuge-chain.git
-  git checkout [latest_release]
-  cd centrifuge-chain
-  RUST_TOOLCHAIN=nightly-2022-11-14 ./scripts/install_toolchain.sh
-  cargo build --release
-  cp ./target/release/centrifuge-chain /var/lib/centrifuge-data
-  ```
-</tab-item>
-
-<tab-item title="Testnet">
-  ```bash
+  sudo apt-get install cmake pkg-config libssl-dev git clang libclang-dev protobuf-compiler
   git clone https://github.com/centrifuge/centrifuge-chain.git
   cd centrifuge-chain
   git checkout [latest_release]
   RUST_TOOLCHAIN=nightly-2022-11-14 ./scripts/install_toolchain.sh
   cargo build --release
-  cp ./target/release/centrifuge-chain /var/lib/demo-data
-  cp ./res/demo-spec-raw.json /var/lib/demo-data/para-spec.json
-  cp ./res/westend-alphanet-raw-specs.json /var/lib/demo-data/relay-spec.json
+  cp ./target/release/centrifuge-chain /usr/local/sbin/centrifuge-chain
+  cp ./res/demo-spec-raw.json /var/lib/centrifuge-testnet/para-spec.json
+  cp ./res/westend-alphanet-raw-specs.json /var/lib/centrifuge-testnet/relay-spec.json
   ```
 </tab-item>
 
+<tab-item title="Download from the release notes">
+Make sure to look at the Centrifuge releases specifically if you want to run a mainnet node.
+Otherwise it's ok to use the latest release: https://github.com/centrifuge/centrifuge-chain/releases/
+
+If no centrifuge-chain-bin.zip is present in the release, try the "extract from docker method"
+Example:
+```
+curl https://github.com/centrifuge/centrifuge-chain/releases/download/v0.10.31/centrifuge-chain-bin.zip -o centrifuge-chain.zip
+unzip centrifuge-chain.zip
+shasum -a 256 --check centrifuge-chain.sha256
+  centrifuge-chain: OK
+mv centrifuge-chain /usr/local/sbin/centrifuge-chain
+```
+</tab-item>
+
+<tab-item title="Extract from docker">
+Make sure to look at the Centrifuge release specifically if you want to run a mainnet node
+```
+  docker run --name centrifuge-cp -d centrifugeio/centrifuge-chain:main-latest --chain centrifuge
+  docker cp centrifuge-cp:/usr/local/bin/centrifuge-chain /usr/local/sbin/centrifuge-chain
+```
+</tab-item>
 </tabs>
-
-<br></br>
 
 ### Configure systemd
 
@@ -173,6 +178,9 @@ Change the `ports` based on your network setup.
 <tab-item title="Mainnet">
 <pre><code>
 ```bash
+useradd centrifuge
+chown centrifuge:centrifuge /data
+
 sudo tee <<EOF >/dev/null /etc/systemd/system/centrifuge.service
 [Unit]
 Description="Centrifuge systemd service"
@@ -183,11 +191,11 @@ StartLimitIntervalSec=0
 Type=simple
 Restart=always
 RestartSec=10
-User=centrifuge_service
+User=centrifuge
 SyslogIdentifier=centrifuge
 SyslogFacility=local7
 KillSignal=SIGHUP
-ExecStart=/var/lib/centrifuge-data/centrifuge-chain \
+ExecStart=/usr/local/sbin/centrifuge-chain \
     --port=30333 \
     --rpc-port=9933 \
     --ws-port=9944 \
@@ -217,15 +225,26 @@ EOF
 </code></pre>
 </tab-item>
 
+<tab-item title="Testnet">
+
 You'll have to download the Relay chain spec first:
+
 <pre><code>
 curl -O https://github.com/centrifuge/centrifuge-chain/blob/main/res/westend-alphanet-raw-specs.json 
 mv westend-alphanet-raw-specs.json /config/
 </code></pre>
 
-<tab-item title="Testnet">
 <pre><code>
 ```bash
+useradd centrifuge
+chown centrifuge:centrifuge /data
+
+git clone https://github.com/centrifuge/centrifuge-chain.git
+cd centrifuge-chain
+git checkout v.0.10.31 # Check out latest release at https://github.com/centrifuge/centrifuge-chain/releases/
+cp ./res/demo-spec-raw.json /config/para-spec.json
+cp ./res/westend-alphanet-raw-specs.json /config/relay-spec.json
+
 sudo tee <<EOF >/dev/null /etc/systemd/system/centrifuge.service
 [Unit]
 Description="Centrifuge Testnet systemd service"
@@ -236,11 +255,11 @@ StartLimitIntervalSec=0
 Type=simple
 Restart=always
 RestartSec=10
-User=centrifuge_service
+User=centrifuge
 SyslogIdentifier=centrifuge_testnet
 SyslogFacility=local7
 KillSignal=SIGHUP
-ExecStart=/var/lib/demo-data/centrifuge-chain \
+ExecStart=/usr/local/sbin/centrifuge-chain \
     --port=30333 \
     --rpc-port=9933 \
     --ws-port=9944 \
@@ -250,7 +269,7 @@ ExecStart=/var/lib/demo-data/centrifuge-chain \
     --pruning=archive \
     --chain=/config/para-spec.json \
     --parachain-id=2031 \
-    --base-path=/data \
+    --base-path=/data-testnet/ \
     --log=main,info \
     --execution=wasm \
     --wasm-execution=compiled \
@@ -269,7 +288,8 @@ EOF
 </code></pre>
 </tab-item>
 </tabs>
-<br></br>
+
+
 
 ##### 2. Start the systemd service
 Actually enable the previously generated service and start it.
@@ -287,14 +307,16 @@ sudo systemctl status centrifuge.service
 sudo journalctl -u centrifuge.service -f
 ```
 
-<br></br>
 
 ##### 3. Test your RPC connection
 
-Once your node is fully synced, you can run a cURL request to see the status of your node:
+Once your node is fully synced, you can run a cURL request to see the status of your node, use
+the port you configured in your /etc/systemd/system/centrifuge.service file avobe
 
 ```bash
-curl -H "Content-Type: application/json" -d '{{"id":1, "jsonrpc":"2.0", "method": "eth_syncing", "params":[]}}' localhost:9933
+curl -H "Content-Type: application/json" \
+-d '{{"id":1, "jsonrpc":"2.0", "method": "eth_syncing", "params":[]}}' \
+localhost:9933
 ```
 
 Expected output if node is synced is `{"jsonrpc":"2.0","result":false,"id":1}`
@@ -304,22 +326,10 @@ Expected output if node is synced is `{"jsonrpc":"2.0","result":false,"id":1}`
 In order for `vald` to connect to your local node, your `rpc_addr` should be exposed in
 `vald`'s `config.toml`
 
-<tabs>
-<tab-item title="Mainnet">
 ```bash
 [[axelar_bridge_evm]]
 name = "centrifuge"
 rpc_addr = "http://IP:PORT"
 start-with-bridge = true
 ```
-</tab-item>
 
-<tab-item title="Testnet">
-```bash
-[[axelar_bridge_evm]]
-name = "centrifuge"
-rpc_addr = "http://IP:PORT"
-start-with-bridge = true
-```
-</tab-item>
-</tabs>
