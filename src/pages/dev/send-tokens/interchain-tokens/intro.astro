@@ -1,0 +1,111 @@
+---
+import Section from "../../../../layouts/Section.astro";
+import { Callout } from "../../../../../src/components/callout"
+
+const title = "What is Interchain Tokens?";
+
+const cards = [
+  {
+    title: "Create a new token",
+    description:
+      "Register and create new Interchain Token(s) using the Interchain Token Portal, or create custom Interchain Tokens.",
+    url: "/dev/send-tokens/interchain-tokens/create-token",
+    icon: `<svg style="margin-right:8px;" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="24" width="24" xmlns="http://www.w3.org/2000/svg"><g><path fill="none" d="M0 0h24v24H0z"></path><path d="M23 12l-7.071 7.071-1.414-1.414L20.172 12l-5.657-5.657 1.414-1.414L23 12zM3.828 12l5.657 5.657-1.414 1.414L1 12l7.071-7.071 1.414 1.414L3.828 12z"></path></g></svg>`,
+  },
+  {
+    title: "Upgrade an existing token",
+    description:
+      "Upgrade existing tokens as Canonical Tokens (Simple Wrappers) or link tokens deployed on multiple chains into Interchain Tokens.",
+    url: "/dev/send-tokens/interchain-tokens/upgrade-tokens",
+    icon: `<svg style="margin-right:8px;"  stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="24" width="24" xmlns="http://www.w3.org/2000/svg"><g><path fill="none" d="M0 0h24v24H0z"></path><path d="M4 3h16a1 1 0 0 1 1 1v7H3V4a1 1 0 0 1 1-1zM3 13h18v7a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1v-7zm4 3v2h3v-2H7zM7 6v2h3V6H7z"></path></g></svg>`,
+  },
+];
+---
+
+<Section title={title}>
+  <Callout>Interchain Tokens have received a major update as of July 2023 with many new features! Read on to learn about all of the new capabilities and check out the <a href="https://testnet.interchain.axelar.dev">Interchain Portal</a></Callout>
+
+  Axelar has <a href="/dev/send-tokens/overview">several ways</a> to send <a href="/resources/testnet#assets">supported native tokens</a>, but what if you want to have your own <a href="https://ethereum.org/developers/docs/standards/tokens/erc-20/">ERC-20</a> token available on multiple chains? Axelar can help with Interchain Tokens!
+  <br /><br />
+  Interchain Tokens are created and managed by our new  Interchain Token Service, which allows you to send tokens cross-chain, build your own asset bridges, build asset transfers into your interchain dApp, and take on many other use cases.
+  <br /><br />
+  Depending on whether or not you have an existing ERC-20 token, there are two main paths available to you.
+
+  <style>
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      grid-template-rows: repeat(2, 1fr);
+      grid-column-gap: 16px;
+      grid-row-gap: 16px;
+      grid-auto-flow: row;
+      margin-top: 32px;
+    }
+    .card {
+      padding: 16px;
+      border: 1px solid rgb(229, 231, 235);
+      border-radius: 4px;
+      margin-right: 16px;
+      display: flex;
+      flex-direction: column;
+      color: inherit;
+    }
+    .card:hover {
+      box-shadow: 0 0 10px #ddd;
+      color: inherit;
+    }
+    .card div:nth-child(1) {
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+    }
+    .card div:nth-child(2) {
+      flex-grow: 1;
+    }
+    .card span {
+      color: #1b62d6;
+    }
+
+    @media (max-width: 768px) {
+      .card-grid {
+        display: flex;
+        flex-direction: column;
+      }
+    }
+
+  </style>
+
+  <div class="card-grid">
+    {
+      cards.map((card) => (
+        <a class="card" href={card.url}>
+          <div>
+            <Fragment set:html={card.icon} /> {card.title}
+          </div>
+          <div>{card.description}</div>
+          <span>
+            Get Started{" "}
+            <svg
+              stroke="currentColor"
+              fill="currentColor"
+              stroke-width="0"
+              viewBox="0 0 20 20"
+              class="mt-0.5"
+              height="16"
+              width="16"
+              xmlns="http://www.w3.org/2000/svg"
+              style="vertical-align:middle;"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z"
+                clip-rule="evenodd"
+              />
+            </svg>
+          </span>
+        </a>
+      ))
+    }
+  </div>
+  
+</Section>

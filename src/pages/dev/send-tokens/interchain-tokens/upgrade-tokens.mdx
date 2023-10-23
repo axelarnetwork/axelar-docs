@@ -1,0 +1,78 @@
+# Upgrade existing tokens into Interchain Token(s)
+
+If you already have an ERC-20 token on one or more blockchains, you can turn it into an Interchain Token by deploying [Token Managers](../../reference/glossary/#token-manager). Token Managers can be either [Lock/Release](../../reference/glossary/#lockrelease) or [Mint/Burn](../../reference/glossary/#mintburn). For Mint/Burn Token Managers, you'll need to give the Token Manager permission to mint and burn tokens on your behalf as tokens move between chains.
+
+To clarify this powerful system, we'll look at two processes for turning existing tokens into Interchain Tokens.
+
+## Canonical Tokens (Simple wrappers)
+Suppose you have an ERC-20 token on a single chain, and you'd like a wrapped & bridgeable version to be available on other chains. You can register your ERC-20 as a [Canonical Token](../../reference/glossary/#canonical) with the [Interchain Token Service](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/interchain-token-service/InterchainTokenService.sol). Each token can only be registered a single time as a canonical chain.
+
+Want to try this out? [Use Remix to create your own ERC-20](https://remix.ethereum.org/axelarnetwork/axelar-docs/blob/main/public/samples/interchain-token-simple.sol) and register your token on the [Interchain Token Portal](https://testnet.interchain.axelar.dev).
+
+You can also do this directly via the Interchain Token Service smart contract. Follow these steps to register your token as a canonical token:
+
+1. First, register your token as a canonical token using the [`registerCanonicalToken`](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/interchain-token-service/InterchainTokenService.sol#L309) method on the Interchain Token Service. This will deploy a [Lock/Release](../../reference/glossary/#lockunlock) - [Token Manager](../..reference/glossary/#token-manager) on the source chain. 
+
+Here is an example of registering a canonical token.
+
+```solidity
+/**
+* @notice Used to register canonical tokens. Caller does not matter.
+* @param tokenAddress the token to be bridged.
+* @return tokenId the tokenId that was used for this canonical token.
+*/
+function registerCanonicalToken(
+	address tokenAddress
+) external payable notPaused returns (bytes32 tokenId);
+```
+2. Deploy a remote canonical token on your token using the [`deployRemoteCanonicalToken`](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/interchain-token-service/InterchainTokenService.sol#L325) method on the Interchain Token Service for each destination chain. This will create an ERC-20 on each destination chain and [Mint/Burn](../../reference/glossary/#mintburn) - [Token Manager](../../reference/glossary/#token-manager). 
+
+Here is an example of deploying a remote canonical token.
+
+```solidity
+/**
+	* @notice Used to deploy remote TokenManagers and standardized tokens for a canonical token. This needs to be
+	* called from the chain that registered the canonical token, and anyone can call it.
+	* @param tokenId the tokenId of the canonical token.
+	* @param destinationChain the name of the chain to deploy the TokenManager and standardized token to.
+	* @param gasValue the amount of native tokens to be used to pay for gas for the remote deployment.
+	* At least the amount specified needs to be passed to the call
+	* @dev `gasValue` exists because this function can be part of a `multicall` involving multiple functions that could make remote contract calls.
+	*/
+function deployRemoteCanonicalToken(
+	bytes32 tokenId, 
+	string calldata destinationChain, 
+	uint256 gasValue
+) public payable notPaused
+```
+
+When tokens are moved from the origin chain to another chain, the token will be locked on the origin chain and minted on the destination chain. If you moved tokens directly from one non-origin chain to another, the token would be burned on the source chain and minted on the destination chain.
+
+## Link deployed tokens on multiple chains into Interchain Token(s)
+
+If you require custom functionality on multiple chains, you must first deploy your [custom](../../reference/glossary/#custom) token on multiple chains or already have a version of your token on multiple chains.
+
+To turn these deployed tokens into linked Interchain Tokens, register a [Token Manager](../..reference/glossary/#token-manager) for each one. You can optionally have any of these custom tokens extend [`IInterchainToken`](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/interfaces/IInterchainToken.sol) to offer [`interchainTransfer`](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/interfaces/IInterchainToken.sol#L20) and [`interchainTransferFrom`](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/interfaces/IInterchainToken.sol#L37) methods directly on your token.
+
+You could decide to make all of these Token Managers [Mint/Burn](../../reference/glossary/#mintburn), or you could specify at most one (likely your primary/origin chain) to be [Lock/Release](../../reference/glossary/#lockunlock) depending on your needs.
+
+To register a Custom Token via the Interchain Token Service, call the `deployCustomTokenManager` method.
+
+```solidity
+/**
+* @notice Used to deploy custom TokenManagers with the specified salt. Different callers would result in different tokenIds.
+* @param salt the salt to be used.
+* @param tokenManagerType the type of TokenManager to be deployed.
+* @param params the params that will be used to initialize the TokenManager.
+*/
+function deployCustomTokenManager(
+	bytes32 salt,
+	TokenManagerType tokenManagerType,
+	bytes memory params
+) public payable notPaused returns (bytes32 tokenId)
+```
+
+>**Note**: If you want to build your token with the `IInterchainToken` feature yourself, make sure your token implements the [`IInterchainToken`](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/interfaces/IInterchainToken.sol) interface so you can offer [`interchainTransfer`](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/interfaces/IInterchainToken.sol#L20) and [`interchainTransferFrom`](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/interfaces/IInterchainToken.sol#L37) methods directly on your token. 
+
+You can try our [sample custom token](https://remix.ethereum.org/axelarnetwork/axelar-docs/blob/main/public/samples/interchain-token-iinterchaintoken.sol) as a starting point. This token self-registers with the Interchain Token Service and can be deployed to multiple chains. 
+Once you have designed your token, you can deploy it to multiple chains using a tool such as the [Constant Address Deployer](https://docs.axelar.dev/dev/general-message-passing/solidity-utilities#constant-address-deployer) to give it the same address everywhere. 

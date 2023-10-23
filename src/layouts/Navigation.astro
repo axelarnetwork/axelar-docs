@@ -17,9 +17,16 @@ const section = Astro.url.pathname?.match(/\/([^\/]*)\//)?.[1];
             <span>Send Tokens</span>
             <div class="group">
                 <a href="/dev/send-tokens/overview">Overview</a>
-                <a href="/dev/send-tokens/interchain-tokens">
-                    Interchain Tokens
+                <span>Interchain Tokens</span>
+                <div class="group">
+                <a href="/dev/send-tokens/interchain-tokens/intro">Introduction</a>
+                <a href="/dev/send-tokens/interchain-tokens/create-token">
+                    Create Token
                 </a>
+                <a href="/dev/send-tokens/interchain-tokens/upgrade-tokens">
+                    Upgrade Tokens
+                </a>
+                </div>
             </div>
             <span>General Message Passing</span>
             <div class="group">
