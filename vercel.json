@@ -311,6 +311,11 @@
       "source": "/cli-docs/:version/:path*",
       "destination": "https://github.com/axelarnetwork/axelar-core/blob/main/docs/cli/:path*.md",
       "permanent": true
+    },
+    {
+      "source": "/dev/send-tokens/interchain-tokens",
+      "destination": "/dev/send-tokens/interchain-tokens/intro",
+      "permanent": true
     }
   ]
 }
