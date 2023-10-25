@@ -395,12 +395,12 @@
     {
       "from": "osmosis",
       "to": "axelarnet",
-      "channel_id": "channel-3"
+      "channel_id": "channel-4118"
     },
     {
       "from": "axelarnet",
       "to": "osmosis",
-      "channel_id": "channel-227"
+      "channel_id": "channel-338"
     },
     {
       "from": "persistence",
@@ -415,11 +415,21 @@
     {
       "from": "secret",
       "to": "axelarnet",
-      "channel_id": "channel-1"
+      "channel_id": "channel-3"
     },
     {
       "from": "axelarnet",
       "to": "secret",
+      "channel_id": "channel-311"
+    },
+    {
+      "from": "secret-snip",
+      "to": "axelarnet",
+      "channel_id": "channel-1"
+    },
+    {
+      "from": "axelarnet",
+      "to": "secret-snip",
       "channel_id": "channel-285"
     },
     {
