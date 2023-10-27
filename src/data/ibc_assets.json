@@ -193,6 +193,14 @@
       "transfer_fee": 0.031
     },
     {
+      "id": "ktc-wei",
+      "name": "KTC - KTX Community Token",
+      "symbol": "KTC",
+      "image": "/images/assets/ktc.svg",
+      "decimals": 18,
+      "transfer_fee": 0.2
+    },
+    {
       "id": "vext-wei",
       "name": "VEXT - Veloce",
       "symbol": "VEXT",
