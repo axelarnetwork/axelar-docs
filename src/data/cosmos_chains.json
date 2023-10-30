@@ -295,6 +295,12 @@
       "name": "Xpla",
       "network_id": "xpla",
       "image": "/images/chains/xpla.svg"
+    },
+    {
+      "id": "provenance",
+      "name": "provenance",
+      "network_id": "provenance",
+      "image": "/images/chains/provenance.svg"
     }
   ]
 }

@@ -471,6 +471,16 @@
       "from": "axelarnet",
       "to": "xpla",
       "channel_id": "channel-108"
+    },
+    {
+      "from": "provenance",
+      "to": "axelarnet",
+      "channel_id": "channel-75"
+    },
+    {
+      "from": "axelarnet",
+      "to": "provenance",
+      "channel_id": "channel-280"
     }
   ]
 }
