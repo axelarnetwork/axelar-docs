@@ -207,6 +207,12 @@
       "image": "/images/chains/burnt.svg"
     },
     {
+      "id": "celestia",
+      "name": "Celestia",
+      "network_id": "celestia",
+      "image": "/images/chains/celestia.svg"
+    },
+    {
       "id": "evmos",
       "name": "Evmos",
       "network_id": "evmos",
