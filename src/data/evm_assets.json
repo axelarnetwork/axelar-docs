@@ -2570,11 +2570,25 @@
           "transfer_fee": 15.0
         },
         {
+          "chain": "linea",
+          "address": "0x41b94c5867f7F6217C9a30520Cb3e793B1ee1b97",
+          "symbol": "axlTIA",
+          "decimals": 6,
+          "transfer_fee": 0.75
+        },
+        {
           "chain": "optimism",
           "address": "0x41b94c5867f7F6217C9a30520Cb3e793B1ee1b97",
           "symbol": "axlTIA",
           "decimals": 6,
           "transfer_fee": 1.0
+        },
+        {
+          "chain": "scroll",
+          "address": "0x41b94c5867f7F6217C9a30520Cb3e793B1ee1b97",
+          "symbol": "axlTIA",
+          "decimals": 6,
+          "transfer_fee": 0.75
         }
       ]
     },
