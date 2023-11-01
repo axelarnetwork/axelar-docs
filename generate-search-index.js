@@ -6,10 +6,15 @@ import matter from "gray-matter";
 import { remark } from "remark";
 import remarkMdx from "remark-mdx";
 // Using strip because stripping via remarkMdx rendering wasn't working
-import strip from 'strip-markdown'
+import strip from "strip-markdown";
 import { exit } from "process";
 
 const client = algoliasearch("ECUG3H1E0M", process.env.ALGOLIA_KEY);
+
+if (!process.env.ALGOLIA_KEY) {
+  console.error("ALGOLIA_KEY not set");
+  exit(1);
+}
 
 const index = client.initIndex("documentation");
 
@@ -53,8 +58,6 @@ function walk(dir) {
         content = fileContents;
       }
 
-      
-
       // Get rid of markdown
       if (filepath.indexOf(".mdx") > -1 || filepath.indexOf(".md") > -1) {
         content = String(remark().use(strip).processSync(content));
@@ -73,11 +76,10 @@ function walk(dir) {
       // Fix newlines
       content = content.replace(/\n/g, " ");
 
-
       // Shorten to fit in Algolia Index
       if (content) {
         content = content.substring(0, 8000);
-      }      
+      }
 
       let title = data?.title;
       const pattern = /^# (.*)$/;
@@ -95,7 +97,6 @@ function walk(dir) {
           title = proposedTitle[1];
         }
       }
-
 
       sitemap.push({
         url: url,
@@ -129,7 +130,7 @@ try {
 }
 
 function stripTags(html) {
-  if(!html || !html.replace) {
+  if (!html || !html.replace) {
     return html;
   }
   // Create a regular expression to match all HTML tags.

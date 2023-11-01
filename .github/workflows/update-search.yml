@@ -1,0 +1,13 @@
+name: Update Search Index
+on:
+  push:
+    branches:
+      - main
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Make sure we have node and dependencies
+        run: npm i
+      - name: Process and send index updates to Algolia
+        run: npm run build-index
