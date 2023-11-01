@@ -11,7 +11,8 @@
     "start": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "build-index": "node ./generate-search-index.js"
   },
   "dependencies": {
     "@astrojs/markdown-remark": "^3.2.0",
