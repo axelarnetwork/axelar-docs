@@ -216,11 +216,35 @@
             "decimals": 18
           },
           "blockExplorerUrls": [
-            "https://mantlescan.org"
+            "https://explorer.mantle.xyz"
           ]
         }
       ],
       "image": "/images/chains/mantle.svg"
+    },
+    {
+      "id": "scroll",
+      "name": "Scroll",
+      "chain_id": 534352,
+      "network_id": "scroll",
+      "provider_params": [
+        {
+          "chainId": "0x82750",
+          "chainName": "Scroll",
+          "rpcUrls": [
+            "https://rpc.scroll.io"
+          ],
+          "nativeCurrency": {
+            "name": "Ether",
+            "symbol": "ETH",
+            "decimals": 18
+          },
+          "blockExplorerUrls": [
+            "https://blockscout.scroll.io"
+          ]
+        }
+      ],
+      "image": "/images/chains/scroll.svg"
     },
     {
       "id": "fantom",
@@ -640,11 +664,35 @@
             "decimals": 18
           },
           "blockExplorerUrls": [
-            "https://testnet.mantlescan.org"
+            "https://explorer.testnet.mantle.xyz"
           ]
         }
       ],
       "image": "/images/chains/mantle.svg"
+    },
+    {
+      "id": "scroll",
+      "name": "Scroll",
+      "chain_id": 534351,
+      "network_id": "scroll",
+      "provider_params": [
+        {
+          "chainId": "0x8274f",
+          "chainName": "Scroll Sepolia Testnet",
+          "rpcUrls": [
+            "https://sepolia-rpc.scroll.io"
+          ],
+          "nativeCurrency": {
+            "name": "Ether",
+            "symbol": "ETH",
+            "decimals": 18
+          },
+          "blockExplorerUrls": [
+            "https://sepolia.scrollscan.dev"
+          ]
+        }
+      ],
+      "image": "/images/chains/scroll.svg"
     },
     {
       "id": "polygon-zkevm",

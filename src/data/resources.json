@@ -80,6 +80,9 @@
       "name": "RPC endpoints",
       "value": [
         {
+          "value": "https://tm.axelar.lava.build"
+        },
+        {
           "value": "https://rpc-axelar.imperator.co:443"
         },
         {
@@ -124,6 +127,9 @@
       "name": "LCD endpoints",
       "value": [
         {
+          "value": "https://rest.axelar.lava.build"
+        },
+        {
           "value": "https://lcd-axelar.imperator.co"
         },
         {
@@ -161,6 +167,9 @@
     {
       "name": "gRPC endpoints",
       "value": [
+        {
+          "value": "grpc.axelar.lava.build:443"
+        },
         {
           "value": "grpc-axelar.imperator.co:2062"
         },
@@ -243,6 +252,9 @@
       "name": "Websocket",
       "value": [
         {
+          "value": "wss://tm.axelar.lava.build/"
+        },
+        {
           "value": "ws://rpc-axelar.imperator.co/wss/websocket"
         },
         {
@@ -312,6 +324,9 @@
       "name": "RPC endpoints",
       "value": [
         {
+          "value": "https://tm.axelar-testnet.lava.build"
+        },
+        {
           "value": "https://rpc-axelar-testnet.imperator.co:443"
         },
         {
@@ -335,6 +350,9 @@
       "name": "LCD endpoints",
       "value": [
         {
+          "value": "https://rest.axelar-testnet.lava.build"
+        },
+        {
           "value": "https://lcd-axelar-testnet.imperator.co"
         },
         {
@@ -357,6 +375,9 @@
     {
       "name": "gRPC endpoints",
       "value": [
+        { 
+          "value":"grpc.axelar-testnet.lava.build:443"
+        },
         {
           "value": "grpc-axelar-testnet.imperator.co:2062"
         },
@@ -382,6 +403,9 @@
     {
       "name": "Websocket",
       "value": [
+        {
+          "value": "wss://tm.axelar-testnet.lava.build/websocket"
+        },
         {
           "value": "ws://rpc-axelar-testnet.imperator.co/wss"
         }
