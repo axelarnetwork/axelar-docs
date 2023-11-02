@@ -12,6 +12,21 @@ Set up your Centrifuge Mainnet or Testnet node.
 - [Releases](https://github.com/centrifuge/centrifuge-chain/releases)
 - Docker OR `rustup` is installed
 
+### Optional: Using a snapshot from the Centrifuge dev team
+-> This will make your node pretty much ready to receive requests in within hours rather than days.
+
+  Using Centrifuge provided snapshots (faster)
+    ```
+    gsutil ls gs://centrifuge-snapshots/{mainnet,testnet-demo}
+    # Download the bundle
+    gsutil cp gs://centrifuge-snapshots/mainnet/YYYY-MM-DD-snap.tar.lz4 $DATA_FOLDER_PATH/
+    lz4 -d -c -q  $DATA_FOLDER_PATH/YYYY-MM-DD-snap.tar.lz4 | tar -xvf - -C /path/to/destination
+    ```
+   Inspect the /path/to/destination, it should contain a 'chain' and a 'relay-chain' directory, the parachain and relay chain 
+   DB data folders repectively. Use /path/to/destination on your node config as --base-path=/path/to/destination directly
+   Remove the `chain` directory to sync the parachain from scratch but keep the relay DB (usually much bigger)
+  
+
 ## Options
 1. Run with Docker
 2. Run with binaries
@@ -19,12 +34,12 @@ Set up your Centrifuge Mainnet or Testnet node.
 ## 1. Run with Docker
 
 You can use the container published by Centrifuge on their [DockerHub repo](https://hub.docker.com/repository/docker/centrifugeio/centrifuge-chain/tags?page=1&ordering=last_updated)
-or be fully trustless either by cloning the [cent-chain repository(https://github.com/centrifuge/centrifuge-chain/)]
-and using the [Dockerfile](https://github.com/centrifuge/centrifuge-chain/blob/main/Dockerfile) (2-4h build time in an average machine)
-
+or be fully trustless by cloning the [cent-chain repository(https://github.com/centrifuge/centrifuge-chain/)]
+and using the [Dockerfile](https://github.com/centrifuge/centrifuge-chain/blob/main/Dockerfile) (2-4h build time in an average machine),
+in the latter make sure to checkout the specific commit for the latest release before building.
 
 To find the latest release go to the [Centrifuge repository](https://github.com/centrifuge/centrifuge-chain/releases), 
-and look for the listed Docker Image for the latest release or use `main-latest`. 
+and look for the listed Docker Image.
 
 More images in the official [Docker Hub repository](https://hub.docker.com/repository/docker/centrifugeio/centrifuge-chain/tags?page=1&ordering=last_updated). 
 
@@ -45,7 +60,6 @@ Replace `/mnt/my_volume/data` with the volume and/or data folder you want to use
       image: "centrifugeio/centrifuge-chain:main-latest"
       platform: "linux/amd64"
       restart: on-failure
-
       ports:
         - "30355:30333"
         - "9936:9933"
@@ -76,6 +90,7 @@ Replace `/mnt/my_volume/data` with the volume and/or data folder you want to use
       - "--execution=wasm"
       - "--wasm-execution=compiled"
       - "--chain=polkadot"
+      - "--sync=fast"
   ```
   </code></pre>
 </tab-item>
@@ -116,6 +131,7 @@ Replace `/mnt/my_volume/data` with the volume and/or data folder you want to use
         - "--execution=wasm"
         - "--wasm-execution=compiled"
         - "--chain=/resources/westend-alphanet-raw-specs.json"
+        - "--sync=fast"
   ```
   </code></pre>
 </tab-item>
@@ -216,7 +232,8 @@ ExecStart=/usr/local/sbin/centrifuge-chain \
     -- \
     --chain=polkadot \
     --execution=wasm \
-    --wasm-execution=compiled
+    --wasm-execution=compiled \
+    --sync=fast
 
 [Install]
 WantedBy=multi-user.target
@@ -280,6 +297,7 @@ ExecStart=/usr/local/sbin/centrifuge-chain \
     --execution=wasm \
     --wasm-execution=compiled \
     --chain=/config/relay-spec.json \
+    --sync=fast
 
 [Install]
 WantedBy=multi-user.target
