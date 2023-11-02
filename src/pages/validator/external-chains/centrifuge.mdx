@@ -72,7 +72,7 @@ Replace `/mnt/my_volume/data` with the volume and/or data folder you want to use
       - "--rpc-port=9933"
       - "--ws-port=9944"
       - "--ws-external"
-      - "--unsafe-rpc-external"
+      - "--rpc-external"
       - "--rpc-cors=all"
       - "--pruning=archive"
       - "--chain=centrifuge"
@@ -115,6 +115,7 @@ Replace `/mnt/my_volume/data` with the volume and/or data folder you want to use
         - "--rpc-port=9933"
         - "--ws-port=9944"
         - "--unsafe-rpc-external"
+        - "--unsafe-ws-external"
         - "--rpc-cors=all"
         - "--pruning=archive"
         - "--chain=/resources/demo-spec-raw.json"
@@ -216,9 +217,8 @@ ExecStart=/usr/local/sbin/centrifuge-chain \
     --rpc-port=9933 \
     --ws-port=9944 \
     --ws-external \
-    --unsafe-rpc-external \
+    --rpc-external \
     --rpc-cors=all \
-    --rpc-methods=unsafe \
     --pruning=archive \
     --chain=centrifuge \
     --parachain-id=2031 \
@@ -280,7 +280,7 @@ ExecStart=/usr/local/sbin/centrifuge-chain \
     --port=30333 \
     --rpc-port=9933 \
     --ws-port=9944 \
-    --ws-external \
+    --unsafe-ws-external \
     --unsafe-rpc-external \
     --rpc-cors=all \
     --pruning=archive \
