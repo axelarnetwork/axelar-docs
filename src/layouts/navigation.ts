@@ -63,15 +63,15 @@ export const getNavigation = (section) => {
               children: [
                 {
                   title: "Error messages",
-                  href: "/dev/general-message-passing/gas-services/pay-gas",
+                  href: "/dev/general-message-passing/debug/error-debugging",
                 },
                 {
                   title: "Smart Contract",
-                  href: "/dev/general-message-passing/gas-services/increase-gas",
+                  href: "/dev/general-message-passing/debug/debugging-your-smart-contract",
                 },
                 {
                   title: "Forking Mainnet",
-                  href: "/dev/general-message-passing/gas-services/refund",
+                  href: "/dev/general-message-passing/debug/fork-mainnet",
                 },
               ],
             },
@@ -265,7 +265,7 @@ export const getNavigation = (section) => {
         href: "/resources/governance/community-pool-proposals",
       },
       { title: "Satellite", href: "/resources/satellite" },
-      { title: "Metamask", href: "/resources/metamask" },
+      { title: "MetaMask", href: "/resources/metamask" },
       { title: "Add Network to Keplr Wallet", href: "/resources/keplr" },
       { title: "Wrap/unwrap tokens", href: "/resources/wrapped-tokens" },
       { title: "Using ipRPC (Free Public RPC)", href: "/resources/lava-iprpc" },

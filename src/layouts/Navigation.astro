@@ -28,7 +28,16 @@ const navigation = getNavigation(section);
                     <span>{child.title}</span>
                     <div class="group">
                       {child.children.map((grandchild) => (
-                        <a href={grandchild.href}>{grandchild.title}</a>
+                        grandchild.children ? (
+                          <span>{grandchild.title}</span>
+                          <div class="group">
+                            {grandchild.children.map((greatGrandchild) => (
+                              <a href={greatGrandchild.href}>{greatGrandchild.title}</a>
+                            ))}
+                          </div>
+                        ) : (
+                          <a href={grandchild.href}>{grandchild.title}</a>
+                        )
                       ))}
                     </div>
                 ) : (
