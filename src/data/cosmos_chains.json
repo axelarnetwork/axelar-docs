@@ -37,6 +37,12 @@
       "image": "/images/chains/carbon.svg"
     },
     {
+      "id": "celestia",
+      "name": "Celestia",
+      "network_id": "celestia",
+      "image": "/images/chains/celestia.svg"
+    },
+    {
       "id": "comdex",
       "name": "Comdex",
       "network_id": "comdex",
@@ -67,6 +73,12 @@
       "image": "/images/chains/fetch.svg"
     },
     {
+      "id": "haqq",
+      "name": "Haqq",
+      "network_id": "haqq",
+      "image": "/images/chains/haqq.svg"
+    },
+    {
       "id": "ixo",
       "name": "IXO",
       "network_id": "ixo",
@@ -95,6 +107,12 @@
       "name": "Kujira",
       "network_id": "kujira",
       "image": "/images/chains/kujira.svg"
+    },
+    {
+      "id": "migaloo",
+      "name": "Migaloo",
+      "network_id": "migaloo",
+      "image": "/images/chains/migaloo.svg"
     },
     {
       "id": "neutron",
@@ -161,6 +179,12 @@
       "name": "Stride",
       "network_id": "stride",
       "image": "/images/chains/stride.svg"
+    },
+    {
+      "id": "teritori",
+      "name": "Teritori",
+      "network_id": "teritori",
+      "image": "/images/chains/teritori.svg"
     },
     {
       "id": "terra",
