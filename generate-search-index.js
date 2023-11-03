@@ -47,7 +47,7 @@ function walk(dir) {
 
       const fileContents = fs.readFileSync(filepath, "utf-8");
 
-      console.log("about to parse", filepath);
+      // console.log("about to parse", filepath);
 
       // Get rid of frontmatter
       let data, content;
@@ -114,7 +114,7 @@ function walk(dir) {
 
 walk("src/pages");
 
-console.dir(sitemap, { maxArrayLength: null });
+//console.dir(sitemap, { maxArrayLength: null });
 
 try {
   index
