@@ -1,6 +1,8 @@
 # Refund the prepaid gas
 
-The prepaid gas to `payGasForContractCall` or `payGasForContractCallWithToken` could exceed the actual amount needed for relaying a message to the destination contract.
+{/* The prepaid gas to `payGasForContractCall` or `payGasForContractCallWithToken` could exceed the actual amount needed for relaying a message to the destination contract. */}
+The prepaid gas to `payNativeGasForContractCall` or `payNativeGasForContractCallWithToken` could exceed the actual amount needed for relaying a message to the destination contract.
+
 
 The Executor Service automatically tracks the excess gas amount and refund it to the payer's wallet address by calling `Refund` in the Gas Service contract.
 
