@@ -6,10 +6,15 @@ import matter from "gray-matter";
 import { remark } from "remark";
 import remarkMdx from "remark-mdx";
 // Using strip because stripping via remarkMdx rendering wasn't working
-import strip from 'strip-markdown'
+import strip from "strip-markdown";
 import { exit } from "process";
 
 const client = algoliasearch("ECUG3H1E0M", process.env.ALGOLIA_KEY);
+
+if (!process.env.ALGOLIA_KEY) {
+  console.error("ALGOLIA_KEY not set");
+  exit(1);
+}
 
 const index = client.initIndex("documentation");
 
@@ -42,7 +47,7 @@ function walk(dir) {
 
       const fileContents = fs.readFileSync(filepath, "utf-8");
 
-      console.log("about to parse", filepath);
+      // console.log("about to parse", filepath);
 
       // Get rid of frontmatter
       let data, content;
@@ -52,8 +57,6 @@ function walk(dir) {
         // couldn't parse the greymatter, oh well
         content = fileContents;
       }
-
-      
 
       // Get rid of markdown
       if (filepath.indexOf(".mdx") > -1 || filepath.indexOf(".md") > -1) {
@@ -73,11 +76,10 @@ function walk(dir) {
       // Fix newlines
       content = content.replace(/\n/g, " ");
 
-
       // Shorten to fit in Algolia Index
       if (content) {
         content = content.substring(0, 8000);
-      }      
+      }
 
       let title = data?.title;
       const pattern = /^# (.*)$/;
@@ -96,7 +98,6 @@ function walk(dir) {
         }
       }
 
-
       sitemap.push({
         url: url,
         lastmod: mtime,
@@ -113,7 +114,7 @@ function walk(dir) {
 
 walk("src/pages");
 
-console.dir(sitemap, { maxArrayLength: null });
+//console.dir(sitemap, { maxArrayLength: null });
 
 try {
   index
@@ -129,7 +130,7 @@ try {
 }
 
 function stripTags(html) {
-  if(!html || !html.replace) {
+  if (!html || !html.replace) {
     return html;
   }
   // Create a regular expression to match all HTML tags.
