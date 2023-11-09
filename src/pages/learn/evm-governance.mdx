@@ -1,0 +1,44 @@
+# EVM Contract Governance
+
+One of the primary mechanisms for Axelar’s decentralization is the use of EVM gateways that verify independent validator signatures and allow upgrades only when created by governance proposal, voted on by staked AXL holders.
+
+You can [see all of the current and past proposals](https://www.mintscan.io/axelar/proposals).
+
+The Axelar Network is governed by the holders of staked AXL. Any holder of AXL with a sufficient deposit can make a proposal to change the network. There are 4 main types of proposals:
+
+- **Software Upgrade** - Make an update to the core node software that powers the consensus layer of the Axelar Network.
+- **Parameter Change** - Change a parameter of the network such as the number of validators or the minimum AXL to create a proposal.
+- **Community Pool Spend** - Send a specified amount of AXL to a wallet address from the community pool.
+- **Call Contracts** - Execute a function call on one more EVM chains.
+
+## Gateway Decentralization
+
+The gateways and services on EVM chains powered by the Axelar Network are kept up to date by governance proposals. When the network votes to make a change to a gateway or interact with another contract, it’s based on a `CallContractsProposal`. Within each proposal lof this type is an array of chain commands. Each command consists of three parts:
+
+- `chain` - the name of the chain
+- `contract_address` - the address of the governance contract to be interacted with
+- `payload` - a payload with the information about the target function to be called with any calldata and value
+
+These proposals will generally be targeted at calling methods within an [`InterchainGovernance`](https://github.com/axelarnetwork/axelar-gmp-sdk-solidity/blob/main/contracts/governance/InterchainGovernance.sol) or [`AxelarServiceGovernance`](https://github.com/axelarnetwork/axelar-gmp-sdk-solidity/blob/main/contracts/governance/AxelarServiceGovernance.sol) contract.
+
+## [InterchainGovernance](https://github.com/axelarnetwork/axelar-gmp-sdk-solidity/blob/main/contracts/governance/InterchainGovernance.sol) Contracts
+
+The gateways that exist on EVM chains for the Axelar Network are governed by `InterchainGovernance` contracts.
+
+These contracts have two main command types:
+
+- `ScheduleTimeLockProposal`
+- `CancelTimeLockProposal`
+
+Only proposals that have passed a governance proposal on the network can be scheduled or canceled. Built into the contract’s is `TimeLock` functionality that ensures that a proposal cannot be executed until the required time has passed. Once the time has passed, a proposal can be executed permissionlessly.
+
+## [AxelarServiceGovernance](https://github.com/axelarnetwork/axelar-gmp-sdk-solidity/blob/main/contracts/governance/AxelarServiceGovernance.sol) Contracts
+
+Other services that exist on the Axelar Network such as the Interchain Token Service are governed by `AxelarServiceGovernance` contracts.
+
+`AxelarServiceGovernance` supports scheduling and canceling `TimeLockProposal`s in the same was as an `InterchainGovernance` contract, but they support two additional methods:
+
+- `ApproveMultisigProposal`
+- `CancelMultisigApproval`
+
+In all cases, commands are decentralized and must be signed by validators with sufficient stake in order to be allowed. The main difference between a TimeLock Proposal and a Multisig Approval is that Multisig approval allows execution by a Multisig contract at a delayed time. This allows the network to propose changes that can be executed at a later date to coincide with other changes to the network, such as coordination of the rollout of new services.
