@@ -1,0 +1,17 @@
+name: Update Search Index
+on:
+  push:
+    branches:
+      - main
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
+      - name: Make sure we have node and dependencies
+        run: npm i
+      - name: Process and send index updates to Algolia
+        env:
+          ALGOLIA_KEY: ${{ secrets.ALGOLIA_KEY }}
+        run: npm run generate-search-index

@@ -207,6 +207,12 @@
       "image": "/images/chains/burnt.svg"
     },
     {
+      "id": "celestia",
+      "name": "Celestia",
+      "network_id": "celestia",
+      "image": "/images/chains/celestia.svg"
+    },
+    {
       "id": "evmos",
       "name": "Evmos",
       "network_id": "evmos",
@@ -251,7 +257,7 @@
     {
       "id": "osmosis",
       "name": "Osmosis",
-      "network_id": "osmosis-6",
+      "network_id": "osmosis-7",
       "image": "/images/chains/osmosis.svg"
     },
     {
@@ -263,8 +269,14 @@
     {
       "id": "secret",
       "name": "Secret",
-      "network_id": "secret-snip-3",
+      "network_id": "secret",
       "image": "/images/chains/secret.svg"
+    },
+    {
+      "id": "secret-snip",
+      "name": "Secret-SNIP",
+      "network_id": "secret-snip-3",
+      "image": "/images/chains/secret-snip.svg"
     },
     {
       "id": "sei",
@@ -289,6 +301,12 @@
       "name": "Xpla",
       "network_id": "xpla",
       "image": "/images/chains/xpla.svg"
+    },
+    {
+      "id": "provenance",
+      "name": "provenance",
+      "network_id": "provenance",
+      "image": "/images/chains/provenance.svg"
     }
   ]
 }

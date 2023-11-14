@@ -216,7 +216,7 @@
             "decimals": 18
           },
           "blockExplorerUrls": [
-            "https://mantlescan.org"
+            "https://explorer.mantle.xyz"
           ]
         }
       ],
@@ -664,7 +664,7 @@
             "decimals": 18
           },
           "blockExplorerUrls": [
-            "https://testnet.mantlescan.org"
+            "https://explorer.testnet.mantle.xyz"
           ]
         }
       ],

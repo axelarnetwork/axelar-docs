@@ -1,0 +1,82 @@
+# Using Axelar ipRPC
+
+## Overview  📋
+
+In order to provide decentralized, reliable and public RPC to all developers in the ecosystem, Axelar uses [Lava](https://www.lavanet.xyz/?utm_source=axelar-iprpc-dev-tutorial&utm_medium=axelar-docs&utm_campaign=axelar-iprpc-dev) to serve RPC to its developer community. Lava aggregates and routes RPC requests to a peer-to-peer network of top-performing node providers, with built-in fraud detection, conflict resolution, and quality of service guarantees for all requests. All relays are conducted securely with no man-in-the-middle. For more details on Lava's protocol, take a look at [the Lava litepaper](https://litepaper.lavanet.xyz/?utm_source=axelar-iprpc-dev-tutorial&utm_medium=axelar-docs&utm_campaign=axelar-iprc-dev).
+
+Lava ipRPC aggregates RPC providers and provides a unified endpoint for Axelar's entire ecosystem. Regardless of whether you're using LCD - `REST` or Full Nodes - `TendermintRPC`, you can interact with Axelar blockchain. You can also use websockets to establish a continuous connection instead of conducting a discrete handshake for each relay.
+
+
+## Endpoints 🔗
+
+A complete list of endpoints available are available [here](https://docs.lavanet.xyz/). For ipRPC, please attend only to addresses on the list which have `Lava Network` as a maintainer. A list is provided below for your convenience, as well!
+
+### Mainnet 🌐
+
+- **Tendermint-RPC** - `https://tm.axelar.lava.build`
+- **Tendermint-RPC Websocket** - `wss://tm.axelar.lava.build/websocket`
+- **REST** - `https://rest.axelar.lava.build`
+- **gRPC** - `grpc.axelar.lava.build:443` 
+
+### Testnet 🧪
+
+- **Tendermint-RPC** - `https://tm.axelar-testnet.lava.build`
+- **Tendermint-RPC Websocket** - `wss://tm.axelar-testnet.lava.build/websocket`
+- **REST** - `https://rest.axelar-testnet.lava.build/`
+- **gRPC** - `grpc.axelar-testnet.lava.build:443`
+
+## Using `axelard` with ipRPC ⚡
+
+You can use your `axelard` installation with ipRPC for all calls and requests. To do so, you need to use the Tendermint-RPC URL.
+
+For `mainnet` use:
+```bash
+./axelard <command> -n https://tm.axelar.lava.build:443
+```
+
+For `testnet` use:
+```bash
+./axelard <command> -n https://tm.axelar-testnet.lava.build:443
+```
+
+Using this schema, all `axelard` commands which communicate with the blockchain will be carried out securely and efficiently over Lava ipRPC.
+
+
+## Test Commands 🖥️
+
+You can send requests to each endpoint directly from the command line without intervention from `axelard`. This can be done with the use of different tools such as `curl` for HTTP-responsive protocols, `wscat` for web sockets, and `grpcurl` for gRPC. You can also use any of the endpoints programmatically. Some examples are below:
+
+
+### 🟢 REST
+Send get requests to the appropriate cosmos endpoints!
+
+```bash
+curl -X GET -H "Content-Type: application/json" https://rest.axelar.lava.build/cosmos/base/tendermint/v1beta1/blocks/latest
+curl -X GET -H "Content-Type: application/json" https://rest.axelar-testnet.lava.build/cosmos/base/tendermint/v1beta1/blocks/latest
+```
+
+### 🟢 Tendermint
+Send post requests to the Tendermint-RPC endpoint!
+
+```bash
+curl -X POST -H "Content-Type: application/json" https://tm.axelar.lava.build --data '{"jsonrpc": "2.0", "id": 1, "method": "status", "params": []}'
+curl -X POST -H "Content-Type: application/json" https://tm.axelar-testnet.lava.build --data '{"jsonrpc": "2.0", "id": 1, "method": "status", "params": []}'
+```
+
+### 🟢 Tendermint/Websocket
+Connect using websockets over Tendermint-RPC.
+
+```bash
+wscat -c wss://tm.axelar.lava.build/websocket -x '{"jsonrpc": "2.0", "id": 1, "method": "status", "params": []}'
+wscat -c wss://tm.axelar-testnet.lava.build/websocket -x '{"jsonrpc": "2.0", "id": 1, "method": "status", "params": []}'
+```
+
+### 🟢 gRPC
+Use gRPC calls directly with the Cosmos API.
+
+```bash
+grpcurl grpc.axelar.lava.build:443 cosmos.base.tendermint.v1beta1.Service/GetLatestBlock
+grpcurl grpc.axelar-testnet.lava.build:443 cosmos.base.tendermint.v1beta1.Service/GetLatestBlock
+```
+
+✅ The rest is up to you! The possibilities are literally endless!
