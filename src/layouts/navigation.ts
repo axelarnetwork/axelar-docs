@@ -284,6 +284,7 @@ export const getNavigation = (section) => {
       },
       { title: "Security Overview", href: "/learn/security" },
       { title: "Interchain Transaction Duration", href: "/learn/txduration" },
+      { title: "EVM Contract Governance", href: "/learn/evm-governance" },
       {
         title: "CLI",
         children: [
