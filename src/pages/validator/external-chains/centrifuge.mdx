@@ -65,7 +65,7 @@ Replace `/mnt/my_volume/data` with the volume and/or data folder you want to use
   services:
     centrifuge:
       container_name: centrifuge-chain
-      image: "centrifugeio/centrifuge-chain:main-latest"
+      image: "centrifugeio/centrifuge-chain:[latest_release]"
       platform: "linux/amd64"
       restart: on-failure
       ports:
@@ -111,7 +111,7 @@ Replace `/mnt/my_volume/data` with the volume and/or data folder you want to use
   services:
     centrifuge:
       container_name: centrifuge-chain
-      image: "centrifugeio/centrifuge-chain:main-latest"
+      image: "centrifugeio/centrifuge-chain:[latest_release]"
       platform: "linux/amd64"
       ports:
         - "30333:30333"
