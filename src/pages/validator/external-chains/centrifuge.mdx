@@ -195,7 +195,7 @@ Make sure to look at the Centrifuge release specifically if you want to run a ma
 
 ### Configure systemd
 
-##### 1. Create systemd service file
+#### 1. Create systemd service file
 We are now ready to start the node, but to ensure it is running in the background and auto-restarts in case of a server failure, we will set up a service file using systemd.
 Change the `ports` based on your network setup.
 
@@ -315,7 +315,7 @@ EOF
 
 
 
-##### 2. Start the systemd service
+#### 2. Start the systemd service
 Actually enable the previously generated service and start it.
 
 ```bash
@@ -332,7 +332,7 @@ sudo journalctl -u centrifuge.service -f
 ```
 
 
-##### 3. Test your RPC connection
+#### 3. Test your RPC connection
 
 Once your node is fully synced, you can run a cURL request to see the status of your node, use
 the port you configured in your `/etc/systemd/system/centrifuge.service` file above
@@ -350,10 +350,22 @@ Expected output if node is synced is `{"jsonrpc":"2.0","result":false,"id":1}`
 In order for `vald` to connect to your local node, your `rpc_addr` should be exposed in
 vald's `config.toml`.
 
+<tabs>
+<tab-item title="Mainnet">
 ```bash
 [[axelar_bridge_evm]]
 name = "centrifuge"
 rpc_addr = "http://IP:PORT"
 start-with-bridge = true
 ```
+</tab-item>
 
+<tab-item title="Testnet">
+```bash
+[[axelar_bridge_evm]]
+name = "centrifuge"
+rpc_addr = "http://IP:PORT"
+start-with-bridge = true
+```
+</tab-item>
+</tabs>
