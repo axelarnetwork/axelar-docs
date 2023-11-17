@@ -768,28 +768,76 @@
       "image": "/images/chains/kava.svg"
     },
     {
-      "id": "centrifuge",
+      "id": "centrifuge-2",
       "name": "Centrifuge",
-      "chain_id": "2089",
-      "network_id": "centrifuge",
+      "chain_id": "2090",
+      "network_id": "centrifuge-2",
       "provider_params": [
         {
-          "chainId": "0x829",
-          "chainName": "Centrifuge Algol Testnet",
+          "chainId": "0x82A",
+          "chainName": "Centrifuge Testnet",
           "rpcUrls": [
-            "https://fullnode.algol.cntrfg.com/rpc"
+            "https://node-7118620155331796992.gx.onfinality.io/rpc?apikey=00538f2d-6297-44e3-8812-4b9d579524b2"
           ],
           "nativeCurrency": {
-            "name": "Algol",
-            "symbol": "ALGL",
+            "name": "Centrifuge",
+            "symbol": "CFG",
             "decimals": 18
           },
           "blockExplorerUrls": [
-            "https://polkadot.js.org/apps/?rpc=wss%3A%2F%2Ffullnode.algol.cntrfg.com%2Fpublic-ws#/explorer"
+            ""
           ]
         }
       ],
       "image": "/images/chains/centrifuge.svg"
+    },
+    {
+      "id": "ethereum-sepolia",
+      "name": "Ethereum Sepolia",
+      "chain_id": "11155111",
+      "network_id": "ethereum-sepolia",
+      "provider_params": [
+        {
+          "chainId": "0xAA36A7",
+          "chainName": "Ethereum Sepolia",
+          "rpcUrls": [
+            "https://1rpc.io/sepolia"
+          ],
+          "nativeCurrency": {
+            "name": "Ethereum",
+            "symbol": "ETH",
+            "decimals": 18
+          },
+          "blockExplorerUrls": [
+            "https://sepolia.etherscan.io"
+          ]
+        }
+      ],
+      "image": "/images/chains/ethereum.svg"
+    },
+    {
+      "id": "immutable",
+      "name": "Immutable",
+      "chain_id": "13473",
+      "network_id": "immutable",
+      "provider_params": [
+        {
+          "chainId": "0x34A1",
+          "chainName": "Immutable",
+          "rpcUrls": [
+            "https://rpc-geth.testnet.immutable.com"
+          ],
+          "nativeCurrency": {
+            "name": "Immutable",
+            "symbol": "IMX",
+            "decimals": 18
+          },
+          "blockExplorerUrls": [
+            ""
+          ]
+        }
+      ],
+      "image": "/images/chains/immutable.svg"
     }
   ]
 }
