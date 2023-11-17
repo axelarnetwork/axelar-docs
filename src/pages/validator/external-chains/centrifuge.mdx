@@ -29,8 +29,8 @@ Set up your Centrifuge Mainnet or Testnet node.
     gsutil cp gs://centrifuge-snapshots/mainnet/YYYY-MM-DD-snap.tar.lz4 $TMP_PATH/
     lz4 -d -c -q  $DATA_FOLDER_PATH/YYYY-MM-DD-snap.tar.lz4 | tar -xvf - -C $DATA_FOLDER_PATH
     ```
-   Inspect the $DATA_FOLDER_PATH it should contain a 'chain' and a 'relay-chain' directory, the parachain and relay chain 
-   DB data folders respectively. Use $DATA_FOLDER_PATH on your node config as --base-path=/path/to/destination directly
+   Inspect the $DATA_FOLDER_PATH it should contain a `chain` and a `relay-chain` directory, the parachain and relay chain 
+   DB data folders respectively. Use `$DATA_FOLDER_PATH` on your node config as `--base-path=$DATA_FOLDER_PATH` directly
    Remove the `chain` directory to sync ONLY the parachain from scratch but keep the relay DB (usually much bigger), this will remove a little bit of trust
    in the Centrifuge dev team by synching the parachain from scratch at least, which is what Axelar validators care about most in terms of data.
   
@@ -136,6 +136,7 @@ Replace `/mnt/my_volume/data` with the volume and/or data folder you want to use
         - "--ws-max-connections=5000"
         - "--bootnodes=/ip4/34.89.150.73/tcp/30333/p2p/12D3KooWHsA69Fb1HkdWrwrxY3cSga3wWyHnxuk5GeYtCh59XsWB"
         - "--bootnodes=/ip4/35.198.144.90/tcp/30333/p2p/12D3KooWMJPzvEp5Jhea8eKsUDufBbAzGrn265GcaCmcnp3koPk4"
+        - "--bootnodes=/ip4/35.198.98.253/tcp/30333/p2p/12D3KooWHzRutQHbQKWh3Z5BWoXGk5c3gxscxfG57N8fNV6XjVLz"
         - "--"
         - "--no-telemetry"
         - "--execution=wasm"
@@ -296,6 +297,7 @@ ExecStart=/usr/local/sbin/centrifuge-chain \
     --wasm-execution=compiled \
     --bootnodes=/ip4/34.89.150.73/tcp/30333/p2p/12D3KooWHsA69Fb1HkdWrwrxY3cSga3wWyHnxuk5GeYtCh59XsWB \
     --bootnodes=/ip4/35.198.144.90/tcp/30333/p2p/12D3KooWMJPzvEp5Jhea8eKsUDufBbAzGrn265GcaCmcnp3koPk4 \
+    --bootnodes=/ip4/35.198.98.253/tcp/30333/p2p/12D3KooWHzRutQHbQKWh3Z5BWoXGk5c3gxscxfG57N8fNV6XjVLz \
     -- \
     --no-telemetry \
     --execution=wasm \
@@ -346,7 +348,7 @@ Expected output if node is synced is `{"jsonrpc":"2.0","result":false,"id":1}`
 ### Configure `vald`
 
 In order for `vald` to connect to your local node, your `rpc_addr` should be exposed in
-`vald`'s `config.toml`
+vald's `config.toml`.
 
 ```bash
 [[axelar_bridge_evm]]
