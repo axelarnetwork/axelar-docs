@@ -133,6 +133,18 @@
     {
       "id": "centrifuge",
       "address": "0xbE406F0189A0B4cf3A05C286473D23791Dd44Cc6"
+    },
+    {
+      "id": "centrifuge",
+      "address": "0xbE406F0189A0B4cf3A05C286473D23791Dd44Cc6"
+    },
+    {
+      "id": "ethereum-sepolia",
+      "address": "0xbE406F0189A0B4cf3A05C286473D23791Dd44Cc6"
+    },
+    {
+      "id": "immutable",
+      "address": "0xbE406F0189A0B4cf3A05C286473D23791Dd44Cc6"
     }
   ]
 }
