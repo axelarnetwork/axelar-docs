@@ -36,8 +36,31 @@ function interchainTransfer(
 If you want more features than the Interchain Token provides, you can create a [custom](../../reference/glossary/#custom) token. You may want a customized token to customize minting policies, ensure ownership or control of the token by a DAO, create rate limits, or build any other custom logic into your token.
 
 - To create a new Interchain Token, use the `deployInterchainToken` method from [`InterchainTokenFactory.sol`](https://github.com/axelarnetwork/interchain-token-service/blob/0a00533f19197a285d6bddc8ec0c2e908094ebfe/contracts/InterchainTokenFactory.sol#L117) for local chain deployment with an optional pre-mint, and then deploy it to your chosen remote chain using the `deployRemoteInterchainToken` method from the same contract.
-- Transfer  initial amount to the user on the local chain and remote chain using `interchainTransfer` on the [`interchainTokenFactory.sol`](https://github.com/axelarnetwork/interchain-token-service/blob/0a00533f19197a285d6bddc8ec0c2e908094ebfe/contracts/InterchainTokenFactory.sol#L292)
+- Transfer  initial amount to the user on the local chain and remote chain using `interchainTransfer` on the [`InterchainTokenFactory.sol`](https://github.com/axelarnetwork/interchain-token-service/blob/0a00533f19197a285d6bddc8ec0c2e908094ebfe/contracts/InterchainTokenFactory.sol#L292)
 - Retrieve the Token Manager address using the unique `tokenId` on the Interchain Token Service by calling [`tokenManagerAddress`](https://github.com/axelarnetwork/interchain-token-service/blob/0a00533f19197a285d6bddc8ec0c2e908094ebfe/contracts/InterchainTokenService.sol#L180C1-L180C1) which calculate the address of a TokenManager from a specific `tokenId`. The TokenManager does not need to exist already
+
+Here is an example of using the `deployInterchainToken` method.
+
+```solidity
+    /**
+     * @notice Deploys a new interchain token with specified parameters.
+     * @dev Creates a new token and optionally mints an initial amount to a specified distributor.
+     * @param salt The unique salt for deploying the token.
+     * @param name The name of the token.
+     * @param symbol The symbol of the token.
+     * @param decimals The number of decimals for the token.
+     * @param mintAmount The amount of tokens to mint initially (can be zero).
+     * @param distributor The address to receive the initially minted tokens.
+     */
+    function deployInterchainToken(
+        bytes32 salt,
+        string calldata name,
+        string calldata symbol,
+        uint8 decimals,
+        uint256 mintAmount,
+        address distributor
+    ) external payable
+```
 
 Tokens can move between chains seamlessly as the Token Manager contracts will mint and burn tokens as needed. If the `distributor` parameter is empty bytes when deploying a new Interchain Token, then a `mint/burn` TokenManager is used; otherwise, a `lock/unlock` TokenManager is used.  If you want to change the token distributor/minter to another address, you can do that using the `transferDistributorship` on the token.
 
