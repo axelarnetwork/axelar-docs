@@ -31,7 +31,6 @@ function interchainTransfer(
 ) external payable;
 ```
 
-
 ## Create a new custom Interchain Token(s)
 
 If you want more features than the Interchain Token provides, you can create a [custom](../../reference/glossary/#custom) token. You may want a customized token to customize minting policies, ensure ownership or control of the token by a DAO, create rate limits, or build any other custom logic into your token.
@@ -40,7 +39,7 @@ If you want more features than the Interchain Token provides, you can create a [
 - Transfer  initial amount to the user on the local chain and remote chain using `interchainTransfer` on the [`interchainTokenFactory.sol`](https://github.com/axelarnetwork/interchain-token-service/blob/0a00533f19197a285d6bddc8ec0c2e908094ebfe/contracts/InterchainTokenFactory.sol#L292)
 - Retrieve the Token Manager address using the unique `tokenId` on the Interchain Token Service by calling [`tokenManagerAddress`](https://github.com/axelarnetwork/interchain-token-service/blob/0a00533f19197a285d6bddc8ec0c2e908094ebfe/contracts/InterchainTokenService.sol#L180C1-L180C1) which calculate the address of a TokenManager from a specific `tokenId`. The TokenManager does not need to exist already
 
-If the `distributor` parameter is empty bytes when deploying a new Interchain Token, then a `mint/burn` TokenManager is used; otherwise, a `lock/unlock` TokenManager is used. Tokens can move between chains seamlessly as the Token Manager contracts will mint and burn tokens as needed. If you want to change the token distributor/minter to another address, you can do that using the `transferDistributorship` on the token.
+Tokens can move between chains seamlessly as the Token Manager contracts will mint and burn tokens as needed. If the `distributor` parameter is empty bytes when deploying a new Interchain Token, then a `mint/burn` TokenManager is used; otherwise, a `lock/unlock` TokenManager is used.  If you want to change the token distributor/minter to another address, you can do that using the `transferDistributorship` on the token.
 
 >**Note**: If you want to build your token with the `IInterchainToken` feature yourself, make sure your token implements the [`IInterchainTokenStandard`](https://github.com/axelarnetwork/interchain-token-service/blob/v1.0.0-beta.3/contracts/interfaces/IInterchainTokenStandard.sol) interface so you can offer [`interchainTransfer`](https://github.com/axelarnetwork/interchain-token-service/blob/0a00533f19197a285d6bddc8ec0c2e908094ebfe/contracts/interfaces/IInterchainTokenStandard.sol#L20) and [`interchainTransferFrom`](https://github.com/axelarnetwork/interchain-token-service/blob/0a00533f19197a285d6bddc8ec0c2e908094ebfe/contracts/interfaces/IInterchainTokenStandard.sol#L37) methods directly on your token. 
 
