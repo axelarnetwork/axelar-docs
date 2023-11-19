@@ -6,28 +6,56 @@ Set up your Centrifuge Mainnet or Testnet node.
 
 ## Prerequisites
 
-- [Setup your Axelar validator](/validator/setup)
+- [Set up your Axelar validator](/validator/setup)
 - Minimum hardware requirements: 2+ cores CPU, 4GB+ RAM, 200GB+ free storage space.
 - Recommended hardware: 4+ CPU cores, 16GB RAM, 500GB SSD or faster storage.
 - [Releases](https://github.com/centrifuge/centrifuge-chain/releases)
 - Docker OR `rustup` is installed
 
-## Steps
+### Optional: Using a snapshot instead of synching from scratch
+  * By downloading a snapshot from the Centrifuge Dev team:
+    - You get faster sync, your fullnode will be ready in within hours (time depends on how old the snapshot is)
+    - You are trusting the Centrifuge's team snapshots and therefore is not as "trustless" or "decentralized" as synching from scratch
+  Prerequisites: 
+  - [Install Gcloud CLI](https://cloud.google.com/sdk/docs/install)
+  - Install lz4. Ex: `sudo snap install lz4`
+  
+  Run the following:
+    ```
+    # List the available bundles (choose between mainnet or testnet-demo)
+    gsutil ls gs://centrifuge-snapshots/{mainnet,testnet-demo}
+    
+    # Download the bundle (~400GB)
+    gsutil cp gs://centrifuge-snapshots/mainnet/YYYY-MM-DD-snap.tar.lz4 $TMP_PATH/
+    lz4 -d -c -q  $DATA_FOLDER_PATH/YYYY-MM-DD-snap.tar.lz4 | tar -xvf - -C $DATA_FOLDER_PATH
+    ```
+   Inspect the $DATA_FOLDER_PATH it should contain a `chain` and a `relay-chain` directory, the parachain and relay chain 
+   DB data folders respectively. Use `$DATA_FOLDER_PATH` on your node config as `--base-path=$DATA_FOLDER_PATH` directly
+   Remove the `chain` directory to sync ONLY the parachain from scratch but keep the relay DB (usually much bigger), this will remove a little bit of trust
+   in the Centrifuge dev team by synching the parachain from scratch at least, which is what Axelar validators care about most in terms of data.
+  
+
+## Options
 1. Run with Docker
 2. Run with binaries
-4. Configure vald
 
 ## 1. Run with Docker
 
 You can use the container published by Centrifuge on their [DockerHub repo](https://hub.docker.com/repository/docker/centrifugeio/centrifuge-chain/tags?page=1&ordering=last_updated)
-or build your own by cloning the cent-chain repository and using the [Dockerfile](https://github.com/centrifuge/centrifuge-chain/blob/main/Dockerfile) in the root of the repo (2-4h build time in an average machine)
+or be fully trustless by cloning the [cent-chain repository](https://github.com/centrifuge/centrifuge-chain/)
+and using the [Dockerfile](https://github.com/centrifuge/centrifuge-chain/blob/main/Dockerfile) (2-4h build time on an average machine),
+in the latter make sure to checkout the specific commit for the latest release before building.
 
-Find the [latest release](https://github.com/centrifuge/centrifuge-chain/releases) of the docker image, e.g. `centrifugeio/centrifuge-chain:main-20230906121926-xyz`.
+To find the latest release go to the [Centrifuge repository](https://github.com/centrifuge/centrifuge-chain/releases), 
+and look for the listed Docker Image.
+
+More images in the official [Docker Hub repository](https://hub.docker.com/repository/docker/centrifugeio/centrifuge-chain/tags?page=1&ordering=last_updated). 
 
 ### Create docker compose file
 
 Create a `docker-compose.yml` file with the following contents.
-Change the `ports` based on your network setup. Replace `/mnt/my_volume/data` with the volume and data folder you want to use.
+Change the `ports` based on your network setup. 
+Replace `/mnt/my_volume/data` with the volume and/or data folder you want to use.
 
 <tabs>
 <tab-item title="Mainnet">
@@ -37,27 +65,23 @@ Change the `ports` based on your network setup. Replace `/mnt/my_volume/data` wi
   services:
     centrifuge:
       container_name: centrifuge-chain
-      image: "centrifugeio/centrifuge-chain:main-[latest_release]"
+      image: "centrifugeio/centrifuge-chain:main-latest"
       platform: "linux/amd64"
-      volumes:
-        - /mnt/my_volume/data:/data
+      restart: on-failure
       ports:
         - "30355:30333"
         - "9936:9933"
         - "9946:9944"
       volumes:
-        - type: bind
-          source: ./res/rococo-local.json
-          target: /chainspec.json
-          read_only: true
+        # Mount your biggest drive
+        - /mnt/my_volume/data:/data
       command:
       - "--port=30333"
       - "--rpc-port=9933"
       - "--ws-port=9944"
-      - "--unsafe-ws-external"
-      - "--unsafe-rpc-external"
+      - "--ws-external"
+      - "--rpc-external"
       - "--rpc-cors=all"
-      - "--rpc-methods=unsafe"
       - "--pruning=archive"
       - "--chain=centrifuge"
       - "--parachain-id=2031"
@@ -68,10 +92,14 @@ Change the `ports` based on your network setup. Replace `/mnt/my_volume/data` wi
       - "--ws-max-connections=5000"
       - "--bootnodes=/ip4/35.198.171.148/tcp/30333/ws/p2p/12D3KooWDXDwSdqi8wB1Vjjs5SVpAfk6neadvNTPAik5mQXqV7jF"
       - "--bootnodes=/ip4/34.159.117.205/tcp/30333/ws/p2p/12D3KooWMspZo4aMEXWBH4UXm3gfiVkeu1AE68Y2JDdVzU723QPc"
+      - "--bootnodes=/dns4/node-7010781199623471104-0.p2p.onfinality.io/tcp/23564/ws/p2p/12D3KooWSN6VXWPvo1hoT5rb5hei5B7YdTWeUyDcc42oTPwLGF2p"
+      - "--state-cache-size=1"
+      - "--name=YOUR-NODE-NAME"
       - "--"
       - "--execution=wasm"
       - "--wasm-execution=compiled"
       - "--chain=polkadot"
+      - "--sync=fast"
   ```
   </code></pre>
 </tab-item>
@@ -83,7 +111,7 @@ Change the `ports` based on your network setup. Replace `/mnt/my_volume/data` wi
   services:
     centrifuge:
       container_name: centrifuge-chain
-      image: "centrifugeio/centrifuge-chain:main-[latest_release]"
+      image: "centrifugeio/centrifuge-chain:main-latest"
       platform: "linux/amd64"
       ports:
         - "30333:30333"
@@ -95,30 +123,26 @@ Change the `ports` based on your network setup. Replace `/mnt/my_volume/data` wi
         - "--port=30333"
         - "--rpc-port=9933"
         - "--ws-port=9944"
-        - "--unsafe-ws-external"
         - "--unsafe-rpc-external"
+        - "--unsafe-ws-external"
         - "--rpc-cors=all"
-        - "--rpc-methods=unsafe"
         - "--pruning=archive"
-        - "--chain=algol"
-        - "--parachain-id=2088"
+        - "--chain=/resources/demo-spec-raw.json"
+        - "--parachain-id=2031"
         - "--base-path=/data"
         - "--log=main,info"
         - "--execution=wasm"
         - "--wasm-execution=compiled"
         - "--ws-max-connections=5000"
-        - "--bootnodes=/dnsaddr/bootstrap.algol.k-f.dev/p2p/12D3KooWQt8qAmXzgdNRuVKhW1NAdfowhoGC3apycsBYhvehp1mA"
-        - "--bootnodes=/dns4/node-7107773973489594368-0.p2p.onfinality.io/tcp/28330/ws/p2p/12D3KooWHAsVwkowLLnwd9ZRAmNFBdsvFzvB9XS8FhEufhvuvec3"
-        - "--bootnodes=/ip4/34.141.22.46/tcp/30333/p2p/12D3KooWPdGhxLeQad8qfxr7cPrYGMW7sJhXL4rfjZMMJpWZ1nHd"
-        - "--bootnodes=/ip4/34.141.85.156/tcp/30333/p2p/12D3KooWH8B1nrkNRvKPTuhaaXy244PZoptRzfXPQqVai3bRq4TS"
-        - "--bootnodes=/ip4/34.141.48.250/tcp/30333/p2p/12D3KooWHsA69Fb1HkdWrwrxY3cSga3wWyHnxuk5GeYtCh59XsWB"
+        - "--bootnodes=/ip4/34.89.150.73/tcp/30333/p2p/12D3KooWHsA69Fb1HkdWrwrxY3cSga3wWyHnxuk5GeYtCh59XsWB"
+        - "--bootnodes=/ip4/35.198.144.90/tcp/30333/p2p/12D3KooWMJPzvEp5Jhea8eKsUDufBbAzGrn265GcaCmcnp3koPk4"
+        - "--bootnodes=/ip4/35.198.98.253/tcp/30333/p2p/12D3KooWHzRutQHbQKWh3Z5BWoXGk5c3gxscxfG57N8fNV6XjVLz"
         - "--"
         - "--no-telemetry"
         - "--execution=wasm"
         - "--wasm-execution=compiled"
-        - "--chain=/config/rococo-local.json"
-        - "--bootnodes=/dnsaddr/bootstrap-relay.algol.k-f.dev/p2p/12D3KooWABjwDpbaapnTwei9ZhSLMHAWij5oZE4CsbsN8K8q4mYb"
-        - "--bootnodes=/dnsaddr/bootstrap-relay-2.algol.k-f.dev/p2p/12D3KooWRQqyBqsFw8gw2oqZHaiPLyw2jgCyz5jwRMmg3aWr3jP5"
+        - "--chain=/resources/westend-alphanet-raw-specs.json"
+        - "--sync=fast"
   ```
   </code></pre>
 </tab-item>
@@ -126,54 +150,52 @@ Change the `ports` based on your network setup. Replace `/mnt/my_volume/data` wi
 
 ### Run the container
 
-Start the docker container.
-
 ```bash
-docker-compose up -d
+docker-compose pull --policy always && docker-compose up -d
 ```
 
-## 2. Run Binaries
-
-#### Prerequisites
-
-```bash
-sudo apt-get install cmake pkg-config libssl-dev git clang libclang-dev protobuf-compiler
-```
-
-#### <br>Building the binary</br>
+## 2. Get or build binaries
 
 <tabs>
-
-<tab-item title="Mainnet">
+<tab-item title="Build your own (Ubuntu)">
   ```bash
-  git clone https://github.com/centrifuge/centrifuge-chain.git
-  git checkout [latest_release]
-  cd centrifuge-chain
-  RUST_TOOLCHAIN=nightly-2022-11-14 ./scripts/install_toolchain.sh
-  cargo build --release
-  cp ./target/release/centrifuge-chain /var/lib/centrifuge-data
-  ```
-</tab-item>
-
-<tab-item title="Testnet">
-  ```bash
+  sudo apt-get install cmake pkg-config libssl-dev git clang libclang-dev protobuf-compiler
   git clone https://github.com/centrifuge/centrifuge-chain.git
   cd centrifuge-chain
   git checkout [latest_release]
-  RUST_TOOLCHAIN=nightly-2022-11-14 ./scripts/install_toolchain.sh
+  ./scripts/install_toolchain.sh
   cargo build --release
-  cp ./target/release/centrifuge-chain /var/lib/algol-data
-  cp ./res/rococo-local.json /var/lib/algol-data/relay-spec.json
+  cp ./target/release/centrifuge-chain /usr/local/sbin/centrifuge-chain
   ```
 </tab-item>
 
+<tab-item title="Download from the release notes">
+Make sure to look at the Centrifuge releases specifically if you want to run a mainnet node.
+Otherwise, it's ok to use the latest release: https://github.com/centrifuge/centrifuge-chain/releases/
+
+If no centrifuge-chain-bin.zip is present in the release, try the "extract from docker method"
+Example:
+```
+curl https://github.com/centrifuge/centrifuge-chain/releases/download/v0.10.31/centrifuge-chain-bin.zip -o centrifuge-chain.zip
+unzip centrifuge-chain.zip
+shasum -a 256 --check centrifuge-chain.sha256
+  centrifuge-chain: OK
+mv centrifuge-chain /usr/local/sbin/centrifuge-chain
+```
+</tab-item>
+
+<tab-item title="Extract from docker">
+Make sure to look at the Centrifuge release specifically if you want to run a mainnet node
+```
+  docker run --name centrifuge-cp -d centrifugeio/centrifuge-chain:main-latest --chain centrifuge
+  docker cp centrifuge-cp:/usr/local/bin/centrifuge-chain /usr/local/sbin/centrifuge-chain
+```
+</tab-item>
 </tabs>
-
-<br></br>
 
 ### Configure systemd
 
-##### 1. Create systemd service file
+#### 1. Create systemd service file
 We are now ready to start the node, but to ensure it is running in the background and auto-restarts in case of a server failure, we will set up a service file using systemd.
 Change the `ports` based on your network setup.
 
@@ -181,6 +203,9 @@ Change the `ports` based on your network setup.
 <tab-item title="Mainnet">
 <pre><code>
 ```bash
+useradd centrifuge
+chown centrifuge:centrifuge /data
+
 sudo tee <<EOF >/dev/null /etc/systemd/system/centrifuge.service
 [Unit]
 Description="Centrifuge systemd service"
@@ -191,18 +216,17 @@ StartLimitIntervalSec=0
 Type=simple
 Restart=always
 RestartSec=10
-User=centrifuge_service
+User=centrifuge
 SyslogIdentifier=centrifuge
 SyslogFacility=local7
 KillSignal=SIGHUP
-ExecStart=/var/lib/centrifuge-data/centrifuge-chain \
+ExecStart=/usr/local/sbin/centrifuge-chain \
     --port=30333 \
     --rpc-port=9933 \
     --ws-port=9944 \
-    --unsafe-ws-external \
-    --unsafe-rpc-external \
+    --ws-external \
+    --rpc-external \
     --rpc-cors=all \
-    --rpc-methods=unsafe \
     --pruning=archive \
     --chain=centrifuge \
     --parachain-id=2031 \
@@ -213,10 +237,12 @@ ExecStart=/var/lib/centrifuge-data/centrifuge-chain \
     --ws-max-connections=5000 \
     --bootnodes=/ip4/35.198.171.148/tcp/30333/ws/p2p/12D3KooWDXDwSdqi8wB1Vjjs5SVpAfk6neadvNTPAik5mQXqV7jF \
     --bootnodes=/ip4/34.159.117.205/tcp/30333/ws/p2p/12D3KooWMspZo4aMEXWBH4UXm3gfiVkeu1AE68Y2JDdVzU723QPc \
+    --bootnodes=/dns4/node-7010781199623471104-0.p2p.onfinality.io/tcp/23564/ws/p2p/12D3KooWSN6VXWPvo1hoT5rb5hei5B7YdTWeUyDcc42oTPwLGF2p \
     -- \
     --chain=polkadot \
     --execution=wasm \
-    --wasm-execution=compiled
+    --wasm-execution=compiled \
+    --sync=fast
 
 [Install]
 WantedBy=multi-user.target
@@ -226,11 +252,24 @@ EOF
 </tab-item>
 
 <tab-item title="Testnet">
+
+You'll have to download the chain specs first:
+
+<pre><code>
+curl -O https://github.com/centrifuge/centrifuge-chain/blob/main/res/westend-alphanet-raw-specs.json 
+mv westend-alphanet-raw-specs.json /config/moonbean-dev-relay.json
+curl -O https://github.com/centrifuge/centrifuge-chain/blob/main/res/demo-spec-raw.json
+mv demo-spec-raw.json /config/centrifuge-demo-raw.json
+</code></pre>
+
 <pre><code>
 ```bash
+useradd centrifuge
+chown centrifuge:centrifuge /data
+
 sudo tee <<EOF >/dev/null /etc/systemd/system/centrifuge.service
 [Unit]
-Description="Centrifuge Testnet systemd service"
+Description="Centrifuge Demo testnet systemd service"
 After=network.target
 StartLimitIntervalSec=0
 
@@ -238,38 +277,33 @@ StartLimitIntervalSec=0
 Type=simple
 Restart=always
 RestartSec=10
-User=centrifuge_service
+User=centrifuge
 SyslogIdentifier=centrifuge_testnet
 SyslogFacility=local7
 KillSignal=SIGHUP
-ExecStart=/var/lib/algol-data/centrifuge-chain \
+ExecStart=/usr/local/sbin/centrifuge-chain \
     --port=30333 \
     --rpc-port=9933 \
     --ws-port=9944 \
     --unsafe-ws-external \
     --unsafe-rpc-external \
     --rpc-cors=all \
-    --rpc-methods=unsafe \
     --pruning=archive \
-    --chain=algol \
-    --parachain-id=2088 \
-    --base-path=/data \
+    --chain=/config/centrifuge-demo-raw.json \
+    --parachain-id=2031 \
+    --base-path=/data-testnet/ \
     --log=main,info \
     --execution=wasm \
     --wasm-execution=compiled \
-    --ws-max-connections=5000 \
-    --bootnodes=/dnsaddr/bootstrap.algol.k-f.dev/p2p/12D3KooWQt8qAmXzgdNRuVKhW1NAdfowhoGC3apycsBYhvehp1mA \
-    --bootnodes=/dns4/node-7107773973489594368-0.p2p.onfinality.io/tcp/28330/ws/p2p/12D3KooWHAsVwkowLLnwd9ZRAmNFBdsvFzvB9XS8FhEufhvuvec3 \
-    --bootnodes=/ip4/34.141.22.46/tcp/30333/p2p/12D3KooWPdGhxLeQad8qfxr7cPrYGMW7sJhXL4rfjZMMJpWZ1nHd \
-    --bootnodes=/ip4/34.141.85.156/tcp/30333/p2p/12D3KooWH8B1nrkNRvKPTuhaaXy244PZoptRzfXPQqVai3bRq4TS \
-    --bootnodes=/ip4/34.141.48.250/tcp/30333/p2p/12D3KooWHsA69Fb1HkdWrwrxY3cSga3wWyHnxuk5GeYtCh59XsWB \
+    --bootnodes=/ip4/34.89.150.73/tcp/30333/p2p/12D3KooWHsA69Fb1HkdWrwrxY3cSga3wWyHnxuk5GeYtCh59XsWB \
+    --bootnodes=/ip4/35.198.144.90/tcp/30333/p2p/12D3KooWMJPzvEp5Jhea8eKsUDufBbAzGrn265GcaCmcnp3koPk4 \
+    --bootnodes=/ip4/35.198.98.253/tcp/30333/p2p/12D3KooWHzRutQHbQKWh3Z5BWoXGk5c3gxscxfG57N8fNV6XjVLz \
     -- \
     --no-telemetry \
     --execution=wasm \
     --wasm-execution=compiled \
-    --chain=/config/rococo-local.json \
-    --bootnodes=/dnsaddr/bootstrap-relay.algol.k-f.dev/p2p/12D3KooWABjwDpbaapnTwei9ZhSLMHAWij5oZE4CsbsN8K8q4mYb \
-    --bootnodes=/dnsaddr/bootstrap-relay-2.algol.k-f.dev/p2p/12D3KooWRQqyBqsFw8gw2oqZHaiPLyw2jgCyz5jwRMmg3aWr3jP5
+    --chain=/config/moonbean-dev-relay.json \
+    --sync=fast
 
 [Install]
 WantedBy=multi-user.target
@@ -278,10 +312,11 @@ EOF
 </code></pre>
 </tab-item>
 </tabs>
-<br></br>
 
-##### 2. Start the systemd service
-Actually enable the previously generated serice and start it.
+
+
+#### 2. Start the systemd service
+Actually enable the previously generated service and start it.
 
 ```bash
 sudo systemctl enable centrifuge.service
@@ -296,14 +331,16 @@ sudo systemctl status centrifuge.service
 sudo journalctl -u centrifuge.service -f
 ```
 
-<br></br>
 
-##### 3. Test your RPC connection
+#### 3. Test your RPC connection
 
-Once your node is fully synced, you can run a cURL request to see the status of your node:
+Once your node is fully synced, you can run a cURL request to see the status of your node, use
+the port you configured in your `/etc/systemd/system/centrifuge.service` file above
 
 ```bash
-curl -H "Content-Type: application/json" -d '{{"id":1, "jsonrpc":"2.0", "method": "eth_syncing", "params":[]}}' localhost:9933
+curl -H "Content-Type: application/json" \
+-d '{{"id":1, "jsonrpc":"2.0", "method": "eth_syncing", "params":[]}}' \
+localhost:9933
 ```
 
 Expected output if node is synced is `{"jsonrpc":"2.0","result":false,"id":1}`
@@ -311,7 +348,7 @@ Expected output if node is synced is `{"jsonrpc":"2.0","result":false,"id":1}`
 ### Configure `vald`
 
 In order for `vald` to connect to your local node, your `rpc_addr` should be exposed in
-`vald`'s `config.toml`
+vald's `config.toml`.
 
 <tabs>
 <tab-item title="Mainnet">
