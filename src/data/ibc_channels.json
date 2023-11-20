@@ -373,6 +373,16 @@
       "channel_id": "channel-341"
     },
     {
+      "from": "elys",
+      "to": "axelarnet",
+      "channel_id": "channel-15"
+    },
+    {
+      "from": "axelarnet",
+      "to": "elys",
+      "channel_id": "channel-315"
+    },
+    {
       "from": "evmos",
       "to": "axelarnet",
       "channel_id": "channel-22"
