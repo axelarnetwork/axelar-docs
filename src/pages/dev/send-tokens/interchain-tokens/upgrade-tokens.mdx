@@ -44,9 +44,7 @@ function deployRemoteCanonicalInterchainToken(
     uint256 gasValue
 ) external payable 
 ```
-> If pre-mint is needed, you must make ERC20 approval to the Factory Contract.
-
-When tokens are moved from the origin chain to another chain, the token will be locked on the origin chain and minted on the destination chain. If you moved tokens directly from one non-origin chain to another, the token would be burned on the source chain and minted on the destination chain.
+If pre-mint is needed, you must make ERC20 approval to the Factory Contract. When tokens are moved from the origin chain to another chain, the token will be locked on the origin chain and minted on the destination chain. If you moved tokens directly from one non-origin chain to another, the token would be burned on the source chain and minted on the destination chain.
 
 ## Link deployed tokens on multiple chains into Interchain Token(s)
 

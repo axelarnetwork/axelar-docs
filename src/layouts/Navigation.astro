@@ -23,17 +23,27 @@ const navigation = getNavigation(section);
         item.children ? (
             <span>{item.title}</span>
             <div class="group">
-                <a href="/dev/send-tokens/overview">Overview</a>
-                <span>Interchain Tokens</span>
-                <div class="group">
-                <a href="/dev/send-tokens/interchain-tokens/intro">Introduction</a>
-                <a href="/dev/send-tokens/interchain-tokens/create-token">
-                    Create Token
-                </a>
-                <a href="/dev/send-tokens/interchain-tokens/upgrade-tokens">
-                    Upgrade Tokens
-                </a>
-                </div>
+              {item.children.map((child) =>
+                child.children ? (
+                    <span>{child.title}</span>
+                    <div class="group">
+                      {child.children.map((grandchild) => (
+                        grandchild.children ? (
+                          <span>{grandchild.title}</span>
+                          <div class="group">
+                            {grandchild.children.map((greatGrandchild) => (
+                              <a href={greatGrandchild.href}>{greatGrandchild.title}</a>
+                            ))}
+                          </div>
+                        ) : (
+                          <a href={grandchild.href}>{grandchild.title}</a>
+                        )
+                      ))}
+                    </div>
+                ) : (
+                  <a href={child.href}>{child.title}</a>
+                )
+              )}
             </div>
         ) : (
           <a href={item.href}>{item.title}</a>
