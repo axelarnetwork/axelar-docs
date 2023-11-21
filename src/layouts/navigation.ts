@@ -23,6 +23,10 @@ export const getNavigation = (section) => {
           children: [
             {
               title: "Overview",
+              href: "/dev/general-message-passing/overview",
+            },
+            {
+              title: "Local Development",
               href: "/dev/general-message-passing/local-dev",
             },
             {
