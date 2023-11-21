@@ -22,7 +22,7 @@ When adding the new address, the following parameters will need to be included:
 1. Address: The address you are looking to add.
 2. Name: The name you want to be displayed for your address.
 3. Image: The image you want to appear alongisde the name.
-4. Environment: If this address is for mainnet or testnet transactions.
+4. Environment: Whether this address is for mainnet or testnet transactions.
 Once you have added the parameters for your contract you can submit a [pull request](https://github.com/CoinHippo-Labs/axelarscan-ui/pulls) to the Axelarscan-UI repo.
 
 
@@ -40,10 +40,9 @@ export default [
 ]
 ```
 
+In this example no `environnment` was set, meaning that this address will appear on both [mainnet](https://axelarscan.io/account/axelar10d07y265gmmuvt4z0w9aw880jnsr700j7v9daj) and [testnet](https://testnet.axelarscan.io/account/axelar10d07y265gmmuvt4z0w9aw880jnsr700j7v9daj).
 
-In this example no `environnment` was set meaning that this address will appear on both [mainnet](https://axelarscan.io/account/axelar10d07y265gmmuvt4z0w9aw880jnsr700j7v9daj) and [testnet](https://testnet.axelarscan.io/account/axelar10d07y265gmmuvt4z0w9aw880jnsr700j7v9daj).
-
-If the address only needs to be included on mainnet then you would add the following 
+If the address only needs to be included on mainnet, then you would add the following:
 
 ```
 export default [
