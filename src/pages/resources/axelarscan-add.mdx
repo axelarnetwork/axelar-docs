@@ -4,31 +4,24 @@
 
 The ability to add metadata about important on-chain addresses allows users to have a simpler experience seeing on-chain activity for these addresses.
 
-Rather than seeing a raw address on Axelarscan users will be able to see a customized photo and name for a given address.
-
-The difference between an address with and without metadata can be seen here.
+Rather than seeing a raw address on Axelarscan, users will be able to see a customized photo and name for a given address:
 
 ![Axelar Governance Address](/images/axelar-governance-address.png)
 
-
 ## How to Add
 
-Adding your address is as simple as sending a pull request to the [Axelarscan-UI repository](https://github.com/CoinHippo-Labs/axelarscan-ui/tree/main). 
+To add a new address to the list of tracked addresses in the [accounts directory](https://github.com/CoinHippo-Labs/axelarscan-ui/blob/main/data/accounts/index.js), send a [pull request](https://github.com/CoinHippo-Labs/axelarscan-ui/pulls) to the [Axelarscan-UI repository](https://github.com/CoinHippo-Labs/axelarscan-ui/tree/main).
 
-In this repo, you must add the new address to the list of tracked addresses in the [accounts directory](https://github.com/CoinHippo-Labs/axelarscan-ui/blob/main/data/accounts/index.js)
+Include the following parameters:
 
-When adding the new address, the following parameters will need to be included:
-
-1. Address: The address you are looking to add.
-2. Name: The name you want to be displayed for your address.
-3. Image: The image you want to appear alongisde the name.
-4. Environment: Whether this address is for mainnet or testnet transactions.
-Once you have added the parameters for your contract you can submit a [pull request](https://github.com/CoinHippo-Labs/axelarscan-ui/pulls) to the Axelarscan-UI repo.
-
+* Address: The address you are looking to add.
+* Name: The name you want to be displayed for your address.
+* Image: The image you want to appear alongisde the name.
+* Environment: Whether this address is for mainnet or testnet transactions.
 
 ## Example
 
-In the example, you can see the Axelar Governance Address being added, this was the address referenced in the above image.
+The following example adds the Axelar Governance Address referenced in the image above to the accounts directory.
 
 ```
 export default [
@@ -40,9 +33,9 @@ export default [
 ]
 ```
 
-In this example no `environnment` was set, meaning that this address will appear on both [mainnet](https://axelarscan.io/account/axelar10d07y265gmmuvt4z0w9aw880jnsr700j7v9daj) and [testnet](https://testnet.axelarscan.io/account/axelar10d07y265gmmuvt4z0w9aw880jnsr700j7v9daj).
+No `environnment` was set, so this address will appear on both [mainnet](https://axelarscan.io/account/axelar10d07y265gmmuvt4z0w9aw880jnsr700j7v9daj) and [testnet](https://testnet.axelarscan.io/account/axelar10d07y265gmmuvt4z0w9aw880jnsr700j7v9daj).
 
-If the address only needs to be included on mainnet, then you would add the following:
+Add the following to include the address on mainnet only:
 
 ```
 export default [
