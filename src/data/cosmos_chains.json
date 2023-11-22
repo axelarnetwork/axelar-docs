@@ -237,6 +237,12 @@
       "image": "/images/chains/celestia.svg"
     },
     {
+      "id": "elys",
+      "name": "Elys",
+      "network_id": "elys",
+      "image": "/images/chains/elys.svg"
+    },
+    {
       "id": "evmos",
       "name": "Evmos",
       "network_id": "evmos",
