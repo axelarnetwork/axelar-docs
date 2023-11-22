@@ -274,6 +274,7 @@ export const getNavigation = (section) => {
       { title: "Wrap/unwrap tokens", href: "/resources/wrapped-tokens" },
       { title: "Using ipRPC (Free Public RPC)", href: "/resources/lava-iprpc" },
       { title: "Bug Bounty", href: "/bug-bounty" },
+      { title: "Add Account to Axelarscan", href: "/resources/axelarscan-add" },
     ],
   });
 
