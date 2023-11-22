@@ -6,5 +6,6 @@
   "metamask": "Set up Metamask",
   "keplr": "Add Network to Keplr Wallet",
   "wrapped-tokens": "Wrap/unwrap tokens",
-  "lava-iprpc": "Using ipRPC (Free Public RPC)"
+  "lava-iprpc": "Using ipRPC (Free Public RPC)",
+  "axelarscan": "Add Account to Axelarscan"
 }
