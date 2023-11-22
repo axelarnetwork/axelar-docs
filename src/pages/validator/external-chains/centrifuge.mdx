@@ -317,7 +317,7 @@ the port you configured in your `/etc/systemd/system/centrifuge.service` file ab
 
 ```bash
 curl -H "Content-Type: application/json" \
--d '{{"id":1, "jsonrpc":"2.0", "method": "eth_syncing", "params":[]}}' \
+-d '{"id":1, "jsonrpc":"2.0", "method": "eth_syncing", "params":[]}' \
 localhost:9933
 ```
 
