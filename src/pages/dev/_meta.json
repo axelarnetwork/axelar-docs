@@ -2,6 +2,7 @@
   "intro": "Introduction",
   "send-tokens": "Send Tokens",
   "general-message-passing":"General Message Passing",
+  "indexers":"Indexers",
   "axelarjs-sdk": "JavaScript SDK",
   "reference": "Reference"
 }
