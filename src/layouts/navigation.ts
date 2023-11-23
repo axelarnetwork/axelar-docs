@@ -220,8 +220,6 @@ export const getNavigation = (section) => {
             { title: "Optimism", href: "/validator/external-chains/optimism" },
             { title: "Polygon", href: "/validator/external-chains/polygon" },
             { title: "Scroll", href: "/validator/external-chains/scroll" },
-            { title: "Aurora", href: "/validator/external-chains/aurora" },
-            { title: "Hero", href: "/validator/external-chains/hero" },
           ],
         },
         {
