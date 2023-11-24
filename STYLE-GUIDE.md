@@ -182,7 +182,7 @@ Use descriptive hyperlink text rather than the word  “here.”
 
 ## Lists
 
-* When writing a list, either use complete sentences for all elements or no elements: either every element has a period at the end, or none of them do. Do not mix and match.
+* When writing a list, either use complete sentences for all elements or no elements. Either every element has a period at the end, or none of them do. Do not mix and match.
 
 **Recommended**
 
