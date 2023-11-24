@@ -100,7 +100,7 @@ function sendToMany(
 
 **Not recommended**
 
-`sendToMany` will need to get the address of a token from its symbol, send funds to another address, approve the gateway to spend funds, and encode the recipient addresses on the destination chain to ensure that they are `byte`s, since GMP messages must be of this type. It will have a list of `byte`s as output.
+`sendToMany` will need to get the address of a token from its symbol, send funds to another address, approve the gateway to spend funds, and encode the recipient addresses on the destination chain to ensure that they are `bytes`, since GMP messages must be of this type. It will have a list of `bytes` as output.
 
 ```
 function sendToMany(
