@@ -126,51 +126,15 @@ function sendToMany(
 ### Section headings
 
 * Don’t skip heading types: Go from title to H1 to H2 to H3.
-* Write in sentence case rather than capitalizing every letter of a new word.
-
-**Recommended**
-
-## Prerequisites
-
-<>
-
-### Set up your development environment
-
-<>
-
-**Not recommended**
-
-## Prerequisites
-
-<>
-
-#### Set up your development environment
-
-<>
 
 ## Document titles
 
 * Write in sentence case rather than capitalizing every letter of a new word.
 
-**Recommended**
-
-## Prerequisites
-
-<>
-
-### Set up your development environment
-
-<>
-
-**Not recommended**
-
-## Prerequisites
-
-<>
-
-### Set Up Your Development Environment
-
-<>
+|  **Recommended**  |  **Not recommended** |
+| --- | --- |
+|  Set up your development environment
+  |  Set Up Your Development Environment  |
 
 ## Content format
 
