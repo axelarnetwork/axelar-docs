@@ -125,7 +125,7 @@ function sendToMany(
 
 ### Section headings
 
-* Don’t skip heading types: Go from title to H1 to H2 to H3.
+* Don’t skip heading types. A subheading under a title should be an H1, the nested subheading under that one an H2, and so forth.
 
 ### Document titles
 
