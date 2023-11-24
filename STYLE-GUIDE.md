@@ -133,8 +133,7 @@ function sendToMany(
 
 |  **Recommended**  |  **Not recommended** |
 | --- | --- |
-|  Set up your development environment
-  |  Set Up Your Development Environment  |
+|  Set up your development environment  |  Set Up Your Development Environment  |
 
 ## Content format
 
