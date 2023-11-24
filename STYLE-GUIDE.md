@@ -35,7 +35,7 @@ This style guide is inspired by the [Google developer documentation style guide]
 
 ### Accessibility
 
-Use “earlier”, “preceding”, or “following” to refer to the position of a code snippet or UI element in a document rather than “above,” “below,” or “left-hand side.”
+* Use “earlier”, “preceding”, or “following” to refer to the position of a code snippet or UI element in a document rather than “above,” “below,” or “left-hand side.”
 
 |  **Recommended**  |  **Not recommended** |
 | --- | --- |
@@ -127,7 +127,7 @@ function sendToMany(
 
 * Don’t skip heading types: Go from title to H1 to H2 to H3.
 
-## Document titles
+### Document titles
 
 * Write in sentence case rather than capitalizing every letter of a new word.
 
@@ -162,7 +162,7 @@ function sendToMany(
 
 * Do not underline anything in the documentation.
 
-## Code font
+### Code font
 
 * Use code font for text input, strings, and any names found in code, such as properties and methods.
 
@@ -172,15 +172,15 @@ function sendToMany(
 |  `sendToMany()` takes many parameters, including `_destChain` and `_destContractAddr`.  |  **sendToMany()** takes many parameters, including **_destChain** and **_destContractAddr**.  |
 |  Give your test wallet an alias, such as `My Sepolia test wallet`.  |  Give your test wallet an alias, such as “My Sepolia test wallet”.  |
 
-## Hyperlinks
+### Hyperlinks
 
-Use descriptive hyperlink text rather than the word  “here.”
+* Use descriptive hyperlink text rather than the word  “here.”
 
 |  **Recommended**  |  **Not recommended** |
 | --- | --- |
 |  For more information on General Message Passing, check out [Axelar’s YouTube channel](https://www.youtube.com/channel/UCf8GFg58fdp1iZwLAOV1Tgg).  |  For more information on General Message Passing, check out Axelar’s YouTube channel [here](https://www.youtube.com/channel/UCf8GFg58fdp1iZwLAOV1Tgg).  |
 
-## Lists
+### Lists
 
 * When writing a list, either use complete sentences for all elements or no elements. Either every element has a period at the end, or none of them do. Do not mix and match.
 
