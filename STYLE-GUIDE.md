@@ -128,40 +128,49 @@ function sendToMany(
 * Don’t skip heading types: Go from title to H1 to H2 to H3.
 * Write in sentence case rather than capitalizing every letter of a new word.
 
-|  **Recommended**  |  **Not recommended** |
-| --- | --- |
-|  ## Prerequisites
+**Recommended**
+
+## Prerequisites
+
 <>
 
 ### Set up your development environment
 
 <>
-  |  ## Prerequisites
+
+**Not recommended**
+
+## Prerequisites
+
 <>
 
 #### Set up your development environment
 
-<>  |
+<>
 
 ## Document titles
 
 * Write in sentence case rather than capitalizing every letter of a new word.
 
-|  **Recommended**  |  **Not recommended** |
-| --- | --- |
-|  ## Prerequisites
+**Recommended**
+
+## Prerequisites
+
 <>
 
 ### Set up your development environment
 
 <>
-  |  ##Prerequisites
+
+**Not recommended**
+
+## Prerequisites
+
 <>
 
 ### Set Up Your Development Environment
 
 <>
-  |
 
 ## Content format
 
@@ -171,11 +180,6 @@ function sendToMany(
 ### Bold font
 
 * Use bold font for UX elements.
-
-|  **Recommended**  |  **Not recommended** |
-| --- | --- |
-|  Cell  |  Cell  |
-|  Cell  |  Cell  |
 
 |  **Recommended**  |  **Not recommended** |
 | --- | --- |
@@ -217,18 +221,20 @@ Use descriptive hyperlink text rather than the word  “here.”
 
 * When writing a list, either use complete sentences for all elements or no elements: either every element has a period at the end, or none of them do. Do not mix and match.
 
-|  **Recommended**  |  **Not recommended** |
-| --- | --- |
-|  Implement the following to send an interchain transaction with Axelar:
+**Recommended**
 
-`AxelarExecutable` – The contract to handle a message on the destination chain once a transaction has been sent to the Axelar network
-`IAxelarGateway` – The Axelar Gateway
-`IAxelarGasService` – The Axelar Gas Service
-`IERC20` – The ERC-20 token interface to access ERC-20-related functionality
-  |  Implement the following to send an interchain transaction with Axelar:
+Implement the following to send an interchain transaction with Axelar:
 
-`AxelarExecutable` – This is a contract that handle a message on the destination chain once a transaction has been sent to the Axelar network.
-`IAxelarGateway` – The Axelar Gateway
-`IAxelarGasService` – The Axelar Gas Service
-`IERC20` – This represents the ERC-20 token interface to access ERC-20-related functionality.
-  |
+* `AxelarExecutable` – The contract to handle a message on the destination chain once a transaction has been sent to the Axelar network
+* `IAxelarGateway` – The Axelar Gateway
+* `IAxelarGasService` – The Axelar Gas Service
+* `IERC20` – The ERC-20 token interface to access ERC-20-related functionality
+
+**Not recommended**
+
+Implement the following to send an interchain transaction with Axelar:
+
+* `AxelarExecutable` – This is a contract that handle a message on the destination chain once a transaction has been sent to the Axelar network.
+* `IAxelarGateway` – The Axelar Gateway
+* `IAxelarGasService` – The Axelar Gas Service
+* `IERC20` – This represents the ERC-20 token interface to access ERC-20-related functionality.
