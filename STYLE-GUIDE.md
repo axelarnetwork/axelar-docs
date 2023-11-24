@@ -178,8 +178,7 @@ Use descriptive hyperlink text rather than the word  “here.”
 
 |  **Recommended**  |  **Not recommended** |
 | --- | --- |
-|  For more information on General Message Passing, check out [Axelar’s YouTube channel](https://www.youtube.com/channel/UCf8GFg58fdp1iZwLAOV1Tgg).
-  |  For more information on General Message Passing, check out Axelar’s YouTube channel [here](https://www.youtube.com/channel/UCf8GFg58fdp1iZwLAOV1Tgg).  |
+|  For more information on General Message Passing, check out [Axelar’s YouTube channel](https://www.youtube.com/channel/UCf8GFg58fdp1iZwLAOV1Tgg).  |  For more information on General Message Passing, check out Axelar’s YouTube channel [here](https://www.youtube.com/channel/UCf8GFg58fdp1iZwLAOV1Tgg).  |
 
 ## Lists
 
