@@ -527,7 +527,11 @@ With GMP, you can:
 
 
 ### Interface
-``` function callContract(
+<Tabs groupId="lang">
+<TabItem value="sol" label="Solidity">
+
+```
+    function callContract(
         string calldata destinationChain,
         string calldata destinationContractAddress,
         bytes calldata payload
@@ -546,6 +550,8 @@ With GMP, you can:
         emit ContractCallWithToken(msg.sender, destinationChain, destinationContractAddress, keccak256(payload), payload, symbol, amount);
     }
 ```
+
+</TabItem>
 
 ### Steps
 
