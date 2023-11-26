@@ -547,6 +547,8 @@ function callContractWithToken(
     _burnTokenFrom(msg.sender, symbol, amount);
     emit ContractCallWithToken(msg.sender, destinationChain, destinationContractAddress, keccak256(payload), payload, symbol, amount);
 }
+
+function _execute(string calldata sourceChain, string calldata sourceAddress, bytes calldata payload) internal virtual {}
 ```
 
 
