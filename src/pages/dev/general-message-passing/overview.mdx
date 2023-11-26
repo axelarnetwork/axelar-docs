@@ -526,6 +526,27 @@ With GMP, you can:
 
 
 
+### Interface
+``` function callContract(
+        string calldata destinationChain,
+        string calldata destinationContractAddress,
+        bytes calldata payload
+    ) external {
+        emit ContractCall(msg.sender, destinationChain, destinationContractAddress, keccak256(payload), payload);
+    }
+
+    function callContractWithToken(
+        string calldata destinationChain,
+        string calldata destinationContractAddress,
+        bytes calldata payload,
+        string calldata symbol,
+        uint256 amount
+    ) external {
+        _burnTokenFrom(msg.sender, symbol, amount);
+        emit ContractCallWithToken(msg.sender, destinationChain, destinationContractAddress, keccak256(payload), payload, symbol, amount);
+    }
+```
+
 ### Steps
 
 #### At the source chain
