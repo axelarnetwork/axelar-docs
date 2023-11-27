@@ -12,17 +12,17 @@ This style guide is inspired by the [Google developer documentation style guide]
 
 ## Voice and tone
 
-* Be friendly, respectful, and not overly pedantic, like you’re pair-programming with a friend.
-* Refer to [Google’s word list](https://developers.google.com/style/word-list) when unsure how to phrase something.
+* Be friendly, respectful, and not overly pedantic, like you're pair-programming with a friend.
+* Refer to [Google's word list](https://developers.google.com/style/word-list) when unsure how to phrase something.
 
 ### When addressing the reader
 
 * Address the reader directly by using the second-person "you."
-* Do not use the word "I." When speaking on Axelar’s behalf, use "we."
+* Do not use the word "I." When speaking on Axelar's behalf, use "we."
 
 |  **Recommended**  |  **Not recommended** |
 | --- | --- |
-|  Hardhat and Foundry are local development platforms. Use Remix if you prefer an online editor.  |  Hardhat and Foundry are local development platforms. I’d use Remix if I preferred an online editor.  |
+|  Hardhat and Foundry are local development platforms. Use Remix if you prefer an online editor.  |  Hardhat and Foundry are local development platforms. I'd use Remix if I preferred an online editor.  |
 |  We recommend using Metamask for this tutorial.  |  I recommend using Metamask for this tutorial.  |
 
 ### When referring to a third party user or developer
@@ -125,7 +125,7 @@ function sendToMany(
 
 ### Section headings
 
-* Don’t skip heading types. A subheading under a title should be an H1, the nested subheading under that one an H2, and so forth.
+* Don't skip heading types. A subheading under a title should be an H1, the nested subheading under that one an H2, and so forth.
 
 ### Document titles
 
@@ -154,8 +154,8 @@ function sendToMany(
 
 |  **Recommended**  |  **Not recommended** |
 | --- | --- |
-|  Axelar’s __General Message Passing (GMP)__ enables a developer building on one chain to call any function on any other connected chain.  |  Axelar’s **General Message Passing (GMP)** enables a developer building on one chain to call any function on any other connected chain.  |
-|  Axelar’s __General Message Passing (GMP)__ enables a developer building on one chain to call any function on any other connected chain. For GMP to work, chains A and B must be EVM or Cosmos with a deployed Axelar Gateway contract.   |  Axelar’s __General Message Passing (GMP)__ enables a developer building on one chain to call any function on any other connected chain. For __GMP__ to work, chains A and B must be EVM or Cosmos with a deployed Axelar Gateway contract.  |
+|  Axelar's __General Message Passing (GMP)__ enables a developer building on one chain to call any function on any other connected chain.  |  Axelar's **General Message Passing (GMP)** enables a developer building on one chain to call any function on any other connected chain.  |
+|  Axelar's __General Message Passing (GMP)__ enables a developer building on one chain to call any function on any other connected chain. For GMP to work, chains A and B must be EVM or Cosmos with a deployed Axelar Gateway contract.   |  Axelar's __General Message Passing (GMP)__ enables a developer building on one chain to call any function on any other connected chain. For __GMP__ to work, chains A and B must be EVM or Cosmos with a deployed Axelar Gateway contract.  |
 
 ### Underlined font
 
@@ -177,7 +177,7 @@ function sendToMany(
 
 |  **Recommended**  |  **Not recommended** |
 | --- | --- |
-|  For more information on General Message Passing, check out [Axelar’s YouTube channel](https://www.youtube.com/channel/UCf8GFg58fdp1iZwLAOV1Tgg).  |  For more information on General Message Passing, check out Axelar’s YouTube channel [here](https://www.youtube.com/channel/UCf8GFg58fdp1iZwLAOV1Tgg).  |
+|  For more information on General Message Passing, check out [Axelar's YouTube channel](https://www.youtube.com/channel/UCf8GFg58fdp1iZwLAOV1Tgg).  |  For more information on General Message Passing, check out Axelar's YouTube channel [here](https://www.youtube.com/channel/UCf8GFg58fdp1iZwLAOV1Tgg).  |
 
 ### Lists
 
