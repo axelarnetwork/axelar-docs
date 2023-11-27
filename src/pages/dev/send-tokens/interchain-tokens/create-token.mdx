@@ -11,16 +11,20 @@ The simplest type of Interchain Token is to create a brand new [Interchain Token
 - Visit the [Interchain Portal](https://testnet.interchain.axelar.dev)
 - Connect your wallet to the portal
 - Select a source network where you have funds available
-- Choose the option to deploy a new ERC-20 token
-- Specify the initial supply for your new token
-	- You can also choose the advanced option to enable later minting of additional tokens
+- Choose the option to deploy a new Interchain token
+- Add the required details for your new token
+    - Name
+    - Symbol
+    - Decimals
+    - Amount to mint
+- You can also choose the advanced option where you can add an account to mint tokens to and `Salt` value
 - Select any additional chains where you want your new token to be available
 
 **Congratulations!** Your ERC-20 token is now accessible on multiple blockchain networks. This allows for seamless interaction with your token on any of these networks, utilizing familiar methods like send, transfer, and approve, just as with any standard ERC-20 token.
 
 Furthermore, your token is categorized as a [Interchain Token](https://github.com/axelarnetwork/interchain-token-service/blob/v1.0.0-beta.3/contracts/interfaces/IInterchainTokenStandard.sol). This classification includes the `interchainTransfer` method, allowing you to transfer it between blockchains.
 
-Here is an example of using the `interchainTransfer` method.
+Here is an example of the `interchainTransfer` method.
 
 ```solidity
 /**
@@ -45,7 +49,7 @@ function interchainTransfer(
 
 If you want more features than the Interchain Token provides, you can create a [custom](../../reference/glossary/#custom) token. You may want a customized token to customize minting policies, ensure ownership or control of the token by a DAO, create rate limits, or build any other custom logic into your token.
 
-- To create a new Interchain Token, use the `deployInterchainToken` method from [`InterchainTokenFactory.sol`](https://github.com/axelarnetwork/interchain-token-service/blob/0a00533f19197a285d6bddc8ec0c2e908094ebfe/contracts/InterchainTokenFactory.sol#L117) for local chain deployment with an optional pre-mint, and then deploy it to your chosen remote chain using the `deployRemoteInterchainToken` method from the same contract.
+- To create a new Interchain Token, use the `deployInterchainToken` method from [`InterchainTokenFactory.sol`](https://github.com/axelarnetwork/interchain-token-service/blob/0a00533f19197a285d6bddc8ec0c2e908094ebfe/contracts/InterchainTokenFactory.sol#L117) for local chain deployment with an optional pre-mint, and then deploy it to your chosen remote chain using the `deployRemoteInterchainToken` method from the same contract
 - Transfer  initial amount to the user on the local chain and remote chain using `interchainTransfer` on the [`InterchainTokenFactory.sol`](https://github.com/axelarnetwork/interchain-token-service/blob/0a00533f19197a285d6bddc8ec0c2e908094ebfe/contracts/InterchainTokenFactory.sol#L292)
 - Retrieve the Token Manager address using the unique `tokenId` on the Interchain Token Service by calling [`tokenManagerAddress`](https://github.com/axelarnetwork/interchain-token-service/blob/0a00533f19197a285d6bddc8ec0c2e908094ebfe/contracts/InterchainTokenService.sol#L180C1-L180C1) which calculate the address of a TokenManager from a specific `tokenId`. The TokenManager does not need to exist already
 
@@ -72,7 +76,7 @@ address distributor
 ) external payable
 ```
 
-Tokens can move between chains seamlessly as the Token Manager contracts will mint and burn tokens as needed. If the `distributor` parameter is empty bytes when deploying a new Interchain Token, then a `mint/burn` TokenManager is used; otherwise, a `lock/unlock` TokenManager is used.  If you want to change the token distributor/minter to another address, you can do that using the `transferDistributorship` on the token.
+Tokens can move between chains seamlessly as the Token Manager contracts will mint and burn tokens as needed. If the `distributor` parameter is empty bytes when deploying a new Interchain Token, then a `mint/burn` TokenManager is used; otherwise, a `lock/unlock` TokenManager is used. If you want to change the token distributor/minter to another address, you can do that using the `transferDistributorship` on the token.
 
 >**Note**: If you want to build your token with the `IInterchainToken` feature yourself, make sure your token implements the [`IInterchainTokenStandard`](https://github.com/axelarnetwork/interchain-token-service/blob/v1.0.0-beta.3/contracts/interfaces/IInterchainTokenStandard.sol) interface so you can offer [`interchainTransfer`](https://github.com/axelarnetwork/interchain-token-service/blob/0a00533f19197a285d6bddc8ec0c2e908094ebfe/contracts/interfaces/IInterchainTokenStandard.sol#L20) and [`interchainTransferFrom`](https://github.com/axelarnetwork/interchain-token-service/blob/0a00533f19197a285d6bddc8ec0c2e908094ebfe/contracts/interfaces/IInterchainTokenStandard.sol#L37) methods directly on your token. 
 
