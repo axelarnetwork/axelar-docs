@@ -17,8 +17,8 @@ This style guide is inspired by the [Google developer documentation style guide]
 
 ### When addressing the reader
 
-* Address the reader directly by using the second-person “you.”
-* Do not use the word “I.” When speaking on Axelar’s behalf, use “we.”
+* Address the reader directly by using the second-person "you."
+* Do not use the word "I." When speaking on Axelar’s behalf, use "we."
 
 |  **Recommended**  |  **Not recommended** |
 | --- | --- |
@@ -27,7 +27,7 @@ This style guide is inspired by the [Google developer documentation style guide]
 
 ### When referring to a third party user or developer
 
-* Use the singular “they” when referring to a third party user or developer.
+* Use the singular "they" when referring to a third party user or developer.
 
 |  **Recommended**  |  **Not recommended** |
 | --- | --- |
@@ -35,7 +35,7 @@ This style guide is inspired by the [Google developer documentation style guide]
 
 ### Accessibility
 
-* Use “earlier”, “preceding”, or “following” to refer to the position of a code snippet or UI element in a document rather than “above,” “below,” or “left-hand side.”
+* Use "earlier", "preceding", or "following" to refer to the position of a code snippet or UI element in a document rather than "above," "below," or "left-hand side."
 
 |  **Recommended**  |  **Not recommended** |
 | --- | --- |
@@ -169,11 +169,11 @@ function sendToMany(
 | --- | --- |
 |  If the prepaid gas is insufficient, you might see `NOT ENOUGH GAS` or other messages, such as `Insufficient gas for executing the transaction` and `intrinsic gas too low`.  |  If the prepaid gas is insufficient, you might see __NOT ENOUGH GAS__ or other messages, such as __Insufficient gas for executing the transaction__ and __intrinsic gas too low__.  |
 |  `sendToMany()` takes many parameters, including `_destChain` and `_destContractAddr`.  |  **sendToMany()** takes many parameters, including **_destChain** and **_destContractAddr**.  |
-|  Give your test wallet an alias, such as `My Sepolia test wallet`.  |  Give your test wallet an alias, such as “My Sepolia test wallet”.  |
+|  Give your test wallet an alias, such as `My Sepolia test wallet`.  |  Give your test wallet an alias, such as "My Sepolia test wallet".  |
 
 ### Hyperlinks
 
-* Use descriptive hyperlink text rather than the word  “here.”
+* Use descriptive hyperlink text rather than the word  "here."
 
 |  **Recommended**  |  **Not recommended** |
 | --- | --- |
