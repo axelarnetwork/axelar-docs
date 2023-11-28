@@ -1,17 +1,17 @@
 # Upgrade existing tokens into Interchain Token(s)
 
-If you already have an ERC-20 token on one or more blockchains, you can turn it into an Interchain Token by deploying [Token Managers](../../reference/glossary/#token-manager). Token Managers can be either [Lock/Release](../../reference/glossary/#lockrelease) or [Mint/Burn](../../reference/glossary/#mintburn). Canonical tokens are registered under the Lock/Release token manager on a local chain and mint/burn on remote chains. They can be deployed to remote chains by anyone and don't depend on a deployer address/salt.
+If you already have an ERC-20 token on one or more blockchains, you can turn it into an Interchain Token by deploying [Token Managers](../../reference/glossary/#token-manager). Token Managers can be either [Lock/Release](../../reference/glossary/#lockunlock) or [Mint/Burn](../../reference/glossary/#mintburn). Canonical tokens are registered under the Lock/Release token manager on a local chain and mint/burn on remote chains. They can be deployed to remote chains by anyone and don't depend on a deployer address/salt.
 
 To clarify this powerful system, we'll look at two processes for turning existing tokens into Interchain Tokens.
 
 ## Canonical Tokens (Simple wrappers)
-Suppose you have an ERC-20 token on a single chain, and you'd like a wrapped & bridgeable version to be available on other chains. You can register your ERC-20 as a [Canonical Token](../../reference/glossary/#canonical) with the [Interchain Token Service](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/interchain-token-service/InterchainTokenService.sol) using the Factory contract. Each token can only be registered a single time as a canonical chain.
+Suppose you have an ERC-20 token on a single chain, and you'd like a wrapped & bridgeable version to be available on other chains. You can register your ERC-20 as a [Canonical Token](../../reference/glossary/#canonical-interchain-token) with the [Interchain Token Service](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/interchain-token-service/InterchainTokenFactory.sol) using the [Interchain Token Factory contract](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/interchain-token-service/InterchainTokenService.sol). Each token can only be registered a single time as a canonical chain.
 
 Want to try this out? [Use Remix to create your own ERC-20](https://remix.ethereum.org/axelarnetwork/axelar-docs/blob/main/public/samples/interchain-token-simple.sol) and register your token on the [Interchain Token Portal](https://testnet.interchain.axelar.dev).
 
-You can also do this directly via the Interchain Token Service smart contract. Follow these steps to register your token as a canonical token:
+You can also do this directly via the Interchain Token Service using Interchain Token Factory to register canonical tokens and deploy remote canonical tokens. Follow these steps to register your token as a canonical token:
 
-1. First, register your token as a canonical token using the [`registerCanonicalInterchainToken`](https://github.com/axelarnetwork/interchain-token-service/blob/0a00533f19197a285d6bddc8ec0c2e908094ebfe/contracts/InterchainTokenFactory.sol#L238) method on the Interchain Token Factory. This will deploy a [Lock/Release](../../reference/glossary/#lockunlock) - [Token Manager](../..reference/glossary/#token-manager) on the source chain. 
+1. First, register your token as a canonical token using the [`registerCanonicalInterchainToken`](https://github.com/axelarnetwork/interchain-token-service/blob/0a00533f19197a285d6bddc8ec0c2e908094ebfe/contracts/InterchainTokenFactory.sol#L238) method on the Interchain Token Factory. This will deploy a [Lock/Release](../../reference/glossary/#lockunlock) - [Token Manager](../../reference/glossary/#token-manager) on the source chain. 
 
 Here is an example of registering a canonical token.
 
@@ -44,17 +44,17 @@ function deployRemoteCanonicalInterchainToken(
     uint256 gasValue
 ) external payable 
 ```
-If pre-mint is needed, you must make ERC20 approval to the Factory Contract. When tokens are moved from the origin chain to another chain, the token will be locked on the origin chain and minted on the destination chain. If you moved tokens directly from one non-origin chain to another, the token would be burned on the source chain and minted on the destination chain.
+If pre-mint is needed, you must make ERC20 approval to the Interchain Token Factory Contract. When tokens are moved from the origin chain to another chain, the token will be locked on the origin chain and minted on the destination chain. If you moved tokens directly from one non-origin chain to another, the token would be burned on the source chain and minted on the destination chain.
 
 ## Link deployed tokens on multiple chains into Interchain Token(s)
 
-If you require custom functionality on multiple chains, you must first deploy your [custom](../../reference/glossary/#custom) token on multiple chains or already have a version of your token on multiple chains.
+If you require custom functionality on multiple chains, you must first deploy your [custom](../../reference/glossary/#custom-token) token on multiple chains or already have a version of your token on multiple chains.
 
-Register a [Token Manager](../..reference/glossary/#token-manager) for each one to turn these deployed tokens into linked Interchain Tokens. You can optionally have any of these custom tokens extend [`IInterchainTokenStandard`](https://github.com/axelarnetwork/interchain-token-service/blob/v1.0.0-beta.3/contracts/interfaces/IInterchainTokenStandard.sol) to offer [`interchainTransfer`](https://github.com/axelarnetwork/interchain-token-service/blob/0a00533f19197a285d6bddc8ec0c2e908094ebfe/contracts/interfaces/IInterchainTokenStandard.sol#L20) and [`interchainTransferFrom`](https://github.com/axelarnetwork/interchain-token-service/blob/0a00533f19197a285d6bddc8ec0c2e908094ebfe/contracts/interfaces/IInterchainTokenStandard.sol#L37) methods directly on your token.
+Register a [Token Manager](../../reference/glossary/#token-manager) for each one to turn these deployed tokens into linked Interchain Tokens. You can optionally have any of these custom tokens extend [`IInterchainTokenStandard`](https://github.com/axelarnetwork/interchain-token-service/blob/v1.0.0-beta.3/contracts/interfaces/IInterchainTokenStandard.sol) to offer [`interchainTransfer`](https://github.com/axelarnetwork/interchain-token-service/blob/0a00533f19197a285d6bddc8ec0c2e908094ebfe/contracts/interfaces/IInterchainTokenStandard.sol#L20) and [`interchainTransferFrom`](https://github.com/axelarnetwork/interchain-token-service/blob/0a00533f19197a285d6bddc8ec0c2e908094ebfe/contracts/interfaces/IInterchainTokenStandard.sol#L37) methods directly on your token.
 
-You could decide to make all of these Token Managers [Mint/Burn](../../reference/glossary/#mintburn), or you could specify at most one (likely your primary/origin chain) to be [Lock/Release](../../reference/glossary/#lockunlock) as indicated in the [`ITokenManagerType.sol`](https://github.com/axelarnetwork/interchain-token-service/blob/v1.0.0-beta.3/contracts/interfaces/ITokenManagerType.sol)depending on your needs.
+You could decide to make all of these Token Managers [Mint/Burn](../../reference/glossary/#mintburn), or you could specify at most one (likely your primary/origin chain) to be [Lock/Release](../../reference/glossary/#lockunlock) as indicated in the [`ITokenManagerType.sol`](https://github.com/axelarnetwork/interchain-token-service/blob/v1.0.0-beta.3/contracts/interfaces/ITokenManagerType.sol) depending on your needs.
 
-To register a Custom Token via the Interchain Token Service, call the `deployTokenManager` method, specifying the type of Token Manager to be deployed for each token. Ensure you have the custom token already deployed on all intended chains and it conforms to the ERC20 standard or a compatible format. The deployTokenManager method requires parameters like `salt`, `destinationChain`, `tokenManagerType`, `params`, and `gasValue`.
+To register a Custom Token via the Interchain Token Service, call the `deployTokenManager` method, specifying the type of Token Manager to be deployed for each token. Ensure you have the custom token already deployed on all intended chains and it conforms to the ERC20 standard or a compatible format. The `deployTokenManager` method requires parameters like `salt`, `destinationChain`, `tokenManagerType`, `params`, and `gasValue`.
 
 ```solidity
 /**

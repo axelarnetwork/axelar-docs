@@ -47,7 +47,7 @@ function interchainTransfer(
 
 ## Create a new custom Interchain Token(s)
 
-If you want more features than the Interchain Token provides, you can create a [custom](../../reference/glossary/#custom) token. You may want a customized token to customize minting policies, ensure ownership or control of the token by a DAO, create rate limits, or build any other custom logic into your token.
+If you want more features than the Interchain Token provides, you can create a [custom](../../reference/glossary/#custom-token) token. You may want a customized token to customize minting policies, ensure ownership or control of the token by a DAO, create rate limits, or build any other custom logic into your token.
 
 - To create a new Interchain Token, use the `deployInterchainToken` method from [`InterchainTokenFactory.sol`](https://github.com/axelarnetwork/interchain-token-service/blob/0a00533f19197a285d6bddc8ec0c2e908094ebfe/contracts/InterchainTokenFactory.sol#L117) for local chain deployment with an optional pre-mint, and then deploy it to your chosen remote chain using the `deployRemoteInterchainToken` method from the same contract
 - Transfer  initial amount to the user on the local chain and remote chain using `interchainTransfer` on the [`InterchainTokenFactory.sol`](https://github.com/axelarnetwork/interchain-token-service/blob/0a00533f19197a285d6bddc8ec0c2e908094ebfe/contracts/InterchainTokenFactory.sol#L292)
