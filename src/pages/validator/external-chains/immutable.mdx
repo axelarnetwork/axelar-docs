@@ -146,12 +146,12 @@ docker run --rm -v /opt/immutable-zkevm:/mnt/geth --name geth geth init --datadi
 <tabs>
 <tab-item title="Testnet">
 ```bash
-docker run --rm -d --always -v /opt/immutable-zkevm:/mnt/geth --name geth geth --config /etc/geth/testnet.toml --datadir /mnt/geth --keystore /mnt/geth/keystore --networkid 13473
+docker run -d --restart=always -v /opt/immutable-zkevm:/mnt/geth --name geth geth --config /etc/geth/testnet.toml --datadir /mnt/geth --keystore /mnt/geth/keystore --networkid 13473
 ```
 </tab-item>
 <tab-item title="Mainnet">
 ```bash
-docker run --rm -d --always -v /opt/immutable-zkevm:/mnt/geth --name geth geth --config /etc/geth/mainnet.toml --datadir /mnt/geth --keystore /mnt/geth/keystore --networkid 13473
+docker run -d --restart=always -v /opt/immutable-zkevm:/mnt/geth --name geth geth --config /etc/geth/mainnet.toml --datadir /mnt/geth --keystore /mnt/geth/keystore --networkid 13473
 ```
 </tab-item>
 </tabs>
@@ -159,6 +159,10 @@ docker run --rm -d --always -v /opt/immutable-zkevm:/mnt/geth --name geth geth -
 ### Verify your deployment
 
 1. Check the logs.
+
+```bash
+docker logs geth
+```
 
 The following logs indicate you are synching from the genesis block.
 
