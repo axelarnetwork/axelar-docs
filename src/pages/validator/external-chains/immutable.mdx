@@ -146,12 +146,12 @@ docker run --rm -v /opt/immutable-zkevm:/mnt/geth --name geth geth init --datadi
 <tabs>
 <tab-item title="Testnet">
 ```bash
-docker run -d --restart=always -v /opt/immutable-zkevm:/mnt/geth --name geth geth --config /etc/geth/testnet.toml --datadir /mnt/geth --keystore /mnt/geth/keystore --networkid 13473
+docker run -d --restart=always -v /opt/immutable-zkevm:/mnt/geth --name geth -p 8545:8545 geth --config /etc/geth/testnet.toml --datadir /mnt/geth --keystore /mnt/geth/keystore --networkid 13473 --http --http.port "8545" --http.addr "0.0.0.0"
 ```
 </tab-item>
 <tab-item title="Mainnet">
 ```bash
-docker run -d --restart=always -v /opt/immutable-zkevm:/mnt/geth --name geth geth --config /etc/geth/mainnet.toml --datadir /mnt/geth --keystore /mnt/geth/keystore --networkid 13473
+docker run -d --restart=always -v /opt/immutable-zkevm:/mnt/geth --name geth -p 8545:8545 geth --config /etc/geth/mainnet.toml --datadir /mnt/geth --keystore /mnt/geth/keystore --networkid 13473 --http --http.port "8545" --http.addr "0.0.0.0"
 ```
 </tab-item>
 </tabs>
@@ -167,25 +167,92 @@ docker logs geth
 The following logs indicate you are synching from the genesis block.
 
 ```bash
-...
-WARN [12-04|01:47:27.007] Discarded delivered header or block, too far away peer=b7f6149fca5464c00dfc9d1824f3481ff31da0a6a3d2ff518cfa7b6d649cdf57 number=1,337,465 hash=e4e052..17c139 distance=1,337,465
-WARN [12-04|01:47:27.008] Discarded delivered header or block, too far away peer=e1893b7238a4f446caadace79130b8aae3aca1996c75b6a9d1eaf53292bc00ea number=1,337,465 hash=e4e052..17c139 distance=1,337,465
-WARN [12-04|01:47:29.007] Discarded delivered header or block, too far away peer=e1893b7238a4f446caadace79130b8aae3aca1996c75b6a9d1eaf53292bc00ea number=1,337,466 hash=b1e1ef..ab983f distance=1,337,466
-WARN [12-04|01:47:31.006] Discarded delivered header or block, too far away peer=b7f6149fca5464c00dfc9d1824f3481ff31da0a6a3d2ff518cfa7b6d649cdf57 number=1,337,467 hash=f4e55e..1b277a distance=1,337,467
-INFO [12-04|01:47:35.243] Block synchronisation started 
-WARN [12-04|01:47:37.257] Discarded delivered header or block, too far away peer=e1893b7238a4f446caadace79130b8aae3aca1996c75b6a9d1eaf53292bc00ea number=1,337,470 hash=c4be8d..3c505d distance=1,337,125
-INFO [12-04|01:47:37.424] Imported new chain segment               number=384       hash=51d9c1..767b59 blocks=384 txs=0 mgas=0.000 elapsed=2.033s mgasps=0.000 age=1mo1d3m  triedirty=0.00B
-WARN [12-04|01:47:39.017] Discarded delivered header or block, too far away peer=599aee5d16ac2309c928325cc634a9698f7a04c9e69ef30c9512fc21cfec1b4d number=1,337,471 hash=448bb2..46cac4 distance=1,336,817
-INFO [12-04|01:47:45.454] Imported new chain segment               number=2013      hash=2dd992..b6430a blocks=1629 txs=9 mgas=2.628 elapsed=8.002s mgasps=0.328 age=1mo23h8m triedirty=0.00B
-WARN [12-04|01:47:47.007] Discarded delivered header or block, too far away peer=b7f6149fca5464c00dfc9d1824f3481ff31da0a6a3d2ff518cfa7b6d649cdf57 number=1,337,475 hash=f6e211..789ba1 distance=1,335,133
-INFO [12-04|01:47:47.429] Imported new chain segment               number=2432      hash=17091f..30d133 blocks=419  txs=0 mgas=0.000 elapsed=1.975s mgasps=0.000 age=1mo22h55m triedirty=0.00B
-WARN [12-04|01:47:51.007] Discarded delivered header or block, too far away peer=599aee5d16ac2309c928325cc634a9698f7a04c9e69ef30c9512fc21cfec1b4d number=1,337,477 hash=66e5e2..bfe549 distance=1,334,303
-INFO [12-04|01:47:55.451] Imported new chain segment               number=4133      hash=9dde8a..f45077 blocks=1701 txs=0 mgas=0.000 elapsed=8.002s mgasps=0.000 age=1mo21h58m triedirty=0.00B
-INFO [12-04|01:47:57.087] Imported new chain segment               number=4480      hash=c3276c..03da57 blocks=347  txs=0 mgas=0.000 elapsed=1.635s mgasps=0.000 age=1mo21h46m triedirty=0.00B
+INFO [12-04|04:54:26.418] Maximum peer count                       ETH=100 LES=0 total=100
+INFO [12-04|04:54:26.421] Smartcard socket not found, disabling    err="stat /run/pcscd/pcscd.comm: no such file or directory"
+INFO [12-04|04:54:26.422] initialising New Relic agent... 
+ERROR[12-04|04:54:26.422] Failed to initialise New Relic agent: NEW_RELIC_APP_NAME missing 
+INFO [12-04|04:54:26.433] Enabling recording of key preimages since archive mode is used 
+INFO [12-04|04:54:26.446] Using pebble as the backing database 
+INFO [12-04|04:54:26.446] Allocated cache and file handles         database=/mnt/geth/geth/chaindata cache=512.00MiB handles=524,288
+INFO [12-04|04:54:26.504] Opened ancient database                  database=/mnt/geth/geth/chaindata/ancient/chain readonly=true
+INFO [12-04|04:54:26.505] State scheme set to already existing     scheme=hash
+INFO [12-04|04:54:26.508] Set global gas cap                       cap=50,000,000
+INFO [12-04|04:54:26.509] Initializing the KZG library             backend=gokzg
+INFO [12-04|04:54:26.650] Allocated trie memory caches             clean=512.00MiB dirty=0.00B
+INFO [12-04|04:54:26.650] Using pebble as the backing database 
+INFO [12-04|04:54:26.650] Allocated cache and file handles         database=/mnt/geth/geth/chaindata               cache=512.00MiB handles=524,288
+INFO [12-04|04:54:26.730] Opened ancient database                  database=/mnt/geth/geth/chaindata/ancient/chain readonly=false
+INFO [12-04|04:54:26.753] Initialising Ethereum protocol           network=13473 dbversion=8
+INFO [12-04|04:54:26.754]  
+INFO [12-04|04:54:26.754] --------------------------------------------------------------------------------------------------------------------------------------------------------- 
+INFO [12-04|04:54:26.754] Chain ID:  13473 (unknown) 
+INFO [12-04|04:54:26.754] Reorg Invariants Enabled: true 
+INFO [12-04|04:54:26.754] Consensus: Clique (proof-of-authority) 
+INFO [12-04|04:54:26.754]  
+INFO [12-04|04:54:26.754] Pre-Merge hard forks (block based): 
+INFO [12-04|04:54:26.754]  - Homestead:                   #0        (https://github.com/ethereum/execution-specs/blob/master/network-upgrades/mainnet-upgrades/homestead.md) 
+INFO [12-04|04:54:26.754]  - Tangerine Whistle (EIP 150): #0        (https://github.com/ethereum/execution-specs/blob/master/network-upgrades/mainnet-upgrades/tangerine-whistle.md) 
+INFO [12-04|04:54:26.754]  - Spurious Dragon/1 (EIP 155): #0        (https://github.com/ethereum/execution-specs/blob/master/network-upgrades/mainnet-upgrades/spurious-dragon.md) 
+INFO [12-04|04:54:26.754]  - Spurious Dragon/2 (EIP 158): #0        (https://github.com/ethereum/execution-specs/blob/master/network-upgrades/mainnet-upgrades/spurious-dragon.md) 
+INFO [12-04|04:54:26.754]  - Byzantium:                   #0        (https://github.com/ethereum/execution-specs/blob/master/network-upgrades/mainnet-upgrades/byzantium.md) 
+INFO [12-04|04:54:26.754]  - Constantinople:              #0        (https://github.com/ethereum/execution-specs/blob/master/network-upgrades/mainnet-upgrades/constantinople.md) 
+INFO [12-04|04:54:26.754]  - Petersburg:                  #0        (https://github.com/ethereum/execution-specs/blob/master/network-upgrades/mainnet-upgrades/petersburg.md) 
+INFO [12-04|04:54:26.754]  - Istanbul:                    #0        (https://github.com/ethereum/execution-specs/blob/master/network-upgrades/mainnet-upgrades/istanbul.md) 
+INFO [12-04|04:54:26.754]  - Muir Glacier:                #0        (https://github.com/ethereum/execution-specs/blob/master/network-upgrades/mainnet-upgrades/muir-glacier.md) 
+INFO [12-04|04:54:26.754]  - Berlin:                      #0        (https://github.com/ethereum/execution-specs/blob/master/network-upgrades/mainnet-upgrades/berlin.md) 
+INFO [12-04|04:54:26.754]  - London:                      #0        (https://github.com/ethereum/execution-specs/blob/master/network-upgrades/mainnet-upgrades/london.md) 
+INFO [12-04|04:54:26.754]  - Arrow Glacier:               #0        (https://github.com/ethereum/execution-specs/blob/master/network-upgrades/mainnet-upgrades/arrow-glacier.md) 
+INFO [12-04|04:54:26.754]  - Gray Glacier:                #0        (https://github.com/ethereum/execution-specs/blob/master/network-upgrades/mainnet-upgrades/gray-glacier.md) 
+INFO [12-04|04:54:26.754]  
+INFO [12-04|04:54:26.754] The Merge is not yet available for this network! 
+INFO [12-04|04:54:26.754]  - Hard-fork specification: https://github.com/ethereum/execution-specs/blob/master/network-upgrades/mainnet-upgrades/paris.md 
+INFO [12-04|04:54:26.754]  
+INFO [12-04|04:54:26.754] Post-Merge hard forks (timestamp based): 
+INFO [12-04|04:54:26.754]  
+INFO [12-04|04:54:26.754] --------------------------------------------------------------------------------------------------------------------------------------------------------- 
+INFO [12-04|04:54:26.754]  
+INFO [12-04|04:54:26.755] Loaded most recent local block           number=1,343,036 hash=b5bb3f..cbe4f1 td=2,686,073 age=1m17s
+WARN [12-04|04:54:26.893] Sanitizing invalid blobpool storage cap  provided=0 updated=10,737,418,240
+INFO [12-04|04:54:26.893] Initialized transaction indexer          limit=2,350,000
+INFO [12-04|04:54:26.929] Gasprice oracle is ignoring threshold set threshold=2
+INFO [12-04|04:54:26.935] Shutdown tracker started marker 
+WARN [12-04|04:54:26.935] Engine API enabled                       protocol=eth
+WARN [12-04|04:54:26.935] Engine API started but chain not configured for merge yet 
+INFO [12-04|04:54:26.935] Starting peer-to-peer node               instance=Geth/v1.13.0-unstable-cb37d5a3-20231204/linux-amd64/go1.21.4
+INFO [12-04|04:54:26.975] IPC endpoint opened                      url=/mnt/geth/geth.ipc
+INFO [12-04|04:54:26.975] Loaded JWT secret file                   path=/mnt/geth/geth/jwtsecret crc32=0xaa03f756
+time="2023-12-04T04:54:26Z" level=error msg="Failed to initialise New Relic middlware: nrApp is nil"
+time="2023-12-04T04:54:26Z" level=error msg="Failed to initialise New Relic middlware: nrApp is nil"
+INFO [12-04|04:54:26.976] WebSocket enabled                        url=ws://127.0.0.1:8551
+INFO [12-04|04:54:26.976] HTTP server started                      endpoint=127.0.0.1:8551 auth=true prefix= cors=localhost vhosts=localhost
+INFO [12-04|04:54:26.981] New local node record                    seq=1,701,654,445,241 id=660d517490a62260 ip=127.0.0.1 udp=0 tcp=0
+INFO [12-04|04:54:26.981] Started P2P networking                   self=enode://9040706fed7d4ac85ff44ac1ad54b28ec39b585ec23a5dacb920163d95dd576ca0ab8d2ba4b590a16a183bc14114ac299f2712ada37f8060be684983b1d5016f@127.0.0.1:0
+INFO [12-04|04:54:36.978] Block synchronisation started 
+INFO [12-04|04:54:37.205] Imported new chain segment               number=1,343,079 hash=560a17..971f02 blocks=43 txs=0 mgas=0.000 elapsed=205.607ms mgasps=0.000 triedirty=0.00B
+INFO [12-04|04:54:37.518] Imported new chain segment               number=1,343,080 hash=db30ec..114a94 blocks=1  txs=0 mgas=0.000 elapsed=4.535ms   mgasps=0.000 triedirty=0.00B
+INFO [12-04|04:54:39.517] Imported new chain segment               number=1,343,081 hash=b72134..f35f55 blocks=1  txs=0 mgas=0.000 elapsed=4.587ms   mgasps=0.000 triedirty=0.00B
+INFO [12-04|04:54:41.015] Imported new chain segment               number=1,343,082 hash=882e89..2b8def blocks=1  txs=0 mgas=0.000 elapsed=5.473ms   mgasps=0.000 triedirty=0.00B
+INFO [12-04|04:54:43.012] Imported new chain segment               number=1,343,083 hash=39f454..608c0c blocks=1  txs=0 mgas=0.000 elapsed=4.066ms   mgasps=0.000 triedirty=0.00B
+INFO [12-04|04:54:45.518] Imported new chain segment               number=1,343,084 hash=aa9eb2..f83f8f blocks=1  txs=0 mgas=0.000 elapsed=4.481ms   mgasps=0.000 triedirty=0.00B
+INFO [12-04|04:54:47.517] Imported new chain segment               number=1,343,085 hash=8161fb..9142ec blocks=1  txs=0 mgas=0.000 elapsed=3.971ms   mgasps=0.000 triedirty=0.00B
+INFO [12-04|04:54:49.516] Imported new chain segment               number=1,343,086 hash=fd6e70..0bf228 blocks=1  txs=0 mgas=0.000 elapsed=4.095ms   mgasps=0.000 triedirty=0.00B
+INFO [12-04|04:54:51.011] Imported new chain segment               number=1,343,087 hash=9bf651..57e23e blocks=1  txs=0 mgas=0.000 elapsed=5.172ms   mgasps=0.000 triedirty=0.00B
 ...
 ```
 
 2. Check the chain ID.
+
+From the container host.
+
+```bash
+curl http://localhost:8545 \
+  -X POST \
+  -H "Content-Type: application/json" \
+  --data '{"method":"eth_chainId","params":[],"id":1,"jsonrpc":"2.0"}'
+
+```
+
+Compare it to the output reported by Immutable nodes.
 
 <tabs>
 <tab-item title="Testnet">
