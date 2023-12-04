@@ -1,0 +1,215 @@
+# Immutable zkEVM
+
+Instructions to set up your Immutable zkEVM node.
+
+## Requirements
+
+- [Setup your Axelar validator](/validator/setup)
+- Minimum hardware requirements: 2 AWS vCPU, 4GB RAM, 100GB free storage space.
+- Ubuntu 22.04.1 (tested on 22.04.1)
+- Read the Immutable zkEVM [Official Documentation](https://docs.immutable.com/)
+
+
+## Prerequisites
+1. Install [Docker](https://docs.docker.com/engine/install/ubuntu/)
+2. Install `openssl`.
+```bash
+sudo apt-get install openssl
+```
+3. **(Optional)** If you plan to use WireGuard.
+```bash
+sudo apt-get install wireguard
+```
+
+## Instructions
+
+### Get access to the Immutable zkEVM partner nodes
+
+The Immutable zkEVM blockchain has dedicated nodes that serve as access points for partners wanting to peer with
+the network.
+Immutable protects these nodes from bad actors trying to disrupt partner services by putting limits on who
+can establish a connection.
+
+Partners can choose between a static IP allowlist or a WireGuard tunnel to establish their connections.
+
+The static IP allowlist ensures only a predetermined list of approved IP addresses can establish connections.
+
+The WireGuard tunnel provides partners with a secure and private conduit for their connections to the Immutable zkEVM,
+without requiring a static IP.
+
+<tabs>
+<tab-item title="Static IP">
+Using the Axelar CLI, create a transaction with a note that includes a `shasum` hash of your static IP.
+
+```bash
+axelard tx bank send broadcaster [any-axelar-address] 1uaxl --note "$( echo axelar-static-ip-[static-ip] | shasum -a 256 - )"
+```
+
+Send an email to the [Immutable team](mailto:squad-imx-rollups@immutable.com) including your static IP and
+a link to your transaction in the Axelar explorer. For example:
+
+<div style={{color: 'gray', padding: '1rem'}}>
+> *Please add my static IP to the Immutable allowlist: `_STATIC_IP_`*
+>
+> *See my verfication transaction at: `_LINK_TO_EXPLORER_`*
+
+</div>
+
+The Immutable team will reply with a confirmation that your IP has been added to the allowlist.
+
+</tab-item>
+<tab-item title="WireGuard">
+Using the WireGuard CLI, create a private and public key for your client.
+
+```bash
+umask 077
+wg genkey > wg-privatekey
+wg pubkey < wg-privatekey > wg-publickey
+```
+
+Using the Axelar CLI, create a transaction with a note that includes a `shasum` hash of your public key.
+
+```bash
+axelard tx bank send broadcaster [any-axelar-address] 1uaxl --note "$( echo axelar-wireguard-[wireguard-pubkey] | shasum -a 256 - )"
+```
+
+Send an email to the [Immutable team](mailto:squad-imx-rollups@immutable.com) including your static IP and
+a link to your transaction in the Axelar explorer. For example:
+
+<div style={{color: 'gray', padding: '1rem'}}>
+> *Please add my public key to the Immutable WireGuard tunnel: `_WIREGUARD_PUBLIC_KEY_`*
+
+> *See my verfication transaction at: `_LINK_TO_EXPLORER_`*
+
+</div>
+
+The Immutable team will reply with a configuration file for your WireGuard client.
+Once you receive this file, update the `PrivateKey` entry with the contents of your `wg-privatekey` file.
+
+Save the WireGuard configuration file in `/etc/wireguard/wg0.conf` and use `wg-quick` to setup the tunnel.
+
+```bash
+wg-quick up wg0
+```
+
+The output should look something like this:
+```bash
+[#] ip link add wg0 type wireguard
+[#] wg setconf wg0 /dev/fd/63
+[#] ip -4 address add <ASSIGNED_CIDR> dev wg0
+[#] ip link set mtu 8921 up dev wg0
+[#] ip -4 route add <GATEWAY_CIDR> dev wg0
+[#] ip -4 route add <GATEWAY_CIDR> dev wg0
+[#] ip -4 route add <GATEWAY_CIDR> dev wg0
+```
+</tab-item>
+</tabs>
+
+### Setup the Immutable zkEVM node
+
+1. Create a data directory.
+
+```bash
+mkdir /opt/immutable-zkevm
+```
+
+2. Generate a random password.
+```bash
+openssl rand -base64 > /opt/immutable-zkevm/password
+```
+
+3. Pull the Docker image.
+
+```bash
+docker pull IMAGE_AND_TAG_TBD
+```
+
+4. Initialise the node.
+
+<tabs>
+<tab-item title="Testnet">
+```bash
+docker run --rm -v /opt/immutable-zkevm:/mnt/geth --name geth geth account new --datadir /mnt/geth --password /mnt/geth/password
+docker run --rm -v /opt/immutable-zkevm:/mnt/geth --name geth geth init --datadir /mnt/geth /etc/geth/testnet.json 
+```
+</tab-item>
+<tab-item title="Mainnet">
+```bash
+docker run --rm -v /opt/immutable-zkevm:/mnt/geth --name geth geth account new --datadir /mnt/geth --password /mnt/geth/password
+docker run --rm -v /opt/immutable-zkevm:/mnt/geth --name geth geth init --datadir /mnt/geth /etc/geth/mainnet.json 
+```
+</tab-item>
+</tabs>
+
+5. Start the Immutable zkEVM node as a service
+
+<tabs>
+<tab-item title="Testnet">
+```bash
+docker run --rm -d --always -v /opt/immutable-zkevm:/mnt/geth --name geth geth --config /etc/geth/testnet.toml --datadir /mnt/geth --keystore /mnt/geth/keystore --networkid 13473
+```
+</tab-item>
+<tab-item title="Mainnet">
+```bash
+docker run --rm -d --always -v /opt/immutable-zkevm:/mnt/geth --name geth geth --config /etc/geth/mainnet.toml --datadir /mnt/geth --keystore /mnt/geth/keystore --networkid 13473
+```
+</tab-item>
+</tabs>
+
+### Verify your deployment
+
+1. Check the logs.
+
+The following logs indicate you are synching from the genesis block.
+
+```bash
+...
+WARN [12-04|01:47:27.007] Discarded delivered header or block, too far away peer=b7f6149fca5464c00dfc9d1824f3481ff31da0a6a3d2ff518cfa7b6d649cdf57 number=1,337,465 hash=e4e052..17c139 distance=1,337,465
+WARN [12-04|01:47:27.008] Discarded delivered header or block, too far away peer=e1893b7238a4f446caadace79130b8aae3aca1996c75b6a9d1eaf53292bc00ea number=1,337,465 hash=e4e052..17c139 distance=1,337,465
+WARN [12-04|01:47:29.007] Discarded delivered header or block, too far away peer=e1893b7238a4f446caadace79130b8aae3aca1996c75b6a9d1eaf53292bc00ea number=1,337,466 hash=b1e1ef..ab983f distance=1,337,466
+WARN [12-04|01:47:31.006] Discarded delivered header or block, too far away peer=b7f6149fca5464c00dfc9d1824f3481ff31da0a6a3d2ff518cfa7b6d649cdf57 number=1,337,467 hash=f4e55e..1b277a distance=1,337,467
+INFO [12-04|01:47:35.243] Block synchronisation started 
+WARN [12-04|01:47:37.257] Discarded delivered header or block, too far away peer=e1893b7238a4f446caadace79130b8aae3aca1996c75b6a9d1eaf53292bc00ea number=1,337,470 hash=c4be8d..3c505d distance=1,337,125
+INFO [12-04|01:47:37.424] Imported new chain segment               number=384       hash=51d9c1..767b59 blocks=384 txs=0 mgas=0.000 elapsed=2.033s mgasps=0.000 age=1mo1d3m  triedirty=0.00B
+WARN [12-04|01:47:39.017] Discarded delivered header or block, too far away peer=599aee5d16ac2309c928325cc634a9698f7a04c9e69ef30c9512fc21cfec1b4d number=1,337,471 hash=448bb2..46cac4 distance=1,336,817
+INFO [12-04|01:47:45.454] Imported new chain segment               number=2013      hash=2dd992..b6430a blocks=1629 txs=9 mgas=2.628 elapsed=8.002s mgasps=0.328 age=1mo23h8m triedirty=0.00B
+WARN [12-04|01:47:47.007] Discarded delivered header or block, too far away peer=b7f6149fca5464c00dfc9d1824f3481ff31da0a6a3d2ff518cfa7b6d649cdf57 number=1,337,475 hash=f6e211..789ba1 distance=1,335,133
+INFO [12-04|01:47:47.429] Imported new chain segment               number=2432      hash=17091f..30d133 blocks=419  txs=0 mgas=0.000 elapsed=1.975s mgasps=0.000 age=1mo22h55m triedirty=0.00B
+WARN [12-04|01:47:51.007] Discarded delivered header or block, too far away peer=599aee5d16ac2309c928325cc634a9698f7a04c9e69ef30c9512fc21cfec1b4d number=1,337,477 hash=66e5e2..bfe549 distance=1,334,303
+INFO [12-04|01:47:55.451] Imported new chain segment               number=4133      hash=9dde8a..f45077 blocks=1701 txs=0 mgas=0.000 elapsed=8.002s mgasps=0.000 age=1mo21h58m triedirty=0.00B
+INFO [12-04|01:47:57.087] Imported new chain segment               number=4480      hash=c3276c..03da57 blocks=347  txs=0 mgas=0.000 elapsed=1.635s mgasps=0.000 age=1mo21h46m triedirty=0.00B
+...
+```
+
+2. Check the chain ID.
+
+<tabs>
+<tab-item title="Testnet">
+
+```bash
+curl https://rpc.testnet.immutable.com \
+  -X POST \
+  -H "Content-Type: application/json" \
+  --data '{"method":"eth_chainId","params":[],"id":1,"jsonrpc":"2.0"}'
+```
+
+The output should be:
+```bash
+{"jsonrpc":"2.0","id":1,"result":"0x34a1"}
+```
+</tab-item>
+<tab-item title="Mainnet">
+
+```bash
+curl https://rpc.immutable.com \
+  -X POST \
+  -H "Content-Type: application/json" \
+  --data '{"method":"eth_chainId","params":[],"id":1,"jsonrpc":"2.0"}'
+```
+
+The output should be:
+```bash
+{"jsonrpc":"2.0","id":1,"result":"0x343b"}
+```
+</tab-item>
+</tabs>
