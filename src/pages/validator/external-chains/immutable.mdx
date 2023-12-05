@@ -131,14 +131,38 @@ docker tag ghcr.io/immutable/go-ethereum/go-ethereum:v0.0.5 geth
 <tabs>
 <tab-item title="Testnet">
 ```bash
-docker run --rm -v /opt/immutable-zkevm:/mnt/geth --name geth geth account new --datadir /mnt/geth --password /mnt/geth/password
-docker run --rm -v /opt/immutable-zkevm:/mnt/geth --name geth geth init --datadir /mnt/geth /etc/geth/testnet.json 
+docker run \
+  --rm \
+  -v /opt/immutable-zkevm:/mnt/geth \
+  --name geth \
+  geth account new --datadir /mnt/geth --password /mnt/geth/password
+```
+
+```bash
+docker run \
+  --rm \
+  -v /opt/immutable-zkevm:/mnt/geth \
+  --name geth \
+  geth init \
+  --datadir /mnt/geth /etc/geth/testnet.json 
 ```
 </tab-item>
 <tab-item title="Mainnet">
 ```bash
-docker run --rm -v /opt/immutable-zkevm:/mnt/geth --name geth geth account new --datadir /mnt/geth --password /mnt/geth/password
-docker run --rm -v /opt/immutable-zkevm:/mnt/geth --name geth geth init --datadir /mnt/geth /etc/geth/mainnet.json 
+docker run \
+  --rm \
+  -v /opt/immutable-zkevm:/mnt/geth \
+  --name geth \
+  geth account new --datadir /mnt/geth --password /mnt/geth/password
+```
+
+```bash
+docker run \
+  --rm \
+  -v /opt/immutable-zkevm:/mnt/geth \
+  --name geth \
+  geth init \
+  --datadir /mnt/geth /etc/geth/mainnet.json 
 ```
 </tab-item>
 </tabs>
@@ -148,12 +172,37 @@ docker run --rm -v /opt/immutable-zkevm:/mnt/geth --name geth geth init --datadi
 <tabs>
 <tab-item title="Testnet">
 ```bash
-docker run -d --restart=always -v /opt/immutable-zkevm:/mnt/geth --name geth -p 8545:8545 geth --config /etc/geth/testnet.toml --datadir /mnt/geth --keystore /mnt/geth/keystore --networkid 13473 --http --http.port "8545" --http.addr "0.0.0.0"
+docker run \
+  -d \
+  --restart=always \
+  -v /opt/immutable-zkevm:/mnt/geth \
+  --name geth \
+  -p 8545:8545 \
+  geth \
+  --config /etc/geth/testnet.toml \
+  --datadir /mnt/geth \
+  --keystore /mnt/geth/keystore \
+  --networkid 13473 \
+  --http \
+  --http.port "8545" \
+  --http.addr "0.0.0.0"
 ```
 </tab-item>
 <tab-item title="Mainnet">
 ```bash
-docker run -d --restart=always -v /opt/immutable-zkevm:/mnt/geth --name geth -p 8545:8545 geth --config /etc/geth/mainnet.toml --datadir /mnt/geth --keystore /mnt/geth/keystore --networkid 13473 --http --http.port "8545" --http.addr "0.0.0.0"
+docker run \
+  -d \
+  --restart=always \
+  -v /opt/immutable-zkevm:/mnt/geth \
+  --name geth \
+  -p 8545:8545 geth \
+  --config /etc/geth/mainnet.toml \
+  --datadir /mnt/geth \
+  --keystore /mnt/geth/keystore \
+  --networkid 13473 \
+  --http \
+  --http.port "8545" \
+  --http.addr "0.0.0.0"
 ```
 </tab-item>
 </tabs>
