@@ -39,7 +39,7 @@ without requiring a static IP.
 
 <tabs>
 <tab-item title="Static IP">
-Using the Axelar CLI, create a transaction with a note that includes a `shasum` hash of your static IP.
+From your vald container, create a transaction with a note that includes a `shasum` hash of your static IP.
 
 ```bash
 axelard tx bank send broadcaster [any-axelar-address] 1uaxl --note "$( echo axelar-static-ip-[static-ip] | shasum -a 256 - )"
@@ -195,7 +195,8 @@ docker run \
   --restart=always \
   -v /opt/immutable-zkevm:/mnt/geth \
   --name geth \
-  -p 8545:8545 geth \
+  -p 8545:8545 \
+  geth \
   --config /etc/geth/mainnet.toml \
   --datadir /mnt/geth \
   --keystore /mnt/geth/keystore \
