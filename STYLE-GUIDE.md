@@ -6,61 +6,61 @@ This style guide is inspired by the [Google developer documentation style guide]
 
 ## Table of contents
 
-* [Voice and tone](#voice-and-tone)
-* [Document structure](#document-structure)
-* [Content format](#content-format)
+- [Voice and tone](#voice-and-tone)
+- [Document structure](#document-structure)
+- [Content format](#content-format)
 
 ## Voice and tone
 
-* Be friendly, respectful, and not overly pedantic, like you're pair-programming with a friend.
-* Refer to [Google's word list](https://developers.google.com/style/word-list) when unsure how to phrase something.
+- Be friendly, respectful, and not overly pedantic, like you're pair-programming with a friend.
+- Refer to [Google's word list](https://developers.google.com/style/word-list) when unsure how to phrase something.
 
 ### When addressing the reader
 
-* Address the reader directly by using the second-person "you."
-* Do not use the word "I." When speaking on Axelar's behalf, use "we."
+- Address the reader directly by using the second-person "you."
+- Do not use the word "I." When speaking on Axelar's behalf, use "we."
 
-|  **Recommended**  |  **Not recommended** |
-| --- | --- |
-|  Hardhat and Foundry are local development platforms. Use Remix if you prefer an online editor.  |  Hardhat and Foundry are local development platforms. I'd use Remix if I preferred an online editor.  |
-|  We recommend using Metamask for this tutorial.  |  I recommend using Metamask for this tutorial.  |
+| **Recommended**                                                                                | **Not recommended**                                                                                 |
+| ---------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- |
+| Hardhat and Foundry are local development platforms. Use Remix if you prefer an online editor. | Hardhat and Foundry are local development platforms. I'd use Remix if I preferred an online editor. |
+| We recommend using MetaMask for this tutorial.                                                 | I recommend using MetaMask for this tutorial.                                                       |
 
 ### When referring to a third party user or developer
 
-* Use the singular "they" when referring to a third party user or developer.
+- Use the singular "they" when referring to a third party user or developer.
 
-|  **Recommended**  |  **Not recommended** |
-| --- | --- |
-|  A user can check their transactions on Axelarscan.  |  A user can check his or her transactions on Axelarscan.  |
+| **Recommended**                                    | **Not recommended**                                     |
+| -------------------------------------------------- | ------------------------------------------------------- |
+| A user can check their transactions on Axelarscan. | A user can check his or her transactions on Axelarscan. |
 
 ### Accessibility
 
-* Use "earlier", "preceding", or "following" to refer to the position of a code snippet or UI element in a document rather than "above," "below," or "left-hand side."
+- Use "earlier", "preceding", or "following" to refer to the position of a code snippet or UI element in a document rather than "above," "below," or "left-hand side."
 
-|  **Recommended**  |  **Not recommended** |
-| --- | --- |
-|  Start up the Hardhat command-line interface by typing the following command.  |  Start up the Hardhat command-line interface by typing the command below.  |
-|  Copy the address from the preceding section.  |  Copy the address from the section above.  |
+| **Recommended**                                                              | **Not recommended**                                                      |
+| ---------------------------------------------------------------------------- | ------------------------------------------------------------------------ |
+| Start up the Hardhat command-line interface by typing the following command. | Start up the Hardhat command-line interface by typing the command below. |
+| Copy the address from the preceding section.                                 | Copy the address from the section above.                                 |
 
 ## Document structure
 
-* Avoid a wall of text whenever possible.
-* Break a long section up into subsections with the appropriate headings.
-* Add screenshots when a UI is not likely to change.
+- Avoid a wall of text whenever possible.
+- Break a long section up into subsections with the appropriate headings.
+- Add screenshots when a UI is not likely to change.
 
 ### Code comments
 
-* Comment in the code directly whenever possible.
-* Add bullet points directly above or below the code snippet if it makes the code more clear.
+- Comment in the code directly whenever possible.
+- Add bullet points directly above or below the code snippet if it makes the code more clear.
 
 **Recommended**
 
 `sendToMany` will need to do the following:
 
-* Get the address of a token from its symbol
-* Send funds to another address
-* Approve the gateway to spend funds
-* Encode the recipient addresses on the destination chain to ensure that they are `byte`s, since GMP messages must be of this type
+- Get the address of a token from its symbol
+- Send funds to another address
+- Approve the gateway to spend funds
+- Encode the recipient addresses on the destination chain to ensure that they are `byte`s, since GMP messages must be of this type
 
 ```solidity
 function sendToMany(
@@ -91,7 +91,7 @@ function sendToMany(
     // token. _destinationAddrs is a list that contains
     // the addresses of the ERC-2O token's final
     // recipients once the transaction has arrived
-    // at the destination chain. 
+    // at the destination chain.
     bytes memory recipientAddressesEncoded = abi.encode(_destinationAddrs);
 
     // Output: a list of addresses in bytes
@@ -104,11 +104,11 @@ function sendToMany(
 
 ```solidity`
 function sendToMany(
-  string memory _destChain,
-  string memory _destContractAddr,
-  address[] calldata _destinationAddrs,
-  string memory _symbol,
-  uint256 _amount
+string memory \_destChain,
+string memory \_destContractAddr,
+address[] calldata \_destinationAddrs,
+string memory \_symbol,
+uint256 \_amount
 ) external payable {
 
     require(msg.value > 0, "Gas payment required");
@@ -120,7 +120,9 @@ function sendToMany(
     IERC20(tokenAddress).approve(address(gateway), _amount);
 
     bytes memory recipientAddressesEncoded = abi.encode(_destinationAddrs);
+
 }
+
 ```
 
 ### Section headings
@@ -146,7 +148,7 @@ function sendToMany(
 
 |  **Recommended**  |  **Not recommended** |
 | --- | --- |
-|  In Metamask, go to the **Tokens** tab and click **Import Tokens**.  |  In Metamask, go to the “Tokens” tab and click “Import Tokens.”  |
+|  In MetaMask, go to the **Tokens** tab and click **Import Tokens**.  |  In MetaMask, go to the “Tokens” tab and click “Import Tokens.”  |
 
 ### Italic font
 
@@ -200,3 +202,4 @@ Implement the following to send an interchain transaction with Axelar:
 * `IAxelarGateway` – The Axelar Gateway
 * `IAxelarGasService` – The Axelar Gas Service
 * `IERC20` – This represents the ERC-20 token interface to access ERC-20-related functionality.
+```

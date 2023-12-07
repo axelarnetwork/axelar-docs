@@ -48,7 +48,7 @@ Wait a few minutes for the IBC relayer to relay your transaction to Axelar.
 <Callout emoji="📝">
   Note: Third-party monitoring tools will automatically complete the remaining steps of this process.
 
-Wait a few minutes then check your Metamask for the UST tokens. Don't forget to import the UST token into Metamask so you can see your balance as described in [Metamask for EVM chains](/resources/metamask).
+Wait a few minutes then check your MetaMask for the UST tokens. Don't forget to import the UST token into MetaMask so you can see your balance as described in [MetaMask for EVM chains](/resources/metamask).
 </Callout>
 
 <Callout type="warning" emoji="⚠️">
@@ -100,10 +100,10 @@ axelard q evm batched-commands {EVM_CHAIN} {BATCH_ID}
 
 Wait for `status: BATCHED_COMMANDS_STATUS_SIGNED` and copy the `execute_data`.
 
-Use Metamask to send a transaction on `{EVM_CHAIN}` with the `execute_data` to the Axelar gateway contract address `{GATEWAY_ADDR}`.
+Use MetaMask to send a transaction on `{EVM_CHAIN}` with the `execute_data` to the Axelar gateway contract address `{GATEWAY_ADDR}`.
 
 <Callout type="error" emoji="🔥">
-  Danger: Post your transaction to the correct chain! Set your Metamask network to `{EVM_CHAIN}`.
+  Danger: Post your transaction to the correct chain! Set your MetaMask network to `{EVM_CHAIN}`.
 </Callout>
 
 <Callout type="warning" emoji="⚠️">
@@ -127,8 +127,8 @@ axelard q evm gateway-address {EVM_CHAIN}
 
 </Callout>
 
-To send a transaction to `{GATEWAY_ADDR}` using Metamask: paste hex from `execute_data` above into "Hex Data" field. (Do not send tokens!)
+To send a transaction to `{GATEWAY_ADDR}` using MetaMask: paste hex from `execute_data` above into "Hex Data" field. (Do not send tokens!)
 
-You should see `{AMOUNT}` of asset AXL in your `{EVM_CHAIN}` Metamask account.
+You should see `{AMOUNT}` of asset AXL in your `{EVM_CHAIN}` MetaMask account.
 
 Congratulations! You have transferred AXL tokens from Axelar to an external EVM chain!
