@@ -79,7 +79,7 @@ img {
   max-width: 100%;
 }
 
-nav {
+.nav-bar {
   height: $nav-size;
   display: flex;
   align-items: center;
@@ -87,7 +87,7 @@ nav {
   max-width: $page-width;
   margin: 0px auto;
 }
-nav a {
+.nav-bar a {
   margin: 16px;
   text-decoration: none;
   color: black;
@@ -148,20 +148,16 @@ ul li {
   font-size: 14px;
   margin-right: 16px;
 }
-.sideNav > div {
+.navigation > div {
   margin-bottom: 32px;
 }
-.sideNav .nav-header {
-  font-size: 1.2em;
-  margin-bottom: 16px;
-  padding-left: 0;
-}
-.sideNav * {
+
+.navigation * {
   display: block;
   color: rgb(107, 114, 128);
   padding-left: 8px;
 }
-.sideNav a:hover {
+.navigation a:hover {
   background-color: rgb(243, 244, 246);
   color: rgb(17, 24, 39);
 }
@@ -169,7 +165,7 @@ ul li {
   display: block;
   font-weight: bold;
 }
-.sideNav div.group {
+.navigation div.group {
   margin-left: 16px;
   border-left: 1px solid #ccc;
   padding-left: 8px;
@@ -412,6 +408,12 @@ astro-island button {
 .items-center {
   align-items: center;
 }
+.hidden {
+  display: none;
+}
+.overflow-hidden {
+  overflow: hidden;
+}
 
 /* End temporary tailwind CSS */
 
@@ -561,7 +563,17 @@ astro-island button {
 .mobile {
   display: none;
 }
+.mobile-nav {
+  display: none;
+}
 
+.menu-btn{
+  margin: 16px;
+  & svg{
+    width: 24px;
+    height: 24px;
+  }
+}
 /* Mobile styles */
 @media (max-width: 650px) {
   #page {
@@ -581,16 +593,42 @@ astro-island button {
   .sideNav {
     display: none;
   }
-  .sideNav.show {
-    position: absolute;
+  .mobile-nav {
+    position: fixed;
+    inset: 0;
+    overflow-y: scroll;
+    background: #111;
+    & .nav-bar{
+      position: sticky;
+      top: 0;
+      background-color: #111;
+    }
+    & .nav-header {
+      padding: 0 16px;
+      display: flex;
+      flex-direction: column;
+      font-size: 1.2em;
+      margin-bottom: 16px;
+      & a:hover {
+        background-color: rgb(243, 244, 246);
+        color: rgb(17, 24, 39);
+      }
+    }
+  }
+  .mobile-nav.show {
     display: block;
-    background-color: #ccc;
-    top: 64px;
-    left: 8px;
-    width: calc(100% - 16px);
-    padding: 32px;
-    border: 1px solid rgb(229, 231, 235);
-    border-radius: 6px;
     z-index: 5;
   }
+  // .sideNav.show {
+  //   position: absolute;
+  //   display: block;
+  //   background-color: #ccc;
+  //   top: 64px;
+  //   left: 8px;
+  //   width: calc(100% - 16px);
+  //   padding: 32px;
+  //   border: 1px solid rgb(229, 231, 235);
+  //   border-radius: 6px;
+  //   z-index: 5;
+  // }
 }

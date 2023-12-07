@@ -8,47 +8,42 @@ const navigation = getNavigation(section);
 // Due to limitations in Astro template syntax
 ---
 
-<div class="mobile nav-header">
-  <a href="/dev/intro">Developers</a>
-  <a href="/node/config-node">Node Operators</a>
-  <a href="/validator/setup/overview">Validators</a>
-  <hr />
+<div class="navigation">  
+  {
+    navigation.map((section) => (
+      <div>
+        <div class="nav-header">{section.header}</div>
+        {section.children.map((item) =>
+          item.children ? (
+              <span>{item.title}</span>
+              <div class="group">
+                {item.children.map((child) =>
+                  child.children ? (
+                      <span>{child.title}</span>
+                      <div class="group">
+                        {child.children.map((grandchild) => (
+                          grandchild.children ? (
+                            <span>{grandchild.title}</span>
+                            <div class="group">
+                              {grandchild.children.map((greatGrandchild) => (
+                                <a href={greatGrandchild.href}>{greatGrandchild.title}</a>
+                              ))}
+                            </div>
+                          ) : (
+                            <a href={grandchild.href}>{grandchild.title}</a>
+                          )
+                        ))}
+                      </div>
+                  ) : (
+                    <a href={child.href}>{child.title}</a>
+                  )
+                )}
+              </div>
+          ) : (
+            <a href={item.href}>{item.title}</a>
+          )
+        )}
+      </div>
+    ))
+  }
 </div>
-
-{
-  navigation.map((section) => (
-    <div>
-      <div class="nav-header">{section.header}</div>
-      {section.children.map((item) =>
-        item.children ? (
-            <span>{item.title}</span>
-            <div class="group">
-              {item.children.map((child) =>
-                child.children ? (
-                    <span>{child.title}</span>
-                    <div class="group">
-                      {child.children.map((grandchild) => (
-                        grandchild.children ? (
-                          <span>{grandchild.title}</span>
-                          <div class="group">
-                            {grandchild.children.map((greatGrandchild) => (
-                              <a href={greatGrandchild.href}>{greatGrandchild.title}</a>
-                            ))}
-                          </div>
-                        ) : (
-                          <a href={grandchild.href}>{grandchild.title}</a>
-                        )
-                      ))}
-                    </div>
-                ) : (
-                  <a href={child.href}>{child.title}</a>
-                )
-              )}
-            </div>
-        ) : (
-          <a href={item.href}>{item.title}</a>
-        )
-      )}
-    </div>
-  ))
-}
