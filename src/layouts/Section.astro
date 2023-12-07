@@ -10,9 +10,9 @@ const { title, description, image, hidden } = Astro.props.frontmatter || Astro.p
 
 <MainLayout {...Astro.props}>
     <div id="page">
-        <div class="sideNav nomobile">
+        <aside class="sideNav nomobile">
             <Navigation />
-        </div>
+        </aside>
         <div class="mainBody">
             <h1>{title}</h1>
             <!-- <div style="display:flex;justify-content:space-between;">
