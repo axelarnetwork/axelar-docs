@@ -526,6 +526,34 @@ With GMP, you can:
 
 
 
+### Gateway Interface
+In your smart contract, you'll be interacting with the `callContract` or `callContractWithToken` methods of the [gateway contract](https://etherscan.io/address/0x4F4495243837681061C4743b74B3eEdf548D56A5#writeProxyContract).
+
+```solidity
+function callContract(
+    string calldata destinationChain,
+    string calldata destinationContractAddress,
+    bytes calldata payload
+) external {
+    emit ContractCall(msg.sender, destinationChain, destinationContractAddress, keccak256(payload), payload);
+}
+
+function callContractWithToken(
+    string calldata destinationChain,
+    string calldata destinationContractAddress,
+    bytes calldata payload,
+    string calldata symbol,
+    uint256 amount
+) external {
+    _burnTokenFrom(msg.sender, symbol, amount);
+    emit ContractCallWithToken(msg.sender, destinationChain, destinationContractAddress, keccak256(payload), payload, symbol, amount);
+}
+
+function _execute(string calldata sourceChain, string calldata sourceAddress, bytes calldata payload) internal virtual {}
+```
+
+
+
 ### Steps
 
 #### At the source chain
