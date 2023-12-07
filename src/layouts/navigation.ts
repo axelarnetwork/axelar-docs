@@ -261,7 +261,7 @@ export const getNavigation = (section) => {
     children: [
       { title: "Mainnet", href: "/resources/mainnet" },
       { title: "Testnet", href: "/resources/testnet" },
-      { title: "Endpoints and Tools", href: "/resources/" },
+      { title: "RPC Endpoints", href: "/resources/" },
       {
         title: "Community Pool Proposals",
         href: "/resources/governance/community-pool-proposals",
