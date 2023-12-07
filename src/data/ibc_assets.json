@@ -81,6 +81,14 @@
       "transfer_fee": 5.7e-05
     },
     {
+      "id": "wusdm-wei",
+      "name": "wUSDM - Wrapped Mountain Protocol USD",
+      "symbol": "wUSDM",
+      "image": "/images/assets/wusdm.svg",
+      "decimals": 18,
+      "transfer_fee": 0.1
+    },
+    {
       "id": "ueuroc",
       "name": "EUROC - Euro Coin",
       "symbol": "EUROC",
@@ -142,7 +150,7 @@
       "symbol": "KUJI",
       "image": "/images/assets/kuji.svg",
       "decimals": 6,
-      "transfer_fee": 0.2
+      "transfer_fee": 0.029
     },
     {
       "id": "cbeth-wei",
@@ -159,6 +167,14 @@
       "image": "/images/assets/sfrxeth.svg",
       "decimals": 18,
       "transfer_fee": 5.7e-05
+    },
+    {
+      "id": "sfrax-wei",
+      "name": "sFRAX - Staked FRAX",
+      "symbol": "sFRAX",
+      "image": "/images/assets/sfrax.svg",
+      "decimals": 18,
+      "transfer_fee": 0.099
     },
     {
       "id": "reth-wei",
@@ -399,6 +415,14 @@
       "image": "/images/assets/somm.svg",
       "decimals": 6,
       "transfer_fee": 0.67
+    },
+    {
+      "id": "utia",
+      "name": "TIA - Axelar Wrapped TIA",
+      "symbol": "TIA",
+      "image": "/images/assets/tia.svg",
+      "decimals": 6,
+      "transfer_fee": 0.05
     },
     {
       "id": "pepe-wei",
