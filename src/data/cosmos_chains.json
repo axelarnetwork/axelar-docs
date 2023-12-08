@@ -309,6 +309,12 @@
       "image": "/images/chains/persistence.svg"
     },
     {
+      "id": "saga",
+      "name": "Saga",
+      "network_id": "saga",
+      "image": "/images/chains/saga.svg"
+    },
+    {
       "id": "secret",
       "name": "Secret",
       "network_id": "secret",

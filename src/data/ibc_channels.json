@@ -493,6 +493,16 @@
       "channel_id": "channel-97"
     },
     {
+      "from": "saga",
+      "to": "axelarnet",
+      "channel_id": "channel-9"
+    },
+    {
+      "from": "axelarnet",
+      "to": "saga",
+      "channel_id": "channel-370"
+    },
+    {
       "from": "secret",
       "to": "axelarnet",
       "channel_id": "channel-3"
