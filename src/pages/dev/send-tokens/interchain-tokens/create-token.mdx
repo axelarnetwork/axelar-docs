@@ -2,9 +2,9 @@
 
 Interchain Tokens are ERC-20 tokens that are available on multiple blockchains. They are created using the [Interchain Token Service](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/InterchainTokenService.sol) and can be used to transfer value between blockchains.
 
-The Interchain Token Service on testnet is deployed to `0xa4A9965149388c86E62CDDDd6C95EFe9c294005a` while the Interchain Token Factory is deployed to `0xe93462bc7Ef7692D763C4d4DbCE7B870c0958c59`. You can find the list of the deployed contract addresses to all the networks supported by Axelar [here](https://github.com/axelarnetwork/axelar-contract-deployments/blob/main/axelar-chains-config/info/testnet.json).
+The Interchain Token Service on testnet is deployed to `0xB5FB4BE02232B1bBA4dC8f81dc24C26980dE9e3C` while the Interchain Token Factory is deployed to `0x83a93500d23Fbc3e82B410aD07A6a9F7A0670D66`. You can find the list of the deployed contract addresses to all the networks supported by Axelar [here](https://github.com/axelarnetwork/axelar-contract-deployments/blob/main/axelar-chains-config/info/testnet.json).
 
-To clarify how this system works, we'll explore two ways to create new Interchain Tokens.
+Let's explore two methods to create new Interchain Token(s).
 
 ## Create a new Interchain Token(s) using the Interchain Token Portal
 
@@ -19,10 +19,10 @@ The simplest type of Interchain Token is to create a brand new [Interchain Token
     - Symbol
     - Decimals
     - Amount to mint
-- You can also choose the advanced option where you can add an account to mint tokens to and `Salt` value; otherwise, it gets prefilled with the deployer(connected account) address and a random, uniquely generated salt value
-- Select any additional chains where you want your new token to be available and optionally add the amount of tokens to mint on each chain selected
+- You can also click the advanced option where you can add an account as `Token Minter` and `Salt` value; otherwise, it gets prefilled with the deployer(connected account) address and a random, uniquely generated salt value
+- Select additional chains for your token's availability and optionally add the token amount to mint on each selected chain.
 
-**Congratulations!** Your ERC-20 token is now accessible on multiple blockchain networks. This allows for seamless interaction with your token on any of these networks, utilizing familiar methods like send, transfer, and approve, just as with any standard ERC-20 token.
+**Congratulations!** Your Interchain Token is now accessible on multiple blockchain networks. This allows for seamless interaction with your token on any of these networks, utilizing familiar methods like send, transfer, and approve, just as with any standard ERC-20 token.
 
 Furthermore, your token is categorized as a [Interchain Token](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/interfaces/IInterchainTokenStandard.sol). This classification includes the `interchainTransfer` method, allowing you to transfer it between blockchains.
 
@@ -30,57 +30,64 @@ Here is an example of the `interchainTransfer` method.
 
 ```solidity
 /**
-* @notice Implementation of the interchainTransfer method.
-* @dev We chose to either pass `metadata` as raw data on a remote contract call, or if no data is passed, just do a transfer.
-* A different implementation could use metadata to specify a function to invoke, or for other purposes as well.
-* @param destinationChain The destination chain identifier.
-* @param recipient The bytes representation of the address of the recipient.
-* @param amount The amount of token to be transferred.
-* @param metadata Either empty, to just facilitate an interchain transfer, or the data can be passed for an interchain contract
-* call with transfer as per semantics defined by the token service.
-*/
+ * @notice Initiates an interchain transfer of a specified token to a destination chain.
+ * @dev The function retrieves the TokenManager associated with the tokenId.
+ * @param tokenId The unique identifier of the token to be transferred.
+ * @param destinationChain The destination chain to send the tokens to.
+ * @param destinationAddress The address on the destination chain to send the tokens to.
+ * @param amount The amount of tokens to be transferred.
+ * @param metadata Optional metadata for the call for additional effects (such as calling a destination contract).
+ */
 function interchainTransfer(
+    bytes32 tokenId,
     string calldata destinationChain,
-    bytes calldata recipient,
+    bytes calldata destinationAddress,
     uint256 amount,
-    bytes calldata metadata
-) external payable;
+    bytes calldata metadata,
+    uint256 gasValue
+) external payable
 ```
 
 ## Create a new custom Interchain Token(s)
 
-If you want more features than the Interchain Token provides, you can create a [custom](../../reference/glossary/#custom-token) token. You may want a customized token to customize minting policies, ensure ownership or control of the token by a DAO, create rate limits, or build any other custom logic into your token.
+If you want more features than the Interchain Token provides, you can create a [custom](../../reference/glossary/#custom-token) token. You may want a customized token to customize specific minting policies, ownership structures, rate limits, or other bespoke functionalities.
 
-- To create a new Interchain Token, use the `deployInterchainToken` method from [`InterchainTokenFactory.sol`](https://github.com/axelarnetwork/interchain-token-service/blob/a2dfcb2490497e627b66be789d944ec3260c5eea/contracts/InterchainTokenFactory.sol#L125) for local chain deployment with an optional pre-mint, and then deploy it to your chosen remote chain using the `deployRemoteInterchainToken` method from the same contract
-- Transfer  initial amount to the user on the local chain and remote chain using `interchainTransfer` on the [`InterchainTokenFactory.sol`](https://github.com/axelarnetwork/interchain-token-service/blob/a2dfcb2490497e627b66be789d944ec3260c5eea/contracts/InterchainTokenFactory.sol#L300)
-- Retrieve the Token Manager address using the unique `tokenId` on the Interchain Token Service by calling [`tokenManagerAddress`](https://github.com/axelarnetwork/interchain-token-service/blob/a2dfcb2490497e627b66be789d944ec3260c5eea/contracts/InterchainTokenService.sol#L169) which calculate the address of a TokenManager from a specific `tokenId`. The TokenManager does not need to exist already
+To create a new Interchain Token:
+
+- Use the [`deployInterchainToken`](https://github.com/axelarnetwork/interchain-token-service/blob/9edc4318ac1c17231e65886eea72c0f55469d7e5/contracts/InterchainTokenFactory.sol#L118) method from `InterchainTokenFactory.sol` for local chain deployment with an optional pre-mint
+- Deploy it to your chosen remote chain using the [`deployRemoteInterchainToken`](https://github.com/axelarnetwork/interchain-token-service/blob/9edc4318ac1c17231e65886eea72c0f55469d7e5/contracts/InterchainTokenFactory.sol#L163) method from `InterchainTokenFactory.sol`
+- Use the `tokenId` on the Interchain Token Service to retrieve the Token Manager address. Call [`tokenManagerAddress`](https://github.com/axelarnetwork/interchain-token-service/blob/9edc4318ac1c17231e65886eea72c0f55469d7e5/contracts/InterchainTokenService.sol#L176) which calculates the TokenManager's address for a given `tokenId`. Note that the Token Manager does not need to pre-exist. Additionally, you can find the token address with the `tokenId` by calling  [`interchainTokenAddress`](https://github.com/axelarnetwork/interchain-token-service/blob/9edc4318ac1c17231e65886eea72c0f55469d7e5/contracts/InterchainTokenService.sol#L207)
 
 Here is an example of using the `deployInterchainToken` method.
 
 ```solidity
 /**
-* @notice Deploys a new interchain token with specified parameters.
-* @dev Creates a new token and optionally mints an initial amount to a specified distributor.
-* @param salt The unique salt for deploying the token.
-* @param name The name of the token.
-* @param symbol The symbol of the token.
-* @param decimals The number of decimals for the token.
-* @param mintAmount The amount of tokens to mint initially (can be zero).
-* @param distributor The address to receive the initially minted tokens.
-*/
+ * @notice Deploys a new interchain token with specified parameters.
+ * @dev Creates a new token and optionally mints an initial amount to a specified minter.
+ * @param salt The unique salt for deploying the token.
+ * @param name The name of the token.
+ * @param symbol The symbol of the token.
+ * @param decimals The number of decimals for the token.
+ * @param initialSupply The amount of tokens to mint initially (can be zero).
+ * @param minter The address to receive the initially minted tokens.
+ * @return tokenId The tokenId corresponding to the deployed InterchainToken.
+ */
 function deployInterchainToken(
-bytes32 salt,
-string calldata name,
-string calldata symbol,
-uint8 decimals,
-uint256 mintAmount,
-address distributor
-) external payable
+    bytes32 salt,
+    string calldata name,
+    string calldata symbol,
+    uint8 decimals,
+    uint256 initialSupply,
+    address minter
+) external payable returns (bytes32 tokenId)
 ```
 
-Tokens can move between chains seamlessly as the Token Manager contracts will mint and burn tokens as needed. If the `distributor` parameter is empty bytes when deploying a new Interchain Token, then a `mint/burn` TokenManager is used; otherwise, a `lock/unlock` TokenManager is used. If you want to change the token distributor/minter to another address, you can do that using the `transferDistributorship` on the token.
+To transfer tokens between chains, you can do that directly via the Interchain Token Service by calling the [`interchainTransfer`](https://github.com/axelarnetwork/interchain-token-service/blob/v1.0.0/contracts/interfaces/IInterchainTokenService.sol#L202). 
 
->**Note**: If you want to build your token with the `IInterchainToken` feature yourself, make sure your token implements the [`IInterchainTokenStandard`](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/interfaces/IInterchainTokenStandard.sol) interface so you can offer [`interchainTransfer`](https://github.com/axelarnetwork/interchain-token-service/blob/a2dfcb2490497e627b66be789d944ec3260c5eea/contracts/interfaces/IInterchainTokenStandard.sol#L20) and [`interchainTransferFrom`](https://github.com/axelarnetwork/interchain-token-service/blob/a2dfcb2490497e627b66be789d944ec3260c5eea/contracts/interfaces/IInterchainTokenStandard.sol#L37) methods directly on your token. 
+Tokens can move between chains seamlessly as the Token Manager contracts will mint and burn tokens as needed. If the `minter` parameter is empty bytes when deploying a new Interchain Token, then a `mint/burn` TokenManager is used; otherwise, a `lock/unlock` TokenManager is used. If you want to change the token minter to another address, you can do that using the `transferMintership` on the token.
+
+
+>**Note**: If you want to build your token with the `IInterchainToken` feature yourself, make sure your token implements the [`IInterchainTokenStandard`](https://github.com/axelarnetwork/interchain-token-service/blob/v1.0.0/contracts/interfaces/IInterchainTokenStandard.sol) interface so you can offer [`interchainTransfer`](https://github.com/axelarnetwork/interchain-token-service/blob/9edc4318ac1c17231e65886eea72c0f55469d7e5/contracts/interfaces/IInterchainTokenStandard.sol#L19) and [`interchainTransferFrom`](https://github.com/axelarnetwork/interchain-token-service/blob/9edc4318ac1c17231e65886eea72c0f55469d7e5/contracts/interfaces/IInterchainTokenStandard.sol#L36) methods directly on your token. 
 
 You can try our [sample custom token](https://remix.ethereum.org/axelarnetwork/axelar-docs/blob/main/public/samples/interchain-token-iinterchaintoken.sol) as a starting point. This token self-registers with the Interchain Token Service and can be deployed to multiple chains. 
 Once you have designed your token, you can deploy it to multiple chains using a tool such as the [Constant Address Deployer](https://docs.axelar.dev/dev/general-message-passing/solidity-utilities#constant-address-deployer) to give it the same address everywhere. 
