@@ -143,6 +143,10 @@ export const getNavigation = (section) => {
               href: "/dev/reference/testnet-contract-addresses",
             },
             {
+              title: "Interchain Token Service Rate Limit",
+              href: "/dev/reference/interchain-token-service-rate-limit",
+            },
+            {
               title: "Transaction Pricing",
               href: "/dev/reference/pricing",
             },

@@ -1,0 +1,182 @@
+# Rate Limit in Interchain Token Service
+
+## Overview
+
+The [`FlowLimit` contract](https://github.com/axelarnetwork/interchain-token-service/blob/v1.0.0/contracts/utils/FlowLimit.sol) is a core component of the [Interchain Token Service](https://github.com/axelarnetwork/interchain-token-service/blob/v1.0.0/contracts/InterchainTokenService.sol), designed to regulate the flow of tokens across different blockchains. This guide provides a comprehensive understanding of how the `FlowLimit` contract operates within the context of [Interchain](https://github.com/axelarnetwork/interchain-token-service/blob/v1.0.0/contracts/InterchainTokenService.sol) token transfers.
+
+It's important to note that `FlowLimit` ensures the stability and security of interchain operations by setting constraints on the volume of tokens that can be transferred within a specified time frame. This prevents system abuse and overload, which is crucial in Interchain transfers.
+
+## Core Aspects
+
+1. **Flow Limit Management**:
+    - The [contract](https://github.com/axelarnetwork/interchain-token-service/blob/v1.0.0/contracts/utils/FlowLimit.sol) manages both the "flow in" and "flow out" of tokens, correlating to tokens entering and leaving a blockchain
+    - The flow limit is a ceiling on the net token flow (difference between flow in and out) within a defined epoch (currently set to [6 hours](https://github.com/axelarnetwork/interchain-token-service/blob/0a00533f19197a285d6bddc8ec0c2e908094ebfe/contracts/utils/FlowLimit.sol#L18))
+2. **Dynamic Slot Allocation**:
+    - The contract uses efficient low-level assembly for peak performance
+    - It dynamically calculates storage slots for flow amounts based on the current epoch, optimizing storage use
+3. **EPOCH_TIME**:
+    - A constant defining the time frame for each epoch. Currently, it is set to `6 hours`
+
+## Functional Overview
+
+1. **Public View Functions**:
+    - `flowLimit()`: Returns the current flow limit value.
+        
+        ```solidity
+        /**
+         * @notice Returns the current flow limit.
+         * @return flowLimit_ The current flow limit value.
+         */
+        function flowLimit() public view returns (uint256 flowLimit_) {
+            assembly {
+                flowLimit_ := sload(FLOW_LIMIT_SLOT)
+            }
+        }
+        ```
+        
+    - `flowOutAmount()`: Returns the current total amount of tokens that have flowed out in the current epoch.
+    
+    ```solidity
+    /**
+     * @notice Returns the current flow out amount.
+     * @return flowOutAmount_ The current flow out amount.
+     */
+    function flowOutAmount() external view returns (uint256 flowOutAmount_) {
+        uint256 epoch = block.timestamp / EPOCH_TIME;
+        uint256 slot = _getFlowOutSlot(epoch);
+    
+        assembly {
+            flowOutAmount_ := sload(slot)
+        }
+    }
+    ```
+    
+    - `flowInAmount()`: Returns the current total amount of tokens that have flowed in the current epoch.
+    
+    ```solidity
+    /**
+     * @notice Returns the current flow in amount.
+     * @return flowInAmount_ The current flow in amount.
+     */
+    function flowInAmount() external view returns (uint256 flowInAmount_) {
+        uint256 epoch = block.timestamp / EPOCH_TIME;
+        uint256 slot = _getFlowInSlot(epoch);
+    
+        assembly {
+            flowInAmount_ := sload(slot)
+        }
+    }
+    ```
+    
+2. **Internal Management Functions**:
+    - `_setFlowLimit(uint256, bytes32)`: Sets the flow limit for a specific token.
+    
+    ```solidity
+    /**
+     * @notice Internal function to set the flow limit.
+     * @param flowLimit_ The value to set the flow limit to.
+     * @param tokenId The id of the token to set the flow limit for.
+     */
+    function _setFlowLimit(uint256 flowLimit_, bytes32 tokenId) internal {
+        assembly {
+            sstore(FLOW_LIMIT_SLOT, flowLimit_)
+        }
+    
+        emit FlowLimitSet(tokenId, msg.sender, flowLimit_);
+    }
+    ```
+    
+    - `_addFlowOut(uint256)`: Adds to the flow out amount, ensuring it does not exceed the flow limit.
+    
+    ```solidity
+    /**
+     * @notice Adds a flow out amount.
+     * @param flowOutAmount_ The flow out amount to add.
+     */
+    function _addFlowOut(uint256 flowOutAmount_) internal {
+        uint256 flowLimit_ = flowLimit();
+        if (flowLimit_ == 0) return;
+    
+        uint256 epoch = block.timestamp / EPOCH_TIME;
+        uint256 slotToAdd = _getFlowOutSlot(epoch);
+        uint256 slotToCompare = _getFlowInSlot(epoch);
+    
+        _addFlow(flowLimit_, slotToAdd, slotToCompare, flowOutAmount_);
+    }
+    ```
+    
+    - `_addFlowIn(uint256)`: Adds to the flow in amount, also ensuring adherence to the flow limit.
+    
+    ```solidity
+    /**
+     * @notice Adds a flow in amount.
+     * @param flowInAmount_ The flow in amount to add.
+     */
+    function _addFlowIn(uint256 flowInAmount_) internal {
+        uint256 flowLimit_ = flowLimit();
+        if (flowLimit_ == 0) return;
+    
+        uint256 epoch = block.timestamp / EPOCH_TIME;
+        uint256 slotToAdd = _getFlowInSlot(epoch);
+        uint256 slotToCompare = _getFlowOutSlot(epoch);
+    
+        _addFlow(flowLimit_, slotToAdd, slotToCompare, flowInAmount_);
+    }
+    ```
+    
+
+## How is FlowLimit contract used in Interchain Token Service?
+
+The `FlowLimit` contract is [integrated](https://github.com/axelarnetwork/interchain-token-service/blob/0a00533f19197a285d6bddc8ec0c2e908094ebfe/contracts/InterchainTokenService.sol#L520) into the token manager contracts within the Interchain Token Service. These token managers, responsible for handling tokens before and after interchain transfers, utilize the `FlowLimit` functionalities to:
+
+- **Regulate Token Transfers**: Ensure that the amount of tokens transferred in or out does not exceed the predefined limits within each epoch.
+- **Maintain System Integrity**: Prevent potential abuse or system overload by controlling the rate of token flow.
+
+Here is an example of how to set a flow limit using the `setFlowLimits` method.
+
+```solidity
+/**
+ * @notice Used to set a flow limit for a token manager that has the service as its operator.
+ * @param tokenIds An array of the tokenIds of the tokenManagers to set the flow limits of.
+ * @param flowLimits The flowLimits to set.
+ */
+function setFlowLimits(bytes32[] calldata tokenIds, uint256[] calldata flowLimits) external onlyRole(uint8(Roles.OPERATOR)) {
+    uint256 length = tokenIds.length;
+    if (length != flowLimits.length) revert LengthMismatch();
+
+    for (uint256 i; i < length; ++i) {
+        ITokenManager tokenManager = ITokenManager(validTokenManagerAddress(tokenIds[i]));
+        // slither-disable-next-line calls-loop
+        tokenManager.setFlowLimit(flowLimits[i]);
+    }
+}
+```
+
+Furthermore, here are a few things to note about how the [Token Manager contract](https://github.com/axelarnetwork/interchain-token-service/blob/v1.0.0-beta.3/contracts/token-manager/TokenManager.sol) integrates the `FlowLimit` itself.
+
+- The Token Manager contract integrates **`FlowLimit`** to regulate interchain token transfers, ensuring the volume of tokens moving in and out does not exceed set limits within defined periods (epochs).
+- Functions like **`interchainTransfer`** and **`giveToken`** use **`_addFlowOut`** and **`_addFlowIn`** from **`FlowLimit`** to update flow amounts, maintaining system stability and preventing abuse.
+- Role-based functions in the contract, such as **`setFlowLimit`**, allow authorized users to manage and adjust the flow limits, adapting to varying network conditions and requirements.
+
+For exceptions and error handling, the FlowLimit contract uses [custom errors](https://github.com/axelarnetwork/interchain-token-service/blob/0a00533f19197a285d6bddc8ec0c2e908094ebfe/contracts/utils/FlowLimit.sol#L104C20-L104C37) like `FlowLimitExceeded` to handle cases where a transfer exceeds the permitted flow limit.
+
+## Setting and Overriding Flow Limits in ITS
+
+To set and override flow limits in the Interchain Token Service (ITS), you have several options based on requirements:
+
+1. If you want Axelar to manage the flow limits for the token and not deal with it yourself:
+    - Deploy the token with the `minter` address set to `address(0)`
+2. If you want to manage the flow limits together with Axelar:
+    - Deploy the token with the `minter` address set to your Deployer account or a multi-sig wallet
+3. If you want to manage the flow limits alone:
+    - Deploy the token with the `minter` address set to your Deployer account
+    - Call `tokenManager.removeFlowLimiter(itsAddress)` to remove flow limit management by Axelar
+4. If you don't want anyone to manage mint limits:
+    - Deploy the token with the `minter` address set to your Deployer account
+    - Call `tokenManager.removeFlowLimiter(itsAddress)` to remove flow limit management by Axelar
+    - Call `tokenManager.removeFlowLimiter(minter)` to remove flow limit management by the minter
+    - Call `tokenManager.transferOperatorship(address(0))` to remove operatorship
+
+You might want to increase the limit to the max before removing access granted to yourself.
+
+The `FlowLimit` contract is essential in the Interchain Token Service. It regulates token flow across blockchains, ensuring stability and security. It sets constraints on token transfers within a timeframe, manages token flow in and out, and dynamically allocates storage slots. Integrated into token manager contracts, it adapts to network conditions and prevents abuse.
