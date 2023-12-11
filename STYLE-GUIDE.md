@@ -102,7 +102,7 @@ function sendToMany(
 
 `sendToMany` will need to get the address of a token from its symbol, send funds to another address, approve the gateway to spend funds, and encode the recipient addresses on the destination chain to ensure that they are `bytes`, since GMP messages must be of this type. It will have a list of `bytes` as output.
 
-```solidity`
+```solidity
 function sendToMany(
 string memory \_destChain,
 string memory \_destContractAddr,
@@ -122,7 +122,6 @@ uint256 \_amount
     bytes memory recipientAddressesEncoded = abi.encode(_destinationAddrs);
 
 }
-
 ```
 
 ### Section headings
@@ -202,4 +201,3 @@ Implement the following to send an interchain transaction with Axelar:
 * `IAxelarGateway` – The Axelar Gateway
 * `IAxelarGasService` – The Axelar Gas Service
 * `IERC20` – This represents the ERC-20 token interface to access ERC-20-related functionality.
-```
