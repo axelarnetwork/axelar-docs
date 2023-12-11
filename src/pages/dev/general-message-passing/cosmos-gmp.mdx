@@ -18,12 +18,12 @@ To send a message from an EVM chain to a Cosmos CosmWasm contract, the payload m
 
 The payload must specify:
 
-1. **string** - The method name of the CosmWasm contract to call
-1. **string[]** - The names of all arguments
-1. **string[]** - the types of all arguments
-1. **bytes** - the values of all arguments
+1. `string` - The method name of the CosmWasm contract to call
+1. `string[]` - The names of all arguments
+1. `string[]` - the types of all arguments
+1. `bytes` - the values of all arguments
 
-### MultiSend Example encoding
+### Multi-send Example encoding
 
 This example encodes a string array of recipients, as you can see in our [example of sending tokens and recipients](https://github.com/axelarnetwork/axelar-examples/blob/main/examples/evm/call-contract-with-token/DistributionExecutable.sol).
 
@@ -174,10 +174,11 @@ If you don’t support CosmWasm on your Cosmos chain, you'll need to implement a
 
 Because IBC messages are permissionless, you'll want to ensure you verify the source of all messages.
 
-You receive a packet on Cosmos chain, you need to verify:
+When you receive a packet on Cosmos chain, you'll need to verify:
 
-1. It came from Axelar (verify IBC channel; Axelar GMP sender account).
-   How do you specify what Axelar IBC channel is? You whitelist the channel hash.
+1. That the packet came from Axelar (verify IBC channel; Axelar GMP sender account).
+
+   Specify the Axelar IBC channel by allowlisting the channel hash.
 
    - **[CosmWasm](https://github.com/osmosis-labs/osmosis/blob/main/x/ibc-hooks/README.md#cosmwasm-contract-execution-format)**
 
@@ -191,10 +192,11 @@ You receive a packet on Cosmos chain, you need to verify:
 
    - **For Consensus**
 
-     Verify (channel & sender == address of our GMP account = **axelar1dv4u5k73pzqrxlzujxg3qp8kvc3pje7jtdvu72npnt5zhq05ejcsn5qme5**.
+     Verify (channel & sender == address of our GMP account = `axelar1dv4u5k73pzqrxlzujxg3qp8kvc3pje7jtdvu72npnt5zhq05ejcsn5qme5`.
      https://github.com/axelarnetwork/evm-cosmos-gmp-sample/blob/main/native-integration/sample-middleware/gmp_middleware.go#L114
 
-1. The EVM source chain and address
+1. The EVM source chain and address.
+
    When a message has an EVM source, the chain and address are passed in differently for CosmWasm and Native GMP.
-   - **CosmWasm**: The CosmWasm contract can define source_chain and/or source_address as arguments for their wasm method. And pass in the correct source_chain and/or source_address as an arg from the EVM contract. The Axelar network will validate that these values are accurate and not being spoofed by the sender.
-   - **Native GMP**: The GMP call will be sent by the Axelar GMP account to the cosmos chain and contain [this format](https://github.com/axelarnetwork/axelar-core/blob/main/x/axelarnet/types/evm_translator.go#L55) in the IBC memo that contains validated source chain/address values.
+   - **CosmWasm**: The CosmWasm contract can define `source_chain` and/or `source_address` as arguments for their `wasm` method. And pass in the correct `source_chain` and/or `source_address` as an argument from the EVM contract. The Axelar network will validate that these values are accurate and not being spoofed by the sender.
+   - **Native GMP**: The GMP call will be sent by the Axelar GMP account to the cosmos chain. Make sure that it is [formatted correctly](https://github.com/axelarnetwork/axelar-core/blob/main/x/axelarnet/types/evm_translator.go#L55) in the IBC memo that contains validated source chain/address values.
