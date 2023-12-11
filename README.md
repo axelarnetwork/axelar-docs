@@ -13,4 +13,4 @@ And visit `localhost:3000` to preview your changes.
 
 ## Updating Navigation
 
-Site navigation is generated in TypeScript based on the section of the site the user is currently browsing. Add new pages to the navigation in `src/layouts/navigation.ts`. In general, a new page will be added as a new child with a `title` and `href` to one of the arrays. The site supports up to 3 levels of nested navigation by providing a `children` instead of an `href` property with the top level being a navigation header. Each level of navigation is visually tabbed beneath its parent.
+Site navigation is generated in TypeScript based on the section the user is currently browsing in. The navigation layout is managed in [`src/layouts/navigation.ts`](https://github.com/axelarnetwork/axelar-docs/blob/main/src/layouts/navigation.ts), with pages represented as a `title` and `href` in one of the `children` arrays. The site supports up to 3 levels of nested navigation, with the top level acting as navigation header. Each subsequent level is visually tabbed beneath its parent.
