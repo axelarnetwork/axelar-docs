@@ -13,4 +13,4 @@ And visit `localhost:3000` to preview your changes.
 
 ## Updating Navigation
 
-When adding new pages, you should add them to the navigation in `src/layouts/navigation.ts`. The navigation is generated in TypeScript based on the section of the site the user is currently browsing. Generally you will just add a new child with a `title` and `href` to one of the arrays. The navigation supports up to 3 level of nested navigation by providing a `children` instead of an `href` property with the top level being a navigation header. Each level level of navigation is visually tabbed beneath its parent.
+Site navigation is generated in TypeScript based on the section of the site the user is currently browsing. Add new pages to the navigation in `src/layouts/navigation.ts`. In general, a new page will be added as a new child with a `title` and `href` to one of the arrays. The site supports up to 3 levels of nested navigation by providing a `children` instead of an `href` property with the top level being a navigation header. Each level of navigation is visually tabbed beneath its parent.
