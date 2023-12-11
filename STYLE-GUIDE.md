@@ -1,4 +1,4 @@
-# Axelar developer documentation style guide
+# Axelar Developer Documentation Style Guide
 
 Thank you for contributing to the Axelar documentation! We aim to provide clear, consistent information on how to build for the interchain future. Please refer to this guide when working on the docs. It will be updated regularly as Axelar grows and new standards come into place.
 
@@ -133,13 +133,13 @@ uint256 \_amount
 
 ### Document titles
 
-* For **H1 headings** (headings with one "#" sign in front), use title case for all words longer than 3 characters.
+* For **H1 headings** (headings with one "#" sign in front), use [title case](https://titlecaseconverter.com/) for all words longer than 3 characters.
 
 |  **Recommended**  |  **Not recommended** |
 | --- | --- |
 |  Everything you Always Wanted to Know About Headings, but Were Afraid to Ask  |  Everything you always wanted to know about headings, but were afraid to ask  |
 
-* For **H2 headings and below** (headings with two or more "#" signs in front), write in sentence case rather than capitalizing every letter of a new word.
+* For **H2 headings and below** (headings with two or more "#" signs in front), write in [sentence case](https://apastyle.apa.org/style-grammar-guidelines/capitalization/sentence-case) rather than capitalizing every letter of a new word.
 
 |  **Recommended**  |  **Not recommended** |
 | --- | --- |
