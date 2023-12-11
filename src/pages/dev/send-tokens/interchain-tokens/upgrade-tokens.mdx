@@ -66,11 +66,11 @@ You can optionally have any of these custom tokens extend [`IInterchainTokenStan
 
 > You could decide to make all of these Token Managers [Mint/Burn](../../reference/glossary/#mintburn), or you could specify at most one (likely your primary/origin chain) to be [Lock/Release](../../reference/glossary/#lockunlock) as indicated in the [`ITokenManagerType.sol`](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/interfaces/ITokenManagerType.sol) depending on your needs.
 
-Here is an example of deploying a remote token manager:
+Here is an example of deploying a token manager:
 
 ```solidity
 /**
- * @notice Used to deploy remote TokenManagers.
+ * @notice Used to deploy TokenManagers.
  * @dev At least the `gasValue` amount of native token must be passed to the function call. `gasValue` exists because this function can be
  * part of a multicall involving multiple functions that could make remote contract calls.
  * @param salt The salt to be used during deployment.

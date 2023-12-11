@@ -20,11 +20,11 @@ The simplest type of Interchain Token is to create a brand new [Interchain Token
     - Decimals
     - Amount to mint
 - You can also click the advanced option where you can add an account as `Token Minter` and `Salt` value; otherwise, it gets prefilled with the deployer(connected account) address and a random, uniquely generated salt value
-- Select additional chains for your token's availability and optionally add the token amount to mint on each selected chain.
+- Select additional chains for your token's availability and optionally add the token amount to mint on each selected chain
 
 **Congratulations!** Your Interchain Token is now accessible on multiple blockchain networks. This allows for seamless interaction with your token on any of these networks, utilizing familiar methods like send, transfer, and approve, just as with any standard ERC-20 token.
 
-Furthermore, your token is categorized as a [Interchain Token](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/interfaces/IInterchainTokenStandard.sol). This classification includes the `interchainTransfer` method, allowing you to transfer it between blockchains.
+Furthermore, your token follows the [Interchain Token Standard](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/interfaces/IInterchainTokenStandard.sol). This means that users can call the `interchainTransfer` method on the token itself to transfer between blockchains.
 
 Here is an example of the `interchainTransfer` method.
 
@@ -48,38 +48,37 @@ function interchainTransfer(
 ) external payable
 ```
 
-## Create a new custom Interchain Token(s)
+## Create a custom Interchain Token(s)
 
 If you want more features than the Interchain Token provides, you can create a [custom](../../reference/glossary/#custom-token) token. You may want a customized token to customize specific minting policies, ownership structures, rate limits, or other bespoke functionalities.
 
-To create a new Interchain Token:
+To create a custom Interchain Token:
 
-- Use the [`deployInterchainToken`](https://github.com/axelarnetwork/interchain-token-service/blob/9edc4318ac1c17231e65886eea72c0f55469d7e5/contracts/InterchainTokenFactory.sol#L118) method from `InterchainTokenFactory.sol` for local chain deployment with an optional pre-mint
-- Deploy it to your chosen remote chain using the [`deployRemoteInterchainToken`](https://github.com/axelarnetwork/interchain-token-service/blob/9edc4318ac1c17231e65886eea72c0f55469d7e5/contracts/InterchainTokenFactory.sol#L163) method from `InterchainTokenFactory.sol`
-- Use the `tokenId` on the Interchain Token Service to retrieve the Token Manager address. Call [`tokenManagerAddress`](https://github.com/axelarnetwork/interchain-token-service/blob/9edc4318ac1c17231e65886eea72c0f55469d7e5/contracts/InterchainTokenService.sol#L176) which calculates the TokenManager's address for a given `tokenId`. Note that the Token Manager does not need to pre-exist. Additionally, you can find the token address with the `tokenId` by calling  [`interchainTokenAddress`](https://github.com/axelarnetwork/interchain-token-service/blob/9edc4318ac1c17231e65886eea72c0f55469d7e5/contracts/InterchainTokenService.sol#L207)
+- Build your [ERC-20](https://docs.alchemy.com/docs/how-to-create-an-erc-20-token-4-steps) token and deploy it on multiple chains
+- Deploy a [Mint/Burn](../../reference/glossary/#mintburn) - [Token Manager](../../reference/glossary/#token-manager) for existing tokens on all chains using [`deployTokenManager`](https://github.com/axelarnetwork/interchain-token-service/blob/9edc4318ac1c17231e65886eea72c0f55469d7e5/contracts/InterchainTokenService.sol#L276) on Interchain Token Service. The `deployTokenManager` method requires parameters like `salt`, `destinationChain`, `tokenManagerType`, `params`, and `gasValue`
+- Make sure the Interchain Token Service can call the mint/burn on the token and repeat the step above for other chains where the token exists using the same deployer address and salt
 
-Here is an example of using the `deployInterchainToken` method.
+Here is an example of deploying a token manager:
 
 ```solidity
 /**
- * @notice Deploys a new interchain token with specified parameters.
- * @dev Creates a new token and optionally mints an initial amount to a specified minter.
- * @param salt The unique salt for deploying the token.
- * @param name The name of the token.
- * @param symbol The symbol of the token.
- * @param decimals The number of decimals for the token.
- * @param initialSupply The amount of tokens to mint initially (can be zero).
- * @param minter The address to receive the initially minted tokens.
- * @return tokenId The tokenId corresponding to the deployed InterchainToken.
+ * @notice Used to deploy TokenManagers.
+ * @dev At least the `gasValue` amount of native token must be passed to the function call. `gasValue` exists because this function can be
+ * part of a multicall involving multiple functions that could make remote contract calls.
+ * @param salt The salt to be used during deployment.
+ * @param destinationChain The name of the chain to deploy the TokenManager and standardized token to.
+ * @param tokenManagerType The type of TokenManager to be deployed.
+ * @param params The params that will be used to initialize the TokenManager.
+ * @param gasValue The amount of native tokens to be used to pay for gas for the remote deployment.
+ * @return tokenId The tokenId corresponding to the deployed TokenManager.
  */
-function deployInterchainToken(
+function deployTokenManager(
     bytes32 salt,
-    string calldata name,
-    string calldata symbol,
-    uint8 decimals,
-    uint256 initialSupply,
-    address minter
-) external payable returns (bytes32 tokenId)
+    string calldata destinationChain,
+    TokenManagerType tokenManagerType,
+    bytes calldata params,
+    uint256 gasValue
+) external payable 
 ```
 
 To transfer tokens between chains, you can do that directly via the Interchain Token Service by calling the [`interchainTransfer`](https://github.com/axelarnetwork/interchain-token-service/blob/v1.0.0/contracts/interfaces/IInterchainTokenService.sol#L202). 
