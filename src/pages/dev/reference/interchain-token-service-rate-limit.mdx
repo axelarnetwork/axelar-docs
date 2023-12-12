@@ -151,14 +151,21 @@ function _addFlowIn(uint256 flowInAmount_) internal {
 
 There are several options for setting and overriding flow limits in the Interchain Token Service.
 
+### Fully managed flow limits
+
 If you want Axelar to manage the flow limits for the token and not deal with it yourself:
 - Deploy the token with the `minter` address set to `address(0)`
+
+### Partially managed flow limits
 
 If you want to manage the flow limits together with Axelar:
 - Deploy the token with the `minter` address set to your Deployer account or a multi-sig wallet
 If you want to manage the flow limits alone:
 - Deploy the token with the `minter` address set to your Deployer account
 - Call `tokenManager.removeFlowLimiter(itsAddress)` to remove flow limit management by Axelar
+
+### Unmanaged flow limits
+
 If you don't want anyone to manage mint limits:
 - Deploy the token with the `minter` address set to your Deployer account
 - Call `tokenManager.removeFlowLimiter(itsAddress)` to remove flow limit management by Axelar
