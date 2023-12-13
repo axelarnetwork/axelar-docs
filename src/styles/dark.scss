@@ -62,8 +62,10 @@ html.dark body {
     tr {
       border-bottom: 2px solid rgb(48, 48, 49);
     }
-
-    tr:nth-child(2n + 2) {
+    tr:nth-child(2n + 1) td {
+      background-color: #111111;
+    }
+    tr:nth-child(2n + 2) td {
       background-color: #1d1f22;
     }
   }
