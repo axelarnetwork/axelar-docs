@@ -1,0 +1,362 @@
+# Immutable zkEVM
+
+Instructions to set up your Immutable zkEVM node.
+
+## Requirements
+
+- [Setup your Axelar validator](/validator/setup)
+- Minimum hardware requirements: 2 AWS vCPU, 4GB RAM, 100GB free storage space.
+- Ubuntu 22.04.1 (tested on 22.04.1)
+- [Official Documentation](https://docs.immutable.com/)
+
+
+## Prerequisites
+1. Install [Docker](https://docs.docker.com/engine/install/ubuntu/)
+2. Install `openssl`.
+```bash
+sudo apt-get install openssl
+```
+3. **(Optional)** If you plan to use WireGuard (see [Get access to the Immutable zkEVM partner nodes](#get-access-to-the-immutable-zkevm-partner-nodes)), install it.
+```bash
+sudo apt-get install wireguard
+```
+
+## Instructions
+
+### Get access to the Immutable zkEVM partner nodes
+
+The Immutable zkEVM blockchain has dedicated nodes that serve as access points for partners wanting to peer with
+the network.
+Immutable protects these nodes from bad actors trying to disrupt partner services by putting limits on who
+can establish a connection.
+
+Partners can choose between a static IP allowlist or a WireGuard tunnel to establish their connections.
+
+The static IP allowlist ensures only a predetermined list of approved IP addresses can establish connections.
+
+The WireGuard tunnel provides partners with a secure and private conduit for their connections to the Immutable zkEVM,
+without requiring a static IP.
+
+<tabs>
+<tab-item title="Static IP">
+From your vald container, create a transaction with a note that includes a `shasum` hash of your static IP.
+
+```bash
+axelard tx bank send broadcaster [any-axelar-address] 1uaxl --note "$( echo axelar-static-ip-[static-ip] | shasum -a 256 - )"
+```
+
+Send an email to the [Immutable team](mailto:squad-imx-rollups@immutable.com) including your static IP and
+a link to your transaction in the Axelar explorer. For example:
+
+<div style={{color: 'gray', padding: '1rem'}}>
+> *Please add my static IP to the Immutable allowlist: `_STATIC_IP_`*
+>
+> *See my verfication transaction at: `_LINK_TO_EXPLORER_`*
+
+</div>
+
+The Immutable team will reply with a confirmation that your IP has been added to the allowlist.
+
+</tab-item>
+<tab-item title="WireGuard">
+Using the WireGuard CLI, create a private and public key for your client.
+
+```bash
+umask 077
+wg genkey > wg-privatekey
+wg pubkey < wg-privatekey > wg-publickey
+```
+
+Using the Axelar CLI, create a transaction with a note that includes a `shasum` hash of your public key.
+
+```bash
+axelard tx bank send broadcaster [any-axelar-address] 1uaxl --note "$( echo axelar-wireguard-[wireguard-pubkey] | shasum -a 256 - )"
+```
+
+Send an email to the [Immutable team](mailto:squad-imx-rollups@immutable.com) including your static IP and
+a link to your transaction in the Axelar explorer. For example:
+
+<div style={{color: 'gray', padding: '1rem'}}>
+> *Please add my public key to the Immutable WireGuard tunnel: `_WIREGUARD_PUBLIC_KEY_`*
+
+> *See my verfication transaction at: `_LINK_TO_EXPLORER_`*
+
+</div>
+
+The Immutable team will reply with a configuration file for your WireGuard client.
+Once you receive this file, update the `PrivateKey` entry with the contents of your `wg-privatekey` file.
+
+Save the WireGuard configuration file in `/etc/wireguard/wg0.conf` and use `wg-quick` to setup the tunnel.
+
+```bash
+wg-quick up wg0
+```
+
+The output should look something like this:
+```bash
+[#] ip link add wg0 type wireguard
+[#] wg setconf wg0 /dev/fd/63
+[#] ip -4 address add <ASSIGNED_CIDR> dev wg0
+[#] ip link set mtu 8921 up dev wg0
+[#] ip -4 route add <GATEWAY_CIDR> dev wg0
+[#] ip -4 route add <GATEWAY_CIDR> dev wg0
+[#] ip -4 route add <GATEWAY_CIDR> dev wg0
+```
+</tab-item>
+</tabs>
+
+### Setup the Immutable zkEVM node
+
+1. Create a data directory.
+
+```bash
+mkdir /opt/immutable-zkevm
+```
+
+2. Generate a random password.
+```bash
+openssl rand -base64 > /opt/immutable-zkevm/password
+```
+
+3. Pull the Docker image.
+
+```bash
+docker pull ghcr.io/immutable/go-ethereum/go-ethereum:v0.0.8
+# Create a short-form tag we can reference in the next few commands
+docker tag ghcr.io/immutable/go-ethereum/go-ethereum:v0.0.8 geth
+```
+
+4. Initialise the node.
+
+<tabs>
+<tab-item title="Testnet">
+```bash
+docker run \
+  --rm \
+  -v /opt/immutable-zkevm:/mnt/geth \
+  --name geth \
+  geth account new --datadir /mnt/geth --password /mnt/geth/password
+```
+
+```bash
+docker run \
+  --rm \
+  -v /opt/immutable-zkevm:/mnt/geth \
+  --name geth \
+  geth init \
+  --datadir /mnt/geth /etc/geth/testnet.json 
+```
+</tab-item>
+<tab-item title="Mainnet">
+```bash
+docker run \
+  --rm \
+  -v /opt/immutable-zkevm:/mnt/geth \
+  --name geth \
+  geth account new --datadir /mnt/geth --password /mnt/geth/password
+```
+
+```bash
+docker run \
+  --rm \
+  -v /opt/immutable-zkevm:/mnt/geth \
+  --name geth \
+  geth init \
+  --datadir /mnt/geth /etc/geth/mainnet.json 
+```
+</tab-item>
+</tabs>
+
+5. Start the Immutable zkEVM node as a service
+
+<tabs>
+<tab-item title="Testnet">
+```bash
+docker run \
+  -d \
+  --restart=always \
+  -v /opt/immutable-zkevm:/mnt/geth \
+  --name geth \
+  -p 8545:8545 \
+  geth \
+  --config /etc/geth/testnet.toml \
+  --datadir /mnt/geth \
+  --keystore /mnt/geth/keystore \
+  --networkid 13473 \
+  --http \
+  --http.port "8545" \
+  --http.addr "0.0.0.0"
+```
+</tab-item>
+<tab-item title="Mainnet">
+```bash
+docker run \
+  -d \
+  --restart=always \
+  -v /opt/immutable-zkevm:/mnt/geth \
+  --name geth \
+  -p 8545:8545 \
+  geth \
+  --config /etc/geth/mainnet.toml \
+  --datadir /mnt/geth \
+  --keystore /mnt/geth/keystore \
+  --networkid 13371 \
+  --http \
+  --http.port "8545" \
+  --http.addr "0.0.0.0"
+```
+</tab-item>
+</tabs>
+
+### Verify your deployment
+
+1. Check the logs.
+
+```bash
+docker logs geth
+```
+
+The following logs indicate you are synching from the genesis block.
+
+```bash
+INFO [12-04|04:54:26.418] Maximum peer count                       ETH=100 LES=0 total=100
+INFO [12-04|04:54:26.421] Smartcard socket not found, disabling    err="stat /run/pcscd/pcscd.comm: no such file or directory"
+INFO [12-04|04:54:26.422] initialising New Relic agent... 
+ERROR[12-04|04:54:26.422] Failed to initialise New Relic agent: NEW_RELIC_APP_NAME missing 
+INFO [12-04|04:54:26.433] Enabling recording of key preimages since archive mode is used 
+INFO [12-04|04:54:26.446] Using pebble as the backing database 
+INFO [12-04|04:54:26.446] Allocated cache and file handles         database=/mnt/geth/geth/chaindata cache=512.00MiB handles=524,288
+INFO [12-04|04:54:26.504] Opened ancient database                  database=/mnt/geth/geth/chaindata/ancient/chain readonly=true
+INFO [12-04|04:54:26.505] State scheme set to already existing     scheme=hash
+INFO [12-04|04:54:26.508] Set global gas cap                       cap=50,000,000
+INFO [12-04|04:54:26.509] Initializing the KZG library             backend=gokzg
+INFO [12-04|04:54:26.650] Allocated trie memory caches             clean=512.00MiB dirty=0.00B
+INFO [12-04|04:54:26.650] Using pebble as the backing database 
+INFO [12-04|04:54:26.650] Allocated cache and file handles         database=/mnt/geth/geth/chaindata               cache=512.00MiB handles=524,288
+INFO [12-04|04:54:26.730] Opened ancient database                  database=/mnt/geth/geth/chaindata/ancient/chain readonly=false
+INFO [12-04|04:54:26.753] Initialising Ethereum protocol           network=13473 dbversion=8
+INFO [12-04|04:54:26.754]  
+INFO [12-04|04:54:26.754] --------------------------------------------------------------------------------------------------------------------------------------------------------- 
+INFO [12-04|04:54:26.754] Chain ID:  13473 (unknown) 
+INFO [12-04|04:54:26.754] Reorg Invariants Enabled: true 
+INFO [12-04|04:54:26.754] Consensus: Clique (proof-of-authority) 
+INFO [12-04|04:54:26.754]  
+INFO [12-04|04:54:26.754] Pre-Merge hard forks (block based): 
+INFO [12-04|04:54:26.754]  - Homestead:                   #0        (https://github.com/ethereum/execution-specs/blob/master/network-upgrades/mainnet-upgrades/homestead.md) 
+INFO [12-04|04:54:26.754]  - Tangerine Whistle (EIP 150): #0        (https://github.com/ethereum/execution-specs/blob/master/network-upgrades/mainnet-upgrades/tangerine-whistle.md) 
+INFO [12-04|04:54:26.754]  - Spurious Dragon/1 (EIP 155): #0        (https://github.com/ethereum/execution-specs/blob/master/network-upgrades/mainnet-upgrades/spurious-dragon.md) 
+INFO [12-04|04:54:26.754]  - Spurious Dragon/2 (EIP 158): #0        (https://github.com/ethereum/execution-specs/blob/master/network-upgrades/mainnet-upgrades/spurious-dragon.md) 
+INFO [12-04|04:54:26.754]  - Byzantium:                   #0        (https://github.com/ethereum/execution-specs/blob/master/network-upgrades/mainnet-upgrades/byzantium.md) 
+INFO [12-04|04:54:26.754]  - Constantinople:              #0        (https://github.com/ethereum/execution-specs/blob/master/network-upgrades/mainnet-upgrades/constantinople.md) 
+INFO [12-04|04:54:26.754]  - Petersburg:                  #0        (https://github.com/ethereum/execution-specs/blob/master/network-upgrades/mainnet-upgrades/petersburg.md) 
+INFO [12-04|04:54:26.754]  - Istanbul:                    #0        (https://github.com/ethereum/execution-specs/blob/master/network-upgrades/mainnet-upgrades/istanbul.md) 
+INFO [12-04|04:54:26.754]  - Muir Glacier:                #0        (https://github.com/ethereum/execution-specs/blob/master/network-upgrades/mainnet-upgrades/muir-glacier.md) 
+INFO [12-04|04:54:26.754]  - Berlin:                      #0        (https://github.com/ethereum/execution-specs/blob/master/network-upgrades/mainnet-upgrades/berlin.md) 
+INFO [12-04|04:54:26.754]  - London:                      #0        (https://github.com/ethereum/execution-specs/blob/master/network-upgrades/mainnet-upgrades/london.md) 
+INFO [12-04|04:54:26.754]  - Arrow Glacier:               #0        (https://github.com/ethereum/execution-specs/blob/master/network-upgrades/mainnet-upgrades/arrow-glacier.md) 
+INFO [12-04|04:54:26.754]  - Gray Glacier:                #0        (https://github.com/ethereum/execution-specs/blob/master/network-upgrades/mainnet-upgrades/gray-glacier.md) 
+INFO [12-04|04:54:26.754]  
+INFO [12-04|04:54:26.754] The Merge is not yet available for this network! 
+INFO [12-04|04:54:26.754]  - Hard-fork specification: https://github.com/ethereum/execution-specs/blob/master/network-upgrades/mainnet-upgrades/paris.md 
+INFO [12-04|04:54:26.754]  
+INFO [12-04|04:54:26.754] Post-Merge hard forks (timestamp based): 
+INFO [12-04|04:54:26.754]  
+INFO [12-04|04:54:26.754] --------------------------------------------------------------------------------------------------------------------------------------------------------- 
+INFO [12-04|04:54:26.754]  
+INFO [12-04|04:54:26.755] Loaded most recent local block           number=1,343,036 hash=b5bb3f..cbe4f1 td=2,686,073 age=1m17s
+WARN [12-04|04:54:26.893] Sanitizing invalid blobpool storage cap  provided=0 updated=10,737,418,240
+INFO [12-04|04:54:26.893] Initialized transaction indexer          limit=2,350,000
+INFO [12-04|04:54:26.929] Gasprice oracle is ignoring threshold set threshold=2
+INFO [12-04|04:54:26.935] Shutdown tracker started marker 
+WARN [12-04|04:54:26.935] Engine API enabled                       protocol=eth
+WARN [12-04|04:54:26.935] Engine API started but chain not configured for merge yet 
+INFO [12-04|04:54:26.935] Starting peer-to-peer node               instance=Geth/v1.13.0-unstable-cb37d5a3-20231204/linux-amd64/go1.21.4
+INFO [12-04|04:54:26.975] IPC endpoint opened                      url=/mnt/geth/geth.ipc
+INFO [12-04|04:54:26.975] Loaded JWT secret file                   path=/mnt/geth/geth/jwtsecret crc32=0xaa03f756
+time="2023-12-04T04:54:26Z" level=error msg="Failed to initialise New Relic middlware: nrApp is nil"
+time="2023-12-04T04:54:26Z" level=error msg="Failed to initialise New Relic middlware: nrApp is nil"
+INFO [12-04|04:54:26.976] WebSocket enabled                        url=ws://127.0.0.1:8551
+INFO [12-04|04:54:26.976] HTTP server started                      endpoint=127.0.0.1:8551 auth=true prefix= cors=localhost vhosts=localhost
+INFO [12-04|04:54:26.981] New local node record                    seq=1,701,654,445,241 id=660d517490a62260 ip=127.0.0.1 udp=0 tcp=0
+INFO [12-04|04:54:26.981] Started P2P networking                   self=enode://9040706fed7d4ac85ff44ac1ad54b28ec39b585ec23a5dacb920163d95dd576ca0ab8d2ba4b590a16a183bc14114ac299f2712ada37f8060be684983b1d5016f@127.0.0.1:0
+INFO [12-04|04:54:36.978] Block synchronisation started 
+INFO [12-04|04:54:37.205] Imported new chain segment               number=1,343,079 hash=560a17..971f02 blocks=43 txs=0 mgas=0.000 elapsed=205.607ms mgasps=0.000 triedirty=0.00B
+INFO [12-04|04:54:37.518] Imported new chain segment               number=1,343,080 hash=db30ec..114a94 blocks=1  txs=0 mgas=0.000 elapsed=4.535ms   mgasps=0.000 triedirty=0.00B
+INFO [12-04|04:54:39.517] Imported new chain segment               number=1,343,081 hash=b72134..f35f55 blocks=1  txs=0 mgas=0.000 elapsed=4.587ms   mgasps=0.000 triedirty=0.00B
+INFO [12-04|04:54:41.015] Imported new chain segment               number=1,343,082 hash=882e89..2b8def blocks=1  txs=0 mgas=0.000 elapsed=5.473ms   mgasps=0.000 triedirty=0.00B
+INFO [12-04|04:54:43.012] Imported new chain segment               number=1,343,083 hash=39f454..608c0c blocks=1  txs=0 mgas=0.000 elapsed=4.066ms   mgasps=0.000 triedirty=0.00B
+INFO [12-04|04:54:45.518] Imported new chain segment               number=1,343,084 hash=aa9eb2..f83f8f blocks=1  txs=0 mgas=0.000 elapsed=4.481ms   mgasps=0.000 triedirty=0.00B
+INFO [12-04|04:54:47.517] Imported new chain segment               number=1,343,085 hash=8161fb..9142ec blocks=1  txs=0 mgas=0.000 elapsed=3.971ms   mgasps=0.000 triedirty=0.00B
+INFO [12-04|04:54:49.516] Imported new chain segment               number=1,343,086 hash=fd6e70..0bf228 blocks=1  txs=0 mgas=0.000 elapsed=4.095ms   mgasps=0.000 triedirty=0.00B
+INFO [12-04|04:54:51.011] Imported new chain segment               number=1,343,087 hash=9bf651..57e23e blocks=1  txs=0 mgas=0.000 elapsed=5.172ms   mgasps=0.000 triedirty=0.00B
+...
+```
+
+2. Check the chain ID.
+
+From the container host.
+
+```bash
+curl http://localhost:8545 \
+  -X POST \
+  -H "Content-Type: application/json" \
+  --data '{"method":"eth_chainId","params":[],"id":1,"jsonrpc":"2.0"}'
+
+```
+
+Compare it to the output reported by Immutable nodes.
+
+<tabs>
+<tab-item title="Testnet">
+
+```bash
+curl https://rpc.testnet.immutable.com \
+  -X POST \
+  -H "Content-Type: application/json" \
+  --data '{"method":"eth_chainId","params":[],"id":1,"jsonrpc":"2.0"}'
+```
+
+The output should be:
+```bash
+{"jsonrpc":"2.0","id":1,"result":"0x34a1"}
+```
+</tab-item>
+<tab-item title="Mainnet">
+
+```bash
+curl https://rpc.immutable.com \
+  -X POST \
+  -H "Content-Type: application/json" \
+  --data '{"method":"eth_chainId","params":[],"id":1,"jsonrpc":"2.0"}'
+```
+
+The output should be:
+```bash
+{"jsonrpc":"2.0","id":1,"result":"0x343b"}
+```
+</tab-item>
+</tabs>
+
+## Configure vald
+
+In order for `vald` to connect to your Optimism node, your `rpc_addr` should be exposed in
+vald's `config.toml`
+
+<tabs>
+  <tab-item title="Mainnet">
+  ```bash
+  [[axelar_bridge_evm]]
+  name = "immutable"
+  rpc_addr = "http://IP:PORT"
+  start-with-bridge = true
+  ```
+  </tab-item>
+  <tab-item title="Testnet">
+  ```bash
+  [[axelar_bridge_evm]]
+  name = "immutable"
+  rpc_addr = "http://IP:PORT"
+  start-with-bridge = true
+  ```
+  </tab-item>
+</tabs>
