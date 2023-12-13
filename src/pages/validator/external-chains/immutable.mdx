@@ -336,3 +336,54 @@ The output should be:
 ```
 </tab-item>
 </tabs>
+
+## Configure vald
+
+In order for `vald` to connect to your Optimism node, your `rpc_addr` should be exposed in
+vald's `config.toml`
+
+<tabs>
+  <tab-item title="Mainnet">
+  ```bash
+  [[axelar_bridge_evm]]
+  name = "optimism"
+  rpc_addr = "http://IP:PORT"
+  start-with-bridge = true
+  ```
+  </tab-item>
+  <tab-item title="Testnet">
+  ```bash
+  [[axelar_bridge_evm]]
+  name = "optimism"
+  rpc_addr = "http://IP:PORT"
+  start-with-bridge = true
+  ```
+  </tab-item>
+</tabs>
+
+### Common Node Operations
+
+First `cd` into the directory
+```bash
+cd $HOME/simple-optimism-node/
+```
+
+To start
+```bash
+docker compose up -d
+```
+
+To stop
+```bash
+docker compose down
+```
+
+To update
+```bash
+docker compose pull
+```
+
+To stop and wipe out everything
+```bash
+docker compose down -v
+```
