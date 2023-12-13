@@ -111,7 +111,8 @@ footer {
   .columns {
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-around;
+    justify-content: space-between;
+    gap: 16px;
     max-width: $page-width;
     margin: 0px auto;
   }
@@ -120,8 +121,9 @@ footer {
   }
   & .footer-links {
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
     gap: 16px;
+    max-width: 800px;
     flex: 1;
   }
 }
