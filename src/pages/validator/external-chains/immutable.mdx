@@ -362,10 +362,10 @@ docker run \
 ```
 
 * `-d` Detach. This means the container will start without holding on to your terminal.
-* `--restart=always`: Always keep it running. This tells Docker, if the container stops running (e.g., if the host restarts), start it up again. 
-* `-v <LOCAL_DIR>:<CONTAINER_DIR>`: Mount host directory. This tells docker to map a directory in your node, to a directory inside the container.
+* `--restart=always`: Always keep it running. This tells the Docker daemon, if the container stops running (e.g., if the host restarts), start it up again. 
+* `-v <LOCAL_DIR>:<CONTAINER_DIR>`: Mount host directory. This tells docker to map a directory from your host, to a directory inside the container.
 * `--name geth`: Name the container. This helps us reference the container later in the docker CLI. If you run `docker ps` you should see the container with an ID and this name.
-* `-p <HOST_PORT>:<CONTAINER_PORT>`. Map host port. This tells docker to forward any connections on the nodes's `<HOST_PORT>` to the container's `<CONTAINER_PORT>`.
+* `-p <HOST_PORT>:<CONTAINER_PORT>`. Map host port. This tells docker to forward any connections on the host's `<HOST_PORT>` to the container's `<CONTAINER_PORT>`.
 * `geth`: Command line. Here starts the command line inside the container. This is the binary for the `immutable-geth` instance running inside the container.
 * `--config /etc/geth/mainnet.toml`: Pre-baked mainnet configuration. This path **_MUST NOT BE MODIFIED_**.
 * `--datadir <CONTAINER_DIR>`: Directory path. This is the directory `geth` will use for storage. It **_MUST_** match `<CONTAINER_DIR>` in the `-v` flag. It **_MUST_** match the path used in the initialisation commands ran previously.
@@ -378,7 +378,7 @@ docker run \
 
 ## Configure vald
 
-In order for `vald` to connect to your Optimism node, your `rpc_addr` should be exposed in
+In order for `vald` to connect to your Immutable zkEVM node, your `rpc_addr` should be exposed in
 vald's `config.toml`
 
 <tabs>
