@@ -337,9 +337,48 @@ The output should be:
 </tab-item>
 </tabs>
 
+## Understanding the Docker command
+
+The following is a breakdown of the docker command used to start up the Immutable zkEVM node.
+This information should help node operators adjust the command to their respected environments.
+
+For simplicity, we use the Mainnet start up command, but the information applies to both Testnet and Mainnet.
+
+```bash
+docker run \
+  -d \
+  --restart=always \
+  -v /opt/immutable-zkevm:/mnt/geth \
+  --name geth \
+  -p 8545:8545 \
+  geth \
+  --config /etc/geth/mainnet.toml \
+  --datadir /mnt/geth \
+  --keystore /mnt/geth/keystore \
+  --networkid 13371 \
+  --http \
+  --http.port "8545" \
+  --http.addr "0.0.0.0"
+```
+
+* `-d` Detach. This means the container will start without holding on to your terminal.
+* `--restart=always`: Always keep it running. This tells the Docker daemon, if the container stops running (e.g., if the host restarts), start it up again. 
+* `-v <LOCAL_DIR>:<CONTAINER_DIR>`: Mount host directory. This tells docker to map a directory from your host, to a directory inside the container.
+* `--name geth`: Name the container. This helps us reference the container later in the docker CLI. If you run `docker ps` you should see the container with an ID and this name.
+* `-p <HOST_PORT>:<CONTAINER_PORT>`. Map host port. This tells docker to forward any connections on the host's `<HOST_PORT>` to the container's `<CONTAINER_PORT>`.
+* `geth`: Command line. Here starts the command line inside the container. This is the binary for the `immutable-geth` instance running inside the container.
+* `--config /etc/geth/mainnet.toml`: Pre-baked mainnet configuration. This path **_MUST NOT BE MODIFIED_**.
+* `--datadir <CONTAINER_DIR>`: Directory path. This is the directory `geth` will use for storage. It **_MUST_** match `<CONTAINER_DIR>` in the `-v` flag. It **_MUST_** match the path used in the initialisation commands ran previously.
+* `--keystore <CONTAINER_DIR>/keystore`: Keystore path. This is relative to `<CONTAINER_DIR>` mentioned above. NOTE: we have a backlog task to potentially remove this.
+* `--networkid 13371`: ChainID. This ***MUST NOT*** be modified.
+* `--http`: Enable RPC interface.
+* `--http.port <CONTAINER_PORT>`: Expose RPC interface in container port `<CONTAINER_PORT>`. This ***MUST*** match `<CONTAINER_PORT>` in the `-p` flag above.
+* `--http.addr "0.0.0.0"`. Expose the RPC interface in all network addresses.
+
+
 ## Configure vald
 
-In order for `vald` to connect to your Optimism node, your `rpc_addr` should be exposed in
+In order for `vald` to connect to your Immutable zkEVM node, your `rpc_addr` should be exposed in
 vald's `config.toml`
 
 <tabs>
