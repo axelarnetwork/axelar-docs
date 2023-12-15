@@ -113,12 +113,7 @@ The output should look something like this:
 mkdir /opt/immutable-zkevm
 ```
 
-2. Generate a random password.
-```bash
-openssl rand -base64 32 > /opt/immutable-zkevm/password
-```
-
-3. Pull the Docker image.
+2. Pull the Docker image.
 
 ```bash
 docker pull ghcr.io/immutable/go-ethereum/go-ethereum:v0.0.8
@@ -126,18 +121,10 @@ docker pull ghcr.io/immutable/go-ethereum/go-ethereum:v0.0.8
 docker tag ghcr.io/immutable/go-ethereum/go-ethereum:v0.0.8 geth
 ```
 
-4. Initialise the node.
+3. Initialise the node.
 
 <tabs>
 <tab-item title="Testnet">
-```bash
-docker run \
-  --rm \
-  -v /opt/immutable-zkevm:/mnt/geth \
-  --name geth \
-  geth account new --datadir /mnt/geth --password /mnt/geth/password
-```
-
 ```bash
 docker run \
   --rm \
@@ -153,21 +140,13 @@ docker run \
   --rm \
   -v /opt/immutable-zkevm:/mnt/geth \
   --name geth \
-  geth account new --datadir /mnt/geth --password /mnt/geth/password
-```
-
-```bash
-docker run \
-  --rm \
-  -v /opt/immutable-zkevm:/mnt/geth \
-  --name geth \
   geth init \
   --datadir /mnt/geth /etc/geth/mainnet.json 
 ```
 </tab-item>
 </tabs>
 
-5. Start the Immutable zkEVM node as a service
+4. Start the Immutable zkEVM node as a service
 
 <tabs>
 <tab-item title="Testnet">
@@ -181,7 +160,6 @@ docker run \
   geth \
   --config /etc/geth/testnet.toml \
   --datadir /mnt/geth \
-  --keystore /mnt/geth/keystore \
   --networkid 13473 \
   --http \
   --http.port "8545" \
@@ -199,7 +177,6 @@ docker run \
   geth \
   --config /etc/geth/mainnet.toml \
   --datadir /mnt/geth \
-  --keystore /mnt/geth/keystore \
   --networkid 13371 \
   --http \
   --http.port "8545" \
