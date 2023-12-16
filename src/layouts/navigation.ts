@@ -143,6 +143,10 @@ export const getNavigation = (section) => {
               href: "/dev/reference/testnet-contract-addresses",
             },
             {
+              title: "Interchain Token Service Rate Limit",
+              href: "/dev/reference/interchain-token-service-rate-limit",
+            },
+            {
               title: "Transaction Pricing",
               href: "/dev/reference/pricing",
             },
@@ -213,6 +217,7 @@ export const getNavigation = (section) => {
             { title: "Ethereum", href: "/validator/external-chains/ethereum" },
             { title: "Fantom", href: "/validator/external-chains/fantom" },
             { title: "Filecoin", href: "/validator/external-chains/filecoin" },
+            { title: "Immutable zkEVM", href: "/validator/external-chains/immutable"},
             { title: "Kava", href: "/validator/external-chains/kava" },
             { title: "Linea", href: "/validator/external-chains/linea" },
             { title: "Mantle", href: "/validator/external-chains/mantle" },
