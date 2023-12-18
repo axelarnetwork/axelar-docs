@@ -107,15 +107,25 @@ ul {
 footer {
   padding: 64px 0;
   background-color: rgb(243, 244, 246);
-}
-footer .columns {
-  display: flex;
-  justify-content: space-around;
-  max-width: $page-width;
-  margin: 0px auto;
-}
-footer > div {
-  padding: 16px;
+
+  .columns {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 16px;
+    max-width: $page-width;
+    margin: 0px auto;
+  }
+  & > div {
+    padding: 16px;
+  }
+  & .footer-links {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    max-width: 800px;
+    flex: 1;
+  }
 }
 
 main {
@@ -293,7 +303,7 @@ table {
     border-bottom: 2px solid rgb(229, 231, 235);
   }
 
-  tr:nth-child(2n + 2) {
+  tr:nth-child(2n + 2) td {
     background-color: rgb(249, 250, 251);
   }
 }
@@ -324,12 +334,6 @@ astro-island button {
 .resources td > div {
 }
 
-.ibc-channels {
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 1rem;
-  grid-auto-flow: row;
-  display: grid;
-}
 .ibc-channels .border {
   border: 1px solid rgb(229, 231, 235);
   border-radius: 8px;
@@ -383,12 +387,28 @@ astro-island button {
   padding: 6px;
   border-radius: 8px;
 }
-.resource-grid {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+.resource-grid,
+.ibc-channels {
+  display: flex;
+  flex-wrap: wrap;
   gap: 1rem;
-  grid-auto-flow: row;
-  display: grid;
 }
+.resource-grid > div,
+.ibc-channels > div {
+  flex: 1 1 320px;
+}
+.asset-table {
+  overflow-x: scroll;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+.sticky-col {
+  position: -webkit-sticky;
+  position: sticky;
+  left: 0;
+}
+
 .colored-svg {
   color: black;
 }
@@ -411,6 +431,9 @@ astro-island button {
 }
 .items-center {
   align-items: center;
+}
+.border-none {
+  border: none;
 }
 
 /* End temporary tailwind CSS */
@@ -449,6 +472,13 @@ astro-island button {
 .ais-SearchBox-input {
   width: calc(100% - 16px);
 }
+.asset-icon {
+  flex-wrap: wrap;
+}
+.chain-icon {
+  flex-wrap: wrap;
+}
+
 .chain-icon img,
 .asset-icon img {
   margin-right: 4px;
@@ -537,6 +567,10 @@ astro-island button {
   border-radius: 8px;
   &:hover {
     background-color: rgb(229, 231, 235);
+  }
+  & img {
+    min-width: 12px;
+    min-height: 12px;
   }
 }
 
