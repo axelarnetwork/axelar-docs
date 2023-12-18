@@ -1,4 +1,4 @@
-# Axelar developer documentation style guide
+# Axelar Developer Documentation Style Guide
 
 Thank you for contributing to the Axelar documentation! We aim to provide clear, consistent information on how to build for the interchain future. Please refer to this guide when working on the docs. It will be updated regularly as Axelar grows and new standards come into place.
 
@@ -6,28 +6,31 @@ This style guide is inspired by the [Google developer documentation style guide]
 
 ## Table of contents
 
-- [Voice and tone](#voice-and-tone)
-- [Document structure](#document-structure)
-- [Content format](#content-format)
+* [Voice and tone](#voice-and-tone)
+* [Document structure](#document-structure)
+* [Content format](#content-format)
+* [Wording](#wording)
 
 ## Voice and tone
 
-- Be friendly, respectful, and not overly pedantic, like you're pair-programming with a friend.
-- Refer to [Google's word list](https://developers.google.com/style/word-list) when unsure how to phrase something.
+* Be friendly, respectful, and not overly pedantic, like you're pair-programming with a friend.
+* Refer to [Google's word list](https://developers.google.com/style/word-list) when unsure how to phrase something.
 
 ### When addressing the reader
 
-- Address the reader directly by using the second-person "you."
-- Do not use the word "I." When speaking on Axelar's behalf, use "we."
+* Address the reader directly by using the second-person "you."
+* Do not use the word "I." When speaking on Axelar's behalf (as a member of the Axelar team), use "we."
+* Avoid using “we” to refer to Axelar as a project. Refer to Axelar by name or as “the project,” “the community,” “the ecosystem,” etc.
 
 | **Recommended**                                                                                | **Not recommended**                                                                                 |
 | ---------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- |
 | Hardhat and Foundry are local development platforms. Use Remix if you prefer an online editor. | Hardhat and Foundry are local development platforms. I'd use Remix if I preferred an online editor. |
 | We recommend using MetaMask for this tutorial.                                                 | I recommend using MetaMask for this tutorial.                                                       |
+| We're launching a bunch of cool new Interchain features this month. | Axelar will have a bunch of cool new Interchain features this month. |
 
 ### When referring to a third party user or developer
 
-- Use the singular "they" when referring to a third party user or developer.
+* Use the singular "they" when referring to a third party user or developer.
 
 | **Recommended**                                    | **Not recommended**                                     |
 | -------------------------------------------------- | ------------------------------------------------------- |
@@ -35,7 +38,7 @@ This style guide is inspired by the [Google developer documentation style guide]
 
 ### Accessibility
 
-- Use "earlier", "preceding", or "following" to refer to the position of a code snippet or UI element in a document rather than "above," "below," or "left-hand side."
+* Use "earlier", "preceding", or "following" to refer to the position of a code snippet or UI element in a document rather than "above," "below," or "left-hand side."
 
 | **Recommended**                                                              | **Not recommended**                                                      |
 | ---------------------------------------------------------------------------- | ------------------------------------------------------------------------ |
@@ -44,23 +47,23 @@ This style guide is inspired by the [Google developer documentation style guide]
 
 ## Document structure
 
-- Avoid a wall of text whenever possible.
-- Break a long section up into subsections with the appropriate headings.
-- Add screenshots when a UI is not likely to change.
+* Avoid a wall of text whenever possible.
+* Break a long section up into subsections with the appropriate headings.
+* Add screenshots when a UI is not likely to change.
 
 ### Code comments
 
-- Comment in the code directly whenever possible.
-- Add bullet points directly above or below the code snippet if it makes the code more clear.
+* Comment in the code directly whenever possible.
+* Add bullet points directly above or below the code snippet if it makes the code more clear.
 
 **Recommended**
 
 `sendToMany` will need to do the following:
 
-- Get the address of a token from its symbol
-- Send funds to another address
-- Approve the gateway to spend funds
-- Encode the recipient addresses on the destination chain to ensure that they are `byte`s, since GMP messages must be of this type
+* Get the address of a token from its symbol
+* Send funds to another address
+* Approve the gateway to spend funds
+* Encode the recipient addresses on the destination chain to ensure that they are `byte`s, since GMP messages must be of this type
 
 ```solidity
 function sendToMany(
@@ -102,7 +105,7 @@ function sendToMany(
 
 `sendToMany` will need to get the address of a token from its symbol, send funds to another address, approve the gateway to spend funds, and encode the recipient addresses on the destination chain to ensure that they are `bytes`, since GMP messages must be of this type. It will have a list of `bytes` as output.
 
-```solidity`
+```solidity
 function sendToMany(
 string memory \_destChain,
 string memory \_destContractAddr,
@@ -122,7 +125,6 @@ uint256 \_amount
     bytes memory recipientAddressesEncoded = abi.encode(_destinationAddrs);
 
 }
-
 ```
 
 ### Section headings
@@ -131,11 +133,29 @@ uint256 \_amount
 
 ### Document titles
 
-* Write in sentence case rather than capitalizing every letter of a new word.
+* For **H1 headings** (headings with one "#" sign in front), use [title case](https://titlecaseconverter.com/) for all words longer than 3 characters.
+
+|  **Recommended**  |  **Not recommended** |
+| --- | --- |
+|  Everything you Always Wanted to Know About Headings, but Were Afraid to Ask  |  Everything you always wanted to know about headings, but were afraid to ask  |
+
+* For **H2 headings and below** (headings with two or more "#" signs in front), write in [sentence case](https://apastyle.apa.org/style-grammar-guidelines/capitalization/sentence-case) rather than capitalizing every letter of a new word.
 
 |  **Recommended**  |  **Not recommended** |
 | --- | --- |
 |  Set up your development environment  |  Set Up Your Development Environment  |
+
+* Always use numerical numbers in all headings.
+
+|  **Recommended**  |  **Not recommended** |
+| --- | --- |
+|  5 Things to Know About Headings  |  Five Things to Know About Headings  |
+
+* Never close a heading with a period. Exclamation points and question marks are OK.
+
+|  **Recommended**  |  **Not recommended** |
+| --- | --- |
+|  How to End a Heading Title.  |  How to End a Heading Title  |
 
 ## Content format
 
@@ -202,4 +222,13 @@ Implement the following to send an interchain transaction with Axelar:
 * `IAxelarGateway` – The Axelar Gateway
 * `IAxelarGasService` – The Axelar Gas Service
 * `IERC20` – This represents the ERC-20 token interface to access ERC-20-related functionality.
-```
+
+## Wording
+
+* **General Message Passing**: Capitalize, since it is as a product name – “Axelar General Message Passing,” "GMP," or “Axelar GMP” (never "Axelar’s GMP"). If you’re looking for a generic description, use “arbitrary message passing.”
+* **Interchain**: Wherever possible, use “interchain,” instead of “cross-chain,” “blockchain interoperability,” “chain-agnostic” or other synonyms. "Interchain" is only capitalized at the beginning of a sentence.
+* **Interchain Tokens**: title case. Likewise Interchain Token Service, Interchain Token Portal.
+* **Network**: “Axelar network,” not “Axelar Network.”
+* **Proof-of-stake**: Only capitalize the first word in titles and at the beginning of sentences. Always hyphenate.
+* **Web**, **Web2**, **Web3**: Capitalized everywhere, as in “the decentralized Web,” “the Web,” and any other context referring to the World Wide Web. “Web2” and “Web3” are also capitalized and written as one word.
+* Time format is always in [UTC](https://en.wikipedia.org/wiki/Coordinated_Universal_Time).
