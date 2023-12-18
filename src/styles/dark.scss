@@ -39,7 +39,7 @@ html.dark body {
     background-color: transparent;
   }
   .desktop-nav .active {
-    color: $dark-text;
+    color: rgba($dark-background, 0.85);
     border-color: $dark-link;
   }
   nav {
