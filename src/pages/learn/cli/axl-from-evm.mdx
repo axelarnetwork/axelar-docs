@@ -29,7 +29,7 @@ Optional: query your new `{EVM_TEMP_ADDR}`:
 axelard q nexus latest-deposit-address {EVM_CHAIN} axelarnet {MY_ADDR}
 ```
 
-Use Metamask to send some wrapped AXL tokens on `{EVM_CHAIN}` to the new temporary deposit address `{EVM_TEMP_ADDR}`. Save the transaction hash `{EVM_TX_HASH}` for later.
+Use MetaMask to send some wrapped AXL tokens on `{EVM_CHAIN}` to the new temporary deposit address `{EVM_TEMP_ADDR}`. Save the transaction hash `{EVM_TX_HASH}` for later.
 
 <Callout type="error" emoji="🔥">
   Danger: Send only `Axelar` ERC20 tokens to `{EVM_TEMP_ADDR}`. Any other token sent to `{EVM_TEMP_ADDR}` will be lost.
@@ -84,10 +84,10 @@ axelard q evm batched-commands {EVM_CHAIN} {BATCH_ID}
 
 Wait for `status: BATCHED_COMMANDS_STATUS_SIGNED` and copy the `execute_data`.
 
-Use Metamask to send a transaction on `{EVM_CHAIN}` with the `execute_data` to the Axelar gateway contract address `{GATEWAY_ADDR}`.
+Use MetaMask to send a transaction on `{EVM_CHAIN}` with the `execute_data` to the Axelar gateway contract address `{GATEWAY_ADDR}`.
 
 <Callout type="error" emoji="🔥">
-  Danger: Post your transaction to the correct chain! Set your Metamask network to `{EVM_CHAIN}`.
+  Danger: Post your transaction to the correct chain! Set your MetaMask network to `{EVM_CHAIN}`.
 </Callout>
 
 <Callout type="warning" emoji="⚠️">
@@ -111,7 +111,7 @@ axelard q evm gateway-address {EVM_CHAIN}
 
 </Callout>
 
-To send a transaction to `{GATEWAY_ADDR}` using Metamask: paste hex from `execute_data` above into "Hex Data" field. (Do not send tokens!)
+To send a transaction to `{GATEWAY_ADDR}` using MetaMask: paste hex from `execute_data` above into "Hex Data" field. (Do not send tokens!)
 
 Optional: Check your Axelar `my_account` account AXL token balance as per [Basic node management](/node/basic) so that you can observe balance change.
 

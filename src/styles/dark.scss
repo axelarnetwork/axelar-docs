@@ -1,10 +1,16 @@
 html.dark body {
-  $dark-link: #008ae6;
+  $dark-link: #c8ffda;
   $dark-line: #1f2937;
-  $dark-text: #e1e1e1;
+  $dark-text: #dadada;
+  $dark-background: #111111;
+  $gradient-subtle: linear-gradient(
+    186deg,
+    rgba(84, 84, 84, 0.2) 9.05%,
+    rgba(85, 85, 85, 0) 144.24%
+  );
 
   color: $dark-text;
-  background-color: rgb(17, 17, 17);
+  background-color: $dark-background;
   a {
     color: $dark-link;
   }
@@ -14,8 +20,8 @@ html.dark body {
   }
   a.active,
   tabs li.active {
-    color: rgb(108, 175, 220);
-    background-color: #0f1e29;
+    color: black;
+    background-color: $dark-link;
   }
   .card span {
     color: $dark-link;
@@ -25,7 +31,7 @@ html.dark body {
   h3,
   h4,
   h5 {
-    color: rgb(241, 245, 249);
+    color: $dark-link;
   }
   .site-logo,
   .site-logo.active {
@@ -33,7 +39,7 @@ html.dark body {
     background-color: transparent;
   }
   .desktop-nav .active {
-    color: $dark-text;
+    color: rgba($dark-background, 0.85);
     border-color: $dark-link;
   }
   nav {
@@ -46,13 +52,32 @@ html.dark body {
     background-color: rgb(23, 23, 23);
     color: $dark-text;
   }
+  footer a {
+    color: white;
+    opacity: 0.8;
+    text-transform: uppercase;
+    font-size: 14px;
+  }
   .sideNav * {
     color: $dark-text;
   }
-  .sideNav a:hover {
-    background-color: #1b1c1d;
-    color: rgb(249, 250, 251);
+  .sideNav {
+    a:hover {
+      color: white;
+      background-color: transparent;
+    }
+    a.active:hover {
+      background-color: $dark-link;
+      color: rgba($dark-background, 0.85);
+    }
+    @media screen and (max-width: 650px) {
+      &.show {
+        background-color: $dark-background;
+        border: 1px solid $dark-line;
+      }
+    }
   }
+
   table {
     th {
       background-color: #3b4e69;
@@ -62,8 +87,10 @@ html.dark body {
     tr {
       border-bottom: 2px solid rgb(48, 48, 49);
     }
-
-    tr:nth-child(2n + 2) {
+    tr:nth-child(2n + 1) td {
+      background-color: #111111;
+    }
+    tr:nth-child(2n + 2) td {
       background-color: #1d1f22;
     }
   }
@@ -72,6 +99,9 @@ html.dark body {
     background-color: #1d1f22;
     border-color: rgb(48, 48, 49);
     color: white;
+  }
+  .ais-SearchBox-form:before {
+    background: url(/images/icon-search-dark.svg);
   }
   .ais-Hits-item {
     background: #1d1f22;
@@ -103,19 +133,37 @@ html.dark body {
     color: #6cafdc;
   }
   .card:hover {
-    box-shadow: 0 0 10px #314158;
-    border-color: #314158;
+    box-shadow: 0 0 10px rgba(#64806d, 0.3);
+    border-color: #3c4c41;
     color: inherit;
   }
   .card {
     border-color: $dark-line;
     color: $dark-text;
+    background: radial-gradient(
+        54.1% 100% at 49.37% 100%,
+        rgba(79, 120, 101, 0.2) 0%,
+        rgba(53, 255, 243, 0) 100%
+      ),
+      rgba(6, 37, 44, 0.1);
+  }
+  .card span {
+    color: $dark-link;
+  }
+  .ibc-channels {
+    > div {
+      background: $gradient-subtle;
+    }
+    .border {
+      border-color: $dark-line;
+    }
   }
   .sideNav div.group {
     border-color: $dark-line;
   }
   .resource-card {
     border-color: $dark-line;
+    background: $gradient-subtle;
   }
   .callout.warning {
     background-color: #291700;
@@ -143,11 +191,15 @@ html.dark body {
   .dropdown button {
     background-color: #000;
     color: #f3f4f6;
+    border-color: rgba(white, 0.25);
   }
   .dropdown .dropdown-menu {
     background-color: black;
   }
   .dropdown .dropdown-menu *:hover {
     background-color: rgb(17, 24, 39);
+  }
+  .colored-svg {
+    color: white;
   }
 }
