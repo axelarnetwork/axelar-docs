@@ -394,6 +394,30 @@
         }
       ],
       "image": "/images/chains/centrifuge.svg"
+    },
+    {
+      "id": "immutable",
+      "name": "Immutable",
+      "chain_id": "13371",
+      "network_id": "immutable",
+      "provider_params": [
+        {
+          "chainId": "0x343B",
+          "chainName": "Immutable",
+          "rpcUrls": [
+            "https://rpc.immutable.com"
+          ],
+          "nativeCurrency": {
+            "name": "Immutable",
+            "symbol": "IMX",
+            "decimals": 18
+          },
+          "blockExplorerUrls": [
+            "https://explorer.immutable.com"
+          ]
+        }
+      ],
+      "image": "/images/chains/immutable.svg"
     }
   ],
   "testnet": [
@@ -849,7 +873,7 @@
           "chainId": "0x34A1",
           "chainName": "Immutable",
           "rpcUrls": [
-            "https://rpc-geth.testnet.immutable.com"
+            "https://rpc.testnet.immutable.com"
           ],
           "nativeCurrency": {
             "name": "Immutable",

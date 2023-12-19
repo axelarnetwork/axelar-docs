@@ -63,6 +63,10 @@
     {
       "id": "centrifuge",
       "address": "0x2d5d7d31F671F86C782533cc367F14109a082712"
+    },
+    {
+      "id": "immutable",
+      "address": "0x24C2b56128fF8E7bFaD578ABefB0fc7Dfa9ba358"
     }
   ],
   "testnet": [
