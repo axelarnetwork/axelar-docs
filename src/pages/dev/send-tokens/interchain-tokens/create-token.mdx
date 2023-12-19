@@ -83,7 +83,7 @@ function deployTokenManager(
 
 You can directly transfer tokens between chains via the Interchain Token Service by calling the [`interchainTransfer`](https://github.com/axelarnetwork/interchain-token-service/blob/v1.0.0/contracts/interfaces/IInterchainTokenService.sol#L202). 
 
-Tokens can move between chains seamlessly as the Token Manager contracts will mint and burn tokens as needed. If the `minter` parameter is empty bytes when deploying a new Interchain Token, use a mint/burn `TokenManager`. Otherwise, use a lock/unlock `TokenManager`. Use the `transferMintership` on the token to change the token minter to another address.
+Tokens can move between chains seamlessly as the Token Manager contracts will mint and burn tokens as needed. If the `minter` parameter is empty bytes when deploying a new Interchain Token, use a Mint/Burn `TokenManager`. Otherwise, use a Lock/Unlock `TokenManager`. Use the `transferMintership` on the token to change the token minter to another address.
 
 >**Note**: If you want to build your token with the `IInterchainToken` feature yourself, make sure your token implements the [`IInterchainTokenStandard`](https://github.com/axelarnetwork/interchain-token-service/blob/v1.0.0/contracts/interfaces/IInterchainTokenStandard.sol) interface so you can offer [`interchainTransfer`](https://github.com/axelarnetwork/interchain-token-service/blob/9edc4318ac1c17231e65886eea72c0f55469d7e5/contracts/interfaces/IInterchainTokenStandard.sol#L19) and [`interchainTransferFrom`](https://github.com/axelarnetwork/interchain-token-service/blob/9edc4318ac1c17231e65886eea72c0f55469d7e5/contracts/interfaces/IInterchainTokenStandard.sol#L36) methods directly on your token. 
 
