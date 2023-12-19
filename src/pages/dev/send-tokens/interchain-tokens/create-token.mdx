@@ -8,7 +8,7 @@ Let's explore two methods to create new Interchain Token(s).
 
 ## Create a new Interchain Token(s) using the Interchain Token Portal
 
-The simplest type of Interchain Token is to create a brand new [Interchain Token](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/InterchainTokenService.sol) available on multiple chains. For a detailed guide on how to create an Interchain Token using the Interchain Token Portal, refer to the four-step tutorial provided [here](https://axelar.network/blog/how-to-create-an-interchain-token-with-axelar-in-4-steps).
+The simplest type of Interchain Token is to create a brand new [Interchain Token](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/InterchainTokenService.sol) available on multiple chains. For a detailed guide on how to create an Interchain Token using the Interchain Token Portal, refer to the [four-step tutorial](https://axelar.network/blog/how-to-create-an-interchain-token-with-axelar-in-4-steps).
 
 - Visit the [Interchain Portal](https://testnet.interchain.axelar.dev)
 - Connect your wallet to the portal
@@ -19,7 +19,7 @@ The simplest type of Interchain Token is to create a brand new [Interchain Token
     - Symbol
     - Decimals
     - Amount to mint
-- You can also click the advanced option where you can add an account as `Token Minter` and `Salt` value; otherwise, it gets prefilled with the deployer(connected account) address and a random, uniquely generated salt value
+- You can also click the advanced option where you can add an account as `Token Minter` and `Salt` value. Otherwise, it gets prefilled with the deployer(connected account) address and a random, uniquely generated salt value
 - Select additional chains for your token's availability and optionally add the token amount to mint on each selected chain
 
 **Congratulations!** Your Interchain Token is now accessible on multiple blockchain networks. This allows for seamless interaction with your token on any of these networks, utilizing familiar methods like send, transfer, and approve, just as with any standard ERC-20 token.
@@ -50,7 +50,7 @@ function interchainTransfer(
 
 ## Create a custom Interchain Token(s)
 
-If you want more features than the Interchain Token provides, you can create a [custom](../../reference/glossary/#custom-token) token. You may want a customized token to customize specific minting policies, ownership structures, rate limits, or other bespoke functionalities.
+If you want more features than the Interchain Token provides, you can create a [custom token](../../reference/glossary/#custom-token). You may want a customized token to customize specific minting policies, ownership structures, rate limits, or other bespoke functionalities.
 
 To create a custom Interchain Token:
 
@@ -81,10 +81,9 @@ function deployTokenManager(
 ) external payable 
 ```
 
-To transfer tokens between chains, you can do that directly via the Interchain Token Service by calling the [`interchainTransfer`](https://github.com/axelarnetwork/interchain-token-service/blob/v1.0.0/contracts/interfaces/IInterchainTokenService.sol#L202). 
+You can directly transfer tokens between chains via the Interchain Token Service by calling the [`interchainTransfer`](https://github.com/axelarnetwork/interchain-token-service/blob/v1.0.0/contracts/interfaces/IInterchainTokenService.sol#L202). 
 
-Tokens can move between chains seamlessly as the Token Manager contracts will mint and burn tokens as needed. If the `minter` parameter is empty bytes when deploying a new Interchain Token, then a `mint/burn` TokenManager is used; otherwise, a `lock/unlock` TokenManager is used. If you want to change the token minter to another address, you can do that using the `transferMintership` on the token.
-
+Tokens can move between chains seamlessly as the Token Manager contracts will mint and burn tokens as needed. If the `minter` parameter is empty bytes when deploying a new Interchain Token, use a mint/burn `TokenManager`. Otherwise, use a lock/unlock `TokenManager`. Use the `transferMintership` on the token to change the token minter to another address.
 
 >**Note**: If you want to build your token with the `IInterchainToken` feature yourself, make sure your token implements the [`IInterchainTokenStandard`](https://github.com/axelarnetwork/interchain-token-service/blob/v1.0.0/contracts/interfaces/IInterchainTokenStandard.sol) interface so you can offer [`interchainTransfer`](https://github.com/axelarnetwork/interchain-token-service/blob/9edc4318ac1c17231e65886eea72c0f55469d7e5/contracts/interfaces/IInterchainTokenStandard.sol#L19) and [`interchainTransferFrom`](https://github.com/axelarnetwork/interchain-token-service/blob/9edc4318ac1c17231e65886eea72c0f55469d7e5/contracts/interfaces/IInterchainTokenStandard.sol#L36) methods directly on your token. 
 
