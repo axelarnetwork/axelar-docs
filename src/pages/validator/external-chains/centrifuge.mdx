@@ -392,6 +392,13 @@ start-with-bridge = true
 </tabs>
 
 ## Troubleshooting
+
+### Upgrading from an older version
+If you are asked to update your node version run this checlist:
+- [ ] Make sure your CLI arguments look like this docs, there could have been changes for a new version
+- [ ] It is a good practice to clone your `data` dir and setup a new node with the new version to make sure it runs, then either point to the new one or replace the old one with the exact same parameters
+- [ ] Use the latest release, not the latest code from the main branch on the centrifuge-chain repo.
+
 ### Error logs during syncing
 During fast syncing it is expected to see the following error messages on the `[Relaychain]` side.
 
