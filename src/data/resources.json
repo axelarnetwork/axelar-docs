@@ -68,11 +68,11 @@
         },
         {
           "title": "OpenAPI 1",
-          "value": "https://axelar-lcd.quickapi.com/static/openapi/"
+          "value": "https://lcd-axelar.imperator.co/static/openapi"
         },
         {
           "title": "OpenAPI 2",
-          "value": "https://lcd-axelar.imperator.co/static/openapi/"
+          "value": "https://axelar-lcd.quickapi.com/static/openapi"
         }
       ]
     },
