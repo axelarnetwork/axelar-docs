@@ -60,7 +60,7 @@
       "value": [
         {
           "title": "Swagger 1",
-          "value": "https://lcd-axelar.imperator.co/static/"
+          "value": "https://lcd-axelar.imperator.co/static/swagger"
         },
         {
           "title": "Swagger 2",
@@ -72,7 +72,7 @@
         },
         {
           "title": "OpenAPI 2",
-          "value": "https://lcd-axelar.stakerun.com/static/openapi/"
+          "value": "https://lcd-axelar.imperator.co/static/openapi/"
         }
       ]
     },
