@@ -14,8 +14,21 @@ export const getNavigation = (section) => {
             { title: "Overview", href: "/dev/send-tokens/overview" },
             {
               title: "Interchain Tokens",
-              href: "/dev/send-tokens/interchain-tokens",
-            },
+              children: [
+                {
+                  title: "Introduction",
+                  href: "/dev/send-tokens/interchain-tokens/intro",
+                },
+                {
+                  title: "Create Token",
+                  href: "/dev/send-tokens/interchain-tokens/create-token",
+                },
+                {
+                  title: "Upgrade Token",
+                  href: "/dev/send-tokens/interchain-tokens/upgrade-tokens",
+                },
+              ],
+            }
           ],
         },
         {
