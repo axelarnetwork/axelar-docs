@@ -64,7 +64,7 @@
         },
         {
           "title": "Swagger 2",
-          "value": "https://lcd-axelar.stakerun.com/static/swagger/"
+          "value": "https://axelar-lcd.quickapi.com/static/swagger/"
         },
         {
           "title": "OpenAPI 1",
@@ -72,7 +72,7 @@
         },
         {
           "title": "OpenAPI 2",
-          "value": "https://lcd-axelar.stakerun.com/static/openapi/"
+          "value": "https://axelar-lcd.quickapi.com/static/openapi/"
         }
       ]
     },
