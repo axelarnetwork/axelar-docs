@@ -1311,6 +1311,42 @@
       ]
     },
     {
+      "id": "fxs-wei",
+      "name": "FXS - Frax Share",
+      "symbol": "FXS",
+      "image": "/images/assets/fxs.svg",
+      "contracts": [
+        {
+          "chain": "ethereum",
+          "address": "0x3432B6A60D23Ca0dFCa7761B7ab56459D9C964D0",
+          "symbol": "FXS",
+          "decimals": 18,
+          "transfer_fee": 6.9
+        },
+        {
+          "chain": "linea",
+          "address": "0x5860a0bF37133f8461b2DEDe7C80e55D6bfF3721",
+          "symbol": "FXS",
+          "decimals": 18,
+          "transfer_fee": 0.17
+        },
+        {
+          "chain": "mantle",
+          "address": "0x5860a0bF37133f8461b2DEDe7C80e55D6bfF3721",
+          "symbol": "FXS",
+          "decimals": 18,
+          "transfer_fee": 0.17
+        },
+        {
+          "chain": "scroll",
+          "address": "0x5860a0bF37133f8461b2DEDe7C80e55D6bfF3721",
+          "symbol": "FXS",
+          "decimals": 18,
+          "transfer_fee": 0.17
+        }
+      ]
+    },
+    {
       "id": "reth-wei",
       "name": "rETH - Rocket Pool ETH",
       "symbol": "rETH",
@@ -2951,6 +2987,42 @@
       ]
     },
     {
+      "id": "fpi-wei",
+      "name": "FPI - Frax Price Index",
+      "symbol": "FPI",
+      "image": "/images/assets/fpi.svg",
+      "contracts": [
+        {
+          "chain": "ethereum",
+          "address": "0x5Ca135cB8527d76e932f34B5145575F9d8cbE08E",
+          "symbol": "FPI",
+          "decimals": 18,
+          "transfer_fee": 55.0
+        },
+        {
+          "chain": "linea",
+          "address": "0x219279953d8D23520B7878447e8A6c266a51de2f",
+          "symbol": "FPI",
+          "decimals": 18,
+          "transfer_fee": 1.4
+        },
+        {
+          "chain": "mantle",
+          "address": "0x219279953d8D23520B7878447e8A6c266a51de2f",
+          "symbol": "FPI",
+          "decimals": 18,
+          "transfer_fee": 1.4
+        },
+        {
+          "chain": "scroll",
+          "address": "0x219279953d8D23520B7878447e8A6c266a51de2f",
+          "symbol": "FPI",
+          "decimals": 18,
+          "transfer_fee": 1.4
+        }
+      ]
+    },
+    {
       "id": "mkr-wei",
       "name": "MKR - Maker",
       "symbol": "MKR",
@@ -3179,6 +3251,134 @@
           "symbol": "YieldETH",
           "decimals": 18,
           "transfer_fee": 0.038
+        }
+      ]
+    },
+    {
+      "id": "utori",
+      "name": "TORI - Teritori",
+      "symbol": "TORI",
+      "image": "/images/assets/tori.svg",
+      "contracts": [
+        {
+          "chain": "arbitrum",
+          "address": "0x809c55916bb542c1419724022B3F0162087E3C88",
+          "symbol": "TORI",
+          "decimals": 6,
+          "transfer_fee": 140.0
+        },
+        {
+          "chain": "avalanche",
+          "address": "0xc13c0d723e01B02984499C672e205D5Ec9c05d10",
+          "symbol": "TORI",
+          "decimals": 6,
+          "transfer_fee": 42.0
+        },
+        {
+          "chain": "base",
+          "address": "0x809c55916bb542c1419724022B3F0162087E3C88",
+          "symbol": "TORI",
+          "decimals": 6,
+          "transfer_fee": 140.0
+        },
+        {
+          "chain": "binance",
+          "address": "0x11eDFA12d70e8AC9e94DE019eBa278430873f8C3",
+          "symbol": "TORI",
+          "decimals": 6,
+          "transfer_fee": 42.0
+        },
+        {
+          "chain": "celo",
+          "address": "0x809c55916bb542c1419724022B3F0162087E3C88",
+          "symbol": "TORI",
+          "decimals": 6,
+          "transfer_fee": 42.0
+        },
+        {
+          "chain": "ethereum",
+          "address": "0x010cddfA5518f74c43Efe911db29Af71b44b4E1C",
+          "symbol": "TORI",
+          "decimals": 6,
+          "transfer_fee": 1700.0
+        },
+        {
+          "chain": "fantom",
+          "address": "0x11eDFA12d70e8AC9e94DE019eBa278430873f8C3",
+          "symbol": "TORI",
+          "decimals": 6,
+          "transfer_fee": 42.0
+        },
+        {
+          "chain": "filecoin",
+          "address": "0x809c55916bb542c1419724022B3F0162087E3C88",
+          "symbol": "TORI",
+          "decimals": 6,
+          "transfer_fee": 42.0
+        },
+        {
+          "chain": "kava",
+          "address": "0x809c55916bb542c1419724022B3F0162087E3C88",
+          "symbol": "TORI",
+          "decimals": 6,
+          "transfer_fee": 42.0
+        },
+        {
+          "chain": "linea",
+          "address": "0x809c55916bb542c1419724022B3F0162087E3C88",
+          "symbol": "TORI",
+          "decimals": 6,
+          "transfer_fee": 42.0
+        },
+        {
+          "chain": "mantle",
+          "address": "0x809c55916bb542c1419724022B3F0162087E3C88",
+          "symbol": "TORI",
+          "decimals": 6,
+          "transfer_fee": 42.0
+        },
+        {
+          "chain": "moonbeam",
+          "address": "0x010cddfA5518f74c43Efe911db29Af71b44b4E1C",
+          "symbol": "TORI",
+          "decimals": 6,
+          "transfer_fee": 42.0
+        },
+        {
+          "chain": "optimism",
+          "address": "0x809c55916bb542c1419724022B3F0162087E3C88",
+          "symbol": "TORI",
+          "decimals": 6,
+          "transfer_fee": 140.0
+        },
+        {
+          "chain": "polygon",
+          "address": "0x69deD9B7658507ca8C5A6f1F6ff53276802ec228",
+          "symbol": "TORI",
+          "decimals": 6,
+          "transfer_fee": 42.0
+        },
+        {
+          "chain": "scroll",
+          "address": "0x809c55916bb542c1419724022B3F0162087E3C88",
+          "symbol": "TORI",
+          "decimals": 6,
+          "transfer_fee": 42.0
+        }
+      ]
+    },
+    {
+      "id": "usdy-wei",
+      "name": "USDY - Ondo U.S. Dollar Yield",
+      "symbol": "USDY",
+      "image": "/images/assets/usdy.svg",
+      "contracts": [
+        {
+          "chain": "ethereum",
+          "address": "0x96F6eF951840721AdBF46Ac996b59E0235CB985C",
+          "symbol": "USDY",
+          "decimals": 18,
+          "transfer_fee": 60.0
         }
       ]
     }
