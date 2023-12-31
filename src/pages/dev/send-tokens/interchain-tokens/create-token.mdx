@@ -2,7 +2,7 @@
 
 Interchain Tokens are ERC-20 tokens that are available on [multiple blockchains](https://docs.axelar.dev/resources/testnet). They are created using the [Interchain Token Service](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/InterchainTokenService.sol) and can be used to transfer value between blockchains.
 
-The Interchain Token Service is deployed to `0xB5FB4BE02232B1bBA4dC8f81dc24C26980dE9e3C` while the Interchain Token Factory is deployed to `0x83a93500d23Fbc3e82B410aD07A6a9F7A0670D66`
+The Interchain Token Service is deployed to [`0xB5FB4BE02232B1bBA4dC8f81dc24C26980dE9e3C`](https://blockscan.com/address/0xB5FB4BE02232B1bBA4dC8f81dc24C26980dE9e3C) while the Interchain Token Factory is deployed to [`0x83a93500d23Fbc3e82B410aD07A6a9F7A0670D66`](https://blockscan.com/address/0x83a93500d23Fbc3e82B410aD07A6a9F7A0670D66)
 
 Let's explore two methods to create new Interchain Token(s).
 
@@ -56,7 +56,19 @@ To create a custom Interchain Token:
 
 - Build your [ERC-20](https://docs.alchemy.com/docs/how-to-create-an-erc-20-token-4-steps) token and deploy it on multiple chains
 - Deploy a [Mint/Burn](../../reference/glossary/#mintburn) - [Token Manager](../../reference/glossary/#token-manager) for existing tokens on all chains using [`deployTokenManager`](https://github.com/axelarnetwork/interchain-token-service/blob/9edc4318ac1c17231e65886eea72c0f55469d7e5/contracts/InterchainTokenService.sol#L276) on Interchain Token Service. The `deployTokenManager` method requires parameters like `salt`, `destinationChain`, `tokenManagerType`, `params`, and `gasValue`
-- Make sure the Interchain Token Service can call the mint/burn on the token and repeat the step above for other chains where the token exists using the same deployer address and salt
+- Ensure the Interchain Token Service can invoke the `mint/burn` functions on the token by calling [`transferMintership`](https://github.com/axelarnetwork/interchain-token-service/blob/9223108211b977d9138fdd67d5b4a641fc35c18c/contracts/utils/Minter.sol#L31) on your token. This is to transfer the minter role to ITS on all chains, enabling it to mint/burn. Repeat this step for other chains where the token exists, using the same deployer address and salt 
+
+Here is an example of how to transfer mintership:
+
+```solidity
+/**
+ * @notice Changes the minter of the contract.
+ * @dev Can only be called by the current minter.
+ * @param minter_ The address of the new minter.
+ */
+function transferMintership(address minter_) external
+```
+- Transfer Interchain Tokens between chains via the Interchain Token Service by calling the [`interchainTransfer`](https://github.com/axelarnetwork/interchain-token-service/blob/9223108211b977d9138fdd67d5b4a641fc35c18c/contracts/interfaces/IInterchainTokenService.sol#L210)
 
 Here is an example of deploying a token manager:
 
@@ -80,8 +92,6 @@ function deployTokenManager(
     uint256 gasValue
 ) external payable 
 ```
-
-You can directly transfer tokens between chains via the Interchain Token Service by calling the [`interchainTransfer`](https://github.com/axelarnetwork/interchain-token-service/blob/v1.0.0/contracts/interfaces/IInterchainTokenService.sol#L202). 
 
 Tokens can move between chains seamlessly as the Token Manager contracts will mint and burn tokens as needed. If the `minter` parameter is empty bytes when deploying a new Interchain Token, use a Mint/Burn `TokenManager`. Otherwise, use a Lock/Unlock `TokenManager`. Use the `transferMintership` on the token to change the token minter to another address.
 
