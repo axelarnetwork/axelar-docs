@@ -169,7 +169,7 @@ uint256 \_amount
 
 |  **Recommended**  |  **Not recommended** |
 | --- | --- |
-|  Users can call `interchainTransfer()` on the token to transfer between blockchains.  |  Users can call `interchainTransfer` on the token to transfer between blockchains.  |
+|  Users can call `interchainTransfer()` on a token to transfer between blockchains.  |  Users can call `interchainTransfer` on a token to transfer between blockchains.  |
 
 ### Bold font
 
