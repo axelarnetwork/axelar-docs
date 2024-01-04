@@ -161,6 +161,15 @@ uint256 \_amount
 
 * Use bold, italic, and code font when appropriate.
 * Product names should not have any special font formatting.
+* Always put parentheses after a method name.
+
+## Method names
+
+* Method names should always include parentheses, so that they are not confused with properties.
+
+|  **Recommended**  |  **Not recommended** |
+| --- | --- |
+|  Users can call `interchainTransfer()` on the token to transfer between blockchains.  |  Users can call `interchainTransfer` on the token to transfer between blockchains.  |
 
 ### Bold font
 
