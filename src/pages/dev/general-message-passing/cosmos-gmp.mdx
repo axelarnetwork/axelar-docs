@@ -1,29 +1,30 @@
----
-templateEngineOverride: md
----
-import { Callout } from "/src/components/callout"
+import { Callout } from "/src/components/callout";
 
 # Cosmos General Message Passing
 
 Axelar has expanded General Message Passing (GMP) to support Cosmos blockchains. With Axelar, you can now send and receive messages on EVM chains and Cosmos chains. Messages sent to Cosmos chains can be received by [CosmWasm smart contracts](https://github.com/axelarnetwork/evm-cosmos-gmp-sample/tree/main/cosmwasm-integration/) (on blockchains with CosmWasm support), or those messages can be received [natively at the consensus layer as part Go code](https://github.com/axelarnetwork/evm-cosmos-gmp-sample/tree/main/native-integration).
 
+Cosmos GMP works by sending and receiving through [IBC's memo field](https://medium.com/the-interchain-foundation/moving-beyond-simple-token-transfers-d42b2b1dc29b). Cosmos chains looking to support GMP should [integrate the appropriate middleware](#chain-support) and [verify message source](#establishing-a-path-of-trust).
 
 <Callout emoji="💡">
-To see full examples of sending and receiving messages in all cases, check out our full [Cosmos GMP Example Project](https://github.com/axelarnetwork/evm-cosmos-gmp-sample/).
+  To see full examples of sending and receiving messages in all cases, check out
+  our full [Cosmos GMP Example
+  Project](https://github.com/axelarnetwork/evm-cosmos-gmp-sample/).
 </Callout>
 
 ## Messages from EVM to CosmWasm
-To send a message from an EVM chain to a Cosmos CosmWasm contract, the payload must be encoded before calling the [standard](./gmp-messages) `payNativeGasForContractCall` and `callContract` methods (or [token-including equivalents](./gmp-tokens-with-messages)). You must also specify the destination method you are calling.
 
+To send a message from an EVM chain to a Cosmos CosmWasm contract, the payload must be encoded before calling the [standard](./gmp-messages) `payNativeGasForContractCall` and `callContract` methods (or [token-including equivalents](./gmp-tokens-with-messages)). You must also specify the destination method you are calling.
 
 The payload must specify:
 
-1. **string** - The method name of the CosmWasm contract to call
-1. **string[]** - The names of all arguments
-1. **string[]** - the types of all arguments
-1. **bytes** - the values of all arguments
+1. `string` - The method name of the CosmWasm contract to call
+1. `string[]` - The names of all arguments
+1. `string[]` - the types of all arguments
+1. `bytes` - the values of all arguments
 
-### MultiSend Example encoding
+### Multi-send Example encoding
+
 This example encodes a string array of recipients, as you can see in our [example of sending tokens and recipients](https://github.com/axelarnetwork/axelar-examples/blob/main/examples/evm/call-contract-with-token/DistributionExecutable.sol).
 
 ```solidity
@@ -41,6 +42,7 @@ bytes memory payloadToCW = abi.encodePacked(
 ```
 
 ## Messages from EVM to Native Cosmos
+
 When sending a message to a Cosmos chain with native (consensus layer) support for GMP, you must encode a version number with the intended payload. This allows the consensus layer to know what to do with the payload.
 
 ```solidity
@@ -50,13 +52,11 @@ bytes memory payload = abi.encodePacked(
 );
 ```
 
-
 ## Messages from Native Cosmos
-To send a message from Naive Cosmos Go code, you must send a message to the Axelar GMP Account (`axelar1dv4u5k73pzqrxlzujxg3qp8kvc3pje7jtdvu72npnt5zhq05ejcsn5qme5s`) via IBC.
 
+To send a message from Native Cosmos Go code, you must send a message to the Axelar GMP Account (`axelar1dv4u5k73pzqrxlzujxg3qp8kvc3pje7jtdvu72npnt5zhq05ejcsn5qme5s`) via IBC.
 
-
-When sending messages from Cosmos, you should perform standard GMP ABI encoding via the `github.com/ethereum/go-ethereum/accounts/abi` package. 
+When sending messages from Cosmos, you should perform standard GMP ABI encoding via the [`github.com/ethereum/go-ethereum/accounts/abi`](https://github.com/ethereum/go-ethereum/tree/master/accounts/abi) package.
 
 ```go
 // build payload that can be decoded by solidity
@@ -105,6 +105,7 @@ if err != nil {
 ```
 
 ## Messages from CosmWasm
+
 To send a message from CosmWasm Rust code, you must send a message to the Axelar Gateway (`axelar1dv4u5k73pzqrxlzujxg3qp8kvc3pje7jtdvu72npnt5zhq05ejcsn5qme5s`) via IBC.
 
 You should encode your payload using [ethabi](https://github.com/rust-ethereum/ethabi).
@@ -162,6 +163,40 @@ pub fn multi_send_to_evm(
 ```
 
 ## Chain Support
+
 For a Cosmos blockchain to support receiving GMP messages (naively or via CosmWasm), it should implement the appropriate middleware in Go as part of the consensus layer.
 
-See our [Sample GMP Middleware](https://github.com/axelarnetwork/evm-cosmos-gmp-sample/tree/main/native-integration/sample-middleware).
+If you have CosmWasm on your Cosmos chain and want to be able to receieve and deliver messages, install [Osmosis IBC-hooks](https://github.com/osmosis-labs/osmosis/tree/main/x/ibc-hooks).
+
+If you don’t support CosmWasm on your Cosmos chain, you'll need to implement and install your own Axelar GMP module to receive and execute messages. See our [sample reference implementation](https://github.com/axelarnetwork/evm-cosmos-gmp-sample/tree/main/native-integration/sample-middleware).
+
+## Establishing a Path of Trust
+
+Because IBC messages are permissionless, you'll want to ensure you verify the source of all messages.
+
+When you receive a packet on Cosmos chain, you'll need to verify:
+
+1. That the packet came from Axelar (verify IBC channel; Axelar GMP sender account).
+
+   Specify the Axelar IBC channel by allowlisting the channel hash.
+
+   - **[CosmWasm](https://github.com/osmosis-labs/osmosis/blob/main/x/ibc-hooks/README.md#cosmwasm-contract-execution-format)**
+
+     For example, in your CosmWasm code, you can combine the IBC hook, the channel ID, and the Axelar GMP account to verify the channel matches the expected channel.
+
+     ```rust
+
+     `Bech32(Hash("ibc-wasm-hook-intermediary" || channelID to Axelar || Axelar GMP account))` assuming the channel is fixed, which is usually true for mainnet
+
+     ```
+
+   - **For Consensus**
+
+     Verify (channel & sender == address of our GMP account = `axelar1dv4u5k73pzqrxlzujxg3qp8kvc3pje7jtdvu72npnt5zhq05ejcsn5qme5`.
+     https://github.com/axelarnetwork/evm-cosmos-gmp-sample/blob/main/native-integration/sample-middleware/gmp_middleware.go#L114
+
+1. The EVM source chain and address.
+
+   When a message has an EVM source, the chain and address are passed in differently for CosmWasm and Native GMP.
+   - **CosmWasm**: When you build your CosmWasm contract, you can define `source_chain` and/or `source_address` as arguments for their `wasm` method. And pass in the correct `source_chain` and/or `source_address` as an argument from the EVM contract. The Axelar network will validate that these values are accurate and not being spoofed by the sender.
+   - **Native GMP**: The GMP call will be sent by the Axelar GMP account to the cosmos chain. Make sure that it is [formatted correctly](https://github.com/axelarnetwork/axelar-core/blob/main/x/axelarnet/types/evm_translator.go#L55) in the IBC memo that contains validated source chain/address values.
