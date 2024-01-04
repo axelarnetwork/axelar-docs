@@ -19,7 +19,7 @@ The simplest way to create an Interchain Token is to do so through the portal:
     - Symbol
     - Decimals
     - Amount to mint
-    You can also choose the advanced option where you can add an account as `Token Minter` and `Salt` value. Otherwise, these fields will be prefilled with the deployer (connected account) address and a random, uniquely generated salt value.
+      You can also choose the advanced option where you can add an account as `Token Minter` and `Salt` value. Otherwise, these fields will be prefilled with the deployer (connected account) address and a random, uniquely generated salt value.
 6. Select additional chains for your token's availability. You can optionally add the token amount to mint on each selected chain.
 
 Congratulations! Your new Interchain Token is now available on multiple chains. Furthermore, it follows the [Interchain Token Standard](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/interfaces/IInterchainTokenStandard.sol), meaning that users can call the [`interchainTransfer()`](https://github.com/axelarnetwork/interchain-token-service/blob/9223108211b977d9138fdd67d5b4a641fc35c18c/contracts/interfaces/IInterchainTokenService.sol#L210) method on the token itself to transfer between blockchains.
