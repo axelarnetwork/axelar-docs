@@ -105,6 +105,7 @@ contract MyInterchainToken is ERC20, Ownable {
      * @notice Implementation of the interchainTransferFrom method
      * @dev We chose to either pass `metadata` as raw data on a remote contract call, or, if no data is passed, just do a transfer.
      * A different implementation could use metadata to specify a function to invoke, or for other purposes as well.
+     * @param tokenId The unique identifier of the token to be transferred.
      * @param sender The sender of the tokens. They need to have approved `msg.sender` before this is called.
      * @param destinationChain The string representation of the destination chain.
      * @param recipient The bytes representation of the address of the recipient.
