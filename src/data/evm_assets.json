@@ -1245,11 +1245,67 @@
       "image": "/images/assets/sfrxeth.svg",
       "contracts": [
         {
+          "chain": "arbitrum",
+          "address": "0x4f74ca4a686203a5D4eBF6E8868c5eBC450bf283",
+          "symbol": "sfrxETH",
+          "decimals": 18,
+          "transfer_fee": 0.0028
+        },
+        {
+          "chain": "avalanche",
+          "address": "0x9428DCF8F77bFb504917A333d0b8030EBA6af8AB",
+          "symbol": "sfrxETH",
+          "decimals": 18,
+          "transfer_fee": 0.00085
+        },
+        {
+          "chain": "base",
+          "address": "0x4f74ca4a686203a5D4eBF6E8868c5eBC450bf283",
+          "symbol": "sfrxETH",
+          "decimals": 18,
+          "transfer_fee": 0.0028
+        },
+        {
+          "chain": "binance",
+          "address": "0x4E30B1B79bfF30840755FafafD9ce8e408131552",
+          "symbol": "sfrxETH",
+          "decimals": 18,
+          "transfer_fee": 0.00085
+        },
+        {
+          "chain": "celo",
+          "address": "0x4f74ca4a686203a5D4eBF6E8868c5eBC450bf283",
+          "symbol": "sfrxETH",
+          "decimals": 18,
+          "transfer_fee": 0.00085
+        },
+        {
           "chain": "ethereum",
           "address": "0xac3E018457B222d93114458476f3E3416Abbe38F",
           "symbol": "sfrxETH",
           "decimals": 18,
           "transfer_fee": 0.034
+        },
+        {
+          "chain": "fantom",
+          "address": "0x4E30B1B79bfF30840755FafafD9ce8e408131552",
+          "symbol": "sfrxETH",
+          "decimals": 18,
+          "transfer_fee": 0.00085
+        },
+        {
+          "chain": "filecoin",
+          "address": "0x4f74ca4a686203a5D4eBF6E8868c5eBC450bf283",
+          "symbol": "sfrxETH",
+          "decimals": 18,
+          "transfer_fee": 0.00085
+        },
+        {
+          "chain": "kava",
+          "address": "0x4f74ca4a686203a5D4eBF6E8868c5eBC450bf283",
+          "symbol": "sfrxETH",
+          "decimals": 18,
+          "transfer_fee": 0.00085
         },
         {
           "chain": "linea",
@@ -1261,6 +1317,27 @@
         {
           "chain": "mantle",
           "address": "0x4f74ca4a686203a5D4eBF6E8868c5eBC450bf283",
+          "symbol": "sfrxETH",
+          "decimals": 18,
+          "transfer_fee": 0.00085
+        },
+        {
+          "chain": "moonbeam",
+          "address": "0xa30d75990F80eC49944D5fC30157D43Fc28777b3",
+          "symbol": "sfrxETH",
+          "decimals": 18,
+          "transfer_fee": 0.00085
+        },
+        {
+          "chain": "optimism",
+          "address": "0x4f74ca4a686203a5D4eBF6E8868c5eBC450bf283",
+          "symbol": "sfrxETH",
+          "decimals": 18,
+          "transfer_fee": 0.0028
+        },
+        {
+          "chain": "polygon",
+          "address": "0x6013ee0C255d00BB885Fed03A3e1F1Ec3aD548AC",
           "symbol": "sfrxETH",
           "decimals": 18,
           "transfer_fee": 0.00085
