@@ -43,6 +43,12 @@
       "image": "/images/chains/celestia.svg"
     },
     {
+      "id": "chihuahua",
+      "name": "Chihuahua",
+      "network_id": "chihuahua",
+      "image": "/images/chains/chihuahua.svg"
+    },
+    {
       "id": "comdex",
       "name": "Comdex",
       "network_id": "comdex",

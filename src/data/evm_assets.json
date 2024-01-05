@@ -3381,6 +3381,119 @@
           "transfer_fee": 60.0
         }
       ]
+    },
+    {
+      "id": "uhuahua",
+      "name": "HUAHUA - Chihuahua native asset",
+      "symbol": "HUAHUA",
+      "image": "/images/assets/huahua.svg",
+      "contracts": [
+        {
+          "chain": "arbitrum",
+          "address": "0x64D599b3d0c5f1375e5e639E98aB86298261A30B",
+          "symbol": "HUAHUA",
+          "decimals": 6,
+          "transfer_fee": 22000.0
+        },
+        {
+          "chain": "avalanche",
+          "address": "0x82057f44aFE6660B177c32fB724aDb5b6aC19e4A",
+          "symbol": "HUAHUA",
+          "decimals": 6,
+          "transfer_fee": 6500.0
+        },
+        {
+          "chain": "base",
+          "address": "0x64D599b3d0c5f1375e5e639E98aB86298261A30B",
+          "symbol": "HUAHUA",
+          "decimals": 6,
+          "transfer_fee": 22000.0
+        },
+        {
+          "chain": "binance",
+          "address": "0x9fD470124903957f299a1C90fEdA9043A4619cc6",
+          "symbol": "HUAHUA",
+          "decimals": 6,
+          "transfer_fee": 6500.0
+        },
+        {
+          "chain": "celo",
+          "address": "0x64D599b3d0c5f1375e5e639E98aB86298261A30B",
+          "symbol": "HUAHUA",
+          "decimals": 6,
+          "transfer_fee": 6500.0
+        },
+        {
+          "chain": "ethereum",
+          "address": "0xF7C79FfDa0d13b68081761BB0a5a66cFC48D97f5",
+          "symbol": "HUAHUA",
+          "decimals": 6,
+          "transfer_fee": 260000.0
+        },
+        {
+          "chain": "fantom",
+          "address": "0x9fD470124903957f299a1C90fEdA9043A4619cc6",
+          "symbol": "HUAHUA",
+          "decimals": 6,
+          "transfer_fee": 6500.0
+        },
+        {
+          "chain": "filecoin",
+          "address": "0x64D599b3d0c5f1375e5e639E98aB86298261A30B",
+          "symbol": "HUAHUA",
+          "decimals": 6,
+          "transfer_fee": 6500.0
+        },
+        {
+          "chain": "kava",
+          "address": "0x64D599b3d0c5f1375e5e639E98aB86298261A30B",
+          "symbol": "HUAHUA",
+          "decimals": 6,
+          "transfer_fee": 6500.0
+        },
+        {
+          "chain": "linea",
+          "address": "0x64D599b3d0c5f1375e5e639E98aB86298261A30B",
+          "symbol": "HUAHUA",
+          "decimals": 6,
+          "transfer_fee": 6500.0
+        },
+        {
+          "chain": "mantle",
+          "address": "0x64D599b3d0c5f1375e5e639E98aB86298261A30B",
+          "symbol": "HUAHUA",
+          "decimals": 6,
+          "transfer_fee": 6500.0
+        },
+        {
+          "chain": "moonbeam",
+          "address": "0xF7C79FfDa0d13b68081761BB0a5a66cFC48D97f5",
+          "symbol": "HUAHUA",
+          "decimals": 6,
+          "transfer_fee": 6500.0
+        },
+        {
+          "chain": "optimism",
+          "address": "0x64D599b3d0c5f1375e5e639E98aB86298261A30B",
+          "symbol": "HUAHUA",
+          "decimals": 6,
+          "transfer_fee": 22000.0
+        },
+        {
+          "chain": "polygon",
+          "address": "0xfecB6d3A5d3FdA8A37A072D5b9018709f690873b",
+          "symbol": "HUAHUA",
+          "decimals": 6,
+          "transfer_fee": 6500.0
+        },
+        {
+          "chain": "scroll",
+          "address": "0x64D599b3d0c5f1375e5e639E98aB86298261A30B",
+          "symbol": "HUAHUA",
+          "decimals": 6,
+          "transfer_fee": 6500.0
+        }
+      ]
     }
   ],
   "testnet": [
