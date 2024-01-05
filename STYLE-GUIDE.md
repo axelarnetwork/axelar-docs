@@ -240,4 +240,7 @@ Implement the following to send an interchain transaction with Axelar:
 * **Network**: “Axelar network,” not “Axelar Network.”
 * **Proof-of-stake**: Only capitalize the first word in titles and at the beginning of sentences. Always hyphenate.
 * **Web**, **Web2**, **Web3**: Capitalized everywhere, as in “the decentralized Web,” “the Web,” and any other context referring to the World Wide Web. “Web2” and “Web3” are also capitalized and written as one word.
+* **Mint/Burn**, not **mint/burn**.
+* **Lock/Unlock**, not **lock/unlock**.
+* **Token manager** is not a proper noun, unless specifying the `TokenManager` object (in which case it should be code font). 
 * Time format is always in [UTC](https://en.wikipedia.org/wiki/Coordinated_Universal_Time).
