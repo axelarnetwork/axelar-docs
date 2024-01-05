@@ -567,6 +567,14 @@
       "image": "/images/assets/usdy.svg",
       "decimals": 18,
       "transfer_fee": 0.1
+    },
+    {
+      "id": "uhuahua",
+      "name": "HUAHUA - Chihuahua native asset",
+      "symbol": "HUAHUA",
+      "image": "/images/assets/huahua.svg",
+      "decimals": 6,
+      "transfer_fee": 430.0
     }
   ],
   "testnet": [
