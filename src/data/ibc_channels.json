@@ -61,6 +61,16 @@
       "channel_id": "channel-125"
     },
     {
+      "from": "chihuahua",
+      "to": "axelarnet",
+      "channel_id": "channel-78"
+    },
+    {
+      "from": "axelarnet",
+      "to": "chihuahua",
+      "channel_id": "channel-135"
+    },
+    {
       "from": "comdex",
       "to": "axelarnet",
       "channel_id": "channel-34"
