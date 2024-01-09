@@ -9,13 +9,30 @@ export const getNavigation = (section) => {
           href: "/dev/intro",
         },
         {
-          title: "Send Tokens",
+          title: "Cross-Chain Token Transfer",
           children: [
-            { title: "Overview", href: "/dev/send-tokens/overview" },
+            { title: "Introduction", href: "/dev/send-tokens/overview" },
             {
               title: "Interchain Tokens",
-              href: "/dev/send-tokens/interchain-tokens",
-            },
+              children: [
+                {
+                  title: "Introduction",
+                  href: "/dev/send-tokens/interchain-tokens/intro",
+                },
+                {
+                  title: "Create Token",
+                  href: "/dev/send-tokens/interchain-tokens/create-token",
+                },
+                {
+                  title: "Upgrade Token",
+                  href: "/dev/send-tokens/interchain-tokens/upgrade-tokens",
+                },
+                {
+                  title: "Rate Limit",
+                  href: "/dev/reference/interchain-token-service-rate-limit",
+                },
+              ],
+            }
           ],
         },
         {
@@ -143,10 +160,6 @@ export const getNavigation = (section) => {
               href: "/dev/reference/testnet-contract-addresses",
             },
             {
-              title: "Interchain Token Service Rate Limit",
-              href: "/dev/reference/interchain-token-service-rate-limit",
-            },
-            {
               title: "Transaction Pricing",
               href: "/dev/reference/pricing",
             },
@@ -217,7 +230,7 @@ export const getNavigation = (section) => {
             { title: "Ethereum", href: "/validator/external-chains/ethereum" },
             { title: "Fantom", href: "/validator/external-chains/fantom" },
             { title: "Filecoin", href: "/validator/external-chains/filecoin" },
-            { title: "Immutable zkEVM", href: "/validator/external-chains/immutable"},
+            { title: "Immutable zkEVM", href: "/validator/external-chains/immutable" },
             { title: "Kava", href: "/validator/external-chains/kava" },
             { title: "Linea", href: "/validator/external-chains/linea" },
             { title: "Mantle", href: "/validator/external-chains/mantle" },

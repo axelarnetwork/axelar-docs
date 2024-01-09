@@ -175,6 +175,21 @@ ul li {
   font-size: 1.2em;
   padding-left: 0;
 }
+.sideNav .nav-group-header {
+  display: flex;
+  justify-content: space-between;
+  padding-left: 0px;
+}
+.sideNav .nav-group-header svg {
+  transition: transform 0.3s ease-in-out;
+}
+.sideNav .nav-group-header.expanded svg {
+  transform: rotate(90deg);
+}
+.sideNav div.group:not(.expanded) {
+  display: none;
+}
+
 .sideNav * {
   display: block;
   color: rgb(107, 114, 128);

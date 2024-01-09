@@ -1,29 +1,30 @@
 {
   "mainnet": [
     {
-      "id": "ethereum",
-      "name": "Ethereum",
-      "chain_id": 1,
-      "network_id": "Ethereum",
+      "id": "polygon",
+      "name": "Polygon",
+      "chain_id": 137,
+      "network_id": "Polygon",
       "provider_params": [
         {
-          "chainId": "0x1",
-          "chainName": "Ethereum",
+          "chainId": "0x89",
+          "chainName": "Polygon",
           "rpcUrls": [
-            "https://mainnet.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161",
-            "https://rpc.ankr.com/eth"
+            "https://rpc.ankr.com/polygon",
+            "https://matic-mainnet.chainstacklabs.com",
+            "https://polygon-rpc.com"
           ],
           "nativeCurrency": {
-            "name": "Ethereum",
-            "symbol": "ETH",
+            "name": "Polygon",
+            "symbol": "MATIC",
             "decimals": 18
           },
           "blockExplorerUrls": [
-            "https://etherscan.io"
+            "https://polygonscan.com"
           ]
         }
       ],
-      "image": "/images/chains/ethereum.svg"
+      "image": "/images/chains/polygon.svg"
     },
     {
       "id": "binance",
@@ -49,32 +50,6 @@
         }
       ],
       "image": "/images/chains/binance.svg"
-    },
-    {
-      "id": "polygon",
-      "name": "Polygon",
-      "chain_id": 137,
-      "network_id": "Polygon",
-      "provider_params": [
-        {
-          "chainId": "0x89",
-          "chainName": "Polygon",
-          "rpcUrls": [
-            "https://rpc.ankr.com/polygon",
-            "https://matic-mainnet.chainstacklabs.com",
-            "https://polygon-rpc.com"
-          ],
-          "nativeCurrency": {
-            "name": "Polygon",
-            "symbol": "MATIC",
-            "decimals": 18
-          },
-          "blockExplorerUrls": [
-            "https://polygonscan.com"
-          ]
-        }
-      ],
-      "image": "/images/chains/polygon.svg"
     },
     {
       "id": "avalanche",
@@ -127,16 +102,17 @@
       "image": "/images/chains/arbitrum.svg"
     },
     {
-      "id": "optimism",
-      "name": "Optimism",
-      "chain_id": 10,
-      "network_id": "optimism",
+      "id": "ethereum",
+      "name": "Ethereum",
+      "chain_id": 1,
+      "network_id": "Ethereum",
       "provider_params": [
         {
-          "chainId": "0xA",
-          "chainName": "Optimism",
+          "chainId": "0x1",
+          "chainName": "Ethereum",
           "rpcUrls": [
-            "https://mainnet.optimism.io"
+            "https://mainnet.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161",
+            "https://rpc.ankr.com/eth"
           ],
           "nativeCurrency": {
             "name": "Ethereum",
@@ -144,107 +120,11 @@
             "decimals": 18
           },
           "blockExplorerUrls": [
-            "https://optimistic.etherscan.io"
+            "https://etherscan.io"
           ]
         }
       ],
-      "image": "/images/chains/optimism.svg"
-    },
-    {
-      "id": "base",
-      "name": "Base",
-      "chain_id": 8453,
-      "network_id": "base",
-      "provider_params": [
-        {
-          "chainId": "0x2105",
-          "chainName": "Base",
-          "rpcUrls": [
-            "https://developer-access-mainnet.base.org"
-          ],
-          "nativeCurrency": {
-            "name": "Ether",
-            "symbol": "ETH",
-            "decimals": 18
-          },
-          "blockExplorerUrls": [
-            "https://basescan.org"
-          ]
-        }
-      ],
-      "image": "/images/chains/base.svg"
-    },
-    {
-      "id": "linea",
-      "name": "Linea",
-      "chain_id": 59144,
-      "network_id": "linea",
-      "provider_params": [
-        {
-          "chainId": "0xe708",
-          "chainName": "Linea",
-          "rpcUrls": [
-            "https://rpc.linea.build"
-          ],
-          "nativeCurrency": {
-            "name": "Ether",
-            "symbol": "ETH",
-            "decimals": 18
-          },
-          "blockExplorerUrls": [
-            "https://lineascan.build"
-          ]
-        }
-      ],
-      "image": "/images/chains/linea.svg"
-    },
-    {
-      "id": "mantle",
-      "name": "Mantle",
-      "chain_id": 5000,
-      "network_id": "mantle",
-      "provider_params": [
-        {
-          "chainId": "0x1388",
-          "chainName": "Mantle",
-          "rpcUrls": [
-            "https://rpc.mantle.xyz"
-          ],
-          "nativeCurrency": {
-            "name": "Mantle",
-            "symbol": "MNT",
-            "decimals": 18
-          },
-          "blockExplorerUrls": [
-            "https://explorer.mantle.xyz"
-          ]
-        }
-      ],
-      "image": "/images/chains/mantle.svg"
-    },
-    {
-      "id": "scroll",
-      "name": "Scroll",
-      "chain_id": 534352,
-      "network_id": "scroll",
-      "provider_params": [
-        {
-          "chainId": "0x82750",
-          "chainName": "Scroll",
-          "rpcUrls": [
-            "https://rpc.scroll.io"
-          ],
-          "nativeCurrency": {
-            "name": "Ether",
-            "symbol": "ETH",
-            "decimals": 18
-          },
-          "blockExplorerUrls": [
-            "https://blockscout.scroll.io"
-          ]
-        }
-      ],
-      "image": "/images/chains/scroll.svg"
+      "image": "/images/chains/ethereum.svg"
     },
     {
       "id": "fantom",
@@ -323,29 +203,52 @@
       "image": "/images/chains/celo.svg"
     },
     {
-      "id": "filecoin",
-      "name": "Filecoin",
-      "chain_id": 314,
-      "network_id": "filecoin",
+      "id": "optimism",
+      "name": "Optimism",
+      "chain_id": 10,
+      "network_id": "optimism",
       "provider_params": [
         {
-          "chainId": "0x13A",
-          "chainName": "Filecoin",
+          "chainId": "0xA",
+          "chainName": "Optimism",
           "rpcUrls": [
-            "https://rpc.ankr.com/filecoin",
-            "https://api.node.glif.io/rpc/v1"
+            "https://mainnet.optimism.io"
           ],
           "nativeCurrency": {
-            "name": "Filecoin",
-            "symbol": "FIL",
+            "name": "Ethereum",
+            "symbol": "ETH",
             "decimals": 18
           },
           "blockExplorerUrls": [
-            "https://filfox.info"
+            "https://optimistic.etherscan.io"
           ]
         }
       ],
-      "image": "/images/chains/filecoin.svg"
+      "image": "/images/chains/optimism.svg"
+    },
+    {
+      "id": "base",
+      "name": "Base",
+      "chain_id": 8453,
+      "network_id": "base",
+      "provider_params": [
+        {
+          "chainId": "0x2105",
+          "chainName": "Base",
+          "rpcUrls": [
+            "https://developer-access-mainnet.base.org"
+          ],
+          "nativeCurrency": {
+            "name": "Ether",
+            "symbol": "ETH",
+            "decimals": 18
+          },
+          "blockExplorerUrls": [
+            "https://basescan.org"
+          ]
+        }
+      ],
+      "image": "/images/chains/base.svg"
     },
     {
       "id": "kava",
@@ -370,6 +273,103 @@
         }
       ],
       "image": "/images/chains/kava.svg"
+    },
+    {
+      "id": "linea",
+      "name": "Linea",
+      "chain_id": 59144,
+      "network_id": "linea",
+      "provider_params": [
+        {
+          "chainId": "0xe708",
+          "chainName": "Linea",
+          "rpcUrls": [
+            "https://rpc.linea.build"
+          ],
+          "nativeCurrency": {
+            "name": "Ether",
+            "symbol": "ETH",
+            "decimals": 18
+          },
+          "blockExplorerUrls": [
+            "https://lineascan.build"
+          ]
+        }
+      ],
+      "image": "/images/chains/linea.svg"
+    },
+    {
+      "id": "mantle",
+      "name": "Mantle",
+      "chain_id": 5000,
+      "network_id": "mantle",
+      "provider_params": [
+        {
+          "chainId": "0x1388",
+          "chainName": "Mantle",
+          "rpcUrls": [
+            "https://rpc.mantle.xyz"
+          ],
+          "nativeCurrency": {
+            "name": "Mantle",
+            "symbol": "MNT",
+            "decimals": 18
+          },
+          "blockExplorerUrls": [
+            "https://explorer.mantle.xyz"
+          ]
+        }
+      ],
+      "image": "/images/chains/mantle.svg"
+    },
+    {
+      "id": "scroll",
+      "name": "Scroll",
+      "chain_id": 534352,
+      "network_id": "scroll",
+      "provider_params": [
+        {
+          "chainId": "0x82750",
+          "chainName": "Scroll",
+          "rpcUrls": [
+            "https://rpc.scroll.io"
+          ],
+          "nativeCurrency": {
+            "name": "Ether",
+            "symbol": "ETH",
+            "decimals": 18
+          },
+          "blockExplorerUrls": [
+            "https://blockscout.scroll.io"
+          ]
+        }
+      ],
+      "image": "/images/chains/scroll.svg"
+    },
+    {
+      "id": "filecoin",
+      "name": "Filecoin",
+      "chain_id": 314,
+      "network_id": "filecoin",
+      "provider_params": [
+        {
+          "chainId": "0x13A",
+          "chainName": "Filecoin",
+          "rpcUrls": [
+            "https://rpc.ankr.com/filecoin",
+            "https://api.node.glif.io/rpc/v1"
+          ],
+          "nativeCurrency": {
+            "name": "Filecoin",
+            "symbol": "FIL",
+            "decimals": 18
+          },
+          "blockExplorerUrls": [
+            "https://filfox.info"
+          ]
+        }
+      ],
+      "image": "/images/chains/filecoin.svg"
     },
     {
       "id": "centrifuge",
@@ -422,29 +422,54 @@
   ],
   "testnet": [
     {
-      "id": "ethereum",
-      "name": "Ethereum Goerli",
-      "chain_id": 5,
-      "network_id": "ethereum-2",
+      "id": "polygon",
+      "name": "Polygon",
+      "chain_id": 80001,
+      "network_id": "Polygon",
       "provider_params": [
         {
-          "chainId": "0x5",
-          "chainName": "Ethereum Goerli",
+          "chainId": "0x13881",
+          "chainName": "Polygon Mumbai",
           "rpcUrls": [
-            "https://rpc.ankr.com/eth_goerli",
-            "https://goerli.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161"
+            "https://rpc.ankr.com/polygon_mumbai",
+            "https://polygon-mumbai.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161",
+            "https://matic-mumbai.chainstacklabs.com"
           ],
           "nativeCurrency": {
-            "name": "Ethereum",
+            "name": "Polygon",
+            "symbol": "MATIC",
+            "decimals": 18
+          },
+          "blockExplorerUrls": [
+            "https://mumbai.polygonscan.com"
+          ]
+        }
+      ],
+      "image": "/images/chains/polygon.svg"
+    },
+    {
+      "id": "polygon-zkevm",
+      "name": "Polygon zkEVM",
+      "chain_id": 1442,
+      "network_id": "polygon-zkevm",
+      "provider_params": [
+        {
+          "chainId": "0x5A2",
+          "chainName": "Polygon zkEVM Testnet",
+          "rpcUrls": [
+            "https://rpc.public.zkevm-test.net"
+          ],
+          "nativeCurrency": {
+            "name": "Ether",
             "symbol": "ETH",
             "decimals": 18
           },
           "blockExplorerUrls": [
-            "https://goerli.etherscan.io"
+            "https://testnet-zkevm.polygonscan.com"
           ]
         }
       ],
-      "image": "/images/chains/ethereum.svg"
+      "image": "/images/chains/polygon.svg"
     },
     {
       "id": "binance",
@@ -473,32 +498,6 @@
       "image": "/images/chains/binance.svg"
     },
     {
-      "id": "polygon",
-      "name": "Polygon",
-      "chain_id": 80001,
-      "network_id": "Polygon",
-      "provider_params": [
-        {
-          "chainId": "0x13881",
-          "chainName": "Polygon Mumbai",
-          "rpcUrls": [
-            "https://rpc.ankr.com/polygon_mumbai",
-            "https://polygon-mumbai.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161",
-            "https://matic-mumbai.chainstacklabs.com"
-          ],
-          "nativeCurrency": {
-            "name": "Polygon",
-            "symbol": "MATIC",
-            "decimals": 18
-          },
-          "blockExplorerUrls": [
-            "https://mumbai.polygonscan.com"
-          ]
-        }
-      ],
-      "image": "/images/chains/polygon.svg"
-    },
-    {
       "id": "avalanche",
       "name": "Avalanche",
       "chain_id": 43113,
@@ -522,6 +521,79 @@
         }
       ],
       "image": "/images/chains/avalanche.svg"
+    },
+    {
+      "id": "arbitrum",
+      "name": "Arbitrum",
+      "chain_id": 421613,
+      "network_id": "arbitrum",
+      "provider_params": [
+        {
+          "chainId": "0x66EED",
+          "chainName": "Arbitrum Goerli Testnet",
+          "rpcUrls": [
+            "https://goerli-rollup.arbitrum.io/rpc"
+          ],
+          "nativeCurrency": {
+            "name": "Ethereum",
+            "symbol": "ETH",
+            "decimals": 18
+          },
+          "blockExplorerUrls": [
+            "https://goerli.arbiscan.io/"
+          ]
+        }
+      ],
+      "image": "/images/chains/arbitrum.svg"
+    },
+    {
+      "id": "ethereum-sepolia",
+      "name": "Ethereum Sepolia",
+      "chain_id": "11155111",
+      "network_id": "ethereum-sepolia",
+      "provider_params": [
+        {
+          "chainId": "0xAA36A7",
+          "chainName": "Ethereum Sepolia",
+          "rpcUrls": [
+            "https://1rpc.io/sepolia"
+          ],
+          "nativeCurrency": {
+            "name": "Ethereum",
+            "symbol": "ETH",
+            "decimals": 18
+          },
+          "blockExplorerUrls": [
+            "https://sepolia.etherscan.io"
+          ]
+        }
+      ],
+      "image": "/images/chains/ethereum.svg"
+    },
+    {
+      "id": "ethereum",
+      "name": "Ethereum Goerli",
+      "chain_id": 5,
+      "network_id": "ethereum-2",
+      "provider_params": [
+        {
+          "chainId": "0x5",
+          "chainName": "Ethereum Goerli",
+          "rpcUrls": [
+            "https://rpc.ankr.com/eth_goerli",
+            "https://goerli.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161"
+          ],
+          "nativeCurrency": {
+            "name": "Ethereum",
+            "symbol": "ETH",
+            "decimals": 18
+          },
+          "blockExplorerUrls": [
+            "https://goerli.etherscan.io"
+          ]
+        }
+      ],
+      "image": "/images/chains/ethereum.svg"
     },
     {
       "id": "fantom",
@@ -549,32 +621,6 @@
       "image": "/images/chains/fantom.svg"
     },
     {
-      "id": "moonbeam",
-      "name": "Moonbase",
-      "chain_id": 1287,
-      "network_id": "Moonbeam",
-      "provider_params": [
-        {
-          "chainId": "0x507",
-          "chainName": "Moonbase Alpha",
-          "rpcUrls": [
-            "https://rpc.api.moonbase.moonbeam.network",
-            "https://rpc.testnet.moonbeam.network",
-            "https://moonbase-alpha.public.blastapi.io"
-          ],
-          "nativeCurrency": {
-            "name": "Dev",
-            "symbol": "DEV",
-            "decimals": 18
-          },
-          "blockExplorerUrls": [
-            "https://moonbase.moonscan.io"
-          ]
-        }
-      ],
-      "image": "/images/chains/moonbase.png"
-    },
-    {
       "id": "celo",
       "name": "Celo",
       "chain_id": 44787,
@@ -599,28 +645,30 @@
       "image": "/images/chains/celo.svg"
     },
     {
-      "id": "arbitrum",
-      "name": "Arbitrum",
-      "chain_id": 421613,
-      "network_id": "arbitrum",
+      "id": "moonbeam",
+      "name": "Moonbase",
+      "chain_id": 1287,
+      "network_id": "Moonbeam",
       "provider_params": [
         {
-          "chainId": "0x66EED",
-          "chainName": "Arbitrum Goerli Testnet",
+          "chainId": "0x507",
+          "chainName": "Moonbase Alpha",
           "rpcUrls": [
-            "https://goerli-rollup.arbitrum.io/rpc"
+            "https://rpc.api.moonbase.moonbeam.network",
+            "https://rpc.testnet.moonbeam.network",
+            "https://moonbase-alpha.public.blastapi.io"
           ],
           "nativeCurrency": {
-            "name": "Ethereum",
-            "symbol": "ETH",
+            "name": "Dev",
+            "symbol": "DEV",
             "decimals": 18
           },
           "blockExplorerUrls": [
-            "https://goerli.arbiscan.io/"
+            "https://moonbase.moonscan.io"
           ]
         }
       ],
-      "image": "/images/chains/arbitrum.svg"
+      "image": "/images/chains/moonbase.png"
     },
     {
       "id": "optimism",
@@ -669,6 +717,30 @@
         }
       ],
       "image": "/images/chains/base.svg"
+    },
+    {
+      "id": "kava",
+      "name": "Kava",
+      "chain_id": "2221",
+      "network_id": "kava",
+      "provider_params": [
+        {
+          "chainId": "0x8AD",
+          "chainName": "Kava EVM",
+          "rpcUrls": [
+            "https://evm.testnet.kava.io"
+          ],
+          "nativeCurrency": {
+            "name": "Kava",
+            "symbol": "KAVA",
+            "decimals": 18
+          },
+          "blockExplorerUrls": [
+            "https://explorer.testnet.kava.io/"
+          ]
+        }
+      ],
+      "image": "/images/chains/kava.svg"
     },
     {
       "id": "linea",
@@ -743,30 +815,6 @@
       "image": "/images/chains/scroll.svg"
     },
     {
-      "id": "polygon-zkevm",
-      "name": "Polygon zkEVM",
-      "chain_id": 1442,
-      "network_id": "polygon-zkevm",
-      "provider_params": [
-        {
-          "chainId": "0x5A2",
-          "chainName": "Polygon zkEVM Testnet",
-          "rpcUrls": [
-            "https://rpc.public.zkevm-test.net"
-          ],
-          "nativeCurrency": {
-            "name": "Ether",
-            "symbol": "ETH",
-            "decimals": 18
-          },
-          "blockExplorerUrls": [
-            "https://testnet-zkevm.polygonscan.com"
-          ]
-        }
-      ],
-      "image": "/images/chains/polygon.svg"
-    },
-    {
       "id": "filecoin",
       "name": "Filecoin",
       "chain_id": 314159,
@@ -792,30 +840,6 @@
       "image": "/images/chains/filecoin.svg"
     },
     {
-      "id": "kava",
-      "name": "Kava",
-      "chain_id": "2221",
-      "network_id": "kava",
-      "provider_params": [
-        {
-          "chainId": "0x8AD",
-          "chainName": "Kava EVM",
-          "rpcUrls": [
-            "https://evm.testnet.kava.io"
-          ],
-          "nativeCurrency": {
-            "name": "Kava",
-            "symbol": "KAVA",
-            "decimals": 18
-          },
-          "blockExplorerUrls": [
-            "https://explorer.testnet.kava.io/"
-          ]
-        }
-      ],
-      "image": "/images/chains/kava.svg"
-    },
-    {
       "id": "centrifuge-2",
       "name": "Centrifuge",
       "chain_id": "2090",
@@ -838,30 +862,6 @@
         }
       ],
       "image": "/images/chains/centrifuge.svg"
-    },
-    {
-      "id": "ethereum-sepolia",
-      "name": "Ethereum Sepolia",
-      "chain_id": "11155111",
-      "network_id": "ethereum-sepolia",
-      "provider_params": [
-        {
-          "chainId": "0xAA36A7",
-          "chainName": "Ethereum Sepolia",
-          "rpcUrls": [
-            "https://1rpc.io/sepolia"
-          ],
-          "nativeCurrency": {
-            "name": "Ethereum",
-            "symbol": "ETH",
-            "decimals": 18
-          },
-          "blockExplorerUrls": [
-            "https://sepolia.etherscan.io"
-          ]
-        }
-      ],
-      "image": "/images/chains/ethereum.svg"
     },
     {
       "id": "immutable",

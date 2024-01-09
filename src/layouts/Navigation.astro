@@ -21,15 +21,24 @@ const navigation = getNavigation(section);
       <div class="nav-header">{section.header}</div>
       {section.children.map((item) =>
         item.children ? (
-            <span>{item.title}</span>
+            <div class="nav-group-header">
+              <span>{item.title}</span>
+              <span><svg aria-hidden="true" class="" width="32" height="32" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"></path></svg></span>
+            </div>
             <div class="group">
               {item.children.map((child) =>
                 child.children ? (
+                  <div class="nav-group-header">
                     <span>{child.title}</span>
+                      <span><svg aria-hidden="true" class="" width="32" height="32" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"></path></svg></span>
+                  </div>
                     <div class="group">
                       {child.children.map((grandchild) => (
                         grandchild.children ? (
-                          <span>{grandchild.title}</span>
+                          <div class="nav-group-header">
+                            <span>{grandchild.title}</span>
+                            <span><svg aria-hidden="true" class="" width="32" height="32" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"></path></svg></span>
+                          </div>
                           <div class="group">
                             {grandchild.children.map((greatGrandchild) => (
                               <a href={greatGrandchild.href}>{greatGrandchild.title}</a>
@@ -44,7 +53,8 @@ const navigation = getNavigation(section);
                   <a href={child.href}>{child.title}</a>
                 )
               )}
-            </div>
+                
+              </div>
         ) : (
           <a href={item.href}>{item.title}</a>
         )

@@ -177,6 +177,14 @@
       "transfer_fee": 0.099
     },
     {
+      "id": "fxs-wei",
+      "name": "FXS - Frax Share",
+      "symbol": "FXS",
+      "image": "/images/assets/fxs.svg",
+      "decimals": 18,
+      "transfer_fee": 0.011
+    },
+    {
       "id": "reth-wei",
       "name": "rETH - Rocket Pool ETH",
       "symbol": "rETH",
@@ -473,6 +481,14 @@
       "transfer_fee": 0.1
     },
     {
+      "id": "fpi-wei",
+      "name": "FPI - Frax Price Index",
+      "symbol": "FPI",
+      "image": "/images/assets/fpi.svg",
+      "decimals": 18,
+      "transfer_fee": 0.091
+    },
+    {
       "id": "mkr-wei",
       "name": "MKR - Maker",
       "symbol": "MKR",
@@ -535,6 +551,30 @@
       "image": "/images/assets/yieldeth.svg",
       "decimals": 18,
       "transfer_fee": 6.2e-05
+    },
+    {
+      "id": "utori",
+      "name": "TORI - Teritori",
+      "symbol": "TORI",
+      "image": "/images/assets/tori.svg",
+      "decimals": 6,
+      "transfer_fee": 2.8
+    },
+    {
+      "id": "usdy-wei",
+      "name": "USDY - Ondo U.S. Dollar Yield",
+      "symbol": "USDY",
+      "image": "/images/assets/usdy.svg",
+      "decimals": 18,
+      "transfer_fee": 0.1
+    },
+    {
+      "id": "uhuahua",
+      "name": "HUAHUA - Chihuahua native asset",
+      "symbol": "HUAHUA",
+      "image": "/images/assets/huahua.svg",
+      "decimals": 6,
+      "transfer_fee": 430.0
     }
   ],
   "testnet": [
@@ -617,6 +657,14 @@
       "image": "/images/assets/wdev.svg",
       "decimals": 18,
       "transfer_fee": 0.02
+    },
+    {
+      "id": "utsaga",
+      "name": "TSAGA - Axelar Wrapped TSAGA",
+      "symbol": "TSAGA",
+      "image": "/images/assets/tsaga.svg",
+      "decimals": 6,
+      "transfer_fee": 0.5
     }
   ]
 }
