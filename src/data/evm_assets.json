@@ -1352,6 +1352,119 @@
       ]
     },
     {
+      "id": "frxeth-wei",
+      "name": "frxETH - Frax Ether",
+      "symbol": "frxETH",
+      "image": "/images/assets/frxeth.svg",
+      "contracts": [
+        {
+          "chain": "arbitrum",
+          "address": "0xEcc68d0451E20292406967Fe7C04280E5238Ac7D",
+          "symbol": "frxETH",
+          "decimals": 18,
+          "transfer_fee": 0.0031
+        },
+        {
+          "chain": "avalanche",
+          "address": "0x939b1a17C0d0Aa3fEA634Ad9157c88245A53C713",
+          "symbol": "frxETH",
+          "decimals": 18,
+          "transfer_fee": 0.00094
+        },
+        {
+          "chain": "base",
+          "address": "0xEcc68d0451E20292406967Fe7C04280E5238Ac7D",
+          "symbol": "frxETH",
+          "decimals": 18,
+          "transfer_fee": 0.0031
+        },
+        {
+          "chain": "binance",
+          "address": "0x39Db1A30122031751e803Fabf329C44efBBfBf4B",
+          "symbol": "frxETH",
+          "decimals": 18,
+          "transfer_fee": 0.00094
+        },
+        {
+          "chain": "celo",
+          "address": "0xEcc68d0451E20292406967Fe7C04280E5238Ac7D",
+          "symbol": "frxETH",
+          "decimals": 18,
+          "transfer_fee": 0.00094
+        },
+        {
+          "chain": "ethereum",
+          "address": "0x5E8422345238F34275888049021821E8E08CAa1f",
+          "symbol": "frxETH",
+          "decimals": 18,
+          "transfer_fee": 0.038
+        },
+        {
+          "chain": "fantom",
+          "address": "0x39Db1A30122031751e803Fabf329C44efBBfBf4B",
+          "symbol": "frxETH",
+          "decimals": 18,
+          "transfer_fee": 0.00094
+        },
+        {
+          "chain": "filecoin",
+          "address": "0xEcc68d0451E20292406967Fe7C04280E5238Ac7D",
+          "symbol": "frxETH",
+          "decimals": 18,
+          "transfer_fee": 0.00094
+        },
+        {
+          "chain": "kava",
+          "address": "0xEcc68d0451E20292406967Fe7C04280E5238Ac7D",
+          "symbol": "frxETH",
+          "decimals": 18,
+          "transfer_fee": 0.00094
+        },
+        {
+          "chain": "linea",
+          "address": "0xEcc68d0451E20292406967Fe7C04280E5238Ac7D",
+          "symbol": "frxETH",
+          "decimals": 18,
+          "transfer_fee": 0.00094
+        },
+        {
+          "chain": "mantle",
+          "address": "0xEcc68d0451E20292406967Fe7C04280E5238Ac7D",
+          "symbol": "frxETH",
+          "decimals": 18,
+          "transfer_fee": 0.00094
+        },
+        {
+          "chain": "moonbeam",
+          "address": "0x29C795559e4Db87054Ba70fafC454214c20aDbD4",
+          "symbol": "frxETH",
+          "decimals": 18,
+          "transfer_fee": 0.00094
+        },
+        {
+          "chain": "optimism",
+          "address": "0xEcc68d0451E20292406967Fe7C04280E5238Ac7D",
+          "symbol": "frxETH",
+          "decimals": 18,
+          "transfer_fee": 0.0031
+        },
+        {
+          "chain": "polygon",
+          "address": "0x01e91A094f5559f211e4ad4bED01468aBb64Bde3",
+          "symbol": "frxETH",
+          "decimals": 18,
+          "transfer_fee": 0.00094
+        },
+        {
+          "chain": "scroll",
+          "address": "0xEcc68d0451E20292406967Fe7C04280E5238Ac7D",
+          "symbol": "frxETH",
+          "decimals": 18,
+          "transfer_fee": 0.00094
+        }
+      ]
+    },
+    {
       "id": "sfrax-wei",
       "name": "sFRAX - Staked FRAX",
       "symbol": "sFRAX",
