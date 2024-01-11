@@ -32,7 +32,7 @@ export const getNavigation = (section) => {
                   href: "/dev/reference/interchain-token-service-rate-limit",
                 },
               ],
-            }
+            },
           ],
         },
         {
@@ -230,7 +230,10 @@ export const getNavigation = (section) => {
             { title: "Ethereum", href: "/validator/external-chains/ethereum" },
             { title: "Fantom", href: "/validator/external-chains/fantom" },
             { title: "Filecoin", href: "/validator/external-chains/filecoin" },
-            { title: "Immutable zkEVM", href: "/validator/external-chains/immutable" },
+            {
+              title: "Immutable zkEVM",
+              href: "/validator/external-chains/immutable",
+            },
             { title: "Kava", href: "/validator/external-chains/kava" },
             { title: "Linea", href: "/validator/external-chains/linea" },
             { title: "Mantle", href: "/validator/external-chains/mantle" },
@@ -270,6 +273,10 @@ export const getNavigation = (section) => {
               href: "/validator/troubleshoot/leave",
             },
           ],
+        },
+        {
+          title: "Amplifier",
+          href: "/validator/amplifier",
         },
       ],
     });
