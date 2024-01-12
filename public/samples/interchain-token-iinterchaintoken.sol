@@ -8,7 +8,7 @@ import {ITokenManager} from "@axelar-network/interchain-token-service/contracts/
 import {ITokenManagerType} from "@axelar-network/interchain-token-service/contracts/interfaces/ITokenManagerType.sol";
 import {IInterchainToken} from "@axelar-network/interchain-token-service/contracts/interfaces/IInterchainToken.sol";
 import {IInterchainTokenService} from "@axelar-network/interchain-token-service/contracts/interfaces/IInterchainTokenService.sol";
-import {AddressBytesUtils} from "@axelar-network/interchain-token-service/contracts/libraries/AddressBytesUtils.sol";
+import {AddressBytes} from "@axelar-network/axelar-gmp-sdk-solidity/contracts/libs/AddressBytes.sol";
 
 /**
  * This is sample code only and has not been audited.
@@ -17,7 +17,7 @@ import {AddressBytesUtils} from "@axelar-network/interchain-token-service/contra
  * in production.
  */
 contract MyInterchainToken is ERC20, AccessControl {
-    using AddressBytesUtils for address;
+    using AddressBytes for address;
 
     address public creator;
     bytes32 public tokenId;
