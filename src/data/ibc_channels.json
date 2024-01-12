@@ -573,6 +573,16 @@
       "channel_id": "channel-108"
     },
     {
+      "from": "fxcore",
+      "to": "axelarnet",
+      "channel_id": "channel-127"
+    },
+    {
+      "from": "axelarnet",
+      "to": "fxcore",
+      "channel_id": "channel-398"
+    },
+    {
       "from": "provenance",
       "to": "axelarnet",
       "channel_id": "channel-75"
