@@ -209,6 +209,14 @@
       "transfer_fee": 0.076
     },
     {
+      "id": "op-wei",
+      "name": "OP - Optimism",
+      "symbol": "OP",
+      "image": "/images/assets/op.svg",
+      "decimals": 18,
+      "transfer_fee": 0.026
+    },
+    {
       "id": "mpx-wei",
       "name": "MPX - MPX",
       "symbol": "MPX",
