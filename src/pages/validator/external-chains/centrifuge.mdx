@@ -16,6 +16,13 @@ Set up your Centrifuge Mainnet or Testnet node.
 1. Run with Docker
 2. Run with binaries
 
+<Callout type="info">
+The CLI options in this doc are a reference that works for the Centrifuge team, but feel free to play with the settings for your own setup using the official docs:
+https://docs.substrate.io/reference/command-line-tools/node-template/
+The info here has been derived from the official documentation, where you can find more info and also all the options for logging and debugging:
+https://docs.substrate.io/deploy/deployment-options/
+</Callout>
+
 ## 1. Run with Docker
 
 You can use the container published by Centrifuge on their [DockerHub repo](https://hub.docker.com/repository/docker/centrifugeio/centrifuge-chain/tags?page=1&ordering=last_updated)
@@ -276,7 +283,6 @@ Change the `ports` based on your network setup.
     ExecStart=/var/lib/centrifuge-data/centrifuge-chain --bootnodes=/ip4/34.89.150.73/tcp/30333/p2p/12D3KooWHsA69Fb1HkdWrwrxY3cSga3wWyHnxuk5GeYtCh59XsWB --bootnodes=/ip4/35.198.144.90/tcp/30333/p2p/12D3KooWMJPzvEp5Jhea8eKsUDufBbAzGrn265GcaCmcnp3koPk4 --bootnodes=/ip4/35.198.98.253/tcp/30333/p2p/12D3KooWHzRutQHbQKWh3Z5BWoXGk5c3gxscxfG57N8fNV6XjVLz \
         --port=30333 \
         --rpc-port=9933 \
-        --unsafe-ws-external \
         --unsafe-rpc-external \
         --rpc-cors=all \
         --pruning=archive \
