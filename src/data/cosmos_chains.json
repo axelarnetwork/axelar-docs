@@ -339,12 +339,6 @@
       "image": "/images/chains/sei.svg"
     },
     {
-      "id": "teritori",
-      "name": "Teritori",
-      "network_id": "teritori",
-      "image": "/images/chains/teritori.svg"
-    },
-    {
       "id": "terra",
       "name": "Terra",
       "network_id": "terra-3",
