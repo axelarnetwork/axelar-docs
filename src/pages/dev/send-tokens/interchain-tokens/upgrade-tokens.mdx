@@ -89,6 +89,7 @@ function deployTokenManager(
     uint256 gasValue
 ) external payable 
 ```
+To create the `params` that will be used to initialize the Token Manager in the `deployTokenManager` method above, you can use the [Online Ethereum ABI Encoder](https://adibas03.github.io/online-ethereum-abi-encoder-decoder/#/encode) specifying the operator of the Token Manager and the token address with the argument type `bytes` and `address` respectively.
 
 >**Note**: If you want to build your token with the `IInterchainToken` feature yourself, make sure your token implements the [`IInterchainTokenStandard`](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/interfaces/IInterchainTokenStandard.sol) interface so you can offer [`interchainTransfer`](https://github.com/axelarnetwork/interchain-token-service/blob/a2dfcb2490497e627b66be789d944ec3260c5eea/contracts/interfaces/IInterchainTokenStandard.sol#L20) and [`interchainTransferFrom`](https://github.com/axelarnetwork/interchain-token-service/blob/a2dfcb2490497e627b66be789d944ec3260c5eea/contracts/interfaces/IInterchainTokenStandard.sol#L37) methods directly on your token. 
 

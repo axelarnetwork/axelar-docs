@@ -357,6 +357,12 @@
       "image": "/images/chains/xpla.svg"
     },
     {
+      "id": "fxcore",
+      "name": "fxCore",
+      "network_id": "fxcore",
+      "image": "/images/chains/fxcore.svg"
+    },
+    {
       "id": "provenance",
       "name": "provenance",
       "network_id": "provenance",
