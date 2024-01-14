@@ -64,7 +64,7 @@
         },
         {
           "title": "Swagger 2",
-          "value": "https://lcd-axelar.stakerun.com/static/swagger/"
+          "value": "https://axelar-lcd.quickapi.com/static/swagger/"
         },
         {
           "title": "OpenAPI 1",
@@ -72,7 +72,7 @@
         },
         {
           "title": "OpenAPI 2",
-          "value": "https://lcd-axelar.stakerun.com/static/openapi/"
+          "value": "https://axelar-lcd.quickapi.com/static/openapi/"
         }
       ]
     },
@@ -80,7 +80,7 @@
       "name": "RPC endpoints",
       "value": [
         {
-          "value": "https://tm.axelar.lava.build"
+          "value": "https://tm.axelar.lava.build:443"
         },
         {
           "value": "https://rpc-axelar.imperator.co:443"
@@ -98,28 +98,28 @@
           "value": "https://axelar-rpc.staketab.org:443"
         },
         {
-          "value": "https://axelar.rpc.stake2.me"
+          "value": "https://axelar.rpc.stake2.me:443"
         },
         {
-          "value": "https://axelar-rpc.qubelabs.io"
+          "value": "https://axelar-rpc.qubelabs.io:443"
         },
         {
           "value": "https://axelar-mainnet-rpc.allthatnode.com:26657"
         },
         {
-          "value": "https://axelar-rpc.quantnode.tech"
+          "value": "https://axelar-rpc.quantnode.tech:443"
         },
         {
-          "value": "https://axelar-rpc.polkachu.com"
+          "value": "https://axelar-rpc.polkachu.com:443"
         },
         {
-          "value": "https://axelar-rpc.4sv.io"
+          "value": "https://axelar-rpc.4sv.io:443"
         },
         {
-          "value": "https://axelar-rpc.validatrium.club"
+          "value": "https://axelar-rpc.validatrium.club:443"
         },
         {
-          "value": "https://rpc-axelar.stakerun.com"
+          "value": "https://rpc-axelar.stakerun.com:443"
         }
       ]
     },
@@ -324,25 +324,25 @@
       "name": "RPC endpoints",
       "value": [
         {
-          "value": "https://tm.axelar-testnet.lava.build"
+          "value": "https://tm.axelar-testnet.lava.build:443"
         },
         {
           "value": "https://rpc-axelar-testnet.imperator.co:443"
         },
         {
-          "value": "https://axelartest-rpc.quickapi.com"
+          "value": "https://axelartest-rpc.quickapi.com:443"
         },
         {
           "value": "https://axelar-rpc-1.staketab.org:443"
         },
         {
-          "value": "https://axelar-testnet-rpc.qubelabs.io"
+          "value": "https://axelar-testnet-rpc.qubelabs.io:443"
         },
         {
           "value": "https://axelar-lisbon-rpc.allthatnode.com:26657"
         },
         {
-          "value": "https://axelartest-rpc.quantnode.tech"
+          "value": "https://axelartest-rpc.quantnode.tech:443"
         }
       ]
     },

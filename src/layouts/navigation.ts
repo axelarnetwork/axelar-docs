@@ -9,13 +9,30 @@ export const getNavigation = (section) => {
           href: "/dev/intro",
         },
         {
-          title: "Send Tokens",
+          title: "Cross-Chain Token Transfer",
           children: [
-            { title: "Overview", href: "/dev/send-tokens/overview" },
+            { title: "Introduction", href: "/dev/send-tokens/overview" },
             {
               title: "Interchain Tokens",
-              href: "/dev/send-tokens/interchain-tokens",
-            },
+              children: [
+                {
+                  title: "Introduction",
+                  href: "/dev/send-tokens/interchain-tokens/intro",
+                },
+                {
+                  title: "Create Token",
+                  href: "/dev/send-tokens/interchain-tokens/create-token",
+                },
+                {
+                  title: "Upgrade Token",
+                  href: "/dev/send-tokens/interchain-tokens/upgrade-tokens",
+                },
+                {
+                  title: "Rate Limit",
+                  href: "/dev/reference/interchain-token-service-rate-limit",
+                },
+              ],
+            }
           ],
         },
         {
@@ -226,6 +243,7 @@ export const getNavigation = (section) => {
             { title: "Ethereum", href: "/validator/external-chains/ethereum" },
             { title: "Fantom", href: "/validator/external-chains/fantom" },
             { title: "Filecoin", href: "/validator/external-chains/filecoin" },
+            { title: "Immutable zkEVM", href: "/validator/external-chains/immutable" },
             { title: "Kava", href: "/validator/external-chains/kava" },
             { title: "Linea", href: "/validator/external-chains/linea" },
             { title: "Mantle", href: "/validator/external-chains/mantle" },
@@ -233,8 +251,6 @@ export const getNavigation = (section) => {
             { title: "Optimism", href: "/validator/external-chains/optimism" },
             { title: "Polygon", href: "/validator/external-chains/polygon" },
             { title: "Scroll", href: "/validator/external-chains/scroll" },
-            { title: "Aurora", href: "/validator/external-chains/aurora" },
-            { title: "Hero", href: "/validator/external-chains/hero" },
           ],
         },
         {
@@ -276,7 +292,7 @@ export const getNavigation = (section) => {
     children: [
       { title: "Mainnet", href: "/resources/mainnet" },
       { title: "Testnet", href: "/resources/testnet" },
-      { title: "Endpoints and Tools", href: "/resources/" },
+      { title: "RPC Endpoints", href: "/resources/" },
       {
         title: "Community Pool Proposals",
         href: "/resources/governance/community-pool-proposals",
@@ -287,6 +303,7 @@ export const getNavigation = (section) => {
       { title: "Wrap/unwrap tokens", href: "/resources/wrapped-tokens" },
       { title: "Using ipRPC (Free Public RPC)", href: "/resources/lava-iprpc" },
       { title: "Bug Bounty", href: "/bug-bounty" },
+      { title: "Add Account to Axelarscan", href: "/resources/axelarscan-add" },
     ],
   });
 

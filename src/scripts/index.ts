@@ -7,5 +7,6 @@ import "./active";
 import "./menu";
 import "./dark";
 import { showToast } from "./toast";
+import "./collapsible-nav";
 
 window["showToast"] = showToast;

@@ -1,0 +1,52 @@
+# Add Account to Axelarscan
+
+## Overview
+
+The ability to add metadata about important on-chain addresses allows users to have a simpler experience seeing on-chain activity for these addresses.
+
+Rather than seeing a raw address on Axelarscan, users will be able to see a customized photo and name for a given address:
+
+![Axelar Governance Address](/images/axelar-governance-address.png)
+
+## How to Add
+
+To add a new address to the list of tracked addresses in the [accounts directory](https://github.com/CoinHippo-Labs/axelarscan-ui/blob/main/data/accounts/index.js), send a [pull request](https://github.com/CoinHippo-Labs/axelarscan-ui/pulls) to the [Axelarscan-UI repository](https://github.com/CoinHippo-Labs/axelarscan-ui/tree/main).
+
+Include the following parameters:
+
+* Address: The address you are looking to add.
+* Name: The name you want to be displayed for your address.
+* Image: The image you want to appear alongisde the name.
+* Environment: Whether this address is for mainnet or testnet transactions.
+
+## Example
+
+The following example adds the Axelar Governance Address referenced in the image above to the accounts directory.
+
+```javascript
+export default [
+  {
+    address: 'axelar10d07y265gmmuvt4z0w9aw880jnsr700j7v9daj',
+    name: 'Axelar Governance',
+    image: '/logos/accounts/axelarnet.svg',
+  }
+]
+```
+
+No `environnment` was set, so this address will appear on both [mainnet](https://axelarscan.io/account/axelar10d07y265gmmuvt4z0w9aw880jnsr700j7v9daj) and [testnet](https://testnet.axelarscan.io/account/axelar10d07y265gmmuvt4z0w9aw880jnsr700j7v9daj).
+
+Add the following to include the address on mainnet only:
+
+```javascript
+export default [
+  {
+    address: 'axelar10d07y265gmmuvt4z0w9aw880jnsr700j7v9daj',
+    name: 'Axelar Governance',
+    image: '/logos/accounts/axelarnet.svg',
+    environnment: 'mainnet'
+  }
+]
+```
+
+
+

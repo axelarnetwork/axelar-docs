@@ -11,88 +11,72 @@ const COLUMNS = [
   },
 ];
 
-export default ({
-  environment = "mainnet",
-}) => {
-  const _resources = resources?.[environment] ||
-    [];
+export default ({ environment = "mainnet" }) => {
+  const _resources = resources?.[environment] || [];
 
   return (
-      <table className="resources bleed">
-        <tbody>
-          {_resources
-            .map((r, i) => {
-              return (
-                <tr
-                  key={i}
-                  className="border-none border-b"
-                >
-                  {COLUMNS
-                    .map((c, j) => {
-                      const {
-                        id,
-                        className,
-                      } = { ...c };
+    <table className="resources bleed">
+      <tbody>
+        {_resources.map((r, i) => {
+          return (
+            <tr key={i} className="border-none border-b">
+              {COLUMNS.map((c, j) => {
+                const { id, className } = { ...c };
 
-                      const data = r?.[id];
+                const data = r?.[id];
 
-                      return (
-                        <td
-                          key={j}
-                          scope="col"
-                          className={`${i % 2 === 0 ? "bg-transparent" : "bg-gray-50 dark:bg-black"} ${i === _resources.length - 1 ? j === 0 ? "rounded-bl-lg" : j === COLUMNS.length - 1 ? "rounded-br-lg" : "" : ""} border-none whitespace-nowrap py-3 px-4 ${className || ""}`}
-                        >
-                          {id === 'value' ?
-                            <div className="flex flex-wrap">
-                              {(data || [])
-                                .map((v, k) => {
-                                  const {
-                                    title,
-                                    value,
-                                  } = { ...v };
+                return (
+                  <td
+                    key={j}
+                    scope="col"
+                    className={`${
+                      i % 2 === 0
+                        ? "bg-transparent"
+                        : "bg-gray-50 dark:bg-black"
+                    } ${
+                      i === _resources.length - 1
+                        ? j === 0
+                          ? "rounded-bl-lg"
+                          : j === COLUMNS.length - 1
+                          ? "rounded-br-lg"
+                          : ""
+                        : ""
+                    } border-none whitespace-nowrap py-3 px-4 ${
+                      className || ""
+                    }`}
+                  >
+                    {id === "value" ? (
+                      <div className="flex flex-wrap">
+                        {(data || []).map((v, k) => {
+                          const { title, value } = { ...v };
 
-                                  const is_external = !value?.startsWith('/');
+                          const is_external = !value?.startsWith("/");
 
-                                  return (
-                                    <div
-                                      key={k}
-                                      className="flex space-x-0.5 mb-2.5 mr-2.5"
-                                    >
-                                      <a
-                                        href={value}
-                                        className="bg-slate-100 dark:bg-slate-800 rounded-xl text-sm font-medium py-1 px-2.5"
-                                      >
-                                        {
-                                          title ||
-                                          value
-                                        }
-                                      </a>
-                                      {
-                                        
-                                        (
-                                          <Copy
-                                            size={20}
-                                            hide={true}
-                                            value={value}
-                                          />
-                                        )
-                                      }
-                                    </div>
-                                  );
-                                })
+                          return (
+                            <div key={k} className="flex">
+                              <a href={value}>{title || value}</a>
+                              {
+                                <Copy
+                                  size={20}
+                                  hide={true}
+                                  value={value}
+                                  className="link-text-icon"
+                                />
                               }
-                            </div> :
-                            data
-                          }
-                        </td>
-                      );
-                    })
-                  }
-                </tr>
-              );
-            })
-          }
-        </tbody>
-      </table>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    ) : (
+                      data
+                    )}
+                  </td>
+                );
+              })}
+            </tr>
+          );
+        })}
+      </tbody>
+    </table>
   );
 };

@@ -1,9 +1,10 @@
+@import url("https://fonts.googleapis.com/css2?family=Space+Grotesk&display=swap");
 @import "dark.scss";
 
 $page-width: 1400px;
-$font: Noto Sans, ui-sans-serif, sans-serif, system-ui, -apple-system,
-  BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial;
+$font: "Space Grotesk", sans-serif;
 $nav-size: 64px;
+$text: #1f2937;
 
 * {
   margin: 0;
@@ -14,15 +15,17 @@ body {
   font-size: 16px;
   font-family: $font;
   line-height: 28px;
-  color: rgb(51, 65, 85);
+  color: $text;
 }
-
 a {
+  color: $text;
   text-decoration: none;
-  color: black;
 }
 a:hover {
   color: grey;
+}
+.link-text-icon {
+  margin-left: 4px;
 }
 button {
   font-family: $font;
@@ -90,11 +93,11 @@ nav {
 nav a {
   margin: 16px;
   text-decoration: none;
-  color: black;
+  color: $text;
 }
 .site-logo,
 .site-logo.active {
-  color: black;
+  color: $text;
   background-color: transparent;
   text-decoration: none;
   font-size: 34px;
@@ -105,19 +108,32 @@ ul {
   padding-left: 16px;
 }
 footer {
-  padding: 64px 0;
+  padding: 32px 0;
   background-color: rgb(243, 244, 246);
-}
-footer .columns {
-  display: flex;
-  justify-content: space-around;
-  max-width: $page-width;
-  margin: 0px auto;
-}
-footer > div {
-  padding: 16px;
-}
 
+  .columns {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 16px;
+    max-width: $page-width;
+    margin: 0px auto;
+  }
+  & > div {
+    padding: 16px;
+  }
+  & .footer-links {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    max-width: 800px;
+    flex: 1;
+  }
+}
+// TODO: All non-card links should have this, need to reformat cards
+footer a:hover {
+  text-decoration: underline;
+}
 main {
   margin: 16px;
 }
@@ -147,15 +163,33 @@ ul li {
   color: rgb(107, 114, 128);
   font-size: 14px;
   margin-right: 16px;
+
+  a {
+    border-radius: 2px;
+  }
 }
 .sideNav > div {
   margin-bottom: 32px;
 }
 .sideNav .nav-header {
   font-size: 1.2em;
-  margin-bottom: 16px;
   padding-left: 0;
 }
+.sideNav .nav-group-header {
+  display: flex;
+  justify-content: space-between;
+  padding-left: 0px;
+}
+.sideNav .nav-group-header svg {
+  transition: transform 0.3s ease-in-out;
+}
+.sideNav .nav-group-header.expanded svg {
+  transform: rotate(90deg);
+}
+.sideNav div.group:not(.expanded) {
+  display: none;
+}
+
 .sideNav * {
   display: block;
   color: rgb(107, 114, 128);
@@ -174,7 +208,6 @@ ul li {
   border-left: 1px solid #ccc;
   padding-left: 8px;
 }
-
 a.active,
 tabs li.active {
   color: rgb(0, 107, 230);
@@ -293,7 +326,7 @@ table {
     border-bottom: 2px solid rgb(229, 231, 235);
   }
 
-  tr:nth-child(2n + 2) {
+  tr:nth-child(2n + 2) td {
     background-color: rgb(249, 250, 251);
   }
 }
@@ -320,8 +353,6 @@ astro-island button {
 .resources td > .flex {
   flex-direction: column;
   justify-content: left;
-}
-.resources td > div {
 }
 
 .ibc-channels {
@@ -364,6 +395,45 @@ astro-island button {
 .flex {
   display: flex;
 }
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  grid-column-gap: 16px;
+  grid-row-gap: 16px;
+  grid-auto-flow: row;
+  margin-top: 32px;
+}
+.card {
+  padding: 16px;
+  border: 1px solid rgb(229, 231, 235);
+  border-radius: 4px;
+  margin-right: 16px;
+  display: flex;
+  flex-direction: column;
+  color: inherit;
+}
+.card:hover {
+  box-shadow: 0 0 10px #ddd;
+  color: inherit;
+}
+.card div:nth-child(1) {
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+}
+.card div:nth-child(2) {
+  flex-grow: 1;
+}
+.card span {
+  color: #1b62d6;
+}
+@media (max-width: 768px) {
+  .card-grid {
+    display: flex;
+    flex-direction: column;
+  }
+}
 .resource-card {
   padding: 1rem;
   border: 1px solid rgb(229, 231, 235);
@@ -383,14 +453,30 @@ astro-island button {
   padding: 6px;
   border-radius: 8px;
 }
-.resource-grid {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+.resource-grid,
+.ibc-channels {
+  display: flex;
+  flex-wrap: wrap;
   gap: 1rem;
-  grid-auto-flow: row;
-  display: grid;
 }
+.resource-grid > div,
+.ibc-channels > div {
+  flex: 1 1 320px;
+}
+.asset-table {
+  overflow-x: scroll;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+.sticky-col {
+  position: -webkit-sticky;
+  position: sticky;
+  left: 0;
+}
+
 .colored-svg {
-  color: black;
+  color: $text;
 }
 
 /* Temporary Tailwind CSS */
@@ -411,6 +497,9 @@ astro-island button {
 }
 .items-center {
   align-items: center;
+}
+.border-none {
+  border: none;
 }
 
 /* End temporary tailwind CSS */
@@ -448,7 +537,20 @@ astro-island button {
 }
 .ais-SearchBox-input {
   width: calc(100% - 16px);
+  box-shadow: none;
 }
+.ais-SearchBox-form:before {
+  background: url(/images/icon-search-light.svg);
+  top: 45%;
+  left: 2%;
+}
+.asset-icon {
+  flex-wrap: wrap;
+}
+.chain-icon {
+  flex-wrap: wrap;
+}
+
 .chain-icon img,
 .asset-icon img {
   margin-right: 4px;
@@ -537,6 +639,10 @@ astro-island button {
   border-radius: 8px;
   &:hover {
     background-color: rgb(229, 231, 235);
+  }
+  & img {
+    min-width: 12px;
+    min-height: 12px;
   }
 }
 
