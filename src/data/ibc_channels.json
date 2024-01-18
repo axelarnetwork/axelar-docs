@@ -543,16 +543,6 @@
       "channel_id": "channel-257"
     },
     {
-      "from": "teritori",
-      "to": "axelarnet",
-      "channel_id": "channel-36"
-    },
-    {
-      "from": "axelarnet",
-      "to": "teritori",
-      "channel_id": "channel-294"
-    },
-    {
       "from": "terra",
       "to": "axelarnet",
       "channel_id": "channel-22"

@@ -1471,11 +1471,67 @@
       "image": "/images/assets/sfrax.svg",
       "contracts": [
         {
+          "chain": "arbitrum",
+          "address": "0xf3602C5A7f625181659445C8dDDde73dA15c22e3",
+          "symbol": "sFRAX",
+          "decimals": 18,
+          "transfer_fee": 5.0
+        },
+        {
+          "chain": "avalanche",
+          "address": "0x70643975D408949044b8949Eba62f695FE12E348",
+          "symbol": "sFRAX",
+          "decimals": 18,
+          "transfer_fee": 1.5
+        },
+        {
+          "chain": "base",
+          "address": "0xf3602C5A7f625181659445C8dDDde73dA15c22e3",
+          "symbol": "sFRAX",
+          "decimals": 18,
+          "transfer_fee": 5.0
+        },
+        {
+          "chain": "binance",
+          "address": "0xa0F18d6Cc2BBE1Da31DE214389BBEfb73a0C836b",
+          "symbol": "sFRAX",
+          "decimals": 18,
+          "transfer_fee": 1.5
+        },
+        {
+          "chain": "celo",
+          "address": "0xf3602C5A7f625181659445C8dDDde73dA15c22e3",
+          "symbol": "sFRAX",
+          "decimals": 18,
+          "transfer_fee": 1.5
+        },
+        {
           "chain": "ethereum",
           "address": "0xA663B02CF0a4b149d2aD41910CB81e23e1c41c32",
           "symbol": "sFRAX",
           "decimals": 18,
           "transfer_fee": 59.0
+        },
+        {
+          "chain": "fantom",
+          "address": "0xa0F18d6Cc2BBE1Da31DE214389BBEfb73a0C836b",
+          "symbol": "sFRAX",
+          "decimals": 18,
+          "transfer_fee": 1.5
+        },
+        {
+          "chain": "filecoin",
+          "address": "0xf3602C5A7f625181659445C8dDDde73dA15c22e3",
+          "symbol": "sFRAX",
+          "decimals": 18,
+          "transfer_fee": 1.5
+        },
+        {
+          "chain": "kava",
+          "address": "0xf3602C5A7f625181659445C8dDDde73dA15c22e3",
+          "symbol": "sFRAX",
+          "decimals": 18,
+          "transfer_fee": 1.5
         },
         {
           "chain": "linea",
@@ -1487,6 +1543,27 @@
         {
           "chain": "mantle",
           "address": "0xf3602C5A7f625181659445C8dDDde73dA15c22e3",
+          "symbol": "sFRAX",
+          "decimals": 18,
+          "transfer_fee": 1.5
+        },
+        {
+          "chain": "moonbeam",
+          "address": "0x481Fbf0d866b777e817bbC3f96970B44fc929Ba7",
+          "symbol": "sFRAX",
+          "decimals": 18,
+          "transfer_fee": 1.5
+        },
+        {
+          "chain": "optimism",
+          "address": "0xf3602C5A7f625181659445C8dDDde73dA15c22e3",
+          "symbol": "sFRAX",
+          "decimals": 18,
+          "transfer_fee": 5.0
+        },
+        {
+          "chain": "polygon",
+          "address": "0x1ED2B2b097E92B2Fe95a172dd29840c71294F1d6",
           "symbol": "sFRAX",
           "decimals": 18,
           "transfer_fee": 1.5
@@ -1507,11 +1584,67 @@
       "image": "/images/assets/fxs.svg",
       "contracts": [
         {
+          "chain": "arbitrum",
+          "address": "0x5860a0bF37133f8461b2DEDe7C80e55D6bfF3721",
+          "symbol": "FXS",
+          "decimals": 18,
+          "transfer_fee": 0.57
+        },
+        {
+          "chain": "avalanche",
+          "address": "0xb890Aa48D0C4DDa49F24F56187633C7a9b9a9c65",
+          "symbol": "FXS",
+          "decimals": 18,
+          "transfer_fee": 0.17
+        },
+        {
+          "chain": "base",
+          "address": "0x5860a0bF37133f8461b2DEDe7C80e55D6bfF3721",
+          "symbol": "FXS",
+          "decimals": 18,
+          "transfer_fee": 0.57
+        },
+        {
+          "chain": "binance",
+          "address": "0x05E7857Cb748F0018C0CBCe3dfd575B0d8677aeF",
+          "symbol": "FXS",
+          "decimals": 18,
+          "transfer_fee": 0.17
+        },
+        {
+          "chain": "celo",
+          "address": "0x5860a0bF37133f8461b2DEDe7C80e55D6bfF3721",
+          "symbol": "FXS",
+          "decimals": 18,
+          "transfer_fee": 0.17
+        },
+        {
           "chain": "ethereum",
           "address": "0x3432B6A60D23Ca0dFCa7761B7ab56459D9C964D0",
           "symbol": "FXS",
           "decimals": 18,
           "transfer_fee": 6.9
+        },
+        {
+          "chain": "fantom",
+          "address": "0x05E7857Cb748F0018C0CBCe3dfd575B0d8677aeF",
+          "symbol": "FXS",
+          "decimals": 18,
+          "transfer_fee": 0.17
+        },
+        {
+          "chain": "filecoin",
+          "address": "0x5860a0bF37133f8461b2DEDe7C80e55D6bfF3721",
+          "symbol": "FXS",
+          "decimals": 18,
+          "transfer_fee": 0.17
+        },
+        {
+          "chain": "kava",
+          "address": "0x5860a0bF37133f8461b2DEDe7C80e55D6bfF3721",
+          "symbol": "FXS",
+          "decimals": 18,
+          "transfer_fee": 0.17
         },
         {
           "chain": "linea",
@@ -1523,6 +1656,27 @@
         {
           "chain": "mantle",
           "address": "0x5860a0bF37133f8461b2DEDe7C80e55D6bfF3721",
+          "symbol": "FXS",
+          "decimals": 18,
+          "transfer_fee": 0.17
+        },
+        {
+          "chain": "moonbeam",
+          "address": "0x151904806a266EEe52700E195D2937891fb8eD59",
+          "symbol": "FXS",
+          "decimals": 18,
+          "transfer_fee": 0.17
+        },
+        {
+          "chain": "optimism",
+          "address": "0x5860a0bF37133f8461b2DEDe7C80e55D6bfF3721",
+          "symbol": "FXS",
+          "decimals": 18,
+          "transfer_fee": 0.57
+        },
+        {
+          "chain": "polygon",
+          "address": "0x75b33EAA41DBc1Aae041d718AdfA4D446dD35ACC",
           "symbol": "FXS",
           "decimals": 18,
           "transfer_fee": 0.17
@@ -1577,6 +1731,28 @@
           "symbol": "axlARB",
           "decimals": 18,
           "transfer_fee": 1.1
+        }
+      ]
+    },
+    {
+      "id": "op-wei",
+      "name": "OP - Optimism",
+      "symbol": "OP",
+      "image": "/images/assets/op.svg",
+      "contracts": [
+        {
+          "chain": "base",
+          "address": "0x994ac01750047B9d35431a7Ae4Ed312ee955E030",
+          "symbol": "axlOP",
+          "decimals": 18,
+          "transfer_fee": 1.3
+        },
+        {
+          "chain": "optimism",
+          "address": "0x4200000000000000000000000000000000000042",
+          "symbol": "OP",
+          "decimals": 18,
+          "transfer_fee": 1.3
         }
       ]
     },
@@ -3183,11 +3359,67 @@
       "image": "/images/assets/fpi.svg",
       "contracts": [
         {
+          "chain": "arbitrum",
+          "address": "0x219279953d8D23520B7878447e8A6c266a51de2f",
+          "symbol": "FPI",
+          "decimals": 18,
+          "transfer_fee": 4.5
+        },
+        {
+          "chain": "avalanche",
+          "address": "0xcaC839c0E82A1A0470B6b78123A239Bb9f17Cbfd",
+          "symbol": "FPI",
+          "decimals": 18,
+          "transfer_fee": 1.4
+        },
+        {
+          "chain": "base",
+          "address": "0x219279953d8D23520B7878447e8A6c266a51de2f",
+          "symbol": "FPI",
+          "decimals": 18,
+          "transfer_fee": 4.5
+        },
+        {
+          "chain": "binance",
+          "address": "0x78d24B91F0988F79AB9f370D607Ffc820d0779B8",
+          "symbol": "FPI",
+          "decimals": 18,
+          "transfer_fee": 1.4
+        },
+        {
+          "chain": "celo",
+          "address": "0x219279953d8D23520B7878447e8A6c266a51de2f",
+          "symbol": "FPI",
+          "decimals": 18,
+          "transfer_fee": 1.4
+        },
+        {
           "chain": "ethereum",
           "address": "0x5Ca135cB8527d76e932f34B5145575F9d8cbE08E",
           "symbol": "FPI",
           "decimals": 18,
           "transfer_fee": 55.0
+        },
+        {
+          "chain": "fantom",
+          "address": "0x78d24B91F0988F79AB9f370D607Ffc820d0779B8",
+          "symbol": "FPI",
+          "decimals": 18,
+          "transfer_fee": 1.4
+        },
+        {
+          "chain": "filecoin",
+          "address": "0x219279953d8D23520B7878447e8A6c266a51de2f",
+          "symbol": "FPI",
+          "decimals": 18,
+          "transfer_fee": 1.4
+        },
+        {
+          "chain": "kava",
+          "address": "0x219279953d8D23520B7878447e8A6c266a51de2f",
+          "symbol": "FPI",
+          "decimals": 18,
+          "transfer_fee": 1.4
         },
         {
           "chain": "linea",
@@ -3199,6 +3431,27 @@
         {
           "chain": "mantle",
           "address": "0x219279953d8D23520B7878447e8A6c266a51de2f",
+          "symbol": "FPI",
+          "decimals": 18,
+          "transfer_fee": 1.4
+        },
+        {
+          "chain": "moonbeam",
+          "address": "0xFA3fd4CDAf85f65849A13a6Af9c3e5c20f71aD60",
+          "symbol": "FPI",
+          "decimals": 18,
+          "transfer_fee": 1.4
+        },
+        {
+          "chain": "optimism",
+          "address": "0x219279953d8D23520B7878447e8A6c266a51de2f",
+          "symbol": "FPI",
+          "decimals": 18,
+          "transfer_fee": 4.5
+        },
+        {
+          "chain": "polygon",
+          "address": "0x72eC87f05CC5eBC4D24Fddba84c179d5e216016B",
           "symbol": "FPI",
           "decimals": 18,
           "transfer_fee": 1.4
@@ -3722,6 +3975,13 @@
           "transfer_fee": 0.1
         },
         {
+          "chain": "ethereum-sepolia",
+          "address": "0x254d06f33bDc5b8ee05b2ea472107E300226659A",
+          "symbol": "aUSDC",
+          "decimals": 6,
+          "transfer_fee": 0.1
+        },
+        {
           "chain": "fantom",
           "address": "0x75Cc4fDf1ee3E781C1A3Ee9151D5c6Ce34Cf5C61",
           "symbol": "aUSDC",
@@ -3785,13 +4045,6 @@
           "transfer_fee": 0.1
         },
         {
-          "chain": "ethereum-sepolia",
-          "address": "0x254d06f33bDc5b8ee05b2ea472107E300226659A",
-          "symbol": "aUSDC",
-          "decimals": 6,
-          "transfer_fee": 0.1
-        },
-        {
           "chain": "arbitrum",
           "address": "0x254d06f33bDc5b8ee05b2ea472107E300226659A",
           "symbol": "aUSDC",
@@ -3843,6 +4096,13 @@
         },
         {
           "chain": "ethereum",
+          "address": "0x23ee2343B892b1BB63503a4FAbc840E0e2C6810f",
+          "symbol": "wAXL",
+          "decimals": 6,
+          "transfer_fee": 0.1
+        },
+        {
+          "chain": "ethereum-sepolia",
           "address": "0x23ee2343B892b1BB63503a4FAbc840E0e2C6810f",
           "symbol": "wAXL",
           "decimals": 6,
@@ -3906,13 +4166,6 @@
         },
         {
           "chain": "scroll",
-          "address": "0x23ee2343B892b1BB63503a4FAbc840E0e2C6810f",
-          "symbol": "wAXL",
-          "decimals": 6,
-          "transfer_fee": 0.1
-        },
-        {
-          "chain": "ethereum-sepolia",
           "address": "0x23ee2343B892b1BB63503a4FAbc840E0e2C6810f",
           "symbol": "wAXL",
           "decimals": 6,
@@ -4027,6 +4280,13 @@
           "transfer_fee": 7e-05
         },
         {
+          "chain": "ethereum-sepolia",
+          "address": "0xeA700DCe55e72C4C08b97AcFc7dF214EC30F4a64",
+          "symbol": "axlWETH",
+          "decimals": 18,
+          "transfer_fee": 7e-05
+        },
+        {
           "chain": "fantom",
           "address": "0xB17053aE763aCfD65A58e265aa9A4a59b25A7a87",
           "symbol": "axlWETH",
@@ -4090,13 +4350,6 @@
           "transfer_fee": 7e-05
         },
         {
-          "chain": "ethereum-sepolia",
-          "address": "0xeA700DCe55e72C4C08b97AcFc7dF214EC30F4a64",
-          "symbol": "axlWETH",
-          "decimals": 18,
-          "transfer_fee": 7e-05
-        },
-        {
           "chain": "arbitrum",
           "address": "0xeA700DCe55e72C4C08b97AcFc7dF214EC30F4a64",
           "symbol": "axlWETH",
@@ -4148,6 +4401,13 @@
         },
         {
           "chain": "ethereum",
+          "address": "0x21ba4f6aEdA155DD77Cc33Fb93646910543F0380",
+          "symbol": "WMATIC",
+          "decimals": 18,
+          "transfer_fee": 0.07
+        },
+        {
+          "chain": "ethereum-sepolia",
           "address": "0x21ba4f6aEdA155DD77Cc33Fb93646910543F0380",
           "symbol": "WMATIC",
           "decimals": 18,
@@ -4217,13 +4477,6 @@
           "transfer_fee": 0.07
         },
         {
-          "chain": "ethereum-sepolia",
-          "address": "0x21ba4f6aEdA155DD77Cc33Fb93646910543F0380",
-          "symbol": "WMATIC",
-          "decimals": 18,
-          "transfer_fee": 0.07
-        },
-        {
           "chain": "arbitrum",
           "address": "0x21ba4f6aEdA155DD77Cc33Fb93646910543F0380",
           "symbol": "WMATIC",
@@ -4275,6 +4528,13 @@
         },
         {
           "chain": "ethereum",
+          "address": "0x2a87806561C550ba2dA9677c5323413E6e539740",
+          "symbol": "WAVAX",
+          "decimals": 18,
+          "transfer_fee": 0.001
+        },
+        {
+          "chain": "ethereum-sepolia",
           "address": "0x2a87806561C550ba2dA9677c5323413E6e539740",
           "symbol": "WAVAX",
           "decimals": 18,
@@ -4344,13 +4604,6 @@
           "transfer_fee": 0.001
         },
         {
-          "chain": "ethereum-sepolia",
-          "address": "0x2a87806561C550ba2dA9677c5323413E6e539740",
-          "symbol": "WAVAX",
-          "decimals": 18,
-          "transfer_fee": 0.001
-        },
-        {
           "chain": "arbitrum",
           "address": "0x2a87806561C550ba2dA9677c5323413E6e539740",
           "symbol": "WAVAX",
@@ -4402,6 +4655,13 @@
         },
         {
           "chain": "ethereum",
+          "address": "0x594D8b81eC765410536ab59E98091700b99508D8",
+          "symbol": "WFTM",
+          "decimals": 18,
+          "transfer_fee": 0.08
+        },
+        {
+          "chain": "ethereum-sepolia",
           "address": "0x594D8b81eC765410536ab59E98091700b99508D8",
           "symbol": "WFTM",
           "decimals": 18,
@@ -4471,13 +4731,6 @@
           "transfer_fee": 0.08
         },
         {
-          "chain": "ethereum-sepolia",
-          "address": "0x594D8b81eC765410536ab59E98091700b99508D8",
-          "symbol": "WFTM",
-          "decimals": 18,
-          "transfer_fee": 0.08
-        },
-        {
           "chain": "arbitrum",
           "address": "0x594D8b81eC765410536ab59E98091700b99508D8",
           "symbol": "WFTM",
@@ -4529,6 +4782,13 @@
         },
         {
           "chain": "ethereum",
+          "address": "0xA9A2D8F279ABC436a18DBB1df3FB233039935D0A",
+          "symbol": "WBNB",
+          "decimals": 18,
+          "transfer_fee": 0.0003
+        },
+        {
+          "chain": "ethereum-sepolia",
           "address": "0xA9A2D8F279ABC436a18DBB1df3FB233039935D0A",
           "symbol": "WBNB",
           "decimals": 18,
@@ -4598,13 +4858,6 @@
           "transfer_fee": 0.0003
         },
         {
-          "chain": "ethereum-sepolia",
-          "address": "0xA9A2D8F279ABC436a18DBB1df3FB233039935D0A",
-          "symbol": "WBNB",
-          "decimals": 18,
-          "transfer_fee": 0.0003
-        },
-        {
           "chain": "arbitrum",
           "address": "0xA9A2D8F279ABC436a18DBB1df3FB233039935D0A",
           "symbol": "WBNB",
@@ -4656,6 +4909,13 @@
         },
         {
           "chain": "ethereum",
+          "address": "0x4B13D583F45Aa01fb2bE18a7AAfE14DE183B1Ac9",
+          "symbol": "WDEV",
+          "decimals": 18,
+          "transfer_fee": 0.04
+        },
+        {
+          "chain": "ethereum-sepolia",
           "address": "0x4B13D583F45Aa01fb2bE18a7AAfE14DE183B1Ac9",
           "symbol": "WDEV",
           "decimals": 18,
@@ -4719,13 +4979,6 @@
         },
         {
           "chain": "scroll",
-          "address": "0x4B13D583F45Aa01fb2bE18a7AAfE14DE183B1Ac9",
-          "symbol": "WDEV",
-          "decimals": 18,
-          "transfer_fee": 0.04
-        },
-        {
-          "chain": "ethereum-sepolia",
           "address": "0x4B13D583F45Aa01fb2bE18a7AAfE14DE183B1Ac9",
           "symbol": "WDEV",
           "decimals": 18,

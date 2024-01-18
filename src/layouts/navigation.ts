@@ -141,6 +141,19 @@ export const getNavigation = (section) => {
           ],
         },
         {
+          title: "Indexers",
+          children: [
+            {
+              title: "Overview",
+              href: "/dev/indexers/overview",
+            },
+            {
+              title: "SubQuery",
+              href: "/dev/indexers/subquery",
+            },
+          ],
+        },
+        {
           title: "Reference",
           children: [
             {
