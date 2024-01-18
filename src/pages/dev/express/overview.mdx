@@ -1,0 +1,37 @@
+# Express
+
+## Overview
+
+Axelar's Express Service allows for interchain [gmp](https://docs.axelar.dev/dev/general-message-passing/overview) transactions to execute significantly quicker than regular gmp transactions. It does so by executing the transaction on the destination chain before the transaction on the source chain is completely finalized. By bypassing the (sometimes) long wait time for [source chain finality](https://docs.axelar.dev/learn/txduration), overall interchain transaction speed is significantly increased.
+
+## Users
+
+Currently, the [Squid](https://www.squidrouter.com/) and [Sugarcane](https://www.sugarcane.app/) protocols are both operating with Axelar Express. Transactions that take place with Squid are significantly faster as a result. For example this transaction from Ethereum to BNB, which would need to wait for the ~15 minute finality plus any additional execution time on Axelar and BNB, executes in just [27 seconds](https://axelarscan.io/gmp/0x2ebb21b93ea8121dcb0cfdda364c4bb96fa06e7e170dae6ecf15c27f2bbf9b25:146) via Axelar Express.
+
+## Under the Hood
+
+To allow for faster transactions. Express transactions execute on the destination chain before finalizing on the source chain. To do so Axelar Express transactions use a seaparate Express Relayer, the relayer will charge $1 per express call.
+
+## Integration
+
+To integrate with Express, protocols must be onboarded manually. 
+1. Each protocol that wants to be onboarded onto express must provide liquidity to assume any [risks](LinkToRisksSection) for the express transaction. 
+2. Once liquidity is provided the contract must inherit from either the [AxelarExpressExecutable](https://github.com/axelarnetwork/axelar-gmp-sdk-solidity/blob/main/contracts/express/AxelarExpressExecutable.sol) or the [AxelarValuedExpressExecutable](https://github.com/axelarnetwork/axelar-gmp-sdk-solidity/blob/main/contracts/express/AxelarValuedExpressExecutable.sol) 
+3. Provide required info for onboarding
+    - The address of the contract integrating with express
+    - The assets needed to be express from that contract
+        - The maximum amount they expect to be expressed in a single call
+        - The maximum amount they expect to be expressed in a 30 minute window
+    - The EVM chains that express transactions will be enabled for
+
+## Axelar Executable vs. Axelar Valued Express Executable
+
+
+## Fees
+
+Express transactions require an additional [fee](https://docs.axelar.dev/dev/reference/pricing#callcontractwithtokenexpress-gmp-express) in addition to existing gmp fees. The extra fee goes to the express relayer for assuming the risk of an express transaction.
+
+## Risks
+
+While the Express solution is an intuitive design pattern for allowing for fast interchain transactions it is not without any risks. Namely if anything changes on the source chain from the time the transaction is sent to the time it is finalized (block reorgs for example) and the transaction on the destination chain has already executed then that could lead to lost funds on the source chain (as the tx instantly executes on the destination chain). Due to the potential risk here funds will need to be provided to onboard to express.
+
