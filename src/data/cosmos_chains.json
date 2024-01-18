@@ -249,6 +249,12 @@
       "image": "/images/chains/celestia.svg"
     },
     {
+      "id": "dymension",
+      "name": "Dymension",
+      "network_id": "dymension",
+      "image": "/images/chains/dymension.svg"
+    },
+    {
       "id": "elys",
       "name": "Elys",
       "network_id": "elys",
