@@ -393,6 +393,16 @@
       "channel_id": "channel-341"
     },
     {
+      "from": "dymension",
+      "to": "axelarnet",
+      "channel_id": "channel-0"
+    },
+    {
+      "from": "axelarnet",
+      "to": "dymension",
+      "channel_id": "channel-400"
+    },
+    {
       "from": "elys",
       "to": "axelarnet",
       "channel_id": "channel-15"
@@ -461,6 +471,16 @@
       "from": "axelarnet",
       "to": "neutron",
       "channel_id": "channel-237"
+    },
+    {
+      "from": "nibiru",
+      "to": "axelarnet",
+      "channel_id": "channel-1"
+    },
+    {
+      "from": "axelarnet",
+      "to": "nibiru",
+      "channel_id": "channel-382"
     },
     {
       "from": "odin",

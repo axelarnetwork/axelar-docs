@@ -249,6 +249,12 @@
       "image": "/images/chains/celestia.svg"
     },
     {
+      "id": "dymension",
+      "name": "Dymension",
+      "network_id": "dymension",
+      "image": "/images/chains/dymension.svg"
+    },
+    {
       "id": "elys",
       "name": "Elys",
       "network_id": "elys",
@@ -289,6 +295,12 @@
       "name": "Neutron",
       "network_id": "neutron",
       "image": "/images/chains/neutron.svg"
+    },
+    {
+      "id": "nibiru",
+      "name": "Nibiru",
+      "network_id": "nibiru",
+      "image": "/images/chains/nibiru.svg"
     },
     {
       "id": "odin",
