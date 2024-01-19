@@ -36,7 +36,7 @@ If the remaining gas amount is insufficient for the return trip, the [**Insuffic
 
 ### Sending messages from a single transaction to multiple destination chains 
 
-The Executor Service also supports relaying multiple message calls from a single transaction. To do this, the application must pay the `GasReceiver` contract a separate gas fee for each message. The following message call is an example transaction where this occurs.
+The Executor Service also supports relaying multiple message calls from a single transaction. To do this, the application must pay the `GasReceiver` contract a single gas fee covering all messages. The following message call is an example transaction where this occurs.
 
 - [Transaction on source chain](https://moonbase.moonscan.io/tx/0x25f0bdcdec0da17e1039161342603d3d537cb6ddc6637d1b22dbdf1ebf9706ed)
 - [Message #1 information](https://testnet.axelarscan.io/gmp/0x25f0bdcdec0da17e1039161342603d3d537cb6ddc6637d1b22dbdf1ebf9706ed:1)
