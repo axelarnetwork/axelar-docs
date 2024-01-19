@@ -1,10 +1,10 @@
 # Increase Gas
 
-On occasion the prepaid gas to the Gas Receiver contract could be insufficient, such as when the destination chain is congested with transfers. When this happens, the application can resubmit a new amount of gas to pay for the transaction through [Axelarscan](http://axelarscan.io), the [AxelarJS SDK](https://docs.axelar.dev/dev/axelarjs-sdk/intro), or via a direct invocation of the [`GasService` contract](https://github.com/axelarnetwork/axelar-gmp-sdk-solidity/blob/ad37802dc6d62fff3ab589f2605f7a3e566977dd/contracts/interfaces/IAxelarGasService.sol).
+On occasion the prepaid gas to the Gas Receiver contract could be insufficient, such as when the destination chain is congested with transfers. When this happens, the application can resubmit a new amount of gas to pay for the transaction through [Axelarscan](http://axelarscan.io), the [AxelarJS SDK](https://docs.axelar.dev/dev/axelarjs-sdk/intro), or via a direct invocation of the [`AxelarGasService` contract](https://github.com/axelarnetwork/axelar-gmp-sdk-solidity/blob/ad37802dc6d62fff3ab589f2605f7a3e566977dd/contracts/interfaces/IAxelarGasService.sol).
 
-## Add gas via the `GasService` contract
+## Add gas via the `AxelarGasService` contract
 
-To add gas to an existing GMP transaction through the `GasService` contract:
+To add gas to an existing GMP transaction through the `AxelarGasService` contract:
 
 ### `addNativeGas()`
 
