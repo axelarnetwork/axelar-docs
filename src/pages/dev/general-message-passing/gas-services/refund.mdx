@@ -1,16 +1,9 @@
-# Refund the prepaid gas
+# Refund Prepaid Gas
 
-The prepaid gas to `payNativeGasForContractCall` or `payNativeGasForContractCallWithToken` could exceed the actual amount needed for relaying a message to the destination contract.
+If the gas fees prepaid to `payNativeGasForContractCall()` or `payNativeGasForContractCallWithToken()` exceeds the actual amount needed for relaying a message to the destination contract, the Gas Service will automatically caclculate the excess gas amount and refund it to the payer’s wallet address by calling `refund()` on the [`AxelarGasService` contract](https://github.com/axelarnetwork/axelar-gmp-sdk-solidity/blob/ad37802dc6d62fff3ab589f2605f7a3e566977dd/contracts/interfaces/IAxelarGasService.sol).
 
+The refunded amount consists of the total amount paid, minus the network base fee, the actual gas used, and the gas costs estimated for transferring the refund. Refunds are made on the source chain.
 
-The Executor Service automatically tracks the excess gas amount and refund it to the payer's wallet address by calling `Refund` in the Gas Service contract.
+## Tracking refund status
 
-The refunded amount = 
-    * The total paid amount 
-    * -the network base fee
-    * -the actual gas used
-    * -the estimated gas for transferring the refund
-
-You can check the refund status on Axelarscan UI. See [Monitoring state of GMP transactions](/dev/general-message-passing/monitoring#1-axelarscan-ui).
-
-![gmp-gas-refund.png](/images/gmp-gas-refund.png)
+Refund status can be [tracked on Axelarscan](https://docs.axelar.dev/dev/general-message-passing/monitoring#1-axelarscan-ui).

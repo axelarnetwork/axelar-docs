@@ -1,17 +1,39 @@
-# Axelar gas & executor services
+# Introduction to the `AxelarGasService` contract
 
-## Executor Service 
+[`AxelarGasService`](https://github.com/axelarnetwork/axelar-gmp-sdk-solidity/blob/main/contracts/interfaces/IAxelarGasService.sol) is a smart contract that manages gas payments and refunds for cross-chain communication on the Axelar network. It allows an application to prepay gas fees on the source chain and increase the gas paid for a transaction. If too much gas is paid for a transaction, it can calculate and refund the sender.
 
-Axelar network provides an optional relayer service, called the Executor Service, which observes the gas-paid amount to the Gas Service contract (below). Then, it automatically uses those amounts to relay the approved message to the application’s destination contract.
+## Prepay gas on the source chain
 
-Users are required to pay gas to the Gas Receiver contract to activate the Executor Service. After an attempt to relay the message to the destination contract, Axelar gas services calculate the remaining gas amount and [refunds](./refund) it to the payer account. The execution result can be monitored on the [Axelarscan](https://axelarscan.io) UI or requested through the AxelarJS SDK. Please see the section titled [Monitoring state of GMP transactions](/dev/general-message-passing/monitoring) for more information.
+The Axelar network routes every [General Message Passing (GMP)](https://docs.axelar.dev/dev/general-message-passing/overview) transaction to its destination chain. The final step of this process involves the application paying the gas fees for the transaction. This can be done in one of two ways:
 
-## Gas Receiver
-For any General Message Passing (GMP) transaction, the Axelar network routes transactions to their destination chains. Execution is the final step of the pipeline to the specified destination contract address on the destination chain. It is invoked in one of two ways.
+1. **On the destination chain:** Manually paid on the destination chain
+1. **On the source chain:** Prepaid to the `AxelarGasService` contract on the source chain, thus allowing it to execute the final transaction on the destination chain
 
-1. Manually paid by the user/application on the destination chain.
-2. Executed automatically by Axelar if the user/application prepays gas to the Gas Receiver contract on the source chain.
+It's possible for gas fees to be manually paid on the destination chain, but developers typically rely on Axelar's Gas Service, which provides the ability to prepay the full estimated cost for any GMP transaction with a single payment on the source chain. This service manages the full pipeline: once gas is paid to the Gas Receiver contract, the Gas Service uses the payment to submit the transaction to the Axelar Network and to execute the final GMP call on the destination chain.
 
-Gas Receiver is a smart contract deployed on every EVM that is provided by Axelar. Our gas services provide users/applications the ability to prepay the full estimated cost for any GMP transaction (from source to destination chains) with the convenience of a single payment on the source chain, relying on Axelar's relay services to manage the full pipeline. Once gas is paid to Gas Receiver for a GMP transaction, Axelar's relayer services pick up the payment and automatically execute the final General Message Passing call.
+## Increase gas
 
-Developers can use Axelar gas services by prepaying upfront the relayer gas fee on the source chain, thereby covering the cost of gas to execute the final transaction on the destination chain.
+If the amount of prepaid gas is not enough — for example, if the destination chain is congested with transfers, causing a gas fee increase for each transaction — the application can add additional gas to pay for the transaction.
+
+## Gas refunds
+
+After the message has been relayed to the destination contract, Axelar will calculate and refund any extra gas fees to the payer account on the source chain. This execution can be [monitored on Axelarscan or requested through the AxelarJS SDK](https://docs.axelar.dev/dev/general-message-passing/monitoring).
+
+## Two-way calls
+
+The Gas Service supports relaying two-way calls, when a message is sent from the source chain and another message is returned from the destination chain.
+
+- **Outbound call:** a GMP call from chain A to chain B
+- **Return call:** a GMP call returned from chain B to chain A
+
+Once the outbound call is executed on chain B and sends another call to return a message to chain A, Axelar will automatically pay the gas for the return transaction.
+
+If the remaining gas amount is insufficient for the return trip, the [**Insufficient Fee** tag](https://docs.axelar.dev/dev/general-message-passing/monitoring) will show up on Axelarscan. The return call will not be relayed until more gas is added via [Axelarscan](https://docs.axelar.dev/dev/general-message-passing/recovery#increase-gas-payment-to-the-gas-receiver-on-the-source-chain) or the [AxelarJS SDK](https://docs.axelar.dev/dev/axelarjs-sdk/tx-status-query-recovery#2-increase-gas-payment).
+
+### Sending messages from a single transaction to multiple destination chains 
+
+The Gas Service also supports relaying multiple message calls from a single transaction. To do this, the application must pay the `GasReceiver` contract a single gas fee covering all messages. The following message call is an example transaction where this occurs.
+
+- [Transaction on source chain](https://moonbase.moonscan.io/tx/0x25f0bdcdec0da17e1039161342603d3d537cb6ddc6637d1b22dbdf1ebf9706ed)
+- [Message #1 information](https://testnet.axelarscan.io/gmp/0x25f0bdcdec0da17e1039161342603d3d537cb6ddc6637d1b22dbdf1ebf9706ed:1)
+- [Message #2 information](https://testnet.axelarscan.io/gmp/0x25f0bdcdec0da17e1039161342603d3d537cb6ddc6637d1b22dbdf1ebf9706ed:3)
