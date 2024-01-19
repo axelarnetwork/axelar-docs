@@ -5,7 +5,7 @@ An application that wants Axelar to automatically execute contract calls on the 
 1. Estimate the `gasLimit` that the contract call will require in the executable contract on the destination chain.
 1. Get the `sourceGasFee` in the desired gas-payment token on the destination chain by [calling `estimateGasFee()`](https://docs.axelar.dev/dev/axelarjs-sdk/axelar-query-api#estimategasfee).
     - The `sourceGasFee` will estimate the fee amount in the destination token and convert it to the same price in the source token.
-1. Pay the `AxelarGasService` smart contract on the source chain with `sourceGasFee`.
+1. Pay the `AxelarGasService` smart contract on the source chain with `payNativeGasForContractCall()` or `payNativeGasForContractCallWithToken()`.
 
 The [`AxelarGasService`](https://github.com/axelarnetwork/axelar-gmp-sdk-solidity/blob/ad37802dc6d62fff3ab589f2605f7a3e566977dd/contracts/interfaces/IAxelarGasService.sol) contract provides methods to pay gas for both `callContract()` and `callContractWithToken()`. Gas fees are paid in the native token of the source chain.
 
