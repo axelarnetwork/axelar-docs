@@ -9,7 +9,7 @@ The Axelar network routes every [General Message Passing (GMP)](https://docs.axe
 1. **On the destination chain:** Manually paid on the destination chain
 1. **On the source chain:** Prepaid to the `AxelarGasService` contract on the source chain, thus allowing a relayer to execute the final transaction on the destination chain
 
-Typically, gas fees are manually paid on the destination chain, but Axelar’s gas services provide the ability to prepay the full estimated cost for any GMP transaction with a single payment on the source chain. Axelar’s relay services manage the full pipeline. Once gas is paid to the Gas Receiver contract, the relayer services pick up the payment and automatically execute the final GMP call on the destination chain.
+It's possible for gas fees to be manually paid on the destination chain, but developers typically rely on gas services that provide the ability to prepay the full estimated cost for any GMP transaction with a single payment on the source chain. Axelar’s relay services manage the full pipeline. Once gas is paid to the Gas Receiver contract, the relayer services use the payment to submit the transaction to the Axelar Network and to execute the final GMP call on the destination chain.
 
 ## Increase gas
 
