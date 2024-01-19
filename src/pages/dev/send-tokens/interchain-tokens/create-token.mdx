@@ -1,6 +1,6 @@
 # Create a New Interchain Token
 
-import { Callout } from '../../../../components/callout'
+import { Callout } from "/src/components/callout";
 
 Interchain tokens are ERC-20 tokens that are available on [multiple blockchains](https://docs.axelar.dev/resources/testnet). They are created using the [Interchain Token Service](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/InterchainTokenService.sol) and can be used to transfer value between blockchains.
 
@@ -8,7 +8,10 @@ The Interchain Token Service is deployed to [`0xB5FB4BE02232B1bBA4dC8f81dc24C269
 
 You can create a new Interchain Token through the [Interchain Portal](https://testnet.interchain.axelar.dev/), or by building a custom ERC-20 token and deploying it with a Mint/Burn token manager on all chains. These tokens will be accessible on multiple chains, allowing for seamless interaction on each chain by utilizing familiar methods such as send, transfer, and approve -- just as with any standard ERC-20 token.
 
-<Callout emoji="💡">Make sure you are thinking about token names and any relevant stakeholders. Creating a simple token using the ITS Portal will use the same token name for all chains. If you need dfferent names on different chains, you'll need to build a custom token.</Callout>
+
+<Callout emoji="🚨">
+  **NOTE:** The security of your token is limited to the security of the chains it integrates with. Since blockchains can have different security practices, we recommend doing due diligence on all chains your token will be deployed to.
+</Callout>
 
 ## Create a new Interchain Token using the Interchain Token Portal
 
@@ -30,6 +33,7 @@ Congratulations! Your new Interchain Token is now available on multiple chains. 
 
 Refer to the [four-step tutorial](https://axelar.network/blog/how-to-create-an-interchain-token-with-axelar-in-4-steps) for more detailed steps on creating Interchain Tokens using the Interchain Token Portal.
 
+<Callout emoji="💡">Make sure you are thinking about token names and any relevant stakeholders. Creating a simple token using the ITS Portal will use the same token name for all chains. If you need dfferent names on different chains, you'll need to build a custom token.</Callout>
 
 ## Create a custom Interchain Token
 
