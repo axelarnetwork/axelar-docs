@@ -3937,6 +3937,21 @@
           "transfer_fee": 6500.0
         }
       ]
+    },
+    {
+      "id": "ox-wei",
+      "name": "OX - Open Exchange Token",
+      "symbol": "OX",
+      "image": "/images/assets/ox.svg",
+      "contracts": [
+        {
+          "chain": "ethereum",
+          "address": "0x78a0A62Fba6Fb21A83FE8a3433d44C73a4017A6f",
+          "symbol": "OX",
+          "decimals": 18,
+          "transfer_fee": 3000.0
+        }
+      ]
     }
   ],
   "testnet": [
