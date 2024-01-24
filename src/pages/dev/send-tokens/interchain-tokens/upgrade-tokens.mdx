@@ -65,7 +65,7 @@ If pre-mint is needed, you must make ERC20 approval to the Interchain Token Fact
 For custom functionality on multiple chains:
 
 - Deploy your [custom](../../reference/glossary/#custom-token) token on multiple chains or have existing versions on multiple chains
-- Deploy a [Mint/Burn](../../reference/glossary/#mintburn) - [Token Manager](../../reference/glossary/#token-manager) for existing tokens on all chains using [`deployTokenManager`](https://github.com/axelarnetwork/interchain-token-service/blob/9edc4318ac1c17231e65886eea72c0f55469d7e5/contracts/InterchainTokenService.sol#L276) on Interchain Token Service. The `deployTokenManager` method requires parameters like `salt`, `destinationChain`, `tokenManagerType`, `params`, and `gasValue`
+- Deploy a [Mint/Burn](../../reference/glossary/#mintburn) - [Token Manager](../../reference/glossary/#token-manager) for existing tokens on all chains using [`deployTokenManager`](https://github.com/axelarnetwork/interchain-token-service/blob/9edc4318ac1c17231e65886eea72c0f55469d7e5/contracts/InterchainTokenService.sol#L276) on Interchain Token Service. The `deployTokenManager` method requires parameters like `salt`, `destinationChain`, [`tokenManagerType`](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/interfaces/ITokenManagerType.sol), `params`, and `gasValue`
 - Transfer Interchain Tokens between chains via the Interchain Token Service by calling the [`interchainTransfer`](https://github.com/axelarnetwork/interchain-token-service/blob/9223108211b977d9138fdd67d5b4a641fc35c18c/contracts/interfaces/IInterchainTokenService.sol#L210)
 
 
