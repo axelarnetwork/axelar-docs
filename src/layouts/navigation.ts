@@ -321,7 +321,7 @@ export const getNavigation = (section) => {
   });
 
   nav.push({
-    header: "Contract and SDK Reference",
+    header: "Contract and SDK reference",
     children: [
       { title: "InterchainTokenService", href: "https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/InterchainTokenService.sol" },
       { title: "InterchainTokenFactory", href: "https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/InterchainTokenFactory.sol" }, ,
