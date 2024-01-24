@@ -1,0 +1,497 @@
+# Programmatically Create a New Token Using the Interchain Token Service
+
+[Interchain Tokens](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/interchain-token/InterchainToken.sol) are created and managed by Axelar’s new [Interchain Token Service](https://github.com/axelarnetwork/interchain-token-service/tree/main), which uses Axelar’s communication protocols to send tokens cross-chain. With it, you can build your own asset bridges, build asset transfers into your interchain dApp, and [take on many other use cases](https://community.axelar.network/t/expanding-the-axelar-ecosystem-ideas-for-infrastructure-projects/2583/2).
+
+The workflow can be summarized in three steps:
+
+1. The user obtains a token `x` from chain A.
+2. A message is sent to chain B specifying where the token should be transferred.
+3. Finally, Chain B receives the message is received and transfers token `x` to the appropriate destination address.
+
+In this tutorial, you will learn how to:
+
+- Programmatically create a new Interchain Token from scratch using Axelar's Interchain Token Service
+- Register and deploy the token locally on the Fantom chain
+- Register and deploy the token remotely on the Polygon chain
+- Transfer your token between those chains
+
+## **Prerequisites**
+
+You will need:
+
+- A basic understanding of [Solidity](https://www.tutorialspoint.com/solidity/index.htm) and [JavaScript](https://www.w3schools.com/js/)
+- A [Metamask wallet](https://metamask.io/) with FTM and MATIC funds for testing. If you don’t have these funds, you can get FTM from the [Fantom faucet](https://faucet.fantom.network/) and MATIC from the Mumbai faucets ([1](https://faucet.polygon.technology/), [2](https://mumbaifaucet.com/)).
+
+## **Set up your development environment**
+
+### Create and initialize a project
+
+Open up your terminal and navigate to any directory of your choice. Run the following commands to create and initiate a project:
+
+```bash
+mkdir interchain-token-project && cd interchain-token-project
+npm init -y
+```
+
+### Install Hardhat and the AxelarJS SDK
+
+Install [Hardhat](https://hardhat.org/) and the [AxelarJS SDK](https://github.com/axelarnetwork/axelarjs-sdk) with the following commands:
+
+```bash
+npm install --save-dev hardhat@2.18.1 dotenv@16.3.1
+npm install @axelar-network/axelarjs-sdk@0.13.9 crypto@1.0.1 @nomicfoundation/hardhat-toolbox@2.0.2
+```
+
+### Set up project ABIs
+
+Next, set up the ABIs for the Interchain Token Service, Interchain Token Factory, and Interchain Token Contract, as they will be needed during deployment.
+
+Create a folder named `utils`. Inside the folder, create the following new files and add the respective ABIs:
+
+- Add the [Interchain Token Service ABI](https://gist.github.com/Olanetsoft/2a632784e6753d34ca7ffc4f73bf58ed) to `interchainTokenServiceABI.json`.
+- Add the [Interchain Token Factory ABI](https://gist.github.com/Olanetsoft/7d24e936f4cf6bd3d10d7b4f9a18d838) to `interchainTokenFactoryABI.json`.
+- Add the [Interchain Token ABI](https://gist.github.com/Olanetsoft/39051a113dfa080d7c58e6cfc8d878cc) to `interchainTokenABI.json`.
+
+## **Set up an RPC for the local chain**
+
+Next, set up an RPC for the Fantom testnet, which you will be using as your local (source) chain.
+
+### Create an `.env` file
+
+To make sure you’re not accidentally publishing your private key, create an [**`.env`** file](https://blog.bitsrc.io/a-gentle-introduction-to-env-files-9ad424cc5ff4) to store it in:
+
+```bash
+touch .env
+```
+
+### Add your private key to `.env` and `hardhat.config.js`
+
+[Export your private key](https://support.metamask.io/hc/en-us/articles/360015289632-How-to-Export-an-Account-Private-Key) and add it to the `.env` file you just created:
+
+```bash
+PRIVATE_KEY= // Add your account private key here
+```
+
+<aside>
+💡 If you will push this project on GitHub, create a `.gitignore` file and include `.env`.
+
+</aside>
+
+Then, create a file with the name `hardhat.config.js` and add the following code snippet:
+
+```JavaScript
+require("@nomicfoundation/hardhat-toolbox");
+require("dotenv").config({ path: ".env" });
+
+const PRIVATE_KEY = process.env.PRIVATE_KEY;
+
+/** @type import('hardhat/config').HardhatUserConfig */
+module.exports = {
+  solidity: "0.8.18",
+  networks: {
+    fantom: {
+      url: "https://rpc.ankr.com/fantom_testnet",
+      chainId: 4002,
+      accounts: [PRIVATE_KEY],
+    },
+  },
+};
+```
+
+## Register and deploy a new Interchain Token to the local chain
+
+Now that you’ve set up a Fantom testnet RPC, you can register and deploy a new Interchain Token. For the purposes of this tutorial, the token you’ll create will be called “New Interchain Token” and have the symbol “NIT”:
+
+### Create a `newInterchainToken.js` script
+
+Create a new file named `newInterchainToken.js` and import the required dependencies:
+
+- Ethers.js
+- The AxelarJS SDK
+- The contract ABIs
+- The address of the Interchain Token Service contract
+- The address of the Interchain Token Factory contract
+
+```JavaScript
+const hre = require("hardhat");
+const crypto = require("crypto");
+const ethers = hre.ethers;
+const {
+  AxelarQueryAPI,
+  Environment,
+  EvmChain,
+  GasToken,
+} = require("@axelar-network/axelarjs-sdk");
+
+const interchainTokenServiceContractABI = require("./utils/interchainTokenServiceABI");
+const interchainTokenFactoryContractABI = require("./utils/interchainTokenFactoryABI");
+const interchainTokenContractABI = require("./utils/interchainTokenABI");
+
+const interchainTokenServiceContractAddress =
+  "0xB5FB4BE02232B1bBA4dC8f81dc24C26980dE9e3C";
+const interchainTokenFactoryContractAddress =
+  "0x83a93500d23Fbc3e82B410aD07A6a9F7A0670D66";
+```
+
+### Get the signer
+
+Next, create a `getSigner()` function in `newInterchainToken.js`. This will obtain a signer for a secure transaction:
+
+```JavaScript
+//...
+
+async function getSigner() {
+  const [signer] = await ethers.getSigners();
+  return signer;
+}
+```
+
+### Get the contract instance
+
+Then, create a `getContractInstance()` function in `newInterchainToken.js` . This will get the contract instance based on the contract’s address, ABI, and signer:
+
+```JavaScript
+//...
+
+async function getContractInstance(contractAddress, contractABI, signer) {
+  return new ethers.Contract(contractAddress, contractABI, signer);
+}
+```
+
+### Add a deployment function
+
+Now you’re ready to register and deploy your token! Create a `registerAndDeploy()` function for the Fantom testnet. This will create a new token called “New Interchain Token” with the symbol “NIT”:
+
+```JavaScript
+// Register and deploy a new interchain token to the Fantom testnet
+async function registerAndDeploy() {
+  // Generate random salt
+  const salt = "0x" + crypto.randomBytes(32).toString("hex");
+
+  // Create a new token
+  const name = "New Interchain Token";
+  const symbol = "NIT";
+  const decimals = 18;
+
+  // Intial token supply
+  const initialSupply = ethers.utils.parseEther("1000");
+
+  // Get a signer to sign the transaction
+  const signer = await getSigner();
+
+  // Create contract instances
+  const interchainTokenFactoryContract = await getContractInstance(
+    interchainTokenFactoryContractAddress,
+    interchainTokenFactoryContractABI,
+    signer
+  );
+  const interchainTokenServiceContract = await getContractInstance(
+    interchainTokenServiceContractAddress,
+    interchainTokenServiceContractABI,
+    signer
+  );
+
+  // Generate a unique token ID using the signer's address and salt
+  const tokenId = await interchainTokenFactoryContract.interchainTokenId(
+    signer.address,
+    salt
+  );
+
+  // Retrieve new token address
+  const tokenAddress =
+    await interchainTokenServiceContract.interchainTokenAddress(tokenId);
+
+  // Retrieve token manager address
+  const expectedTokenManagerAddress =
+    await interchainTokenServiceContract.tokenManagerAddress(tokenId);
+
+  // Deploy new Interchain Token
+  const deployTxData =
+    await interchainTokenFactoryContract.deployInterchainToken(
+      salt,
+      name,
+      symbol,
+      decimals,
+      initialSupply,
+      signer.address
+    );
+
+  console.log(
+    `
+  Deployed Token ID: ${tokenId},
+  Token Address: ${tokenAddress},
+  Transaction Hash: ${deployTxData.hash},
+  salt: ${salt},
+  Expected Token Manager Address: ${expectedTokenManagerAddress},
+     `
+  );
+}
+```
+
+### Add a `main()` function
+
+Add a `main()` function for executing the `newInterchainToken.js` script. It will handle any errors that may arise:
+
+```JavaScript
+//...
+
+async function main() {
+  const functionName = process.env.FUNCTION_NAME;
+  switch (functionName) {
+    case "registerAndDeploy":
+      await registerAndDeploy();
+      break;
+    default:
+      console.error(`Unknown function: ${functionName}`);
+      process.exitCode = 1;
+      return;
+  }
+}
+
+main().catch((error) => {
+  console.error(error);
+  process.exitCode = 1;
+});
+```
+
+### Run the `newInterchainToken.js` script to deploy to Fantom
+
+Run the script in your terminal to register and deploy the token, specifying the `fantom` testnet:
+
+```bash
+FUNCTION_NAME=registerAndDeploy npx hardhat run newInterchainToken.js --network fantom
+```
+
+You should see something similar to the following on your console:
+
+```JavaScript
+Deployed Token ID: 0x4427c3aab191db9cfc696291f93c6c33e93b5384ea5b25497e457316b50c45e9,
+Token Address: 0xc028ebdF906a890be73C594b6a14858D0552544A,
+Transaction Hash: 0x7b1b6321b5027851a15048fb9743d2b894f19d745441c1daf87d0c5054ed5309,
+salt: 0x47ca252a2441a0e420c6ca15944fc902712a120e4be7d753733bb26c55f7098f,
+Expected Token Manager Address: 0xECB7E82E4caBA520a4B9a10E6Ce831884c3685eF,
+```
+
+This shows that you have created a new interchain token called New Interchain Token (NIT) and deployed it on the Fantom testnet.
+
+### Check the transaction on the Fantom testnet scanner
+
+Check the [Fantom testnet scanner](https://testnet.ftmscan.com/) to see if you have successfully [created](https://testnet.ftmscan.com/token/0xc028ebdf906a890be73c594b6a14858d0552544a) and [locally deployed](https://testnet.ftmscan.com/tx/0x7b1b6321b5027851a15048fb9743d2b894f19d745441c1daf87d0c5054ed5309) a new Interchain Token on the Fantom testnet.
+
+### Get new token address
+
+On FTMScan, navigate to the **ERC-20 Tokens Transferred** section and click **New Interchain Token (NIT)**. This should take you to a page for your new token. Copy the token contract address from the **Other Info** section and store it somewhere safe. You will need it to initiate a remote transfer from the token in a later step.
+
+## Deploy an Interchain Token to a remote chain
+
+You’ve just successfully deployed an Interchain Token to Fantom, which you are using as your local chain. Now, deploy it to Polygon, which will be the remote chain in this tutorial. Remember that you can specify any two chains to be your local and remote chains.
+
+### Estimate gas fees
+
+In `newInterchainToken.js`, call `estimateGasFee()` from the [AxelarJS SDK](https://www.notion.so/bd238d757a144a069501f0b481488ef3?pvs=21) to estimate the actual cost of deploying your token on a remote chain:
+
+```JavaScript
+//...
+
+const api = new AxelarQueryAPI({ environment: Environment.TESTNET });
+
+// Estimate gas costs.
+async function gasEstimator() {
+  const gas = await api.estimateGasFee(
+    EvmChain.FANTOM,
+    EvmChain.POLYGON,
+    GasToken.FTM,
+    700000,
+    1.1
+  );
+
+  return gas;
+}
+
+//...
+```
+
+### Perform remote token deployment
+
+Create a `deployToRemoteChain()` function that will perform token remote deployment on the Polygon Mumbai testnet. Make sure to replace the `salt` value with the salt returned to your terminal from when you ran `registerAndDeploy()`:
+
+```JavaScript
+//...
+
+// Deploy to remote chain: Polygon
+async function deployToRemoteChain() {
+  // Get a signer for authorizing transactions
+  const signer = await getSigner();
+  // Get contract for remote deployment
+  const interchainTokenFactoryContract = await getContractInstance(
+    interchainTokenFactoryContractAddress,
+    interchainTokenFactoryContractABI,
+    signer
+  );
+
+  // Estimate gas fees
+  const gasAmount = await gasEstimator();
+
+  // Salt value from registerAndDeploy(). Replace with your own
+  const salt =
+    "0x47ca252a2441a0e420c6ca15944fc902712a120e4be7d753733bb26c55f7098f";
+
+  // Initiate transaction
+  const txn = await interchainTokenFactoryContract.deployRemoteInterchainToken(
+    "Fantom",
+    salt,
+    signer.address,
+    "Polygon",
+    gasAmount,
+    { value: gasAmount }
+  );
+
+  console.log(`Transaction Hash: ${txn.hash}`);
+}
+
+//...
+```
+
+### Update `main()` to deploy to remote chains
+
+Update `main()` to execute `deployToRemoteChain()` :
+
+```JavaScript
+//...
+
+async function main() {
+  const functionName = process.env.FUNCTION_NAME;
+  switch (functionName) {
+    //...
+    case "deployToRemoteChain":
+      await deployToRemoteChain();
+      break;
+    default:
+    //...
+  }
+}
+
+//...
+```
+
+### Run the `newInterchainToken.js` script to deploy to Polygon
+
+Run the script in your terminal to register and deploy the token, once again specifying the `fantom` testnet (the source chain where all transactions are taking place):
+
+```JavaScript
+FUNCTION_NAME=deployToRemoteChain npx hardhat run newInterchainToken.js --network fantom
+```
+
+You should see something similar to the following on your console:
+
+```bash
+Transaction Hash: 0xca901048c74c3757fcea5d309cd53ef6e21816c841e85145ac8586fa71a9cc48
+```
+
+### Check the transaction on the Axelar testnet scanner
+
+Check the [Axelarscan testnet scanner](https://testnet.axelarscan.io/) to see if you have successfully created and remotely deployed NIT on the Polygon Mumbai testnet. It should look something like [this](https://testnet.axelarscan.io/gmp/0xca901048c74c3757fcea5d309cd53ef6e21816c841e85145ac8586fa71a9cc48). Make sure that Axelar shows a successful transaction before continuing on to the next step.
+
+## Transfer your token between chains
+
+Now that you have deployed your token both locally to Fantom and remotely to Polygon, you can transfer between those two chains using the NIT you just deployed via the [`interchainTransfer()`](https://github.com/axelarnetwork/interchain-token-service/blob/9edc4318ac1c17231e65886eea72c0f55469d7e5/contracts/interfaces/IInterchainTokenStandard.sol#L19) method.
+
+### Initiate a remote token transfer directly from the token
+
+In `newInterchainToken.js`, create a `transferTokens()` function that will facilitate remote token transfers between chains. Change the address in `interchainToken` to the new token address from the FTM scan that you saved from an earlier step, and change the address in `transfer` to your own wallet address:
+
+```JavaScript
+//...
+
+async function transferTokens() {
+  // Get signer
+  const signer = await getSigner();
+
+  const interchainToken = await getContractInstance(
+    "0xc028ebdF906a890be73C594b6a14858D0552544A", // Update with new token address
+    interchainTokenContractABI, // Interchain Token contract ABI
+    signer
+  );
+
+  // Calculate gas amount
+  const gasAmount = await gasEstimator();
+
+  // Initate transfer via token
+  const transfer = await interchainToken.interchainTransfer(
+    "Polygon", // Destination chain
+    "0x510e5EA32386B7C48C4DEEAC80e86859b5e2416C", // Update with your own wallet address
+    ethers.utils.parseEther("25"), // Transfer 25 tokens
+    "0x", // Empty data payload
+    { value: gasAmount } // Transaction options
+  );
+  console.log("Transfer Transaction Hash:", transfer.hash);
+}
+
+//...
+```
+
+### Update `main()` to execute token transfer
+
+Update the `main()` to execute `transferTokens()`:
+
+```JavaScript
+//...
+
+async function main() {
+  const functionName = process.env.FUNCTION_NAME;
+  switch (functionName) {
+    //...
+    case "transferTokens":
+      await transferTokens();
+      break;
+    default:
+    //...
+  }
+}
+
+//...
+```
+
+### Run the `newInterchainToken.js` script to transfer tokens
+
+Run the script in your terminal, specifying the `fantom` testnet:
+
+```JavaScript
+FUNCTION_NAME=transferTokens npx hardhat run newInterchainToken.js --network fantom
+```
+
+You should see something similar to the following on your console:
+
+```bash
+Transfer Transaction Hash: 0x205554f5e39e29b21f3110ebf813579a3826465746c37a151ed18c992004c6b5
+```
+
+If you see this, it means that your interchain transfer has been successful! 🎉
+
+### Check the transaction on the Axelar testnet scanner
+
+Check the [Axelarscan testnet scanner](https://testnet.axelarscan.io/) to see if you have successfully transferred NIT from the Fantom testnet to the Polygon testnet. It should look something like [this](https://mumbai.polygonscan.com/token/0xc028ebdf906a890be73c594b6a14858d0552544a).
+
+### Import the new token into your wallet
+
+You can also import the new token into your own wallet with its contract address that you saved from FTMScan. You should have 975 NIT on Fantom and 25 NIT on Polygon.
+
+## Congratulations!
+
+You have now programmatically created a new interchain token called NIT using Axelar’s Interchain Token Service and transferred it between two chains. You should now be able to confidently create and manage your own Interchain Tokens, opening up a wide range of possibilities for token transfers and asset bridges.
+
+Great job making it this far! To show your support to the author of this tutorial, please post about your experience and tag [@axelarnetwork](https://twitter.com/axelarnetwork) on Twitter (X).
+
+## What’s next
+
+You can also explore other functionalities of the Interchain Token Service, such as:
+
+- [Creating a new custom Interchain Token](https://docs.axelar.dev/dev/send-tokens/interchain-tokens/create-token#create-a-custom-interchain-token)
+- [Transforming an existing token into an Interchain token](https://docs.axelar.dev/dev/send-tokens/interchain-tokens/upgrade-tokens#canonical-tokens-simple-wrappers)
+- [Turn deployed tokens on multiple chains into Interchain Tokens](https://docs.axelar.dev/dev/send-tokens/interchain-tokens/upgrade-tokens#link-deployed-tokens-on-multiple-chains-into-interchain-tokens)
+
+## References
+
+- [Interchain Token Service Documentation](https://docs.axelar.dev/dev/send-tokens/interchain-tokens/intro)
+- [Interchain Tokens GitHub Repository](https://github.com/axelarnetwork/interchain-token-service/tree/main)
+- [AxelarJS SDK](https://github.com/axelar-network/axelarjs-sdk)
