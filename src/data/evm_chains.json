@@ -1,55 +1,29 @@
 {
   "mainnet": [
     {
-      "id": "polygon",
-      "name": "Polygon",
-      "chain_id": 137,
-      "network_id": "Polygon",
+      "id": "arbitrum",
+      "name": "Arbitrum",
+      "chain_id": 42161,
+      "network_id": "arbitrum",
       "provider_params": [
         {
-          "chainId": "0x89",
-          "chainName": "Polygon",
+          "chainId": "0xA4B1",
+          "chainName": "Arbitrum",
           "rpcUrls": [
-            "https://rpc.ankr.com/polygon",
-            "https://matic-mainnet.chainstacklabs.com",
-            "https://polygon-rpc.com"
+            "https://arb1.arbitrum.io/rpc",
+            "https://rpc.ankr.com/arbitrum"
           ],
           "nativeCurrency": {
-            "name": "Polygon",
-            "symbol": "MATIC",
+            "name": "Ethereum",
+            "symbol": "ETH",
             "decimals": 18
           },
           "blockExplorerUrls": [
-            "https://polygonscan.com"
+            "https://arbiscan.io"
           ]
         }
       ],
-      "image": "/images/chains/polygon.svg"
-    },
-    {
-      "id": "binance",
-      "name": "BNB Chain",
-      "chain_id": 56,
-      "network_id": "binance",
-      "provider_params": [
-        {
-          "chainId": "0x38",
-          "chainName": "BNB Chain",
-          "rpcUrls": [
-            "https://rpc.ankr.com/bsc",
-            "https://bscrpc.com"
-          ],
-          "nativeCurrency": {
-            "name": "BNB",
-            "symbol": "BNB",
-            "decimals": 18
-          },
-          "blockExplorerUrls": [
-            "https://bscscan.com"
-          ]
-        }
-      ],
-      "image": "/images/chains/binance.svg"
+      "image": "/images/chains/arbitrum.svg"
     },
     {
       "id": "avalanche",
@@ -77,29 +51,102 @@
       "image": "/images/chains/avalanche.svg"
     },
     {
-      "id": "arbitrum",
-      "name": "Arbitrum",
-      "chain_id": 42161,
-      "network_id": "arbitrum",
+      "id": "base",
+      "name": "Base",
+      "chain_id": 8453,
+      "network_id": "base",
       "provider_params": [
         {
-          "chainId": "0xA4B1",
-          "chainName": "Arbitrum",
+          "chainId": "0x2105",
+          "chainName": "Base",
           "rpcUrls": [
-            "https://arb1.arbitrum.io/rpc",
-            "https://rpc.ankr.com/arbitrum"
+            "https://developer-access-mainnet.base.org"
           ],
           "nativeCurrency": {
-            "name": "Ethereum",
+            "name": "Ether",
             "symbol": "ETH",
             "decimals": 18
           },
           "blockExplorerUrls": [
-            "https://arbiscan.io"
+            "https://basescan.org"
           ]
         }
       ],
-      "image": "/images/chains/arbitrum.svg"
+      "image": "/images/chains/base.svg"
+    },
+    {
+      "id": "binance",
+      "name": "BNB Chain",
+      "chain_id": 56,
+      "network_id": "binance",
+      "provider_params": [
+        {
+          "chainId": "0x38",
+          "chainName": "BNB Chain",
+          "rpcUrls": [
+            "https://rpc.ankr.com/bsc",
+            "https://bscrpc.com"
+          ],
+          "nativeCurrency": {
+            "name": "BNB",
+            "symbol": "BNB",
+            "decimals": 18
+          },
+          "blockExplorerUrls": [
+            "https://bscscan.com"
+          ]
+        }
+      ],
+      "image": "/images/chains/binance.svg"
+    },
+    {
+      "id": "celo",
+      "name": "Celo",
+      "chain_id": 42220,
+      "network_id": "celo",
+      "provider_params": [
+        {
+          "chainId": "0xA4EC",
+          "chainName": "Celo",
+          "rpcUrls": [
+            "https://forno.celo.org",
+            "https://rpc.ankr.com/celo"
+          ],
+          "nativeCurrency": {
+            "name": "Celo",
+            "symbol": "CELO",
+            "decimals": 18
+          },
+          "blockExplorerUrls": [
+            "https://celoscan.io/"
+          ]
+        }
+      ],
+      "image": "/images/chains/celo.svg"
+    },
+    {
+      "id": "centrifuge",
+      "name": "Centrifuge",
+      "chain_id": "2031",
+      "network_id": "centrifuge",
+      "provider_params": [
+        {
+          "chainId": "0x7EF",
+          "chainName": "Centrifuge",
+          "rpcUrls": [
+            "https://fullnode.parachain.centrifuge.io"
+          ],
+          "nativeCurrency": {
+            "name": "Centrifuge",
+            "symbol": "CFG",
+            "decimals": 18
+          },
+          "blockExplorerUrls": [
+            "https://centrifuge.subscan.io"
+          ]
+        }
+      ],
+      "image": "/images/chains/centrifuge.svg"
     },
     {
       "id": "ethereum",
@@ -153,102 +200,53 @@
       "image": "/images/chains/fantom.svg"
     },
     {
-      "id": "moonbeam",
-      "name": "Moonbeam",
-      "chain_id": 1284,
-      "network_id": "Moonbeam",
+      "id": "filecoin",
+      "name": "Filecoin",
+      "chain_id": 314,
+      "network_id": "filecoin",
       "provider_params": [
         {
-          "chainId": "0x504",
-          "chainName": "Moonbeam",
+          "chainId": "0x13A",
+          "chainName": "Filecoin",
           "rpcUrls": [
-            "https://rpc.ankr.com/moonbeam",
-            "https://rpc.api.moonbeam.network"
+            "https://rpc.ankr.com/filecoin",
+            "https://api.node.glif.io/rpc/v1"
           ],
           "nativeCurrency": {
-            "name": "Glimmer",
-            "symbol": "GLMR",
+            "name": "Filecoin",
+            "symbol": "FIL",
             "decimals": 18
           },
           "blockExplorerUrls": [
-            "https://moonscan.io"
+            "https://filfox.info"
           ]
         }
       ],
-      "image": "/images/chains/moonbeam.svg"
+      "image": "/images/chains/filecoin.svg"
     },
     {
-      "id": "celo",
-      "name": "Celo",
-      "chain_id": 42220,
-      "network_id": "celo",
+      "id": "immutable",
+      "name": "Immutable",
+      "chain_id": "13371",
+      "network_id": "immutable",
       "provider_params": [
         {
-          "chainId": "0xA4EC",
-          "chainName": "Celo",
+          "chainId": "0x343B",
+          "chainName": "Immutable",
           "rpcUrls": [
-            "https://forno.celo.org",
-            "https://rpc.ankr.com/celo"
+            "https://rpc.immutable.com"
           ],
           "nativeCurrency": {
-            "name": "Celo",
-            "symbol": "CELO",
+            "name": "Immutable",
+            "symbol": "IMX",
             "decimals": 18
           },
           "blockExplorerUrls": [
-            "https://celoscan.io/"
+            "https://explorer.immutable.com"
           ]
         }
       ],
-      "image": "/images/chains/celo.svg"
-    },
-    {
-      "id": "optimism",
-      "name": "Optimism",
-      "chain_id": 10,
-      "network_id": "optimism",
-      "provider_params": [
-        {
-          "chainId": "0xA",
-          "chainName": "Optimism",
-          "rpcUrls": [
-            "https://mainnet.optimism.io"
-          ],
-          "nativeCurrency": {
-            "name": "Ethereum",
-            "symbol": "ETH",
-            "decimals": 18
-          },
-          "blockExplorerUrls": [
-            "https://optimistic.etherscan.io"
-          ]
-        }
-      ],
-      "image": "/images/chains/optimism.svg"
-    },
-    {
-      "id": "base",
-      "name": "Base",
-      "chain_id": 8453,
-      "network_id": "base",
-      "provider_params": [
-        {
-          "chainId": "0x2105",
-          "chainName": "Base",
-          "rpcUrls": [
-            "https://developer-access-mainnet.base.org"
-          ],
-          "nativeCurrency": {
-            "name": "Ether",
-            "symbol": "ETH",
-            "decimals": 18
-          },
-          "blockExplorerUrls": [
-            "https://basescan.org"
-          ]
-        }
-      ],
-      "image": "/images/chains/base.svg"
+      "image": "/images/chains/immutable.svg"
     },
     {
       "id": "kava",
@@ -323,6 +321,81 @@
       "image": "/images/chains/mantle.svg"
     },
     {
+      "id": "moonbeam",
+      "name": "Moonbeam",
+      "chain_id": 1284,
+      "network_id": "Moonbeam",
+      "provider_params": [
+        {
+          "chainId": "0x504",
+          "chainName": "Moonbeam",
+          "rpcUrls": [
+            "https://rpc.ankr.com/moonbeam",
+            "https://rpc.api.moonbeam.network"
+          ],
+          "nativeCurrency": {
+            "name": "Glimmer",
+            "symbol": "GLMR",
+            "decimals": 18
+          },
+          "blockExplorerUrls": [
+            "https://moonscan.io"
+          ]
+        }
+      ],
+      "image": "/images/chains/moonbeam.svg"
+    },
+    {
+      "id": "optimism",
+      "name": "Optimism",
+      "chain_id": 10,
+      "network_id": "optimism",
+      "provider_params": [
+        {
+          "chainId": "0xA",
+          "chainName": "Optimism",
+          "rpcUrls": [
+            "https://mainnet.optimism.io"
+          ],
+          "nativeCurrency": {
+            "name": "Ethereum",
+            "symbol": "ETH",
+            "decimals": 18
+          },
+          "blockExplorerUrls": [
+            "https://optimistic.etherscan.io"
+          ]
+        }
+      ],
+      "image": "/images/chains/optimism.svg"
+    },
+    {
+      "id": "polygon",
+      "name": "Polygon",
+      "chain_id": 137,
+      "network_id": "Polygon",
+      "provider_params": [
+        {
+          "chainId": "0x89",
+          "chainName": "Polygon",
+          "rpcUrls": [
+            "https://rpc.ankr.com/polygon",
+            "https://matic-mainnet.chainstacklabs.com",
+            "https://polygon-rpc.com"
+          ],
+          "nativeCurrency": {
+            "name": "Polygon",
+            "symbol": "MATIC",
+            "decimals": 18
+          },
+          "blockExplorerUrls": [
+            "https://polygonscan.com"
+          ]
+        }
+      ],
+      "image": "/images/chains/polygon.svg"
+    },
+    {
       "id": "scroll",
       "name": "Scroll",
       "chain_id": 534352,
@@ -345,119 +418,69 @@
         }
       ],
       "image": "/images/chains/scroll.svg"
-    },
-    {
-      "id": "filecoin",
-      "name": "Filecoin",
-      "chain_id": 314,
-      "network_id": "filecoin",
-      "provider_params": [
-        {
-          "chainId": "0x13A",
-          "chainName": "Filecoin",
-          "rpcUrls": [
-            "https://rpc.ankr.com/filecoin",
-            "https://api.node.glif.io/rpc/v1"
-          ],
-          "nativeCurrency": {
-            "name": "Filecoin",
-            "symbol": "FIL",
-            "decimals": 18
-          },
-          "blockExplorerUrls": [
-            "https://filfox.info"
-          ]
-        }
-      ],
-      "image": "/images/chains/filecoin.svg"
-    },
-    {
-      "id": "centrifuge",
-      "name": "Centrifuge",
-      "chain_id": "2031",
-      "network_id": "centrifuge",
-      "provider_params": [
-        {
-          "chainId": "0x7EF",
-          "chainName": "Centrifuge",
-          "rpcUrls": [
-            "https://fullnode.parachain.centrifuge.io"
-          ],
-          "nativeCurrency": {
-            "name": "Centrifuge",
-            "symbol": "CFG",
-            "decimals": 18
-          },
-          "blockExplorerUrls": [
-            "https://centrifuge.subscan.io"
-          ]
-        }
-      ],
-      "image": "/images/chains/centrifuge.svg"
-    },
-    {
-      "id": "immutable",
-      "name": "Immutable",
-      "chain_id": "13371",
-      "network_id": "immutable",
-      "provider_params": [
-        {
-          "chainId": "0x343B",
-          "chainName": "Immutable",
-          "rpcUrls": [
-            "https://rpc.immutable.com"
-          ],
-          "nativeCurrency": {
-            "name": "Immutable",
-            "symbol": "IMX",
-            "decimals": 18
-          },
-          "blockExplorerUrls": [
-            "https://explorer.immutable.com"
-          ]
-        }
-      ],
-      "image": "/images/chains/immutable.svg"
     }
   ],
   "testnet": [
     {
-      "id": "polygon",
-      "name": "Polygon",
-      "chain_id": 80001,
-      "network_id": "Polygon",
+      "id": "arbitrum",
+      "name": "Arbitrum",
+      "chain_id": 421613,
+      "network_id": "arbitrum",
       "provider_params": [
         {
-          "chainId": "0x13881",
-          "chainName": "Polygon Mumbai",
+          "chainId": "0x66EED",
+          "chainName": "Arbitrum Goerli Testnet",
           "rpcUrls": [
-            "https://rpc.ankr.com/polygon_mumbai",
-            "https://polygon-mumbai.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161",
-            "https://matic-mumbai.chainstacklabs.com"
+            "https://goerli-rollup.arbitrum.io/rpc"
           ],
           "nativeCurrency": {
-            "name": "Polygon",
-            "symbol": "MATIC",
+            "name": "Ethereum",
+            "symbol": "ETH",
             "decimals": 18
           },
           "blockExplorerUrls": [
-            "https://mumbai.polygonscan.com"
+            "https://goerli.arbiscan.io/"
           ]
         }
       ],
-      "image": "/images/chains/polygon.svg"
+      "image": "/images/chains/arbitrum.svg"
     },
     {
-      "id": "polygon-zkevm",
-      "name": "Polygon zkEVM",
-      "chain_id": 1442,
-      "network_id": "polygon-zkevm",
+      "id": "avalanche",
+      "name": "Avalanche",
+      "chain_id": 43113,
+      "network_id": "Avalanche",
       "provider_params": [
         {
-          "chainId": "0x5A2",
-          "chainName": "Polygon zkEVM Testnet",
+          "chainId": "0xa869",
+          "chainName": "Avalanche Fuji",
           "rpcUrls": [
-            "https://rpc.public.zkevm-test.net"
+            "https://rpc.ankr.com/avalanche_fuji",
+            "https://api.avax-test.network/ext/bc/C/rpc"
+          ],
+          "nativeCurrency": {
+            "name": "Avalanche",
+            "symbol": "AVAX",
+            "decimals": 18
+          },
+          "blockExplorerUrls": [
+            "https://testnet.snowtrace.io"
+          ]
+        }
+      ],
+      "image": "/images/chains/avalanche.svg"
+    },
+    {
+      "id": "base",
+      "name": "Base",
+      "chain_id": 84531,
+      "network_id": "base",
+      "provider_params": [
+        {
+          "chainId": "0x14a33",
+          "chainName": "Base Goerli Testnet",
+          "rpcUrls": [
+            "https://goerli.base.org"
           ],
           "nativeCurrency": {
             "name": "Ether",
@@ -465,11 +488,11 @@
             "decimals": 18
           },
           "blockExplorerUrls": [
-            "https://testnet-zkevm.polygonscan.com"
+            "https://goerli.basescan.org"
           ]
         }
       ],
-      "image": "/images/chains/polygon.svg"
+      "image": "/images/chains/base.svg"
     },
     {
       "id": "binance",
@@ -498,77 +521,52 @@
       "image": "/images/chains/binance.svg"
     },
     {
-      "id": "avalanche",
-      "name": "Avalanche",
-      "chain_id": 43113,
-      "network_id": "Avalanche",
+      "id": "celo",
+      "name": "Celo",
+      "chain_id": 44787,
+      "network_id": "celo",
       "provider_params": [
         {
-          "chainId": "0xa869",
-          "chainName": "Avalanche Fuji",
+          "chainId": "0xAEF3",
+          "chainName": "Celo Alfajores Testnet",
           "rpcUrls": [
-            "https://rpc.ankr.com/avalanche_fuji",
-            "https://api.avax-test.network/ext/bc/C/rpc"
+            "https://alfajores-forno.celo-testnet.org"
           ],
           "nativeCurrency": {
-            "name": "Avalanche",
-            "symbol": "AVAX",
+            "name": "Celo",
+            "symbol": "CELO",
             "decimals": 18
           },
           "blockExplorerUrls": [
-            "https://testnet.snowtrace.io"
+            "https://alfajores.celoscan.io/"
           ]
         }
       ],
-      "image": "/images/chains/avalanche.svg"
+      "image": "/images/chains/celo.svg"
     },
     {
-      "id": "arbitrum",
-      "name": "Arbitrum",
-      "chain_id": 421613,
-      "network_id": "arbitrum",
+      "id": "centrifuge-2",
+      "name": "Centrifuge",
+      "chain_id": "2090",
+      "network_id": "centrifuge-2",
       "provider_params": [
         {
-          "chainId": "0x66EED",
-          "chainName": "Arbitrum Goerli Testnet",
+          "chainId": "0x82A",
+          "chainName": "Centrifuge Testnet",
           "rpcUrls": [
-            "https://goerli-rollup.arbitrum.io/rpc"
+            "https://node-7118620155331796992.gx.onfinality.io/rpc?apikey=00538f2d-6297-44e3-8812-4b9d579524b2"
           ],
           "nativeCurrency": {
-            "name": "Ethereum",
-            "symbol": "ETH",
+            "name": "Centrifuge",
+            "symbol": "CFG",
             "decimals": 18
           },
           "blockExplorerUrls": [
-            "https://goerli.arbiscan.io/"
+            ""
           ]
         }
       ],
-      "image": "/images/chains/arbitrum.svg"
-    },
-    {
-      "id": "ethereum-sepolia",
-      "name": "Ethereum Sepolia",
-      "chain_id": "11155111",
-      "network_id": "ethereum-sepolia",
-      "provider_params": [
-        {
-          "chainId": "0xAA36A7",
-          "chainName": "Ethereum Sepolia",
-          "rpcUrls": [
-            "https://1rpc.io/sepolia"
-          ],
-          "nativeCurrency": {
-            "name": "Ethereum",
-            "symbol": "ETH",
-            "decimals": 18
-          },
-          "blockExplorerUrls": [
-            "https://sepolia.etherscan.io"
-          ]
-        }
-      ],
-      "image": "/images/chains/ethereum.svg"
+      "image": "/images/chains/centrifuge.svg"
     },
     {
       "id": "ethereum",
@@ -590,6 +588,30 @@
           },
           "blockExplorerUrls": [
             "https://goerli.etherscan.io"
+          ]
+        }
+      ],
+      "image": "/images/chains/ethereum.svg"
+    },
+    {
+      "id": "ethereum-sepolia",
+      "name": "Ethereum Sepolia",
+      "chain_id": "11155111",
+      "network_id": "ethereum-sepolia",
+      "provider_params": [
+        {
+          "chainId": "0xAA36A7",
+          "chainName": "Ethereum Sepolia",
+          "rpcUrls": [
+            "https://1rpc.io/sepolia"
+          ],
+          "nativeCurrency": {
+            "name": "Ethereum",
+            "symbol": "ETH",
+            "decimals": 18
+          },
+          "blockExplorerUrls": [
+            "https://sepolia.etherscan.io"
           ]
         }
       ],
@@ -621,102 +643,53 @@
       "image": "/images/chains/fantom.svg"
     },
     {
-      "id": "celo",
-      "name": "Celo",
-      "chain_id": 44787,
-      "network_id": "celo",
+      "id": "filecoin",
+      "name": "Filecoin",
+      "chain_id": 314159,
+      "network_id": "filecoin-2",
       "provider_params": [
         {
-          "chainId": "0xAEF3",
-          "chainName": "Celo Alfajores Testnet",
+          "chainId": "0x4cb2f",
+          "chainName": "Filecoin Calibration Testnet",
           "rpcUrls": [
-            "https://alfajores-forno.celo-testnet.org"
+            "https://api.calibration.node.glif.io/rpc/v1",
+            "https://rpc.ankr.com/filecoin_testnet"
           ],
           "nativeCurrency": {
-            "name": "Celo",
-            "symbol": "CELO",
+            "name": "Filecoin",
+            "symbol": "FIL",
             "decimals": 18
           },
           "blockExplorerUrls": [
-            "https://alfajores.celoscan.io/"
+            "https://calibration.filfox.info"
           ]
         }
       ],
-      "image": "/images/chains/celo.svg"
+      "image": "/images/chains/filecoin.svg"
     },
     {
-      "id": "moonbeam",
-      "name": "Moonbase",
-      "chain_id": 1287,
-      "network_id": "Moonbeam",
+      "id": "immutable",
+      "name": "Immutable",
+      "chain_id": "13473",
+      "network_id": "immutable",
       "provider_params": [
         {
-          "chainId": "0x507",
-          "chainName": "Moonbase Alpha",
+          "chainId": "0x34A1",
+          "chainName": "Immutable",
           "rpcUrls": [
-            "https://rpc.api.moonbase.moonbeam.network",
-            "https://rpc.testnet.moonbeam.network",
-            "https://moonbase-alpha.public.blastapi.io"
+            "https://rpc.testnet.immutable.com"
           ],
           "nativeCurrency": {
-            "name": "Dev",
-            "symbol": "DEV",
+            "name": "Immutable",
+            "symbol": "IMX",
             "decimals": 18
           },
           "blockExplorerUrls": [
-            "https://moonbase.moonscan.io"
+            ""
           ]
         }
       ],
-      "image": "/images/chains/moonbase.png"
-    },
-    {
-      "id": "optimism",
-      "name": "Optimism",
-      "chain_id": 420,
-      "network_id": "optimism",
-      "provider_params": [
-        {
-          "chainId": "0x1A4",
-          "chainName": "Optimism Goerli Testnet",
-          "rpcUrls": [
-            "https://goerli.optimism.io"
-          ],
-          "nativeCurrency": {
-            "name": "Ethereum",
-            "symbol": "ETH",
-            "decimals": 18
-          },
-          "blockExplorerUrls": [
-            "https://goerli-optimism.etherscan.io/"
-          ]
-        }
-      ],
-      "image": "/images/chains/optimism.svg"
-    },
-    {
-      "id": "base",
-      "name": "Base",
-      "chain_id": 84531,
-      "network_id": "base",
-      "provider_params": [
-        {
-          "chainId": "0x14a33",
-          "chainName": "Base Goerli Testnet",
-          "rpcUrls": [
-            "https://goerli.base.org"
-          ],
-          "nativeCurrency": {
-            "name": "Ether",
-            "symbol": "ETH",
-            "decimals": 18
-          },
-          "blockExplorerUrls": [
-            "https://goerli.basescan.org"
-          ]
-        }
-      ],
-      "image": "/images/chains/base.svg"
+      "image": "/images/chains/immutable.svg"
     },
     {
       "id": "kava",
@@ -791,6 +764,106 @@
       "image": "/images/chains/mantle.svg"
     },
     {
+      "id": "moonbeam",
+      "name": "Moonbase",
+      "chain_id": 1287,
+      "network_id": "Moonbeam",
+      "provider_params": [
+        {
+          "chainId": "0x507",
+          "chainName": "Moonbase Alpha",
+          "rpcUrls": [
+            "https://rpc.api.moonbase.moonbeam.network",
+            "https://rpc.testnet.moonbeam.network",
+            "https://moonbase-alpha.public.blastapi.io"
+          ],
+          "nativeCurrency": {
+            "name": "Dev",
+            "symbol": "DEV",
+            "decimals": 18
+          },
+          "blockExplorerUrls": [
+            "https://moonbase.moonscan.io"
+          ]
+        }
+      ],
+      "image": "/images/chains/moonbase.png"
+    },
+    {
+      "id": "optimism",
+      "name": "Optimism",
+      "chain_id": 420,
+      "network_id": "optimism",
+      "provider_params": [
+        {
+          "chainId": "0x1A4",
+          "chainName": "Optimism Goerli Testnet",
+          "rpcUrls": [
+            "https://goerli.optimism.io"
+          ],
+          "nativeCurrency": {
+            "name": "Ethereum",
+            "symbol": "ETH",
+            "decimals": 18
+          },
+          "blockExplorerUrls": [
+            "https://goerli-optimism.etherscan.io/"
+          ]
+        }
+      ],
+      "image": "/images/chains/optimism.svg"
+    },
+    {
+      "id": "polygon",
+      "name": "Polygon",
+      "chain_id": 80001,
+      "network_id": "Polygon",
+      "provider_params": [
+        {
+          "chainId": "0x13881",
+          "chainName": "Polygon Mumbai",
+          "rpcUrls": [
+            "https://rpc.ankr.com/polygon_mumbai",
+            "https://polygon-mumbai.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161",
+            "https://matic-mumbai.chainstacklabs.com"
+          ],
+          "nativeCurrency": {
+            "name": "Polygon",
+            "symbol": "MATIC",
+            "decimals": 18
+          },
+          "blockExplorerUrls": [
+            "https://mumbai.polygonscan.com"
+          ]
+        }
+      ],
+      "image": "/images/chains/polygon.svg"
+    },
+    {
+      "id": "polygon-zkevm",
+      "name": "Polygon zkEVM",
+      "chain_id": 1442,
+      "network_id": "polygon-zkevm",
+      "provider_params": [
+        {
+          "chainId": "0x5A2",
+          "chainName": "Polygon zkEVM Testnet",
+          "rpcUrls": [
+            "https://rpc.public.zkevm-test.net"
+          ],
+          "nativeCurrency": {
+            "name": "Ether",
+            "symbol": "ETH",
+            "decimals": 18
+          },
+          "blockExplorerUrls": [
+            "https://testnet-zkevm.polygonscan.com"
+          ]
+        }
+      ],
+      "image": "/images/chains/polygon.svg"
+    },
+    {
       "id": "scroll",
       "name": "Scroll",
       "chain_id": 534351,
@@ -813,79 +886,6 @@
         }
       ],
       "image": "/images/chains/scroll.svg"
-    },
-    {
-      "id": "filecoin",
-      "name": "Filecoin",
-      "chain_id": 314159,
-      "network_id": "filecoin-2",
-      "provider_params": [
-        {
-          "chainId": "0x4cb2f",
-          "chainName": "Filecoin Calibration Testnet",
-          "rpcUrls": [
-            "https://api.calibration.node.glif.io/rpc/v1",
-            "https://rpc.ankr.com/filecoin_testnet"
-          ],
-          "nativeCurrency": {
-            "name": "Filecoin",
-            "symbol": "FIL",
-            "decimals": 18
-          },
-          "blockExplorerUrls": [
-            "https://calibration.filfox.info"
-          ]
-        }
-      ],
-      "image": "/images/chains/filecoin.svg"
-    },
-    {
-      "id": "centrifuge-2",
-      "name": "Centrifuge",
-      "chain_id": "2090",
-      "network_id": "centrifuge-2",
-      "provider_params": [
-        {
-          "chainId": "0x82A",
-          "chainName": "Centrifuge Testnet",
-          "rpcUrls": [
-            "https://node-7118620155331796992.gx.onfinality.io/rpc?apikey=00538f2d-6297-44e3-8812-4b9d579524b2"
-          ],
-          "nativeCurrency": {
-            "name": "Centrifuge",
-            "symbol": "CFG",
-            "decimals": 18
-          },
-          "blockExplorerUrls": [
-            ""
-          ]
-        }
-      ],
-      "image": "/images/chains/centrifuge.svg"
-    },
-    {
-      "id": "immutable",
-      "name": "Immutable",
-      "chain_id": "13473",
-      "network_id": "immutable",
-      "provider_params": [
-        {
-          "chainId": "0x34A1",
-          "chainName": "Immutable",
-          "rpcUrls": [
-            "https://rpc.testnet.immutable.com"
-          ],
-          "nativeCurrency": {
-            "name": "Immutable",
-            "symbol": "IMX",
-            "decimals": 18
-          },
-          "blockExplorerUrls": [
-            ""
-          ]
-        }
-      ],
-      "image": "/images/chains/immutable.svg"
     }
   ]
 }
