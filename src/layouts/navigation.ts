@@ -299,6 +299,7 @@ export const getNavigation = (section) => {
       ],
     });
   }
+
   nav.push({
     header: "Resources",
     children: [
@@ -316,6 +317,18 @@ export const getNavigation = (section) => {
       { title: "Using ipRPC (Free Public RPC)", href: "/resources/lava-iprpc" },
       { title: "Bug Bounty", href: "/bug-bounty" },
       { title: "Add Account to Axelarscan", href: "/resources/axelarscan-add" },
+    ],
+  });
+
+  nav.push({
+    header: "Contract and SDK Reference",
+    children: [
+      { title: "InterchainTokenService", href: "https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/InterchainTokenService.sol" },
+      { title: "InterchainTokenFactory", href: "https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/InterchainTokenFactory.sol" }, ,
+      { title: "AxelarGateway ", href: "https://github.com/axelarnetwork/axelar-cgp-solidity/blob/main/contracts/AxelarGateway.sol" },
+      { title: "AxelarGasService", href: "https://github.com/axelarnetwork/axelar-cgp-solidity/blob/main/contracts/gas-service/AxelarGasService.sol" },
+      { title: "AxelarExecutable", href: "https://github.com/axelarnetwork/axelar-gmp-sdk-solidity/blob/main/contracts/executable/AxelarExecutable.sol" },
+      { title: "AxelarJS SDK", href: "https://github.com/axelarnetwork/axelarjs-sdk" }
     ],
   });
 
