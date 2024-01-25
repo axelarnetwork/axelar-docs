@@ -31,8 +31,17 @@ export const getNavigation = (section) => {
                   title: "Rate Limit",
                   href: "/dev/reference/interchain-token-service-rate-limit",
                 },
+                {
+                  title: "Developer Guides",
+                  children: [
+                    {
+                      title: "Programmatically Create a Token",
+                      href: "/dev/send-tokens/interchain-tokens/developer-guides/programmatically-create-a-token",
+                    },
+                  ],
+                },
               ],
-            }
+            },
           ],
         },
         {
@@ -243,7 +252,10 @@ export const getNavigation = (section) => {
             { title: "Ethereum", href: "/validator/external-chains/ethereum" },
             { title: "Fantom", href: "/validator/external-chains/fantom" },
             { title: "Filecoin", href: "/validator/external-chains/filecoin" },
-            { title: "Immutable zkEVM", href: "/validator/external-chains/immutable" },
+            {
+              title: "Immutable zkEVM",
+              href: "/validator/external-chains/immutable",
+            },
             { title: "Kava", href: "/validator/external-chains/kava" },
             { title: "Linea", href: "/validator/external-chains/linea" },
             { title: "Mantle", href: "/validator/external-chains/mantle" },
@@ -287,6 +299,7 @@ export const getNavigation = (section) => {
       ],
     });
   }
+
   nav.push({
     header: "Resources",
     children: [
@@ -304,6 +317,18 @@ export const getNavigation = (section) => {
       { title: "Using ipRPC (Free Public RPC)", href: "/resources/lava-iprpc" },
       { title: "Bug Bounty", href: "/bug-bounty" },
       { title: "Add Account to Axelarscan", href: "/resources/axelarscan-add" },
+    ],
+  });
+
+  nav.push({
+    header: "Contract and SDK reference",
+    children: [
+      { title: "InterchainTokenService", href: "https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/InterchainTokenService.sol" },
+      { title: "InterchainTokenFactory", href: "https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/InterchainTokenFactory.sol" }, ,
+      { title: "AxelarGateway ", href: "https://github.com/axelarnetwork/axelar-cgp-solidity/blob/main/contracts/AxelarGateway.sol" },
+      { title: "AxelarGasService", href: "https://github.com/axelarnetwork/axelar-cgp-solidity/blob/main/contracts/gas-service/AxelarGasService.sol" },
+      { title: "AxelarExecutable", href: "https://github.com/axelarnetwork/axelar-gmp-sdk-solidity/blob/main/contracts/executable/AxelarExecutable.sol" },
+      { title: "AxelarJS SDK", href: "https://github.com/axelarnetwork/axelarjs-sdk" }
     ],
   });
 
