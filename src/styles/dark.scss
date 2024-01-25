@@ -32,6 +32,9 @@ html.dark body {
   h4,
   h5 {
     color: $dark-link;
+    .anchor-icon {
+      color: $dark-text;
+    }
   }
   .site-logo,
   .site-logo.active {
