@@ -842,11 +842,74 @@
       "image": "/images/assets/wsteth.svg",
       "contracts": [
         {
+          "chain": "arbitrum",
+          "address": "0x9cfB13E6c11054ac9fcB92BA89644F30775436e4",
+          "symbol": "axl-wstETH",
+          "decimals": 18,
+          "transfer_fee": 0.0028
+        },
+        {
+          "chain": "avalanche",
+          "address": "0x74c6b86A89fE77B48952Bc3a9Db74a307B202e97",
+          "symbol": "axl-wstETH",
+          "decimals": 18,
+          "transfer_fee": 0.00085
+        },
+        {
+          "chain": "base",
+          "address": "0x9cfB13E6c11054ac9fcB92BA89644F30775436e4",
+          "symbol": "axl-wstETH",
+          "decimals": 18,
+          "transfer_fee": 0.0028
+        },
+        {
+          "chain": "binance",
+          "address": "0xb306669D6C024B3deA4ff3A35D50844289b2DCFC",
+          "symbol": "axl-wstETH",
+          "decimals": 18,
+          "transfer_fee": 0.00085
+        },
+        {
           "chain": "ethereum",
           "address": "0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0",
           "symbol": "wstETH",
           "decimals": 18,
           "transfer_fee": 0.034
+        },
+        {
+          "chain": "linea",
+          "address": "0x9cfB13E6c11054ac9fcB92BA89644F30775436e4",
+          "symbol": "axl-wstETH",
+          "decimals": 18,
+          "transfer_fee": 0.00085
+        },
+        {
+          "chain": "mantle",
+          "address": "0x9cfB13E6c11054ac9fcB92BA89644F30775436e4",
+          "symbol": "axl-wstETH",
+          "decimals": 18,
+          "transfer_fee": 0.00085
+        },
+        {
+          "chain": "optimism",
+          "address": "0x9cfB13E6c11054ac9fcB92BA89644F30775436e4",
+          "symbol": "axl-wstETH",
+          "decimals": 18,
+          "transfer_fee": 0.0028
+        },
+        {
+          "chain": "polygon",
+          "address": "0xd7Bb095a60D7666D4A6f236423B47DDD6ae6Cfa7",
+          "symbol": "axl-wstETH",
+          "decimals": 18,
+          "transfer_fee": 0.00085
+        },
+        {
+          "chain": "scroll",
+          "address": "0x9cfB13E6c11054ac9fcB92BA89644F30775436e4",
+          "symbol": "axl-wstETH",
+          "decimals": 18,
+          "transfer_fee": 0.00085
         }
       ]
     },

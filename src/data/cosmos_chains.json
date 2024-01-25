@@ -249,6 +249,12 @@
       "image": "/images/chains/celestia.svg"
     },
     {
+      "id": "chain4energy",
+      "name": "Chain4Energy",
+      "network_id": "chain4energy",
+      "image": "/images/chains/chain4energy.svg"
+    },
+    {
       "id": "dymension",
       "name": "Dymension",
       "network_id": "dymension",
@@ -349,6 +355,12 @@
       "name": "Sei",
       "network_id": "sei-2",
       "image": "/images/chains/sei.svg"
+    },
+    {
+      "id": "teritori",
+      "name": "Teritori",
+      "network_id": "teritori-2",
+      "image": "/images/chains/teritori.svg"
     },
     {
       "id": "terra",
