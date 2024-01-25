@@ -1,3 +1,5 @@
+import BonadocsWidget from '@bonadocs/widget'
+
 # Increase Gas
 
 On occasion the prepaid gas to the Gas Receiver contract could be insufficient, such as when the destination chain is congested with transfers. When this happens, the application can resubmit a new amount of gas to pay for the transaction through [Axelarscan](http://axelarscan.io), the [AxelarJS SDK](https://docs.axelar.dev/dev/axelarjs-sdk/intro), or via a direct invocation of the [`AxelarGasService` contract](https://github.com/axelarnetwork/axelar-gmp-sdk-solidity/blob/ad37802dc6d62fff3ab589f2605f7a3e566977dd/contracts/interfaces/IAxelarGasService.sol).
@@ -16,13 +18,8 @@ In Solidity, `addNativeGas()` takes the following parameters:
 - `logIndex` — The log index for the cross-chain call
 - `refundAddress`  — The address where refunds, if any, should be sent
 
-```solidity
-function addNativeGas(
-    bytes32 txHash,
-    uint256 logIndex,
-    address refundAddress
-) external payable override;
-```
+
+<BonadocsWidget client:only widgetConfigUri="ipfs://bafkreiffnktusdlkv5pcfeorotyc7gf6l3oj2m6fz5qpq2pou25jnx4htu" contract="GasService" functionKey="addNativeGas(bytes32,uint256,address)" />
 
 In JavaScript or TypeScript, the SDK [abstracts a method that can be invoked directly in a web application](https://docs.axelar.dev/dev/axelarjs-sdk/tx-status-query-recovery#21-native-gas-payment).
 
@@ -39,15 +36,8 @@ In Solidity, `addGas()` takes the following parameters:
 - `gasFeeAmount` — The amount of tokens to add as gas
 - `refundAddress` — The address where refunds, if any, should be sent
 
-```solidity
-function addGas(
-    bytes32 txHash,
-    uint256 logIndex,
-    address gasToken,
-    uint256 gasFeeAmount,
-    address refundAddress
-) external override;
-```
+
+<BonadocsWidget client:only widgetConfigUri="ipfs://bafkreiffnktusdlkv5pcfeorotyc7gf6l3oj2m6fz5qpq2pou25jnx4htu" contract="GasService" functionKey="addGas(bytes32,uint256,address,uint256,address)" />
 
 In JavaScript or TypeScript, the SDK [abstracts a method that can be invoked directly in a web application](https://docs.axelar.dev/dev/axelarjs-sdk/tx-status-query-recovery#22-erc-20-gas-payment). It is similar to a native gas payment, except with Axelar-supported ERC-20 tokens instead of native tokens. Make sure that the ERC-20 tokens you use are supported by Axelar.
 

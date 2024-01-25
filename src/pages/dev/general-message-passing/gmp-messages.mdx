@@ -1,3 +1,5 @@
+import BonadocsWidget from '@bonadocs/widget'
+
 # Call a contract on chain B from chain A
 
 import { Callout } from "/src/components/callout"
@@ -24,13 +26,8 @@ To call a contract on chain B from chain A, the user needs to call `callContract
 
 If you want to try this out directly on the blockchain, you can [use Remix to try out Axelar's GMP](https://remix.ethereum.org/axelarnetwork/axelar-docs/blob/main/public/samples/gmp-senderreceiver.sol).
 
-```solidity
-function callContract(
-    string memory destinationChain,
-    string memory contractAddress,
-    bytes memory payload
-) external;
-```
+
+<BonadocsWidget client:only widgetConfigUri="ipfs://bafkreiffnktusdlkv5pcfeorotyc7gf6l3oj2m6fz5qpq2pou25jnx4htu" contract="Gateway" functionKey="callContract(string,string,bytes)" />
 
 `AxelarExecutable` has an `execute` function that will be triggered by the Axelar network on the destination chain after the `callContract` function has been executed on the source chain. This will validate the contract call and then invoke *your* `_execute` method, where you should write any custom logic.
 

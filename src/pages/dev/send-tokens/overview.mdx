@@ -1,3 +1,5 @@
+import BonadocsWidget from '@bonadocs/widget'
+
 # Send tokens cross-chain
 
 There are three ways to transfer tokens cross-chain with Axelar:
@@ -8,7 +10,7 @@ There are three ways to transfer tokens cross-chain with Axelar:
 
 ## Call `sendToken`
 
-`sendToken` is an API method that allows you to send any token supported directly on the Axelar network to any recipient on a destination chain. 
+`sendToken` is an API method that allows you to send any token supported directly on the Axelar network to any recipient on a destination chain.
 
 The underlying mechanics work slightly differently, depending on whether the origin chain is an EVM chain or a Cosmos-based chain:
 
@@ -24,14 +26,8 @@ Axelar Gateways are application-layer smart contracts established on source and 
 
 An Axelar Gateway implements the `IAxelarGateway` interface, which has a public method called `sendToken`:
 
-```solidity
-function sendToken(
-    string memory destinationChain,
-    string memory destinationAddress,
-    string memory symbol,
-    uint256 amount
-) external;
-```
+
+<BonadocsWidget client:only widgetConfigUri="ipfs://bafkreiffnktusdlkv5pcfeorotyc7gf6l3oj2m6fz5qpq2pou25jnx4htu" contract="Gateway" functionKey="sendToken(string,string,string,uint256)" />
 
 #### 2. Execute approve on the source chain (ERC-20)
 

@@ -1,3 +1,4 @@
+import BonadocsWidget from '@bonadocs/widget'
 
 # Call a contract on chain B from chain A and attach some tokens
 
@@ -27,15 +28,8 @@ To call chain B from chain A and send some tokens along the way, the user needs 
 
 As per the snippet below:
 
-```solidity
-function callContractWithToken(
-    string memory destinationChain,
-    string memory contractAddress,
-    bytes memory payload,
-    string memory symbol,
-    uint256 amount
-) external;
-```
+
+<BonadocsWidget client:only widgetConfigUri="ipfs://bafkreiffnktusdlkv5pcfeorotyc7gf6l3oj2m6fz5qpq2pou25jnx4htu" contract="Gateway" functionKey="callContractWithToken(string,string,bytes,string,uint256)" />
 
 `AxelarExecutable` has an `executeWithToken` function that will be triggered by the Axelar network on the destination chain after the `callContractWithToken` function has been executed on the source chain. This will validate the contract call and then invoke *your* `_executeWithToken` method, where you should write any custom logic.
 
