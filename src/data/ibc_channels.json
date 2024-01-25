@@ -473,6 +473,16 @@
       "channel_id": "channel-237"
     },
     {
+      "from": "nibiru",
+      "to": "axelarnet",
+      "channel_id": "channel-1"
+    },
+    {
+      "from": "axelarnet",
+      "to": "nibiru",
+      "channel_id": "channel-382"
+    },
+    {
       "from": "odin",
       "to": "axelarnet",
       "channel_id": "channel-5"

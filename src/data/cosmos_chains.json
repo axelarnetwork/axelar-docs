@@ -297,6 +297,12 @@
       "image": "/images/chains/neutron.svg"
     },
     {
+      "id": "nibiru",
+      "name": "Nibiru",
+      "network_id": "nibiru",
+      "image": "/images/chains/nibiru.svg"
+    },
+    {
       "id": "odin",
       "name": "Odin",
       "network_id": "odin",
