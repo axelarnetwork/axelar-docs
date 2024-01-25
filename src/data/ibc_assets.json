@@ -591,6 +591,14 @@
       "image": "/images/assets/huahua.svg",
       "decimals": 6,
       "transfer_fee": 430.0
+    },
+    {
+      "id": "ox-wei",
+      "name": "OX - Open Exchange Token",
+      "symbol": "OX",
+      "image": "/images/assets/ox.svg",
+      "decimals": 18,
+      "transfer_fee": 5.0
     }
   ],
   "testnet": [
