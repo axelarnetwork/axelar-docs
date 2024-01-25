@@ -393,6 +393,16 @@
       "channel_id": "channel-341"
     },
     {
+      "from": "dymension",
+      "to": "axelarnet",
+      "channel_id": "channel-0"
+    },
+    {
+      "from": "axelarnet",
+      "to": "dymension",
+      "channel_id": "channel-400"
+    },
+    {
       "from": "elys",
       "to": "axelarnet",
       "channel_id": "channel-15"
