@@ -232,7 +232,6 @@ export const getNavigation = (section) => {
               title: "Register broadcaster proxy",
               href: "/validator/setup/register-broadcaster",
             },
-            { title: "Stake AXL tokens", href: "/validator/setup/stake-axl" },
             { title: "Health check", href: "/validator/setup/health-check" },
             { title: "Manual setup", href: "/validator/setup/manual" },
           ],
@@ -307,20 +306,48 @@ export const getNavigation = (section) => {
   nav.push({
     header: "Resources",
     children: [
-      { title: "Mainnet", href: "/resources/mainnet" },
-      { title: "Testnet", href: "/resources/testnet" },
-      { title: "RPC Endpoints", href: "/resources/" },
       {
-        title: "Community Pool Proposals",
-        href: "/resources/governance/community-pool-proposals",
+        title: "Addresses",
+        children: [
+          { title: "Mainnet", href: "/resources/mainnet" },
+          { title: "Testnet", href: "/resources/testnet" },
+        ],
       },
-      { title: "Satellite", href: "/resources/satellite" },
-      { title: "MetaMask", href: "/resources/metamask" },
-      { title: "Add Network to Keplr Wallet", href: "/resources/keplr" },
-      { title: "Wrap/unwrap tokens", href: "/resources/wrapped-tokens" },
-      { title: "Using ipRPC (Free Public RPC)", href: "/resources/lava-iprpc" },
-      { title: "Bug Bounty", href: "/bug-bounty" },
-      { title: "Add Account to Axelarscan", href: "/resources/axelarscan-add" },
+      {
+        title: "RPCs",
+        children: [
+          { title: "RPC Endpoints", href: "/resources/" },
+          { title: "Free Public RPC", href: "/resources/lava-iprpc" },
+        ],
+      },
+      {
+        title: "Tokens",
+        children: [
+          { title: "Stake AXL tokens", href: "/validator/setup/stake-axl" },
+          { title: "Wrap / unwrap tokens", href: "/resources/wrapped-tokens" },
+        ],
+      },
+      {
+        title: "Axelarscan",
+        children: [
+          { title: "Add Account to Axelarscan", href: "/resources/axelarscan-add" },
+        ],
+      },
+      {
+        title: "Helpers",
+        children: [
+          { title: "Satellite", href: "/resources/satellite" },
+          { title: "MetaMask", href: "/resources/metamask" },
+          { title: "Add Network to Keplr Wallet", href: "/resources/keplr" },
+        ],
+      },
+      {
+        title: "Community",
+        children: [
+          { title: "Community Pool Proposals", href: "/resources/governance/community-pool-proposals" },
+          { title: "Bug Bounty", href: "/bug-bounty" },
+        ],
+      },
     ],
   });
 
