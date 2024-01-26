@@ -2,6 +2,21 @@
   "framework": null,
   "redirects": [
     {
+      "source": "/learn/validators",
+      "destination": "/validator/status/register-external-chains",
+      "permanent": true
+    },
+    {
+      "source": "/validator/setup/health-check",
+      "destination": "/validator/status/health-check",
+      "permanent": true
+    },
+    {
+      "source": "/validator/troubleshoot/leave",
+      "destination": "/validator/status/leave",
+      "permanent": true
+    },
+    {
       "source": "/node",
       "destination": "/node/config-node",
       "permanent": true
@@ -141,7 +156,6 @@
       "destination": "/dev/send-tokens/overview",
       "permanent": true
     },
-
     {
       "source": "/dev/build/:path(.*)",
       "destination": "/dev/general-message-passing/:path",
