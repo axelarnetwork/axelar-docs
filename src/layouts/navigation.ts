@@ -307,7 +307,7 @@ export const getNavigation = (section) => {
     header: "Resources",
     children: [
       {
-        title: "Addresses",
+        title: "Contract addresses",
         children: [
           { title: "Mainnet", href: "/resources/mainnet" },
           { title: "Testnet", href: "/resources/testnet" },
@@ -334,7 +334,7 @@ export const getNavigation = (section) => {
         ],
       },
       {
-        title: "Helpers",
+        title: "Misc",
         children: [
           { title: "Satellite", href: "/resources/satellite" },
           { title: "MetaMask", href: "/resources/metamask" },
