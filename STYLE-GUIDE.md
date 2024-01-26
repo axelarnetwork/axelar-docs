@@ -236,7 +236,7 @@ Implement the following to send an interchain transaction with Axelar:
 
 * **General Message Passing**: Capitalize, since it is as a product name – “Axelar General Message Passing,” "GMP," or “Axelar GMP” (never "Axelar’s GMP"). If you’re looking for a generic description, use “arbitrary message passing.”
 * **Interchain**: Wherever possible, use “interchain,” instead of “cross-chain,” “blockchain interoperability,” “chain-agnostic” or other synonyms. "Interchain" is only capitalized at the beginning of a sentence.
-* **Interchain Tokens**: title case. Likewise Interchain Token Service, Interchain Token Portal.
+* **Interchain Tokens**: title case. Likewise Interchain Token Service, Interchain Token Portal, Canonical Interchain Token.
 * **Network**: “Axelar network,” not “Axelar Network.”
 * **Proof-of-stake**: Only capitalize the first word in titles and at the beginning of sentences. Always hyphenate.
 * **Web**, **Web2**, **Web3**: Capitalized everywhere, as in “the decentralized Web,” “the Web,” and any other context referring to the World Wide Web. “Web2” and “Web3” are also capitalized and written as one word.
