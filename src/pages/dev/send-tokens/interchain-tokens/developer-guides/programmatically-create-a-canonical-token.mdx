@@ -6,13 +6,13 @@ If you have an [ERC-20](https://docs.openzeppelin.com/contracts/4.x/erc20) token
 
 If you would like to create a wrapped, bridgeable version of your ERC-20 token on other chains, you can register it as a [Canonical Interchain Token](https://docs.axelar.dev/dev/send-tokens/interchain-tokens/upgrade-tokens#canonical-tokens-simple-wrappers) using the [`InterchainTokenFactory`](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/InterchainTokenFactory.sol) [contract](https://etherscan.io/address/0x83a93500d23Fbc3e82B410aD07A6a9F7A0670D66).
 
-**Each token can only be registered once as a canonical Interchain Token.** This ensures unique and streamlined token management across different blockchains. Though you can register your canonical Interchain Token directly through the [Interchain Token Portal](https://testnet.interchain.axelar.dev/), there are times where you may want to do so programmatically, such as when you have already deployed a token on one chain and wish to deploy a wrapped version of that token on another chain.
+**Each token can only be registered once as a Canonical Interchain Token.** This ensures unique and streamlined token management across different blockchains. Though you can register your Canonical Interchain Token directly through the [Interchain Token Portal](https://testnet.interchain.axelar.dev/), there are times where you may want to do so programmatically, such as when you have already deployed a token on one chain and wish to deploy a wrapped version of that token on another chain.
 
 In this tutorial, you will learn how to:
 
-- Programmatically create a canonical Interchain Token from scratch using Axelar's Interchain Token Service
-- Register a canonical Interchain Token on the Fantom chain
-- Deploy remote canonical Interchain Token on the Polygon chain
+- Programmatically create a Canonical Interchain Token from scratch using Axelar's Interchain Token Service
+- Register a Canonical Interchain Token on the Fantom chain
+- Deploy remote Canonical Interchain Token on the Polygon chain
 - Transfer your token between Fantom and Polygon
 
 ## Prerequisites
@@ -105,7 +105,7 @@ module.exports = {
 
 ## Register a Canonical Interchain Token on a local chain
 
-Now that you have set up an RPC for the Fantom testnet, you can register a canonical Interchain Token.
+Now that you have set up an RPC for the Fantom testnet, you can register a Canonical Interchain Token.
 
 ### Create a `canonicalInterchainToken.js` script
 
@@ -169,10 +169,10 @@ async function getContractInstance(contractAddress, contractABI, signer) {
 
 ## Register Canonical Interchain Token
 
-Now you’re ready to register your token as a canonical Interchain Token! Create a `registerCanonicalInterchainToken()` function for the Fantom testnet. This will register a canonical Interchain Token with your custom token address:
+Now you’re ready to register your token as a Canonical Interchain Token! Create a `registerCanonicalInterchainToken()` function for the Fantom testnet. This will register a Canonical Interchain Token with your custom token address:
 
 ```JavaScript
-// Register canonical interchain token to the Fantom chain.
+// Register Canonical Interchain Token to the Fantom chain.
 async function registerCanonicalInterchainToken() {
   // Get a signer to sign the transaction
   const signer = await getSigner();
@@ -189,7 +189,7 @@ async function registerCanonicalInterchainToken() {
     signer
   );
 
-  // Register a new canonical interchain token
+  // Register a new Canonical Interchain Token
   const deployTxData =
     await interchainTokenFactoryContract.registerCanonicalInterchainToken(
       customTokenAddress // Your token address
@@ -248,7 +248,7 @@ Run the script in your terminal to register and deploy the token, specifying the
 FUNCTION_NAME=registerCanonicalInterchainToken npx hardhat run canonicalInterchainToken.js --network fantom
 ```
 
-If you see something similar to the following on your console, you have successfully registered your token as a canonical Interchain Token.
+If you see something similar to the following on your console, you have successfully registered your token as a Canonical Interchain Token.
 
 ```bash
 Transaction Hash: 0x551cdba803a55bc8989a8eb74165c03563590f8f0161b0eb1308ae3953295de8,
@@ -262,15 +262,15 @@ Copy the token ID and store it somewhere safe. You will need it to initiate a re
 
 ### Check the transaction on the Fantom testnet scanner
 
-Check the [Fantom testnet scanner](https://testnet.ftmscan.com/) to see if you have successfully registered your [token as a canonical Interchain Token](https://testnet.ftmscan.com/tx/0x551cdba803a55bc8989a8eb74165c03563590f8f0161b0eb1308ae3953295de8).
+Check the [Fantom testnet scanner](https://testnet.ftmscan.com/) to see if you have successfully registered your [token as a Canonical Interchain Token](https://testnet.ftmscan.com/tx/0x551cdba803a55bc8989a8eb74165c03563590f8f0161b0eb1308ae3953295de8).
 
 ## Deploy Remote Canonical Interchain Token
 
-You’ve just successfully a canonical Interchain Token to Fantom, which you are using as your local chain. Now, deploy the token remotely to Polygon, which will be the remote chain in this tutorial. Remember that you can specify any two chains to be your local and remote chains.
+You’ve just successfully a Canonical Interchain Token to Fantom, which you are using as your local chain. Now, deploy the token remotely to Polygon, which will be the remote chain in this tutorial. Remember that you can specify any two chains to be your local and remote chains.
 
 ### Estimate gas fees
 
-In `canonicalInterchainToken.js`, call `estimateGasFee()` from the [AxelarJS SDK](https://www.notion.so/bd238d757a144a069501f0b481488ef3?pvs=21) to estimate the actual cost of deploying your remote canonical Interchain Token on a remote chain:
+In `canonicalInterchainToken.js`, call `estimateGasFee()` from the [AxelarJS SDK](https://www.notion.so/bd238d757a144a069501f0b481488ef3?pvs=21) to estimate the actual cost of deploying your remote Canonical Interchain Token on a remote chain:
 
 ```JavaScript
 //...
@@ -355,7 +355,7 @@ async function main() {
 
 ### Run the `canonicalInterchainToken.js` script to deploy to Polygon
 
-Run the script in your terminal to to deploy remote canonical Interchain Token, once again specifying the `fantom` testnet (the source chain where all transactions are taking place):
+Run the script in your terminal to to deploy remote Canonical Interchain Token, once again specifying the `fantom` testnet (the source chain where all transactions are taking place):
 
 ```bash
 FUNCTION_NAME=deployRemoteCanonicalInterchainToken npx hardhat run canonicalInterchainToken.js --network fantom
@@ -369,11 +369,11 @@ Transaction Hash: 0xb963f5ce3402e1787ead0c8f421be79ac06e5b78305b1dbce184806e099d
 
 ### Check the transaction on the Axelar testnet scanner
 
-Check the [Axelarscan testnet scanner](https://testnet.axelarscan.io/) to see if you have successfully deployed the remote canonical Interchain Token “MAT” on the Polygon Mumbai testnet. It should look something like [this](https://testnet.axelarscan.io/gmp/0xb963f5ce3402e1787ead0c8f421be79ac06e5b78305b1dbce184806e099d54fd). Make sure that Axelar shows a successful transaction before continuing on to the next step.
+Check the [Axelarscan testnet scanner](https://testnet.axelarscan.io/) to see if you have successfully deployed the remote Canonical Interchain Token “MAT” on the Polygon Mumbai testnet. It should look something like [this](https://testnet.axelarscan.io/gmp/0xb963f5ce3402e1787ead0c8f421be79ac06e5b78305b1dbce184806e099d54fd). Make sure that Axelar shows a successful transaction before continuing on to the next step.
 
 ## Transfer your token between chains
 
-Now that you have registered and deployed a canonical Interchain Token both locally to Fantom and remotely to Polygon, you can transfer between those two chains via the [`interchainTransfer()`](https://github.com/axelarnetwork/interchain-token-service/blob/9edc4318ac1c17231e65886eea72c0f55469d7e5/contracts/interfaces/IInterchainTokenStandard.sol#L19) method.
+Now that you have registered and deployed a Canonical Interchain Token both locally to Fantom and remotely to Polygon, you can transfer between those two chains via the [`interchainTransfer()`](https://github.com/axelarnetwork/interchain-token-service/blob/9edc4318ac1c17231e65886eea72c0f55469d7e5/contracts/interfaces/IInterchainTokenStandard.sol#L19) method.
 
 ### Initiate a remote token transfer
 
@@ -480,7 +480,7 @@ You can also import the new token into your own wallet with its contract address
 
 ## Congratulations!
 
-You have now programmatically created a canonical interchain token using Axelar’s Interchain Token Service and transferred it between two chains. You should now be able to confidently create and manage your own Interchain Tokens, opening up a wide range of possibilities for token transfers and asset bridges.
+You have now programmatically created a Canonical Interchain Token using Axelar’s Interchain Token Service and transferred it between two chains. You should now be able to confidently create and manage your own Interchain Tokens, opening up a wide range of possibilities for token transfers and asset bridges.
 
 Great job making it this far! To show your support to the author of this tutorial, please post about your experience and tag [@axelarnetwork](https://twitter.com/axelarnetwork) on Twitter (X).
 
