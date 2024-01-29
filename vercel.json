@@ -2,6 +2,21 @@
   "framework": null,
   "redirects": [
     {
+      "source": "/dev/general-message-passing/solidity-utilities",
+      "destination": "/dev/solidity-utilities",
+      "permanent": true
+    },
+    {
+      "source": "/dev/general-message-passing/axelar-sandbox/intro",
+      "destination": "/dev/axelar-sandbox/intro",
+      "permanent": true
+    },
+    {
+      "source": "/dev/general-message-passing/local-dev",
+      "destination": "/dev/general-message-passing/developer-guides/example-gmp",
+      "permanent": true
+    },
+    {
       "source": "/dev/general-message-passing/example-usdc-cctp",
       "destination": "/dev/general-message-passing/developer-guides/example-usdc-cctp",
       "permanent": true

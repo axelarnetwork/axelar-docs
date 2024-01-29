@@ -60,10 +60,6 @@ export const getNavigation = (section) => {
               href: "/dev/general-message-passing/examples",
             },
             {
-              title: "Hello World GMP Example",
-              href: "/dev/general-message-passing/local-dev",
-            },
-            {
               title: "Send Messages",
               href: "/dev/general-message-passing/gmp-messages",
             },
@@ -72,7 +68,7 @@ export const getNavigation = (section) => {
               href: "/dev/general-message-passing/gmp-tokens-with-messages",
             },
             {
-              title: "Gas Services and Transaction Pricing",
+              title: "Gas Service and Transaction Pricing",
               children: [
                 {
                   title: "Introduction",
@@ -101,101 +97,105 @@ export const getNavigation = (section) => {
               href: "/dev/general-message-passing/monitoring",
             },
             {
-              title: "AxelarJS SDK",
-              children: [
-                { title: "Introduction", href: "/dev/axelarjs-sdk/intro" },
-                {
-                  title: "Token Transfer via Deposit Address",
-                  href: "/dev/axelarjs-sdk/token-transfer-dep-addr",
-                },
-                {
-                  title: "GMP transaction status and recovery",
-                  href: "/dev/axelarjs-sdk/tx-status-query-recovery",
-                },
-                {
-                  title: "Axelar Query API",
-                  href: "/dev/axelarjs-sdk/axelar-query-api",
-                },
-              ],
-            },
-            {
-              title: "Cosmos GMP",
-              href: "/dev/general-message-passing/cosmos-gmp",
-            },
-            {
-              title: "Debugging",
-              children: [
-                {
-                  title: "Error messages",
-                  href: "/dev/general-message-passing/debug/error-debugging",
-                },
-                {
-                  title: "Debugging Smart Contract",
-                  href: "/dev/general-message-passing/debug/debugging-your-smart-contract",
-                },
-                {
-                  title: "Fork Mainnet for Local Testing",
-                  href: "/dev/general-message-passing/debug/fork-mainnet",
-                },
-                {
-                  title: "Transaction Recovery",
-                  href: "/dev/general-message-passing/debug/transaction-recovery",
-                },
-              ],
-            },
-            {
-              title: "Indexers",
-              children: [
-                {
-                  title: "Introduction",
-                  href: "/dev/indexers/overview",
-                },
-                {
-                  title: "SubQuery",
-                  href: "/dev/indexers/subquery",
-                },
-              ],
-            },
-            {
-              title: "Chain and Contract Reference",
-              children: [
-                {
-                  title: "Mainnet Chain Names",
-                  href: "/dev/reference/mainnet-chain-names",
-                },
-                {
-                  title: "Mainnet Contract Addresses",
-                  href: "/dev/reference/mainnet-contract-addresses",
-                },
-                {
-                  title: "Testnet Chain Names",
-                  href: "/dev/reference/testnet-chain-names",
-                },
-                {
-                  title: "Testnet Contract Addresses",
-                  href: "/dev/reference/testnet-contract-addresses",
-                },
-                { title: "Glossary", href: "/dev/reference/glossary" },
-              ],
-            },
-            {
               title: "Developer Guides",
               children: [
                 {
                   title: "Cross-Chain Swaps with CCTP",
                   href: "/dev/general-message-passing/developer-guides/example-usdc-cctp",
                 },
+                {
+                  title: "Hello World GMP Example",
+                  href: "/dev/general-message-passing/developer-guides/example-gmp",
+                },
               ],
             },
+          ],
+        },
+        {
+          title: "Cosmos GMP",
+          href: "/dev/general-message-passing/cosmos-gmp",
+        },
+        {
+          title: "AxelarJS SDK",
+          children: [
+            { title: "Introduction", href: "/dev/axelarjs-sdk/intro" },
             {
-              title: "Solidity Utilities",
-              href: "/dev/general-message-passing/solidity-utilities",
+              title: "Token Transfer via Deposit Address",
+              href: "/dev/axelarjs-sdk/token-transfer-dep-addr",
             },
             {
-              title: "Sandbox",
-              href: "/dev/general-message-passing/axelar-sandbox/intro",
+              title: "GMP transaction status and recovery",
+              href: "/dev/axelarjs-sdk/tx-status-query-recovery",
+            },
+            {
+              title: "Axelar Query API",
+              href: "/dev/axelarjs-sdk/axelar-query-api",
             },
           ],
+        },
+        {
+          title: "Indexers",
+          children: [
+            {
+              title: "Introduction",
+              href: "/dev/indexers/overview",
+            },
+            {
+              title: "SubQuery",
+              href: "/dev/indexers/subquery",
+            },
+          ],
+        },
+        {
+          title: "Debugging",
+          children: [
+            {
+              title: "Error messages",
+              href: "/dev/general-message-passing/debug/error-debugging",
+            },
+            {
+              title: "Debugging Smart Contract",
+              href: "/dev/general-message-passing/debug/debugging-your-smart-contract",
+            },
+            {
+              title: "Fork Mainnet for Local Testing",
+              href: "/dev/general-message-passing/debug/fork-mainnet",
+            },
+            {
+              title: "Transaction Recovery",
+              href: "/dev/general-message-passing/debug/transaction-recovery",
+            },
+          ],
+        },
+        {
+          title: "Chain and Contract Reference",
+          children: [
+            {
+              title: "Mainnet Chain Names",
+              href: "/dev/reference/mainnet-chain-names",
+            },
+            {
+              title: "Mainnet Contract Addresses",
+              href: "/dev/reference/mainnet-contract-addresses",
+            },
+            {
+              title: "Testnet Chain Names",
+              href: "/dev/reference/testnet-chain-names",
+            },
+            {
+              title: "Testnet Contract Addresses",
+              href: "/dev/reference/testnet-contract-addresses",
+            },
+            { title: "Glossary", href: "/dev/reference/glossary" },
+          ],
+        },
+        {
+          title: "Solidity Utilities",
+          href: "/dev/solidity-utilities",
+        },
+        {
+          title: "Sandbox",
+          href: "/dev/axelar-sandbox/intro",
         },
       ],
     });
