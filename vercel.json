@@ -39,6 +39,7 @@
     {
       "source": "/resources/lava-iprpc",
       "destination": "/resources/rpc/lava-iprpc",
+      "permanent": true
     },
     {
       "source": "/learn/validators",
