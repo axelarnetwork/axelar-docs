@@ -333,6 +333,12 @@ export const getNavigation = (section) => {
             { title: "Leave the network", href: "/validator/status/leave" },
           ],
         },
+        {
+          title: "Amplifier",
+          children: [
+            { title: "Become a Verifier", href: "/validator/amplifier/verifier-onboarding" },
+          ],
+        },
       ],
     });
   }
