@@ -27,11 +27,6 @@
       "permanent": true
     },
     {
-      "source": "/validator/setup/stake-axl",
-      "destination": "/resources/tokens/stake-axl",
-      "permanent": true
-    },
-    {
       "source": "/resources/wrapped-tokens",
       "destination": "/resources/tokens/wrapped-tokens",
       "permanent": true
@@ -44,6 +39,25 @@
     {
       "source": "/resources/lava-iprpc",
       "destination": "/resources/rpc/lava-iprpc",
+    },
+    {
+      "source": "/learn/validators",
+      "destination": "/validator/status/register-external-chains",
+      "permanent": true
+    },
+    {
+      "source": "/validator/setup/health-check",
+      "destination": "/validator/status/health-check",
+      "permanent": true
+    },
+    {
+      "source": "/validator/setup/stake-axl",
+      "destination": "/resources/tokens/stake-axl",
+      "permanent": true
+    },
+    {
+      "source": "/validator/troubleshoot/leave",
+      "destination": "/validator/status/leave",
       "permanent": true
     },
     {

@@ -221,7 +221,7 @@ export const getNavigation = (section) => {
               href: "/validator/setup/config",
             },
             {
-              title: "Create and backup accounts",
+              title: "Create and back up accounts",
               href: "/validator/setup/backup",
             },
             {
@@ -237,7 +237,7 @@ export const getNavigation = (section) => {
           ],
         },
         {
-          title: "Support External Chains",
+          title: "External Chain Support",
           children: [
             { title: "Overview", href: "/validator/external-chains/overview" },
             { title: "Arbitrum", href: "/validator/external-chains/arbitrum" },
@@ -272,10 +272,10 @@ export const getNavigation = (section) => {
           title: "Operations",
           children: [
             {
-              title: "Rotating mnemonics",
+              title: "Rotate tofnd mnemonics",
               href: "/validator/operations/mnemonic-rotation",
             },
-            { title: "Monitoring", href: "/validator/operations/monitoring" },
+            { title: "Monitor a validator or node", href: "/validator/operations/monitoring" },
           ],
         },
         {
@@ -290,13 +290,17 @@ export const getNavigation = (section) => {
               href: "/validator/troubleshoot/missed-too-many-blocks",
             },
             {
-              title: "Unjail your validator",
+              title: "Unjail validator",
               href: "/validator/troubleshoot/unjail",
             },
-            {
-              title: "Leave the network",
-              href: "/validator/troubleshoot/leave",
-            },
+          ],
+        },
+        {
+          title: "Validator status",
+          children: [
+            { title: "Register external chains", href: "/validator/status/register-external-chains" },
+            { title: "Check validator status", href: "/validator/status/health-check" },
+            { title: "Leave the network", href: "/validator/status/leave" },
           ],
         },
       ],
@@ -387,10 +391,6 @@ export const getNavigation = (section) => {
     children: [
       { title: "Crosschain Message Flow", href: "/learn/network/flow" },
       { title: "axlUSDC", href: "/learn/axlusdc" },
-      {
-        title: "Registering external chains for validators",
-        href: "/learn/validators",
-      },
       { title: "Security Overview", href: "/learn/security" },
       { title: "Interchain Transaction Duration", href: "/learn/txduration" },
       { title: "EVM Contract Governance", href: "/learn/evm-governance" },
