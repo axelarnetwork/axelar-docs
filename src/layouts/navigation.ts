@@ -309,28 +309,28 @@ export const getNavigation = (section) => {
       {
         title: "Contract addresses",
         children: [
-          { title: "Mainnet", href: "/resources/mainnet" },
-          { title: "Testnet", href: "/resources/testnet" },
+          { title: "Mainnet", href: "/resources/contract-addresses/mainnet" },
+          { title: "Testnet", href: "/resources/contract-addresses/testnet" },
         ],
       },
       {
         title: "RPCs",
         children: [
-          { title: "RPC Endpoints", href: "/resources/" },
-          { title: "Free Public RPC", href: "/resources/lava-iprpc" },
+          { title: "RPC Endpoints", href: "/resources/rpc/resources" },
+          { title: "Free Public RPC", href: "/resources/rpc/lava-iprpc" },
         ],
       },
       {
         title: "Tokens",
         children: [
-          { title: "Stake AXL tokens", href: "/validator/setup/stake-axl" },
-          { title: "Wrap / unwrap tokens", href: "/resources/wrapped-tokens" },
+          { title: "Stake AXL tokens", href: "/resources/tokens/stake-axl" },
+          { title: "Wrap / unwrap tokens", href: "/resources/tokens/wrapped-tokens" },
         ],
       },
       {
         title: "Axelarscan",
         children: [
-          { title: "Add Account to Axelarscan", href: "/resources/axelarscan-add" },
+          { title: "Add Account to Axelarscan", href: "/resources/axelarscan/axelarscan-add" },
         ],
       },
       {
@@ -344,8 +344,8 @@ export const getNavigation = (section) => {
       {
         title: "Community",
         children: [
-          { title: "Community Pool Proposals", href: "/resources/governance/community-pool-proposals" },
-          { title: "Bug Bounty", href: "/bug-bounty" },
+          { title: "Community Pool Proposals", href: " /resources/community/community-pool-proposals" },
+          { title: "Bug Bounty", href: "/resources/community/bug-bounty" },
         ],
       },
     ],
