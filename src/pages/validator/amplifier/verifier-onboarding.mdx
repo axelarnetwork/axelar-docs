@@ -1,10 +1,12 @@
-# Becoming an Amplifier Verifier
+# Becoming an Amplifier Verifier (Worker)
 
 import { Callout } from "/src/components/callout"
 
-<Callout>The Axelar Virtual Machine (AVM) and Amplifier are currently under active development, so these instructions are likely to change. Please check back frequently for updates.</Callout>
+<Callout>
+The Axelar Virtual Machine (AVM) and Amplifier are currently under active development, so these instructions are likely to change. Please check back frequently for updates.
+</Callout>
 
-By running a verifier for a chain integration with Axelar, you will be responsible for voting on the validity of transactions on the Axelar network for a given chain.
+By running a **verifier** (also called a **worker**) for a chain integration with Axelar, you will be responsible for voting on the validity of transactions on the Axelar network for a given chain.
 
 ## Prerequisites
 
@@ -61,7 +63,7 @@ docker run --network host -v $(pwd)/ampd:/root/.ampd haiyizxx/ampd:v0.0.2 worker
 Sample response
 
 ```bash
-Verifier address is axelar1up3vvhxg4swh2lfeh8n84dat86j6hmgz20d6d3
+Worker address is axelar1up3vvhxg4swh2lfeh8n84dat86j6hmgz20d6d3
 ```
 
 Create an issue on [Axelar Support](https://github.com/axelarnetwork/support) asking for devnet funds and to be whitelisted.
