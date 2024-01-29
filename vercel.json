@@ -2,6 +2,21 @@
   "framework": null,
   "redirects": [
     {
+      "source": "/dev/general-message-passing/example-usdc-cctp",
+      "destination": "/dev/general-message-passing/developer-guides/example-usdc-cctp",
+      "permanent": true
+    },
+    {
+      "source": "/dev/general-message-passing/recovery",
+      "destination": "/dev/general-message-passing/debug/transaction-recovery",
+      "permanent": true
+    },
+    {
+      "source": "/dev/reference/pricing",
+      "destination": "/dev/general-message-passing/gas-services/pricing",
+      "permanent": true
+    },
+    {
       "source": "/learn/validators",
       "destination": "/validator/status/register-external-chains",
       "permanent": true
