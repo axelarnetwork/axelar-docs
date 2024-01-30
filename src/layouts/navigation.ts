@@ -75,7 +75,7 @@ export const getNavigation = (section) => {
               title: "Debug",
               children: [
                 {
-                  title: "Error messages",
+                  title: "Error Messages",
                   href: "/dev/general-message-passing/debug/error-debugging",
                 },
                 {
@@ -141,7 +141,7 @@ export const getNavigation = (section) => {
               href: "/dev/axelarjs-sdk/token-transfer-dep-addr",
             },
             {
-              title: "GMP transaction status and recovery",
+              title: "GMP Transaction Status and Recovery",
               href: "/dev/axelarjs-sdk/tx-status-query-recovery",
             },
             {
@@ -186,7 +186,6 @@ export const getNavigation = (section) => {
               title: "Testnet Contract Addresses",
               href: "/dev/reference/testnet-contract-addresses",
             },
-            { title: "Glossary", href: "/dev/reference/glossary" },
           ],
         },
         {
@@ -196,6 +195,10 @@ export const getNavigation = (section) => {
         {
           title: "Sandbox",
           href: "/dev/axelar-sandbox/intro",
+        },
+        {
+          title: "Glossary",
+          href: "/dev/glossary"
         },
       ],
     });
