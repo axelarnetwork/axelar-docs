@@ -68,33 +68,29 @@ export const getNavigation = (section) => {
               href: "/dev/general-message-passing/gmp-tokens-with-messages",
             },
             {
-              title: "Gas Service and Transaction Pricing",
-              children: [
-                {
-                  title: "Introduction",
-                  href: "/dev/general-message-passing/gas-services/intro",
-                },
-                {
-                  title: "Pay Gas",
-                  href: "/dev/general-message-passing/gas-services/pay-gas",
-                },
-                {
-                  title: "Increase Gas",
-                  href: "/dev/general-message-passing/gas-services/increase-gas",
-                },
-                {
-                  title: "Refund Gas",
-                  href: "/dev/general-message-passing/gas-services/refund",
-                },
-                {
-                  title: "Transaction Pricing",
-                  href: "/dev/general-message-passing/gas-services/pricing",
-                },
-              ],
+              title: "Monitor Transaction State",
+              href: "/dev/general-message-passing/monitoring",
             },
             {
-              title: "Monitoring Transaction State",
-              href: "/dev/general-message-passing/monitoring",
+              title: "Debug",
+              children: [
+                {
+                  title: "Error messages",
+                  href: "/dev/general-message-passing/debug/error-debugging",
+                },
+                {
+                  title: "Debug a Smart Contract",
+                  href: "/dev/general-message-passing/debug/debugging-your-smart-contract",
+                },
+                {
+                  title: "Fork Mainnet for Local Testing",
+                  href: "/dev/general-message-passing/debug/fork-mainnet",
+                },
+                {
+                  title: "Transaction Recovery",
+                  href: "/dev/general-message-passing/debug/transaction-recovery",
+                },
+              ],
             },
             {
               title: "Developer Guides",
@@ -112,8 +108,29 @@ export const getNavigation = (section) => {
           ],
         },
         {
-          title: "Cosmos GMP",
-          href: "/dev/general-message-passing/cosmos-gmp",
+          title: "Gas Service and Transaction Pricing",
+          children: [
+            {
+              title: "Introduction",
+              href: "/dev/gas-service/intro",
+            },
+            {
+              title: "Pay Gas",
+              href: "/dev/gas-service/pay-gas",
+            },
+            {
+              title: "Increase Gas",
+              href: "/dev/gas-service/increase-gas",
+            },
+            {
+              title: "Refund Gas",
+              href: "/dev/gas-service/refund",
+            },
+            {
+              title: "Transaction Pricing",
+              href: "/dev/gas-service/pricing",
+            },
+          ],
         },
         {
           title: "AxelarJS SDK",
@@ -134,6 +151,10 @@ export const getNavigation = (section) => {
           ],
         },
         {
+          title: "Cosmos GMP",
+          href: "/dev/cosmos-gmp",
+        },
+        {
           title: "Indexers",
           children: [
             {
@@ -143,27 +164,6 @@ export const getNavigation = (section) => {
             {
               title: "SubQuery",
               href: "/dev/indexers/subquery",
-            },
-          ],
-        },
-        {
-          title: "Debugging",
-          children: [
-            {
-              title: "Error messages",
-              href: "/dev/general-message-passing/debug/error-debugging",
-            },
-            {
-              title: "Debugging Smart Contract",
-              href: "/dev/general-message-passing/debug/debugging-your-smart-contract",
-            },
-            {
-              title: "Fork Mainnet for Local Testing",
-              href: "/dev/general-message-passing/debug/fork-mainnet",
-            },
-            {
-              title: "Transaction Recovery",
-              href: "/dev/general-message-passing/debug/transaction-recovery",
             },
           ],
         },
