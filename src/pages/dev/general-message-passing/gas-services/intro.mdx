@@ -1,3 +1,5 @@
+import type starlight from '@astrojs/starlight';
+
 # Introduction to the `AxelarGasService` contract
 
 [`AxelarGasService`](https://github.com/axelarnetwork/axelar-gmp-sdk-solidity/blob/main/contracts/interfaces/IAxelarGasService.sol) is a smart contract that manages gas payments and refunds for cross-chain communication on the Axelar network. It allows an application to prepay gas fees on the source chain and increase the gas paid for a transaction. If too much gas is paid for a transaction, it can calculate and refund the sender.
