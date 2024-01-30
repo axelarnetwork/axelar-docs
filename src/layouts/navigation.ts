@@ -108,7 +108,7 @@ export const getNavigation = (section) => {
           ],
         },
         {
-          title: "Gas Service and Transaction Pricing",
+          title: "Gas Service",
           children: [
             {
               title: "Introduction",
