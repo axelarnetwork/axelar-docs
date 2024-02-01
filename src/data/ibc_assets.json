@@ -14,7 +14,7 @@
       "symbol": "AXL",
       "image": "/images/assets/axl.svg",
       "decimals": 6,
-      "transfer_fee": 0.2
+      "transfer_fee": 0.025
     },
     {
       "id": "dai-wei",
@@ -135,6 +135,14 @@
       "image": "/images/assets/osmo.svg",
       "decimals": 6,
       "transfer_fee": 0.12
+    },
+    {
+      "id": "factory/osmo1mlng7pz4pnyxtpq0akfwall37czyk9lukaucsrn30ameplhhshtqdvfm5c/ulvn",
+      "name": "LVN - Levana Governance Token",
+      "symbol": "LVN",
+      "image": "/images/assets/lvn.svg",
+      "decimals": 6,
+      "transfer_fee": 0.56
     },
     {
       "id": "cusd-wei",
