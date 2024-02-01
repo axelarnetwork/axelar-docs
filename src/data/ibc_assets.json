@@ -14,7 +14,7 @@
       "symbol": "AXL",
       "image": "/images/assets/axl.svg",
       "decimals": 6,
-      "transfer_fee": 0.2
+      "transfer_fee": 0.025
     },
     {
       "id": "dai-wei",
@@ -137,6 +137,14 @@
       "transfer_fee": 0.12
     },
     {
+      "id": "factory/osmo1mlng7pz4pnyxtpq0akfwall37czyk9lukaucsrn30ameplhhshtqdvfm5c/ulvn",
+      "name": "LVN - Levana Governance Token",
+      "symbol": "LVN",
+      "image": "/images/assets/lvn.svg",
+      "decimals": 6,
+      "transfer_fee": 0.56
+    },
+    {
       "id": "cusd-wei",
       "name": "cUSD - Celo Dollar",
       "symbol": "cUSD",
@@ -169,6 +177,14 @@
       "transfer_fee": 5.7e-05
     },
     {
+      "id": "frxeth-wei",
+      "name": "frxETH - Frax Ether",
+      "symbol": "frxETH",
+      "image": "/images/assets/frxeth.svg",
+      "decimals": 18,
+      "transfer_fee": 6.2e-05
+    },
+    {
       "id": "sfrax-wei",
       "name": "sFRAX - Staked FRAX",
       "symbol": "sFRAX",
@@ -199,6 +215,14 @@
       "image": "/images/assets/arb.svg",
       "decimals": 18,
       "transfer_fee": 0.076
+    },
+    {
+      "id": "op-wei",
+      "name": "OP - Optimism",
+      "symbol": "OP",
+      "image": "/images/assets/op.svg",
+      "decimals": 18,
+      "transfer_fee": 0.026
     },
     {
       "id": "mpx-wei",
@@ -575,6 +599,14 @@
       "image": "/images/assets/huahua.svg",
       "decimals": 6,
       "transfer_fee": 430.0
+    },
+    {
+      "id": "ox-wei",
+      "name": "OX - Open Exchange Token",
+      "symbol": "OX",
+      "image": "/images/assets/ox.svg",
+      "decimals": 18,
+      "transfer_fee": 5.0
     }
   ],
   "testnet": [

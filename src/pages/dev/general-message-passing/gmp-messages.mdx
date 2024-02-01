@@ -18,6 +18,10 @@ To call a contract on chain B from chain A, the user needs to call `callContract
 - The destination contract address, which must inherit from `AxelarExecutable` defined in [AxelarExecutable.sol](https://github.com/axelarnetwork/axelar-gmp-sdk-solidity/blob/main/contracts/executable/AxelarExecutable.sol).
 - The payload `bytes` to pass to the destination contract.
 
+<Callout emoji="🚨">
+  **NOTE:** The security of your contracts is limited to the security of the chains they integrate with. Since blockchains can have different security practices, we recommend doing due diligence on all chains your contract will be deployed to.
+</Callout>
+
 If you want to try this out directly on the blockchain, you can [use Remix to try out Axelar's GMP](https://remix.ethereum.org/axelarnetwork/axelar-docs/blob/main/public/samples/gmp-senderreceiver.sol).
 
 ```solidity

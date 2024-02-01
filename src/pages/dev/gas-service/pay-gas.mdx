@@ -1,0 +1,97 @@
+# Pay Gas
+
+An application that wants Axelar to automatically execute contract calls on the destination chain must do the following:
+
+1. Estimate the `gasLimit` that the contract call will require in the executable contract on the destination chain.
+1. Get the value of the source gas fee in the desired gas-payment token on the destination chain by [calling `estimateGasFee()`](https://docs.axelar.dev/dev/axelarjs-sdk/axelar-query-api#estimategasfee).
+    - `estimateGasFee()` will estimate the fee amount in the destination token,  convert it to the same price in the source token, and return that converted amount.
+1. Pay the `AxelarGasService` smart contract on the source chain with `payNativeGasForContractCall()` or `payNativeGasForContractCallWithToken()`.
+
+The [`AxelarGasService`](https://github.com/axelarnetwork/axelar-gmp-sdk-solidity/blob/ad37802dc6d62fff3ab589f2605f7a3e566977dd/contracts/interfaces/IAxelarGasService.sol) contract provides methods to pay gas for both `callContract()` and `callContractWithToken()`. Gas fees are paid in the native token of the source chain.
+
+## Prerequisites
+
+The [AxelarJS SDK](https://docs.axelar.dev/dev/axelarjs-sdk/intro) must be installed.
+
+## Pay gas fees to an `AxelarGasService` contract
+
+The following is an example of how gas fees can be paid to an `AxelarGasService` contract. Assume that `SimpleTransferContract` is a smart contract deployed on a source chain:
+
+```solidity
+contract SimpleTransferContract {
+  ...
+  function sendToMany(
+      string memory destinationChain,
+      string memory destinationContractAddress,
+      address[] calldata destinationAddresses,
+      string memory symbol,
+      uint256 amount
+  ) external payable {
+      address tokenAddress = gateway.tokenAddresses(symbol);
+      IERC20(tokenAddress).transferFrom(msg.sender, address(this), amount);
+      IERC20(tokenAddress).approve(address(gateway), amount);
+      bytes memory payload = abi.encode(destinationAddresses);
+
+      // msg.value is the gas amount paid to the contract.
+      if(msg.value > 0) {
+          // Pay the gas fee.
+          gasReceiver.payNativeGasForContractCallWithToken{value: msg.value}(
+              address(this),
+              destinationChain,
+              destinationContractAddress,
+              payload,
+              symbol,
+              amount,
+              msg.sender
+          );
+      }
+      gateway.callContractWithToken(destinationChain, destinationContractAddress, payload, symbol, amount);
+  }
+}
+```
+
+`msg.value` is the gas amount paid to the `AxelarGasService` contract. Thus, the value returned from a call to `estimateGasFee()` must be passed to `msg.value` on the front end:
+
+```solidity
+await contract.sendToMany("moonbeam", "0x...", ["0x.."], "USDC", 1, {
+  value: sourceGasFee, // Value returned from calling estimateGasFee()
+});
+```
+
+After sending a transaction out, Axelar’s Gas Service will do the following:
+
+- Monitor `AxelarGasReceiver` for receipt of payment and get the amount paid as `amountPaid`.
+- Match the gas paid to the correct contract calls.
+- Submit the transaction to the Axelar network for confirmation.
+- Execute the contract call with the `gasLimit` specified by the application.
+
+## Alternative gas payment methods
+
+See the [`AxelarGasService` interface](https://github.com/axelarnetwork/axelar-gmp-sdk-solidity/blob/ad37802dc6d62fff3ab589f2605f7a3e566977dd/contracts/interfaces/IAxelarGasService.sol) for alternative gas payment methods.
+
+When passing in arguments for these methods:
+
+- `sender` must match the address that calls `callContract()` or `callContractWithToken()` on the `AxelarGateway`. If the `AxelarGasReceiver` is called by the same contract that will call the Gateway, specify `address(this)` as `sender`.
+- `refundAddress` is the address that will eventually be able to [receive the excess amount paid for gas](https://docs.axelar.dev/dev/general-message-passing/gas-services/refund). Refunds are made on the source chain.
+
+**`payNativeGasForContractCall()`**
+
+For `payNativeGasForContractCall()`, the following must match the arguments of a `contractCall()` on the `AxelarGateway`:
+
+- `destinationChain`
+- `destinationAddress`
+- `payload`
+
+`msg.value` specifies the amount of funds received.
+
+**`payNativeGasForContractCallWithToken()`**
+
+For `payNativeGasForContractCallWithToken()`, the following must match the arguments of a `contractCallWithToken()` on the `AxelarGateway`:
+
+- `destinationChain`
+- `destinationAddress`
+- `payload`
+- `symbol`
+- `amount`
+
+`msg.value` specifies the amount of funds received.

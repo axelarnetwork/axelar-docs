@@ -393,6 +393,26 @@
       "channel_id": "channel-341"
     },
     {
+      "from": "chain4energy",
+      "to": "axelarnet",
+      "channel_id": "channel-3"
+    },
+    {
+      "from": "axelarnet",
+      "to": "chain4energy",
+      "channel_id": "channel-405"
+    },
+    {
+      "from": "dymension",
+      "to": "axelarnet",
+      "channel_id": "channel-0"
+    },
+    {
+      "from": "axelarnet",
+      "to": "dymension",
+      "channel_id": "channel-400"
+    },
+    {
       "from": "elys",
       "to": "axelarnet",
       "channel_id": "channel-15"
@@ -461,6 +481,16 @@
       "from": "axelarnet",
       "to": "neutron",
       "channel_id": "channel-237"
+    },
+    {
+      "from": "nibiru",
+      "to": "axelarnet",
+      "channel_id": "channel-1"
+    },
+    {
+      "from": "axelarnet",
+      "to": "nibiru",
+      "channel_id": "channel-382"
     },
     {
       "from": "odin",
@@ -545,12 +575,12 @@
     {
       "from": "teritori",
       "to": "axelarnet",
-      "channel_id": "channel-36"
+      "channel_id": "channel-0"
     },
     {
       "from": "axelarnet",
       "to": "teritori",
-      "channel_id": "channel-294"
+      "channel_id": "channel-406"
     },
     {
       "from": "terra",
@@ -571,6 +601,16 @@
       "from": "axelarnet",
       "to": "xpla",
       "channel_id": "channel-108"
+    },
+    {
+      "from": "fxcore",
+      "to": "axelarnet",
+      "channel_id": "channel-127"
+    },
+    {
+      "from": "axelarnet",
+      "to": "fxcore",
+      "channel_id": "channel-398"
     },
     {
       "from": "provenance",

@@ -249,6 +249,18 @@
       "image": "/images/chains/celestia.svg"
     },
     {
+      "id": "chain4energy",
+      "name": "Chain4Energy",
+      "network_id": "chain4energy",
+      "image": "/images/chains/chain4energy.svg"
+    },
+    {
+      "id": "dymension",
+      "name": "Dymension",
+      "network_id": "dymension",
+      "image": "/images/chains/dymension.svg"
+    },
+    {
       "id": "elys",
       "name": "Elys",
       "network_id": "elys",
@@ -289,6 +301,12 @@
       "name": "Neutron",
       "network_id": "neutron",
       "image": "/images/chains/neutron.svg"
+    },
+    {
+      "id": "nibiru",
+      "name": "Nibiru",
+      "network_id": "nibiru",
+      "image": "/images/chains/nibiru.svg"
     },
     {
       "id": "odin",
@@ -341,7 +359,7 @@
     {
       "id": "teritori",
       "name": "Teritori",
-      "network_id": "teritori",
+      "network_id": "teritori-2",
       "image": "/images/chains/teritori.svg"
     },
     {
@@ -355,6 +373,12 @@
       "name": "Xpla",
       "network_id": "xpla",
       "image": "/images/chains/xpla.svg"
+    },
+    {
+      "id": "fxcore",
+      "name": "fxCore",
+      "network_id": "fxcore",
+      "image": "/images/chains/fxcore.svg"
     },
     {
       "id": "provenance",

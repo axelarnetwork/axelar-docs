@@ -16,29 +16,54 @@ Set up your Centrifuge Mainnet or Testnet node.
 1. Run with Docker
 2. Run with binaries
 
+<Callout type="info">
+The CLI options in this doc are a reference that works for the Centrifuge team, but feel free to play with the settings for your own setup using the official docs:
+https://docs.substrate.io/reference/command-line-tools/node-template/
+The info here has been derived from the official documentation, where you can find more info and also all the options for logging and debugging:
+https://docs.substrate.io/deploy/deployment-options/
+</Callout>
+
 ## 1. Run with Docker
 
 You can use the container published by Centrifuge on their [DockerHub repo](https://hub.docker.com/repository/docker/centrifugeio/centrifuge-chain/tags?page=1&ordering=last_updated)
 or be fully trustless by cloning the [cent-chain repository](https://github.com/centrifuge/centrifuge-chain/)
-and using the [Dockerfile](https://github.com/centrifuge/centrifuge-chain/blob/main/Dockerfile) (2-4h build time on an average machine),
+and using the [Dockerfile](https://github.com/centrifuge/centrifuge-chain/blob/main/docker/centrifuge-chain/Dockerfile) (2-4h build time on an average machine),
 in the latter make sure to checkout the specific commit for the latest release before building.
 
-To find the latest release go to the [Centrifuge repository](https://github.com/centrifuge/centrifuge-chain/releases),
+To find the latest release go to the [Centrifuge repository](https://github.com/centrifuge/centrifuge-chain/releases/latest),
 and look for the listed Docker Image.
 
 More images in the official [Docker Hub repository](https://hub.docker.com/repository/docker/centrifugeio/centrifuge-chain/tags?page=1&ordering=last_updated).
 
-### Latest Image Info
-Find below information on the latest and previous images that can be used with docker.
+<Callout type="info">
+Note: using the tag `latest` is always going to point to the latest release, make sure that your system always pulls the image though or you'll end up with your local cached verison. For docker-compose this is achieved using the `pull --policy always` option
+</Callout>
 
-* `v0.10.34`: `main-20231006174657-160318c7`
-* `latest (November 22, 2023)`: `main-20231006174657-160318c7`
 
 ### Create docker compose file
 
 Create a `docker-compose.yml` file with the following contents.
 Change the `ports` based on your network setup.
 Replace `/mnt/my_volume/data` with the volume and/or data folder you want to use.
+
+<Callout type="error">
+From version 0.10.35 onwards, the Docker container uses an unprivileged user to run the centrifuge-chain and thus
+it is possible it won't be able to access the `/data` folder, to be sure either:
+- Make sure your data folder is owned by the centrifuge user:
+``
+```bash
+chown -R 1000:1000 /mnt/my_volume/data
+```
+- Run the containe as root adding `user: root` to your service definition in the docker-compose below (not recommended)
+</Callout>
+
+<Callout type="warning">
+From version 0.10.35 the relay chain DB folder has changed names from `relay-chain` to `polkadot`.
+The container is prepared to handle this change automatically but it is advised to check your /mnt/my_volume/data
+to see if there are any extra folders after you upgrade from a previous version.
+For a first time setup, ignore this message.
+</Callout>
+
 
 <tabs>
 <tab-item title="Mainnet">
@@ -61,8 +86,6 @@ Replace `/mnt/my_volume/data` with the volume and/or data folder you want to use
       command:
       - "--port=30333"
       - "--rpc-port=9933"
-      - "--ws-port=9944"
-      - "--ws-external"
       - "--rpc-external"
       - "--rpc-cors=all"
       - "--pruning=archive"
@@ -73,7 +96,6 @@ Replace `/mnt/my_volume/data` with the volume and/or data folder you want to use
       - "--execution=wasm"
       - "--wasm-execution=compiled"
       - "--ws-max-connections=5000"
-      - "--bootnodes=/ip4/35.198.171.148/tcp/30333/ws/p2p/12D3KooWDXDwSdqi8wB1Vjjs5SVpAfk6neadvNTPAik5mQXqV7jF"
       - "--bootnodes=/ip4/34.159.117.205/tcp/30333/ws/p2p/12D3KooWMspZo4aMEXWBH4UXm3gfiVkeu1AE68Y2JDdVzU723QPc"
       - "--bootnodes=/dns4/node-7010781199623471104-0.p2p.onfinality.io/tcp/23564/ws/p2p/12D3KooWSN6VXWPvo1hoT5rb5hei5B7YdTWeUyDcc42oTPwLGF2p"
       - "--name=YOUR_NODE_NAME"
@@ -104,9 +126,7 @@ Replace `/mnt/my_volume/data` with the volume and/or data folder you want to use
       command:
         - "--port=30333"
         - "--rpc-port=9933"
-        - "--ws-port=9944"
         - "--unsafe-rpc-external"
-        - "--unsafe-ws-external"
         - "--rpc-cors=all"
         - "--pruning=archive"
         - "--chain=/resources/demo-spec-raw.json"
@@ -204,9 +224,7 @@ Change the `ports` based on your network setup.
     KillSignal=SIGHUP
     ExecStart=/var/lib/centrifuge-data/centrifuge-chain --bootnodes=/ip4/35.198.171.148/tcp/30333/ws/p2p/12D3KooWDXDwSdqi8wB1Vjjs5SVpAfk6neadvNTPAik5mQXqV7jF --bootnodes=/ip4/34.159.117.205/tcp/30333/ws/p2p/12D3KooWMspZo4aMEXWBH4UXm3gfiVkeu1AE68Y2JDdVzU723QPc --bootnodes=/dns4/node-7010781199623471104-0.p2p.onfinality.io/tcp/23564/ws/p2p/12D3KooWSN6VXWPvo1hoT5rb5hei5B7YdTWeUyDcc42oTPwLGF2p \
         --port=30333 \
-        --rpc-port=9933 \
-        --ws-port=9944 \
-        --ws-external \
+        --rpc-port=9933 
         --rpc-external \
         --rpc-cors=all \
         --pruning=archive \
@@ -265,8 +283,6 @@ Change the `ports` based on your network setup.
     ExecStart=/var/lib/centrifuge-data/centrifuge-chain --bootnodes=/ip4/34.89.150.73/tcp/30333/p2p/12D3KooWHsA69Fb1HkdWrwrxY3cSga3wWyHnxuk5GeYtCh59XsWB --bootnodes=/ip4/35.198.144.90/tcp/30333/p2p/12D3KooWMJPzvEp5Jhea8eKsUDufBbAzGrn265GcaCmcnp3koPk4 --bootnodes=/ip4/35.198.98.253/tcp/30333/p2p/12D3KooWHzRutQHbQKWh3Z5BWoXGk5c3gxscxfG57N8fNV6XjVLz \
         --port=30333 \
         --rpc-port=9933 \
-        --ws-port=9944 \
-        --unsafe-ws-external \
         --unsafe-rpc-external \
         --rpc-cors=all \
         --pruning=archive \
@@ -316,15 +332,19 @@ Once your node is fully synced, you can run a cURL request to see the status of 
 the port you configured in your `/etc/systemd/system/centrifuge.service` file above
 
 ```bash
-curl -H "Content-Type: application/json" \
--d '{"id":1, "jsonrpc":"2.0", "method": "eth_syncing", "params":[]}' \
-localhost:9933
+curl -H "Content-Type: application/json" 
+localhost:9933/health
 ```
 
-Expected output if node is synced is `{"jsonrpc":"2.0","result":false,"id":1}`
+Expected output if node is synced is `{"peers":35,"isSyncing":false,"shouldHavePeers":true}`
 
 
 ## Optional: Using a snapshot instead of synching from scratch
+
+<Callout type="warning">
+Centrifuge currently does not maintain automated snapshots, if you need a newer snapshot please reach out to the dev team
+</Callout>
+
 * By downloading a snapshot from the Centrifuge Dev team:
   - You get faster sync, your fullnode will be ready in within hours (time depends on how old the snapshot is)
   - You are trusting the Centrifuge's team snapshots and therefore is not as "trustless" or "decentralized" as synching from scratch
@@ -378,6 +398,13 @@ start-with-bridge = true
 </tabs>
 
 ## Troubleshooting
+
+### Upgrading from an older version
+If you are asked to update your node version run this checlist:
+- [ ] Make sure your CLI arguments look like this docs, there could have been changes for a new version
+- [ ] It is a good practice to clone your `data` dir and setup a new node with the new version to make sure it runs, then either point to the new one or replace the old one with the exact same parameters
+- [ ] Use the latest release, not the latest code from the main branch on the centrifuge-chain repo.
+
 ### Error logs during syncing
 During fast syncing it is expected to see the following error messages on the `[Relaychain]` side.
 

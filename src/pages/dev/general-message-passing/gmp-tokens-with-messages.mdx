@@ -21,6 +21,10 @@ To call chain B from chain A and send some tokens along the way, the user needs 
 - The symbol of the token to transfer, which must be a supported asset ([Mainnet](../reference/mainnet-contract-addresses) | [Testnet](../reference/testnet-contract-addresses)).
 - The amount of the token to transfer.
 
+<Callout emoji="🚨">
+  **NOTE:** The security of your contracts, and the tokens passed between them, is limited to the security of the chains they integrate with. Since blockchains can have different security practices, we recommend doing due diligence on all chains your contract will be deployed to.
+</Callout>
+
 As per the snippet below:
 
 ```solidity

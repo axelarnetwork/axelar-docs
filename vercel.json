@@ -2,6 +2,126 @@
   "framework": null,
   "redirects": [
     {
+      "source": "/resources/mainnet",
+      "destination": " /resources/contract-addresses/mainnet",
+      "permanent": true
+    },
+    {
+      "source": "/resources/testnet",
+      "destination": "/resources/contract-addresses/testnet",
+      "permanent": true
+    },
+    {
+      "source": "/resources/governance/community-pool-proposals",
+      "destination": " /resources/community/community-pool-proposals",
+      "permanent": true
+    },
+    {
+      "source": "/resources/bug-bounty",
+      "destination": "/resources/community/bug-bounty",
+      "permanent": true
+    },
+    {
+      "source": "/resources/axelarscan-add",
+      "destination": "/resources/axelarscan/axelarscan-add",
+      "permanent": true
+    },
+    {
+      "source": "/resources/wrapped-tokens",
+      "destination": "/resources/tokens/wrapped-tokens",
+      "permanent": true
+    },
+    {
+      "source": "/resources",
+      "destination": "/resources/rpc/resources",
+      "permanent": true
+    },
+    {
+      "source": "/resources/lava-iprpc",
+      "destination": "/resources/rpc/lava-iprpc",
+      "permanent": true
+    },
+    {
+      "source": "/dev/general-message-passing/cosmos-gmp",
+      "destination": "/dev/cosmos-gmp",
+      "permanent": true
+    },
+    {
+      "source": "/dev/general-message-passing/gas-services/intro",
+      "destination": "/dev/gas-service/intro",
+      "permanent": true
+    },
+    {
+      "source": "/dev/general-message-passing/gas-services/pay-gas",
+      "destination": "/dev/gas-service/pay-gas",
+      "permanent": true
+    },
+    {
+      "source": "/dev/general-message-passing/gas-services/increase-gas",
+      "destination": "/dev/gas-service/increase-gas",
+      "permanent": true
+    },
+    {
+      "source": "/dev/general-message-passing/gas-services/refund",
+      "destination": "/dev/gas-service/refund",
+      "permanent": true
+    },
+    {
+      "source": " /dev/general-message-passing/gas-services/pricing",
+      "destination": "/dev/gas-service/pricing",
+      "permanent": true
+    },
+    {
+      "source": "/dev/general-message-passing/solidity-utilities",
+      "destination": "/dev/solidity-utilities",
+      "permanent": true
+    },
+    {
+      "source": "/dev/general-message-passing/axelar-sandbox/intro",
+      "destination": "/dev/axelar-sandbox/intro",
+      "permanent": true
+    },
+    {
+      "source": "/dev/general-message-passing/local-dev",
+      "destination": "/dev/general-message-passing/developer-guides/example-gmp",
+      "permanent": true
+    },
+    {
+      "source": "/dev/general-message-passing/example-usdc-cctp",
+      "destination": "/dev/general-message-passing/developer-guides/example-usdc-cctp",
+      "permanent": true
+    },
+    {
+      "source": "/dev/general-message-passing/recovery",
+      "destination": "/dev/general-message-passing/debug/transaction-recovery",
+      "permanent": true
+    },
+    {
+      "source": "/dev/reference/pricing",
+      "destination": "/dev/gas-service/pricing",
+      "permanent": true
+    },
+    {
+      "source": "/learn/validators",
+      "destination": "/validator/status/register-external-chains",
+      "permanent": true
+    },
+    {
+      "source": "/validator/setup/health-check",
+      "destination": "/validator/status/health-check",
+      "permanent": true
+    },
+    {
+      "source": "/validator/setup/stake-axl",
+      "destination": "/resources/tokens/stake-axl",
+      "permanent": true
+    },
+    {
+      "source": "/validator/troubleshoot/leave",
+      "destination": "/validator/status/leave",
+      "permanent": true
+    },
+    {
       "source": "/node",
       "destination": "/node/config-node",
       "permanent": true
@@ -141,7 +261,6 @@
       "destination": "/dev/send-tokens/overview",
       "permanent": true
     },
-
     {
       "source": "/dev/build/:path(.*)",
       "destination": "/dev/general-message-passing/:path",
@@ -150,11 +269,6 @@
     {
       "source": "/dev/debug/:path(.*)",
       "destination": "/dev/general-message-passing/debug/:path",
-      "permanent": true
-    },
-    {
-      "source": "/dev/gas-services/:path(.*)",
-      "destination": "/dev/general-message-passing/gas-services/:path",
       "permanent": true
     },
     {

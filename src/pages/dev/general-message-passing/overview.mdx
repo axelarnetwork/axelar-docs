@@ -1,11 +1,17 @@
 # General Message Passing
 
+import { Callout } from "/src/components/callout";
+
 Axelar's General Message Passing (GMP) enables a developer building on one chain to call any function on any other connected chain. (We use the word "function" to encompass both smart contracts at the application layer and functions built at the protocol layer, as in Cosmos, for example.) That means complete composability across Web3.
 
 With GMP, you can:
 
 - Call a contract on chain B from chain A.
 - Call a contract on chain B from chain A and attach some tokens.
+
+<Callout emoji="🚨">
+  **NOTE:** The security of your contracts is limited to the security of the chains they integrate with. Since blockchains can have different security practices, we recommend doing due diligence on all chains your contract will be deployed to.
+</Callout>
 
 ### Prerequisites
 - For GMP to work, chains A and B must be EVM or Cosmos with a deployed Axelar Gateway contract. We're adding new chains and chain technology stacks all of the time. This document primarily focuses on EVM chains and Solidity code, but you can [learn about interacting with Cosmos GMP](./cosmos-gmp).

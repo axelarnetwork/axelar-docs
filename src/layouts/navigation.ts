@@ -31,20 +31,29 @@ export const getNavigation = (section) => {
                   title: "Rate Limit",
                   href: "/dev/reference/interchain-token-service-rate-limit",
                 },
+                {
+                  title: "Developer Guides",
+                  children: [
+                    {
+                      title: "Programmatically Create a Token",
+                      href: "/dev/send-tokens/interchain-tokens/developer-guides/programmatically-create-a-token",
+                    },
+                    {
+                      title: "Programmatically Create a Canonical Token",
+                      href: "/dev/send-tokens/interchain-tokens/developer-guides/programmatically-create-a-canonical-token",
+                    },
+                  ],
+                },
               ],
-            }
+            },
           ],
         },
         {
           title: "General Message Passing",
           children: [
             {
-              title: "Overview",
+              title: "Introduction",
               href: "/dev/general-message-passing/overview",
-            },
-            {
-              title: "Local Development",
-              href: "/dev/general-message-passing/local-dev",
             },
             {
               title: "Examples",
@@ -59,89 +68,107 @@ export const getNavigation = (section) => {
               href: "/dev/general-message-passing/gmp-tokens-with-messages",
             },
             {
-              title: "Gas Services",
-              children: [
-                {
-                  title: "Introduction",
-                  href: "/dev/general-message-passing/gas-services/intro",
-                },
-                {
-                  title: "Pay Gas",
-                  href: "/dev/general-message-passing/gas-services/pay-gas",
-                },
-                {
-                  title: "Increase Gas",
-                  href: "/dev/general-message-passing/gas-services/increase-gas",
-                },
-                {
-                  title: "Refund",
-                  href: "/dev/general-message-passing/gas-services/refund",
-                },
-              ],
-            },
-            {
-              title: "Debugging",
-              children: [
-                {
-                  title: "Error messages",
-                  href: "/dev/general-message-passing/debug/error-debugging",
-                },
-                {
-                  title: "Smart Contract",
-                  href: "/dev/general-message-passing/debug/debugging-your-smart-contract",
-                },
-                {
-                  title: "Forking Mainnet",
-                  href: "/dev/general-message-passing/debug/fork-mainnet",
-                },
-              ],
-            },
-            {
-              title: "Recovery",
-              href: "/dev/general-message-passing/recovery",
-            },
-            {
-              title: "Monitoring",
+              title: "Monitor Transaction State",
               href: "/dev/general-message-passing/monitoring",
             },
             {
-              title: "Solidity Utilities",
-              href: "/dev/general-message-passing/solidity-utilities",
-            },
-            {
-              title: "Sandbox",
-              href: "/dev/general-message-passing/axelar-sandbox/intro",
-            },
-            {
-              title: "Cosmos GMP",
-              href: "/dev/general-message-passing/cosmos-gmp",
-            },
-            {
-              title: "USDC CCTP",
-              href: "/dev/general-message-passing/example-usdc-cctp",
-            },
-            {
-              title: "AxelarJS SDK",
+              title: "Debug",
               children: [
-                { title: "Introduction", href: "/dev/axelarjs-sdk/intro" },
                 {
-                  title: "Token Transfer via Deposit Address",
-                  href: "/dev/axelarjs-sdk/token-transfer-dep-addr",
+                  title: "Error Messages",
+                  href: "/dev/general-message-passing/debug/error-debugging",
                 },
                 {
-                  title: "GMP transaction status and recovery",
-                  href: "/dev/axelarjs-sdk/tx-status-query-recovery",
+                  title: "Debug a Smart Contract",
+                  href: "/dev/general-message-passing/debug/debugging-your-smart-contract",
                 },
                 {
-                  title: "Axelar Query API",
-                  href: "/dev/axelarjs-sdk/axelar-query-api",
+                  title: "Fork Mainnet for Local Testing",
+                  href: "/dev/general-message-passing/debug/fork-mainnet",
+                },
+                {
+                  title: "Transaction Recovery",
+                  href: "/dev/general-message-passing/debug/transaction-recovery",
+                },
+              ],
+            },
+            {
+              title: "Developer Guides",
+              children: [
+                {
+                  title: "Cross-Chain Swaps with CCTP",
+                  href: "/dev/general-message-passing/developer-guides/example-usdc-cctp",
+                },
+                {
+                  title: "Hello World GMP Example",
+                  href: "/dev/general-message-passing/developer-guides/example-gmp",
                 },
               ],
             },
           ],
         },
         {
-          title: "Reference",
+          title: "Gas Service",
+          children: [
+            {
+              title: "Introduction",
+              href: "/dev/gas-service/intro",
+            },
+            {
+              title: "Pay Gas",
+              href: "/dev/gas-service/pay-gas",
+            },
+            {
+              title: "Increase Gas",
+              href: "/dev/gas-service/increase-gas",
+            },
+            {
+              title: "Refund Gas",
+              href: "/dev/gas-service/refund",
+            },
+            {
+              title: "Transaction Pricing",
+              href: "/dev/gas-service/pricing",
+            },
+          ],
+        },
+        {
+          title: "AxelarJS SDK",
+          children: [
+            { title: "Introduction", href: "/dev/axelarjs-sdk/intro" },
+            {
+              title: "Token Transfer via Deposit Address",
+              href: "/dev/axelarjs-sdk/token-transfer-dep-addr",
+            },
+            {
+              title: "GMP Transaction Status and Recovery",
+              href: "/dev/axelarjs-sdk/tx-status-query-recovery",
+            },
+            {
+              title: "Axelar Query API",
+              href: "/dev/axelarjs-sdk/axelar-query-api",
+            },
+          ],
+        },
+        {
+          title: "Cosmos GMP",
+          href: "/dev/cosmos-gmp",
+        },
+        {
+          title: "Indexers",
+          children: [
+            {
+              title: "Introduction",
+              href: "/dev/indexers/overview",
+            },
+            {
+              title: "SubQuery",
+              href: "/dev/indexers/subquery",
+            },
+          ],
+        },
+        {
+          title: "Chain and Contract Reference",
           children: [
             {
               title: "Mainnet Chain Names",
@@ -159,12 +186,19 @@ export const getNavigation = (section) => {
               title: "Testnet Contract Addresses",
               href: "/dev/reference/testnet-contract-addresses",
             },
-            {
-              title: "Transaction Pricing",
-              href: "/dev/reference/pricing",
-            },
-            { title: "Glossary", href: "/dev/reference/glossary" },
           ],
+        },
+        {
+          title: "Solidity Utilities",
+          href: "/dev/solidity-utilities",
+        },
+        {
+          title: "Sandbox",
+          href: "/dev/axelar-sandbox/intro",
+        },
+        {
+          title: "Glossary",
+          href: "/dev/glossary"
         },
       ],
     });
@@ -195,7 +229,7 @@ export const getNavigation = (section) => {
               href: "/validator/setup/config",
             },
             {
-              title: "Create and backup accounts",
+              title: "Create and back up accounts",
               href: "/validator/setup/backup",
             },
             {
@@ -206,13 +240,12 @@ export const getNavigation = (section) => {
               title: "Register broadcaster proxy",
               href: "/validator/setup/register-broadcaster",
             },
-            { title: "Stake AXL tokens", href: "/validator/setup/stake-axl" },
             { title: "Health check", href: "/validator/setup/health-check" },
             { title: "Manual setup", href: "/validator/setup/manual" },
           ],
         },
         {
-          title: "Support External Chains",
+          title: "External Chain Support",
           children: [
             { title: "Overview", href: "/validator/external-chains/overview" },
             { title: "Arbitrum", href: "/validator/external-chains/arbitrum" },
@@ -230,7 +263,10 @@ export const getNavigation = (section) => {
             { title: "Ethereum", href: "/validator/external-chains/ethereum" },
             { title: "Fantom", href: "/validator/external-chains/fantom" },
             { title: "Filecoin", href: "/validator/external-chains/filecoin" },
-            { title: "Immutable zkEVM", href: "/validator/external-chains/immutable" },
+            {
+              title: "Immutable zkEVM",
+              href: "/validator/external-chains/immutable",
+            },
             { title: "Kava", href: "/validator/external-chains/kava" },
             { title: "Linea", href: "/validator/external-chains/linea" },
             { title: "Mantle", href: "/validator/external-chains/mantle" },
@@ -244,10 +280,10 @@ export const getNavigation = (section) => {
           title: "Operations",
           children: [
             {
-              title: "Rotating mnemonics",
+              title: "Rotate tofnd mnemonics",
               href: "/validator/operations/mnemonic-rotation",
             },
-            { title: "Monitoring", href: "/validator/operations/monitoring" },
+            { title: "Monitor a validator or node", href: "/validator/operations/monitoring" },
           ],
         },
         {
@@ -262,35 +298,102 @@ export const getNavigation = (section) => {
               href: "/validator/troubleshoot/missed-too-many-blocks",
             },
             {
-              title: "Unjail your validator",
+              title: "Unjail validator",
               href: "/validator/troubleshoot/unjail",
             },
-            {
-              title: "Leave the network",
-              href: "/validator/troubleshoot/leave",
-            },
+          ],
+        },
+        {
+          title: "Validator status",
+          children: [
+            { title: "Register external chains", href: "/validator/status/register-external-chains" },
+            { title: "Check validator status", href: "/validator/status/health-check" },
+            { title: "Leave the network", href: "/validator/status/leave" },
           ],
         },
       ],
     });
   }
+
   nav.push({
     header: "Resources",
     children: [
-      { title: "Mainnet", href: "/resources/mainnet" },
-      { title: "Testnet", href: "/resources/testnet" },
-      { title: "RPC Endpoints", href: "/resources/" },
       {
-        title: "Community Pool Proposals",
-        href: "/resources/governance/community-pool-proposals",
+        title: "Contract addresses",
+        children: [
+          { title: "Mainnet", href: "/resources/contract-addresses/mainnet" },
+          { title: "Testnet", href: "/resources/contract-addresses/testnet" },
+        ],
       },
-      { title: "Satellite", href: "/resources/satellite" },
-      { title: "MetaMask", href: "/resources/metamask" },
-      { title: "Add Network to Keplr Wallet", href: "/resources/keplr" },
-      { title: "Wrap/unwrap tokens", href: "/resources/wrapped-tokens" },
-      { title: "Using ipRPC (Free Public RPC)", href: "/resources/lava-iprpc" },
-      { title: "Bug Bounty", href: "/bug-bounty" },
-      { title: "Add Account to Axelarscan", href: "/resources/axelarscan-add" },
+      {
+        title: "RPCs",
+        children: [
+          { title: "RPC Endpoints", href: "/resources/rpc/resources" },
+          { title: "Free Public RPC", href: "/resources/rpc/lava-iprpc" },
+        ],
+      },
+      {
+        title: "Tokens",
+        children: [
+          { title: "Stake AXL tokens", href: "/resources/tokens/stake-axl" },
+          { title: "Wrap / unwrap tokens", href: "/resources/tokens/wrapped-tokens" },
+        ],
+      },
+      {
+        title: "Axelarscan",
+        children: [
+          { title: "Add Account to Axelarscan", href: "/resources/axelarscan/axelarscan-add" },
+        ],
+      },
+      {
+        title: "Misc",
+        children: [
+          { title: "Satellite", href: "/resources/satellite" },
+          { title: "MetaMask", href: "/resources/metamask" },
+          { title: "Add Network to Keplr Wallet", href: "/resources/keplr" },
+        ],
+      },
+      {
+        title: "Community",
+        children: [
+          { title: "Community Pool Proposals", href: " /resources/community/community-pool-proposals" },
+          { title: "Bug Bounty", href: "/resources/community/bug-bounty" },
+        ],
+      },
+    ],
+  });
+
+  nav.push({
+    header: "Contract and SDK reference",
+    children: [
+      {
+        title: "InterchainTokenService",
+        href: "https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/InterchainTokenService.sol",
+      },
+      {
+        title: "InterchainTokenFactory",
+        href: "https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/InterchainTokenFactory.sol",
+      },
+      {
+        title: "TokenManager",
+        href: "https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/token-manager/TokenManager.sol",
+      },
+      {
+        title: "AxelarGateway ",
+        href: "https://github.com/axelarnetwork/axelar-cgp-solidity/blob/main/contracts/AxelarGateway.sol",
+      },
+      {
+        title: "AxelarGasService",
+        href: "https://github.com/axelarnetwork/axelar-cgp-solidity/blob/main/contracts/gas-service/AxelarGasService.sol",
+      },
+      {
+        title: "AxelarExecutable",
+        href: "https://github.com/axelarnetwork/axelar-gmp-sdk-solidity/blob/main/contracts/executable/AxelarExecutable.sol",
+      },
+      {
+        title: "AxelarJS SDK",
+        href: "https://github.com/axelarnetwork/axelarjs-sdk",
+      },
     ],
   });
 
@@ -299,10 +402,6 @@ export const getNavigation = (section) => {
     children: [
       { title: "Crosschain Message Flow", href: "/learn/network/flow" },
       { title: "axlUSDC", href: "/learn/axlusdc" },
-      {
-        title: "Registering external chains for validators",
-        href: "/learn/validators",
-      },
       { title: "Security Overview", href: "/learn/security" },
       { title: "Interchain Transaction Duration", href: "/learn/txduration" },
       { title: "EVM Contract Governance", href: "/learn/evm-governance" },

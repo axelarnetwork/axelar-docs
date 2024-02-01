@@ -34,7 +34,7 @@ The `estimateGasFee` method in the [AxelarJS SDK](../axelarjs-sdk/axelar-query-a
 ### Notable Considerations
 #### EXECUTION FEE
 
-While the `estimateGasFee` method builds the components of the gas costs for you, you are still responsible to tell it the amount of gas you believe will be required to execute the `_execute` method on your destination smart contract. An optional parameter in the `estimateGasFee` method can be used to specify the estimated gas limit; otherwise a default gas limit of `700_000` gas is used.
+While the `estimateGasFee` method builds the components of the gas costs for you, you are still responsible to tell it the amount of gas you believe will be required to execute the `_execute` method on your destination smart contract. The `gasLimit` parameter in the `estimateGasFee()` method can be used to specify the estimated gas limit; otherwise a default gas limit of `700_000` gas is used.
 
 #### GAS PRICE VOLATILITY
 
