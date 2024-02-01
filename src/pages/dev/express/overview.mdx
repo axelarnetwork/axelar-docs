@@ -2,19 +2,19 @@
 
 ## Overview
 
-Axelar's Express Service allows for interchain [gmp](https://docs.axelar.dev/dev/general-message-passing/overview) transactions to execute significantly quicker than regular gmp transactions. It does so by executing the transaction on the destination chain before the transaction on the source chain is completely finalized. By bypassing the (sometimes) long wait time for [source chain finality](https://docs.axelar.dev/learn/txduration), overall interchain transaction speed is significantly increased.
+Axelar's Express Service allows for interchain [GMP](https://docs.axelar.dev/dev/general-message-passing/overview) transactions to execute significantly quicker than regular gmp transactions. It does so by executing the transaction on the destination chain before the transaction on the source chain is completely finalized. By bypassing the (sometimes) long wait time for [source chain finality](https://docs.axelar.dev/learn/txduration), overall interchain transaction speed is significantly increased.
 
 ## Users
 
-Currently, the [Squid](https://www.squidrouter.com/) and [Sugarcane](https://www.sugarcane.app/) protocols are both operating with Axelar Express. Transactions that take place with Squid are significantly faster as a result. For example this [non-express transaction](https://axelarscan.io/gmp/0xc3653cda8535c59e0418b57250c504528a493dd5556fc4cb71b80f8c0a867e62:2) from Linea to Polygon took 28 minutes to execute. A transaction using express executes from the same two chains was able to execute in just [18 seconds](https://axelarscan.io/gmp/0x4dbf091ebf31157bf73995c0fb473f115888bd1f11793359807d543ada03f021:11) via Axelar Express. 
+Currently, the [Squid](https://www.squidrouter.com/) and [Sugarcane](https://www.sugarcane.app/) protocols are both operating with Axelar Express. In this example you can see the difference integrating with express makes. This [non-express transaction](https://axelarscan.io/gmp/0xc3653cda8535c59e0418b57250c504528a493dd5556fc4cb71b80f8c0a867e62:2) from Linea to Polygon took 28 minutes to execute, whereas [this](https://axelarscan.io/gmp/0x4dbf091ebf31157bf73995c0fb473f115888bd1f11793359807d543ada03f021:11) transaction using express executes from the same two chains was able to execute in just 18 seconds.
 
 
 ## Integration
 
 To integrate with Express, protocols must be onboarded in coordination with the Axelar team. It is not enough to simply integrate with the relevant express contracts and expect transactions to go through the express service.
 
-1. Each protocol that wants to be onboarded onto express must provide liquidity to assume any [risks](LinkToRisksSection) for the express transaction. 
-2. Once liquidity is provided the contract must inherit from either the [AxelarExpressExecutable](https://github.com/axelarnetwork/axelar-gmp-sdk-solidity/blob/main/contracts/express/AxelarExpressExecutable.sol) or the [AxelarValuedExpressExecutable](https://github.com/axelarnetwork/axelar-gmp-sdk-solidity/blob/main/contracts/express/AxelarValuedExpressExecutable.sol). Liquidity is provided for assuming the risk of an express transaction. In the event a transaction executes on the destination chain and a chain reorg occurs on the source chain then the funds will be lost (see more in risks section). The entity providing the liquidty will assume the risks for onboarding with express.
+1. Each protocol that wants to be onboarded onto express [must provide funding](#funding) to assume any [risks](#risks) for the express transaction. 
+2. Once liquidity is provided the contract must inherit [from either](#axelar-executable-vs-axelar-valued-express-executable) the [AxelarExpressExecutable](https://github.com/axelarnetwork/axelar-gmp-sdk-solidity/blob/main/contracts/express/AxelarExpressExecutable.sol) or the [AxelarValuedExpressExecutable](https://github.com/axelarnetwork/axelar-gmp-sdk-solidity/blob/main/contracts/express/AxelarValuedExpressExecutable.sol). 
 3. Provide required info for onboarding
     - The address of the contract integrating with express
     - The assets needed to be express from that contract
@@ -24,20 +24,22 @@ To integrate with Express, protocols must be onboarded in coordination with the 
 
 ## How it Works
 
-To allow for faster transactions. Express transactions execute on the destination chain before finalizing on the source chain. To do so Axelar Express transactions use a separate Express Relayer, the relayer will charge $1 per express call.
+To allow for faster transactions. Express transactions execute on the destination chain before finalizing on the source chain. To do so Axelar Express transactions use a separate Express Relayer.
 
 
 ## Axelar Executable vs. Axelar Valued Express Executable
 review this thread!: https://interoplabs.slack.com/archives/C039EFMTN59/p1697664836862679
+
 For protocols that require express support for arbitrary GMP messages where the value of the payload can alter the state of the contract the Axelar Valued Express Executable can be used. For the Valued Express Executable you need to call the `contractCallWithTokenValue()` or `callContractValue()` function to trigger your interchain transaction. These functions will return the value that the call is worth. If `tokenAddress` is `0`, then value is in terms of the native token, otherwise it's in terms of the token address.
 
 ## Fees
 
-Express transactions require an additional [fee](https://docs.axelar.dev/dev/reference/pricing#callcontractwithtokenexpress-gmp-express) in addition to existing gmp fees. The extra fee goes to the express relayer for assuming the risk of an express transaction.
+Express transactions require an additional [fee](https://docs.axelar.dev/dev/reference/pricing#callcontractwithtokenexpress-gmp-express) in addition to existing gmp fees. The extra fee goes to the express relayer for assuming the risk of an express transaction. 
+{/* TODO confirm $1 with team */}
 
 ### Gas Estimation
-When estimating gas for an interchain transaction the [estimateGasFee]https://docs.axelar.dev/dev/axelarjs-sdk/axelar-query-api#estimategasfee) function is available to provide the estimated cost. The same function can be used to estimate gas costs for an express transaction. However, for express you also need to specify several options to specify an accurate gas estimation.
-For example;
+When estimating gas for an interchain transaction the [estimateGasFee](https://docs.axelar.dev/dev/axelarjs-sdk/axelar-query-api#estimategasfee) function is available to provide the estimated cost. The same function can be used to estimate gas costs for an express transaction. However, for express you also need to specify several options to specify an accurate gas estimation.
+For example an express transaction going from Polygon to Avalanche;
 ```
 await api.estimateGasFee(
     "Polygon",
@@ -51,43 +53,22 @@ await api.estimateGasFee(
       transferAmount: inputTokenAmount, // In terms of symbol, not unit denom, e.g. use 1 for 1 axlUSDC, not 1000000
       sourceContractAddress: sourceChainAddress,
       destinationContractAddress: destinationChainAddress
-      tokenSymbol: "axlUSDC",
+      tokenSymbol: "axlUSDC", //aUSDC for testnet
     } 
 )
 ```
 
 ## Interchain Token Service
 For those who are deploying interchain token via Axelar's [Interchain Token Service](https://axelar.network/its), those tokens can also be added to the Express Service to provide express transactions for those tokens.
+{/* TODO expand more here! */}
 
 ## Risks
 
 ### Funding
-While the Express solution is an intuitive design pattern for allowing for fast interchain transactions it is not without any risks. Namely if anything changes on the source chain from the time the transaction is sent to the time it is finalized (block reorgs for example) and the transaction on the destination chain has already executed then that could lead to lost funds on the source chain (as the tx instantly executes on the destination chain). Due to the potential risk here funds will need to be provided to onboard to express.
+While the Express solution is an intuitive design pattern for allowing for fast interchain transactions it is not without any risks. Namely if anything changes on the source chain from the time the transaction is sent to the time it is finalized (due to a [block reorg](https://cointelegraph.com/explained/what-is-chain-reorganization-in-blockchain-technology) for example) and the transaction on the destination chain has already executed then that could lead to lost funds on the source chain as the transaction will have been instantly executed on the destination chain. Due to the potential risk here funds will need to be provided to onboard to express. Liquidity must be provided by a party to underwrite the risk.
 
 ### Execution
 On the destination chain an Axelar relayer triggers the `_execute()`/ `_executeWithToken()` function to trigger a transaction. The GMP payload being used can be assumed to be true as it passes through the [validation process](https://github.com/axelarnetwork/axelar-cgp-solidity/blob/4d01eb6ea1b5413520d9ecab804f815103021148/contracts/AxelarGateway.sol#L233) on the Axelar Gateway. In an express call however the execution on the destination chain occurs before the source chain finalizes, meaning that you cannot rely on this validation process. To mitigate, data that is being passed in you can make use of the unique [CommandId](https://github.com/axelarnetwork/axelar-core/blob/main/docs/cli/axelard_query_evm_command.md). The `CommandId` is a unique identifier, which is available on the destination chain you're transacting to. With your unique commanId you can reconstruct the message that was passed in 
+{/* TODO code example */}
 
-[*TODO: provide example*]
 
-
-TODO
-Express Msg vs. Express token
--msg is riskier (see squid) as the way logic is executed is different
--token simply requires assuming risk of reorg on src chain external team can provide tokens to mitigate the risk
-
-B Quesitons
-1. Review CommandId fix 
-Basically, what I was suggesting is to not pass messageId anymore in the payload itself, and compute it dynamically using this internal method on the destination
-https://github.com/axelarnetwork/axelar-gmp-sdk-solidity/blob/main/contracts/express/ExpressExecutorTracker.sol#L20
-2. Express vs Express Executable
-
-What we have today: [relayer is loaning token that gets funded]
-1. Easily Extendible -> Express Executable -> express gmp call with gateway tokens. current model is for squid we take the risk for providing that liquidity but for other partners they can provide us the tokens they want to expresss. we can have dedicated relayer for them
-2. We can do GMP calls with ITS tokens. Relayer would need to be configured to support these. (No process on how to onboarded yet, we need to figure this out)
-3. Arbitrary GMP calls where value of payload is what matters (i.e. messageId) Axelar valued express excutable exposes the payload relayer will need to be confiugred foer hthis
-(review parrot) (ITS uses this, value is in the payload). There is an arbitrary token which were using to price the other tokens which the relayer does not have access to.
-
-^tokens are expressed at a risk
-
-What we don't have
-1. fast finality where validator confirmations can be configured
