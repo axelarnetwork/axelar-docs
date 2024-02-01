@@ -63,11 +63,11 @@ Transactions may intermittently stall on their way from a source chain to a dest
 
 Every transaction can be seen on Axelarscan with a detailed view of where transactions get "stuck", so one can start there to debug such circumstances. Axelarscan and the AxelarJS SDK expose two approaches to recover stalled transactions: 1. manual execution of the transaction on the destination chain, or 2. add gas for transactions. More details can be found [here](../general-message-passing/debug/error-debugging) for debugging and [here](../general-message-passing/recovery) and recovery.
 
-## callContractWithToken (General Message Passing)
-Fees for `callContractWithToken` are almost identical to those of `callContract`, but have an increased execution cost due to the additional gas cost of minting/releasing tokens.
+## `callContractWithToken` (General Message Passing)
+Fees for `callContractWithToken()` are almost identical to those of `callContract`, but have an increased execution cost due to the additional gas cost of minting/releasing tokens.
 
-## callContractWithToken ("GMP Express")
-Fees for GMP express include all of the same fees as `callContractWithToken`, plus:
+## `callContractWithToken` ("GMP Express")
+Fees for GMP express include all of the same fees as `callContractWithToken()`, plus:
 * an `Express Fee` that covers relayer/reorg risk
 * gas used to execute the express method
 
