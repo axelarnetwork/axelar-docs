@@ -75,7 +75,8 @@ Tokens can move between chains seamlessly, as the Token Manager contracts will m
 
 If you want to build a token with the `IInterchainToken` feature yourself, make sure that your token implements the [`IInterchainTokenStandard`](https://github.com/axelarnetwork/interchain-token-service/blob/v1.0.0/contracts/interfaces/IInterchainTokenStandard.sol) interface so you can offer the [`interchainTransfer()`](https://github.com/axelarnetwork/interchain-token-service/blob/9edc4318ac1c17231e65886eea72c0f55469d7e5/contracts/interfaces/IInterchainTokenStandard.sol#L19) and [`interchainTransferFrom()`](https://github.com/axelarnetwork/interchain-token-service/blob/9edc4318ac1c17231e65886eea72c0f55469d7e5/contracts/interfaces/IInterchainTokenStandard.sol#L36) methods directly on it.
 
-### Sample custom token
+Once you have designed an Interchain Token, you can deploy it to multiple chains using a tool such as the [Constant Address Deployer](https://docs.axelar.dev/dev/general-message-passing/solidity-utilities#constant-address-deployer) to give it the same address everywhere.
 
-You can try our [sample custom token](https://remix.ethereum.org/axelarnetwork/axelar-docs/blob/main/public/samples/interchain-token-iinterchaintoken.sol) as a starting point. This token self-registers with the Interchain Token Service and can be deployed to multiple chains. 
-Once you have designed your token, you can deploy it to multiple chains using a tool such as the [Constant Address Deployer](https://docs.axelar.dev/dev/general-message-passing/solidity-utilities#constant-address-deployer) to give it the same address everywhere. 
+## What’s next
+
+For further examples utilizing the Interchain Token Service, check out the [`axelar-examples`](https://github.com/axelarnetwork/axelar-examples/tree/main/examples/evm) repo on GitHub.

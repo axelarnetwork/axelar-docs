@@ -38,6 +38,10 @@ export const getNavigation = (section) => {
                       title: "Programmatically Create a Token",
                       href: "/dev/send-tokens/interchain-tokens/developer-guides/programmatically-create-a-token",
                     },
+                    {
+                      title: "Programmatically Create a Canonical Token",
+                      href: "/dev/send-tokens/interchain-tokens/developer-guides/programmatically-create-a-canonical-token",
+                    },
                   ],
                 },
               ],
@@ -48,12 +52,8 @@ export const getNavigation = (section) => {
           title: "General Message Passing",
           children: [
             {
-              title: "Overview",
+              title: "Introduction",
               href: "/dev/general-message-passing/overview",
-            },
-            {
-              title: "Local Development",
-              href: "/dev/general-message-passing/local-dev",
             },
             {
               title: "Examples",
@@ -68,92 +68,97 @@ export const getNavigation = (section) => {
               href: "/dev/general-message-passing/gmp-tokens-with-messages",
             },
             {
-              title: "Gas Services",
-              children: [
-                {
-                  title: "Introduction",
-                  href: "/dev/general-message-passing/gas-services/intro",
-                },
-                {
-                  title: "Pay Gas",
-                  href: "/dev/general-message-passing/gas-services/pay-gas",
-                },
-                {
-                  title: "Increase Gas",
-                  href: "/dev/general-message-passing/gas-services/increase-gas",
-                },
-                {
-                  title: "Refund",
-                  href: "/dev/general-message-passing/gas-services/refund",
-                },
-              ],
-            },
-            {
-              title: "Debugging",
-              children: [
-                {
-                  title: "Error messages",
-                  href: "/dev/general-message-passing/debug/error-debugging",
-                },
-                {
-                  title: "Smart Contract",
-                  href: "/dev/general-message-passing/debug/debugging-your-smart-contract",
-                },
-                {
-                  title: "Forking Mainnet",
-                  href: "/dev/general-message-passing/debug/fork-mainnet",
-                },
-              ],
-            },
-            {
-              title: "Recovery",
-              href: "/dev/general-message-passing/recovery",
-            },
-            {
-              title: "Monitoring",
+              title: "Monitor Transaction State",
               href: "/dev/general-message-passing/monitoring",
             },
             {
-              title: "Solidity Utilities",
-              href: "/dev/general-message-passing/solidity-utilities",
-            },
-            {
-              title: "Sandbox",
-              href: "/dev/general-message-passing/axelar-sandbox/intro",
-            },
-            {
-              title: "Cosmos GMP",
-              href: "/dev/general-message-passing/cosmos-gmp",
-            },
-            {
-              title: "USDC CCTP",
-              href: "/dev/general-message-passing/example-usdc-cctp",
-            },
-            {
-              title: "AxelarJS SDK",
+              title: "Debug",
               children: [
-                { title: "Introduction", href: "/dev/axelarjs-sdk/intro" },
                 {
-                  title: "Token Transfer via Deposit Address",
-                  href: "/dev/axelarjs-sdk/token-transfer-dep-addr",
+                  title: "Error Messages",
+                  href: "/dev/general-message-passing/debug/error-debugging",
                 },
                 {
-                  title: "GMP transaction status and recovery",
-                  href: "/dev/axelarjs-sdk/tx-status-query-recovery",
+                  title: "Debug a Smart Contract",
+                  href: "/dev/general-message-passing/debug/debugging-your-smart-contract",
                 },
                 {
-                  title: "Axelar Query API",
-                  href: "/dev/axelarjs-sdk/axelar-query-api",
+                  title: "Fork Mainnet for Local Testing",
+                  href: "/dev/general-message-passing/debug/fork-mainnet",
+                },
+                {
+                  title: "Transaction Recovery",
+                  href: "/dev/general-message-passing/debug/transaction-recovery",
+                },
+              ],
+            },
+            {
+              title: "Developer Guides",
+              children: [
+                {
+                  title: "Cross-Chain Swaps with CCTP",
+                  href: "/dev/general-message-passing/developer-guides/example-usdc-cctp",
+                },
+                {
+                  title: "Hello World GMP Example",
+                  href: "/dev/general-message-passing/developer-guides/example-gmp",
                 },
               ],
             },
           ],
         },
         {
+          title: "Gas Service",
+          children: [
+            {
+              title: "Introduction",
+              href: "/dev/gas-service/intro",
+            },
+            {
+              title: "Pay Gas",
+              href: "/dev/gas-service/pay-gas",
+            },
+            {
+              title: "Increase Gas",
+              href: "/dev/gas-service/increase-gas",
+            },
+            {
+              title: "Refund Gas",
+              href: "/dev/gas-service/refund",
+            },
+            {
+              title: "Transaction Pricing",
+              href: "/dev/gas-service/pricing",
+            },
+          ],
+        },
+        {
+          title: "AxelarJS SDK",
+          children: [
+            { title: "Introduction", href: "/dev/axelarjs-sdk/intro" },
+            {
+              title: "Token Transfer via Deposit Address",
+              href: "/dev/axelarjs-sdk/token-transfer-dep-addr",
+            },
+            {
+              title: "GMP Transaction Status and Recovery",
+              href: "/dev/axelarjs-sdk/tx-status-query-recovery",
+            },
+            {
+              title: "Axelar Query API",
+              href: "/dev/axelarjs-sdk/axelar-query-api",
+            },
+          ],
+        },
+        {
+          title: "Cosmos GMP",
+          href: "/dev/cosmos-gmp",
+        },
+        {
           title: "Indexers",
           children: [
             {
-              title: "Overview",
+              title: "Introduction",
               href: "/dev/indexers/overview",
             },
             {
@@ -163,7 +168,7 @@ export const getNavigation = (section) => {
           ],
         },
         {
-          title: "Reference",
+          title: "Chain and Contract Reference",
           children: [
             {
               title: "Mainnet Chain Names",
@@ -181,12 +186,19 @@ export const getNavigation = (section) => {
               title: "Testnet Contract Addresses",
               href: "/dev/reference/testnet-contract-addresses",
             },
-            {
-              title: "Transaction Pricing",
-              href: "/dev/reference/pricing",
-            },
-            { title: "Glossary", href: "/dev/reference/glossary" },
           ],
+        },
+        {
+          title: "Solidity Utilities",
+          href: "/dev/solidity-utilities",
+        },
+        {
+          title: "Sandbox",
+          href: "/dev/axelar-sandbox/intro",
+        },
+        {
+          title: "Glossary",
+          href: "/dev/glossary"
         },
       ],
     });
@@ -217,7 +229,7 @@ export const getNavigation = (section) => {
               href: "/validator/setup/config",
             },
             {
-              title: "Create and backup accounts",
+              title: "Create and back up accounts",
               href: "/validator/setup/backup",
             },
             {
@@ -229,12 +241,11 @@ export const getNavigation = (section) => {
               href: "/validator/setup/register-broadcaster",
             },
             { title: "Stake AXL tokens", href: "/validator/setup/stake-axl" },
-            { title: "Health check", href: "/validator/setup/health-check" },
             { title: "Manual setup", href: "/validator/setup/manual" },
           ],
         },
         {
-          title: "Support External Chains",
+          title: "External Chain Support",
           children: [
             { title: "Overview", href: "/validator/external-chains/overview" },
             { title: "Arbitrum", href: "/validator/external-chains/arbitrum" },
@@ -269,10 +280,10 @@ export const getNavigation = (section) => {
           title: "Operations",
           children: [
             {
-              title: "Rotating mnemonics",
+              title: "Rotate tofnd mnemonics",
               href: "/validator/operations/mnemonic-rotation",
             },
-            { title: "Monitoring", href: "/validator/operations/monitoring" },
+            { title: "Monitor a validator or node", href: "/validator/operations/monitoring" },
           ],
         },
         {
@@ -287,13 +298,17 @@ export const getNavigation = (section) => {
               href: "/validator/troubleshoot/missed-too-many-blocks",
             },
             {
-              title: "Unjail your validator",
+              title: "Unjail validator",
               href: "/validator/troubleshoot/unjail",
             },
-            {
-              title: "Leave the network",
-              href: "/validator/troubleshoot/leave",
-            },
+          ],
+        },
+        {
+          title: "Validator status",
+          children: [
+            { title: "Register external chains", href: "/validator/status/register-external-chains" },
+            { title: "Check validator status", href: "/validator/status/health-check" },
+            { title: "Leave the network", href: "/validator/status/leave" },
           ],
         },
       ],
@@ -338,10 +353,6 @@ export const getNavigation = (section) => {
     children: [
       { title: "Crosschain Message Flow", href: "/learn/network/flow" },
       { title: "axlUSDC", href: "/learn/axlusdc" },
-      {
-        title: "Registering external chains for validators",
-        href: "/learn/validators",
-      },
       { title: "Security Overview", href: "/learn/security" },
       { title: "Interchain Transaction Duration", href: "/learn/txduration" },
       { title: "EVM Contract Governance", href: "/learn/evm-governance" },
