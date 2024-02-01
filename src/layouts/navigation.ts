@@ -133,6 +133,15 @@ export const getNavigation = (section) => {
           ],
         },
         {
+          title: "Express Service",
+          children: [
+            {
+              title: "Introduction",
+              href: "/dev/express/overview",
+            }
+          ],
+        },
+        {
           title: "AxelarJS SDK",
           children: [
             { title: "Introduction", href: "/dev/axelarjs-sdk/intro" },
