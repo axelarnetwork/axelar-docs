@@ -346,7 +346,10 @@ export const getNavigation = (section) => {
         title: "InterchainTokenFactory",
         href: "https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/InterchainTokenFactory.sol",
       },
-      ,
+      {
+        title: "TokenManager",
+        href: "https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/token-manager/TokenManager.sol",
+      },
       {
         title: "AxelarGateway ",
         href: "https://github.com/axelarnetwork/axelar-cgp-solidity/blob/main/contracts/AxelarGateway.sol",
