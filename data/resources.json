@@ -64,7 +64,7 @@
         },
         {
           "title": "Swagger 2",
-          "value": "https://lcd-axelar.stakerun.com/static/swagger/"
+          "value": "https://lcd-axelar.hoodrun.io/static/swagger/"
         },
         {
           "title": "OpenAPI 1",
@@ -72,7 +72,7 @@
         },
         {
           "title": "OpenAPI 2",
-          "value": "https://lcd-axelar.stakerun.com/static/openapi/"
+          "value": "https://lcd-axelar.hoodrun.io/static/openapi/"
         }
       ]
     },
@@ -116,7 +116,7 @@
           "value": "https://axelar-rpc.validatrium.club"
         },
         {
-          "value": "https://rpc-axelar.stakerun.com"
+          "value": "https://rpc-axelar.hoodrun.io"
         }
       ]
     },
@@ -154,7 +154,7 @@
           "value": "https://axelar-api.validatrium.club"
         },
         {
-          "value": "https://lcd-axelar.stakerun.com"
+          "value": "https://lcd-axelar.hoodrun.io"
         }
       ]
     },
@@ -186,7 +186,7 @@
           "value": "axelar-grpc.quantnode.tech:9090"
         },
         {
-          "value": "grpc-axelar.stakerun.com:9090"
+          "value": "grpc-axelar.hoodrun.io:9090"
         }
       ]
     },
@@ -203,7 +203,7 @@
           "value": "https://axelar-grpcweb.chainode.tech"
         },
         {
-          "value": "https://web-grpc-axelar.stakerun.com"
+          "value": "https://web-grpc-axelar.hoodrun.io"
         }
       ]
     },
@@ -232,10 +232,10 @@
           "value": "https://axelararchive-grpc.quickapi.com"
         },
         {
-          "value": "https://archive-rpc-axelar.stakerun.com"
+          "value": "https://archive-rpc-axelar.hoodrun.io"
         },
         {
-          "value": "https://archive-lcd-axelar.stakerun.com"
+          "value": "https://archive-lcd-axelar.hoodrun.io"
         }
       ]
     },
@@ -246,7 +246,7 @@
           "value": "ws://rpc-axelar.imperator.co/wss"
         },
         {
-          "value": "wss://rpc-axelar.stakerun.com/websocket"
+          "value": "wss://rpc-axelar.hoodrun.io/websocket"
         }
       ]
     }
