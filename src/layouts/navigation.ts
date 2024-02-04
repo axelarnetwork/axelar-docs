@@ -42,6 +42,10 @@ export const getNavigation = (section) => {
                       title: "Programmatically Create a Canonical Token",
                       href: "/dev/send-tokens/interchain-tokens/developer-guides/programmatically-create-a-canonical-token",
                     },
+                    {
+                      title: "Link Custom Tokens Into Interchain Tokens",
+                      href: "/dev/send-tokens/interchain-tokens/developer-guides/link-custom-tokens-deployed-across-multiple-chains-into-interchain-tokens",
+                    },
                   ],
                 },
               ],
@@ -198,7 +202,7 @@ export const getNavigation = (section) => {
         },
         {
           title: "Glossary",
-          href: "/dev/glossary"
+          href: "/dev/glossary",
         },
       ],
     });
@@ -240,7 +244,7 @@ export const getNavigation = (section) => {
               title: "Register broadcaster proxy",
               href: "/validator/setup/register-broadcaster",
             },
-            { title: "Stake AXL tokens", href: "/validator/setup/stake-axl" },
+            { title: "Health check", href: "/validator/setup/health-check" },
             { title: "Manual setup", href: "/validator/setup/manual" },
           ],
         },
@@ -283,7 +287,10 @@ export const getNavigation = (section) => {
               title: "Rotate tofnd mnemonics",
               href: "/validator/operations/mnemonic-rotation",
             },
-            { title: "Monitor a validator or node", href: "/validator/operations/monitoring" },
+            {
+              title: "Monitor a validator or node",
+              href: "/validator/operations/monitoring",
+            },
           ],
         },
         {
@@ -306,8 +313,14 @@ export const getNavigation = (section) => {
         {
           title: "Validator status",
           children: [
-            { title: "Register external chains", href: "/validator/status/register-external-chains" },
-            { title: "Check validator status", href: "/validator/status/health-check" },
+            {
+              title: "Register external chains",
+              href: "/validator/status/register-external-chains",
+            },
+            {
+              title: "Check validator status",
+              href: "/validator/status/health-check",
+            },
             { title: "Leave the network", href: "/validator/status/leave" },
           ],
         },
@@ -318,20 +331,57 @@ export const getNavigation = (section) => {
   nav.push({
     header: "Resources",
     children: [
-      { title: "Mainnet", href: "/resources/mainnet" },
-      { title: "Testnet", href: "/resources/testnet" },
-      { title: "RPC Endpoints", href: "/resources/" },
       {
-        title: "Community Pool Proposals",
-        href: "/resources/governance/community-pool-proposals",
+        title: "Contract addresses",
+        children: [
+          { title: "Mainnet", href: "/resources/contract-addresses/mainnet" },
+          { title: "Testnet", href: "/resources/contract-addresses/testnet" },
+        ],
       },
-      { title: "Satellite", href: "/resources/satellite" },
-      { title: "MetaMask", href: "/resources/metamask" },
-      { title: "Add Network to Keplr Wallet", href: "/resources/keplr" },
-      { title: "Wrap/unwrap tokens", href: "/resources/wrapped-tokens" },
-      { title: "Using ipRPC (Free Public RPC)", href: "/resources/lava-iprpc" },
-      { title: "Bug Bounty", href: "/bug-bounty" },
-      { title: "Add Account to Axelarscan", href: "/resources/axelarscan-add" },
+      {
+        title: "RPCs",
+        children: [
+          { title: "RPC Endpoints", href: "/resources/rpc/resources" },
+          { title: "Free Public RPC", href: "/resources/rpc/lava-iprpc" },
+        ],
+      },
+      {
+        title: "Tokens",
+        children: [
+          { title: "Stake AXL tokens", href: "/resources/tokens/stake-axl" },
+          {
+            title: "Wrap / unwrap tokens",
+            href: "/resources/tokens/wrapped-tokens",
+          },
+        ],
+      },
+      {
+        title: "Axelarscan",
+        children: [
+          {
+            title: "Add Account to Axelarscan",
+            href: "/resources/axelarscan/axelarscan-add",
+          },
+        ],
+      },
+      {
+        title: "Misc",
+        children: [
+          { title: "Satellite", href: "/resources/satellite" },
+          { title: "MetaMask", href: "/resources/metamask" },
+          { title: "Add Network to Keplr Wallet", href: "/resources/keplr" },
+        ],
+      },
+      {
+        title: "Community",
+        children: [
+          {
+            title: "Community Pool Proposals",
+            href: " /resources/community/community-pool-proposals",
+          },
+          { title: "Bug Bounty", href: "/resources/community/bug-bounty" },
+        ],
+      },
     ],
   });
 
@@ -346,7 +396,10 @@ export const getNavigation = (section) => {
         title: "InterchainTokenFactory",
         href: "https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/InterchainTokenFactory.sol",
       },
-      ,
+      {
+        title: "TokenManager",
+        href: "https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/token-manager/TokenManager.sol",
+      },
       {
         title: "AxelarGateway ",
         href: "https://github.com/axelarnetwork/axelar-cgp-solidity/blob/main/contracts/AxelarGateway.sol",
