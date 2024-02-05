@@ -9,7 +9,7 @@ In this tutorial, you will:
 - Link custom tokens deployed across multiple chains into Interchain Tokens
 - Deploy a simple ERC-20 token on the Fantom chain
 - Deploy a simple ERC-20 token on the Polygon chain
-- Deploy a [Token Manager](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/token-manager/TokenManager.sol) on both Fantom and Polygon
+- Deploy a [token manager](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/token-manager/TokenManager.sol) on both Fantom and Polygon
 - Transfer mint access to the [Interchain Token Service address](https://etherscan.io/address/0xB5FB4BE02232B1bBA4dC8f81dc24C26980dE9e3C) on both Fantom and Polygon
 - Transfer your token between Fantom and Polygon
 
@@ -22,17 +22,17 @@ You will need:
 
 ## Deploy an ERC-20 token on the Fantom and Polygon testnets
 
-[Create a SimpleERC20 token](https://bakemytoken.com/) and provide it with a name and symbol. You can skip this step if you already have an ERC-20 token deployed on the Fantom and Polygon testnets.
+Deploy the following `SimpleCustomToken` on the Fantom and Polygon testnets.
 
-The following is an example of a token deployed on the Fantom and Polygon testnets, `SimpleCustomToken`. It utilizes OpenZeppelin's libraries to create a custom ERC20 token with functionalities for minting, burning, and access control. The token includes a minter role, which enables designated addresses to mint or burn tokens. Additionally, it incorporates ERC20Permit for gasless transactions. The contract starts with a predefined supply of tokens minted to the deployer's address and establishes roles for a default administrator and minter:
+This code utilizes OpenZeppelin's libraries to create a custom ERC20 token with functionalities for minting, burning, and access control. The token includes a minter role, which enables designated addresses to mint or burn tokens. Additionally, it incorporates ERC20Permit for gasless transactions. The contract starts with a predefined supply of tokens minted to the deployer's address and establishes roles for a default administrator and minter:
 
 ```Solidity
 
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.18;
 
-// Importing OpenZeppelin contracts for ERC20 standard token implementations,
-// burnable tokens, access control mechanisms, and permit functionality.
+// Import OpenZeppelin contracts for ERC20 standard token implementations,
+// burnable tokens, access control mechanisms, and permit functionality
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Burnable.sol";
 import "@openzeppelin/contracts/access/AccessControl.sol";
@@ -40,32 +40,32 @@ import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Permit.sol";
 
 contract SimpleCustomToken is ERC20, ERC20Burnable, AccessControl, ERC20Permit {
 
-// Define a constant for the minter role using keccak256 to generate a unique hash.
+// Define a constant for the minter role using keccak256 to generate a unique hash
     bytes32 public constant MINTER_ROLE = keccak256("MINTER_ROLE");
 
     constructor(address defaultAdmin, address minter)
-        ERC20("SimpleCustomToken", "SCT") // Setting token name and symbol.
-        ERC20Permit("SimpleCustomToken") // Initialize ERC20Permit with the token name.
+        ERC20("SimpleCustomToken", "SCT") // Set token name and symbol
+        ERC20Permit("SimpleCustomToken") // Initialize ERC20Permit with the token name
     {
-        // Minting an initial supply of tokens to the message sender.
+        // Mint an initial supply of tokens to the message sender
         _mint(msg.sender, 10000 * 10 ** decimals());
 
 
-        // Grant the DEFAULT_ADMIN_ROLE to the specified defaultAdmin address.
+        // Grant the DEFAULT_ADMIN_ROLE to the specified defaultAdmin address
         _grantRole(DEFAULT_ADMIN_ROLE, defaultAdmin);
 
 
-        // Grant the MINTER_ROLE to the specified minter address.
-        // Addresses with the minter role are allowed to mint new tokens.
+        // Grant the MINTER_ROLE to the specified minter address
+        // Addresses with the minter role are allowed to mint new tokens
         _grantRole(MINTER_ROLE, minter);
     }
 
-    // Mint new tokens. Only addresses with the MINTER_ROLE can call this function.
+    // Mint new tokens. Only addresses with the MINTER_ROLE can call this function
     function mint(address to, uint256 amount) public onlyRole(MINTER_ROLE) {
         _mint(to, amount);
     }
 
-    // Burn tokens from a specified account.
+    // Burn tokens from a specified account
     function burn(address account, uint256 amount) public onlyRole(MINTER_ROLE) {
         _burn(account, amount);
     }
@@ -99,7 +99,7 @@ Next, set up the ABIs for the [Interchain Token Service](https://github.com/axel
 Create a folder named `utils`. Inside the folder, create the following new files and add the respective ABIs:
 
 - Add the [Interchain Token Service ABI](https://gist.github.com/Olanetsoft/2a632784e6753d34ca7ffc4f73bf58ed) to `interchainTokenServiceABI.json`.
-- Add your custom token ABI to `customTokenABI**.**json`. You can get this from [FTMScan](https://testnet.ftmscan.com/) or [PolygonScan](https://mumbai.polygonscan.com/) with the address of your deployed token.
+- Add your custom token ABI to `customTokenABI**.**json`. You can get this from [FTMScan](https://testnet.ftmscan.com/) or [PolygonScan](https://mumbai.polygonscan.com/) with the address of your deployed token if your contract is verified. Otherwise, you can get it from the same service you deployed the `SimpleCustomToken` on.
 
 ## Set up an RPC for the local chain
 
@@ -152,9 +152,9 @@ module.exports = {
 };
 ```
 
-## Deploy Token Manager on the Fantom Testnet
+## Deploy token manager on the Fantom testnet
 
-Now that you have set up an RPC for the Fantom and Polygon testnet, you can deploy a Token Manager on the Fantom testnet.
+Now that you have set up an RPC for the Fantom and Polygon testnet, you can deploy a token manager on the Fantom testnet.
 
 ### Create a `customInterchainToken.js` script
 
@@ -215,14 +215,14 @@ async function getContractInstance(contractAddress, contractABI, signer) {
 }
 ```
 
-## Deploy Token Manager on Fantom
+## Deploy a token manager on Fantom
 
 Create a `deployTokenManager()` function for the Fantom testnet. This will deploy a token manager with your custom token address:
 
 ```JavaScript
 //...
 
-// deploy Token Manager : Fantom
+// Deploy token manager : Fantom
 async function deployTokenManager() {
   // Get a signer to sign the transaction
   const signer = await getSigner();
@@ -237,7 +237,7 @@ async function deployTokenManager() {
   // Generate a random salt
   const salt = "0x" + crypto.randomBytes(32).toString("hex");
 
-  // Create the params
+  // Create params
   const params = ethers.utils.defaultAbiCoder.encode(
     ["bytes", "address"],
     [signer.address, fantomCustomTokenAddress]
@@ -267,7 +267,7 @@ async function deployTokenManager() {
 	Salt: ${salt},
 	Transaction Hash: ${deployTxData.hash},
 	Token ID: ${tokenId},
-	Expected Token Manager Address: ${expectedTokenManagerAddress},
+	Expected token manager address: ${expectedTokenManagerAddress},
 	`
   );
 }
@@ -313,7 +313,7 @@ If you see something similar to the following on your console, you have successf
 Salt: 0x368f6c0d56af7cb3d90aac4b12186cbb0639edf7923f1405adf752bace5ed795,
 Transaction Hash: 0x1854ed395fd1a6542433e277c607f4817ef896ef9c841e2ceaca108d08ff997c,
 Token ID: 0xf60cd19fca372e0351a2619fe63435203a8699105c84850681b4aabbd3d9f6e0,
-Expected Token Manager Address: 0x71D6374761Dcb3e331Ee08051998A0A958438571,
+Expected token manager address: 0x71D6374761Dcb3e331Ee08051998A0A958438571,
 ```
 
 ### Store the token ID and salt value
@@ -324,7 +324,7 @@ Copy the token ID and salt value and store them somewhere safe. You will need th
 
 Check the [Fantom testnet scanner](https://testnet.ftmscan.com/) to see if you have successfully [deployed a token manager](https://testnet.ftmscan.com/tx/0x1854ed395fd1a6542433e277c607f4817ef896ef9c841e2ceaca108d08ff997c).
 
-## Deploy a Token Manager remotely on the Polygon Testnet
+## Remotely deploy a token manager on the Polygon testnet
 
 You’ve just successfully deployed a token manager to Fantom, which you are using as your local chain. Now, deploy a token manager remotely to Polygon, which will act as the remote chain in this tutorial. Remember that you can specify any two chains to be your local and remote chains.
 
@@ -337,7 +337,7 @@ In `customInterchainToken.js`, call `estimateGasFee()` from the [AxelarJS SDK](h
 
 const api = new AxelarQueryAPI({ environment: Environment.TESTNET });
 
-// Estimate gas costs.
+// Estimate gas costs
 async function gasEstimator() {
   const gas = await api.estimateGasFee(
     EvmChain.FANTOM,
@@ -355,12 +355,12 @@ async function gasEstimator() {
 
 ### Perform remote token manager deployment
 
-Create a `deployRemoteTokenManager()` function. This will deploy the remote Canonical Interchain Token on the Polygon Mumbai testnet.
+Create a `deployRemoteTokenManager()` function. This will deploy the remote Canonical Interchain Token on the Polygon Mumbai testnet. Make sure to change the salts to the value you saved from a previous step.
 
 ```JavaScript
 //...
 
-// deploy Remote Token Manager : Polygon
+// Deploy remote token manager : Polygon
 async function deployRemoteTokenManager() {
   // Get a signer to sign the transaction
   const signer = await getSigner();
@@ -372,7 +372,7 @@ async function deployRemoteTokenManager() {
     signer
   );
 
-  // Create the params
+  // Create params
   const param = ethers.utils.defaultAbiCoder.encode(
     ["bytes", "address"],
     [signer.address, polygonCustomTokenAddress]
@@ -382,7 +382,7 @@ async function deployRemoteTokenManager() {
 
   // Deploy the token manager
   const deployTxData = await interchainTokenServiceContract.deployTokenManager(
-    "0x368f6c0d56af7cb3d90aac4b12186cbb0639edf7923f1405adf752bace5ed795", // salt used in the previous step
+    "0x368f6c0d56af7cb3d90aac4b12186cbb0639edf7923f1405adf752bace5ed795", // change salt
     "Polygon",
     MINT_BURN,
     param,
@@ -393,7 +393,7 @@ async function deployRemoteTokenManager() {
   // Get the tokenId
   const tokenId = await interchainTokenServiceContract.interchainTokenId(
     signer.address,
-    "0x368f6c0d56af7cb3d90aac4b12186cbb0639edf7923f1405adf752bace5ed795" // salt used in the previous step
+    "0x368f6c0d56af7cb3d90aac4b12186cbb0639edf7923f1405adf752bace5ed795" // change salt
   );
 
   // Get the token manager address
@@ -404,7 +404,7 @@ async function deployRemoteTokenManager() {
     `
 	Transaction Hash: ${deployTxData.hash},
 	Token ID: ${tokenId},
-	Expected Token Manager Address: ${expectedTokenManagerAddress},
+	Expected token manager address: ${expectedTokenManagerAddress},
 	`
   );
 }
@@ -445,7 +445,7 @@ You should see something similar to the following on your console:
 ```bash
 Transaction Hash: 0xbfe92d3fb5bf3e9e08f65a3e11f231ff9df9c65985d2d5b952acf82e1375d5a5,
 Token ID: 0xf60cd19fca372e0351a2619fe63435203a8699105c84850681b4aabbd3d9f6e0,
-Expected Token Manager Address: 0x71D6374761Dcb3e331Ee08051998A0A958438571,
+Expected token manager address: 0x71D6374761Dcb3e331Ee08051998A0A958438571,
 ```
 
 Take a look at the token ID and the expected token manager address. These must match the ones obtained in the previous step, as they are linked with the same salt value when deploying a token manager remotely on the Polygon testnet.
@@ -457,9 +457,11 @@ When deploying the token manager to a preferred chain other than the local chain
 
 ### Check the transaction on the Axelar testnet scanner
 
-Check the [Axelarscan testnet scanner](https://testnet.axelarscan.io/) to see if you have successfully deployed the remote token manager on the Polygon Mumbai testnet. It should look something like [this](https://testnet.axelarscan.io/gmp/0xbfe92d3fb5bf3e9e08f65a3e11f231ff9df9c65985d2d5b952acf82e1375d5a5). Ensure that Axelar shows a successful transaction before continuing to the next step.
+Check the [Axelarscan testnet scanner](https://testnet.axelarscan.io/) to see if you have successfully deployed the remote token manager on the Polygon Mumbai testnet. It should look something like [this](https://testnet.axelarscan.io/gmp/0xbfe92d3fb5bf3e9e08f65a3e11f231ff9df9c65985d2d5b952acf82e1375d5a5).
 
-## Transfer mint access to the Interchain Token Service address on the Fantom and Polygon Testnets
+Add gas if needed. Ensure that Axelar shows a successful transaction before continuing to the next step.
+
+## Transfer mint access to the Interchain Token Service address on the Fantom and Polygon testnets
 
 You must transfer mint access to the Interchain Token Service address on both chains before you can mint and burn tokens while moving assets between chains.
 
@@ -470,7 +472,7 @@ Create a `transferMintAccessToITSOnFantom()` function that will perform the mint
 ```JavaScript
 //...
 
-// Transfer Mint Access on all chains to ITS : Fantom
+// Transfer mint access on all chains to ITS : Fantom
 async function transferMintAccessToITSOnFantom() {
   // Get a signer to sign the transaction
   const signer = await getSigner();
@@ -540,7 +542,7 @@ Create a `transferMintAccessToITSOnPolygon()` function that will perform the min
 ```JavaScript
 //...
 
-// Transfer Mint Access on all chains to ITS : Polygon
+// Transfer mint access on all chains to ITS : Polygon
 async function transferMintAccessToITSOnPolygon() {
   // Get a signer to sign the transaction
   const signer = await getSigner();
