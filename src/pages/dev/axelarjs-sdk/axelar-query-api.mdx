@@ -26,7 +26,7 @@ This is a useful query for GMP transactions, when invoking `callContract` or `ca
 
 IMPORTANT NOTES:
 
-* You must ensure the correct `gasLimit` is used for your gas estimation. The `gasLimit` parameter can be used here to override the default 700K gas limit that is used. 
+* You must ensure the correct `gasLimit` is used for your gas estimation. The gas limit is equal to the execution gas cost on the destination chain. You can test out GMP calls to find the correct value.
 * The `minGasPrice` and `gasMultipler` parameters can be adjusted to enhance execution certainty of cross-chain transactions.
 * The response to the method gives a single value (in `wei`) of the total estimated gas required for the cross-chain call. In the GMPParams parameter, there is an option to show a full breakdown of fees instead by specifying `true` for `showDetailedFees`. If you do this, you will have to add the individual components of the fees yourself, 
   e.g. `(baseFee + executionFeeWithMultiplier)` for regular way GMP calls, or `(baseFee + executionFeeWithMultiplier + expressFee)` for GMP Express calls
@@ -57,9 +57,9 @@ IMPORTANT NOTES:
    * @param sourceChainId
    * @param destinationChainId
    * @param sourceChainTokenSymbol
-   * @param gasLimit An estimated gas amount required to execute `executeWithToken` function. The default value is 700000 which should be sufficient for most transactions.
-   * @param gasMultiplier A multiplier used to create a buffer above the calculated gas fee, to account for potential slippage throughout tx execution, e.g. 1.1 = 10% buffer. supports up to 3 decimal places
-   * @param minGasPrice (Optional) A minimum value, in wei, for the gas price on the destination chain that is used to override the estimated gas price if it falls below this specified value.
+   * @param gasLimit An estimated gas amount required to execute `executeWithToken` function. Equivalent to the execution gas cost on the destination chain
+   * @param gasMultiplier A multiplier used to create a buffer above the calculated gas fee, to account for potential slippage throughout tx execution, e.g. 1.1 = 10% buffer. Supports up to 3 decimal places. Default is `auto`.
+   * @param minGasPrice (Optional) A minimum value, in wei, for the gas price on the destination chain that is used to override the estimated gas price if it falls below this specified value. Default is `0`.
    * @param gmpParams (Optional) Additional parameters for GMP transactions, including the ability to see a detailed view of the fee response
    * @returns
    */
@@ -68,7 +68,7 @@ IMPORTANT NOTES:
     destinationChainId: EvmChain | string,
     sourceChainTokenSymbol: GasToken | string,
     gasLimit: number = DEFAULT_ESTIMATED_GAS,
-    gasMultiplier = 1.1,
+    gasMultiplier = auto,
     minGasPrice = "0",
     gmpParams?: GMPParams
   ): Promise<string | AxelarQueryAPIFeeResponse> 
