@@ -3,7 +3,7 @@
   "redirects": [
     {
       "source": "/resources/mainnet",
-      "destination": " /resources/contract-addresses/mainnet",
+      "destination": "/resources/contract-addresses/mainnet",
       "permanent": true
     },
     {

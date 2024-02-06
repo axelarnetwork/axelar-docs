@@ -42,6 +42,10 @@ export const getNavigation = (section) => {
                       title: "Programmatically Create a Canonical Token",
                       href: "/dev/send-tokens/interchain-tokens/developer-guides/programmatically-create-a-canonical-token",
                     },
+                    {
+                      title: "Link Custom Tokens Into Interchain Tokens",
+                      href: "/dev/send-tokens/interchain-tokens/developer-guides/link-custom-tokens-deployed-across-multiple-chains-into-interchain-tokens",
+                    },
                   ],
                 },
               ],
@@ -207,7 +211,7 @@ export const getNavigation = (section) => {
         },
         {
           title: "Glossary",
-          href: "/dev/glossary"
+          href: "/dev/glossary",
         },
       ],
     });
@@ -292,7 +296,10 @@ export const getNavigation = (section) => {
               title: "Rotate tofnd mnemonics",
               href: "/validator/operations/mnemonic-rotation",
             },
-            { title: "Monitor a validator or node", href: "/validator/operations/monitoring" },
+            {
+              title: "Monitor a validator or node",
+              href: "/validator/operations/monitoring",
+            },
           ],
         },
         {
@@ -315,8 +322,14 @@ export const getNavigation = (section) => {
         {
           title: "Validator status",
           children: [
-            { title: "Register external chains", href: "/validator/status/register-external-chains" },
-            { title: "Check validator status", href: "/validator/status/health-check" },
+            {
+              title: "Register external chains",
+              href: "/validator/status/register-external-chains",
+            },
+            {
+              title: "Check validator status",
+              href: "/validator/status/health-check",
+            },
             { title: "Leave the network", href: "/validator/status/leave" },
           ],
         },
@@ -345,13 +358,19 @@ export const getNavigation = (section) => {
         title: "Tokens",
         children: [
           { title: "Stake AXL tokens", href: "/resources/tokens/stake-axl" },
-          { title: "Wrap / unwrap tokens", href: "/resources/tokens/wrapped-tokens" },
+          {
+            title: "Wrap / unwrap tokens",
+            href: "/resources/tokens/wrapped-tokens",
+          },
         ],
       },
       {
         title: "Axelarscan",
         children: [
-          { title: "Add Account to Axelarscan", href: "/resources/axelarscan/axelarscan-add" },
+          {
+            title: "Add Account to Axelarscan",
+            href: "/resources/axelarscan/axelarscan-add",
+          },
         ],
       },
       {
@@ -365,7 +384,10 @@ export const getNavigation = (section) => {
       {
         title: "Community",
         children: [
-          { title: "Community Pool Proposals", href: " /resources/community/community-pool-proposals" },
+          {
+            title: "Community Pool Proposals",
+            href: " /resources/community/community-pool-proposals",
+          },
           { title: "Bug Bounty", href: "/resources/community/bug-bounty" },
         ],
       },

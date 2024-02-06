@@ -65,6 +65,11 @@ html.dark body {
     color: $dark-text;
   }
   .sideNav {
+    .nav-group-header:hover,
+    .nav-group-header:hover span {
+      color: white;
+      background-color: transparent;
+    }
     a:hover {
       color: white;
       background-color: transparent;
