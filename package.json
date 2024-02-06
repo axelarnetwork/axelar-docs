@@ -19,6 +19,7 @@
     "@astrojs/mdx": "^2.1.1",
     "@astrojs/react": "^3.0.9",
     "@astrojs/sitemap": "^3.0.5",
+    "@astrojs/starlight": "^0.17.3",
     "@headlessui/react": "^1.7.2",
     "@redux-devtools/extension": "^3.2.3",
     "@typeform/embed-react": "^1.21.0",
