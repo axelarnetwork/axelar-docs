@@ -14,9 +14,9 @@ To create a governance proposal, make sure you have:
 1. Set the parameters to environment variables:
 
    ```bash
-   TESNET=...
+   TESNET=... # fix this value
    RPC=http://...
-   GOVERNANCE=axelar10d07y265gmmuvt4z0w9aw880jnsr700j7v9daj
+   GOVERNANCE=axelar10d07y265gmmuvt4z0w9aw880jnsr700j7v9daj # fix this value
    ```
 
 1. Run the optimizer to get the contracts bytecode. This should be done via a [Docker container](https://www.docker.com/) to ensure that the bytecode is built with the proper environment. The following command will build the contract and save it to the `artifacts` folder:
@@ -75,7 +75,7 @@ To create a governance proposal, make sure you have:
 
    ```bash
    CONTRACT_WASM=artifacts/service_registry-aarch64.wasm
-   CONTRACT_SOURCE=https://github.com/axelarnetwork/axelar-amplifier/tree/main/contracts/service-registry
+CONTRACT_SOURCE=https://github.com/axelarnetwork/axelar-amplifier/tree/main/contracts/service-registry # correct this
    CONTRACT_CODE_HASH=20814e7f6a11bb7be119babbd233c3a647a2c8b5d9376eb810729152288d225c
    ```
 
