@@ -1,0 +1,66 @@
+# Testnet-1 upgrade: v0.35.3
+
+import { Callout } from '/src/components/callout'
+
+## About the v0.35.3 upgrade
+
+This release adds the Axelar Virtual Machine to the network and adds support for CosmWasm contract creation.
+
+<Callout type="warning" emoji="⚠️">
+This release enables CosmWasm. Contracts created with CosmWasm will require [governance proposals](https://docs.axelar.dev/learn/cosmwasm-governance) to be deployed for the indefinite future.
+</Callout>
+
+Instructions for `2024-February-8` testnet upgrade to axelar-core `v0.35.3`, vald `v0.35.3`, and tofnd `v0.10.1`.
+Release can be found [here](https://github.com/axelarnetwork/axelar-core/releases/tag/v0.35.3).
+
+<Callout type="warning" emoji="⚠️">
+  Upgrade height will be determined once the governance upgrade proposal is ready. `9462850` is currently used as a placeholder.
+</Callout>
+
+Upgrade height `9462850` [countdown](https://testnet.mintscan.io/axelar-testnet/blocks/9462850)
+
+<Callout type="warning" emoji="⚠️">
+  [Go v1.21](https://tip.golang.org/doc/go1.21) will be needed to build axelard.
+</Callout>
+
+1. If you're a validator or have delegated to one, please vote for the upgrade proposal via
+
+```bash
+axelard tx gov vote 46 yes --from validator
+```
+
+2. Wait for the proposed upgrade block, `9462850`. Your node will panic at that block height with a log: `{"level":"error","module":"consensus","err":"UPGRADE \"v0.35.5\" NEEDED at height: ",`. Stop your node after chain halt.
+
+```bash
+pkill -f 'axelard start'
+# Validators need to also stop vald/tofnd
+pkill -f 'vald-start'
+pkill -f tofnd
+```
+
+3. Backup the state:
+
+```bash
+cp -r ~/.axelar_testnet/.core/data ~/.axelar-lisbon-3-upgrade-0.33/.core/data
+```
+
+<Callout type="warning" emoji="⚠️">
+  Caution: If you backup the entire folder, `~/.axelar_testnet/.core`, that'll
+  also include your private keys (inside `config` and `keyring-file`
+  subfolders). That can be dangerous if anyone gets access to your backups. We
+  recommend backing up keys separately when you first create your node, and then
+  excluding them from any data backups.
+</Callout>
+
+4. Restart your `axelard` node with the new `v0.35.5` build.
+5. If you're a validator also restart `vald` with `v0.35.5` and `tofnd` with `v0.10.1`.
+
+Example using join scripts in [axelarate-community git repo](https://github.com/axelarnetwork/axelarate-community):
+
+```bash
+# in axelarate-community repo
+git checkout main
+git pull
+KEYRING_PASSWORD="pw-1" ./scripts/node.sh -n testnet -a v0.35.5
+# For validators, restart vald/tofnd
+KEYRING_PASSWORD="pw-1" TOFND_PASSWORD="pw-2" ./scripts/validator-tools-host.sh -n testnet -a v0.35.5 -q v0.10.1
