@@ -3,7 +3,7 @@
   "redirects": [
     {
       "source": "/dev/reference/glossary",
-      "destination": "/dev/glossary",
+      "destination": "/dev/glossary/",
       "permanent": true
     },
     {
