@@ -2,6 +2,11 @@
   "framework": null,
   "redirects": [
     {
+      "source": "/dev/reference/glossary",
+      "destination": "/dev/glossary",
+      "permanent": true
+    },
+    {
       "source": "/resources/mainnet",
       "destination": "/resources/contract-addresses/mainnet",
       "permanent": true
