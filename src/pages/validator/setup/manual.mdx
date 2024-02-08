@@ -19,6 +19,7 @@ Check the appropriate version for the network accordingly:
  ```bash
  AXELARD_RELEASE=v0.34.1
 TOFND_RELEASE=v0.10.1
+WASMVM_RELEASE=v1.3.1
 ```
 
 </tab-item>
@@ -26,6 +27,7 @@ TOFND_RELEASE=v0.10.1
  ```bash
  AXELARD_RELEASE=v0.34.1
 TOFND_RELEASE=v0.10.1
+WASMVM_RELEASE=v1.3.1
 ```
 
 </tab-item>
@@ -33,7 +35,7 @@ TOFND_RELEASE=v0.10.1
 
 ```bash
 # verify correct versions
-echo $AXELARD_RELEASE $TOFND_RELEASE
+echo $AXELARD_RELEASE $TOFND_RELEASE $WASMVM_RELEASE
 
 # create a temp dir for binaries
 cd $HOME
@@ -52,11 +54,15 @@ chmod +x *
 # move to usr bin
 sudo mv * /usr/bin/
 
+# get wasmvm library
+wget https://github.com/CosmWasm/wasmvm/releases/download/$WASMVM_RELEASE/libwasmvm.x86_64.so -O /usr/local/lib/libwasmvm.x86_64.so
+
 # get out of binaries directory
 cd $HOME
 
 # check versions
 axelard version
+axelard q wasm libwasmvm-version
 tofnd --help
 ```
 
