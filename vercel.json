@@ -18,7 +18,7 @@
     },
     {
       "source": "/resources/governance/community-pool-proposals",
-      "destination": " /resources/community/community-pool-proposals",
+      "destination": "/resources/community/community-pool-proposals",
       "permanent": true
     },
     {
@@ -72,7 +72,7 @@
       "permanent": true
     },
     {
-      "source": " /dev/general-message-passing/gas-services/pricing",
+      "source": "/dev/general-message-passing/gas-services/pricing",
       "destination": "/dev/gas-service/pricing",
       "permanent": true
     },
