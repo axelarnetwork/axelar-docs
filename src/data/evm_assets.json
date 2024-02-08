@@ -3182,6 +3182,34 @@
           "symbol": "axlSOMM",
           "decimals": 6,
           "transfer_fee": 10.0
+        },
+        {
+          "chain": "base",
+          "address": "0x4e914bbDCDE0f455A8aC9d59d3bF739c46287Ed2",
+          "symbol": "axlSOMM",
+          "decimals": 6,
+          "transfer_fee": 33.0
+        },
+        {
+          "chain": "binance",
+          "address": "0xBa0651622b11110Ef1F04cE7c78f10ca0AF997bD",
+          "symbol": "axlSOMM",
+          "decimals": 6,
+          "transfer_fee": 10.0
+        },
+        {
+          "chain": "optimism",
+          "address": "0x4e914bbDCDE0f455A8aC9d59d3bF739c46287Ed2",
+          "symbol": "axlSOMM",
+          "decimals": 6,
+          "transfer_fee": 33.0
+        },
+        {
+          "chain": "polygon",
+          "address": "0xDd96E9c50f5dA40180e3848e712D349Ad2511D57",
+          "symbol": "axlSOMM",
+          "decimals": 6,
+          "transfer_fee": 10.0
         }
       ]
     },
