@@ -886,6 +886,30 @@
         }
       ],
       "image": "/images/chains/scroll.svg"
+    },
+    {
+      "id": "fraxtal",
+      "name": "Fraxtal",
+      "chain_id": 2522,
+      "network_id": "fraxtal",
+      "provider_params": [
+        {
+          "chainId": "0x9DA",
+          "chainName": "Fraxtal Testnet",
+          "rpcUrls": [
+            "https://rpc.testnet.frax.com"
+          ],
+          "nativeCurrency": {
+            "name": "frxETH",
+            "symbol": "frxETH",
+            "decimals": 18
+          },
+          "blockExplorerUrls": [
+            "https://explorer.testnet.frax.com"
+          ]
+        }
+      ],
+      "image": "/images/chains/fraxtal.svg"
     }
   ]
 }
