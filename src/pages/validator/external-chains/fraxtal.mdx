@@ -12,6 +12,7 @@ Instructions to set up your frax node.
 
 ## Prerequisites
 
+- [Common Docker Compose Commands](./optimism#common-node-operations)
 ```bash
 sudo apt-get install jq -y
 snap install docker
@@ -64,23 +65,11 @@ source $HOME/.profile
 </tabs>
 
 Set the following config options in `fraxtal-node/.env.testnet` or `fraxtal-node/.env`:
-<tabs>
-    <tab-item title="Mainnet">
-        ```bash
-        # Your Ethereum RPC node endpoint. As an L2, your Frax node will verify tx finality by
-        # querying your own Ethereum RPC node.
-        OP_NODE_L1_ETH_RPC=
-        ```
-
-    </tab-item>
-    <tab-item title="Testnet">
-        ```bash
-        # Your Ethereum RPC node endpoint. As an L2, your Frax node will verify tx finality by
-        # querying your own Ethereum RPC node.
-        OP_NODE_L1_ETH_RPC=
-        ```
-    </tab-item>
-</tabs>
+```bash
+# Your Ethereum RPC node endpoint. As an L2, your Frax node will verify tx finality by
+# querying your own Ethereum RPC node.
+OP_NODE_L1_ETH_RPC=
+```
 
 ## Start the node
 ```bash
@@ -123,16 +112,6 @@ docker compose -f $DOCKER_COMPOSE_FILE_LOCATION logs $ENVIRONMENT-geth --since 2
 fraxtal-node-testnet-geth-1  | INFO [02-04|07:42:29.722] Chain head was updated                   number=39537 hash=26c5c6..e67efa root=14a631..1e99bf elapsed=5.40331ms   age=2mo2w6d
 fraxtal-node-testnet-geth-1  | INFO [02-04|07:42:29.734] Starting work on payload                 id=0x95a98a726f1398ee
 fraxtal-node-testnet-geth-1  | INFO [02-04|07:42:29.751] Imported new potential chain segment     number=39538 hash=219454..97cd30 blocks=1 txs=1 mgas=0.051 elapsed=16.713ms    mgasps=3.022  age=2mo2w6d  triedirty=0.00B
-fraxtal-node-testnet-geth-1  | INFO [02-04|07:42:29.757] Chain head was updated                   number=39538 hash=219454..97cd30 root=45f271..74cc11 elapsed=5.440149ms  age=2mo2w6d
-fraxtal-node-testnet-geth-1  | INFO [02-04|07:42:29.769] Starting work on payload                 id=0xfa2eeaa01ee4840e
-fraxtal-node-testnet-geth-1  | INFO [02-04|07:42:29.787] Imported new potential chain segment     number=39539 hash=1d8cda..df02b7 blocks=1 txs=1 mgas=0.051 elapsed=16.752ms    mgasps=3.015  age=2mo2w6d  triedirty=0.00B
-fraxtal-node-testnet-geth-1  | INFO [02-04|07:42:29.793] Chain head was updated                   number=39539 hash=1d8cda..df02b7 root=2c7735..af4ee5 elapsed=5.433239ms  age=2mo2w6d
-fraxtal-node-testnet-geth-1  | INFO [02-04|07:42:29.805] Starting work on payload                 id=0x47a2af1ec9230cbb
-fraxtal-node-testnet-geth-1  | INFO [02-04|07:42:29.823] Imported new potential chain segment     number=39540 hash=f1abd8..a08f1a blocks=1 txs=1 mgas=0.051 elapsed=16.715ms    mgasps=3.021  age=2mo2w6d  triedirty=0.00B
-fraxtal-node-testnet-geth-1  | INFO [02-04|07:42:29.828] Chain head was updated                   number=39540 hash=f1abd8..a08f1a root=264d94..fff3ec elapsed=5.43533ms   age=2mo2w6d
-fraxtal-node-testnet-geth-1  | INFO [02-04|07:42:29.841] Starting work on payload                 id=0x0e3c24b1a4dd250f
-fraxtal-node-testnet-geth-1  | INFO [02-04|07:42:29.858] Imported new potential chain segment     number=39541 hash=24a85a..87b80c blocks=1 txs=1 mgas=0.073 elapsed=16.754ms    mgasps=4.341  age=2mo2w6d  triedirty=0.00B
-fraxtal-node-testnet-geth-1  | INFO [02-04|07:42:29.864] Chain head was updated                   number=39541 hash=24a85a..87b80c root=de2e34..2a92ff elapsed=5.324281ms  age=2mo2w6d
 ```
 
 #### Verify OP node logs
@@ -180,85 +159,8 @@ If you get something like this in response to the above rpc call, your node is s
       "parentHash": "0x99ce84a2d455425f0c3a68b2b83a74301810fc8c726cba384b08d9a79d9381d1",
       "timestamp": 1700059308
     },
-    "current_l1_finalized": {
-      "hash": "0x1a2750306a11058a7ba807afda69a07f0aea392fa87fcc87ffcea18ca5d7bd01",
-      "number": 873783,
-      "parentHash": "0xb154fdaf8a83928593ecc6470bc250c079c195c2b712e745c44fb1b66471ba5b",
-      "timestamp": 1707030720
-    },
-    "head_l1": {
-      "hash": "0x6e7b0268bb6ffe4ef528b49b360c272ecc9ba97dacac55c21d50dc2c458a42e1",
-      "number": 873875,
-      "parentHash": "0xf606ea3d37e8e3d4f1a9b9e90ff4f20524b4c3aa6abfe25d760946d59d4d73b7",
-      "timestamp": 1707031872
-    },
-    "safe_l1": {
-      "hash": "0xee110a2dc224e6cd356cb05cb969fb303337283971e79d9e24a52f87915e2dfb",
-      "number": 873813,
-      "parentHash": "0x159a85fb60524494e4211e8a73c13a1bf0d3c35c2ff9a6c6d9fcec43d311a6f7",
-      "timestamp": 1707031104
-    },
-    "finalized_l1": {
-      "hash": "0x1a2750306a11058a7ba807afda69a07f0aea392fa87fcc87ffcea18ca5d7bd01",
-      "number": 873783,
-      "parentHash": "0xb154fdaf8a83928593ecc6470bc250c079c195c2b712e745c44fb1b66471ba5b",
-      "timestamp": 1707030720
-    },
-    "unsafe_l2": {
-      "hash": "0x7b7ed381aac9cec2a43b37c30779832cb8a82e044e38b4ada0f1c90719bd3d50",
-      "number": 30955,
-      "parentHash": "0x882503037e902b2476e1d4c308a895cc3b936c5ee19b45361dc26c9631d29ae0",
-      "timestamp": 1700059286,
-      "l1origin": {
-        "hash": "0x49ee7a7398bc5010b48de111fc0ebc99d63d38ac8233202c913646d901e15213",
-        "number": 323353
-      },
-      "sequenceNumber": 2
-    },
-    "safe_l2": {
-      "hash": "0x7b7ed381aac9cec2a43b37c30779832cb8a82e044e38b4ada0f1c90719bd3d50",
-      "number": 30955,
-      "parentHash": "0x882503037e902b2476e1d4c308a895cc3b936c5ee19b45361dc26c9631d29ae0",
-      "timestamp": 1700059286,
-      "l1origin": {
-        "hash": "0x49ee7a7398bc5010b48de111fc0ebc99d63d38ac8233202c913646d901e15213",
-        "number": 323353
-      },
-      "sequenceNumber": 2
-    },
-    "finalized_l2": {
-      "hash": "0x43e19e7bed3d205aec15228b3f689c9d5f40920b9ff8ea3bd325f1e3fe70b757",
-      "number": 30709,
-      "parentHash": "0x87d7b203a4d868ea4aff0fa8fc60b98977ad5cc1f6fc260b3d0f3f577a4526dd",
-      "timestamp": 1700058794,
-      "l1origin": {
-        "hash": "0xfb429c1a5797d239b19d3101cf72683a4366f0ad2f0364c29786c32b629a878c",
-        "number": 323313
-      },
-      "sequenceNumber": 3
-    },
-    "pending_safe_l2": {
-      "hash": "0x7b7ed381aac9cec2a43b37c30779832cb8a82e044e38b4ada0f1c90719bd3d50",
-      "number": 30955,
-      "parentHash": "0x882503037e902b2476e1d4c308a895cc3b936c5ee19b45361dc26c9631d29ae0",
-      "timestamp": 1700059286,
-      "l1origin": {
-        "hash": "0x49ee7a7398bc5010b48de111fc0ebc99d63d38ac8233202c913646d901e15213",
-        "number": 323353
-      },
-      "sequenceNumber": 2
-    },
-    "queued_unsafe_l2": {
-      "hash": "0xeeb475b9876628f879c71e47d22e361c468b751b196a374b7a7f1a8f823aa7bc",
-      "number": 3516054,
-      "parentHash": "0xfdabc208e76735b29a2730d61923990e88f1e7f2f0b42fda0e91b5b813e2113b",
-      "timestamp": 1707029484,
-      "l1origin": {
-        "hash": "0x25c332267c9b3d7d3df832e2d98e31fbcc6e113a0494ed55673cbe456df7c32e",
-        "number": 873680
-      },
-      "sequenceNumber": 5
-    },
+..........
+..........
     "engine_sync_target": {
       "hash": "0x7b7ed381aac9cec2a43b37c30779832cb8a82e044e38b4ada0f1c90719bd3d50",
       "number": 30955,
@@ -313,30 +215,3 @@ vald's `config.toml`
         ```
     </tab-item>
 </tabs>
-
-### Common Node Operations
-
-First `cd` into the directory
-```bash
-cd $HOME/fraxtal-node/
-```
-
-To start
-```bash
-docker compose -f $DOCKER_COMPOSE_FILE_LOCATION up -d
-```
-
-To stop
-```bash
-docker compose -f $DOCKER_COMPOSE_FILE_LOCATION down
-```
-
-To update
-```bash
-docker compose -f $DOCKER_COMPOSE_FILE_LOCATION pull
-```
-
-To stop and wipe out everything
-```bash
-docker compose -f $DOCKER_COMPOSE_FILE_LOCATION down -v
-```
