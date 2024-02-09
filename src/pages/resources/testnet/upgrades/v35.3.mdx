@@ -1,8 +1,8 @@
-# Testnet-1 upgrade: v0.35.3
+# Testnet upgrade: v0.35
 
 import { Callout } from '/src/components/callout'
 
-## About the v0.35.3 upgrade
+## About the v0.35 upgrade
 
 This release adds the Axelar Virtual Machine to the network and adds support for CosmWasm contract creation.
 
@@ -14,10 +14,10 @@ Instructions for `2024-February-8` testnet upgrade to axelar-core `v0.35.3`, val
 Release can be found [here](https://github.com/axelarnetwork/axelar-core/releases/tag/v0.35.3).
 
 <Callout type="warning" emoji="⚠️">
-  Upgrade height will be determined once the governance upgrade proposal is ready. `9462850` is currently used as a placeholder.
+  Upgrade height will be determined once the governance upgrade proposal is ready. `[height]` is currently used as a placeholder.
 </Callout>
 
-Upgrade height `9462850` [countdown](https://testnet.mintscan.io/axelar-testnet/blocks/9462850)
+Upgrade height `[height]` [countdown](https://testnet.mintscan.io/axelar-testnet/blocks/[height])
 
 <Callout type="warning" emoji="⚠️">
   [Go v1.21](https://tip.golang.org/doc/go1.21) will be needed to build axelard.
@@ -26,10 +26,10 @@ Upgrade height `9462850` [countdown](https://testnet.mintscan.io/axelar-testnet/
 1. If you're a validator or have delegated to one, please vote for the upgrade proposal via
 
 ```bash
-axelard tx gov vote 46 yes --from validator
+axelard tx gov vote [proposal id] yes --from validator
 ```
 
-2. Wait for the proposed upgrade block, `9462850`. Your node will panic at that block height with a log: `{"level":"error","module":"consensus","err":"UPGRADE \"v0.35.5\" NEEDED at height: ",`. Stop your node after chain halt.
+2. Wait for the proposed upgrade block, `9462850`. Your node will panic at that block height with a log: `{"level":"error","module":"consensus","err":"UPGRADE \"v0.35\" NEEDED at height: [height]",`. Stop your node after chain halt.
 
 ```bash
 pkill -f 'axelard start'
