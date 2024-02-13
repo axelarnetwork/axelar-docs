@@ -1,14 +1,18 @@
 const loadSearch = async () => {
+  document.querySelector("#search")?.removeEventListener("click", loadSearch);
+  document.querySelector("#search")?.removeEventListener("keydown", loadSearch);
   const algoliasearch = (await import("algoliasearch/lite")).default;
   const instantsearch = (await import("instantsearch.js")).default;
   const { searchBox, hits } = await import("instantsearch.js/es/widgets");
-
-  console.log(algoliasearch);
 
   const searchClient = algoliasearch(
     "ECUG3H1E0M",
     "79f21d06bc68b25fa46dda5e23318a3f"
   );
+
+  /* Save search state so it's not lost with widget load */
+  const typed = (<HTMLInputElement>document.querySelector("#search input"))
+    .value;
 
   const search = instantsearch({
     indexName: "documentation",
@@ -19,6 +23,11 @@ const loadSearch = async () => {
       },
     },
     onStateChange: stateChange,
+    initialUiState: {
+      documentation: {
+        query: typed,
+      },
+    },
   });
 
   let timerId = 0;
@@ -29,9 +38,10 @@ const loadSearch = async () => {
       container: "#search",
       // Debounce the search for 300ms
       queryHook(query, refine) {
-        clearTimeout(timerId)
-        timerId = window.setTimeout(() => refine(query), debounceTime)
+        clearTimeout(timerId);
+        timerId = window.setTimeout(() => refine(query), debounceTime);
       },
+      placeholder: typed,
     }),
 
     hits({
@@ -39,10 +49,11 @@ const loadSearch = async () => {
       templates: {
         item(hit, { html, components, sendEvent }) {
           // Link directly to matched content
-          const matched = null;// = hit._highlightResult?.contents?.matchedWords[0];
+          const matched = null; // = hit._highlightResult?.contents?.matchedWords[0];
           return html`
             <a
-              href="${hit.url + (matched ? '#:~:text=' + encodeURIComponent(matched) : '')}"
+              href="${hit.url +
+              (matched ? "#:~:text=" + encodeURIComponent(matched) : "")}"
               onClick="${() => {
                 sendEvent("click", hit, "Search result clicked");
               }}"
@@ -76,3 +87,4 @@ const loadSearch = async () => {
 };
 
 document.getElementById("search")?.addEventListener("click", loadSearch);
+document.getElementById("search")?.addEventListener("keydown", loadSearch);
