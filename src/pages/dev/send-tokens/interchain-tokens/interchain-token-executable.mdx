@@ -1,0 +1,115 @@
+# Interchain Token Service Executable
+
+import { Callout } from "/src/components/callout";
+
+You can use the [Axelar Interchain Token Service (ITS)](https://github.com/axelarnetwork/interchain-token-service/tree/main) to create a new Interchain Token or upgrade existing ERC-20 tokens to an [Interchain Token](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/interchain-token/InterchainToken.sol). ITS also allows you to send messages along with Interchain Tokens across different blockchain networks.
+
+The Interchain Token Service is deployed to [`0xB5FB4BE02232B1bBA4dC8f81dc24C26980dE9e3C`](https://etherscan.io/address/0xB5FB4BE02232B1bBA4dC8f81dc24C26980dE9e3C) while the Interchain Token Factory is deployed to [`0x83a93500d23Fbc3e82B410aD07A6a9F7A0670D66`](https://etherscan.io/address/0x83a93500d23Fbc3e82B410aD07A6a9F7A0670D66).
+
+## Deploy a new Interchain Token
+
+To deploy a new Interchain Token on Chain A, use the [deployInterchainToken()](https://github.com/axelarnetwork/interchain-token-service/blob/4e5f878dafb764ad37728ea239850b6a18a21d85/contracts/InterchainTokenFactory.sol#L122) method in the [Interchain Token Factory contract](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/InterchainTokenFactory.sol).
+
+```Solidity
+/**
+ * @notice Deploys a new interchain token with specified parameters.
+ * @dev Creates a new token and optionally mints an initial amount to a specified minter.
+ * @param salt The unique salt for deploying the token.
+ * @param name The name of the token.
+ * @param symbol The symbol of the token.
+ * @param decimals The number of decimals for the token.
+ * @param initialSupply The amount of tokens to mint initially (can be zero).
+ * @param minter The address to receive the initially minted tokens.
+ * @return tokenId The tokenId corresponding to the deployed InterchainToken.
+ */
+function deployInterchainToken(
+    bytes32 salt,
+    string calldata name,
+    string calldata symbol,
+    uint8 decimals,
+    uint256 initialSupply,
+    address minter
+) external payable returns (bytes32 tokenId) {}
+```
+
+## Remotely deploy an Interchain Token
+
+Deploy an Interchain Token remotely from chain A to chain B using the [`deployRemoteInterchainToken()`](https://github.com/axelarnetwork/interchain-token-service/blob/4e5f878dafb764ad37728ea239850b6a18a21d85/contracts/InterchainTokenFactory.sol#L167) function in the [Interchain Token Factory](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/InterchainTokenFactory.sol) contract.
+
+```Solidity
+/**
+ * @notice Deploys a remote interchain token on a specified destination chain.
+ * @param originalChainName The name of the chain where the token originally exists.
+ * @param salt The unique salt for deploying the token.
+ * @param minter The address to distribute the token on the destination chain.
+ * @param destinationChain The name of the destination chain.
+ * @param gasValue The amount of gas to send for the deployment.
+ * @return tokenId The tokenId corresponding to the deployed InterchainToken.
+ */
+function deployRemoteInterchainToken(
+    string calldata originalChainName,
+    bytes32 salt,
+    address minter,
+    string memory destinationChain,
+    uint256 gasValue
+) external payable returns (bytes32 tokenId) {}
+```
+
+## Send a message with a token
+
+Send a message alongside a token using the [`callContractWithInterchainToken()`](https://github.com/axelarnetwork/interchain-token-service/blob/4e5f878dafb764ad37728ea239850b6a18a21d85/contracts/InterchainTokenService.sol#L491) function from the [Interchain Token Service](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/InterchainTokenService.sol). You should provide the `tokenId`, `destinationChain`, `destinationAddress`, `amount`, `message`, and `gasValue` as parameters.
+
+```Solidity
+/**
+ * @notice Initiates an interchain call contract with interchain token to a destination chain.
+ * @param tokenId The unique identifier of the token to be transferred.
+ * @param destinationChain The destination chain to send the tokens to.
+ * @param destinationAddress The address on the destination chain to send the tokens to.
+ * @param amount The amount of tokens to be transferred.
+ * @param data Additional data to be passed along with the transfer.
+ */
+function callContractWithInterchainToken(
+    bytes32 tokenId,
+    string calldata destinationChain,
+    bytes calldata destinationAddress,
+    uint256 amount,
+    bytes memory data,
+    uint256 gasValue
+) external payable {}
+```
+
+<Callout emoji="🚨">
+ Ensure the `destinationAddress` should be an address encoded as bytes. Use the [`toBytes()`](https://github.com/axelarnetwork/axelar-gmp-sdk-solidity/blob/main/contracts/libs/AddressBytes.sol#L30) method to quickly accomplish this on-chain.
+
+</Callout>
+
+## Execute with Interchain Token
+
+The [`InterchainTokenExecutable`](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/executable/InterchainTokenExecutable.sol) contains an [`_executeWithInterchainToken()`](https://github.com/axelarnetwork/interchain-token-service/blob/4e5f878dafb764ad37728ea239850b6a18a21d85/contracts/executable/InterchainTokenExecutable.sol#L74) function that is triggered on the destination chain after the `callContractWithInterchainToken()` function is executed on the source chain. The purpose of this function is to validate the contract call and then invoke your `_executeWithInterchainToken()` method. You can write any custom logic inside this method.
+
+```solidity
+/**
+ * @notice Internal function containing the logic to be executed with interchain token transfer.
+ * derived contracts must implement @dev Logic.
+ * @param commandId The unique message id.
+ * @param sourceChain The source chain of the token transfer.
+ * @param sourceAddress The source address of the token transfer.
+ * @param data The data associated with the token transfer.
+ * @param tokenId The token ID.
+ * @param token The token address.
+ * @param amount The amount of tokens being transferred.
+ */
+function _executeWithInterchainToken(
+    bytes32 commandId,
+    string calldata sourceChain,
+    bytes calldata sourceAddress,
+    bytes calldata data,
+    bytes32 tokenId,
+    address token,
+    uint256 amount
+) internal virtual;
+```
+
+## What’s next
+
+To find more examples of how to utilize the Interchain Token Service and test the Interchain Token Service Executable, please refer to the [`axelar-examples`](https://github.com/axelarnetwork/axelar-examples/blob/main/examples/evm/its-executable/README.md) repository on GitHub.
