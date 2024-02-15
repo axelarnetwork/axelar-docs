@@ -121,6 +121,10 @@ export const getNavigation = (section) => {
               href: "/dev/general-message-passing/example-usdc-cctp",
             },
             {
+              title: "Axelar Express",
+              href: "/dev/general-message-passing/express",
+            },
+            {
               title: "AxelarJS SDK",
               children: [
                 { title: "Introduction", href: "/dev/axelarjs-sdk/intro" },
