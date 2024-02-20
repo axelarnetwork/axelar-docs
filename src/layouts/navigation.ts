@@ -80,6 +80,10 @@ export const getNavigation = (section) => {
               href: "/dev/general-message-passing/monitoring",
             },
             {
+              title: "Verify GMP Transaction",
+              href: "/dev/general-message-passing/verify-gmp-tx",
+            },
+            {
               title: "Debug",
               children: [
                 {
