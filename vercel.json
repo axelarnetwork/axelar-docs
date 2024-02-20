@@ -23,7 +23,7 @@
     },
     {
       "source": "/resources/bug-bounty",
-      "destination": "/resources/community/bug-bounty",
+      "destination": "/resources/security",
       "permanent": true
     },
     {
