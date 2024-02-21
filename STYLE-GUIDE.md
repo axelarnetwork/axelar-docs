@@ -210,6 +210,12 @@ uint256 \_amount
 | --- | --- |
 |  For more information on General Message Passing, check out [Axelar's YouTube channel](https://www.youtube.com/channel/UCf8GFg58fdp1iZwLAOV1Tgg).  |  For more information on General Message Passing, check out Axelar's YouTube channel [here](https://www.youtube.com/channel/UCf8GFg58fdp1iZwLAOV1Tgg).  |
 
+* Use the root-relative path instead of a relative one when linking in docs. This makes links less likely to break if a file is moved into another folder.
+
+|  **Recommended**  |  **Not recommended** |
+| --- | --- |
+|  `Create a [custom token](/dev/glossary#custom-token).`  |  `Create a [custom token](../../reference/glossary/#custom-token).`  |
+
 ### Lists
 
 * When writing a list, either use complete sentences for all elements or no elements. Either every element has a period at the end, or none of them do. Do not mix and match.
