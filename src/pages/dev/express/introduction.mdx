@@ -11,7 +11,7 @@ The following are two example transactions that took place between the Linea and
 
 ## Express Executable vs. Valued Express Executable
 
-If your protocol requires Express support for arbitrary GMP messages, where the value of the payload can alter the state of the contract, you can use the Valued Express Executable.
+If your app requires Express support for arbitrary GMP messages, where the value of the payload can alter the state of the contract, you can use the Valued Express Executable.
 
 Regular Express Executables have tokens being sent with them. With the Valued Express Executable, the relayer is able to calculate the value of a GMP message in the event that the message itself has a value with no tokens being sent. 
 
@@ -21,10 +21,10 @@ If `tokenAddress` is `0`, then the value will be set in terms of the native toke
 
 Under the hood the relayer dynamically queries the value of the payload from the contract itself, in terms of how much amount and in what token it will need to loan if allowlisted.
 
-Protocols that integrate with the Valued Express Executable must keep the following in mind: 
+Apps that integrate with the Valued Express Executable must keep the following in mind: 
 
 1. They must be allowlisted since the relayer cannot trust arbitrary contracts.
-2. The value of the payload in terms of a token is not state or time dependent, so the value cannot change between the time the call is triggered on the source chain and when it is executed on the destination chain.This restriction can be removed, but since it will require the relayer to assume more risk, there will be an [additional fee to the protocol](#fees).
+2. The value of the payload in terms of a token is not state or time dependent, so the value cannot change between the time the call is triggered on the source chain and when it is executed on the destination chain.This restriction can be removed, but since it will require the relayer to assume more risk, there will be an [additional fee to the app](#fees).
 
 ## Express ITS tokens
 
@@ -32,14 +32,14 @@ Interchain Tokens deployed via the [Interchain Token Service](https://axelar.net
 
 ## Integrate with Express
 
-Protocols integrated with Express contracts will not automatically have transactions going through the Express service. They must be onboarded in coordination with the Axelar team to integrate with Express. 
+Apps integrated with Express contracts will not automatically have transactions going through the Express service. They must be onboarded in coordination with the Axelar team to integrate with Express. 
 
-1. Each protocol must [provide a fee](#fees) as insurance for the Express transaction.
+1. Each app must [provide a fee](#fees) as insurance for the Express transaction.
 2. Once liquidity has been provided, the contract must [inherit from either](#axelar-executable-vs-axelar-valued-express-executable) the [`AxelarExpressExecutable`](https://github.com/axelarnetwork/axelar-gmp-sdk-solidity/blob/main/contracts/express/AxelarExpressExecutable.sol) or the [`AxelarValuedExpressExecutable`](https://github.com/axelarnetwork/axelar-gmp-sdk-solidity/blob/main/contracts/express/AxelarValuedExpressExecutable.sol) contracts.
 
 ### Required onboarding information
 
-To onboard a protocol, you must provide the following:
+To onboard an app, you must provide the following:
 
 - The address of the contract integrating with Express
 - The assets (tokens) to be sent in Express transactions from that contract
@@ -84,6 +84,3 @@ In a non-Express transaction, an Axelar relayer triggers a transaction with eith
 // Subject to change, Ben to fact-check
 
 However, in an Express call, the execution on the destination chain occurs before the source chain finalizes. Thus, you cannot rely on the validation process. Instead, use the transaction's unique [command ID](https://github.com/axelarnetwork/axelar-core/blob/main/docs/cli/axelard_query_evm_command.md) to reconstruct the message.
-
-
-
