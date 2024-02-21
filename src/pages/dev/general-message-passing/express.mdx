@@ -20,7 +20,6 @@ Applications integrated with Express contracts will not automatically have trans
 3. The team must submit the required [onboarding information](#required-onboarding-information) to enable being onboarded to Axelar's Express infrastructure.
 
 ### Required Onboarding Information
-
 The following information is required for an Express Relayer to be configured for your protocol:
 
 1. The address of the contract integrating with Express
@@ -53,7 +52,7 @@ Interchain Tokens that were deployed via the [Interchain Token Service](https://
 Express transactions require an additional [fee](https://docs.axelar.dev/dev/reference/pricing#callcontractwithtokenexpress-gmp-express) alongside existing GMP fees. This extra fee goes to the Express Relayer for assuming the risk of an Express transaction. If the fee is not paid then the transaction will revert to a regular non-express GMP transaction. This fee is currently set to $1 per call.
 
 ### Gas Estimation
-The [estimateGasFee()](https://docs.axelar.dev/dev/axelarjs-sdk/axelar-query-api#estimategasfee) function provides the estimated cost when estimating gas for an interchain transaction. This same function can be used to estimate gas costs for an Express transaction. You'll just need to provide some more information to help it specify an accurate gas estimation.
+The [`estimateGasFee()`](https://docs.axelar.dev/dev/axelarjs-sdk/axelar-query-api#estimategasfee) function provides the estimated cost when estimating gas for an interchain transaction. This same function can be used to estimate gas costs for an Express transaction. You'll just need to provide some more information to help it specify an accurate gas estimation.
 
 For example, in an Express transaction from Polygon to Avalanche:
 
@@ -81,7 +80,7 @@ await api.estimateGasFee(
 Using Axelar Express comes with risks. Namely if anything changes on the source chain from the time the transaction is sent to the time it is finalized (due to a [block reorg](https://cointelegraph.com/explained/what-is-chain-reorganization-in-blockchain-technology) for example) and the transaction on the destination chain has already executed then that could lead to lost funds. These funds would be lost as the transaction will have been instantly executed on the destination chain on the assumption of logic that never took place on the source chain. Due to the potential risk here, liquidity must be provided for the Express Relayers by a party to assume the risk that the relayer is taking when it loans out funds on the destination chain.
 
 ### Execution
-On the destination chain an Axelar relayer triggers the `_execute()`/ `_executeWithToken()` function to trigger a transaction. The GMP payload being used can be assumed to be true as it passes through the [validation process](https://github.com/axelarnetwork/axelar-cgp-solidity/blob/4d01eb6ea1b5413520d9ecab804f815103021148/contracts/AxelarGateway.sol#L233) on the Axelar Gateway. In an express call however the execution on the destination chain occurs before the source chain finalizes, meaning that you cannot rely on this validation process. To mitigate, data that is being passed in you can make use of the unique [CommandId](https://github.com/axelarnetwork/axelar-core/blob/main/docs/cli/axelard_query_evm_command.md). The `CommandId` is a unique identifier, which is available on the destination chain you're transacting to. With your unique commanId you can reconstruct the message that was passed in. 
+On the destination chain an Axelar relayer triggers the `_execute()`/ `_executeWithToken()` function to trigger a transaction. The GMP payload being used can be assumed to be true as it passes through the [validation process](https://github.com/axelarnetwork/axelar-cgp-solidity/blob/4d01eb6ea1b5413520d9ecab804f815103021148/contracts/AxelarGateway.sol#L233) on the Axelar Gateway. In an express call however the execution on the destination chain occurs before the source chain finalizes, meaning that you cannot rely on this validation process. To mitigate, data that is being passed in you can make use of the unique [`CommandId`](https://github.com/axelarnetwork/axelar-core/blob/main/docs/cli/axelard_query_evm_command.md). The `CommandId` is a unique identifier, which is available on the destination chain you're transacting to. With your unique commanId you can reconstruct the message that was passed in. 
 
 ## Example
-To see how to execute with Axelar Express at the contract level follow this example, see [here](https://github.com/axelarnetwork/axelar-examples/tree/main/examples/evm/call-contract-with-token-express). The implementation is very similar to a regular Axelar GMP integration, however notice that the contract is inherting from `AxelarExpressExecutable` rather than `AxelarExecutable`.
+To see how to execute with Axelar Express at the contract level follow this example, see the [the Call Contract with Token (Express) sample contract](https://github.com/axelarnetwork/axelar-examples/tree/main/examples/evm/call-contract-with-token-express). The implementation is very similar to a regular Axelar GMP integration, however notice that the contract is inherting from `AxelarExpressExecutable` rather than `AxelarExecutable`.
