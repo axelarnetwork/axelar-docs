@@ -76,10 +76,6 @@ export const getNavigation = (section) => {
               href: "/dev/general-message-passing/gmp-tokens-with-messages",
             },
             {
-              title: "Express",
-              href: "/dev/general-message-passing/express",
-            },
-            {
               title: "Monitor Transaction State",
               href: "/dev/general-message-passing/monitoring",
             },
@@ -116,6 +112,10 @@ export const getNavigation = (section) => {
                   href: "/dev/general-message-passing/developer-guides/example-gmp",
                 },
               ],
+            },
+            {
+              title: "Express Service",
+              href: "/dev/general-message-passing/express",
             },
           ],
         },
