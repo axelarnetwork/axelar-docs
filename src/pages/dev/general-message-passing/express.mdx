@@ -13,7 +13,7 @@ Think of it as a loan: funds on the destination chain are "loaned out" to the ap
 
 ## Integrate your app with the Express Service
 
-**Applications integrated with Express contracts will not automatically have transactions going through the Express service.** They must be onboarded by the Interop Labs team to integrate with Express. 
+**Your application must be onboarded by the Interop Labs team to integrate with Express.** Simply extending the `AxelarExpressExecutable` or `AxelarValuedExpressExecutable` contracts is not enough.
 
 To onboard your app to the Express Service:
 
@@ -91,7 +91,7 @@ Since the Express service instantly executes the transaction on the destination 
 
 These funds would be lost because the transaction will have been instantly executed on the destination chain on the assumption of logic that never took place on the source chain.
 
-To mitigate this risk, the transacting party must provide liquidity to the Express relayers for all Express transactions. This liquidity will act as insurance against the risk the relayer takes when loaning out funds on the destination chain. The amount of funds should match the value of the transaction itself, and will be returned when the transaction has finalized on the source chain.
+To mitigate this risk, liquidity must be provided to the Express relayers for all Express transactions. This liquidity will act as insurance against the risk the relayer takes when loaning out funds on the destination chain. The amount of funds should match the value of the transaction itself, and will be returned when the transaction has finalized on the source chain.
 
 ### Payload validity during execution
 
