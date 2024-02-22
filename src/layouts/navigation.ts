@@ -28,6 +28,10 @@ export const getNavigation = (section) => {
                   href: "/dev/send-tokens/interchain-tokens/upgrade-tokens",
                 },
                 {
+                  title: "Interchain Token Executable",
+                  href: "/dev/send-tokens/interchain-tokens/interchain-token-executable"
+                },
+                {
                   title: "Rate Limit",
                   href: "/dev/reference/interchain-token-service-rate-limit",
                 },
@@ -70,6 +74,10 @@ export const getNavigation = (section) => {
             {
               title: "Send Messages with Tokens",
               href: "/dev/general-message-passing/gmp-tokens-with-messages",
+            },
+            {
+              title: "Express",
+              href: "/dev/general-message-passing/express",
             },
             {
               title: "Monitor Transaction State",
