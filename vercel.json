@@ -27,6 +27,11 @@
       "permanent": true
     },
     {
+      "source": "/resources/community/bug-bounty",
+      "destination": "/resources/security",
+      "permanent": true
+    },
+    {
       "source": "/resources/axelarscan-add",
       "destination": "/resources/axelarscan/axelarscan-add",
       "permanent": true
