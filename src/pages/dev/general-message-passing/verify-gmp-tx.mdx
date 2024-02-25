@@ -4,7 +4,7 @@ Axelar enables messages to be sent between two different blockchains. When a mes
 
 ## Ethereum Virtual Machine (EVM)
 
-On EVM based chains such as Ethereum or Avalanche, integrations to Axelar are set via the [Gateway Contract](https://github.com/axelarnetwork/axelar-cgp-solidity/blob/main/contracts/AxelarGateway.sol). The Gateway is used on both the source and the destination chain. On the source chain it is used to trigger the interchain transaction, on the destination chain it is triggered by the [Axelar Executable](https://github.com/axelarnetwork/axelar-gmp-sdk-solidity/blob/main/contracts/executable/AxelarExecutable.sol) to [validate](https://github.com/axelarnetwork/axelar-cgp-solidity/blob/2023fadee722c3896f1071c2a9d578436643c5a7/contracts/AxelarGateway.sol#L233) an incoming GMP message. 
+On EVM based chains such as Ethereum or Avalanche, connections to Axelar are initiated via the [Gateway Contract](https://github.com/axelarnetwork/axelar-cgp-solidity/blob/main/contracts/AxelarGateway.sol). The Gateway is used on both the source and the destination chain. On the source chain it is used to trigger the interchain transaction, on the destination chain it is triggered by the [Axelar Executable](https://github.com/axelarnetwork/axelar-gmp-sdk-solidity/blob/main/contracts/executable/AxelarExecutable.sol) to [validate](https://github.com/axelarnetwork/axelar-cgp-solidity/blob/2023fadee722c3896f1071c2a9d578436643c5a7/contracts/AxelarGateway.sol#L233) an incoming GMP message. 
 
 #### Validate Contract Call
 The `validateContractCall()` function is called on every inbound GMP message to ensure that the incoming message is authentic. This function receives the relevant parameters of a GMP call including;
