@@ -1,43 +1,77 @@
 import AddChain from "../web3";
 import Copy from "../copy";
 import { ellipse } from "../../utils";
-import evm_chains from "../../data/evm_chains.json";
-import gateways from "../../data/gateways.json";
-import gas_services from "../../data/gas_services.json";
+import { useEffect, useState } from "react";
 
 export default ({ environment = "mainnet" }) => {
-  const _evm_chains = evm_chains?.[environment] || [];
-  const _gateways = gateways?.[environment] || [];
-  const _gas_services = gas_services?.[environment] || [];
+  const CHAIN_CONFIGS = {
+    mainnet:
+      "https://axelar-mainnet.s3.us-east-2.amazonaws.com/configs/mainnet-config-1.x.json",
+    testnet:
+      "https://axelar-testnet.s3.us-east-2.amazonaws.com/configs/testnet-config-1.x.json",
+  };
+
+  const [data, setData] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
+  useEffect(() => {
+    const fetchData = async () => {
+      setIsLoading(true);
+      try {
+        const response = await fetch(CHAIN_CONFIGS[environment]);
+        console.log("fetching", CHAIN_CONFIGS[environment]);
+        const data = await response.json();
+        console.log("data", data);
+        setData(data);
+      } catch (error) {
+        setError(error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [CHAIN_CONFIGS]);
 
   return (
     <div className="resource-grid">
-      {_evm_chains
-        .filter(c => !c?.is_staging)
-        .map((c, i) => {
-          const {
-            id,
-            chain_id,
-            network_id,
-            name,
-            provider_params,
-            image,
-          } = { ...c };
+      {isLoading && <p>Loading chain data...</p>}
+      {error && <p>Error: {error.message}</p>}
+      {data &&
+        Object.values(data.chains)
+          .filter((chain) => chain.chainType == "evm")
+          .map((chain) => {
+            const newChain = {};
 
-          const explorer_url = provider_params?.[0]?.blockExplorerUrls?.[0];
-          const gateway_contract_address = _gateways.find(_c => _c?.id === id)?.address;
-          const gas_service_address = _gas_services.find(_c => _c?.id === id)?.address;
-
-          return (
-            <div
-              key={i}
-              className="resource-card"
-            >
+            newChain.id = chain.id;
+            newChain.chain_id = chain.externalChainId;
+            newChain.network_id = chain.id;
+            newChain.name = chain.displayName;
+            newChain.image = chain.iconUrl;
+            newChain.provider_params = {
+              chainId: "0x" + parseInt(newChain.chain_id, 10).toString(16),
+              chainName: chain.displayName,
+              rpcUrls: chain.rpcUrls,
+              nativeCurrency: chain.nativeCurrency,
+              blockExplorerUrls: chain.blockExplorers?.map(
+                (explorer) => explorer.url
+              ),
+            };
+            newChain.explorer_url =
+              newChain.provider_params.blockExplorerUrls?.[0] || null;
+            newChain.gateway_contract_address =
+              chain.config?.contracts?.["AxelarGateway"] || "missing";
+            newChain.gas_service_address =
+              chain.config?.contracts?.["AxelarGasServce"] || "missing";
+            return newChain;
+          })
+          .map((chain) => {
+            <div className="resource-card">
               <div className="flex items-start justify-between">
                 <div className="flex items-center">
-                  {image && (
+                  {chain.image && (
                     <img
-                      src={image}
+                      src={chain.image}
                       alt=""
                       width={32}
                       height={32}
@@ -46,17 +80,14 @@ export default ({ environment = "mainnet" }) => {
                   )}
                   <div className="flex flex-col">
                     <span className="text-base font-semibold">
-                      {name}
+                      {chain.name}
                     </span>
                     <span className="text-gray-400 dark:text-gray-500 text-sm font-medium">
-                      Chain ID: {chain_id}
+                      Chain ID: {chain.chain_id}
                     </span>
                   </div>
                 </div>
-                <AddChain 
-                  environment={environment}
-                  chain={id}
-                />
+                <AddChain environment={chain.environment} chain={chain.id} />
               </div>
               <div className="flex flex-col flex-wrap justify-between">
                 <span className="whitespace-nowrap text-sm text-gray-600 dark:text-gray-400">
@@ -65,8 +96,8 @@ export default ({ environment = "mainnet" }) => {
                 <div className="flex items-center text-sm space-x-1">
                   <Copy
                     size={18}
-                    title={network_id}
-                    value={network_id}
+                    title={chain.network_id}
+                    value={chain.network_id}
                   />
                 </div>
               </div>
@@ -75,25 +106,25 @@ export default ({ environment = "mainnet" }) => {
                   Gateway Contract:
                 </span>
                 <div className="flex items-center text-sm space-x-1">
-                  {gateway_contract_address ?
+                  {chain.gateway_contract_address ? (
                     <a
-                      href={`${explorer_url}/address/${gateway_contract_address}`}
+                      href={`${chain.explorer_url}/address/${chain.gateway_contract_address}`}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="no-underline text-blue-500 dark:text-white font-semibold"
                     >
-                      {ellipse(gateway_contract_address, 14)}
+                      {/* {ellipse(chain.gateway_contract_address, 14)} */}
                     </a>
-                    :
+                  ) : (
                     <span className="text-gray-500 dark:text-white font-semibold">
                       -
                     </span>
-                  }
-                  {gateway_contract_address && (
+                  )}
+                  {chain.gateway_contract_address && (
                     <Copy
                       size={18}
                       hide={true}
-                      value={gateway_contract_address}
+                      value={chain.gateway_contract_address}
                     />
                   )}
                 </div>
@@ -103,33 +134,31 @@ export default ({ environment = "mainnet" }) => {
                   Gas Service Contract:
                 </span>
                 <div className="flex items-center text-sm space-x-1">
-                  {gas_service_address ?
+                  {chain.gas_service_address ? (
                     <a
-                      href={`${explorer_url}/address/${gas_service_address}`}
+                      href={`${chain.explorer_url}/address/${chain.gas_service_address}`}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="no-underline text-blue-500 dark:text-white font-semibold"
                     >
-                      {ellipse(gas_service_address, 14)}
+                      {ellipse(chain.gas_service_address, 14)}
                     </a>
-                    :
+                  ) : (
                     <span className="text-gray-500 dark:text-white font-semibold">
                       -
                     </span>
-                  }
-                  {gas_service_address && (
+                  )}
+                  {chain.gas_service_address && (
                     <Copy
                       size={18}
                       hide={true}
-                      value={gas_service_address}
+                      value={chain.gas_service_address}
                     />
                   )}
                 </div>
               </div>
-            </div>
-          );
-        })
-      }
+            </div>;
+          })}
     </div>
   );
 };
