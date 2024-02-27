@@ -31,7 +31,7 @@ export default ({ environment = "mainnet" }) => {
     };
 
     fetchData();
-  }, [CHAIN_CONFIGS]);
+  }, []);
 
   return (
     <div className="resource-grid">
@@ -60,13 +60,14 @@ export default ({ environment = "mainnet" }) => {
             newChain.explorer_url =
               newChain.provider_params.blockExplorerUrls?.[0] || null;
             newChain.gateway_contract_address =
-              chain.config?.contracts?.["AxelarGateway"] || "missing";
+              chain.config?.contracts?.["AxelarGateway"].address;
             newChain.gas_service_address =
-              chain.config?.contracts?.["AxelarGasServce"] || "missing";
+              chain.config?.contracts?.["AxelarGasService"].address;
+            console.log("new chain data is", newChain);
             return newChain;
           })
-          .map((chain) => {
-            <div className="resource-card">
+          .map((chain, i) => (
+            <div className="resource-card" key={i}>
               <div className="flex items-start justify-between">
                 <div className="flex items-center">
                   {chain.image && (
@@ -157,8 +158,8 @@ export default ({ environment = "mainnet" }) => {
                   )}
                 </div>
               </div>
-            </div>;
-          })}
+            </div>
+          ))}
     </div>
   );
 };
