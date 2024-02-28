@@ -13,6 +13,11 @@ With GMP, you can:
   **NOTE:** The security of your contracts is limited to the security of the chains they integrate with. Since blockchains can have different security practices, we recommend doing due diligence on all chains your contract will be deployed to.
 </Callout>
 
+<Callout emoji="🚨">
+  **NOTE:** GMP Transactions using `callContractWithToken` sent to the Axelar chain itself are not yet supported. Axelar only supports GMP call without token from Axelar to chain X. Transactions sent to the Axelar chain as the destination chain will be stuck until support is rolled out.
+</Callout>
+
+
 ### Prerequisites
 - For GMP to work, chains A and B must be EVM or Cosmos with a deployed Axelar Gateway contract. We're adding new chains and chain technology stacks all of the time. This document primarily focuses on EVM chains and Solidity code, but you can [learn about interacting with Cosmos GMP](./cosmos-gmp).
 - The application's executable contract must be deployed on the destination contract.
