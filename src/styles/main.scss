@@ -1,10 +1,11 @@
-@import url("https://fonts.googleapis.com/css2?family=Space+Grotesk&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;700&display=swap");
 @import "dark.scss";
 
 $page-width: 1400px;
 $font: "Space Grotesk", sans-serif;
 $nav-size: 64px;
-$text: #1f2937;
+$text: rgb(31, 41, 55);
+$link-text: rgb(33, 100, 207);
 
 * {
   margin: 0;
@@ -36,8 +37,10 @@ button {
   }
 }
 article a,
-article a:hover {
-  color: rgb(33, 100, 207);
+article a:hover,
+#toc a,
+#toc a:hover {
+  color: $link-text;
 }
 h1 {
   font-size: 2.25rem;
@@ -154,6 +157,11 @@ ul li {
 .mainBody {
   flex: 1;
   min-width: 0;
+  display: flex;
+  width: calc(100vw - 32px - 300px);
+}
+article {
+  overflow-x: hidden;
 }
 .sideNav {
   width: 300px;
@@ -265,6 +273,24 @@ body pre[class*="language-"] {
 }
 div.code-toolbar {
   color: white;
+}
+#toc {
+  display: block;
+  position: sticky;
+  top: 0.5rem;
+  padding-left: 1rem;
+  height: fit-content;
+  font-weight: bold;
+  ul {
+    list-style-type: none;
+    padding-left: 1.2rem;
+  }
+  > ul {
+    width: 300px;
+    padding-left: 0;
+    font-weight: normal;
+    font-size: 14px;
+  }
 }
 
 .callout {

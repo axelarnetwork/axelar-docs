@@ -1,0 +1,47 @@
+---
+import TableOfContentsHeading from "./TableOfContentsHeading.astro";
+
+const { headings } = Astro.props;
+
+const toc = buildToc(headings);
+
+function buildToc(headings) {
+  const toc: any[] = [];
+  const parentHeadings = new Map();
+  headings.forEach((h) => {
+    const heading = { ...h, subheadings: [] };
+    parentHeadings.set(heading.depth, heading);
+    // Change 2 to 1 if your markdown includes your <h1>
+    if (heading.depth === 2) {
+      toc.push(heading);
+    } else if (heading.depth < 4 && heading.depth > 1) {
+      if (!parentHeadings.get(heading.depth - 1)) {
+        console.log("No parent heading for", heading);
+        return;
+      }
+      parentHeadings.get(heading.depth - 1).subheadings.push(heading);
+    } else {
+      // Skip headings that are too deep or shallow
+    }
+  });
+  return toc;
+}
+---
+
+<div id="toc">
+  <strong>On this page</strong>
+  <ul>
+    {toc.map((heading) => <TableOfContentsHeading heading={heading} />)}
+  </ul>
+  <!-- <svg class="toc-progress" xmlns="http://www.w3.org/2000/svg">
+    <path
+      class="toc-marker"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-dasharray="1 0 0 1000"
+      stroke-dashoffset="1"
+      stroke-linecap="round"
+      stroke-linejoin="round"></path>
+  </svg> -->
+</div>
