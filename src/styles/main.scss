@@ -458,12 +458,7 @@ astro-island button {
 .card span {
   color: #1b62d6;
 }
-@media (max-width: 768px) {
-  .card-grid {
-    display: flex;
-    flex-direction: column;
-  }
-}
+
 .resource-card {
   padding: 1rem;
   border: 1px solid rgb(229, 231, 235);
@@ -698,7 +693,18 @@ astro-island button {
   display: none;
 }
 
-/* Mobile styles */
+/* Only render TOC if we have space */
+@media (max-width: 950px) {
+  #toc {
+    display: none;
+  }
+}
+@media (max-width: 768px) {
+  .card-grid {
+    display: flex;
+    flex-direction: column;
+  }
+}
 @media (max-width: 650px) {
   #page {
     padding: 8px;
