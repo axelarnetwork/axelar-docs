@@ -29,7 +29,7 @@ export const getNavigation = (section) => {
                 },
                 {
                   title: "Interchain Token Executable",
-                  href: "/dev/send-tokens/interchain-tokens/interchain-token-executable"
+                  href: "/dev/send-tokens/interchain-tokens/interchain-token-executable",
                 },
                 {
                   title: "Rate Limit",
@@ -256,7 +256,6 @@ export const getNavigation = (section) => {
               title: "Register broadcaster proxy",
               href: "/validator/setup/register-broadcaster",
             },
-            { title: "Health check", href: "/validator/setup/health-check" },
             { title: "Manual setup", href: "/validator/setup/manual" },
           ],
         },
@@ -340,7 +339,10 @@ export const getNavigation = (section) => {
         {
           title: "Amplifier",
           children: [
-            { title: "Become a Verifier", href: "/validator/amplifier/verifier-onboarding" },
+            {
+              title: "Become a Verifier",
+              href: "/validator/amplifier/verifier-onboarding",
+            },
           ],
         },
       ],
