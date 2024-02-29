@@ -121,7 +121,18 @@ blast-node-blast-geth-1  | INFO [02-04|07:42:29.722] Chain head was updated     
 blast-node-blast-geth-1  | INFO [02-04|07:42:29.734] Starting work on payload                 id=0x95a98a726f1398ee
 blast-node-blast-geth-1  | INFO [02-04|07:42:29.751] Imported new potential chain segment     number=39538 hash=219454..97cd30 blocks=1 txs=1 mgas=0.051 elapsed=16.713ms    mgasps=3.022  age=2mo2w6d  triedirty=0.00B
 ```
-It will not import new headers until your op-node is synced
+It will not import new headers until your op-node is synced, once your op-node is synced, your blast-geth logs should look like this
+
+```bash
+blast-node-blast-geth-1  | INFO [02-29|08:08:15.219] Starting work on payload                 id=0x48323feb74b0d35a
+blast-node-blast-geth-1  | INFO [02-29|08:08:15.237] Imported new potential chain segment     number=3083 hash=96c535..584bd5 blocks=1 txs=1 mgas=0.047 elapsed=16.962ms    mgasps=2.768 age=1mo3w1d snapdiffs=606.60KiB triedirty=0.00B
+blast-node-blast-geth-1  | INFO [02-29|08:08:15.243] Chain head was updated                   number=3083 hash=96c535..584bd5 root=52730a..6a9c02 elapsed=5.42431ms   age=1mo3w1d
+blast-node-blast-geth-1  | INFO [02-29|08:08:15.256] Starting work on payload                 id=0x180234ae531457a1
+blast-node-blast-geth-1  | INFO [02-29|08:08:15.274] Imported new potential chain segment     number=3084 hash=9687bc..de7e94 blocks=1 txs=1 mgas=0.047 elapsed=16.911ms    mgasps=2.776 age=1mo3w1d snapdiffs=606.78KiB triedirty=0.00B
+blast-node-blast-geth-1  | INFO [02-29|08:08:15.285] Chain head was updated                   number=3084 hash=9687bc..de7e94 root=8081fb..43e327 elapsed=10.075637ms age=1mo3w1d
+blast-node-blast-geth-1  | INFO [02-29|08:08:15.307] Starting work on payload                 id=0x44c95802c3652dbd
+```
+
 
 #### Verify OP node logs
 
