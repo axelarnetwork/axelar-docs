@@ -256,7 +256,6 @@ export const getNavigation = (section) => {
               title: "Register broadcaster proxy",
               href: "/validator/setup/register-broadcaster",
             },
-            { title: "Health check", href: "/validator/status/health-check" },
             { title: "Manual setup", href: "/validator/setup/manual" },
           ],
         },
