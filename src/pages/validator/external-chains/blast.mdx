@@ -25,59 +25,27 @@ git clone https://github.com/blast-io/deployment.git blast-node
 cd blast-node
 ```
 
-## Set Environment Variables
-Note: Update your shell profile in accordance with the shell you are using
-
-<tabs>
-    <tab-item title="Mainnet">
-        ```bash
-        echo export ENVIRONMENT=mainnet >> $HOME/.profile
-        echo export DOCKER_COMPOSE_FILE_LOCATION=$HOME/blast-node/docker-compose.yml >> $HOME/.profile
-        ```
-    </tab-item>
-    <tab-item title="Testnet">
-        ```bash
-        echo export ENVIRONMENT=testnet >> $HOME/.profile
-        echo export DOCKER_COMPOSE_FILE_LOCATION=$HOME/blast-node/docker-compose.yml >> $HOME/.profile
-        ```
-    </tab-item>
-</tabs>
-
-Apply your changes
+## Set Node Config Environment Variables
 ```bash
-source $HOME/.profile
+cp .env.example .env
 ```
-
-## Set node config
-
-<tabs>
-    <tab-item title="Mainnet">
-        ```bash
-        cp .env.example .env
-        ```
-
-    </tab-item>
-    <tab-item title="Testnet">
-        ```bash
-        cp .env.example .env
-        ```
-    </tab-item>
-</tabs>
 
 Set the following config options in `blast-node/.env.testnet` or `blast-node/.env`:
 ```bash
+# NETWORK should be mainnet or sepolia
+NETWORK=mainnet
 # Relative path to the directory that will store chain data
 GETH_DATA_DIR=blast-geth-data
 # Your Sepolia L1 RPC endpoint
-L1_RPC_URL="https://eth-sepolia.g.alchemy.com/v2/xxxxxx"
-# The type of RPC provider; valid options are: alchemy, quicknode, infura, parity, nethermind, debug_geth, erigon, basic, any
+L1_RPC_URL="your_l1_rpc_url"
+# The type of RPC provider, valid options are alchemy, quicknode, infura, parity, nethermind, debug_geth, erigon, basic, any
 # Axelar Team recommends you to run your own
 L1_RPC_KIND="any"
 ```
 
 ## Start the node
 ```bash
-docker compose -f $DOCKER_COMPOSE_FILE_LOCATION up -d
+docker compose up -d
 ```
 
 This should show an output like this:
@@ -93,7 +61,7 @@ This should show an output like this:
 
 After it is done, verify by listing the services and their status
  ```bash
-docker compose -f $DOCKER_COMPOSE_FILE_LOCATION ps
+docker compose ps
 ```
 
 You should see these 2 services running
@@ -108,7 +76,7 @@ blast-node-op-node-1      blastio/blast-optimism:testnet-sepolia   "op-node --l1
 #### Verify blast geth logs
 
 ```bash
-docker compose -f $DOCKER_COMPOSE_FILE_LOCATION logs blast-geth --since 2m -f
+docker compose logs blast-geth --since 2m -f
 ```
 
 ```bash
@@ -137,7 +105,7 @@ blast-node-blast-geth-1  | INFO [02-29|08:08:15.307] Starting work on payload   
 #### Verify OP node logs
 
 ```bash
-docker compose -f $DOCKER_COMPOSE_FILE_LOCATION logs op-node --since 2m -f
+docker compose logs op-node --since 2m -f
 ```
 You should see logs like
 
