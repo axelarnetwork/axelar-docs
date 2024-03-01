@@ -30,18 +30,37 @@ cd blast-node
 cp .env.example .env
 ```
 
-Set the following config options in `blast-node/.env.testnet` or `blast-node/.env`:
-```bash
-# NETWORK should be mainnet or sepolia
-NETWORK=mainnet
-# Relative path to the directory that will store chain data
-GETH_DATA_DIR=blast-geth-data
-# Your Sepolia L1 RPC endpoint
-L1_RPC_URL="your_l1_rpc_url"
-# The type of RPC provider, valid options are alchemy, quicknode, infura, parity, nethermind, debug_geth, erigon, basic, any
-# Axelar Team recommends you to run your own
-L1_RPC_KIND="any"
-```
+Set the following config options in `blast-node/.env`:
+
+<tabs>
+    <tab-item title="Mainnet">
+        ```bash
+        # NETWORK should be mainnet or sepolia
+        NETWORK=mainnet
+        # Relative path to the directory that will store chain data
+        GETH_DATA_DIR=blast-geth-data
+        # Your Sepolia L1 RPC endpoint
+        L1_RPC_URL="your_l1_rpc_url"
+        # The type of RPC provider, valid options are alchemy, quicknode, infura, parity, nethermind, debug_geth, erigon, basic, any
+        # Axelar Team recommends you to run your own
+        L1_RPC_KIND="any"
+        ```
+    </tab-item>
+    <tab-item title="Testnet">
+        ```bash
+        # NETWORK should be mainnet or sepolia
+        NETWORK=sepolia
+        # Relative path to the directory that will store chain data
+        GETH_DATA_DIR=blast-geth-data
+        # Your Sepolia L1 RPC endpoint
+        L1_RPC_URL="your_l1_rpc_url"
+        # The type of RPC provider, valid options are alchemy, quicknode, infura, parity, nethermind, debug_geth, erigon, basic, any
+        # Axelar Team recommends you to run your own
+        L1_RPC_KIND="any"
+        ```
+    </tab-item>
+</tabs>
+
 
 ## Start the node
 ```bash
@@ -66,9 +85,9 @@ docker compose ps
 
 You should see these 2 services running
 ```bash
-NAME                      IMAGE                                    COMMAND                  SERVICE             CREATED              STATUS              PORTS
-blast-node-blast-geth-1   blastio/blast-geth:testnet-sepolia       "geth --datadir=/bla…"   blast-geth          About a minute ago   Up 58 seconds       8545-8546/tcp, 30303/tcp, 0.0.0.0:9545-9546->9545-9546/tcp, :::9545-9546->9545-9546/tcp, 30303/udp
-blast-node-op-node-1      blastio/blast-optimism:testnet-sepolia   "op-node --l1=https:…"   op-node             About a minute ago   Up 58 seconds       0.0.0.0:9003->9003/tcp, :::9003->9003/tcp
+NAME                      IMAGE                            COMMAND                  SERVICE             CREATED             STATUS              PORTS
+blast-node-blast-geth-1   blastio/blast-geth:sepolia       "geth --datadir=/bla…"   blast-geth          4 hours ago         Up 4 hours          8545-8546/tcp, 30303/tcp, 0.0.0.0:9545-9546->9545-9546/tcp, :::9545-9546->9545-9546/tcp, 30303/udp
+blast-node-op-node-1      blastio/blast-optimism:sepolia   "op-node --l1=https:…"   op-node             4 hours ago         Up 4 hours          0.0.0.0:9003->9003/tcp, :::9003->9003/tcp
 ```
 
 ## Check logs
