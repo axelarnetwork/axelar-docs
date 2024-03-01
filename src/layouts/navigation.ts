@@ -270,6 +270,7 @@ export const getNavigation = (section) => {
             },
             { title: "Base", href: "/validator/external-chains/base" },
             { title: "Binance", href: "/validator/external-chains/binance" },
+            { title: "Blast", href: "/validator/external-chains/blast" },
             { title: "Celo", href: "/validator/external-chains/celo" },
             {
               title: "Centrifuge",

@@ -138,10 +138,12 @@ fraxtal-node-testnet-node-1  | t=2024-02-04T07:41:42+0000 lvl=warn msg="tx in in
 ### RPC Endpoint
 
 ```bash
-echo "$(curl -4 ifconfig.co):7545"
+echo "$(curl -4 ifconfig.co):8545"
 ```
 
 #### Method:
+Check your op node status at port 7545 by
+
 ```bash
 curl -X POST -H "Content-Type: application/json" --data     '{"jsonrpc":"2.0","method":"optimism_syncStatus","params":[],"id":1}' [rpc] | jq
 ```
@@ -186,7 +188,7 @@ You can check your status by connecting to geth console
 ```bash
 docker exec -it fraxtal-node-$ENVIRONMENT-geth-1 geth attach http://localhost:8545
 > eth.blockNumber
-35065 # it will show you the latest block - number here is just an example
+94078 # it will show you the latest block - number here is just an example
 
 > eth.syncing
 false

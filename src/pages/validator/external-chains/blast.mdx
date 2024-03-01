@@ -1,0 +1,204 @@
+# Blast
+
+Instructions to set up your blast node.
+
+## Requirements
+
+- [Setup your Axelar validator](/validator/setup)
+- Minimum hardware requirements: 8 AWS vCPU+, 8GB RAM, 512GB of SSD free storage space.
+- MacOS or Ubuntu 22.04 (tested on 22.04)
+- [Official Github Documentation](https://github.com/blast-io/deployment)
+- [Official Documentation for Node Providers](https://docs.blast.io/tools/node-providers)
+
+## Prerequisites
+
+- [Common Docker Compose Commands](./optimism#common-node-operations)
+```bash
+sudo apt-get install jq -y
+snap install docker
+```
+
+## Clone Repo
+
+```bash
+git clone https://github.com/blast-io/deployment.git blast-node
+cd blast-node
+```
+
+## Set Node Config Environment Variables
+```bash
+cp .env.example .env
+```
+
+Set the following config options in `blast-node/.env`:
+
+<tabs>
+    <tab-item title="Mainnet">
+        ```bash
+        # NETWORK should be mainnet or sepolia
+        NETWORK=mainnet
+        # Relative path to the directory that will store chain data
+        GETH_DATA_DIR=blast-geth-data
+        # Your Ethereum L1 RPC endpoint
+        L1_RPC_URL="your_l1_rpc_url"
+        # The type of RPC provider, valid options are alchemy, quicknode, infura, parity, nethermind, debug_geth, erigon, basic, any
+        # Axelar Team recommends you to run your own
+        L1_RPC_KIND="any"
+        ```
+    </tab-item>
+    <tab-item title="Testnet">
+        ```bash
+        # NETWORK should be mainnet or sepolia
+        NETWORK=sepolia
+        # Relative path to the directory that will store chain data
+        GETH_DATA_DIR=blast-geth-data
+        # Your Sepolia L1 RPC endpoint
+        L1_RPC_URL="your_l1_rpc_url"
+        # The type of RPC provider, valid options are alchemy, quicknode, infura, parity, nethermind, debug_geth, erigon, basic, any
+        # Axelar Team recommends you to run your own
+        L1_RPC_KIND="any"
+        ```
+    </tab-item>
+</tabs>
+
+
+## Start the node
+```bash
+docker compose up -d
+```
+
+This should show an output like this:
+```bash
+[+] Running 6/6
+ ✔ Network blast-node_blast-net         Created                                                                                                              0.1s
+ ✔ Network blast-node_default           Created                                                                                                              0.1s
+ ✔ Container blast-node-generate-jwt-1  Exited                                                                                                               1.0s
+ ✔ Container blast-node-geth-init-1     Exited                                                                                                               1.8s
+ ✔ Container blast-node-blast-geth-1    Started                                                                                                              2.0s
+ ✔ Container blast-node-op-node-1       Started                                                                                                              2.3s                                                                                                      11.2s
+```
+
+After it is done, verify by listing the services and their status
+ ```bash
+docker compose ps
+```
+
+You should see these 2 services running
+```bash
+NAME                      IMAGE                            COMMAND                  SERVICE             CREATED             STATUS              PORTS
+blast-node-blast-geth-1   blastio/blast-geth:sepolia       "geth --datadir=/bla…"   blast-geth          4 hours ago         Up 4 hours          8545-8546/tcp, 30303/tcp, 0.0.0.0:9545-9546->9545-9546/tcp, :::9545-9546->9545-9546/tcp, 30303/udp
+blast-node-op-node-1      blastio/blast-optimism:sepolia   "op-node --l1=https:…"   op-node             4 hours ago         Up 4 hours          0.0.0.0:9003->9003/tcp, :::9003->9003/tcp
+```
+
+## Check logs
+
+#### Verify blast geth logs
+
+```bash
+docker compose logs blast-geth --since 2m -f
+```
+
+```bash
+blast-node-blast-geth-1  | INFO [02-27|07:43:45.734] Started P2P networking                   self="enode://54139a54494808b5f9703b3858fc8fe0aaffa5902d41b1fc61f6c92bc003743d87c81e115120a2d5061bb1852fd04fb2851bb235e660462d0c107b7bed640302@127.0.0.1:30303?discport=0"
+blast-node-blast-geth-1  | INFO [02-27|07:43:45.735] HTTP server started                      endpoint=[::]:9545 auth=false prefix= cors=* vhosts=*
+blast-node-blast-geth-1  | INFO [02-27|07:43:45.735] WebSocket enabled                        url=ws://[::]:9546
+blast-node-blast-geth-1  | INFO [02-27|07:43:45.735] WebSocket enabled                        url=ws://[::]:8551
+blast-node-blast-geth-1  | INFO [02-27|07:43:45.735] HTTP server started                      endpoint=[::]:8551 auth=true  prefix= cors=localhost vhosts=*
+blast-node-blast-geth-1  | INFO [02-04|07:42:29.722] Chain head was updated                   number=39537 hash=26c5c6..e67efa root=14a631..1e99bf elapsed=5.40331ms   age=2mo2w6d
+blast-node-blast-geth-1  | INFO [02-04|07:42:29.734] Starting work on payload                 id=0x95a98a726f1398ee
+blast-node-blast-geth-1  | INFO [02-04|07:42:29.751] Imported new potential chain segment     number=39538 hash=219454..97cd30 blocks=1 txs=1 mgas=0.051 elapsed=16.713ms    mgasps=3.022  age=2mo2w6d  triedirty=0.00B
+```
+It will not import new headers until your op-node is synced, once your op-node is synced, your blast-geth logs should look like this
+
+```bash
+blast-node-blast-geth-1  | INFO [02-29|08:08:15.219] Starting work on payload                 id=0x48323feb74b0d35a
+blast-node-blast-geth-1  | INFO [02-29|08:08:15.237] Imported new potential chain segment     number=3083 hash=96c535..584bd5 blocks=1 txs=1 mgas=0.047 elapsed=16.962ms    mgasps=2.768 age=1mo3w1d snapdiffs=606.60KiB triedirty=0.00B
+blast-node-blast-geth-1  | INFO [02-29|08:08:15.243] Chain head was updated                   number=3083 hash=96c535..584bd5 root=52730a..6a9c02 elapsed=5.42431ms   age=1mo3w1d
+blast-node-blast-geth-1  | INFO [02-29|08:08:15.256] Starting work on payload                 id=0x180234ae531457a1
+blast-node-blast-geth-1  | INFO [02-29|08:08:15.274] Imported new potential chain segment     number=3084 hash=9687bc..de7e94 blocks=1 txs=1 mgas=0.047 elapsed=16.911ms    mgasps=2.776 age=1mo3w1d snapdiffs=606.78KiB triedirty=0.00B
+blast-node-blast-geth-1  | INFO [02-29|08:08:15.285] Chain head was updated                   number=3084 hash=9687bc..de7e94 root=8081fb..43e327 elapsed=10.075637ms age=1mo3w1d
+blast-node-blast-geth-1  | INFO [02-29|08:08:15.307] Starting work on payload                 id=0x44c95802c3652dbd
+```
+
+
+#### Verify OP node logs
+
+```bash
+docker compose logs op-node --since 2m -f
+```
+You should see logs like
+
+```bash
+blast-node-op-node-1  | t=2024-02-27T07:43:46+0000 lvl=info msg="Starting JSON-RPC server"
+blast-node-op-node-1  | t=2024-02-27T07:43:46+0000 lvl=info msg="metrics disabled"
+blast-node-op-node-1  | t=2024-02-27T07:43:46+0000 lvl=info msg="Starting execution engine driver"
+blast-node-op-node-1  | t=2024-02-27T07:43:46+0000 lvl=info msg="Starting driver"                   sequencerEnabled=false sequencerStopped=false
+blast-node-op-node-1  | t=2024-02-27T07:43:46+0000 lvl=info msg="Rollup node started"
+blast-node-op-node-1  | t=2024-02-27T07:43:46+0000 lvl=info msg="State loop started"
+blast-node-op-node-1  | t=2024-02-27T07:43:46+0000 lvl=info msg="Loaded current L2 heads"           unsafe=0x26a1c0faad7b041f34569a1bb383f00ab74b335883a44bed53e9f41ced5fd906:0 safe=0x26a1c0faad7b041f34569a1bb383f00ab74b335883a44bed53e9f41ced5fd906:0 finalized=0x26a1c0faad7b041f34569a1bb383f00ab74b335883a44bed53e9f41ced5fd906:0 unsafe_origin=0x17728cf4d8e0b4f292d2390a869fd7c632d39e72efb00ca3462b4387c6aa2437:5044255 safe_origin=0x17728cf4d8e0b4f292d2390a869fd7c632d39e72efb00ca3462b4387c6aa2437:5044255
+blast-node-op-node-1  | t=2024-02-27T07:43:47+0000 lvl=info msg="Walking back L1Block by number"    curr=0x17728cf4d8e0b4f292d2390a869fd7c632d39e72efb00ca3462b4387c6aa2437:5044255 next=0x17728cf4d8e0b4f292d2390a869fd7c632d39e72efb00ca3462b4387c6aa2437:5044255 l2block=0x26a1c0faad7b041f34569a1bb383f00ab74b335883a44bed53e9f41ced5fd906:0
+blast-node-op-node-1  | t=2024-02-27T07:43:47+0000 lvl=info msg="Hit finalized L2 head, returning immediately" unsafe=0x26a1c0faad7b041f34569a1bb383f00ab74b335883a44bed53e9f41ced5fd906:0 safe=0x26a1c0faad7b041f34569a1bb383f00ab74b335883a44bed53e9f41ced5fd906:0 finalized=0x26a1c0faad7b041f34569a1bb383f00ab74b335883a44bed53e9f41ced5fd906:0 unsafe_origin=0x17728cf4d8e0b4f292d2390a869fd7c632d39e72efb00ca3462b4387c6aa2437:5044255 safe_origin=0x17728cf4d8e0b4f292d2390a869fd7c632d39e72efb00ca3462b4387c6aa2437:5044255
+blast-node-op-node-1  | t=2024-02-27T07:43:47+0000 lvl=info msg="Sync progress"                     reason="reset derivation work" l2_finalized=0x26a1c0faad7b041f34569a1bb383f00ab74b335883a44bed53e9f41ced5fd906:0 l2_safe=0x26a1c0faad7b041f34569a1bb383f00ab74b335883a44bed53e9f41ced5fd906:0 l2_unsafe=0x26a1c0faad7b041f34569a1bb383f00ab74b335883a44bed53e9f41ced5fd906:0 l2_engineSyncTarget=0x26a1c0faad7b041f34569a1bb383f00ab74b335883a44bed53e9f41ced5fd906:0 l2_time=1,704,686,688 l1_derived=0x17728cf4d8e0b4f292d2390a869fd7c632d39e72efb00ca3462b4387c6aa2437:5044255
+```
+
+## Verify node sync status
+
+### RPC Endpoint
+
+```bash
+echo "$(curl -4 ifconfig.co):9545"
+```
+
+#### Method:
+```bash
+curl -X POST -H "Content-Type: application/json" --data     '{"jsonrpc":"2.0","method":"eth_blockNumber","params":[],"id":1}' [rpc] | jq
+```
+
+If you get something like this in response to the above rpc call, your node is setup correctly
+
+```bash
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "result": "0x09A"
+}
+```
+
+#### Sync Status of Blast optimism Execution Node
+
+You can check your status by connecting to geth console
+
+```bash
+docker exec -it blast-node-blast-geth-1 geth attach http://localhost:9545
+> eth.blockNumber
+94078 # it will show you the latest block - number here is just an example
+
+> eth.syncing
+false
+```
+You can compare the block height on your node with explorer ([mainnet](https://blastscan.io/) or [testnet](https://testnet.blastscan.io)),
+use your RPC node only when it has caught up with the latest block height.
+
+## Configure vald
+
+In order for `vald` to connect to your Blast node, your `rpc_addr` should be exposed in
+vald's `config.toml`
+
+<tabs>
+    <tab-item title="Mainnet">
+        ```bash
+        [[axelar_bridge_evm]]
+        name = "blast"
+        rpc_addr = "http://IP:PORT"
+        start-with-bridge = true
+        ```
+    </tab-item>
+    <tab-item title="Testnet">
+        ```bash
+        [[axelar_bridge_evm]]
+        name = "blast"
+        rpc_addr = "http://IP:PORT"
+        start-with-bridge = true
+        ```
+    </tab-item>
+</tabs>
