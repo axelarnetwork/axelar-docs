@@ -546,9 +546,9 @@ export const getNavigation = (section) => {
             title: "Community Pool Proposals",
             href: " /resources/community/community-pool-proposals",
           },
-          { title: "Bug Bounty", href: "/resources/community/bug-bounty" },
         ],
       },
+      { title: "Bug Bounty", href: "/resources/bug-bounty" },
     ],
   });
 

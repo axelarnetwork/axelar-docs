@@ -2,6 +2,11 @@
   "framework": null,
   "redirects": [
     {
+      "source": "/resources/community/bug-bounty",
+      "destination": "/resources/bug-bounty",
+      "permanent": true
+    },
+    {
       "source": "/dev/reference/glossary",
       "destination": "/dev/glossary",
       "permanent": true
