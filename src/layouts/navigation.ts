@@ -531,7 +531,7 @@ export const getNavigation = (section) => {
           },
         ],
       },
-      { title: "Report a Vulnerability", href: "/resources/security" },
+      { title: "Bug Bounty", href: "/resources/security" },
     ],
   });
 
