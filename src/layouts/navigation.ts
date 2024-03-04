@@ -533,6 +533,10 @@ export const getNavigation = (section) => {
                     title: "v0.34",
                     href: "/resources/testnet/upgrades/v34",
                   },
+                  {
+                    title: "v0.35.3",
+                    href: "/resources/testnet/upgrades/v35-3",
+                  },
                 ],
               },
             ],
