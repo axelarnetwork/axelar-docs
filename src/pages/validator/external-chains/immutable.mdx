@@ -112,9 +112,9 @@ mkdir /opt/immutable-zkevm
 2. Pull the Docker image.
 
 ```bash
-docker pull ghcr.io/immutable/go-ethereum/go-ethereum:v0.0.8
+docker pull ghcr.io/immutable/go-ethereum/go-ethereum:v1.0.0-beta.1
 # Create a short-form tag we can reference in the next few commands
-docker tag ghcr.io/immutable/go-ethereum/go-ethereum:v0.0.8 geth
+docker tag ghcr.io/immutable/go-ethereum/go-ethereum:v1.0.0-beta.1 geth
 ```
 
 3. Initialise the node.
@@ -126,7 +126,8 @@ docker run \
   --rm \
   -v /opt/immutable-zkevm:/mnt/geth \
   --name geth \
-  geth init \
+  geth immutable bootstrap rpc \
+  --zkevm testnet \
   --datadir /mnt/geth /etc/geth/testnet.json 
 ```
 </tab-item>
@@ -136,7 +137,8 @@ docker run \
   --rm \
   -v /opt/immutable-zkevm:/mnt/geth \
   --name geth \
-  geth init \
+  geth immutable bootstrap rpc \
+  --zkevm mainnet \
   --datadir /mnt/geth /etc/geth/mainnet.json 
 ```
 </tab-item>
@@ -154,9 +156,9 @@ docker run \
   --name geth \
   -p 8545:8545 \
   geth \
+  --zkevm testnet \
   --config /etc/geth/testnet.toml \
   --datadir /mnt/geth \
-  --networkid 13473 \
   --http \
   --http.port "8545" \
   --http.addr "0.0.0.0"
@@ -171,9 +173,9 @@ docker run \
   --name geth \
   -p 8545:8545 \
   geth \
+  --zkevm mainnet \
   --config /etc/geth/mainnet.toml \
   --datadir /mnt/geth \
-  --networkid 13371 \
   --http \
   --http.port "8545" \
   --http.addr "0.0.0.0"
