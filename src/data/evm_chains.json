@@ -442,6 +442,30 @@
         }
       ],
       "image": "/images/chains/fraxtal.svg"
+    },
+    {
+      "id": "blast",
+      "name": "Blast",
+      "chain_id": 81457,
+      "network_id": "blast",
+      "provider_params": [
+        {
+          "chainId": "0x13E31",
+          "chainName": "Blast",
+          "rpcUrls": [
+            "https://rpc.blast.io"
+          ],
+          "nativeCurrency": {
+            "name": "Ether",
+            "symbol": "ETH",
+            "decimals": 18
+          },
+          "blockExplorerUrls": [
+            "https://blastscan.io"
+          ]
+        }
+      ],
+      "image": "/images/chains/blast.svg"
     }
   ],
   "testnet": [
