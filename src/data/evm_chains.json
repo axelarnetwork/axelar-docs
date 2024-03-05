@@ -934,6 +934,127 @@
         }
       ],
       "image": "/images/chains/fraxtal.svg"
+    },
+    
+    {
+      "id": "arbitrum-sepolia",
+      "name": "Arbitrum Sepolia",
+      "chain_id": 421614,
+      "network_id": "arbitrum-sepolia",
+      "provider_params": [
+        {
+          "chainId": "0x66EEE",
+          "chainName": "Arbitrum Sepolia Testnet",
+          "rpcUrls": [
+            "https://sepolia-rollup.arbitrum.io/rpc"
+          ],
+          "nativeCurrency": {
+            "name": "Ethereum",
+            "symbol": "ETH",
+            "decimals": 18
+          },
+          "blockExplorerUrls": [
+            "https://sepolia.arbiscan.io"
+          ]
+        }
+      ],
+      "image": "/images/chains/arbitrum.svg"
+    },
+    {
+      "id": "optimism-sepolia",
+      "name": "Optimism Sepolia Testnet",
+      "chain_id": 11155420,
+      "network_id": "optimism-sepolia",
+      "provider_params": [
+        {
+          "chainId": "0xAA37DC",
+          "chainName": "Optimism Sepolia Testnet",
+          "rpcUrls": [
+            "https://sepolia.optimism.io"
+          ],
+          "nativeCurrency": {
+            "name": "Ethereum",
+            "symbol": "ETH",
+            "decimals": 18
+          },
+          "blockExplorerUrls": [
+            "https://sepolia-optimistic.etherscan.io"
+          ]
+        }
+      ],
+      "image": "/images/chains/optimism.svg"
+    },
+    {
+      "id": "base-sepolia",
+      "name": "Base Sepolia Testnet",
+      "chain_id": 84532,
+      "network_id": "base-sepolia",
+      "provider_params": [
+        {
+          "chainId": "0x14A34",
+          "chainName": "Base Sepolia Testnet",
+          "rpcUrls": [
+            "https://sepolia.base.org"
+          ],
+          "nativeCurrency": {
+            "name": "Ether",
+            "symbol": "ETH",
+            "decimals": 18
+          },
+          "blockExplorerUrls": [
+            "https://sepolia-explorer.base.org"
+          ]
+        }
+      ],
+      "image": "/images/chains/base.svg"
+    },
+    {
+      "id": "blast-sepolia",
+      "name": "Blast Sepolia Testnet",
+      "chain_id": 168587773,
+      "network_id": "blast-sepolia",
+      "provider_params": [
+        {
+          "chainId": "0xA0C71FD",
+          "chainName": "Blast Sepolia Testnet",
+          "rpcUrls": [
+            "https://sepolia.blast.io"
+          ],
+          "nativeCurrency": {
+            "name": "Ether",
+            "symbol": "ETH",
+            "decimals": 18
+          },
+          "blockExplorerUrls": [
+            "https://testnet.blastscan.io"
+          ]
+        }
+      ],
+      "image": "/images/chains/blast.svg"
+    },
+    {
+      "id": "mantle-sepolia",
+      "name": "Mantle Sepolia",
+      "chain_id": 5003,
+      "network_id": "mantle-sepolia",
+      "provider_params": [
+        {
+          "chainId": "0x138B",
+          "chainName": "Mantle Sepolia",
+          "rpcUrls": [
+            "https://rpc.sepolia.mantle.xyz"
+          ],
+          "nativeCurrency": {
+            "name": "Ether",
+            "symbol": "ETH",
+            "decimals": 18
+          },
+          "blockExplorerUrls": [
+            "https://explorer.sepolia.mantle.xyz"
+          ]
+        }
+      ],
+      "image": "/images/chains/mantle.svg"
     }
   ]
 }
