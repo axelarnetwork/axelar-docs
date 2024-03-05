@@ -27,7 +27,7 @@ Upgrade height `11795700` [countdown](https://www.mintscan.io/axelar/block/11795
 1. If you're a validator or have delegated to one, please vote for the upgrade proposal via
 
 ```bash
-axelard tx gov vote 70 yes --from validator
+axelard tx gov vote 195 [yes|no] --from validator
 ```
 
 2. Wait for the proposed upgrade block, `12017025`. Your node will panic at that block height with a log: `{"level":"error","module":"consensus","err":"UPGRADE \"v0.35\" NEEDED at height: 12017025", ...}`. Stop your node after chain halt.
