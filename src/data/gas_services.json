@@ -161,6 +161,26 @@
     {
       "id": "fraxtal",
       "address": "0xbE406F0189A0B4cf3A05C286473D23791Dd44Cc6"
+    },
+    {
+      "id": "mantle-sepolia",
+      "address": "0xbE406F0189A0B4cf3A05C286473D23791Dd44Cc6"
+    },
+    {
+      "id": "blast-sepolia",
+      "address": "0xbE406F0189A0B4cf3A05C286473D23791Dd44Cc6"
+    },
+    {
+      "id": "arbitrum-sepolia",
+      "address": "0xbE406F0189A0B4cf3A05C286473D23791Dd44Cc6"
+    },
+    {
+      "id": "base-sepolia",
+      "address": "0xbE406F0189A0B4cf3A05C286473D23791Dd44Cc6"
+    },
+    {
+      "id": "optimism-sepolia",
+      "address": "0xbE406F0189A0B4cf3A05C286473D23791Dd44Cc6"
     }
   ]
 }
