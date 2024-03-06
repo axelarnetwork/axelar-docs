@@ -144,7 +144,7 @@ const customTokenAddress = "0x0EF6280417A1BF22c8fF05b54D7A7928a173E605"; // your
 
 ### Get the signer
 
-Next, create a `getSigner()` function in `newInterchainToken.js`. This will obtain a signer for a secure transaction:
+Next, create a `getSigner()` function in `canonicalInterchainToken.js`. This will obtain a signer for a secure transaction:
 
 ```JavaScript
 //...
@@ -157,7 +157,7 @@ async function getSigner() {
 
 ### Get the contract instance
 
-Then, create a `getContractInstance()` function in `newInterchainToken.js` . This will get the contract instance based on the contract’s address, ABI, and signer:
+Then, create a `getContractInstance()` function in `canonicalInterchainToken.js` . This will get the contract instance based on the contract’s address, ABI, and signer:
 
 ```JavaScript
 //...
