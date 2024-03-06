@@ -14,7 +14,7 @@
       "symbol": "AXL",
       "image": "/images/assets/axl.svg",
       "decimals": 6,
-      "transfer_fee": 0.025
+      "transfer_fee": 0.01
     },
     {
       "id": "dai-wei",
@@ -601,12 +601,60 @@
       "transfer_fee": 430.0
     },
     {
+      "id": "factory/sei10hud5e5er4aul2l7sp2u9qp2lag5u4xf8mvyx38cnjvqhlgsrcls5qn5ke/seilor",
+      "name": "SEILOR - Axelar Wrapped SEILOR",
+      "symbol": "SEILOR",
+      "image": "/images/assets/seilor.svg",
+      "decimals": 6,
+      "transfer_fee": 1.7
+    },
+    {
+      "id": "uscrt",
+      "name": "SCRT - Secret native asset",
+      "symbol": "SCRT",
+      "image": "/images/assets/scrt.svg",
+      "decimals": 6,
+      "transfer_fee": 0.26
+    },
+    {
       "id": "ox-wei",
       "name": "OX - Open Exchange Token",
       "symbol": "OX",
       "image": "/images/assets/ox.svg",
       "decimals": 18,
       "transfer_fee": 5.0
+    },
+    {
+      "id": "factory/osmo1f5vfcph2dvfeqcqkhetwv75fda69z7e5c2dldm3kvgj23crkv6wqcn47a0/umilkTIA",
+      "name": "milkTIA - milkTIA",
+      "symbol": "milkTIA",
+      "image": "/images/assets/milktia.svg",
+      "decimals": 6,
+      "transfer_fee": 0.0052
+    },
+    {
+      "id": "aISLM",
+      "name": "ISLM - Islamic Coin",
+      "symbol": "ISLM",
+      "image": "/images/assets/islm.svg",
+      "decimals": 18,
+      "transfer_fee": 1.2
+    },
+    {
+      "id": "wmnt-wei",
+      "name": "WMNT - Wrapped Mantle",
+      "symbol": "WMNT",
+      "image": "/images/assets/wmnt.svg",
+      "decimals": 18,
+      "transfer_fee": 0.16
+    },
+    {
+      "id": "ustars",
+      "name": "STARS - Axelar Wrapped STARS",
+      "symbol": "STARS",
+      "image": "/images/assets/stars.svg",
+      "decimals": 6,
+      "transfer_fee": 2.1
     }
   ],
   "testnet": [
@@ -697,6 +745,30 @@
       "image": "/images/assets/tsaga.svg",
       "decimals": 6,
       "transfer_fee": 0.5
+    },
+    {
+      "id": "uxion",
+      "name": "XION - Xion",
+      "symbol": "XION",
+      "image": "/images/assets/xion.svg",
+      "decimals": 6,
+      "transfer_fee": 5.0
+    },
+    {
+      "id": "uc4e",
+      "name": "C4E - chain4energy native asset",
+      "symbol": "C4E",
+      "image": "/images/assets/c4e.svg",
+      "decimals": 6,
+      "transfer_fee": 5.0
+    },
+    {
+      "id": "untrn",
+      "name": "NTRN - Axelar Wrapped NTRN",
+      "symbol": "NTRN",
+      "image": "/images/assets/ntrn.svg",
+      "decimals": 6,
+      "transfer_fee": 0.03
     }
   ]
 }

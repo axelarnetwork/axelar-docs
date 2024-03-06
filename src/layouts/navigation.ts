@@ -28,6 +28,10 @@ export const getNavigation = (section) => {
                   href: "/dev/send-tokens/interchain-tokens/upgrade-tokens",
                 },
                 {
+                  title: "Interchain Token Executable",
+                  href: "/dev/send-tokens/interchain-tokens/interchain-token-executable",
+                },
+                {
                   title: "Rate Limit",
                   href: "/dev/reference/interchain-token-service-rate-limit",
                 },
@@ -41,6 +45,10 @@ export const getNavigation = (section) => {
                     {
                       title: "Programmatically Create a Canonical Token",
                       href: "/dev/send-tokens/interchain-tokens/developer-guides/programmatically-create-a-canonical-token",
+                    },
+                    {
+                      title: "Link Custom Tokens Into Interchain Tokens",
+                      href: "/dev/send-tokens/interchain-tokens/developer-guides/link-custom-tokens-deployed-across-multiple-chains-into-interchain-tokens",
                     },
                   ],
                 },
@@ -70,6 +78,10 @@ export const getNavigation = (section) => {
             {
               title: "Monitor Transaction State",
               href: "/dev/general-message-passing/monitoring",
+            },
+            {
+              title: "Verify GMP Transaction",
+              href: "/dev/general-message-passing/verify-gmp-tx",
             },
             {
               title: "Debug",
@@ -104,6 +116,10 @@ export const getNavigation = (section) => {
                   href: "/dev/general-message-passing/developer-guides/example-gmp",
                 },
               ],
+            },
+            {
+              title: "Express Service",
+              href: "/dev/general-message-passing/express",
             },
           ],
         },
@@ -198,7 +214,7 @@ export const getNavigation = (section) => {
         },
         {
           title: "Glossary",
-          href: "/dev/glossary"
+          href: "/dev/glossary",
         },
       ],
     });
@@ -240,7 +256,6 @@ export const getNavigation = (section) => {
               title: "Register broadcaster proxy",
               href: "/validator/setup/register-broadcaster",
             },
-            { title: "Stake AXL tokens", href: "/validator/setup/stake-axl" },
             { title: "Manual setup", href: "/validator/setup/manual" },
           ],
         },
@@ -255,6 +270,7 @@ export const getNavigation = (section) => {
             },
             { title: "Base", href: "/validator/external-chains/base" },
             { title: "Binance", href: "/validator/external-chains/binance" },
+            { title: "Blast", href: "/validator/external-chains/blast" },
             { title: "Celo", href: "/validator/external-chains/celo" },
             {
               title: "Centrifuge",
@@ -263,6 +279,7 @@ export const getNavigation = (section) => {
             { title: "Ethereum", href: "/validator/external-chains/ethereum" },
             { title: "Fantom", href: "/validator/external-chains/fantom" },
             { title: "Filecoin", href: "/validator/external-chains/filecoin" },
+            { title: "Fraxtal", href: "/validator/external-chains/fraxtal" },
             {
               title: "Immutable zkEVM",
               href: "/validator/external-chains/immutable",
@@ -283,7 +300,10 @@ export const getNavigation = (section) => {
               title: "Rotate tofnd mnemonics",
               href: "/validator/operations/mnemonic-rotation",
             },
-            { title: "Monitor a validator or node", href: "/validator/operations/monitoring" },
+            {
+              title: "Monitor a validator or node",
+              href: "/validator/operations/monitoring",
+            },
           ],
         },
         {
@@ -306,9 +326,24 @@ export const getNavigation = (section) => {
         {
           title: "Validator status",
           children: [
-            { title: "Register external chains", href: "/validator/status/register-external-chains" },
-            { title: "Check validator status", href: "/validator/status/health-check" },
+            {
+              title: "Register external chains",
+              href: "/validator/status/register-external-chains",
+            },
+            {
+              title: "Check validator status",
+              href: "/validator/status/health-check",
+            },
             { title: "Leave the network", href: "/validator/status/leave" },
+          ],
+        },
+        {
+          title: "Amplifier",
+          children: [
+            {
+              title: "Become a Verifier",
+              href: "/validator/amplifier/verifier-onboarding",
+            },
           ],
         },
       ],
@@ -318,20 +353,210 @@ export const getNavigation = (section) => {
   nav.push({
     header: "Resources",
     children: [
-      { title: "Mainnet", href: "/resources/mainnet" },
-      { title: "Testnet", href: "/resources/testnet" },
-      { title: "RPC Endpoints", href: "/resources/" },
       {
-        title: "Community Pool Proposals",
-        href: "/resources/governance/community-pool-proposals",
+        title: "Contract addresses",
+        children: [
+          { title: "Mainnet", href: "/resources/contract-addresses/mainnet" },
+          { title: "Testnet", href: "/resources/contract-addresses/testnet" },
+        ],
       },
-      { title: "Satellite", href: "/resources/satellite" },
-      { title: "MetaMask", href: "/resources/metamask" },
-      { title: "Add Network to Keplr Wallet", href: "/resources/keplr" },
-      { title: "Wrap/unwrap tokens", href: "/resources/wrapped-tokens" },
-      { title: "Using ipRPC (Free Public RPC)", href: "/resources/lava-iprpc" },
-      { title: "Bug Bounty", href: "/bug-bounty" },
-      { title: "Add Account to Axelarscan", href: "/resources/axelarscan-add" },
+      {
+        title: "RPCs",
+        children: [
+          { title: "RPC Endpoints", href: "/resources/rpc/resources" },
+          { title: "Free Public RPC", href: "/resources/rpc/lava-iprpc" },
+        ],
+      },
+      {
+        title: "Tokens",
+        children: [
+          { title: "Stake AXL tokens", href: "/resources/tokens/stake-axl" },
+          {
+            title: "Wrap / unwrap tokens",
+            href: "/resources/tokens/wrapped-tokens",
+          },
+        ],
+      },
+      {
+        title: "Axelarscan",
+        children: [
+          {
+            title: "Add Account to Axelarscan",
+            href: "/resources/axelarscan/axelarscan-add",
+          },
+        ],
+      },
+      {
+        title: "Misc",
+        children: [
+          { title: "Satellite", href: "/resources/satellite" },
+          { title: "MetaMask", href: "/resources/metamask" },
+          { title: "Add Network to Keplr Wallet", href: "/resources/keplr" },
+        ],
+      },
+      {
+        title: "Upgrades",
+        children: [
+          {
+            title: "Mainnet",
+            children: [
+              {
+                title: "Axelard",
+                children: [
+                  {
+                    title: "v0.35",
+                    href: "/resources/mainnet/upgrades/v35",
+                  },
+                  {
+                    title: "v0.34",
+                    href: "/resources/mainnet/upgrades/v34",
+                  },
+                  {
+                    title: "v0.33",
+                    href: "/resources/mainnet/upgrades/v33",
+                  },
+                  {
+                    title: "v0.31",
+                    href: "/resources/mainnet/upgrades/v31",
+                  },
+                  {
+                    title: "v0.29",
+                    href: "/resources/mainnet/upgrades/v29",
+                  },
+                  {
+                    title: "v0.28",
+                    href: "/resources/mainnet/upgrades/v28",
+                  },
+                  {
+                    title: "v0.26",
+                    href: "/resources/mainnet/upgrades/v26",
+                  },
+                  {
+                    title: "v0.24",
+                    href: "/resources/mainnet/upgrades/v24",
+                  },
+                  {
+                    title: "v0.21",
+                    href: "/resources/mainnet/upgrades/v21",
+                  },
+                  {
+                    title: "v0.20",
+                    href: "/resources/mainnet/upgrades/v20",
+                  },
+                  {
+                    title: "v0.19",
+                    href: "/resources/mainnet/upgrades/v19",
+                  },
+                  {
+                    title: "v0.18",
+                    href: "/resources/mainnet/upgrades/v18",
+                  },
+                  {
+                    title: "v0.17",
+                    href: "/resources/mainnet/upgrades/v17",
+                  },
+                  {
+                    title: "v0.16",
+                    href: "/resources/mainnet/upgrades/v16",
+                  },
+                ],
+              },
+            ],
+          },
+          {
+            title: "Testnet",
+            children: [
+              {
+                title: "Axelard",
+                children: [
+                  {
+                    title: "v0.35",
+                    href: "/resources/testnet/upgrades/v35",
+                  },
+                  {
+                    title: "v0.34",
+                    href: "/resources/testnet/upgrades/v34",
+                  },
+                  {
+                    title: "v0.33",
+                    href: "/resources/testnet/upgrades/v33",
+                  },
+                  {
+                    title: "v0.32",
+                    href: "/resources/testnet/upgrades/v32",
+                  },
+                  {
+                    title: "v0.31",
+                    href: "/resources/testnet/upgrades/v31",
+                  },
+                  {
+                    title: "v0.29",
+                    href: "/resources/testnet/upgrades/v29",
+                  },
+                  {
+                    title: "v0.28",
+                    href: "/resources/testnet/upgrades/v28",
+                  },
+                  {
+                    title: "v0.27",
+                    href: "/resources/testnet/upgrades/v27",
+                  },
+                  {
+                    title: "v0.26",
+                    href: "/resources/testnet/upgrades/v26",
+                  },
+                  {
+                    title: "v0.25",
+                    href: "/resources/testnet/upgrades/v25",
+                  },
+                  {
+                    title: "v0.24",
+                    href: "/resources/testnet/upgrades/v24",
+                  },
+                  {
+                    title: "v0.23",
+                    href: "/resources/testnet/upgrades/v23",
+                  },
+                  {
+                    title: "v0.22",
+                    href: "/resources/testnet/upgrades/v22",
+                  },
+                  {
+                    title: "v0.21",
+                    href: "/resources/testnet/upgrades/v21",
+                  },
+                  {
+                    title: "v0.20",
+                    href: "/resources/testnet/upgrades/v20",
+                  },
+                  {
+                    title: "v0.19",
+                    href: "/resources/testnet/upgrades/v19",
+                  },
+                  {
+                    title: "v0.18",
+                    href: "/resources/testnet/upgrades/v18",
+                  },
+                  {
+                    title: "v0.17",
+                    href: "/resources/testnet/upgrades/v17",
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+      {
+        title: "Community",
+        children: [
+          {
+            title: "Community Pool Proposals",
+            href: " /resources/community/community-pool-proposals",
+          },
+          { title: "Bug Bounty", href: "/resources/community/bug-bounty" },
+        ],
+      },
     ],
   });
 
@@ -346,7 +571,10 @@ export const getNavigation = (section) => {
         title: "InterchainTokenFactory",
         href: "https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/InterchainTokenFactory.sol",
       },
-      ,
+      {
+        title: "TokenManager",
+        href: "https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/token-manager/TokenManager.sol",
+      },
       {
         title: "AxelarGateway ",
         href: "https://github.com/axelarnetwork/axelar-cgp-solidity/blob/main/contracts/AxelarGateway.sol",

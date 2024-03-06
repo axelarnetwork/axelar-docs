@@ -13,12 +13,17 @@ With GMP, you can:
   **NOTE:** The security of your contracts is limited to the security of the chains they integrate with. Since blockchains can have different security practices, we recommend doing due diligence on all chains your contract will be deployed to.
 </Callout>
 
+<Callout emoji="🚨">
+  **NOTE:** GMP Transactions using `callContractWithToken` sent to the Axelar chain itself are not yet supported. Axelar only supports GMP call without token from Axelar to chain X. Transactions sent to the Axelar chain as the destination chain will be stuck until support is rolled out.
+</Callout>
+
+
 ### Prerequisites
 - For GMP to work, chains A and B must be EVM or Cosmos with a deployed Axelar Gateway contract. We're adding new chains and chain technology stacks all of the time. This document primarily focuses on EVM chains and Solidity code, but you can [learn about interacting with Cosmos GMP](./cosmos-gmp).
 - The application's executable contract must be deployed on the destination contract.
 - The application must be on one of Axelar's supported EVM chains. See [chain names](../reference/mainnet-chain-names) for a list of EVM chains that have an Axelar Gateway deployed. The list is updated as new chains are added.
 
-### Flow architecture (in steps)
+## Flow architecture (in steps)
 <div class="colored-svg">
   <svg
    width="100%"
@@ -532,7 +537,7 @@ With GMP, you can:
 
 
 
-### Gateway Interface
+## Gateway Interface
 In your smart contract, you'll be interacting with the `callContract` or `callContractWithToken` methods of the [gateway contract](https://etherscan.io/address/0x4F4495243837681061C4743b74B3eEdf548D56A5#writeProxyContract).
 
 ```solidity
@@ -560,19 +565,19 @@ function _execute(string calldata sourceChain, string calldata sourceAddress, by
 
 
 
-### Steps
+## Steps
 
-#### At the source chain
+### At the source chain
 
 1. You call a `callContract` (or `callContractWithToken`) function on the Axelar Gateway contract to initiate a call. Once the call is initiated, the user can see its status at https://axelarscan.io/gmp/[txHash] or programmatically track it via the [AxelarJS SDK](/dev/axelarjs-sdk/tx-status-query-recovery#query-transaction-status-by-txhash).
 1. You prepay the [gas for the decentralized Axelar consensus](./gas-services/pay-gas) and the necessary transactions to approve and execute on the destination chain.
 1. The call enters the Axelar Gateway from the source chain.
 
-#### At the Axelar network
+### At the Axelar network
 
 1. The Axelar network confirms the call and utilizes funds from the source chain's native token reserves to cover the gas costs on both the Axelar blockchain and the destination chain.
 
-#### At the destination chain
+### At the destination chain
 
 1. The call is approved (Axelar validators come to a consensus by voting, and their votes and signatures are then available to pass to the destination chain), and the approval is relayed to the Axelar Gateway on the destination chain.
 1. The executor service relays and executes the approved call to the application's Axelar Executable interface.
@@ -580,21 +585,21 @@ function _execute(string calldata sourceChain, string calldata sourceAddress, by
 Suppose the paid gas (step 2) is insufficient to approve or execute on the destination chain; Axelar offers [monitoring and recovery](/dev/general-message-passing/monitoring) steps to help deal with such scenarios.
 
 
-### Real-World Breakdown of Cross-Chain [Contract Calls](https://axelarscan.io/gmp/0x93cb0b614b07d6050b164cc3e35da617a2fbefc13069a35369894cac74b861a2:54) 
+## Real-World Breakdown of Cross-Chain [Contract Calls](https://axelarscan.io/gmp/0x93cb0b614b07d6050b164cc3e35da617a2fbefc13069a35369894cac74b861a2:54) 
 
 
-#### Setup
+### Setup
 
 1. The destination application contract implements the `AxelarExecutable.sol` to receive the cross-chain message.
 
 1. The destination application contract stores the address of the local Gateway contract.
 
-#### On Source Chain
+### On Source Chain
 1. A smart contract on the source chain [calls](https://etherscan.io/tx/0x9b7428e9843c6accee77a9ab19cb374687ed57428968f4ce9591e3378a4da816) `AxelarGateway.callContract()` with the destination chain/address and `payload`, which emits the `ContractCall` event.
 
 1. The smart contract can deposit tokens to the [`AxelarGasService`](https://github.com/axelarnetwork/axelar-cgp-solidity/blob/main/contracts/gas-service/AxelarGasService.sol#L122) contract in the same transaction to pay the Axelar relayers for submitting the intermediate transactions required for cross-chain execution.
 
-#### On Axelar Network
+### On Axelar Network
 
 1. A [relayer](https://docs.axelar.dev/learn/network/flow#message-processing-and-relayers) monitors the `ContractCall` event and submits a transaction to the Axelar network to request validation. The relayer also stores the `payload` in a database, keyed by `hash(payload)` for later retrieval.
 
@@ -604,7 +609,7 @@ Suppose the paid gas (step 2) is insufficient to approve or execute on the desti
 
 1. A signed [batch](https://axelarscan.io/evm-batches?commandId=0x47d0de91330856d70caecf442341be3faf6e644b83892b214c5a2bcc673ba8ca) of approved payloads is prepared on Axelar that anyone can view.
 
-#### On Destination Chain
+### On Destination Chain
 
 1. A relayer [submits](https://bscscan.com/tx/0x72e6c040bfbf26073cdcf55cc4db571badcadd3b9316cf0f53b72f980d3e5100) the signed batch to the destination gateway contract, which records the [approval](https://github.com/axelarnetwork/cgp-spec/blob/main/solidity/contracts/AxelarGateway.sol#L109) of the payload hash and emits a `ContractCallApproved` [event](https://github.com/axelarnetwork/cgp-spec/blob/main/solidity/contracts/AxelarGateway.sol#L144).
 

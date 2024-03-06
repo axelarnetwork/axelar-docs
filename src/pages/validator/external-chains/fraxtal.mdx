@@ -1,0 +1,219 @@
+# Fraxtal
+
+Instructions to set up your frax node.
+
+## Requirements
+
+- [Setup your Axelar validator](/validator/setup)
+- Minimum hardware requirements: 8 AWS vCPU+, 8GB RAM, 512GB of SSD free storage space.
+- MacOS or Ubuntu 22.04 (tested on 22.04)
+- [Official Documentation](https://github.com/FraxFinance/fraxtal-node)
+- [Official Documentation](https://docs.frax.finance)
+
+## Prerequisites
+
+- [Common Docker Compose Commands](./optimism#common-node-operations)
+```bash
+sudo apt-get install jq -y
+snap install docker
+```
+
+## Clone Repo
+
+```bash
+git clone https://github.com/FraxFinance/fraxtal-node.git
+cd fraxtal-node
+```
+
+## Set Environment Variables
+Note: Update your shell profile in accordance with the shell you are using
+
+<tabs>
+    <tab-item title="Mainnet">
+        ```bash
+        echo export ENVIRONMENT=mainnet >> $HOME/.profile
+        echo export DOCKER_COMPOSE_FILE_LOCATION=$HOME/fraxtal-node/docker-compose.yml >> $HOME/.profile
+        ```
+    </tab-item>
+    <tab-item title="Testnet">
+        ```bash
+        echo export ENVIRONMENT=testnet >> $HOME/.profile
+        echo export DOCKER_COMPOSE_FILE_LOCATION=$HOME/fraxtal-node/testnet.docker-compose.yml >> $HOME/.profile
+        ```
+    </tab-item>
+</tabs>
+
+Apply your changes
+```bash
+source $HOME/.profile
+```
+
+## Set node config
+
+<tabs>
+    <tab-item title="Mainnet">
+        ```bash
+        cp .env.SAMPLE .env
+        ```
+
+    </tab-item>
+    <tab-item title="Testnet">
+        ```bash
+        cp .env.testnet.SAMPLE .env.testnet
+        ```
+    </tab-item>
+</tabs>
+
+Set the following config options in `fraxtal-node/.env.testnet` or `fraxtal-node/.env`:
+```bash
+# Your Ethereum RPC node endpoint. As an L2, your Frax node will verify tx finality by
+# querying your own Ethereum RPC node.
+OP_NODE_L1_ETH_RPC=
+```
+
+## Start the node
+```bash
+docker compose -f $DOCKER_COMPOSE_FILE_LOCATION up -d
+```
+
+This should show an output like this:
+```bash
+[+] Running 3/3
+ ✔ mainnet-node 2 layers [⣿⣿]      0B/0B      Pulled                                                                                                         3.0s
+   ✔ 619be1103602 Pull complete                                                                                                                              0.4s
+   ✔ b1167d0af7e0 Pull complete                                                                                                                              1.7s
+[+] Running 3/3
+ ✔ Network fraxtal-node_default           Created                                                                                                            0.1s
+ ✔ Container fraxtal-node-mainnet-geth-1  Healthy                                                                                                           10.9s
+ ✔ Container fraxtal-node-mainnet-node-1  Started                                                                                                           11.2s
+```
+
+After it is done, verify by listing the services and their status
+ ```bash
+docker compose -f $DOCKER_COMPOSE_FILE_LOCATION ps
+```
+
+You should see these 2 services running
+```bash
+NAME                          IMAGE                                                                                                 COMMAND             SERVICE             CREATED             STATUS                    PORTS
+fraxtal-node-testnet-geth-1   us-docker.pkg.dev/oplabs-tools-artifacts/images/op-geth:v1.101305.1                                   "geth-entrypoint"   testnet-geth        24 minutes ago      Up 24 minutes (healthy)   30303/tcp, 30303/udp, 0.0.0.0:8548->8545/tcp, :::8548->8545/tcp, 0.0.0.0:8549->8546/tcp, :::8549->8546/tcp
+fraxtal-node-testnet-node-1   public.ecr.aws/d7v3u3t4/fraxchain-testnet-optimism/op-node:a371733ab8b8ca288829e94734fbcdf88907e7c3   "node-entrypoint"   testnet-node        24 minutes ago      Up 24 minutes (healthy)   0.0.0.0:9222->9222/tcp, 0.0.0.0:9222->9222/udp, :::9222->9222/tcp, :::9222->9222/udp, 0.0.0.0:7545->8545/tcp, :::7545->8545/tcp
+```
+
+## Check logs
+
+#### Verify OP geth logs
+
+```bash
+docker compose -f $DOCKER_COMPOSE_FILE_LOCATION logs $ENVIRONMENT-geth --since 2m -f
+```
+
+```bash
+fraxtal-node-testnet-geth-1  | INFO [02-04|07:42:29.722] Chain head was updated                   number=39537 hash=26c5c6..e67efa root=14a631..1e99bf elapsed=5.40331ms   age=2mo2w6d
+fraxtal-node-testnet-geth-1  | INFO [02-04|07:42:29.734] Starting work on payload                 id=0x95a98a726f1398ee
+fraxtal-node-testnet-geth-1  | INFO [02-04|07:42:29.751] Imported new potential chain segment     number=39538 hash=219454..97cd30 blocks=1 txs=1 mgas=0.051 elapsed=16.713ms    mgasps=3.022  age=2mo2w6d  triedirty=0.00B
+```
+
+#### Verify OP node logs
+
+```bash
+docker compose -f $DOCKER_COMPOSE_FILE_LOCATION logs $ENVIRONMENT-node --since 2m -f
+```
+You should see logs like
+
+```bash
+fraxtal-node-testnet-node-1  | t=2024-02-04T07:41:42+0000 lvl=info msg="Sync progress"                          reason="processed safe block derived from L1" l2_finalized=0xd878b889605ac928844c12371b381d80a088fce5ae91cc4f25b913c7eb5bddaf:38833 l2_safe=0x9575d501f128d1fcd40229e6a3bc8d21d1f94667e2a81a5b01941d7ac2b11de1:38929 l2_safe_pending=0x9575d501f128d1fcd40229e6a3bc8d21d1f94667e2a81a5b01941d7ac2b11de1:38929 l2_unsafe=0x9575d501f128d1fcd40229e6a3bc8d21d1f94667e2a81a5b01941d7ac2b11de1:38929 l2_engineSyncTarget=0x9575d501f128d1fcd40229e6a3bc8d21d1f94667e2a81a5b01941d7ac2b11de1:38929 l2_time=1,700,075,234 l1_derived=0xfe9d9478267c3908ff1f59bfbebde3805b90c78015c672a72e1707b006a7bcc5:324630
+fraxtal-node-testnet-node-1  | t=2024-02-04T07:41:42+0000 lvl=info msg="Found next batch"                       batch_type=SingularBatch batch_timestamp=1,700,075,236 parent_hash=0x9575d501f128d1fcd40229e6a3bc8d21d1f94667e2a81a5b01941d7ac2b11de1 batch_epoch=0x18798cd2aec043a8fb1e8d1cf3fd76eb1ae146e9dc10c04de37051eb6bd01bd3:324624 txs=0
+fraxtal-node-testnet-node-1  | t=2024-02-04T07:41:42+0000 lvl=info msg="generated attributes in payload queue"  txs=1 timestamp=1,700,075,236
+fraxtal-node-testnet-node-1  | t=2024-02-04T07:41:42+0000 lvl=info msg="Received signed execution payload from p2p" id=0x9ee568dd726943cb819f1baa231bb7e870d40e12e7f699189dab492ef5fdc4ea:3517563 peer=16Uiu2HAkyvyfKpDjZd8FasvbQ3SALrvYy5AJZKF4SeTd4xYEVWeg
+fraxtal-node-testnet-node-1  | t=2024-02-04T07:41:42+0000 lvl=info msg="inserted block"                         hash=0xba734087a84f209a1c45585578bb10ac4dfa85af0eb147a2c7249eb9f4a7d63d number=38930 state_root=0x475ea2621418e01da0e350c51c20b388aad7f0307673adb35d66947693949050 timestamp=1,700,075,236 parent=0x9575d501f128d1fcd40229e6a3bc8d21d1f94667e2a81a5b01941d7ac2b11de1 prev_randao=0x01317c6e3c9c717e8819927f2c33eb83505d4d72ac627fb6883cc042573be0ed fee_recipient=0x4200000000000000000000000000000000000011 txs=1 update_safe=true
+fraxtal-node-testnet-node-1  | t=2024-02-04T07:41:42+0000 lvl=info msg="Sync progress"                          reason="processed safe block derived from L1" l2_finalized=0xd878b889605ac928844c12371b381d80a088fce5ae91cc4f25b913c7eb5bddaf:38833 l2_safe=0xba734087a84f209a1c45585578bb10ac4dfa85af0eb147a2c7249eb9f4a7d63d:38930 l2_safe_pending=0xba734087a84f209a1c45585578bb10ac4dfa85af0eb147a2c7249eb9f4a7d63d:38930 l2_unsafe=0xba734087a84f209a1c45585578bb10ac4dfa85af0eb147a2c7249eb9f4a7d63d:38930 l2_engineSyncTarget=0xba734087a84f209a1c45585578bb10ac4dfa85af0eb147a2c7249eb9f4a7d63d:38930 l2_time=1,700,075,236 l1_derived=0xfe9d9478267c3908ff1f59bfbebde3805b90c78015c672a72e1707b006a7bcc5:324630
+fraxtal-node-testnet-node-1  | t=2024-02-04T07:41:42+0000 lvl=info msg="Advancing bq origin"                    origin=0x356f2620c66268c1e21dce36067271b894ce8cf3cfabbe205b42b7d5116f35f1:324631 originBehind=false
+fraxtal-node-testnet-node-1  | t=2024-02-04T07:41:42+0000 lvl=warn msg="tx in inbox with unauthorized submitter" origin=0x356f2620c66268c1e21dce36067271b894ce8cf3cfabbe205b42b7d5116f35f1:324631 index=0  txHash=0xfc516bf5107835f384f2589f372498be041415aa75132378a222f06a6b5981fb err=nil
+fraxtal-node-testnet-node-1  | t=2024-02-04T07:41:42+0000 lvl=warn msg="tx in inbox with unauthorized submitter" origin=0x356f2620c66268c1e21dce36067271b894ce8cf3cfabbe205b42b7d5116f35f1:324631 index=1  txHash=0x71a9a9d2c5ae121b1121d6a2d2c4f4b3dfe3b864c37e49690b89454f2a41ae3b err=nil
+```
+
+## Verify node sync status
+
+### RPC Endpoint
+
+```bash
+echo "$(curl -4 ifconfig.co):8545"
+```
+
+#### Method:
+Check your op node status at port 7545 by
+
+```bash
+curl -X POST -H "Content-Type: application/json" --data     '{"jsonrpc":"2.0","method":"optimism_syncStatus","params":[],"id":1}' [rpc] | jq
+```
+
+If you get something like this in response to the above rpc call, your node is setup correctly
+
+```bash
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "result": {
+    "current_l1": {
+      "hash": "0x24f7d66e8c80d0c6a598e9206ba1abc81264c1cc68afc14d8eca3f04fa81f921",
+      "number": 323360,
+      "parentHash": "0x99ce84a2d455425f0c3a68b2b83a74301810fc8c726cba384b08d9a79d9381d1",
+      "timestamp": 1700059308
+    },
+..........
+..........
+    "engine_sync_target": {
+      "hash": "0x7b7ed381aac9cec2a43b37c30779832cb8a82e044e38b4ada0f1c90719bd3d50",
+      "number": 30955,
+      "parentHash": "0x882503037e902b2476e1d4c308a895cc3b936c5ee19b45361dc26c9631d29ae0",
+      "timestamp": 1700059286,
+      "l1origin": {
+        "hash": "0x49ee7a7398bc5010b48de111fc0ebc99d63d38ac8233202c913646d901e15213",
+        "number": 323353
+      },
+      "sequenceNumber": 2
+    }
+  }
+}
+```
+
+You can compare the block height on your node with explorer ([mainnet](https://fraxscan.com) or [testnet](https://holesky.fraxscan.com)),
+use your RPC node only when it has caught up with the latest block height.
+
+#### Sync Status of Frax optimism Execution Node
+
+You can check your status by connecting to geth console
+
+```bash
+docker exec -it fraxtal-node-$ENVIRONMENT-geth-1 geth attach http://localhost:8545
+> eth.blockNumber
+94078 # it will show you the latest block - number here is just an example
+
+> eth.syncing
+false
+```
+
+## Configure vald
+
+In order for `vald` to connect to your Fraxtal node, your `rpc_addr` should be exposed in
+vald's `config.toml`
+
+<tabs>
+    <tab-item title="Mainnet">
+        ```bash
+        [[axelar_bridge_evm]]
+        name = "fraxtal"
+        rpc_addr = "http://IP:PORT"
+        start-with-bridge = true
+        ```
+    </tab-item>
+    <tab-item title="Testnet">
+        ```bash
+        [[axelar_bridge_evm]]
+        name = "fraxtal"
+        rpc_addr = "http://IP:PORT"
+        start-with-bridge = true
+        ```
+    </tab-item>
+</tabs>
