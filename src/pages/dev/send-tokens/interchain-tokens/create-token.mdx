@@ -62,15 +62,21 @@ To create a custom Interchain Token:
 4. Transfer Interchain Tokens between chains via the Interchain Token Service by calling [`interchainTransfer()`](https://github.com/axelarnetwork/interchain-token-service/blob/9223108211b977d9138fdd67d5b4a641fc35c18c/contracts/interfaces/IInterchainTokenService.sol#L210).
 
 ```solidity
+Here's the comment section reformatted to ensure each line does not exceed 80 characters:
+
+```solidity
 /**
  * @notice Used to deploy TokenManagers.
- * @dev At least the `gasValue` amount of native token must be passed to the function call. `gasValue` exists because this function can be
- * part of a multicall involving multiple functions that could make remote contract calls.
+ * @dev At least the `gasValue` amount of native token must be passed to the
+ * function call. `gasValue` exists because this function can be part of a
+ * multicall involving multiple functions that could make remote contract calls.
  * @param salt The salt to be used during deployment.
- * @param destinationChain The name of the chain to deploy the TokenManager and standardized token to.
+ * @param destinationChain The name of the chain to deploy the TokenManager and
+ * standardized token to.
  * @param tokenManagerType The type of TokenManager to be deployed.
  * @param params The params that will be used to initialize the TokenManager.
- * @param gasValue The amount of native tokens to be used to pay for gas for the remote deployment.
+ * @param gasValue The amount of native tokens to be used to pay for gas for the
+ * remote deployment.
  * @return tokenId The tokenId corresponding to the deployed TokenManager.
  */
 function deployTokenManager(
