@@ -2,6 +2,38 @@
   "framework": null,
   "redirects": [
     {
+      "source": "/its/intro",
+      "destination": "/dev/send-tokens/interchain-tokens/intro"
+    },
+    {
+      "source": "/its/create-token",
+      "destination": "/dev/send-tokens/interchain-tokens/create-token"
+    },
+    {
+      "source": "/its/upgrade-token",
+      "destination": "/dev/send-tokens/interchain-tokens/upgrade-tokens"
+    },
+    {
+      "source": "/its/token-executable",
+      "destination": "/dev/send-tokens/interchain-tokens/interchain-token-executable"
+    },
+    {
+      "source": "/its/rate-limit",
+      "destination": "/dev/reference/interchain-token-service-rate-limit"
+    },
+    {
+      "source": "/its/create-token-tutorial",
+      "destination": "/dev/send-tokens/interchain-tokens/developer-guides/programmatically-create-a-token"
+    },
+    {
+      "source": "/its/canonical-token-tutorial",
+      "destination": "/dev/send-tokens/interchain-tokens/developer-guides/programmatically-create-a-canonical-token"
+    },
+    {
+      "source": "/its/link-token-tutorial",
+      "destination": "/dev/send-tokens/interchain-tokens/developer-guides/link-custom-tokens-deployed-across-multiple-chains-into-interchain-tokens"
+    },
+    {
       "source": "/dev/reference/glossary",
       "destination": "/dev/glossary",
       "permanent": true

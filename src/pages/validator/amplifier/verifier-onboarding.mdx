@@ -1,0 +1,197 @@
+# Become an Amplifier Verifier (Worker)
+
+import { Callout } from "/src/components/callout"
+
+<Callout>
+The Axelar Virtual Machine (AVM) and Amplifier are currently under active development, so these instructions are likely to change. Please check back frequently for updates.
+</Callout>
+
+By running a **verifier** (also called a **worker**) for a chain integration with Axelar, you will be responsible for voting on the validity of transactions on the Axelar network for a given chain.
+
+## Prerequisites
+
+1. Pull the **`tofnd`** and `ampd` image from [Docker Hub](https://hub.docker.com/):
+    ```bash
+    docker pull haiyizxx/tofnd:latest
+    docker pull haiyizxx/ampd:v0.0.2
+    ```
+1. Create an `ampd` folder in your working directory, download [`config.toml`](https://file.notion.so/f/f/8f1eb2f6-501d-4ae8-bd56-d35b21d3750f/a9bc03f8-a772-41bb-ad17-4f1b650f18ca/config.toml?id=6a8ec351-527a-467e-ab81-abc7ee8a9950&table=block&spaceId=8f1eb2f6-501d-4ae8-bd56-d35b21d3750f&expirationTimestamp=1705082400000&signature=qeG1WvtWM640SjvpYwg3ZMcBgEpCbIq2gUO1diGYbVQ&downloadName=config.toml), and put it in `ampd` folder.
+
+## Onboard as a verifier
+
+### Run `tofnd`
+
+- If you are running `tofnd` for the first time, a verifier key will be generated for you automatically.
+
+    ```docker
+
+    docker run  -p 50051:50051 --env MNEMONIC_CMD=auto  --env NOPASSWORD=true -v tofnd:/.tofnd haiyizxx/tofnd:latest
+    ```
+
+    If you have done this before, don't run this, cmmand, instead restart your existing container by container id.
+
+- Now check to ensure it's running successfully
+
+  ```bash
+  docker ps -a --filter ancestor=haiyizxx/tofnd:latest
+  ```
+
+  if you see tofnd container is up and running, you are good to go.
+  e.g.
+
+  ```bash
+
+  CONTAINER ID   IMAGE                  ...   STATUS       PORTS
+  1df5dba065e0   haiyizxx/tofnd:latest  ...   Up 2 weeks   0.0.0.0:50051->50051/tcp
+  ```
+
+  Otherwise, restart the container by container id, e.g.
+
+  ```bash
+  docker start 1df5dba065e0
+  ```
+
+### Bond your verifier
+Bonding your verifier registers it as a voting verifier as part of the pool. Bonded verifiers will stay bonded until they unbond, or are removed by governance.
+
+1. Query your verifier address
+
+```bash
+docker run --network host -v $(pwd)/ampd:/root/.ampd haiyizxx/ampd:v0.0.2 worker-address
+```
+
+Sample response
+
+```bash
+Worker address is axelar1up3vvhxg4swh2lfeh8n84dat86j6hmgz20d6d3
+```
+
+Create an issue on [Axelar Support](https://github.com/axelarnetwork/support) asking for devnet funds and to be whitelisted.
+
+1.  After your address has been funded, bond your verifier
+    (Simply copy and paste the command without altering the arguments.)
+    (Can skip if you reuse the verifier key)
+
+```bash
+docker run --network host -v $(pwd)/ampd:/root/.ampd haiyizxx/ampd:v0.0.2 bond-worker "axelar15xkahjmdkxu9jm63nlfff5kczkye5nj53f29d26ktqrc9nk8sy6srcwxyy" "validators" 100 "uamplifier"
+```
+
+1. Declare chain support
+   (Simply copy and paste the command without altering the arguments.)
+
+```bash
+docker run --network host -v $(pwd)/ampd:/root/.ampd haiyizxx/ampd:v0.0.2 declare-chain-support  "axelar15xkahjmdkxu9jm63nlfff5kczkye5nj53f29d26ktqrc9nk8sy6srcwxyy" "validators" "sui-2" "avalanche"
+```
+
+1. Register your public key
+   (Can skip if you reuse the verifier key)
+
+```bash
+docker run --network host -v $(pwd)/ampd:/root/.ampd haiyizxx/ampd:v0.0.2 register-public-key
+```
+
+1. You can now run ampd
+
+```bash
+docker run --network host -v $(pwd)/ampd:/root/.ampd haiyizxx/ampd:v0.0.2
+```
+
+# Key Rotation
+
+1. Update verifier set
+    ```bash
+    axelard tx wasm execute $SUI_PROVER '"update_worker_set"' --from validator --gas auto --gas-adjustment 2
+    ```
+
+    Query multisig contract to get signing state
+
+    ```bash
+    axelard q wasm contract-state smart $MULTISIG '{"get_multisig":{"session_id":"12"}}'
+    ```
+1. Query signed command
+
+    ```bash
+    axelard q wasm contract-state smart $SUI_PROVER '{"get_proof":{"multisig_session_id":"12"}}'
+    ```
+1. Relay the batch to Sui gateway
+1. Verify key rotation happened on Sui
+    ```bash
+    axelard tx wasm execute $SUI_VERIFIER '{"confirm_worker_set":{"message_id":"9RSAJtcr5z4wJte5nzdmhLHjWzzNegvHECfpWJ3FwUTs:0","new_operators":{"weights_by_addresses":[["021c4f23e560c7fe709dfc9d21564c50ae7d47849564b9c3321c38a8ad1b94d30d","1"],["023054b468b4d9e85144225705aa5dd06e46226a12aae6e854b16046df272145f3","1"],["026fa53253c4e5ca8ba71690470c887686f865fadb49430c2e95dfcc3a864e0c8c","1"],["027561c44dd85e1f08a99f4da41af912fc6a4986a431b3209cf1c8ecdb77609aae","1"],["02d3eef76c31694945e855423b1d7244d80dbbd04c2dbe707f3f4ec9bdcfe88950","1"],["02fdf3916dd87dc1357cd27c9d3ec302bb1a4e331decde00f7479db12c3bc9c96e","1"],["030d47294351c4800e804281e7e24d7fad7b3a53c666958fa5bdcf071a927f78df","1"],["03b36f52c88d68db7fb1a39d1c6a298dbf6936c8c73f8c7d3986145a13b7993744","1"],["03faa1ac20735bdc5647390f9bb9a763d139c284720bb05b46e8db54ca77059d7d","1"]], "threshold":"5"}}}' --from validator --gas auto --gas-adjustment 2
+    ```
+    ```bash
+    axelard tx wasm execute $SUI_VERIFIER '{"end_poll":{"poll_id":"8"}}' --from validator --gas auto --gas-adjustment 2
+    ```
+1. Confirm verifier set
+    ```bash
+    axelard tx wasm execute $SUI_PROVER '"confirm_worker_set"' --from validator --gas auto --gas-adjustment 2
+    ```
+    ```bash
+    axelard q wasm contract-state smart $SUI_PROVER '"get_worker_set"'
+    ```
+1. Distribute rewards
+  ```bash
+  # for AVAX voting verifier
+  axelard tx wasm execute $REWARDS '{"distribute_rewards": {"contract_address": "'$SUI_VERIFIER'", "epoch_count":1000}}' --from validator --gas auto --gas-adjustment 2
+
+  # for Multisig
+  axelard tx wasm execute $REWARDS '{"distribute_rewards": {"contract_address": "'$MULTISIG'", "epoch_count":2000}}' --from validator --gas auto --gas-adjustment 2
+  ```
+
+# Message Passing from Avalanche to Sui
+
+1. Send a cross chain message
+1. Verifiers verify the source transaction
+    ```bash
+    MESSAGE_ID=0x2cfe059bde1de13cbb2ebbe4a79265cce41e50e21a86d8a72a708a9a1cabd9a1:0
+    SOURCE_CHAIN=avalanche
+    SOURCE_ADDRESS=0x777d2d82dab1bf06a4dcf5a3e07057c41100c22d
+    DESTINATION_CHAIN=sui-2
+    DESTINATION_ADDRESS=16d3de825d0e59e9dcf7726a7d4607841eab211f5fa7741a7c44d6453fe38545
+    PAYLOAD_HASH=5FE7F977E71DBA2EA1A68E21057BEEBB9BE2AC30C6410AA38D4F3FBE41DCFFD2
+    ```
+
+    ```bash
+    axelard tx wasm execute $AVAX_GATEWAY '{"verify_messages":[{"cc_id":{"chain":"avalanche","id":"'$MESSAGE_ID'"}, "source_address":"'$SOURCE_ADDRESS'","destination_chain":"'$DESTINATION_CHAIN'","destination_address":"'$DESTINATION_ADDRESS'","payload_hash":"'$PAYLOAD_HASH'"}]}' --from validator --gas auto --gas-adjustment 2
+
+    ```
+
+    ```bash
+    axelard tx wasm execute $AVAX_VERIFIER '{"end_poll":{"poll_id":"11"}}' --from validator --gas auto --gas-adjustment 2
+    ```
+
+    Check message verified
+
+    ```bash
+    axelard q wasm contract-state smart $AVAX_VERIFIER '{"is_verified":{"messages":[{"cc_id":{"chain":"avalanche","id":"'$MESSAGE_ID'"},"source_address":"'$SOURCE_ADDRESS'","destination_chain":"'$DESTINATION_CHAIN'","destination_address":"'$DESTINATION_ADDRESS'","payload_hash":"'$PAYLOAD_HASH'"}]}}'
+
+    ```
+3. Distribute rewards
+    ```jsx
+    axelard tx wasm execute $REWARDS '{"distribute_rewards": {"contract_address": "'$AVAX_VERIFIER'", "epoch_count":1000}}' --from validator --gas auto --gas-adjustment 2
+    ```
+4. Route message
+    ```bash
+    axelard tx wasm execute $AVAX_GATEWAY '{"route_messages":[{"cc_id":{"chain":"avalanche","id":"'$MESSAGE_ID'"}, "source_address":"'$SOURCE_ADDRESS'","destination_chain":"'$DESTINATION_CHAIN'","destination_address":"'$DESTINATION_ADDRESS'","payload_hash":"'$PAYLOAD_HASH'"}]}' --from validator --gas auto --gas-adjustment 2
+    ```
+
+    Verify message arrived at destination gateway
+
+    ```bash
+    axelard q wasm contract-state smart $SUI_GATEWAY '{"get_messages":{"message_ids":[{"chain":"avalanche","id":"'$MESSAGE_ID'"}]}}'
+    ```
+1. Construct proof
+    ```bash
+    axelard tx wasm execute $SUI_PROVER '{"construct_proof":{"message_ids":["avalanche:'$MESSAGE_ID'"]}}' --from validator --gas auto --gas-adjustment 2
+    ```
+1. Distribute Rewards
+    ```jsx
+    axelard tx wasm execute $REWARDS '{"distribute_rewards": {"contract_address": "'$MULTISIG'", "epoch_count":1000}}' --from validator --gas auto --gas-adjustment 2
+    ```
+1. Relay proof to Avalanche gateway
+    ```bash
+    axelard q wasm contract-state smart $SUI_PROVER '{"get_proof":{"multisig_session_id":"13"}}'
+    ```
+
+
+## Productionizing
+You should now switch to running your own full Axelar node and your own full node for any chains you are voting on.

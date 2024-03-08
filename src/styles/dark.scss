@@ -15,7 +15,9 @@ html.dark body {
     color: $dark-link;
   }
   .article a,
-  article a:hover {
+  article a:hover,
+  #toc a,
+  #toc a:hover {
     color: $dark-link;
   }
   a.active,

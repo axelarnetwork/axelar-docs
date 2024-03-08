@@ -67,6 +67,14 @@
     {
       "id": "immutable",
       "address": "0x24C2b56128fF8E7bFaD578ABefB0fc7Dfa9ba358"
+    },
+    {
+      "id": "fraxtal",
+      "address": "0x2d5d7d31F671F86C782533cc367F14109a082712"
+    },
+    {
+      "id": "blast",
+      "address": "0x2d5d7d31F671F86C782533cc367F14109a082712"
     }
   ],
   "testnet": [
@@ -143,7 +151,7 @@
       "address": "0xbE406F0189A0B4cf3A05C286473D23791Dd44Cc6"
     },
     {
-      "id": "centrifuge",
+      "id": "centrifuge-2",
       "address": "0xbE406F0189A0B4cf3A05C286473D23791Dd44Cc6"
     },
     {
@@ -152,6 +160,30 @@
     },
     {
       "id": "immutable",
+      "address": "0xbE406F0189A0B4cf3A05C286473D23791Dd44Cc6"
+    },
+    {
+      "id": "fraxtal",
+      "address": "0xbE406F0189A0B4cf3A05C286473D23791Dd44Cc6"
+    },
+    {
+      "id": "mantle-sepolia",
+      "address": "0xbE406F0189A0B4cf3A05C286473D23791Dd44Cc6"
+    },
+    {
+      "id": "blast-sepolia",
+      "address": "0xbE406F0189A0B4cf3A05C286473D23791Dd44Cc6"
+    },
+    {
+      "id": "arbitrum-sepolia",
+      "address": "0xbE406F0189A0B4cf3A05C286473D23791Dd44Cc6"
+    },
+    {
+      "id": "base-sepolia",
+      "address": "0xbE406F0189A0B4cf3A05C286473D23791Dd44Cc6"
+    },
+    {
+      "id": "optimism-sepolia",
       "address": "0xbE406F0189A0B4cf3A05C286473D23791Dd44Cc6"
     }
   ]

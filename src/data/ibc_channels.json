@@ -101,6 +101,16 @@
       "channel_id": "channel-7"
     },
     {
+      "from": "dymension",
+      "to": "axelarnet",
+      "channel_id": "channel-5"
+    },
+    {
+      "from": "axelarnet",
+      "to": "dymension",
+      "channel_id": "channel-138"
+    },
+    {
       "from": "evmos",
       "to": "axelarnet",
       "channel_id": "channel-21"
@@ -571,6 +581,16 @@
       "from": "axelarnet",
       "to": "sei",
       "channel_id": "channel-257"
+    },
+    {
+      "from": "sommelier",
+      "to": "axelarnet",
+      "channel_id": "channel-3"
+    },
+    {
+      "from": "axelarnet",
+      "to": "sommelier",
+      "channel_id": "channel-420"
     },
     {
       "from": "teritori",
