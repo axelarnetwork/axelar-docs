@@ -288,11 +288,6 @@
       "permanent": true
     },
     {
-      "source": "/dev/axelar-sandbox/:path(.*)",
-      "destination": "/dev/general-message-passing/axelar-sandbox/:path",
-      "permanent": true
-    },
-    {
       "source": "/dev/build/5-min-starter-examples",
       "destination": "/dev/general-message-passing/examples",
       "permanent": true
