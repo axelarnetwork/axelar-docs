@@ -118,6 +118,11 @@
       "permanent": true
     },
     {
+      "source": "/dev/general-message-passing/axelar-sandbox/intro",
+      "destination": "/dev/axelar-sandbox/intro",
+      "permanent": true
+    },
+    {
       "source": "/dev/general-message-passing/local-dev",
       "destination": "/dev/general-message-passing/developer-guides/example-gmp",
       "permanent": true
