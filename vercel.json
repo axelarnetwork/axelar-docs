@@ -19,7 +19,7 @@
     },
     {
       "source": "/its/rate-limit",
-      "destination": "/dev/reference/interchain-token-service-rate-limit"
+      "destination": "/dev/send-tokens/interchain-tokens/rate-limit"
     },
     {
       "source": "/its/create-token-tutorial",
@@ -32,6 +32,10 @@
     {
       "source": "/its/link-token-tutorial",
       "destination": "/dev/send-tokens/interchain-tokens/developer-guides/link-custom-tokens-deployed-across-multiple-chains-into-interchain-tokens"
+    },
+    {
+      "source": "/dev/reference/interchain-token-service-rate-limit",
+      "destination": "/dev/send-tokens/interchain-tokens/rate-limit"
     },
     {
       "source": "/dev/reference/glossary",
