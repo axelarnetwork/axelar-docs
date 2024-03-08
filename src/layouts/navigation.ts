@@ -210,13 +210,7 @@ export const getNavigation = (section) => {
         },
         {
           title: "Sandbox",
-          children: [
-            { title: "Introduction", href: "/dev/axelar-sandbox/intro" },
-            {
-              title: "How to Use",
-              href: "/dev/axelar-sandbox/how-to-use",
-            },
-          ],
+          href: "https://xchainbox.axelar.dev",
         },
         {
           title: "Glossary",
