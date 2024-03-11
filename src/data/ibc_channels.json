@@ -483,6 +483,16 @@
       "channel_id": "channel-19"
     },
     {
+      "from": "lava",
+      "to": "axelarnet",
+      "channel_id": "channel-4"
+    },
+    {
+      "from": "axelarnet",
+      "to": "lava",
+      "channel_id": "channel-444"
+    },
+    {
       "from": "neutron",
       "to": "axelarnet",
       "channel_id": "channel-8"
