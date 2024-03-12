@@ -10,23 +10,117 @@ By running a **verifier** (also called a **worker**) for a chain integration wit
 
 ## Prerequisites
 
-1. Run `tofnd`. `ampd` needs access to a running `tofnd` instance in order to onboard as a worker or run the daemon. See the [tofnd repository](https://github.com/axelarnetwork/tofnd) for more info.
+1. Run `tofnd`. [`ampd`](https://github.com/axelarnetwork/axelar-amplifier/tree/main/ampd#worker-onboarding), the off-chain daemon responsible for voting and signing with the amplifier protocol, needs access to a running `tofnd` instance in order to onboard as a worker or run the daemon. See the [tofnd repository](https://github.com/axelarnetwork/tofnd) for more info.
 
 2. Download `ampd` through either the [binary](https://github.com/axelarnetwork/axelar-amplifier/releases/tag/ampd-v0.1.0) or [docker](https://hub.docker.com/r/axelarnet/axelar-ampd).
 
-3. Dowload the `ampd` config: 
-
-//TODO: host the config file with updated devnet urls and contract address
-
-Dowload [`config.toml`](place holder) and put it in `~/.ampd/`.
+3. Create a `config.toml` file and put it in your `~/.ampd/` directory. 
 
 By default, `ampd` loads the `config` file from `~/.ampd/config.toml` when running any command. This can be overridden by passing `--config [path]`.
+
+The file should have the following format:
+
+```toml
+tm_jsonrpc=[JSON-RPC URL of Axelar node]
+tm_grpc=[gRPC URL of Axelar node]
+event_buffer_cap=[max blockchain events to queue. Will error if set too low]
+
+[service_registry]
+cosmwasm_contract=[address of service registry]
+
+[broadcast]
+batch_gas_limit=[max gas for a transaction. Transactions can contain multiple votes and signatures]
+broadcast_interval=[how often to broadcast transactions]
+chain_id=[chain id of Axelar network to connect to]
+gas_adjustment=[gas adjustment to use when broadcasting]
+gas_price=[gas price with denom, i.e. "0.007uaxl"]
+queue_cap=[max messages to queue when broadcasting]
+tx_fetch_interval=[how often to query for transaction inclusion in a block]
+tx_fetch_max_retries=[how many times to query for transaction inclusion in a block before failing]
+
+[tofnd_config]
+key_uid=[uid of key used for signing transactions]
+party_uid=[metadata, should just be set to ampd]
+url=[url of tofnd]
+
+# multisig handler. This handler is used for all supported chains.
+[[handlers]]
+cosmwasm_contract=[address of multisig contract]
+type="MultisigSigner"
+
+# message verifier handler. One per supported chain
+[[handlers]]
+chain_name=[chain name. Not necessary in the Sui case]
+chain_rpc_url=[URL of JSON-RPC endpoint for external chain]
+cosmwasm_contract=[verifier contract address]
+type=[handler type. Could be EvmMsgVerifier | SuiMsgVerifier]
+
+# workerset verifier handler. One per supported chain
+[[handlers]]
+chain_name=[chain name. Not necessary in the Sui case]
+chain_rpc_url=[URL of JSON-RPC endpoint for external chain]
+cosmwasm_contract=[verifier contract address]
+type=[handler type. Could be EvmMsgWorkerSetVerifier | SuiWorkerSetVerifier]
+```
+
+Here's an example config for connecting to a local axelard node and `tofnd` process and verifying transactions from the Avalanche and Sui testnets:
+
+```toml
+tm_jsonrpc="http://localhost:26657"
+tm_grpc="tcp://localhost:9090"
+event_buffer_cap=10000
+
+[service_registry]
+cosmwasm_contract="axelar1hrpna9v7vs3stzyd4z3xf00676kf78zpe2u5ksvljswn2vnjp3ystlgl4x"
+
+[broadcast]
+batch_gas_limit="10000000"
+broadcast_interval="1s"
+chain_id="devnet-amplifier"
+gas_adjustment="2"
+gas_price="0.00005uamplifier"
+queue_cap="1000"
+tx_fetch_interval="600ms"
+tx_fetch_max_retries="10"
+
+[tofnd_config]
+key_uid="axelar"
+party_uid="ampd"
+url="http://127.0.0.1:50051"
+
+[[handlers]]
+type = 'MultisigSigner'
+cosmwasm_contract = 'axelar1au3qdftlypz3uydz9260aj4w73r7jm747zm5fsgrdnrlpwy7rrwqjzlemm'
+
+[[handlers]]
+type = 'SuiMsgVerifier'
+cosmwasm_contract = 'axelar1hmdc9verjjfttcsav57nhcjm7hfcrpg08tqk9phcceulzurnfqns9yqsap'
+rpc_url = "https://fullnode.testnet.sui.io:443"
+
+[[handlers]]
+type = 'SuiWorkerSetVerifier'
+cosmwasm_contract = 'axelar1hmdc9verjjfttcsav57nhcjm7hfcrpg08tqk9phcceulzurnfqns9yqsap'
+rpc_url = "https://fullnode.testnet.sui.io:443"
+
+[[handlers]]
+type = 'EvmMsgVerifier'
+cosmwasm_contract = 'axelar14lh98gp06zdqh5r9qj3874hdmfzs4sh5tkfzg3cyty4xeqsufdjqedt3q8'
+chain_name = 'avalanche'
+chain_rpc_url = "https://api.avax-test.network/ext/bc/C/rpc"
+
+
+[[handlers]]
+type = 'EvmWorkerSetVerifier'
+cosmwasm_contract = 'axelar14lh98gp06zdqh5r9qj3874hdmfzs4sh5tkfzg3cyty4xeqsufdjqedt3q8'
+chain_name = 'avalanche'
+chain_rpc_url = "https://api.avax-test.network/ext/bc/C/rpc"
+```
 
 ## Verifier Onboarding
 
 Prior to running the `ampd` daemon, workers will need to perform the following onboarding steps:
 
-1. Query the verifier address:
+1. Determine the verifier address:
 
 ```bash
 ampd worker-address
@@ -36,8 +130,8 @@ ampd worker-address
 
 For devnet:
 
-1. Join the [Axelar Discord](https://discord.com/invite/axelar)
-1. Get the Developer Role
+1. Join the [Axelar Discord](https://discord.com/invite/axelar).
+1. Get the Developer Role.
 3. Go to the #faucet channel and submit a request with your account to get 100 test tokens.
 
 ```bash
@@ -74,12 +168,24 @@ For devnet, create an issue on [Axelar Support](https://github.com/axelarnetwork
 
 ## Run the daemon
 
-```bash
-ampd
-```
+The `ampd` command will run the daemon. A state file will be created if it doesn't yet exist. Its default location is `~/.ampd/state.json`, which can be overridden by passing:
 
-A state file will be created if it doesn't yet exist. The default location of the state file is `~/.ampd/state.json`, which can be overridden by passing `--state [path]`.
+```bash
+--state [path]
+```
 
 ## Productionizing
 
 You should now switch to running your own full Axelar node and your own full node for any chains you are voting on.
+
+## Help
+
+For more info about the available commands and options, run:
+
+```bash
+ampd --help
+```
+
+## Feedback
+
+If you have any feedback or would like to report a bug, please file an issue in the [Axelar Developer Support repository](https://github.com/axelarnetwork/support/issues).
