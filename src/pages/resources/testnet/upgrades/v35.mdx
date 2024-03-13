@@ -18,7 +18,9 @@ Upgrade height `12017025` [countdown](https://testnet.mintscan.io/axelar-testnet
 <Callout type="warning" emoji="⚠️">
   [Go v1.21](https://tip.golang.org/doc/go1.21) will be needed to build `axelard`.
 
-  Node operators using binaries need to download `wasmvm v1.3.1` [libwasmvm.x86_64.so](https://github.com/CosmWasm/wasmvm/releases/tag/v1.3.1) and add the parent folder to `LD_LIBRARY_PATH`
+  Node operators using binaries need to download `wasmvm v1.3.1` [libwasmvm.x86_64.so](https://github.com/CosmWasm/wasmvm/releases/tag/v1.3.1) and add the parent folder to `LD_LIBRARY_PATH`.
+
+   Node operators will need to use the updated [`cosmsprund`](https://github.com/binaryholdings/cosmprund/pull/26) to prune their nodes.
 
   If using the community node setup scripts, please update to the latest commit on `main` first.
   `wasmvm` lib will be auto-downloaded to `$AXELARD_HOME/lib` but you'll need to add it to `LD_LIBRARY_PATH` before running the script.
