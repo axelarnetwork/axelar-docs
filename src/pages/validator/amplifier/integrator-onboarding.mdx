@@ -1,0 +1,34 @@
+# Integrate your chain
+
+## Prerequisites
+
+- Make sure you have `wasm` enabled.
+- You should know how to deploy and interact with a CosmWasm contract. Refer to the [Osmosis CosmWasm testnet deployment tutorial](https://docs.osmosis.zone/cosmwasm/testnet/cosmwasm-deployment/) if you’d like a refresher — just replace `osmosisid` with `axelard` and use the `arm64` version of the [contract optimizer](https://github.com/CosmWasm/optimizer) if you are working on a [Mac with Apple silicon](https://support.apple.com/en-us/116943). Run `--gas auto --gas-adjustment 2` to provide your transactions with sufficient gas.
+
+## Devnet reference
+
+- Devnet RPC: http://devnet.rpc.axelar.dev:26657
+- Devnet LCD (REST API/JSON RPC): http://devnet.rpc.axelar.dev:1317
+- Devnet gRPC: http://devnet.rpc.axelar.dev:9090
+- Chain ID: `devnet-wasm`
+
+## Set up your CosmWasm devnet environment
+
+1. Download the pre-built [`axelard v0.35.5` binary](https://github.com/axelarnetwork/axelar-core/releases/tag/v0.35.5) from GitHub.
+1. Generate an account by running `./bin/axelard keys add test`.
+1. Fund your devnet account with `uwasm` tokens:
+    - Join the [Axelar Discord](https://discord.com/invite/axelar).
+    - Get the Developer Role.
+    - Go to the **#faucet** channel and submit a request with your account to get 100 test tokens. A sample request: `!faucet devnet axelar1suw3fsckht00c5srgtr8p6lhn58e9lxq9yf5th`
+1. Query your account balance by running `axelard q bank balances axelar1suw3fsckht00c5srgtr8p6lhn58e9lxq9yf5th —-node [RPC]`.
+1. Deploy your CosmWasm contract.
+
+## Run `ampd` / `tofnd`
+
+See the [verifier onboarding docs](/validator/amplifier/verifier-onboarding) for detailed instructions on how to run ampd and tofnd on your machine.
+
+## Register your chain in the router
+
+- Fill out the [Google form](placeholder) to register a chain in the router. // - TODO: Create form with link
+Authorize the verifier. // TODO: instructions
+- Authorize multisig provider. // TODO: instructions
