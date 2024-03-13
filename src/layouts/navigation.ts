@@ -344,6 +344,10 @@ export const getNavigation = (section) => {
               title: "Become a Verifier",
               href: "/validator/amplifier/verifier-onboarding",
             },
+            {
+              title: "GMP with Amplifier",
+              href: "/validator/amplifier/gmp-tutorial",
+            },
           ],
         },
       ],
