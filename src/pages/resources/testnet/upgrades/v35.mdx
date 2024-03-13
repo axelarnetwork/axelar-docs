@@ -10,8 +10,8 @@ This release adds the Axelar Virtual Machine to the network and adds support for
 This release enables CosmWasm. Contracts created with CosmWasm will require [governance proposals](https://docs.axelar.dev/learn/cosmwasm-governance) to be deployed for the indefinite future.
 </Callout>
 
-Instructions for `2024-February-13` testnet upgrade to axelar-core `v0.35.3`, vald `v0.35.3`, and tofnd `v0.10.1`.
-Release can be found [here](https://github.com/axelarnetwork/axelar-core/releases/tag/v0.35.3).
+Instructions for `2024-February-13` testnet upgrade to axelar-core `v0.35.5`, vald `v0.35.5`, and tofnd `v0.10.1`.
+Release can be found [here](https://github.com/axelarnetwork/axelar-core/releases/tag/v0.35.5).
 
 Upgrade height `12017025` [countdown](https://testnet.mintscan.io/axelar-testnet/blocks/12017025)
 
@@ -53,8 +53,8 @@ cp -r ~/.axelar_testnet/.core/data ~/.axelar-lisbon-3-upgrade-0.34/.core/data
   excluding them from any data backups.
 </Callout>
 
-4. Restart your `axelard` node with the new `v0.35.3` build.
-5. If you're a validator also restart `vald` with `v0.35.3` and `tofnd` with `v0.10.1`.
+4. Restart your `axelard` node with the new `v0.35.5` build.
+5. If you're a validator also restart `vald` with `v0.35.5` and `tofnd` with `v0.10.1`.
 
 Example using join scripts in [axelarate-community git repo](https://github.com/axelarnetwork/axelarate-community):
 
@@ -62,7 +62,7 @@ Example using join scripts in [axelarate-community git repo](https://github.com/
 # in axelarate-community repo
 git checkout main
 git pull
-KEYRING_PASSWORD="pw-1" ./scripts/node.sh -n testnet -a v0.35.3
+KEYRING_PASSWORD="pw-1" ./scripts/node.sh -n testnet -a v0.35.5
 # For validators, restart vald/tofnd
-KEYRING_PASSWORD="pw-1" TOFND_PASSWORD="pw-2" ./scripts/validator-tools-host.sh -n testnet -a v0.35.3 -q v0.10.1
+KEYRING_PASSWORD="pw-1" TOFND_PASSWORD="pw-2" ./scripts/validator-tools-host.sh -n testnet -a v0.35.5 -q v0.10.1
 ```
