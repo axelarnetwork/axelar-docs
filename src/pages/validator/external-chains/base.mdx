@@ -33,8 +33,22 @@ snap install docker
 git clone https://github.com/base-org/node
 ```
 
-2. In `docker-compose.yml`, set `OP_NODE_L1_ETH_RPC` to your own Goerli L1 RPC node. Using your own Goerli node is required to guarantee decentralization for validation.
+2. In `docker-compose.yml`, uncomment the right .env file according to the network you want to run it on
 
+```bash
+    env_file:
+      # select your network here:
+#      - .env.sepolia
+#      - .env.mainnet
+```
+Update the following variables in your env file
+```bash
+# [recommended] replace with your preferred L1 (Ethereum, not Base) node RPC URL:
+OP_NODE_L1_ETH_RPC=https://rpc.sepolia.org
+
+# [required] replace with your preferred L1 CL beacon endpoint:
+OP_NODE_L1_BEACON=https://your.sepolia.beacon.node/endpoint-here
+```
 3. Run:
 
 ```bash
