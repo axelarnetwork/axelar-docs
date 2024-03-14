@@ -345,8 +345,8 @@ export const getNavigation = (section) => {
               href: "/validator/amplifier/verifier-onboarding",
             },
             {
-              title: "GMP tutorial",
-              href: "/validator/amplifier/gmp-tutorial",
+              title: "GMP with Amplifier",
+              href: "/validator/amplifier/gmp",
             },
           ],
         },
