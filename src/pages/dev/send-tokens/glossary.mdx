@@ -1,0 +1,50 @@
+# Interchain Token Glossary
+
+## Interchain Token
+
+An Interchain Token is an ERC-20 token that can be transferred between blockchains, preserving native token qualities. At the core, an Interchain Token is an ERC-20 contract on a public blockchain secured by a dynamic validator set. If this contract implements the [`IInterchainToken`](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/interfaces/IInterchainToken.sol) interface, it will have knowledge of its own [Token Manager](/dev/send-tokens/glossary#token-manager) and will contain all of the Token Manager’s transfer methods. If it does not implement this interface, token transfers must be done through explicit function calls on the Token Manager.
+
+## Interchain Token Service
+
+The Interchain Token Service is a [smart contract](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/InterchainTokenService.sol) deployed by Axelar that manages the creation and management of Interchain Tokens and Token Managers. Its testnet address is [`0xF786e21509A9D50a9aFD033B5940A2b7D872C208`](https://goerli.etherscan.io/address/0xF786e21509A9D50a9aFD033B5940A2b7D872C208), and its mainnet address is [`0xB5FB4BE02232B1bBA4dC8f81dc24C26980dE9e3C`](https://etherscan.io/address/0xB5FB4BE02232B1bBA4dC8f81dc24C26980dE9e3C).
+
+## Canonical Interchain Token
+
+In the context of Axelar’s Interchain Token Service, a canonical interchain token is an interchain token built from a token that already exists on a chain. The token manager “duplicates” this token by deploying it on other chains, accepting the “original” as the standard across all chains. This standardization ensures consistent behavior and enables interoperability between blockchains, allowing cross-chain transactions and interactions within blockchain networks that support various chains. Thus, every ERC-20 token can only have one canonical chain. It will be deployed to all other chains as a [standardized token](/dev/send-tokens/glossary#standardized-token).
+
+## Custom Token
+
+A custom token is an ERC-20 token that is designed to serve specific use cases within the blockchain ecosystem. Unlike [standardized tokens](/dev/send-tokens/glossary#standardized-token), custom tokens are highly customizable, allowing their creators to define unique features, functionalities, and rules. For example, a standardized token will have the same name and symbol on all chains, but a custom token can have a different name and symbol on each chain. Custom tokens can optionally implement the [`IInterchainToken`](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/interfaces/IInterchainToken.sol) interface for transfer methods directly on the ERC-20 contract.
+
+## Standardized Token
+
+In the context of Axelar’s Interchain Token Service, a standardized token is a ERC-20 contract that implements the [`IInterchainToken`](https://github.com/axelarnetwork/interchain-token-service/blob/8d66c0b4d42fa7c3918ee9e2ccb9d80b7a4e3b1b/contracts/interfaces/IInterchainToken.sol) and [`IStandardizedToken`](https://github.com/axelarnetwork/interchain-token-service/blob/8d66c0b4d42fa7c3918ee9e2ccb9d80b7a4e3b1b/contracts/interfaces/IStandardizedToken.sol) interfaces and can be deployed by the Interchain Token Service.
+
+## Token ID
+
+A token ID is a token’s unique identifier within a blockchain network. It remains the same across all the chains that the token is deployed to.
+
+## Token Manager
+
+A [`TokenManager`](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/token-manager/TokenManager.sol) is a contract that is responsible for managing interchain tokens. There are two types of token managers:
+
+- [Lock/Unlock](/dev/send-tokens/glossary#lockunlock) — can lock and release token supply
+- [Mint/Burn](/dev/send-tokens/glossary#mintburn) — can mint or burn tokens
+
+Token Managers must be designated either Lock/Unlock or Mint/Burn.
+
+## Lock/Unlock
+
+To lock or unlock a smart contract means to temporarily restrict or restore the transfer of tokens or assets within the contract.  Locking can be used in smart contracts to enforce specific conditions or trigger events only when certain criteria are met.
+
+## Mint/Burn
+
+Minting refers to the creation of new tokens, typically increasing the total supply. Burning involves permanently removing tokens from circulation, reducing the total supply. In the Interchain Token Service, the contract’s Token Manager will mint new tokens on its chain when there are incoming token transfers, and burn the received tokens when there are outgoing token transfers.
+
+## Distributor Role
+
+The distributor is a permission role for custom tokens within the Axelar ecosystem. Tokens with distributor permissions can mint and burn tokens. This role is essential for managing the token supply and ensuring its proper functioning.
+
+## Operator
+
+In Interchain Token Service, the Operator is a role for a Token Manager that can set the `flowLimit` to control the influx and outflux of tokens on an ERC-20 contract.

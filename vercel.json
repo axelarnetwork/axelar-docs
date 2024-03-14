@@ -39,7 +39,7 @@
     },
     {
       "source": "/dev/reference/glossary",
-      "destination": "/dev/glossary",
+      "destination": "/dev/send-tokens/glossary",
       "permanent": true
     },
     {

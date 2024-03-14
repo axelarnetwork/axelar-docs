@@ -54,6 +54,10 @@ export const getNavigation = (section) => {
                 },
               ],
             },
+            {
+              title: "Glossary",
+              href: "/dev/send-tokens/glossary",
+            },
           ],
         },
         {
@@ -211,10 +215,6 @@ export const getNavigation = (section) => {
         {
           title: "Sandbox",
           href: "/dev/axelar-sandbox/intro",
-        },
-        {
-          title: "Glossary",
-          href: "/dev/glossary",
         },
       ],
     });
