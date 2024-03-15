@@ -14,7 +14,13 @@
 
 ## Set up your CosmWasm devnet environment
 
-1. Download the pre-built [`axelard v0.35.5`](https://github.com/axelarnetwork/axelar-core/releases/tag/v0.35.5) binary from GitHub for your device.
+1. Install the `v0.35.5` axelard binary. You can either:
+    * Download the pre-built [`axelard v0.35.5`](https://github.com/axelarnetwork/axelar-core/releases/tag/v0.35.5) binary from GitHub for your device. You will also need to download 
+    [`wasmvm v1.3.1`](https://github.com/CosmWasm/wasmvm/releases/tag/v1.3.1) `libwasmvm.x86_64.so` (for Linux) or `libwasmvm.dylib` (for Mac) and in either case add the parent folder to `LD_LIBRARY_PATH`, OR: 
+    * Build `axelard` binary directly from the `axelar-core`: 
+        * Clone the [repo](https://github.com/axelarnetwork/axelar-core)
+        * Checkout the `v0.35.5` release tag
+        * Run `make build`
 1. Generate an account by running `axelard keys add wallet --keyring-backend test`.
 1. Fund your devnet account with `uamplifier` tokens:
     - Join the [Axelar Discord](https://discord.com/invite/axelar).
