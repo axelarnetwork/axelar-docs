@@ -341,11 +341,15 @@ export const getNavigation = (section) => {
           title: "Amplifier",
           children: [
             {
-              title: "Become a Verifier",
+              title: "Introduction",
+              href: "/validator/amplifier/introduction",
+            },
+            {
+              title: "Become a verifier",
               href: "/validator/amplifier/verifier-onboarding",
             },
             {
-              title: "Integrate your chain",
+              title: "Integrate a chain",
               href: "/validator/amplifier/integrator-onboarding",
             },
             {
