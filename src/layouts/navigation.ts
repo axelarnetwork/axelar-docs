@@ -54,10 +54,6 @@ export const getNavigation = (section) => {
                 },
               ],
             },
-            {
-              title: "Glossary",
-              href: "/dev/send-tokens/glossary",
-            },
           ],
         },
         {
@@ -216,6 +212,10 @@ export const getNavigation = (section) => {
           title: "Sandbox",
           href: "/dev/axelar-sandbox/intro",
         },
+        {
+          title: "Glossary",
+          href: "/dev/glossary",
+        },
       ],
     });
   }
@@ -343,6 +343,14 @@ export const getNavigation = (section) => {
             {
               title: "Become a Verifier",
               href: "/validator/amplifier/verifier-onboarding",
+            },
+            {
+              title: "Integrate your chain",
+              href: "/validator/amplifier/integrator-onboarding",
+            },
+            {
+              title: "GMP with Amplifier",
+              href: "/validator/amplifier/gmp",
             },
           ],
         },
