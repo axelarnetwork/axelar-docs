@@ -23,6 +23,8 @@ docker run -p 50051:50051 --env MNEMONIC_CMD=auto --env NOPASSWORD=true -v tofnd
 
 1. Download `ampd` through either the [binary](https://github.com/axelarnetwork/axelar-amplifier/releases/tag/ampd-v0.1.0) or [docker](https://hub.docker.com/r/axelarnet/axelar-ampd).
 
+For docker, be sure to pull the `0.1.0` version and `amd64` platform specifically, i.e. `docker pull axelarnet/axelar-ampd:v0.1.0 --platform amd64`.
+
 1. Create a `config.toml` file and put it in your `~/.ampd/` directory. 
 
 Example config.toml file for the current devnet:
@@ -109,10 +111,10 @@ ampd register-public-key
 ```bash
 ampd register-chain-support [service name] [chains]...
 
-#e.g. ampd register-chain-support validators avalanche fantom
+#e.g. ampd register-chain-support validators avalanche chainB chainC
 ```
 
-Multiple chain names can be passed, separated by a space.
+Multiple chain names can be passed, separated by a space. Note, any chain you want to support here must be configured in your ampd `config.toml` file. 
 
 6. Authorize your verifier. 
 
