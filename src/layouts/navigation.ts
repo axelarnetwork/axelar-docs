@@ -209,6 +209,23 @@ export const getNavigation = (section) => {
           ],
         },
         {
+          title: "Amplifier",
+          children: [
+            {
+              title: "Introduction",
+              href: "/dev/amplifier/introduction",
+            },
+            {
+              title: "Integrate a chain",
+              href: "/dev/amplifier/chain-integration",
+            },
+            {
+              title: "GMP with Amplifier example",
+              href: "/dev/amplifier/gmp-example",
+            },
+          ],
+        },
+        {
           title: "Solidity Utilities",
           href: "/dev/solidity-utilities",
         },
@@ -341,7 +358,7 @@ export const getNavigation = (section) => {
           title: "Amplifier",
           children: [
             {
-              title: "Become a Verifier",
+              title: "Become a verifier",
               href: "/validator/amplifier/verifier-onboarding",
             },
           ],
