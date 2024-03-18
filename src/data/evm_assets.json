@@ -3030,6 +3030,133 @@
       ]
     },
     {
+      "id": "stutia",
+      "name": "stTIA - Stride Staked Tia",
+      "symbol": "stTIA",
+      "image": "/images/assets/sttia.svg",
+      "contracts": [
+        {
+          "chain": "arbitrum",
+          "address": "0x789CbBE5d19f04F38Ec9790b28Ecb07ba5617f61",
+          "symbol": "stTIA.axl",
+          "decimals": 6,
+          "transfer_fee": 0.63
+        },
+        {
+          "chain": "avalanche",
+          "address": "0x86ae86e42286BC37e502fB26d2f7DD2813dADCd1",
+          "symbol": "stTIA.axl",
+          "decimals": 6,
+          "transfer_fee": 0.094
+        },
+        {
+          "chain": "base",
+          "address": "0x789CbBE5d19f04F38Ec9790b28Ecb07ba5617f61",
+          "symbol": "stTIA.axl",
+          "decimals": 6,
+          "transfer_fee": 0.63
+        },
+        {
+          "chain": "binance",
+          "address": "0x3Ef52A56Ce63f9d22F5ACdDA4e5Bd8b0c65C37a5",
+          "symbol": "stTIA.axl",
+          "decimals": 6,
+          "transfer_fee": 0.094
+        },
+        {
+          "chain": "blast",
+          "address": "0x789CbBE5d19f04F38Ec9790b28Ecb07ba5617f61",
+          "symbol": "stTIA.axl",
+          "decimals": 6,
+          "transfer_fee": 0.63
+        },
+        {
+          "chain": "celo",
+          "address": "0x789CbBE5d19f04F38Ec9790b28Ecb07ba5617f61",
+          "symbol": "stTIA.axl",
+          "decimals": 6,
+          "transfer_fee": 0.094
+        },
+        {
+          "chain": "ethereum",
+          "address": "0xF84131c858EB4C51cda2ccF0Eb614994c456c9E7",
+          "symbol": "stTIA.axl",
+          "decimals": 6,
+          "transfer_fee": 3.8
+        },
+        {
+          "chain": "fantom",
+          "address": "0x3Ef52A56Ce63f9d22F5ACdDA4e5Bd8b0c65C37a5",
+          "symbol": "stTIA.axl",
+          "decimals": 6,
+          "transfer_fee": 0.094
+        },
+        {
+          "chain": "filecoin",
+          "address": "0x789CbBE5d19f04F38Ec9790b28Ecb07ba5617f61",
+          "symbol": "stTIA.axl",
+          "decimals": 6,
+          "transfer_fee": 0.094
+        },
+        {
+          "chain": "fraxtal",
+          "address": "0x789CbBE5d19f04F38Ec9790b28Ecb07ba5617f61",
+          "symbol": "stTIA.axl",
+          "decimals": 6,
+          "transfer_fee": 0.63
+        },
+        {
+          "chain": "kava",
+          "address": "0x789CbBE5d19f04F38Ec9790b28Ecb07ba5617f61",
+          "symbol": "stTIA.axl",
+          "decimals": 6,
+          "transfer_fee": 0.094
+        },
+        {
+          "chain": "linea",
+          "address": "0x789CbBE5d19f04F38Ec9790b28Ecb07ba5617f61",
+          "symbol": "stTIA.axl",
+          "decimals": 6,
+          "transfer_fee": 0.63
+        },
+        {
+          "chain": "mantle",
+          "address": "0x789CbBE5d19f04F38Ec9790b28Ecb07ba5617f61",
+          "symbol": "stTIA.axl",
+          "decimals": 6,
+          "transfer_fee": 0.63
+        },
+        {
+          "chain": "moonbeam",
+          "address": "0xF84131c858EB4C51cda2ccF0Eb614994c456c9E7",
+          "symbol": "stTIA.axl",
+          "decimals": 6,
+          "transfer_fee": 0.094
+        },
+        {
+          "chain": "optimism",
+          "address": "0x789CbBE5d19f04F38Ec9790b28Ecb07ba5617f61",
+          "symbol": "stTIA.axl",
+          "decimals": 6,
+          "transfer_fee": 0.63
+        },
+        {
+          "chain": "polygon",
+          "address": "0xd2df01598512F7cf6E0ec54beFc439f923e0dd32",
+          "symbol": "stTIA.axl",
+          "decimals": 6,
+          "transfer_fee": 0.094
+        },
+        {
+          "chain": "scroll",
+          "address": "0x789CbBE5d19f04F38Ec9790b28Ecb07ba5617f61",
+          "symbol": "stTIA.axl",
+          "decimals": 6,
+          "transfer_fee": 0.63
+        }
+      ]
+    },
+    {
       "id": "stkbnb-wei",
       "name": "stkBNB - Staked BNB",
       "symbol": "stkBNB",
