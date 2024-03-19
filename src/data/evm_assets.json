@@ -925,6 +925,13 @@
           "transfer_fee": 60.0
         },
         {
+          "chain": "kava",
+          "address": "0x4D84E25cEa9447581867fE9f2329B972f532Da2c",
+          "symbol": "axlBUSD",
+          "decimals": 18,
+          "transfer_fee": 1.5
+        },
+        {
           "chain": "linea",
           "address": "0x4D84E25cEa9447581867fE9f2329B972f532Da2c",
           "symbol": "axlBUSD",
@@ -3381,6 +3388,13 @@
           "chain": "binance",
           "address": "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
           "symbol": "WBNB",
+          "decimals": 18,
+          "transfer_fee": 0.006
+        },
+        {
+          "chain": "kava",
+          "address": "0x23A6486099f740B7688A0bb7AED7C912015cA2F0",
+          "symbol": "axlBNB",
           "decimals": 18,
           "transfer_fee": 0.006
         },
