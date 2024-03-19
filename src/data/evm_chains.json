@@ -1,31 +1,6 @@
 {
   "mainnet": [
     {
-      "id": "arbitrum",
-      "name": "Arbitrum",
-      "chain_id": 42161,
-      "network_id": "arbitrum",
-      "provider_params": [
-        {
-          "chainId": "0xA4B1",
-          "chainName": "Arbitrum",
-          "rpcUrls": [
-            "https://arb1.arbitrum.io/rpc",
-            "https://rpc.ankr.com/arbitrum"
-          ],
-          "nativeCurrency": {
-            "name": "Ethereum",
-            "symbol": "ETH",
-            "decimals": 18
-          },
-          "blockExplorerUrls": [
-            "https://arbiscan.io"
-          ]
-        }
-      ],
-      "image": "/images/chains/arbitrum.svg"
-    },
-    {
       "id": "avalanche",
       "name": "Avalanche",
       "chain_id": 43114,
@@ -470,30 +445,6 @@
   ],
   "testnet": [
     {
-      "id": "arbitrum",
-      "name": "Arbitrum",
-      "chain_id": 421613,
-      "network_id": "arbitrum",
-      "provider_params": [
-        {
-          "chainId": "0x66EED",
-          "chainName": "Arbitrum Goerli Testnet",
-          "rpcUrls": [
-            "https://goerli-rollup.arbitrum.io/rpc"
-          ],
-          "nativeCurrency": {
-            "name": "Ethereum",
-            "symbol": "ETH",
-            "decimals": 18
-          },
-          "blockExplorerUrls": [
-            "https://goerli.arbiscan.io/"
-          ]
-        }
-      ],
-      "image": "/images/chains/arbitrum.svg"
-    },
-    {
       "id": "avalanche",
       "name": "Avalanche",
       "chain_id": 43113,
@@ -615,31 +566,6 @@
         }
       ],
       "image": "/images/chains/centrifuge.svg"
-    },
-    {
-      "id": "ethereum",
-      "name": "Ethereum Goerli",
-      "chain_id": 5,
-      "network_id": "ethereum-2",
-      "provider_params": [
-        {
-          "chainId": "0x5",
-          "chainName": "Ethereum Goerli",
-          "rpcUrls": [
-            "https://rpc.ankr.com/eth_goerli",
-            "https://goerli.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161"
-          ],
-          "nativeCurrency": {
-            "name": "Ethereum",
-            "symbol": "ETH",
-            "decimals": 18
-          },
-          "blockExplorerUrls": [
-            "https://goerli.etherscan.io"
-          ]
-        }
-      ],
-      "image": "/images/chains/ethereum.svg"
     },
     {
       "id": "ethereum-sepolia",
