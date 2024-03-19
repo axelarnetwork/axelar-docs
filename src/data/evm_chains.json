@@ -470,30 +470,6 @@
       "image": "/images/chains/avalanche.svg"
     },
     {
-      "id": "base",
-      "name": "Base",
-      "chain_id": 84531,
-      "network_id": "base",
-      "provider_params": [
-        {
-          "chainId": "0x14a33",
-          "chainName": "Base Goerli Testnet",
-          "rpcUrls": [
-            "https://goerli.base.org"
-          ],
-          "nativeCurrency": {
-            "name": "Ether",
-            "symbol": "ETH",
-            "decimals": 18
-          },
-          "blockExplorerUrls": [
-            "https://goerli.basescan.org"
-          ]
-        }
-      ],
-      "image": "/images/chains/base.svg"
-    },
-    {
       "id": "binance",
       "name": "BNB Chain",
       "chain_id": 97,
@@ -690,30 +666,6 @@
       "image": "/images/chains/kava.svg"
     },
     {
-      "id": "linea",
-      "name": "Linea",
-      "chain_id": 59140,
-      "network_id": "linea",
-      "provider_params": [
-        {
-          "chainId": "0xe704",
-          "chainName": "Linea Testnet",
-          "rpcUrls": [
-            "https://rpc.goerli.linea.build"
-          ],
-          "nativeCurrency": {
-            "name": "Ether",
-            "symbol": "ETH",
-            "decimals": 18
-          },
-          "blockExplorerUrls": [
-            "https://goerli.lineascan.build"
-          ]
-        }
-      ],
-      "image": "/images/chains/linea.svg"
-    },
-    {
       "id": "mantle",
       "name": "Mantle",
       "chain_id": 5001,
@@ -762,30 +714,6 @@
         }
       ],
       "image": "/images/chains/moonbase.png"
-    },
-    {
-      "id": "optimism",
-      "name": "Optimism",
-      "chain_id": 420,
-      "network_id": "optimism",
-      "provider_params": [
-        {
-          "chainId": "0x1A4",
-          "chainName": "Optimism Goerli Testnet",
-          "rpcUrls": [
-            "https://goerli.optimism.io"
-          ],
-          "nativeCurrency": {
-            "name": "Ethereum",
-            "symbol": "ETH",
-            "decimals": 18
-          },
-          "blockExplorerUrls": [
-            "https://goerli-optimism.etherscan.io/"
-          ]
-        }
-      ],
-      "image": "/images/chains/optimism.svg"
     },
     {
       "id": "polygon",
