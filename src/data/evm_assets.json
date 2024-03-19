@@ -2293,6 +2293,13 @@
           "transfer_fee": 15.0
         },
         {
+          "chain": "blast",
+          "address": "0xA3d1a8DEB97B111454B294E2324EfAD13a9d8396",
+          "symbol": "OVN",
+          "decimals": 18,
+          "transfer_fee": 100.0
+        },
+        {
           "chain": "linea",
           "address": "0xA3d1a8DEB97B111454B294E2324EfAD13a9d8396",
           "symbol": "OVN",
