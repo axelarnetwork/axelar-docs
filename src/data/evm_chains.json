@@ -1,6 +1,31 @@
 {
   "mainnet": [
     {
+      "id": "arbitrum",
+      "name": "Arbitrum",
+      "chain_id": 42161,
+      "network_id": "arbitrum",
+      "provider_params": [
+        {
+          "chainId": "0xA4B1",
+          "chainName": "Arbitrum",
+          "rpcUrls": [
+            "https://arb1.arbitrum.io/rpc",
+            "https://rpc.ankr.com/arbitrum"
+          ],
+          "nativeCurrency": {
+            "name": "Ethereum",
+            "symbol": "ETH",
+            "decimals": 18
+          },
+          "blockExplorerUrls": [
+            "https://arbiscan.io"
+          ]
+        }
+      ],
+      "image": "/images/chains/arbitrum.svg"
+    },
+    {
       "id": "avalanche",
       "name": "Avalanche",
       "chain_id": 43114,
