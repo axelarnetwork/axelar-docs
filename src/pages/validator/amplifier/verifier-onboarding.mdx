@@ -30,38 +30,38 @@ For docker, be sure to pull the `0.1.0` version and `amd64` platform specificall
 Example config.toml file for the current devnet:
 
 ```bash
-    tm_jsonrpc="http://devnet-verifiers.axelar.dev:26657"
-    tm_grpc="tcp://devnet-verifiers.axelar.dev:9090"
-    event_buffer_cap=1000
+tm_jsonrpc="http://devnet-verifiers.axelar.dev:26657"
+tm_grpc="tcp://devnet-verifiers.axelar.dev:9090"
+event_buffer_cap=1000
 
-    [service_registry]
-    cosmwasm_contract="axelar1hrpna9v7vs3stzyd4z3xf00676kf78zpe2u5ksvljswn2vnjp3ystlgl4x"
+[service_registry]
+cosmwasm_contract="axelar1hrpna9v7vs3stzyd4z3xf00676kf78zpe2u5ksvljswn2vnjp3ystlgl4x"
 
-    [broadcast]
-    batch_gas_limit="1000000"
-    broadcast_interval="1s"
-    chain_id="devnet-verifier"
-    gas_adjustment="2"
-    gas_price="0.00005uamplifier"
-    queue_cap="1000"
-    tx_fetch_interval="600ms"
-    tx_fetch_max_retries="10"
+[broadcast]
+batch_gas_limit="1000000"
+broadcast_interval="1s"
+chain_id="devnet-verifier"
+gas_adjustment="2"
+gas_price="0.00005uamplifier"
+queue_cap="1000"
+tx_fetch_interval="600ms"
+tx_fetch_max_retries="10"
 
-    [tofnd_config]
-    batch_gas_limit="10000000"
-    key_uid="axelar"
-    party_uid="ampd"
-    url="http://127.0.0.1:50051"
+[tofnd_config]
+batch_gas_limit="10000000"
+key_uid="axelar"
+party_uid="ampd"
+url="http://127.0.0.1:50051"
 
-    [[handlers]]
-    cosmwasm_contract="axelar1ufs3tlq4umljk0qfe8k5ya0x6hpavn897u2cnf9k0en9jr7qarqqa9263g"
-    type="MultisigSigner"
+[[handlers]]
+cosmwasm_contract="axelar1ufs3tlq4umljk0qfe8k5ya0x6hpavn897u2cnf9k0en9jr7qarqqa9263g"
+type="MultisigSigner"
 
-    [[handlers]]
-    chain_name="avalanche"
-    chain_rpc_url="https://avalanche-fuji-c-chain-rpc.publicnode.com"
-    cosmwasm_contract="axelar1466nf3zuxpya8q9emxukd7vftaf6h4psr0a07srl5zw74zh84yjq4687qd"
-    type="EvmMsgVerifier"
+[[handlers]]
+chain_name="avalanche"
+chain_rpc_url="https://avalanche-fuji-c-chain-rpc.publicnode.com"
+cosmwasm_contract="axelar1466nf3zuxpya8q9emxukd7vftaf6h4psr0a07srl5zw74zh84yjq4687qd"
+type="EvmMsgVerifier"
 ```
 
 By default, `ampd` loads the `config` file from `~/.ampd/config.toml` when running any command. This can be overridden by passing `--config [path]`.
