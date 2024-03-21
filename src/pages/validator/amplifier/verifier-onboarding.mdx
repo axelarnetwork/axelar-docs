@@ -12,24 +12,24 @@ By running a **verifier** for a chain integration with Axelar, you will be respo
 
 1. Run `tofnd`. 
 
-If you do not have it, you can pull and run the latest with the following:
+    If you do not have it, you can pull and run the latest with the following:
 
-```bash
-docker pull axelarnet/tofnd:v0.10.1
-docker run -p 50051:50051 --env MNEMONIC_CMD=auto --env NOPASSWORD=true -v tofnd:/.tofnd axelarnet/tofnd:v0.10.1
-```
+    ```bash
+    docker pull axelarnet/tofnd:v0.10.1
+    docker run -p 50051:50051 --env MNEMONIC_CMD=auto --env NOPASSWORD=true -v tofnd:/.tofnd axelarnet/tofnd:v0.10.1
+    ```
 
-1. Then, pull and run [`ampd`](https://github.com/axelarnetwork/axelar-amplifier/tree/main/ampd#worker-onboarding), the off-chain daemon responsible for voting and signing with the amplifier protocol, needs access to a running `tofnd` instance in order to onboard as a worker or run the daemon. See the [tofnd repository](https://github.com/axelarnetwork/tofnd) for more info.
+1. Then, pull and run [`ampd`](https://github.com/axelarnetwork/axelar-amplifier/tree/main/ampd#worker-onboarding), the off-chain daemon responsible for voting and signing with the amplifier protocol, needs access to a running `tofnd` instance in order to onboard as a verifier or run the daemon. See the [tofnd repository](https://github.com/axelarnetwork/tofnd) for more info.
 
 1. Download `ampd` through either the [binary](https://github.com/axelarnetwork/axelar-amplifier/releases/tag/ampd-v0.1.0) or [docker](https://hub.docker.com/r/axelarnet/axelar-ampd).
 
-For docker, be sure to pull the `0.1.0` version and `amd64` platform specifically, i.e. `docker pull axelarnet/axelar-ampd:v0.1.0 --platform amd64`.
+    For docker, be sure to pull the `0.1.0` version and `amd64` platform specifically, i.e. `docker pull axelarnet/axelar-ampd:v0.1.0 --platform amd64`.
 
 1. Create a `config.toml` file and put it in your `~/.ampd/` directory. 
 
-Example config.toml file for the current devnet:
+    Example config.toml file for the verifier devnet:
 
-```bash
+    ```bash
     tm_jsonrpc="http://devnet-verifiers.axelar.dev:26657"
     tm_grpc="tcp://devnet-verifiers.axelar.dev:9090"
     event_buffer_cap=1000
@@ -62,65 +62,71 @@ Example config.toml file for the current devnet:
     chain_rpc_url="https://avalanche-fuji-c-chain-rpc.publicnode.com"
     cosmwasm_contract="axelar1466nf3zuxpya8q9emxukd7vftaf6h4psr0a07srl5zw74zh84yjq4687qd"
     type="EvmMsgVerifier"
-```
+    ```
 
-By default, `ampd` loads the `config` file from `~/.ampd/config.toml` when running any command. This can be overridden by passing `--config [path]`.
+    By default, `ampd` loads the `config` file from `~/.ampd/config.toml` when running any command. This can be overridden by passing `--config [path]`.
 
-See the [`ampd` README](https://github.com/axelarnetwork/axelar-amplifier/blob/main/ampd/README.md) on GitHub for instructions on formatting your `config` file.
+    See the [`ampd` README](https://github.com/axelarnetwork/axelar-amplifier/blob/main/ampd/README.md) on GitHub for instructions on formatting your `config` file.
 
 ## Verifier Onboarding
 
-Prior to running the `ampd` daemon, workers will need to perform the following onboarding steps:
+Prior to running the `ampd` daemon, verifiers will need to perform the following onboarding steps:
 
 1. Determine the verifier address:
 
-```bash
-ampd worker-address
-```
+    ```bash
+    ampd worker-address
+    ```
 
-2. Fund the verifier address. This can be achieved in a number of ways and is dependent on the environment (mainnet, testnet or devnet).
+1. Fund the verifier address.
 
-For devnet:
+    For devnet:
 
-1. Join the [Axelar Discord](https://discord.com/invite/axelar).
-1. Get the Developer Role.
-3. Go to the #faucet channel and submit a request with your account to get 100 test tokens.
+    1. Join the [Axelar Discord](https://discord.com/invite/axelar).
+    1. Get the Developer Role.
+    1. Go to the #faucet channel and submit a request with your account to get 100 test tokens.
 
-```bash
-!faucet devnet-verifiers axelar1suw3fsckht00c5srgtr8p6lhn58e9lxq9yf5th
-```
 
-3. Bond the verifier:
+        ```bash
+        !faucet devnet-verifiers axelar1suw3fsckht00c5srgtr8p6lhn58e9lxq9yf5th
+        ```
 
-```bash
-ampd bond-worker [service name] [amount] [denom]
+1. Bond the verifier:
 
-#e.g. ampd bond-worker validators 100 uverifiers
-```
+    ```bash
+    ampd bond-worker [service name] [amount] [denom]
+    ```
 
-Bonded verifiers will stay bonded until they unbond or are removed by governance.
 
-4. Register your public key:
+    For example:
 
-```bash
-ampd register-public-key
-```
+    ```bash
+    ampd bond-worker validators 100 uverifiers
+    ```
 
-5. Register support for desired chains, enabling `ampd` to participate in voting and signing for the specified chains:
+    Bonded verifiers will stay bonded until they unbond or are removed by governance.
 
-```bash
-ampd register-chain-support [service name] [chains]...
+1. Register your public key:
 
-#e.g. ampd register-chain-support validators avalanche chainB chainC
-```
+    ```bash
+    ampd register-public-key
+    ```
 
-Multiple chain names can be passed, separated by a space. Note, any chain you want to support here must be configured in your ampd `config.toml` file. 
+1. Register support for desired chains, enabling `ampd` to participate in voting and signing for the specified chains:
 
-6. Authorize your verifier. 
+    ```bash
+    ampd register-chain-support [service name] [chains]...
 
-This is dependent on the environment, and can be done via governance, or by the network operators.
+    #e.g. ampd register-chain-support validators avalanche chainB chainC
+    ```
 
-For devnet, fill out the [Amplifier Verifier Onboarding Form](https://docs.google.com/forms/d/e/1FAIpQLSfQQhk292yT9j8sJF5ARRIE8PpI3LjuFc8rr7xZW7posSLtJA/viewform) for your address to be whitelisted.
+    Multiple chain names can be passed, separated by a space. Note, any chain you want to support here must be configured in your ampd `config.toml` file. 
+
+1. Authorize your verifier. 
+
+    This is dependent on the environment, and can be done via governance, or by the network operators.
+
+    For devnet, fill out the [Amplifier Verifier Onboarding Form](https://docs.google.com/forms/d/e/1FAIpQLSfQQhk292yT9j8sJF5ARRIE8PpI3LjuFc8rr7xZW7posSLtJA/viewform) for your address to be whitelisted.
 
 ## Run the daemon
 
