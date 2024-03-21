@@ -377,6 +377,14 @@
       "transfer_fee": 0.0083
     },
     {
+      "id": "stutia",
+      "name": "stTIA - Stride Staked Tia",
+      "symbol": "stTIA",
+      "image": "/images/assets/sttia.svg",
+      "decimals": 6,
+      "transfer_fee": 0.0063
+    },
+    {
       "id": "stkbnb-wei",
       "name": "stkBNB - Staked BNB",
       "symbol": "stkBNB",
@@ -689,14 +697,6 @@
       "image": "/images/assets/celo.svg",
       "decimals": 18,
       "transfer_fee": 0.07
-    },
-    {
-      "id": "eth-wei",
-      "name": "WETH - Wrapped Ether",
-      "symbol": "WETH",
-      "image": "/images/assets/weth.svg",
-      "decimals": 18,
-      "transfer_fee": 3e-05
     },
     {
       "id": "wmatic-wei",
