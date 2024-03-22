@@ -15,17 +15,17 @@ By running a **verifier** for a chain integration with Axelar, you will be respo
     If you do not have it, you can pull and run the latest with the following:
 
     ```bash
-    docker pull axelarnet/tofnd:v0.10.1
-    docker run -p 50051:50051 --env MNEMONIC_CMD=auto --env NOPASSWORD=true -v tofnd:/.tofnd axelarnet/tofnd:v0.10.1
+    docker pull haiyizxx/tofnd:latest
+    docker run -p 50051:50051 --env MNEMONIC_CMD=auto --env NOPASSWORD=true -v tofnd:/.tofnd haiyizxx/tofnd:latest
     ```
 
-1. Then, pull and run [`ampd`](https://github.com/axelarnetwork/axelar-amplifier/tree/main/ampd#worker-onboarding), the off-chain daemon responsible for voting and signing with the amplifier protocol, needs access to a running `tofnd` instance in order to onboard as a verifier or run the daemon. See the [tofnd repository](https://github.com/axelarnetwork/tofnd) for more info.
+1. Then, pull and run [`ampd`](https://github.com/axelarnetwork/axelar-amplifier/tree/main/ampd#worker-onboarding), the off-chain daemon responsible for voting and signing with the amplifier protocol. `ampd` needs access to a locally running `tofnd` instance in order to onboard as a verifier or run the daemon. See the [tofnd repository](https://github.com/axelarnetwork/tofnd) for more info.
 
-1. Download `ampd` through either the [binary](https://github.com/axelarnetwork/axelar-amplifier/releases/tag/ampd-v0.1.0) or [docker](https://hub.docker.com/r/axelarnet/axelar-ampd).
+    Download `ampd` through either the [binary](https://github.com/axelarnetwork/axelar-amplifier/releases/tag/ampd-v0.1.0). All instructions in this tutorial will assume you have a binary in your `PATH` named `ampd`. If you don't want to add it to your path, you can refer to the binary directly, such as `~/ampd-linux-amd64-v0.1.0 <command>`.
 
-    For docker, be sure to pull the `0.1.0` version and `amd64` platform specifically, i.e. `docker pull axelarnet/axelar-ampd:v0.1.0 --platform amd64`.
+    You can also use [`ampd` from docker](https://hub.docker.com/r/axelarnet/axelar-ampd). For docker, be sure to pull the `0.1.0` version and `amd64` platform specifically, i.e. `docker pull axelarnet/axelar-ampd:v0.1.0 --platform amd64`.
 
-1. Create a `config.toml` file and put it in your `~/.ampd/` directory. 
+1. Create a `~/.ampd/config.toml` file (or refer to your chosen location later in ampd commands such as `ampd -config /home/me/devnet-verifiers.toml`. This configuration file tells `ampd` how to connect to your local `tofnd`, how to talk to the devnet and the Amplifier smart contracts, and includes a default configuration for verifying transactions on the Avalanche testnet.
 
     Example config.toml file for the verifier devnet:
 
@@ -42,7 +42,7 @@ By running a **verifier** for a chain integration with Axelar, you will be respo
     broadcast_interval="1s"
     chain_id="devnet-verifiers"
     gas_adjustment="2"
-    gas_price="0.00005uamplifier"
+    gas_price="0.00005uverifiers"
     queue_cap="1000"
     tx_fetch_interval="600ms"
     tx_fetch_max_retries="10"
@@ -63,8 +63,6 @@ By running a **verifier** for a chain integration with Axelar, you will be respo
     cosmwasm_contract="axelar1466nf3zuxpya8q9emxukd7vftaf6h4psr0a07srl5zw74zh84yjq4687qd"
     type="EvmMsgVerifier"
     ```
-
-    By default, `ampd` loads the `config` file from `~/.ampd/config.toml` when running any command. This can be overridden by passing `--config [path]`.
 
     See the [`ampd` README](https://github.com/axelarnetwork/axelar-amplifier/blob/main/ampd/README.md) on GitHub for instructions on formatting your `config` file.
 
@@ -88,17 +86,10 @@ Prior to running the `ampd` daemon, verifiers will need to perform the following
 
 
         ```bash
-        !faucet devnet-verifiers axelar1suw3fsckht00c5srgtr8p6lhn58e9lxq9yf5th
+        !faucet devnet-verifiers [my verifier address]
         ```
 
 1. Bond the verifier:
-
-    ```bash
-    ampd bond-worker [service name] [amount] [denom]
-    ```
-
-
-    For example:
 
     ```bash
     ampd bond-worker validators 100 uverifiers
@@ -112,15 +103,13 @@ Prior to running the `ampd` daemon, verifiers will need to perform the following
     ampd register-public-key
     ```
 
-1. Register support for desired chains, enabling `ampd` to participate in voting and signing for the specified chains:
+1. Register support for desired chains, enabling `ampd` to participate in voting and signing for the specified chains. As our configuration only supports Avalanche, the command is
 
     ```bash
-    ampd register-chain-support [service name] [chains]...
-
-    #e.g. ampd register-chain-support validators avalanche chainB chainC
+    ampd register-chain-support validators avalanche
     ```
 
-    Multiple chain names can be passed, separated by a space. Note, any chain you want to support here must be configured in your ampd `config.toml` file. 
+    Multiple chain names can be passed, separated by a space (ampd register-chain-support [service name] [chains]...). Note, any chain you want to support here must be configured in your ampd `config.toml` file. 
 
 1. Authorize your verifier. 
 
