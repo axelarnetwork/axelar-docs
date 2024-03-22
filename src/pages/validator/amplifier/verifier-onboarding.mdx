@@ -21,9 +21,9 @@ By running a **verifier** for a chain integration with Axelar, you will be respo
 
 1. Then, pull and run [`ampd`](https://github.com/axelarnetwork/axelar-amplifier/tree/main/ampd#worker-onboarding), the off-chain daemon responsible for voting and signing with the amplifier protocol. `ampd` needs access to a locally running `tofnd` instance in order to onboard as a verifier or run the daemon. See the [tofnd repository](https://github.com/axelarnetwork/tofnd) for more info.
 
-    Download `ampd` through either the [binary](https://github.com/axelarnetwork/axelar-amplifier/releases/tag/ampd-v0.1.0). All instructions in this tutorial will assume you have a binary in your `PATH` named `ampd`. If you don't want to add it to your path, you can refer to the binary directly, such as `~/ampd-linux-amd64-v0.1.0 <command>`.
+    We recommend downloading the `ampd` [binary](https://github.com/axelarnetwork/axelar-amplifier/releases/tag/ampd-v0.1.0) (Mac and Linux). All instructions in this tutorial will assume you have a binary in your `PATH` named `ampd`. If you don't want to add it to your path, you can refer to the binary directly, such as `~/ampd-linux-amd64-v0.1.0 <command>`.
 
-    You can also use [`ampd` from docker](https://hub.docker.com/r/axelarnet/axelar-ampd). For docker, be sure to pull the `0.1.0` version and `amd64` platform specifically, i.e. `docker pull axelarnet/axelar-ampd:v0.1.0 --platform amd64`.
+    You can alternatively use [`ampd` from docker](https://hub.docker.com/r/axelarnet/axelar-ampd). For docker, be sure to pull the `0.1.0` version and `amd64` platform specifically, i.e. `docker pull axelarnet/axelar-ampd:v0.1.0 --platform amd64`.
 
 1. Create a `~/.ampd/config.toml` file (or refer to your chosen location later in ampd commands such as `ampd -config /home/me/devnet-verifiers.toml`. This configuration file tells `ampd` how to connect to your local `tofnd`, how to talk to the devnet and the Amplifier smart contracts, and includes a default configuration for verifying transactions on the Avalanche testnet.
 
