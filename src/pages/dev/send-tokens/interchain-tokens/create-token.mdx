@@ -1,5 +1,12 @@
 # Create a New Interchain Token
 
+<Callout emoji="⭐">
+  The [Token Whitelisting for Squid Router
+  form](https://github.com/axelarnetwork/axelar-configs) is now live! Download
+  the repo, install dependencies, and `npm run wizard` on the command line to
+  access the interactive form through the wizard.
+</Callout>
+
 import { Callout } from "/src/components/callout";
 
 Interchain tokens are ERC-20 tokens that are available on [multiple blockchains](https://docs.axelar.dev/resources/testnet). They are created using the [Interchain Token Service](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/InterchainTokenService.sol) and can be used to transfer value between blockchains.
@@ -9,7 +16,9 @@ The Interchain Token Service is deployed to [`0xB5FB4BE02232B1bBA4dC8f81dc24C269
 You can create a new Interchain Token through the [Interchain Portal](https://testnet.interchain.axelar.dev/), or by building a custom ERC-20 token and deploying it with a Mint/Burn token manager on all chains. These tokens will be accessible on multiple chains, allowing for seamless interaction on each chain by utilizing familiar methods such as send, transfer, and approve -- just as with any standard ERC-20 token.
 
 <Callout emoji="🚨">
-  **NOTE:** The security of your token is limited to the security of the chains it integrates with. Since blockchains can have different security practices, we recommend doing due diligence on all chains your token will be deployed to.
+  **NOTE:** The security of your token is limited to the security of the chains
+  it integrates with. Since blockchains can have different security practices,
+  we recommend doing due diligence on all chains your token will be deployed to.
 </Callout>
 
 ## Create a new Interchain Token using the Interchain Token Portal
@@ -21,11 +30,11 @@ The simplest way to create an Interchain Token is to do so through the portal:
 3. Select a source network where you have funds available.
 4. Select the option to deploy a new Interchain token.
 5. Add the required details for your new token:
-    - Name
-    - Symbol
-    - Decimals
-    - Amount to mint
-        - You can also choose the advanced option where you can add an account as `Token Minter` and `Salt` value. Otherwise, these fields will be prefilled with the deployer (connected account) address and a random, uniquely generated salt value.
+   - Name
+   - Symbol
+   - Decimals
+   - Amount to mint
+     - You can also choose the advanced option where you can add an account as `Token Minter` and `Salt` value. Otherwise, these fields will be prefilled with the deployer (connected account) address and a random, uniquely generated salt value.
 6. Select additional chains for your token's availability. You can optionally add the token amount to mint on each selected chain.
 
 Congratulations! Your new Interchain Token is now available on multiple chains. Furthermore, it follows the [Interchain Token Standard](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/interfaces/IInterchainTokenStandard.sol), meaning that users can call the [`interchainTransfer()`](https://github.com/axelarnetwork/interchain-token-service/blob/9223108211b977d9138fdd67d5b4a641fc35c18c/contracts/interfaces/IInterchainTokenService.sol#L210) method on the token itself to transfer between blockchains.
@@ -33,31 +42,44 @@ Congratulations! Your new Interchain Token is now available on multiple chains. 
 Refer to the [four-step tutorial](https://axelar.network/blog/how-to-create-an-interchain-token-with-axelar-in-4-steps) for more detailed steps on creating Interchain Tokens using the Interchain Token Portal.
 
 <Callout emoji="💡">
-  Make sure you consider all relevant stakeholders before deploying a token through ITS. Creating a simple token using the ITS Portal will give the token the same name and symbol on all chains. If you need your token to have different names or symbols on different chains, you’ll have to build a custom token.
+  Make sure you consider all relevant stakeholders before deploying a token
+  through ITS. Creating a simple token using the ITS Portal will give the token
+  the same name and symbol on all chains. If you need your token to have
+  different names or symbols on different chains, you’ll have to build a custom
+  token.
 </Callout>
 
 ## Create a custom Interchain Token
 
-If you want your token to have more features than the standard Interchain Token, you can create a [custom token](../../reference/glossary/#custom-token). With these tokens, you can specify minting policies, ownership structures, rate limits, and other bespoke functionality.
+<Callout emoji="🚨">
+  We're making some improvements to the custom token manager flow, which required
+  disabling token manager deployments temporarily. We're hoping to have it live
+  soon.
+</Callout>
+
+If you want your token to have more features than the standard Interchain Token, you can create a [custom token](https://docs.axelar.dev/dev/glossary#custom-token). With these tokens, you can specify minting policies, ownership structures, rate limits, and other bespoke functionality.
 
 To create a custom Interchain Token:
 
 1. Build your [ERC-20](https://docs.alchemy.com/docs/how-to-create-an-erc-20-token-4-steps) token and deploy it on multiple chains.
-2. Deploy a [Mint/Burn](../../reference/glossary/#mintburn) - [Token Manager](../../reference/glossary/#token-manager) for existing tokens on all chains using the [`deployTokenManager()`](https://github.com/axelarnetwork/interchain-token-service/blob/9edc4318ac1c17231e65886eea72c0f55469d7e5/contracts/InterchainTokenService.sol#L276) method on the Interchain Token Service specifying parameters like `salt`, `destinationChain`, [`tokenManagerType`](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/interfaces/ITokenManagerType.sol), `params`, and `gasValue`.
+2. Deploy a [Mint/Burn](/dev/glossary#mintburn) - [Token Manager](/dev/glossary#token-manager) for existing tokens on all chains using the [`deployTokenManager()`](https://github.com/axelarnetwork/interchain-token-service/blob/9edc4318ac1c17231e65886eea72c0f55469d7e5/contracts/InterchainTokenService.sol#L276) method on the Interchain Token Service specifying parameters like `salt`, `destinationChain`, [`tokenManagerType`](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/interfaces/ITokenManagerType.sol), `params`, and `gasValue`.
 3. Ensure that the Interchain Token Service can invoke the `Mint/Burn` functions on the token by calling [`transferMintership()`](https://github.com/axelarnetwork/interchain-token-service/blob/9223108211b977d9138fdd67d5b4a641fc35c18c/contracts/utils/Minter.sol#L31) on your token. This will transfer the minter role to the ITS on all chains, enabling it to mint or burn tokens.
-    * Repeat this step on all other chains where the token exists, using the same deployer address and salt.
+   - Repeat this step on all other chains where the token exists, using the same deployer address and salt.
 4. Transfer Interchain Tokens between chains via the Interchain Token Service by calling [`interchainTransfer()`](https://github.com/axelarnetwork/interchain-token-service/blob/9223108211b977d9138fdd67d5b4a641fc35c18c/contracts/interfaces/IInterchainTokenService.sol#L210).
 
 ```solidity
 /**
  * @notice Used to deploy TokenManagers.
- * @dev At least the `gasValue` amount of native token must be passed to the function call. `gasValue` exists because this function can be
- * part of a multicall involving multiple functions that could make remote contract calls.
+ * @dev At least the `gasValue` amount of native token must be passed to the
+ * function call. `gasValue` exists because this function can be part of a
+ * multicall involving multiple functions that could make remote contract calls.
  * @param salt The salt to be used during deployment.
- * @param destinationChain The name of the chain to deploy the TokenManager and standardized token to.
+ * @param destinationChain The name of the chain to deploy the TokenManager and
+ * standardized token to.
  * @param tokenManagerType The type of TokenManager to be deployed.
  * @param params The params that will be used to initialize the TokenManager.
- * @param gasValue The amount of native tokens to be used to pay for gas for the remote deployment.
+ * @param gasValue The amount of native tokens to be used to pay for gas for the
+ * remote deployment.
  * @return tokenId The tokenId corresponding to the deployed TokenManager.
  */
 function deployTokenManager(
@@ -66,7 +88,7 @@ function deployTokenManager(
     TokenManagerType tokenManagerType,
     bytes calldata params,
     uint256 gasValue
-) external payable 
+) external payable
 ```
 
 To create the `params` that will be used to initialize the Token Manager in the `deployTokenManager` method above, you can use the [Online Ethereum ABI Encoder](https://adibas03.github.io/online-ethereum-abi-encoder-decoder/#/encode) specifying the operator of the Token Manager and the token address with the argument type `bytes` and `address` respectively.

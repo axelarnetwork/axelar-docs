@@ -210,6 +210,12 @@ uint256 \_amount
 | --- | --- |
 |  For more information on General Message Passing, check out [Axelar's YouTube channel](https://www.youtube.com/channel/UCf8GFg58fdp1iZwLAOV1Tgg).  |  For more information on General Message Passing, check out Axelar's YouTube channel [here](https://www.youtube.com/channel/UCf8GFg58fdp1iZwLAOV1Tgg).  |
 
+* Use the root-relative path instead of a relative one when linking in docs. This makes links less likely to break if a file is moved into another folder.
+
+|  **Recommended**  |  **Not recommended** |
+| --- | --- |
+|  `Create a [custom token](/dev/glossary#custom-token).`  |  `Create a [custom token](../../reference/glossary/#custom-token).`  |
+
 ### Lists
 
 * When writing a list, either use complete sentences for all elements or no elements. Either every element has a period at the end, or none of them do. Do not mix and match.
@@ -242,5 +248,6 @@ Implement the following to send an interchain transaction with Axelar:
 * **Web**, **Web2**, **Web3**: Capitalized everywhere, as in “the decentralized Web,” “the Web,” and any other context referring to the World Wide Web. “Web2” and “Web3” are also capitalized and written as one word.
 * **Mint/Burn**, not **mint/burn**.
 * **Lock/Unlock**, not **lock/unlock**.
-* **Token manager** is not a proper noun, unless specifying the `TokenManager` object (in which case it should be code font). 
+* **Token manager** is not a proper noun, unless specifying the `TokenManager` object (in which case it should be code font).
+* Refer to Axelar's Gas Service as **Axelar Gas Service**, **the Gas Service**, or **the `AxelarGasService` contract**, not as "Gas Services" or "the `GasService` contract."
 * Time format is always in [UTC](https://en.wikipedia.org/wiki/Coordinated_Universal_Time).

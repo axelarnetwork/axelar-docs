@@ -418,33 +418,57 @@
         }
       ],
       "image": "/images/chains/scroll.svg"
-    }
-  ],
-  "testnet": [
+    },
     {
-      "id": "arbitrum",
-      "name": "Arbitrum",
-      "chain_id": 421613,
-      "network_id": "arbitrum",
+      "id": "fraxtal",
+      "name": "Fraxtal",
+      "chain_id": 252,
+      "network_id": "fraxtal",
       "provider_params": [
         {
-          "chainId": "0x66EED",
-          "chainName": "Arbitrum Goerli Testnet",
+          "chainId": "0xFC",
+          "chainName": "Fraxtal",
           "rpcUrls": [
-            "https://goerli-rollup.arbitrum.io/rpc"
+            "https://rpc.frax.com"
           ],
           "nativeCurrency": {
-            "name": "Ethereum",
+            "name": "frxETH",
+            "symbol": "frxETH",
+            "decimals": 18
+          },
+          "blockExplorerUrls": [
+            "https://fraxscan.com"
+          ]
+        }
+      ],
+      "image": "/images/chains/fraxtal.svg"
+    },
+    {
+      "id": "blast",
+      "name": "Blast",
+      "chain_id": 81457,
+      "network_id": "blast",
+      "provider_params": [
+        {
+          "chainId": "0x13E31",
+          "chainName": "Blast",
+          "rpcUrls": [
+            "https://rpc.blast.io"
+          ],
+          "nativeCurrency": {
+            "name": "Ether",
             "symbol": "ETH",
             "decimals": 18
           },
           "blockExplorerUrls": [
-            "https://goerli.arbiscan.io/"
+            "https://blastscan.io"
           ]
         }
       ],
-      "image": "/images/chains/arbitrum.svg"
-    },
+      "image": "/images/chains/blast.svg"
+    }
+  ],
+  "testnet": [
     {
       "id": "avalanche",
       "name": "Avalanche",
@@ -469,30 +493,6 @@
         }
       ],
       "image": "/images/chains/avalanche.svg"
-    },
-    {
-      "id": "base",
-      "name": "Base",
-      "chain_id": 84531,
-      "network_id": "base",
-      "provider_params": [
-        {
-          "chainId": "0x14a33",
-          "chainName": "Base Goerli Testnet",
-          "rpcUrls": [
-            "https://goerli.base.org"
-          ],
-          "nativeCurrency": {
-            "name": "Ether",
-            "symbol": "ETH",
-            "decimals": 18
-          },
-          "blockExplorerUrls": [
-            "https://goerli.basescan.org"
-          ]
-        }
-      ],
-      "image": "/images/chains/base.svg"
     },
     {
       "id": "binance",
@@ -567,31 +567,6 @@
         }
       ],
       "image": "/images/chains/centrifuge.svg"
-    },
-    {
-      "id": "ethereum",
-      "name": "Ethereum Goerli",
-      "chain_id": 5,
-      "network_id": "ethereum-2",
-      "provider_params": [
-        {
-          "chainId": "0x5",
-          "chainName": "Ethereum Goerli",
-          "rpcUrls": [
-            "https://rpc.ankr.com/eth_goerli",
-            "https://goerli.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161"
-          ],
-          "nativeCurrency": {
-            "name": "Ethereum",
-            "symbol": "ETH",
-            "decimals": 18
-          },
-          "blockExplorerUrls": [
-            "https://goerli.etherscan.io"
-          ]
-        }
-      ],
-      "image": "/images/chains/ethereum.svg"
     },
     {
       "id": "ethereum-sepolia",
@@ -716,30 +691,6 @@
       "image": "/images/chains/kava.svg"
     },
     {
-      "id": "linea",
-      "name": "Linea",
-      "chain_id": 59140,
-      "network_id": "linea",
-      "provider_params": [
-        {
-          "chainId": "0xe704",
-          "chainName": "Linea Testnet",
-          "rpcUrls": [
-            "https://rpc.goerli.linea.build"
-          ],
-          "nativeCurrency": {
-            "name": "Ether",
-            "symbol": "ETH",
-            "decimals": 18
-          },
-          "blockExplorerUrls": [
-            "https://goerli.lineascan.build"
-          ]
-        }
-      ],
-      "image": "/images/chains/linea.svg"
-    },
-    {
       "id": "mantle",
       "name": "Mantle",
       "chain_id": 5001,
@@ -788,30 +739,6 @@
         }
       ],
       "image": "/images/chains/moonbase.png"
-    },
-    {
-      "id": "optimism",
-      "name": "Optimism",
-      "chain_id": 420,
-      "network_id": "optimism",
-      "provider_params": [
-        {
-          "chainId": "0x1A4",
-          "chainName": "Optimism Goerli Testnet",
-          "rpcUrls": [
-            "https://goerli.optimism.io"
-          ],
-          "nativeCurrency": {
-            "name": "Ethereum",
-            "symbol": "ETH",
-            "decimals": 18
-          },
-          "blockExplorerUrls": [
-            "https://goerli-optimism.etherscan.io/"
-          ]
-        }
-      ],
-      "image": "/images/chains/optimism.svg"
     },
     {
       "id": "polygon",
@@ -886,6 +813,150 @@
         }
       ],
       "image": "/images/chains/scroll.svg"
+    },
+    {
+      "id": "fraxtal",
+      "name": "Fraxtal",
+      "chain_id": 2522,
+      "network_id": "fraxtal",
+      "provider_params": [
+        {
+          "chainId": "0x9DA",
+          "chainName": "Fraxtal Testnet",
+          "rpcUrls": [
+            "https://rpc.testnet.frax.com"
+          ],
+          "nativeCurrency": {
+            "name": "frxETH",
+            "symbol": "frxETH",
+            "decimals": 18
+          },
+          "blockExplorerUrls": [
+            "https://explorer.testnet.frax.com"
+          ]
+        }
+      ],
+      "image": "/images/chains/fraxtal.svg"
+    },
+    {
+      "id": "arbitrum-sepolia",
+      "name": "Arbitrum Sepolia",
+      "chain_id": 421614,
+      "network_id": "arbitrum-sepolia",
+      "provider_params": [
+        {
+          "chainId": "0x66EEE",
+          "chainName": "Arbitrum Sepolia Testnet",
+          "rpcUrls": [
+            "https://sepolia-rollup.arbitrum.io/rpc"
+          ],
+          "nativeCurrency": {
+            "name": "Ethereum",
+            "symbol": "ETH",
+            "decimals": 18
+          },
+          "blockExplorerUrls": [
+            "https://sepolia.arbiscan.io"
+          ]
+        }
+      ],
+      "image": "/images/chains/arbitrum.svg"
+    },
+    {
+      "id": "optimism-sepolia",
+      "name": "Optimism Sepolia Testnet",
+      "chain_id": 11155420,
+      "network_id": "optimism-sepolia",
+      "provider_params": [
+        {
+          "chainId": "0xAA37DC",
+          "chainName": "Optimism Sepolia Testnet",
+          "rpcUrls": [
+            "https://sepolia.optimism.io"
+          ],
+          "nativeCurrency": {
+            "name": "Ethereum",
+            "symbol": "ETH",
+            "decimals": 18
+          },
+          "blockExplorerUrls": [
+            "https://sepolia-optimistic.etherscan.io"
+          ]
+        }
+      ],
+      "image": "/images/chains/optimism.svg"
+    },
+    {
+      "id": "base-sepolia",
+      "name": "Base Sepolia Testnet",
+      "chain_id": 84532,
+      "network_id": "base-sepolia",
+      "provider_params": [
+        {
+          "chainId": "0x14A34",
+          "chainName": "Base Sepolia Testnet",
+          "rpcUrls": [
+            "https://sepolia.base.org"
+          ],
+          "nativeCurrency": {
+            "name": "Ether",
+            "symbol": "ETH",
+            "decimals": 18
+          },
+          "blockExplorerUrls": [
+            "https://sepolia-explorer.base.org"
+          ]
+        }
+      ],
+      "image": "/images/chains/base.svg"
+    },
+    {
+      "id": "blast-sepolia",
+      "name": "Blast Sepolia Testnet",
+      "chain_id": 168587773,
+      "network_id": "blast-sepolia",
+      "provider_params": [
+        {
+          "chainId": "0xA0C71FD",
+          "chainName": "Blast Sepolia Testnet",
+          "rpcUrls": [
+            "https://sepolia.blast.io"
+          ],
+          "nativeCurrency": {
+            "name": "Ether",
+            "symbol": "ETH",
+            "decimals": 18
+          },
+          "blockExplorerUrls": [
+            "https://testnet.blastscan.io"
+          ]
+        }
+      ],
+      "image": "/images/chains/blast.svg"
+    },
+    {
+      "id": "mantle-sepolia",
+      "name": "Mantle Sepolia",
+      "chain_id": 5003,
+      "network_id": "mantle-sepolia",
+      "provider_params": [
+        {
+          "chainId": "0x138B",
+          "chainName": "Mantle Sepolia",
+          "rpcUrls": [
+            "https://rpc.sepolia.mantle.xyz"
+          ],
+          "nativeCurrency": {
+            "name": "Ether",
+            "symbol": "ETH",
+            "decimals": 18
+          },
+          "blockExplorerUrls": [
+            "https://explorer.sepolia.mantle.xyz"
+          ]
+        }
+      ],
+      "image": "/images/chains/mantle.svg"
     }
   ]
 }
