@@ -51,6 +51,12 @@ Refer to the [four-step tutorial](https://axelar.network/blog/how-to-create-an-i
 
 ## Create a custom Interchain Token
 
+<Callout emoji="🚨">
+  We're making some improvements to the custom token manager flow, which required
+  disabling token manager deployments temporarily. We're hoping to have it live
+  soon.
+</Callout>
+
 If you want your token to have more features than the standard Interchain Token, you can create a [custom token](https://docs.axelar.dev/dev/glossary#custom-token). With these tokens, you can specify minting policies, ownership structures, rate limits, and other bespoke functionality.
 
 To create a custom Interchain Token:
@@ -64,13 +70,16 @@ To create a custom Interchain Token:
 ```solidity
 /**
  * @notice Used to deploy TokenManagers.
- * @dev At least the `gasValue` amount of native token must be passed to the function call. `gasValue` exists because this function can be
- * part of a multicall involving multiple functions that could make remote contract calls.
+ * @dev At least the `gasValue` amount of native token must be passed to the
+ * function call. `gasValue` exists because this function can be part of a
+ * multicall involving multiple functions that could make remote contract calls.
  * @param salt The salt to be used during deployment.
- * @param destinationChain The name of the chain to deploy the TokenManager and standardized token to.
+ * @param destinationChain The name of the chain to deploy the TokenManager and
+ * standardized token to.
  * @param tokenManagerType The type of TokenManager to be deployed.
  * @param params The params that will be used to initialize the TokenManager.
- * @param gasValue The amount of native tokens to be used to pay for gas for the remote deployment.
+ * @param gasValue The amount of native tokens to be used to pay for gas for the
+ * remote deployment.
  * @return tokenId The tokenId corresponding to the deployed TokenManager.
  */
 function deployTokenManager(

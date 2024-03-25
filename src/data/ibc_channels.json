@@ -101,6 +101,16 @@
       "channel_id": "channel-7"
     },
     {
+      "from": "dymension",
+      "to": "axelarnet",
+      "channel_id": "channel-5"
+    },
+    {
+      "from": "axelarnet",
+      "to": "dymension",
+      "channel_id": "channel-138"
+    },
+    {
       "from": "evmos",
       "to": "axelarnet",
       "channel_id": "channel-21"
@@ -473,6 +483,16 @@
       "channel_id": "channel-19"
     },
     {
+      "from": "lava",
+      "to": "axelarnet",
+      "channel_id": "channel-4"
+    },
+    {
+      "from": "axelarnet",
+      "to": "lava",
+      "channel_id": "channel-444"
+    },
+    {
       "from": "neutron",
       "to": "axelarnet",
       "channel_id": "channel-8"
@@ -571,6 +591,16 @@
       "from": "axelarnet",
       "to": "sei",
       "channel_id": "channel-257"
+    },
+    {
+      "from": "sommelier",
+      "to": "axelarnet",
+      "channel_id": "channel-3"
+    },
+    {
+      "from": "axelarnet",
+      "to": "sommelier",
+      "channel_id": "channel-420"
     },
     {
       "from": "teritori",
