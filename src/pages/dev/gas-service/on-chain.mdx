@@ -1,0 +1,126 @@
+# On-Chain Gas Estimation (alpha)
+
+On-chain gas estimation allows you to estimate interchain transaction gas fees directly from a Solidity contract. You should only use this capability if you are unable to estimate gas off-chain. This on-chain API has been designed for specific use cases such as DApps and services that only integrate and have no UI for a user to initiate transactions. Most developers should instead use the [off-chain `estimateGas` API](/dev/axelarjs-sdk/axelar-query-api#estimategasfee)
+
+## Usage
+The on-chain API provided by the [IInterchainGasEstimation](https://github.com/axelarnetwork/axelar-gmp-sdk-solidity/blob/main/contracts/interfaces/IInterchainGasEstimation.sol) interface which is implemented by the [Axelar Gas Service](https://github.com/axelarnetwork/axelar-gmp-sdk-solidity/blob/main/contracts/interfaces/IAxelarGasService.sol) contract. Gas estimates will include a buffer as they do not have access to real time off-chain gas pricing.
+
+The primary method to invoke is `estimateGasFee`.
+
+```solidity
+/**
+ * @notice Estimates the gas fee for a cross-chain contract call.
+ * @param destinationChain Axelar registered name of the destination chain
+ * @param destinationAddress Destination contract address being called
+ * @param executionGasLimit The gas limit to be used for the destination contract execution,
+ *        e.g. pass in 200k if your app consumes needs upto 200k for this contract call
+ * @param params Additional parameters for the gas estimation
+ * @return gasEstimate The cross-chain gas estimate, in terms of source chain's native gas token that should be forwarded to the gas service.
+ */
+function estimateGasFee(
+    string calldata destinationChain,
+    string calldata destinationAddress,
+    bytes calldata payload,
+    uint256 executionGasLimit,
+    bytes calldata params
+) external view returns (uint256 gasEstimate);
+```
+
+When using on-chain gas estimation, you should pay gas based on the estimate via the new `payGas` function on the gas service instead of calling `payNativeGasForContractCall`. 
+
+```solidity
+/**
+ * @notice Pay for gas for any type of contract execution on a destination chain.
+ * @dev This function is called on the source chain before calling the gateway to execute a remote contract.
+ * @dev If estimateOnChain is true, the function will estimate the gas cost and revert if the payment is insufficient.
+ * @param sender The address making the payment
+ * @param destinationChain The target chain where the contract call will be made
+ * @param destinationAddress The target address on the destination chain
+ * @param payload Data payload for the contract call
+ * @param executionGasLimit The gas limit for the contract call
+ * @param estimateOnChain Flag to enable on-chain gas estimation
+ * @param refundAddress The address where refunds, if any, should be sent
+ * @param params Additional parameters for gas payment. This can be left empty for normal contract call payments.
+*/
+function payGas(
+    address sender,
+    string calldata destinationChain,
+    string calldata destinationAddress,
+    bytes calldata payload,
+    uint256 executionGasLimit,
+    bool estimateOnChain,
+    address refundAddress,
+    bytes calldata params
+) external payable;
+```
+
+
+# Full GMP Example
+Here is an example GMP contract that can send and receive messages. It uses on-chain gas estimation to immediately return any overpayment to the sender. Real use cases will likely involve another smart contract making a separate call to `estimateGas` prior to initiating a message.
+
+[Deploy this example on remix](https://remix.ethereum.org/axelarnetwork/axelar-docs/blob/main/public/samples/on-chain-gas-estimate.sol)
+
+```solidity
+pragma solidity ^0.8.12;
+
+import { AxelarExecutable } from '@axelar-network/axelar-gmp-sdk-solidity/contracts/executable/AxelarExecutable.sol';
+import { IAxelarGateway } from '@axelar-network/axelar-gmp-sdk-solidity/contracts/interfaces/IAxelarGateway.sol';
+import { IAxelarGasService } from '@axelar-network/axelar-gmp-sdk-solidity/contracts/interfaces/IAxelarGasService.sol';
+import { IInterchainGasEstimation } from '@axelar-network/axelar-gmp-sdk-solidity/contracts/interfaces/IInterchainGasEstimation.sol';
+
+
+contract SenderReceiver is AxelarExecutable {
+    IAxelarGasService public immutable gasService;
+    IInterchainGasEstimation public immutable estimator;
+    string public message;
+
+    constructor(address gateway_, address gasService_) AxelarExecutable(gateway_) {
+        gasService = IAxelarGasService(gasService_);
+        estimator = IInterchainGasEstimation(gasService_);
+    }
+
+    function sendMessage(
+        string calldata destinationChain,
+        string calldata destinationAddress,
+        string calldata message_
+    ) external payable {
+        bytes memory payload = abi.encode(message_);
+        
+        uint256 estimate = estimator.estimateGasFee(destinationChain, destinationAddress, payload, 200000, '');
+
+
+        gasService.payGas{value: estimate} (
+            address(this),
+            destinationChain,
+            destinationAddress,
+            payload,
+            200000,
+            true,
+            msg.sender,
+            ''
+        );
+
+        uint256 refund = msg.value - estimate;
+        payable(msg.sender).transfer(refund);
+
+        gateway.callContract(destinationChain,destinationAddress,payload);
+    }
+
+    function _execute(
+        string calldata sourceChain,
+        string calldata sourceAddress,
+        bytes calldata payload_
+    ) internal override {
+        message = abi.decode(payload_, (string));
+    }
+
+    function getEstimate(
+        string calldata destinationChain,
+        string calldata destinationAddress,
+        string calldata message_) external view returns (uint256) {
+            bytes memory payload = abi.encode(message_);
+        return estimator.estimateGasFee(destinationChain, destinationAddress, payload, 200000, '');
+    }
+}
+```
+
