@@ -2,6 +2,11 @@
   "framework": null,
   "redirects": [
     {
+      "source": "/resources/community/bug-bounty",
+      "destination": "/resources/bug-bounty",
+      "permanent": true
+    },
+    {
       "source": "/its/intro",
       "destination": "/dev/send-tokens/interchain-tokens/intro"
     },

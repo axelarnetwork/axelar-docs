@@ -48,7 +48,7 @@ Please provide the RPC URL of your synced [Ethereum node](ethereum) with this fl
   </tab-item>
   <tab-item title="Sepolia Testnet">
   ```bash
-      docker run --rm -it  -v /some/local/dir/arbitrum:/home/user/.arbitrum -p 0.0.0.0:8547:8547 -p 0.0.0.0:8548:8548 <LATEST_DOCKER_IMAGE> --parent-chain.connection.url <YOUR_ETH_RPC_URL> --chain.id=421613 --http.api=net,web3,eth,debug --http.corsdomain=* --http.addr=0.0.0.0 --http.vhosts=* --init.url="https://snapshot.arbitrum.foundation/sepolia/nitro-archive.tar"
+  docker run --rm -it  -v /some/local/dir/arbitrum:/home/user/.arbitrum -p 0.0.0.0:8547:8547 -p 0.0.0.0:8548:8548 <LATEST_DOCKER_IMAGE> --parent-chain.connection.url <YOUR_ETH_RPC_URL> --chain.id=421613 --http.api=net,web3,eth,debug --http.corsdomain=* --http.addr=0.0.0.0 --http.vhosts=* --init.url="https://snapshot.arbitrum.foundation/sepolia/nitro-archive.tar"
   ```
   </tab-item>
 </tabs>
