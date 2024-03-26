@@ -252,7 +252,7 @@
       "name": "Websocket",
       "value": [
         {
-          "value": "wss://tm.axelar.lava.build/"
+          "value": "wss://tm.axelar.lava.build/websocket"
         },
         {
           "value": "ws://rpc-axelar.imperator.co/wss/websocket"
@@ -407,7 +407,7 @@
           "value": "wss://tm.axelar-testnet.lava.build/websocket"
         },
         {
-          "value": "ws://rpc-axelar-testnet.imperator.co/wss"
+          "value": "ws://rpc-axelar-testnet.imperator.co/wss/websocket"
         }
       ]
     }
