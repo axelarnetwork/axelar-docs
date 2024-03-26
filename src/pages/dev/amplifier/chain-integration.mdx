@@ -16,30 +16,43 @@ The Axelar Virtual Machine (AVM) and Amplifier are currently under active develo
 - Devnet LCD (REST API/JSON RPC): `http://devnet-amplifier.axelar.dev:1317`
 - Devnet gRPC: `devnet-amplifier.axelar.dev:9090`
 - Chain ID: `devnet-amplifier`
-- Other info can be found in [`devnet-amplifier.json`](https://github.com/axelarnetwork/axelar-contract-deployments/blob/main/axelar-chains-config/info/devnet-amplifier.json).
 
-## Set up your CosmWasm devnet environment
+Other info can be found in [`devnet-amplifier.json`](https://github.com/axelarnetwork/axelar-contract-deployments/blob/main/axelar-chains-config/info/devnet-amplifier.json).
 
-1. Install the `v0.35.5` axelard binary. You can either:
-    * Download the pre-built [`axelard v0.35.5`](https://github.com/axelarnetwork/axelar-core/releases/tag/v0.35.5) binary from GitHub for your device. You will also need to download 
-    [`wasmvm v1.3.1`](https://github.com/CosmWasm/wasmvm/releases/tag/v1.3.1) `libwasmvm.x86_64.so` (for Linux) or `libwasmvm.dylib` (for Mac) and in either case add the parent folder to `LD_LIBRARY_PATH`, OR: 
-    * Build `axelard` binary directly from the `axelar-core`: 
-        * Clone the [repo](https://github.com/axelarnetwork/axelar-core)
-        * Checkout the `v0.35.5` release tag
-        * Run `make build`
+## Get the `axelard` binary
+
+Install the `v0.35.5 axelard` binary. You can either download the pre-built version or build it yourself from `axelar-core`.
+
+### Option 1: Download the pre-built binary
+
+1. Download the pre-built [`axelard` binary](https://github.com/axelarnetwork/axelar-core/releases/tag/v0.35.5) along with the latest version of the [`WasmVM`](https://github.com/CosmWasm/wasmvm/releases/tag/v1.3.1).
+    * Intel Macs: [`axelard-darwin-amd64-v0.35.5`](https://github.com/axelarnetwork/axelar-core/releases/download/v0.35.5/axelard-darwin-amd64-v0.35.5) and [`libwasmvm.dylib`](https://github.com/CosmWasm/wasmvm/releases/download/v1.3.1/libwasmvm.dylib)
+    * M1 macs: [`axelard-darwin-arm64-v0.35.5`](https://github.com/axelarnetwork/axelar-core/releases/download/v0.35.5/axelard-darwin-arm64-v0.35.5) and [`libwasmvm.dylib`](https://github.com/CosmWasm/wasmvm/releases/download/v1.3.1/libwasmvm.dylib)
+    * Linux: [`axelard-linux-amd64-v0.35.5`](https://github.com/axelarnetwork/axelar-core/releases/download/v0.35.5/axelard-linux-amd64-v0.35.5) and [`libwasmvm.x86_64.so`](https://github.com/CosmWasm/wasmvm/releases/download/v1.3.1/libwasmvm.x86_64.so)
+
+1. Add the parent folder to `LD_LIBRARY_PATH` by running `export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:~/[your-path]`.
+
+### Option 2: Build the binary yourself
+
+1. Clone the [`axelar-core` repo](https://github.com/axelarnetwork/axelar-core).
+1. Checkout the `v0.35.5` release tag.
+1. Run `make build`.
 1. Generate an account by running `axelard keys add wallet --keyring-backend test`.
 1. Fund your devnet account with `uamplifier` tokens:
     - Join the [Axelar Discord](https://discord.com/invite/axelar).
     - Get the Developer Role.
     - Go to the [**#faucet**](https://discord.com/channels/770814806105128977/1002423218772136056/1217885883152334918) channel and submit a request with your account to get 100 test tokens: `!faucet devnet-amplifier [your axelar wallet address]`
 1. Query your account balance by running `axelard q bank balances [your axelar wallet] —-node [RPC]`.
-1. Deploy your CosmWasm contract.
 
-## Run `ampd` / `tofnd`
+## Run `ampd` and `tofnd`
 
-See the [Become an Amplifier Verifier (Worker)](/validator/amplifier/verifier-onboarding) for detailed instructions on how to run ampd and tofnd on your machine.
+// TODO: Add why devs need to run these
+
+See the [Become an Amplifier Verifier (Worker)](/validator/amplifier/verifier-onboarding) for detailed instructions on how to run `ampd` and `tofnd` on your machine.
 
 ## Onboard a chain to Amplifier
+
+Once you are running `ampd` and `tofnd`, you can onboard a chain to the Amplifier. **This requires approval by the Interop Labs team.**
 
 1. Build and deploy the contracts. The primary contracts are the `gateway`, `voting verifier`, and `multisig prover` contracts. You can either:
 
@@ -112,4 +125,4 @@ See the [Become an Amplifier Verifier (Worker)](/validator/amplifier/verifier-on
 
 ## Begin routing messages
 
-Once your chain is registered with the protocol, it will need verifiers to begin routing messages. See [Become an Amplifier Verifier (Worker)](/validator/amplifier/verifier-onboarding) for instructions on onboarding a verifier. Note that chain integrators will onboard on `devnet-amplifier` and not `devnet-verifier`.
+Once your chain is registered with the protocol, it will need verifiers to begin routing messages. See [Become an Amplifier Verifier (Worker)](/validator/amplifier/verifier-onboarding) for instructions to onboard a verifier. Note that chain integrators will onboard on `devnet-amplifier` and not `devnet-verifier`.
