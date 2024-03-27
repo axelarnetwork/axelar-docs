@@ -43,12 +43,12 @@ Please provide the RPC URL of your synced [Ethereum node](ethereum) with this fl
 <tabs>
   <tab-item title="Mainnet">
   ```bash
-  docker run --rm -it -d -v /path/to/data/arbitrum:/home/user/.arbitrum -p 0.0.0.0:8547:8547 -p 0.0.0.0:8548:8548 <LATEST_DOCKER_IMAGE> --l1.url <YOUR_ETH_RPC_URL> --l2.chain-id=42161 --http.api=net,web3,eth,debug --http.corsdomain=* --http.addr=0.0.0.0 --http.vhosts=* --init.url="https://snapshot.arbitrum.io/mainnet/nitro.tar"
+  docker run --rm -it  -v /some/local/dir/arbitrum:/home/user/.arbitrum -p 0.0.0.0:8547:8547 -p 0.0.0.0:8548:8548 <LATEST_DOCKER_IMAGE> --parent-chain.connection.url <YOUR_ETH_RPC_URL> --chain.id=42161 --http.api=net,web3,eth,debug --http.corsdomain=* --http.addr=0.0.0.0 --http.vhosts=* --init.url="https://snapshot.arbitrum.foundation/arb1/nitro-archive.tar"
   ```
   </tab-item>
-  <tab-item title="Goerli Testnet">
+  <tab-item title="Sepolia Testnet">
   ```bash
- docker run --rm -it -d -v /path/to/data/arbitrum:/home/user/.arbitrum -p 0.0.0.0:8547:8547 -p 0.0.0.0:8548:8548 <LATEST_DOCKER_IMAGE> --l1.url <YOUR_GOERLI_ETH_RPC_URL> --l2.chain-id=421613 --http.api=net,web3,eth,debug --http.corsdomain=* --http.addr=0.0.0.0 --http.vhosts=*
+  docker run --rm -it  -v /some/local/dir/arbitrum:/home/user/.arbitrum -p 0.0.0.0:8547:8547 -p 0.0.0.0:8548:8548 <LATEST_DOCKER_IMAGE> --parent-chain.connection.url <YOUR_ETH_RPC_URL> --chain.id=421613 --http.api=net,web3,eth,debug --http.corsdomain=* --http.addr=0.0.0.0 --http.vhosts=* --init.url="https://snapshot.arbitrum.foundation/sepolia/nitro-archive.tar"
   ```
   </tab-item>
 </tabs>

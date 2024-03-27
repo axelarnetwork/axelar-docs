@@ -693,6 +693,10 @@ astro-island button {
   display: none;
 }
 
+.wrap-text {
+  word-break: break-word;
+}
+
 /* Only render TOC if we have space */
 @media (max-width: 950px) {
   #toc {
