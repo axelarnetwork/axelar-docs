@@ -36,26 +36,37 @@ Set the following config options in `simple-optimism-node/.env`:
 <tabs>
 <tab-item title="Mainnet">
  ```bash
- NETWORK_NAME=mainnet
-NODE_TYPE=full
-BEDROCK_SOURCE=download
-# Your Ethereum RPC node endpoint. As an L2, your Optimism node will verify tx finality by
-# querying your own Ethereum RPC node.
-OP_NODE__RPC_ENDPOINT=
-OP_NODE__RPC_TYPE=basic
+    NETWORK_NAME=op-mainnet
+    NODE_TYPE=full
+    # Your Ethereum RPC node endpoint. As an L2, your Optimism node will verify tx finality by
+    # querying your own Ethereum RPC node.
+    OP_NODE__RPC_ENDPOINT=
+    # Specify the beacon endpoint of Layer 1
+    OP_NODE__L1_BEACON=
+    OP_NODE__RPC_TYPE=basic
+    # HEALTHCHECK__REFERENCE_RPC_PROVIDER - Specify the public RPC endpoint for Layer 2 network you want to operate on for healthchecking. For instance:
+    # Optimism Mainnet - https://mainnet.optimism.io
+    # Optimism Sepolia - https://sepolia.optimism.io
+    HEALTHCHECK__REFERENCE_RPC_PROVIDER=
+
 ```
 
 </tab-item>
 <tab-item title="Testnet">
  ```bash
- # only goerli is supported for now
-NETWORK_NAME=goerli
-NODE_TYPE=full
-BEDROCK_SOURCE=download
-# Your Ethereum RPC node endpoint. As an L2, your Optimism node will verify tx finality by
-# querying your own Ethereum RPC node.
-OP_NODE__RPC_ENDPOINT=
-OP_NODE__RPC_TYPE=basic
+    NETWORK_NAME=op-sepolia
+    NODE_TYPE=full
+    # Your Ethereum RPC node endpoint. As an L2, your Optimism node will verify tx finality by
+    # querying your own Ethereum RPC node.
+    OP_NODE__RPC_ENDPOINT=
+    OP_NODE__RPC_TYPE=basic
+    # Specify the beacon endpoint of Layer 1
+    OP_NODE__L1_BEACON=
+    OP_NODE__RPC_TYPE=basic
+    # HEALTHCHECK__REFERENCE_RPC_PROVIDER - Specify the public RPC endpoint for Layer 2 network you want to operate on for healthchecking. For instance:
+    # Optimism Mainnet - https://mainnet.optimism.io
+    # Optimism Sepolia - https://sepolia.optimism.io
+    HEALTHCHECK__REFERENCE_RPC_PROVIDER=
 ```
 
 </tab-item>
@@ -63,7 +74,7 @@ OP_NODE__RPC_TYPE=basic
 
 ## Start the node
 ```bash
-docker compose up -d
+docker compose up -d --build
 ```
 
 This should show an output like this:

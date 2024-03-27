@@ -161,7 +161,11 @@ export default ({ environment = "mainnet" }) => {
                           </div>
                         </div>
                       ) : c.id === "denom" ? (
-                        <div className="flex items-center text-base space-x-1.5">
+                        <div
+                          className={`flex items-center text-base space-x-1.5 ${
+                            id.length > 15 ? "wrap-text" : ""
+                          }`}
+                        >
                           <span className="whitespace-nowrap text-base font-semibold">
                             {id}
                           </span>

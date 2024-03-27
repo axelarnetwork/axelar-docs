@@ -10,7 +10,7 @@ In this tutorial, you will:
 - Deploy a simple ERC-20 token on the Fantom chain
 - Deploy a simple ERC-20 token on the Polygon chain
 - Deploy a [token manager](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/token-manager/TokenManager.sol) on both Fantom and Polygon
-- Transfer mint access to the [Interchain Token Service address](https://etherscan.io/address/0xB5FB4BE02232B1bBA4dC8f81dc24C26980dE9e3C) on both Fantom and Polygon
+- Transfer mint access to the Token Manage Address on both Fantom and Polygon
 - Transfer your token between Fantom and Polygon
 
 ## Prerequisites
@@ -180,14 +180,13 @@ const {
 const interchainTokenServiceContractABI = require("./utils/interchainTokenServiceABI");
 const customTokenABI = require("./utils/customTokenABI");
 
-const MINT_BURN = 0;
-const LOCK_UNLOCK = 2;
+const MINT_BURN = 4;
 
 const interchainTokenServiceContractAddress =
   "0xB5FB4BE02232B1bBA4dC8f81dc24C26980dE9e3C";
 
-const fantomCustomTokenAddress = "0x6B9ee4Ae432ffE426491FeA0032aE350FD9fFE85"; // Replace with your token address on fantom
-const polygonCustomTokenAddress = "0xe5f05c39BFf8efb465b573fD53D5556667743046"; // Replace with your token address on Polygon
+const fantomCustomTokenAddress = "0x8D4a6B2A784749BBc412A41C1440C5A67EAB57EE"; // Replace with your token address on fantom
+const polygonCustomTokenAddress = "0x7884ac325fa7aedB8A4d7bBD92671e8699f49108"; // Replace with your token address on Polygon
 ```
 
 ### Get the signer
@@ -205,7 +204,7 @@ async function getSigner() {
 
 ### Get the contract instance
 
-Then, create a `getContractInstance()` function in `customInterchainToken.js` . This will get the contract instance based on the contract’s address, ABI, and signer:
+Then, create a `getContractInstance()` function in `customInterchainToken.js`. This will get the contract instance based on the contract’s address, ABI, and signer:
 
 ```JavaScript
 //...
@@ -310,23 +309,23 @@ FUNCTION_NAME=deployTokenManager npx hardhat run customInterchainToken.js --netw
 If you see something similar to the following on your console, you have successfully registered your token as a canonical Interchain Token.
 
 ```bash
-Salt: 0x368f6c0d56af7cb3d90aac4b12186cbb0639edf7923f1405adf752bace5ed795,
-Transaction Hash: 0x1854ed395fd1a6542433e277c607f4817ef896ef9c841e2ceaca108d08ff997c,
-Token ID: 0xf60cd19fca372e0351a2619fe63435203a8699105c84850681b4aabbd3d9f6e0,
-Expected token manager address: 0x71D6374761Dcb3e331Ee08051998A0A958438571,
+Salt: 0x7f5fe989334ad23b77e8da841f672394d021ae83ff0a24afb461ba19d72e3553,
+Transaction Hash: 0x026ee7992de2108ecb83f37119ec84ebed371ff724d38e8fd055cbecde5b77e6,
+Token ID: 0x11780bda6e8238e24cdcd88e9b0088f1ed354c8b03c836f35f9ddb9e2c8be7c5, 
+Expected Token Manager Address: 0xad8Cf8FF7BBe82269844bBcbA60bAa8f02781f13,
 ```
 
-### Store the token ID and salt value
+### Store the token ID, Expected Token Manager, and salt value
 
-Copy the token ID and salt value and store them somewhere safe. You will need them to initiate a remote token manager deployment and token transfer in a later step.
+Copy the token ID, Expected Token Manager, and salt value and store them somewhere safe. You will need them to initiate a remote token manager deployment and token transfer in a later step.
 
 ### Check the transaction on the Fantom testnet scanner
 
-Check the [Fantom testnet scanner](https://testnet.ftmscan.com/) to see if you have successfully [deployed a token manager](https://testnet.ftmscan.com/tx/0x1854ed395fd1a6542433e277c607f4817ef896ef9c841e2ceaca108d08ff997c).
+Check the [Fantom testnet scanner](https://testnet.ftmscan.com/) to see if you have successfully [deployed a token manager](https://testnet.ftmscan.com/tx/0x026ee7992de2108ecb83f37119ec84ebed371ff724d38e8fd055cbecde5b77e6).
 
 ## Remotely deploy a token manager on the Polygon testnet
 
-You’ve just successfully deployed a token manager to Fantom, which you are using as your local chain. Now, deploy a token manager remotely to Polygon, which will act as the remote chain in this tutorial. Remember that you can specify any two chains to be your local and remote chains.
+You’ve just successfully deployed a token manager to Fantom, which you are using as your local chain. Now, deploy a token manager remotely to Polygon, which will act as the remote chain in this tutorial. Remember that you can specify any two chains as your local and remote chains.
 
 ### Estimate gas fees
 
@@ -355,7 +354,7 @@ async function gasEstimator() {
 
 ### Perform remote token manager deployment
 
-Create a `deployRemoteTokenManager()` function. This will deploy the remote Canonical Interchain Token on the Polygon Mumbai testnet. Make sure to change the salts to the value you saved from a previous step.
+Create a `deployRemoteTokenManager()` function. This will deploy the remote Token Manager on the Polygon Mumbai testnet. Make sure to change the salts to the value you saved from a previous step.
 
 ```JavaScript
 //...
@@ -382,7 +381,7 @@ async function deployRemoteTokenManager() {
 
   // Deploy the token manager
   const deployTxData = await interchainTokenServiceContract.deployTokenManager(
-    "0x368f6c0d56af7cb3d90aac4b12186cbb0639edf7923f1405adf752bace5ed795", // change salt
+    "0x7f5fe989334ad23b77e8da841f672394d021ae83ff0a24afb461ba19d72e3553", // change salt
     "Polygon",
     MINT_BURN,
     param,
@@ -393,7 +392,7 @@ async function deployRemoteTokenManager() {
   // Get the tokenId
   const tokenId = await interchainTokenServiceContract.interchainTokenId(
     signer.address,
-    "0x368f6c0d56af7cb3d90aac4b12186cbb0639edf7923f1405adf752bace5ed795" // change salt
+    "0x7f5fe989334ad23b77e8da841f672394d021ae83ff0a24afb461ba19d72e3553" // change salt
   );
 
   // Get the token manager address
@@ -443,9 +442,9 @@ FUNCTION_NAME=deployRemoteTokenManager npx hardhat run customInterchainToken.js 
 You should see something similar to the following on your console:
 
 ```bash
-Transaction Hash: 0xbfe92d3fb5bf3e9e08f65a3e11f231ff9df9c65985d2d5b952acf82e1375d5a5,
-Token ID: 0xf60cd19fca372e0351a2619fe63435203a8699105c84850681b4aabbd3d9f6e0,
-Expected token manager address: 0x71D6374761Dcb3e331Ee08051998A0A958438571,
+Transaction Hash: 0x5dbba37f7741d19ca872bb4b2a29523baa002a3d6f0f31834bc34d6d6ca633f5,
+Token ID: 0x11780bda6e8238e24cdcd88e9b0088f1ed354c8b03c836f35f9ddb9e2c8be7c5, 
+Expected Token Manager Address: 0xad8Cf8FF7BBe82269844bBcbA60bAa8f02781f13,
 ```
 
 Take a look at the token ID and the expected token manager address. These must match the ones obtained in the previous step, as they are linked with the same salt value when deploying a token manager remotely on the Polygon testnet.
@@ -457,23 +456,23 @@ When deploying the token manager to a preferred chain other than the local chain
 
 ### Check the transaction on the Axelar testnet scanner
 
-Check the [Axelarscan testnet scanner](https://testnet.axelarscan.io/) to see if you have successfully deployed the remote token manager on the Polygon Mumbai testnet. It should look something like [this](https://testnet.axelarscan.io/gmp/0xbfe92d3fb5bf3e9e08f65a3e11f231ff9df9c65985d2d5b952acf82e1375d5a5).
+Check the [Axelarscan testnet scanner](https://testnet.axelarscan.io/) to see if you have successfully deployed the remote token manager on the Polygon Mumbai testnet. It should look something like [this](https://testnet.axelarscan.io/gmp/0x5dbba37f7741d19ca872bb4b2a29523baa002a3d6f0f31834bc34d6d6ca633f5).
 
 Add gas if needed. Ensure that Axelar shows a successful transaction before continuing to the next step.
 
-## Transfer mint access to the Interchain Token Service address on the Fantom and Polygon testnets
+## Transfer mint access to the Token Manager address on the Fantom and Polygon testnets
 
-You must transfer mint access to the Interchain Token Service address on both chains before you can mint and burn tokens while moving assets between chains.
+You must transfer mint access to the Token Manager address on both chains before you can mint and burn tokens while moving assets between chains.
 
-### Transfer mint access to the Interchain Token Service on the Fantom testnet
+### Transfer mint access to the Token Manager address on the Fantom testnet
 
-Create a `transferMintAccessToITSOnFantom()` function that will perform the mint access transfer on the Fantom testnet.
+Create a `transferMintAccessToTokenManagerOnFantom()` function that will perform the mint access transfer on the Fantom testnet.
 
 ```JavaScript
 //...
 
-// Transfer mint access on all chains to ITS : Fantom
-async function transferMintAccessToITSOnFantom() {
+// Transfer mint access on all chains to the Expected Token Manager : Fantom
+async function transferMintAccessToTokenManagerOnFantom() {
   // Get a signer to sign the transaction
   const signer = await getSigner();
 
@@ -488,7 +487,7 @@ async function transferMintAccessToITSOnFantom() {
 
   const grantRoleTxn = await tokenContract.grantRole(
     getMinterRole,
-    interchainTokenServiceContractAddress
+    "0xad8Cf8FF7BBe82269844bBcbA60bAa8f02781f13"
   );
 
   console.log("grantRoleTxn: ", grantRoleTxn.hash);
@@ -497,7 +496,7 @@ async function transferMintAccessToITSOnFantom() {
 
 ### Update `main()` to transfer mint access on Fantom testnet
 
-Update `main()` to execute `transferMintAccessToITSOnFantom()` :
+Update `main()` to execute `transferMintAccessToTokenManagerOnFantom()` :
 
 ```JavaScript
 //...
@@ -506,8 +505,8 @@ async function main() {
   const functionName = process.env.FUNCTION_NAME;
   switch (functionName) {
     //...
-    case "transferMintAccessToITSOnFantom":
-      await transferMintAccessToITSOnFantom();
+    case "transferMintAccessToTokenManagerOnFantom":
+      await transferMintAccessToTokenManagerOnFantom();
       break;
     default:
     //...
@@ -519,31 +518,31 @@ async function main() {
 
 ### Run the `customInterchainToken.js` script to deploy to Fantom testnet
 
-Run the script in your terminal to transfer mint access to ITS specifying the `fantom` testnet:
+Run the script in your terminal to transfer mint access to the Token Manager specifying the `fantom` testnet:
 
 ```bash
-FUNCTION_NAME=transferMintAccessToITSOnFantom npx hardhat run customInterchainToken.js --network fantom
+FUNCTION_NAME=transferMintAccessToTokenManagerOnFantom npx hardhat run customInterchainToken.js --network fantom
 ```
 
 You should see something similar to the following on your console:
 
 ```bash
-grantRoleTxn:  0x12ff55a84aa3bb7bf6a1dada8f14017a0a610bccd9199ca108f22aafdd16a7f2
+grantRoleTxn:  0xec32651883a4d48f76e957f7fe6ca39aaa616cfb5eba89d6ee4a73f768874222
 ```
 
 ### Check the transaction on the Fantom testnet scanner
 
-Check the [Fantom testnet scanner](https://testnet.ftmscan.com/) to see if you have successfully [transferred mint access to the Interchain Token Service address](https://testnet.ftmscan.com/tx/0x12ff55a84aa3bb7bf6a1dada8f14017a0a610bccd9199ca108f22aafdd16a7f2).
+Check the [Fantom testnet scanner](https://testnet.ftmscan.com/) to see if you have successfully [transferred mint access to the Token Manager address](https://testnet.ftmscan.com/tx/0xec32651883a4d48f76e957f7fe6ca39aaa616cfb5eba89d6ee4a73f768874222).
 
-### Transfer mint access to the Interchain Token Service on the Polygon testnet
+### Transfer mint access to the Token Manager address on the Polygon testnet
 
-Create a `transferMintAccessToITSOnPolygon()` function that will perform the mint access transfer on the Fantom testnet.
+Create a `transferMintAccessToTokenManagerOnPolygon()` function that will perform the mint access transfer on the Fantom testnet.
 
 ```JavaScript
 //...
 
-// Transfer mint access on all chains to ITS : Polygon
-async function transferMintAccessToITSOnPolygon() {
+// Transfer mint access on all chains to the Expected Token Manager Address : Polygon
+async function transferMintAccessToTokenManagerOnPolygon() {
   // Get a signer to sign the transaction
   const signer = await getSigner();
 
@@ -558,7 +557,7 @@ async function transferMintAccessToITSOnPolygon() {
 
   const grantRoleTxn = await tokenContract.grantRole(
     getMinterRole,
-    interchainTokenServiceContractAddress
+    "0xad8Cf8FF7BBe82269844bBcbA60bAa8f02781f13"
   );
 
   console.log("grantRoleTxn: ", grantRoleTxn.hash);
@@ -569,7 +568,7 @@ async function transferMintAccessToITSOnPolygon() {
 
 ### Update `main()` to transfer mint access on Fantom testnet
 
-Update `main()` to execute `transferMintAccessToITSOnPolygon()` :
+Update `main()` to execute `transferMintAccessToTokenManagerOnPolygon()` :
 
 ```JavaScript
 //...
@@ -578,8 +577,8 @@ async function main() {
   const functionName = process.env.FUNCTION_NAME;
   switch (functionName) {
     //...
-    case "transferMintAccessToITSOnPolygon":
-      await transferMintAccessToITSOnPolygon();
+    case "transferMintAccessToTokenManagerOnPolygon":
+      await transferMintAccessToTokenManagerOnPolygon();
       break;
     default:
     //...
@@ -591,21 +590,21 @@ async function main() {
 
 ### Run the `customInterchainToken.js` script to deploy to the Polygon testnet
 
-Run the script in your terminal to transfer mint access to ITS, specifying the `polygon` testnet:
+Run the script in your terminal to transfer mint access to Token Manager, specifying the `polygon` testnet:
 
 ```bash
-FUNCTION_NAME=transferMintAccessToITSOnPolygon npx hardhat run customInterchainToken.js --network polygon
+FUNCTION_NAME=transferMintAccessToTokenManagerOnPolygon npx hardhat run customInterchainToken.js --network polygon
 ```
 
 You should see something similar to the following on your console:
 
 ```bash
-grantRoleTxn:  0x2e581188fc57a97d2ab040de9440c112eb9a5553b43646a64a4fa43d8e79991d
+grantRoleTxn:  0xb3d4c9264faabe137595a9032b3958a07d24c308df5c8c3e45d711d7b9df4488
 ```
 
 ### Check the transaction on the Polygon testnet scanner
 
-Check the [Polygon testnet scanner](https://mumbai.polygonscan.com/) to see if you have successfully [transferred Mint access to the Interchain Token Service address](https://mumbai.polygonscan.com/tx/0x2e581188fc57a97d2ab040de9440c112eb9a5553b43646a64a4fa43d8e79991d).
+Check the [Polygon testnet scanner](https://mumbai.polygonscan.com/) to see if you have successfully [transferred Mint access to the Token Manager address](https://mumbai.polygonscan.com/tx/0xb3d4c9264faabe137595a9032b3958a07d24c308df5c8c3e45d711d7b9df4488).
 
 ## Transfer your token between chains
 
@@ -613,7 +612,7 @@ Now that you have deployed a `TokenManager` on both Fantom and Polygon testnet, 
 
 ### Initiate a remote token transfer
 
-In `customInterchainToken.js`, create a `transferTokens()` function that will facilitate remote token transfers between chains. Change the token ID to the `tokenId` that you [saved from an earlier step](https://www.notion.so/Edited-Programmatically-Create-a-Canonical-Interchain-Token-Using-the-Interchain-Token-Service-2e65ba3e4e8c4a0d9470effacec2c2be?pvs=21), and change the address in `transfer` to your own wallet address:
+In `customInterchainToken.js`, create a `transferTokens()` function that will facilitate remote token transfers between chains. Change the token ID to the `tokenId` that you [saved from an earlier step](### Store the token ID, Expected Token Manager, and salt value), and change the address in `transfer` to your own wallet address:
 
 ```JavaScript
 //...
@@ -630,10 +629,10 @@ async function transferTokens() {
   );
   const gasAmount = await gasEstimator();
   const transfer = await interchainTokenServiceContract.interchainTransfer(
-    "0xf60cd19fca372e0351a2619fe63435203a8699105c84850681b4aabbd3d9f6e0", // tokenId, the one you store in the earlier step
+    "0x11780bda6e8238e24cdcd88e9b0088f1ed354c8b03c836f35f9ddb9e2c8be7c5", // tokenId, the one you store in the earlier step
     "Polygon",
     "0x510e5EA32386B7C48C4DEEAC80e86859b5e2416C", // receiver address
-    ethers.utils.parseEther("50"), // amount of token to transfer
+    ethers.utils.parseEther("500"), // amount of token to transfer
     "0x",
     ethers.utils.parseEther("0.01"), // gasValue
     {
@@ -643,7 +642,7 @@ async function transferTokens() {
   );
 
   console.log("Transfer Transaction Hash:", transfer.hash);
-  // 0xc2bb491cb1987e3ae9c164694b0c84a649c79d615c8c51c5c5df2bb339ee1f07
+  // 0x65258117e8133397b047a6192cf69a1b48f59b0cb806be1c0fa5a7c1efd747ef
 }
 ```
 
@@ -680,18 +679,18 @@ FUNCTION_NAME=transferTokens npx hardhat run customInterchainToken.js --network 
 You should see something similar to the following on your console:
 
 ```bash
-Transfer Transaction Hash: 0x146589f59683efd6d79cd1404afab6b6df9d052d55cbf69d29fc73c170b73e8b
+Transfer Transaction Hash: 0x65258117e8133397b047a6192cf69a1b48f59b0cb806be1c0fa5a7c1efd747ef
 ```
 
 If you see this, it means that your interchain transfer has been successful! 🎉
 
 ### Check the transaction on the Axelar testnet scanner
 
-Check the [Axelarscan testnet scanner](https://testnet.axelarscan.io/) to see if you have successfully transferred SCT from the [Fantom testnet](https://testnet.ftmscan.com/token/0x6B9ee4Ae432ffE426491FeA0032aE350FD9fFE85) to the [Polygon testnet](https://mumbai.polygonscan.com/token/0xe5f05c39BFf8efb465b573fD53D5556667743046). It should look something like [this](https://testnet.axelarscan.io/gmp/0x146589f59683efd6d79cd1404afab6b6df9d052d55cbf69d29fc73c170b73e8b).
+Check the [Axelarscan testnet scanner](https://testnet.axelarscan.io/) to see if you have successfully transferred SCT from the [Fantom testnet](https://testnet.ftmscan.com/token/0x8D4a6B2A784749BBc412A41C1440C5A67EAB57EE) to the [Polygon testnet](https://mumbai.polygonscan.com/token/0x7884ac325fa7aedB8A4d7bBD92671e8699f49108). It should look something like [this](https://testnet.axelarscan.io/gmp/0x65258117e8133397b047a6192cf69a1b48f59b0cb806be1c0fa5a7c1efd747ef).
 
 ## Congratulations!
 
-You have now programmatically linked custom tokens deployed on multiple chains as Interchain Toke using Axelar’s Interchain Token Service and transferred it between two chains.
+You have now programmatically linked custom tokens deployed on multiple chains as Interchain Token using Axelar’s Interchain Token Service and transfer it between two chains.
 
 Great job making it this far! To show your support to the author of this tutorial, please post about your experience and tag [@axelarnetwork](https://twitter.com/axelarnetwork) on Twitter (X).
 
