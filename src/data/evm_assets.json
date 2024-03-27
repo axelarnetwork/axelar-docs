@@ -2857,6 +2857,13 @@
           "transfer_fee": 0.06
         },
         {
+          "chain": "blast",
+          "address": "0xebD4A18034C78A415088DF8508f102421eD693b1",
+          "symbol": "axlDEUS",
+          "decimals": 18,
+          "transfer_fee": 0.4
+        },
+        {
           "chain": "ethereum",
           "address": "0x69e557b926F4eEf6d9400e36DBBFEb9600Af2880",
           "symbol": "axlDEUS",
