@@ -1,89 +1,209 @@
 # Base
 
-
-import { Callout } from "/src/components/callout"
-
-Instructions to set up your Base (Coinbase L2) node.
-
-<Callout type="info" emoji="ℹ️">
-  Note: Mainnet for base is not available yet. Instructions will be added after launch.
-</Callout>
+Instructions to set up your base node.
 
 ## Requirements
 
 - [Setup your Axelar validator](/validator/setup)
-- Minimum hardware requirements: 16GB RAM, 100GB+ free storage space.
-- MacOS or Ubuntu 20.04 (tested on 20.04)
-- [Official Documentation](https://docs.base.org/guides/run-a-base-goerli-node)
-
+- Minimum hardware requirements: 8 AWS vCPU+, 8GB RAM, 512GB of SSD free storage space.
+- MacOS or Ubuntu 22.04 (tested on 22.04)
+- [Official Documentation](https://github.com/base-org/node)
 
 ## Prerequisites
 
+- [Common Docker Compose Commands](./optimism#common-node-operations)
 ```bash
 sudo apt-get install jq -y
 snap install docker
-
 ```
 
-## Configure and start node
-
-1. Clone the Base repo
+## Clone Repo
 
 ```bash
-git clone https://github.com/base-org/node
+git clone https://github.com/base-org/node base-node
+cd base-node
+```
+## Set node config
+
+In docker-compose.yml, uncomment the right .env file according to the network you want to run it on
+<tabs>
+    <tab-item title="Mainnet">
+        ```bash
+        env_file:
+        # select your network here:
+        #      - .env.sepolia
+              - .env.mainnet
+        ```
+
+    </tab-item>
+    <tab-item title="Testnet">
+        ```bash
+        env_file:
+        # select your network here:
+              - .env.sepolia
+        #      - .env.mainnet
+        ```
+    </tab-item>
+</tabs>
+
+Set the following config options in `base-node/.env.sepolia` or `base-node/.env`:
+```bash
+# [recommended] replace with your preferred L1 (Ethereum, not Base) node RPC URL:
+OP_NODE_L1_ETH_RPC=https://rpc.sepolia.org
+
+# [required] replace with your preferred L1 CL beacon endpoint:
+OP_NODE_L1_BEACON=https://your.sepolia.beacon.node/endpoint-here
+```
+You can setup a beacon endpoint using the instructions [here](./ethereum#install-a-consensus-layer-client), make sure to expose the endpoint to public
+In lighthouse this needs passing of `--http-address 0.0.0.0` while starting the service
+
+## Start the node
+```bash
+docker compose up -d
 ```
 
-2. In `docker-compose.yml`, set `OP_NODE_L1_ETH_RPC` to your own Goerli L1 RPC node. Using your own Goerli node is required to guarantee decentralization for validation.
+This should show an output like this:
+```bash
+[+] Running 3/3
+ ✔ Network base-node_default   Created                                                                                                                       0.1s
+ ✔ Container base-node-geth-1  Started                                                                                                                       0.4s
+ ✔ Container base-node-node-1  Started                                                                                                                       0.8s                                                                                                       11.2s
+```
 
-3. Run:
+After it is done, verify by listing the services and their status
+ ```bash
+docker compose ps
+```
+
+You should see these 2 services running
+```bash
+NAME                          IMAGE                                                                                                 COMMAND             SERVICE             CREATED             STATUS                    PORTS
+NAME                IMAGE               COMMAND                  SERVICE             CREATED             STATUS              PORTS
+base-node-geth-1    base-node-geth      "bash ./geth-entrypo…"   geth                16 seconds ago      Up 15 seconds       0.0.0.0:7308->6060/tcp, :::7308->6060/tcp, 0.0.0.0:8525->8545/tcp, :::8525->8545/tcp, 0.0.0.0:8526->8546/tcp, :::8526->8546/tcp, 0.0.0.0:30308->30303/tcp, 0.0.0.0:30308->30303/udp, :::30308->30303/tcp, :::30308->30303/udp
+base-node-node-1    base-node-node      "bash ./op-node-entr…"   node                16 seconds ago      Up 15 seconds       0.0.0.0:6062->6060/tcp, :::6062->6060/tcp, 0.0.0.0:7320->7300/tcp, :::7320->7300/tcp, 0.0.0.0:7445->8545/tcp, :::7445->8545/tcp, 0.0.0.0:9242->9222/tcp, 0.0.0.0:9242->9222/udp, :::9242->9222/tcp, :::9242->9222/udp
+```
+
+## Check logs
+
+#### Verify OP geth logs
 
 ```bash
-docker compose up
+docker compose  logs geth --since 20m -f
 ```
-
-4. You should now be able to `curl` your Base node:
 
 ```bash
-curl -d '{"id":0,"jsonrpc":"2.0","method":"eth_getBlockByNumber","params":["latest",false]}' \
-  -H "Content-Type: application/json" http://localhost:8545
+base-node-geth-1  | INFO [03-18|07:28:01.409] HTTP server started                      endpoint=[::]:8545 auth=false prefix= cors=* vhosts=*
+base-node-geth-1  | INFO [03-18|07:28:01.409] WebSocket enabled                        url=ws://[::]:8546
+base-node-geth-1  | INFO [03-18|07:28:01.409] WebSocket enabled                        url=ws://[::]:8551
+base-node-geth-1  | INFO [03-18|07:28:01.409] HTTP server started                      endpoint=[::]:8551 auth=true  prefix= cors=localhost vhosts=*
+base-node-geth-1  | INFO [03-18|07:28:11.610] Looking for peers                        peercount=0 tried=156 static=0
+base-node-geth-1  | INFO [03-18|07:28:21.725] Looking for peers                        peercount=0 tried=122 static=0
+base-node-geth-1  | INFO [03-18|11:32:45.773] Forkchoice requested sync to new head    number=11,986,109 hash=085c5c..61c7ca
+base-node-geth-1  | INFO [03-18|11:32:47.466] Forkchoice requested sync to new head    number=11,986,110 hash=2f176f..8f3656
+base-node-geth-1  | INFO [03-18|11:32:49.476] Forkchoice requested sync to new head    number=11,986,111 hash=e247cf..08c3fb
+base-node-geth-1  | INFO [03-18|11:32:51.280] Forkchoice requested sync to new head    number=11,986,112 hash=b6c25a..b7a064
 ```
 
-Sync speed depends on your L1 node, as the majority of the chain is derived from data submitted to the L1. You can check your syncing status using the `optimism_syncStatus` RPC on the `op-node` container. Example:
+#### Verify OP node logs
 
 ```bash
-echo Latest synced block behind by: \
-$((($( date +%s )-\
-$( curl -d '{"id":0,"jsonrpc":"2.0","method":"optimism_syncStatus"}' -H "Content-Type: application/json" http://localhost:7545 |
-   jq -r .result.unsafe_l2.timestamp))/60)) minutes
+docker compose  logs node --since 20m -f
+```
+You should see logs like
+
+```bash
+base-node-node-1  | t=2024-03-18T11:32:40+0000 lvl=info msg="Starting JSON-RPC server"
+base-node-node-1  | t=2024-03-18T11:32:40+0000 lvl=info msg="started metrics server" addr=[::]:7300
+base-node-node-1  | t=2024-03-18T11:32:40+0000 lvl=info msg="Starting execution engine driver"
+base-node-node-1  | t=2024-03-18T11:32:40+0000 lvl=info msg="Starting driver" sequencerEnabled=false sequencerStopped=false
+base-node-node-1  | t=2024-03-18T11:32:40+0000 lvl=info msg="Rollup node started"
+base-node-node-1  | t=2024-03-18T11:32:40+0000 lvl=info msg="State loop started"
+base-node-node-1  | t=2024-03-18T11:50:47+0000 lvl=info msg="Sync progress" reason="unsafe payload from sequencer while in EL sync" l2_finalized=0x0000000000000000000000000000000000000000000000000000000000000000:0 l2_safe=0x0000000000000000000000000000000000000000000000000000000000000000:0 l2_pending_safe=0x0000000000000000000000000000000000000000000000000000000000000000:0 l2_unsafe=0x6e8ea627774bbe62255b23938ea2639c251e5199cadc7eaee58412193423acfc:11986117 l2_time=1710761581 l1_derived=0x0000000000000000000000000000000000000000000000000000000000000000:0
+base-node-node-1  | t=2024-03-18T11:50:49+0000 lvl=info msg="Received signed execution payload from p2p" id=0x17e27490a5845c45d656d2a464a0c9aa1c764cc286d96bc2d17a108e2cbe2737:11986651 peer=16Uiu2HAm5zCUPtJdtbGF7XLQ8fsmsgWP9656wmMTSnnp5FoDdxDD
+base-node-node-1  | t=2024-03-18T11:50:49+0000 lvl=info msg="Optimistically inserting unsafe L2 execution payload to drive EL sync" id=0x17e27490a5845c45d656d2a464a0c9aa1c764cc286d96bc2d17a108e2cbe2737:11986651
 ```
 
-You can check the latest block against the [explorer](https://goerli.basescan.org/).
+## Verify node sync status
 
-Since Base uses the Optimism stack, you can review the [Optimism Instructions](/validator/external-chains/optimism) for more details on expected log output and helpful rpc queries.
+### RPC Endpoint
 
-### Configure vald
+```bash
+echo "$(curl -4 ifconfig.co):8545"
+```
 
-In order for `vald` to connect to your Base node, your Base RPC should be exposed in
+#### Method:
+Check your op node status at port 7545 by
+
+```bash
+curl -X POST -H "Content-Type: application/json" --data     '{"jsonrpc":"2.0","method":"optimism_syncStatus","params":[],"id":1}' [rpc] | jq
+```
+
+If you get something like this in response to the above rpc call, your node is setup correctly
+
+```bash
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "result": {
+    "current_l1": {
+      "hash": "0x24f7d66e8c80d0c6a598e9206ba1abc81264c1cc68afc14d8eca3f04fa81f921",
+      "number": 323360,
+      "parentHash": "0x99ce84a2d455425f0c3a68b2b83a74301810fc8c726cba384b08d9a79d9381d1",
+      "timestamp": 1700059308
+    },
+..........
+..........
+    "engine_sync_target": {
+      "hash": "0x7b7ed381aac9cec2a43b37c30779832cb8a82e044e38b4ada0f1c90719bd3d50",
+      "number": 30955,
+      "parentHash": "0x882503037e902b2476e1d4c308a895cc3b936c5ee19b45361dc26c9631d29ae0",
+      "timestamp": 1700059286,
+      "l1origin": {
+        "hash": "0x49ee7a7398bc5010b48de111fc0ebc99d63d38ac8233202c913646d901e15213",
+        "number": 323353
+      },
+      "sequenceNumber": 2
+    }
+  }
+}
+```
+
+You can compare the block height on your node with explorer ([mainnet](https://basescan.org/) or [testnet](https://goerli.basescan.org/)),
+use your RPC node only when it has caught up with the latest block height.
+
+#### Sync Status of Base optimism Execution Node
+
+You can check your status by connecting to geth console
+
+```bash
+docker exec -it  base-node-geth-1 geth attach http://localhost:8545
+> eth.blockNumber
+94078 # it will show you the latest block - number here is just an example
+
+> eth.syncing
+true
+```
+
+## Configure vald
+
+In order for `vald` to connect to your Base node, your `rpc_addr` should be exposed in
 vald's `config.toml`
 
-
 <tabs>
-  <tab-item title="Mainnet">
-  ```bash
-  [[axelar_bridge_evm]]
-
-  name = "base"
-  rpc_addr = "http://IP:PORT"
-  start-with-bridge = true
-  ```
-  </tab-item>
-  <tab-item title="Testnet">
-  ```bash
-  [[axelar_bridge_evm]]
-
-  name = "base"
-  rpc_addr = "http://IP:PORT"
-  start-with-bridge = true
-  ```
-  </tab-item>
+    <tab-item title="Mainnet">
+        ```bash
+        [[axelar_bridge_evm]]
+        name = "base"
+        rpc_addr = "http://IP:PORT"
+        start-with-bridge = true
+        ```
+    </tab-item>
+    <tab-item title="Testnet">
+        ```bash
+        [[axelar_bridge_evm]]
+        name = "base"
+        rpc_addr = "http://IP:PORT"
+        start-with-bridge = true
+        ```
+    </tab-item>
 </tabs>
