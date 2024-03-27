@@ -7,6 +7,11 @@
       "permanent": true
     },
     {
+      "source": "/bug-bounty",
+      "destination": "/resources/bug-bounty",
+      "permanent": true
+    },
+    {
       "source": "/its/intro",
       "destination": "/dev/send-tokens/interchain-tokens/intro"
     },
@@ -60,11 +65,6 @@
     {
       "source": "/resources/governance/community-pool-proposals",
       "destination": "/resources/community/community-pool-proposals",
-      "permanent": true
-    },
-    {
-      "source": "/resources/bug-bounty",
-      "destination": "/resources/community/bug-bounty",
       "permanent": true
     },
     {
