@@ -5,6 +5,32 @@ const loadSearch = async () => {
   const instantsearch = (await import("instantsearch.js")).default;
   const { searchBox, hits } = await import("instantsearch.js/es/widgets");
 
+  /* Hack to make inputs not get overwritten during async loading by Algolia
+   * No matter what we do, we get into a race condition with alogolia and user
+   * typing (user types after setting placeholder, then placeholder overrides it)
+   * We don't want to load everything up front because it's 1.1MB of JS
+   * So we're going to hack the input box to keep its value as you type
+   */
+  const inputBox = <HTMLInputElement>document.querySelector("#search input");
+  let previousInput = inputBox?.value;
+  const hackInput = (ev) => {
+    if (ev["data"]) {
+      console.log(
+        "hacking to make input value",
+        inputBox.value,
+        previousInput,
+        ev["data"]
+      );
+      inputBox.value = previousInput + ev["data"];
+    }
+    previousInput = inputBox.value;
+  };
+  inputBox?.addEventListener("input", hackInput);
+  // Hopefully we don't need this hack after a couple seconds, enough time for Algolia to stop loading
+  setTimeout(() => {
+    inputBox.removeEventListener("input", hackInput);
+  }, 2000);
+
   const searchClient = algoliasearch(
     "ECUG3H1E0M",
     "79f21d06bc68b25fa46dda5e23318a3f"

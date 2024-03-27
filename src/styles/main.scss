@@ -724,13 +724,26 @@ astro-island button {
     justify-content: right;
     display: flex;
   }
+  #menu #menu-open {
+    display: block;
+  }
+  #menu #menu-close {
+    display: none;
+  }
+  #menu.open #menu-open {
+    display: none;
+  }
+  #menu.open #menu-close {
+    display: block;
+  }
+
   .sideNav {
     display: none;
   }
   .sideNav.show {
     position: absolute;
     display: block;
-    background-color: #ccc;
+    background-color: #fff;
     top: 64px;
     left: 8px;
     width: calc(100% - 16px);
