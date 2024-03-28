@@ -150,6 +150,10 @@ export const getNavigation = (section) => {
               title: "Transaction Pricing",
               href: "/dev/gas-service/pricing",
             },
+            {
+              title: "On-Chain Estimation",
+              href: "/dev/gas-service/on-chain",
+            },
           ],
         },
         {
