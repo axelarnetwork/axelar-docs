@@ -1,35 +1,69 @@
 ---
 import Section from "../../../../layouts/Section.astro";
-import { Callout } from "../../../../../src/components/callout"
+import { Callout } from "../../../../../src/components/callout";
 
-const title = "What are Interchain Tokens?";
+const title = "Interchain Tokens and the Interchain Token Service";
 
 const cards = [
   {
-    title: "Create a new token",
+    title: "Create a new Interchain Token",
     description:
       "Register and create new Interchain Token(s) using the Interchain Token Portal, or create custom Interchain Tokens.",
     url: "/dev/send-tokens/interchain-tokens/create-token",
-    icon: `<svg style="margin-right:8px;" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="24" width="24" xmlns="http://www.w3.org/2000/svg"><g><path fill="none" d="M0 0h24v24H0z"></path><path d="M23 12l-7.071 7.071-1.414-1.414L20.172 12l-5.657-5.657 1.414-1.414L23 12zM3.828 12l5.657 5.657-1.414 1.414L1 12l7.071-7.071 1.414 1.414L3.828 12z"></path></g></svg>`,
   },
   {
-    title: "Upgrade an existing token",
+    title: "Programmatically create a new Interchain Token",
+    description: "Create new Interchain Tokens using code.",
+    url: "/dev/send-tokens/interchain-tokens/developer-guides/programmatically-create-a-token",
+  },
+  {
+    title: "Make an existing ERC-20 token an Interchain Token",
     description:
-      "Upgrade existing tokens as Canonical Tokens (Simple Wrappers) or link tokens deployed on multiple chains into Interchain Tokens.",
+      "Upgrade existing tokens to canonical tokens, or link tokens deployed on multiple chains into Interchain Tokens.",
     url: "/dev/send-tokens/interchain-tokens/upgrade-tokens",
-    icon: `<svg style="margin-right:8px;"  stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="24" width="24" xmlns="http://www.w3.org/2000/svg"><g><path fill="none" d="M0 0h24v24H0z"></path><path d="M4 3h16a1 1 0 0 1 1 1v7H3V4a1 1 0 0 1 1-1zM3 13h18v7a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1v-7zm4 3v2h3v-2H7zM7 6v2h3V6H7z"></path></g></svg>`,
+  },
+  {
+    title: "Check out the Interchain Portal",
+    description:
+      "Create your own Interchain Token with one click on the Interchain Portal.",
+    url: "http://interchain.axelar.dev/",
   },
 ];
 ---
 
 <Section title={title}>
-  <Callout>Interchain Tokens have received a major update as of November 2023 deployed with many new features! Read on to learn about all of the new capabilities and check out the <a href="https://testnet.interchain.axelar.dev">Interchain Portal</a></Callout>
+  <Callout
+    >Interchain Tokens have received a major update as of November 2023 deployed
+    with many new features! Read on to learn about all of the new capabilities
+    and check out the <a href="https://testnet.interchain.axelar.dev"
+      >Interchain Portal</a
+    >.</Callout
+  >
 
-  Axelar has <a href="/dev/send-tokens/overview">several ways</a> to send <a href="/resources/testnet#assets">supported native tokens</a>, but what if you want to have your own <a href="https://ethereum.org/developers/docs/standards/tokens/erc-20/">ERC-20</a> token available on multiple chains? Axelar can help with Interchain Tokens!
-  <br /><br />
-  Interchain Tokens are created and managed by our new  Interchain Token Service, which allows you to send tokens cross-chain, build your own asset bridges, build asset transfers into your interchain dApp, and take on many other use cases.
-  <br /><br />
-  Depending on whether or not you have an existing ERC-20 token, there are two main paths available to you.
+  <h1>{title}</h1>
+
+  Web3 has gone cross-chain, with assets bridging between blockchains and
+  developers deploying applications everywhere. But bridged tokens lose their
+  fungibility and their custom features, and it's costly to mint tokens on
+  multiple chains.
+
+  <br />
+  <br />
+
+  Interchain Tokens go beyond legacy bridges. The <a
+    href="https://axelar.network/interchaintokens"
+    >Interchain Token Service (ITS)</a
+  > allows ERC-20 tokens to be available on multiple blockchains. It preserves native
+  token qualities while allowing you to easily manage token features and token supply.
+  Interchain Tokens run on open-source code via smart contracts on a public blockchain
+  secured by a dynamic validator set. With ITS, you can have multiple blockchains
+  with canonical versions of your token that all share a single EVM address.
+
+  <br />
+  <br />
+
+  You can either create new Interchain Tokens from scratch or update tokens that
+  already exist on an Ethereum blockchain.
 
   <style>
     .card-grid {
@@ -72,7 +106,6 @@ const cards = [
         flex-direction: column;
       }
     }
-
   </style>
 
   <div class="card-grid">
@@ -107,5 +140,4 @@ const cards = [
       ))
     }
   </div>
-  
 </Section>
