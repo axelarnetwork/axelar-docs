@@ -58,6 +58,11 @@
       "permanent": true
     },
     {
+      "source": "/dev/glossary",
+      "destination": "/dev/send-tokens/glossary",
+      "permanent": true
+    },
+    {
       "source": "/resources/mainnet",
       "destination": "/resources/contract-addresses/mainnet",
       "permanent": true
