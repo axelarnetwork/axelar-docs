@@ -2,6 +2,11 @@
   "framework": null,
   "redirects": [
     {
+      "source": "/dev/send-tokens/overview",
+      "destination": "/dev/send-tokens/introduction",
+      "permanent": true
+    },
+    {
       "source": "/resources/community/bug-bounty",
       "destination": "/resources/bug-bounty",
       "permanent": true
@@ -284,7 +289,7 @@
     },
     {
       "source": "/dev/build/tokens",
-      "destination": "/dev/send-tokens/overview",
+      "destination": "/dev/send-tokens/introduction",
       "permanent": true
     },
     {
@@ -304,7 +309,7 @@
     },
     {
       "source": "/dev/build/tokens",
-      "destination": "/dev/send-tokens/overview",
+      "destination": "/dev/send-tokens/introduction",
       "permanent": true
     },
     {
@@ -409,7 +414,7 @@
     },
     {
       "source": "/dev/general-message-passing/tokens",
-      "destination": "/dev/send-tokens/overview",
+      "destination": "/dev/send-tokens/introduction",
       "permanent": true
     },
     {
