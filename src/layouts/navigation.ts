@@ -11,7 +11,7 @@ export const getNavigation = (section) => {
         {
           title: "Cross-Chain Token Transfer",
           children: [
-            { title: "Introduction", href: "/dev/send-tokens/overview" },
+            { title: "Introduction", href: "/dev/send-tokens/introduction" },
             {
               title: "Interchain Tokens",
               children: [
