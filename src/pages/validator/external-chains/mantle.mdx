@@ -66,7 +66,7 @@ cd mantlenetworks
     <tab-item title="Testnet">
         Set the following config option in `docker-compose-sepolia.yml`
         ```bash
-        OP_NODE_L1_ETH_RPC=your_ethereum_mainnet_l1_node
+        OP_NODE_L1_ETH_RPC=your_ethereum_sepolia_l1_node
         ```
     </tab-item>
 </tabs>
@@ -143,7 +143,7 @@ mantlenetworks-op-node-1   mantlenetworkio/op-node:v1.0.0-alpha.1   "op-node"   
 
 ## Check logs
 
-#### Verify blast geth logs
+#### Verify mantle geth logs
 
 ```bash
 docker compose logs op-geth --since 2m -f
