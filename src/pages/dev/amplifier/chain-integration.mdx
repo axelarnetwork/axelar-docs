@@ -21,7 +21,7 @@ To connect your chain to the Axelar network via the Interchain Amplifier, you'll
     - A gateway contract that exists on the Axelar network that will knows how to use your verifier contract to check the validity of a transaction and then knows how to forward transactions onto the Amplifier router.
     - Most integrators will begin by using or customizing this [Gateway Contract](https://github.com/axelarnetwork/axelar-amplifier/tree/main/contracts/gateway).
 - **Prover Contract**
-    - A smart contract on the Axelar network that knows how to prove the validity of a transaction on your chain.\
+    - A smart contract on the Axelar network that knows how to prove the validity of a transaction on your chain.
     - Most integrators will begin by usign or customzing the [multisig prover](https://github.com/axelarnetwork/axelar-amplifier/tree/main/contracts/multisig-prover)
 - **Message Relayer**
     - A service built with any tech stack that listens for events on your chain and relays them to the Axelar network.
