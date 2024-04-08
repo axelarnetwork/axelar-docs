@@ -5199,6 +5199,133 @@
           "transfer_fee": 210.0
         }
       ]
+    },
+    {
+      "id": "uc4e",
+      "name": "C4E - C4E native asset",
+      "symbol": "C4E",
+      "image": "/images/assets/c4e.svg",
+      "contracts": [
+        {
+          "chain": "arbitrum",
+          "address": "0x520391D410314451E12A85D79970a61915Bc315D",
+          "symbol": "C4E",
+          "decimals": 6,
+          "transfer_fee": 170.0
+        },
+        {
+          "chain": "avalanche",
+          "address": "0x26b0783269ff93C49ae0Fb9F65AC05e27005e9b4",
+          "symbol": "C4E",
+          "decimals": 6,
+          "transfer_fee": 25.0
+        },
+        {
+          "chain": "base",
+          "address": "0x520391D410314451E12A85D79970a61915Bc315D",
+          "symbol": "C4E",
+          "decimals": 6,
+          "transfer_fee": 170.0
+        },
+        {
+          "chain": "binance",
+          "address": "0x27443B27dfDf632390521C0b8A6fDaFe07d8f79f",
+          "symbol": "C4E",
+          "decimals": 6,
+          "transfer_fee": 25.0
+        },
+        {
+          "chain": "blast",
+          "address": "0x520391D410314451E12A85D79970a61915Bc315D",
+          "symbol": "C4E",
+          "decimals": 6,
+          "transfer_fee": 170.0
+        },
+        {
+          "chain": "celo",
+          "address": "0x520391D410314451E12A85D79970a61915Bc315D",
+          "symbol": "C4E",
+          "decimals": 6,
+          "transfer_fee": 25.0
+        },
+        {
+          "chain": "ethereum",
+          "address": "0x24a6f525636d75eF3e4E090b44B75FeB440e9697",
+          "symbol": "C4E",
+          "decimals": 6,
+          "transfer_fee": 1000.0
+        },
+        {
+          "chain": "fantom",
+          "address": "0x27443B27dfDf632390521C0b8A6fDaFe07d8f79f",
+          "symbol": "C4E",
+          "decimals": 6,
+          "transfer_fee": 25.0
+        },
+        {
+          "chain": "filecoin",
+          "address": "0x520391D410314451E12A85D79970a61915Bc315D",
+          "symbol": "C4E",
+          "decimals": 6,
+          "transfer_fee": 25.0
+        },
+        {
+          "chain": "fraxtal",
+          "address": "0x520391D410314451E12A85D79970a61915Bc315D",
+          "symbol": "C4E",
+          "decimals": 6,
+          "transfer_fee": 170.0
+        },
+        {
+          "chain": "kava",
+          "address": "0x520391D410314451E12A85D79970a61915Bc315D",
+          "symbol": "C4E",
+          "decimals": 6,
+          "transfer_fee": 25.0
+        },
+        {
+          "chain": "linea",
+          "address": "0x520391D410314451E12A85D79970a61915Bc315D",
+          "symbol": "C4E",
+          "decimals": 6,
+          "transfer_fee": 170.0
+        },
+        {
+          "chain": "mantle",
+          "address": "0x520391D410314451E12A85D79970a61915Bc315D",
+          "symbol": "C4E",
+          "decimals": 6,
+          "transfer_fee": 170.0
+        },
+        {
+          "chain": "moonbeam",
+          "address": "0x24a6f525636d75eF3e4E090b44B75FeB440e9697",
+          "symbol": "C4E",
+          "decimals": 6,
+          "transfer_fee": 25.0
+        },
+        {
+          "chain": "optimism",
+          "address": "0x520391D410314451E12A85D79970a61915Bc315D",
+          "symbol": "C4E",
+          "decimals": 6,
+          "transfer_fee": 170.0
+        },
+        {
+          "chain": "polygon",
+          "address": "0x0043E8eAC1810e30636f38BF3a140287Fadb6B4c",
+          "symbol": "C4E",
+          "decimals": 6,
+          "transfer_fee": 25.0
+        },
+        {
+          "chain": "scroll",
+          "address": "0x520391D410314451E12A85D79970a61915Bc315D",
+          "symbol": "C4E",
+          "decimals": 6,
+          "transfer_fee": 170.0
+        }
+      ]
     }
   ],
   "testnet": [
