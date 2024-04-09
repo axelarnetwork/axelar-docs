@@ -25,7 +25,7 @@ export const getNavigation = (section) => {
                 },
                 {
                   title: "Upgrade Token",
-                  href: "/dev/send-tokens/interchain-tokens/upgrade-tokens",
+                  href: "/dev/send-tokens/interchain-tokens/upgrade-token",
                 },
                 {
                   title: "Interchain Token Executable",
