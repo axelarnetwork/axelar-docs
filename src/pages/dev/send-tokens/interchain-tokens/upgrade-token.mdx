@@ -27,19 +27,23 @@ There are two ways upgrade an existing ERC-20 token into an Interchain Token, de
 
 ## Make an existing token into a canonical Interchain Token
 
-If you have an ERC-20 token on a single chain and want a wrapped, bridgeable version on other chains, register and deploy it as a canonical token.
+If you have an ERC-20 token on a single chain and want a wrapped, bridgeable version on other chains, register and deploy it as a canonical token via the Interchain Token Service using Interchain Token Factory. Each token can only be registered a single time as a canonical chain.
 
-### Option 1: Register your token as a canonical Interchain Token
+### Register your token as a canonical Interchain Token
 
 Register your token as a canonical token by calling [`registerCanonicalInterchainToken()`](https://github.com/axelarnetwork/interchain-token-service/blob/9edc4318ac1c17231e65886eea72c0f55469d7e5/contracts/InterchainTokenFactory.sol#L240) on the `InterchainTokenFactory` contract. This will deploy a Lock/Release token manager on the source chain. 
 
-### Option 2: Deploy a new remote canonical Interchain Token for your token
+### Deploy your new remote canonical Interchain Token
 
 1. Call the [`deployRemoteCanonicalInterchainToken()`](https://github.com/axelarnetwork/interchain-token-service/blob/9edc4318ac1c17231e65886eea72c0f55469d7e5/contracts/InterchainTokenFactory.sol#L257) method on the `InterchainTokenFactory` contract for each destination chain to deploy a remote canonical Interchain Token for a pre-existing token. This will create and register a Mint/Burn token manager for each token on each destination chain. These tokens do not depend on a deployer address or salt.
 1. Call the `approve()` method on your token to approve the Interchain Token Service to spend tokens. Specify the Interchain Token Service address and the amount to be approved. 
 1. Call the [`interchainTransfer()`](https://github.com/axelarnetwork/interchain-token-service/blob/9223108211b977d9138fdd67d5b4a641fc35c18c/contracts/interfaces/IInterchainTokenService.sol#L210) method to begin transferring Interchain Tokens between chains.
 
-If pre-mint is needed, you will also need to give ERC-20 approval to the `InterchainTokenFactory` contract. When tokens are moved from the origin chain to another chain, the token will be locked on the origin chain and minted on the destination chain. If you moved tokens directly from one non-origin chain to another, the token would be burned on the source chain and minted on the destination chain.
+If you need to pre-mint a supply of tokens, you must also give ERC-20 approval to the `InterchainTokenFactory` contract. When tokens are moved from the origin chain to another chain, the token will be locked on the origin chain and minted on the destination chain. If you moved tokens directly from one non-origin chain to another, the token would be burned on the source chain and minted on the destination chain.
+
+### Tutorial
+
+For detailed steps on deploying a canonical Interchain Token and transferring it between chains, check out the [Programmatically Create a Canonical Interchain Token Using the Interchain Token Service](/dev/send-tokens/interchain-tokens/developer-guides/programmatically-create-a-canonical-token) tutorial.
 
 ## Link tokens on multiple chains into one Interchain Token
 
@@ -54,7 +58,4 @@ If you want to build your token with the `IInterchainToken` feature yourself, ma
 
 ## What’s next
 
-For further examples utilizing the Interchain Token Service, check out the [`axelar-examples`](https://github.com/axelarnetwork/axelar-examples/tree/main/examples/evm) repo on GitHub.
-
-
-[Programmatically create a canonical token](/dev/send-tokens/interchain-tokens/developer-guides/programmatically-create-a-canonical-token).
+For further examples utilizing the Interchain Token Service, take a look at the [`axelar-examples`](https://github.com/axelarnetwork/axelar-examples/tree/main/examples/evm) repo on GitHub.
