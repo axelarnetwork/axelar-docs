@@ -13,14 +13,40 @@ You can turn an ERC-20 token that exists on one or more blockchains into an Inte
 
 Canonical tokens are registered under the local chain’s Lock/Unlock token manager and the remote chain’s Mint/Burn token manager. Anyone can deploy a canonical token to a remote chain without depending on a deployer address or salt.
 
+<Callout emoji="🚨">
+  **NOTE:** The security of your token is limited to the security of the chains
+  it integrates with. Since blockchains can have different security practices,
+  we recommend doing due diligence on all chains your token will be deployed to.
+</Callout>
+
+## Contract addresses
+
+- Interchain Token Service: [`0xB5FB4BE02232B1bBA4dC8f81dc24C26980dE9e3C`](https://etherscan.io/address/0xB5FB4BE02232B1bBA4dC8f81dc24C26980dE9e3C)
+- Interchain Token Factory: [`0x83a93500d23Fbc3e82B410aD07A6a9F7A0670D66`](https://etherscan.io/address/0x83a93500d23Fbc3e82B410aD07A6a9F7A0670D66)
+
 ## Canonical tokens (Simple wrappers)
 
-If you have an ERC-20 token on a single chain and want a wrapped, bridgeable version on other chains, register it as a canonical token with the [Interchain Token Service](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/InterchainTokenService.sol) using the [Interchain Token Factory](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/InterchainTokenFactory.sol). Each token can only be registered a single time as a canonical chain.
+If you have an ERC-20 token on a single chain and want a wrapped, bridgeable version on other chains, register and deploy it as a canonical token. There are two ways to do this:
 
-There are two ways to register a canonical token:
+1. Use the [Interchain Token Portal](https://testnet.interchain.axelar.dev/).
+1. Programmatically create, register, and deploy a token with the [Interchain Token Service](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/InterchainTokenService.sol) using the [Interchain Token Factory](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/InterchainTokenFactory.sol). Each token can only be registered a single time as a canonical chain.
 
-1. Create and register an ERC-20 token on the [Interchain Token Portal](https://testnet.interchain.axelar.dev/).
-1. [Programmatically create a canonical token](/dev/send-tokens/interchain-tokens/developer-guides/programmatically-create-a-canonical-token).
+### Programmatically and register a new canonical token
+
+Register your token as a canonical token by calling [`registerCanonicalInterchainToken()`](https://github.com/axelarnetwork/interchain-token-service/blob/9edc4318ac1c17231e65886eea72c0f55469d7e5/contracts/InterchainTokenFactory.sol#L240) on the `InterchainTokenFactory` contract. This will deploy a Lock/Release token manager on the source chain. 
+
+### Make an existing token into an Interchain Token
+
+Deploy a remote canonical Interchain token for a pre-existing token by calling the [`deployRemoteCanonicalInterchainToken()`](https://github.com/axelarnetwork/interchain-token-service/blob/9edc4318ac1c17231e65886eea72c0f55469d7e5/contracts/InterchainTokenFactory.sol#L257) method on the `InterchainTokenFactory` contract for each destination chain. This will create and register a Mint/Burn token manager for each token on each destination chain. These tokens do not depend on a deployer address or salt.
+
+
+
+
+
+
+
+
+
 
 ## Link deployed tokens on multiple chains into Interchain Token(s)
 
@@ -34,3 +60,6 @@ If you want to build your token with the `IInterchainToken` feature yourself, ma
 ## What’s next
 
 For further examples utilizing the Interchain Token Service, check out the [`axelar-examples`](https://github.com/axelarnetwork/axelar-examples/tree/main/examples/evm) repo on GitHub.
+
+
+[Programmatically create a canonical token](/dev/send-tokens/interchain-tokens/developer-guides/programmatically-create-a-canonical-token).
