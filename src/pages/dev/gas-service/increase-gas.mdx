@@ -40,15 +40,6 @@ In Solidity, `addNativeGas()` takes the following parameters:
 
 <BonadocsWidget client:only deploymentAddresses={deploymentAddresses} functionSignature="addNativeGas(bytes32 txHash, uint256 logIndex, address refundAddress) payable" />
 
-
-```solidity
-function addNativeGas(
-    bytes32 txHash,
-    uint256 logIndex,
-    address refundAddress
-) external payable override;
-```
-
 In JavaScript or TypeScript, the SDK [abstracts a method that can be invoked directly in a web application](https://docs.axelar.dev/dev/axelarjs-sdk/tx-status-query-recovery#21-native-gas-payment).
 
 
@@ -65,16 +56,6 @@ In Solidity, `addGas()` takes the following parameters:
 - `refundAddress` — The address where refunds, if any, should be sent
 
 <BonadocsWidget client:only deploymentAddresses={deploymentAddresses} functionSignature="addGas(bytes32 txHash, uint256 logIndex, address gasToken, uint256 gasFeeAmount, address refundAddress)" />
-
-```solidity
-function addGas(
-    bytes32 txHash,
-    uint256 logIndex,
-    address gasToken,
-    uint256 gasFeeAmount,
-    address refundAddress
-) external override;
-```
 
 In JavaScript or TypeScript, the SDK [abstracts a method that can be invoked directly in a web application](https://docs.axelar.dev/dev/axelarjs-sdk/tx-status-query-recovery#22-erc-20-gas-payment). It is similar to a native gas payment, except with Axelar-supported ERC-20 tokens instead of native tokens. Make sure that the ERC-20 tokens you use are supported by Axelar.
 
