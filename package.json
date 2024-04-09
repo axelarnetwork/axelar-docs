@@ -19,6 +19,7 @@
     "@astrojs/mdx": "^1.1.0",
     "@astrojs/react": "^3.0.2",
     "@astrojs/sitemap": "^3.0.0",
+    "@bonadocs/widget": "^1.0.6",
     "@headlessui/react": "^1.7.2",
     "@redux-devtools/extension": "^3.2.3",
     "@typeform/embed-react": "^1.21.0",

@@ -1,3 +1,25 @@
+import BonadocsWidget from '@bonadocs/widget'
+
+export const deploymentAddresses = new Map([
+  [42161,"0x2d5d7d31F671F86C782533cc367F14109a082712"],
+  [43114,"0x2d5d7d31F671F86C782533cc367F14109a082712"],
+  [8453,"0x2d5d7d31F671F86C782533cc367F14109a082712"],
+  [56,"0x2d5d7d31F671F86C782533cc367F14109a082712"],
+  [42220,"0x2d5d7d31F671F86C782533cc367F14109a082712"],
+  [2031,"0x2d5d7d31F671F86C782533cc367F14109a082712"],
+  [1,"0x2d5d7d31F671F86C782533cc367F14109a082712"],
+  [250,"0x2d5d7d31F671F86C782533cc367F14109a082712"],
+  [314, "0x2d5d7d31F671F86C782533cc367F14109a082712"],
+  [13371, "0x24C2b56128fF8E7bFaD578ABefB0fc7Dfa9ba358"],
+  [2222, "0x2d5d7d31F671F86C782533cc367F14109a082712"],
+  [59144, "0x2d5d7d31F671F86C782533cc367F14109a082712"],
+  [5000, "0x2d5d7d31F671F86C782533cc367F14109a082712"],
+  [1284, "0x2d5d7d31F671F86C782533cc367F14109a082712"],
+  [10, "0x2d5d7d31F671F86C782533cc367F14109a082712"],
+  [137, "0x2d5d7d31F671F86C782533cc367F14109a082712"],
+  [534352, "0x2d5d7d31F671F86C782533cc367F14109a082712"]
+])
+
 # Increase Gas
 
 On occasion the prepaid gas to the Gas Receiver contract could be insufficient, such as when the destination chain is congested with transfers. When this happens, the application can resubmit a new amount of gas to pay for the transaction through [Axelarscan](http://axelarscan.io), the [AxelarJS SDK](https://docs.axelar.dev/dev/axelarjs-sdk/intro), or via a direct invocation of the [`AxelarGasService` contract](https://github.com/axelarnetwork/axelar-gmp-sdk-solidity/blob/ad37802dc6d62fff3ab589f2605f7a3e566977dd/contracts/interfaces/IAxelarGasService.sol).
@@ -15,6 +37,9 @@ In Solidity, `addNativeGas()` takes the following parameters:
 - `txHash` — The transaction hash of the cross-chain call
 - `logIndex` — The log index for the cross-chain call
 - `refundAddress`  — The address where refunds, if any, should be sent
+
+<BonadocsWidget client:only deploymentAddresses={deploymentAddresses} functionSignature="addNativeGas(bytes32 txHash, uint256 logIndex, address refundAddress) payable" />
+
 
 ```solidity
 function addNativeGas(
@@ -38,6 +63,8 @@ In Solidity, `addGas()` takes the following parameters:
 - `gasToken` — The ERC-20 token address used to add gas
 - `gasFeeAmount` — The amount of tokens to add as gas
 - `refundAddress` — The address where refunds, if any, should be sent
+
+<BonadocsWidget client:only deploymentAddresses={deploymentAddresses} functionSignature="addGas(bytes32 txHash, uint256 logIndex, address gasToken, uint256 gasFeeAmount, address refundAddress)" />
 
 ```solidity
 function addGas(
