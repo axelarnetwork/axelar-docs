@@ -9,9 +9,10 @@ import { Callout } from "/src/components/callout";
   access the interactive form through the wizard.
 </Callout>
 
-You can turn an ERC-20 token that exists on one or more blockchains into an Interchain Token by deploying a [token manager](/dev/send-tokens/glossary#token-manager), which can be either [Lock/Unlock](/dev/send-tokens/glossary#lockunlock) or [Mint/Burn](/dev/send-tokens/glossary#mintburn). Interchain Tokens created this way are called [canonical tokens](/dev/send-tokens/glossary#canonical-interchain-token).
+There are two ways upgrade an existing ERC-20 token into an Interchain Token, depending on your situation:
 
-Canonical tokens are registered under the local chain’s Lock/Unlock token manager and the remote chain’s Mint/Burn token manager. Anyone can deploy a canonical token to a remote chain without depending on a deployer address or salt.
+1. If your token only exists on one chain and you want to make it available on multiple chains as an Interchain Token, you can turn it into a [canonical token](/dev/send-tokens/interchain-tokens/upgrade-token#make-an-existing-token-into-a-canonical-interchain-token).
+1. If your token exists on multiple chains, and you want to [link them all into one Interchain Token](/dev/send-tokens/interchain-tokens/upgrade-token#link-tokens-on-multiple-chains-into-one-interchain-token), you can use a [custom token integration](/dev/send-tokens/interchain-tokens/upgrade-token#option-1-use-a-custom-token-integration) and [deploy a token manager](/dev/send-tokens/interchain-tokens/upgrade-token#option-2-deploy-a-token-manager) that does the linking for you.
 
 <Callout emoji="🚨">
   **NOTE:** The security of your token is limited to the security of the chains
@@ -24,38 +25,32 @@ Canonical tokens are registered under the local chain’s Lock/Unlock token mana
 - Interchain Token Service: [`0xB5FB4BE02232B1bBA4dC8f81dc24C26980dE9e3C`](https://etherscan.io/address/0xB5FB4BE02232B1bBA4dC8f81dc24C26980dE9e3C)
 - Interchain Token Factory: [`0x83a93500d23Fbc3e82B410aD07A6a9F7A0670D66`](https://etherscan.io/address/0x83a93500d23Fbc3e82B410aD07A6a9F7A0670D66)
 
-## Canonical tokens (Simple wrappers)
+## Make an existing token into a canonical Interchain Token
 
-If you have an ERC-20 token on a single chain and want a wrapped, bridgeable version on other chains, register and deploy it as a canonical token. There are two ways to do this:
+If you have an ERC-20 token on a single chain and want a wrapped, bridgeable version on other chains, register and deploy it as a canonical token.
 
-1. Use the [Interchain Token Portal](https://testnet.interchain.axelar.dev/).
-1. Programmatically create, register, and deploy a token with the [Interchain Token Service](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/InterchainTokenService.sol) using the [Interchain Token Factory](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/InterchainTokenFactory.sol). Each token can only be registered a single time as a canonical chain.
-
-### Programmatically and register a new canonical token
+### Option 1: Register your token as a canonical Interchain Token
 
 Register your token as a canonical token by calling [`registerCanonicalInterchainToken()`](https://github.com/axelarnetwork/interchain-token-service/blob/9edc4318ac1c17231e65886eea72c0f55469d7e5/contracts/InterchainTokenFactory.sol#L240) on the `InterchainTokenFactory` contract. This will deploy a Lock/Release token manager on the source chain. 
 
-### Make an existing token into an Interchain Token
+### Option 2: Deploy a new remote canonical Interchain Token for your token
 
-Deploy a remote canonical Interchain token for a pre-existing token by calling the [`deployRemoteCanonicalInterchainToken()`](https://github.com/axelarnetwork/interchain-token-service/blob/9edc4318ac1c17231e65886eea72c0f55469d7e5/contracts/InterchainTokenFactory.sol#L257) method on the `InterchainTokenFactory` contract for each destination chain. This will create and register a Mint/Burn token manager for each token on each destination chain. These tokens do not depend on a deployer address or salt.
+1. Call the [`deployRemoteCanonicalInterchainToken()`](https://github.com/axelarnetwork/interchain-token-service/blob/9edc4318ac1c17231e65886eea72c0f55469d7e5/contracts/InterchainTokenFactory.sol#L257) method on the `InterchainTokenFactory` contract for each destination chain to deploy a remote canonical Interchain Token for a pre-existing token. This will create and register a Mint/Burn token manager for each token on each destination chain. These tokens do not depend on a deployer address or salt.
+1. Call the `approve()` method on your token to approve the Interchain Token Service to spend tokens. Specify the Interchain Token Service address and the amount to be approved. 
+1. Call the [`interchainTransfer()`](https://github.com/axelarnetwork/interchain-token-service/blob/9223108211b977d9138fdd67d5b4a641fc35c18c/contracts/interfaces/IInterchainTokenService.sol#L210) method to begin transferring Interchain Tokens between chains.
 
+If pre-mint is needed, you will also need to give ERC-20 approval to the `InterchainTokenFactory` contract. When tokens are moved from the origin chain to another chain, the token will be locked on the origin chain and minted on the destination chain. If you moved tokens directly from one non-origin chain to another, the token would be burned on the source chain and minted on the destination chain.
 
+## Link tokens on multiple chains into one Interchain Token
 
-
-
-
-
-
-
-
-## Link deployed tokens on multiple chains into Interchain Token(s)
-
-If you have a token deployed on multiple chains and want to make it an Interchain Token:
-
-1. Call [`deployTokenManager()`](https://github.com/axelarnetwork/interchain-token-service/blob/9edc4318ac1c17231e65886eea72c0f55469d7e5/contracts/InterchainTokenService.sol#L276) on the Interchain Token Service to deploy a token manager for the existing version of the token on all chains. The [Online Ethereum ABI Encoder](https://adibas03.github.io/online-ethereum-abi-encoder-decoder/#/encode) can create the parameters for initializing the token manager. You can specify at most one chain (likely the primary or origin) to have a Lock/Unlock token manager. The rest must be Mint/Burn. 
-1. Call [`interchainTransfer()`](https://github.com/axelarnetwork/interchain-token-service/blob/9223108211b977d9138fdd67d5b4a641fc35c18c/contracts/interfaces/IInterchainTokenService.sol#L210) to transfer Interchain Tokens between chains.
+To link tokens on multiple chains into one Interchain Token, you should already have a [custom token](/dev/send-tokens/glossary#custom-token) deployed on multiple chains, or have existing versions of an ERC-20 token on multiple chains.
 
 If you want to build your token with the `IInterchainToken` feature yourself, make sure your token implements the [`IInterchainTokenStandard`](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/interfaces/IInterchainTokenStandard.sol) interface so you can offer [`interchainTransfer()`](https://github.com/axelarnetwork/interchain-token-service/blob/a2dfcb2490497e627b66be789d944ec3260c5eea/contracts/interfaces/IInterchainTokenStandard.sol#L20) and [`interchainTransferFrom()`](https://github.com/axelarnetwork/interchain-token-service/blob/a2dfcb2490497e627b66be789d944ec3260c5eea/contracts/interfaces/IInterchainTokenStandard.sol#L37) methods directly on the token.
+
+1. Call [`deployTokenManager()`](https://github.com/axelarnetwork/interchain-token-service/blob/9edc4318ac1c17231e65886eea72c0f55469d7e5/contracts/InterchainTokenService.sol#L276) on the Interchain Token Service to deploy a token manager for the existing version of the token on all chains.
+* You can use the [Online Ethereum ABI Encoder](https://adibas03.github.io/online-ethereum-abi-encoder-decoder/#/encode) to create the `params` for initializing the token manager. The token manager operator will be of type `bytes`, and the token address will be an `address`.
+* You can specify at most one chain (likely the primary or origin) to have a Lock/Unlock token manager. The rest must be Mint/Burn. 
+1. Call [`interchainTransfer()`](https://github.com/axelarnetwork/interchain-token-service/blob/9223108211b977d9138fdd67d5b4a641fc35c18c/contracts/interfaces/IInterchainTokenService.sol#L210) to transfer Interchain Tokens between chains.
 
 ## What’s next
 
