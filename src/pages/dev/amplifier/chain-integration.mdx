@@ -144,7 +144,7 @@ Use the existing deployments for all three contracts, making note of the existin
     docker run --rm -v "$(pwd)":/code \
     --mount type=volume,source="$(basename "$(pwd)")_cache",target=/target \
     --mount type=volume,source=registry_cache,target=/usr/local/cargo/registry \
-    cosmwasm/optimizer:0.15.0
+    cosmwasm/optimizer:0.15.1
     ```
 
 1. Deploy the verifier:
