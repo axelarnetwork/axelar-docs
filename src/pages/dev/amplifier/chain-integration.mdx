@@ -63,11 +63,12 @@ Most integrators will follow the following process:
     - Make an on-chain proposal to add your chain to the Amplifier router.
 
 
-## Integraton Tutorial
+## Integration Tutorial
 
 ### Prerequisites
 
-- You should know how to deploy and interact with a CosmWasm contract. Refer to the [Osmosis CosmWasm testnet deployment tutorial](https://docs.osmosis.zone/cosmwasm/testnet/cosmwasm-deployment/) if you’d like a refresher — just replace `osmosisid` with `axelard` and use the `amd64` version if building on Linux and `arm64` version of the [contract optimizer](https://github.com/CosmWasm/optimizer) if you are working on a [Mac with Apple silicon](https://support.apple.com/en-us/116943). Run `--gas auto --gas-adjustment 1.5` to provide your transactions with sufficient gas.
+- You should know how to deploy and interact with a CosmWasm contract. Refer to the [Osmosis CosmWasm testnet deployment tutorial](https://docs.osmosis.zone/cosmwasm/testnet/cosmwasm-deployment/) if you’d like a refresher — just replace `osmosisid` with `axelard` and use the `amd64` version if building on Linux and `arm64` version of the [contract optimizer](https://github.com/CosmWasm/optimizer) if you are working on a [Mac with Apple silicon](https://support.apple.com/en-us/116943). 
+- Run `--gas auto --gas-adjustment 1.5` to provide your transactions with sufficient gas.
 
 ### Devnet information
 
@@ -85,9 +86,9 @@ Install the `v0.35.5 axelard` binary. You can either download the pre-built vers
 #### Option 1: Download the pre-built binary
 
 1. Download the pre-built [`axelard` binary](https://github.com/axelarnetwork/axelar-core/releases/tag/v0.35.5) along with the latest version of the [`WasmVM`](https://github.com/CosmWasm/wasmvm/releases/tag/v1.3.1).
-    * Intel Macs: [`axelard-darwin-amd64-v0.35.5`](https://github.com/axelarnetwork/axelar-core/releases/download/v0.35.5/axelard-darwin-amd64-v0.35.5) and [`libwasmvm.dylib`](https://github.com/CosmWasm/wasmvm/releases/download/v1.3.1/libwasmvm.dylib)
-    * [Macs with Apple silicon](https://support.apple.com/en-us/116943): [`axelard-darwin-arm64-v0.35.5`](https://github.com/axelarnetwork/axelar-core/releases/download/v0.35.5/axelard-darwin-arm64-v0.35.5) and [`libwasmvm.dylib`](https://github.com/CosmWasm/wasmvm/releases/download/v1.3.1/libwasmvm.dylib)
-    * Linux: [`axelard-linux-amd64-v0.35.5`](https://github.com/axelarnetwork/axelar-core/releases/download/v0.35.5/axelard-linux-amd64-v0.35.5) and [`libwasmvm.x86_64.so`](https://github.com/CosmWasm/wasmvm/releases/download/v1.3.1/libwasmvm.x86_64.so)
+    - Intel Macs: [`axelard-darwin-amd64-v0.35.5`](https://github.com/axelarnetwork/axelar-core/releases/download/v0.35.5/axelard-darwin-amd64-v0.35.5) and [`libwasmvm.dylib`](https://github.com/CosmWasm/wasmvm/releases/download/v1.3.1/libwasmvm.dylib)
+    - [Macs with Apple silicon](https://support.apple.com/en-us/116943): [`axelard-darwin-arm64-v0.35.5`](https://github.com/axelarnetwork/axelar-core/releases/download/v0.35.5/axelard-darwin-arm64-v0.35.5) and [`libwasmvm.dylib`](https://github.com/CosmWasm/wasmvm/releases/download/v1.3.1/libwasmvm.dylib)
+    - Linux: [`axelard-linux-amd64-v0.35.5`](https://github.com/axelarnetwork/axelar-core/releases/download/v0.35.5/axelard-linux-amd64-v0.35.5) and [`libwasmvm.x86_64.so`](https://github.com/CosmWasm/wasmvm/releases/download/v1.3.1/libwasmvm.x86_64.so)
 
 1. Add the parent folder to `LD_LIBRARY_PATH`:
 
@@ -100,7 +101,8 @@ Install the `v0.35.5 axelard` binary. You can either download the pre-built vers
 
     If you run into a Mac warning telling you that either the `axelard` binary or the `WasmVM` cannot be verified, you can disable it by running:
 
-    ```
+
+    ```bash
     xattr -d com.apple.quarantine [filename]
     ```
 
@@ -109,12 +111,27 @@ Install the `v0.35.5 axelard` binary. You can either download the pre-built vers
 1. Clone the [`axelar-core` repo](https://github.com/axelarnetwork/axelar-core).
 1. Checkout the `v0.35.5` release tag.
 1. Run `make build`.
-1. Generate an account by running `axelard keys add wallet --keyring-backend test`.
+1. Generate an account by running:
+
+    ```bash
+    axelard keys add wallet --keyring-backend test
+    ```
+
 1. Fund your devnet account with `uamplifier` tokens:
     - Join the [Axelar Discord](https://discord.com/invite/axelar).
     - Get the Developer Role.
-    - Go to the [**#faucet**](https://discord.com/channels/770814806105128977/1002423218772136056/1217885883152334918) channel and submit a request with your account to get 100 test tokens: `!faucet devnet-amplifier [your axelar wallet address]`
-1. Query your account balance by running `axelard q bank balances [your axelar wallet] —-node [RPC]`.
+    - Go to the [**#faucet**](https://discord.com/channels/770814806105128977/1002423218772136056/1217885883152334918) channel and submit a request with your account to get 100 test tokens:
+
+    ```bash
+    !faucet devnet-amplifier [your axelar wallet address]
+    ```
+
+
+1. Query your account balance by running:
+
+    ```bash
+    axelard q bank balances [your axelar wallet] —-node [RPC]
+    ```
 
 ### Onboard a chain to Amplifier
 
@@ -125,9 +142,10 @@ You can either use the existing deployed contracts and their `code id`s, or buil
 #### Option 1: Use existing deployed contracts
 
 Use the existing deployments for all three contracts, making note of the existing deployment's `code id`:
-    * [Gateway](https://github.com/axelarnetwork/axelar-contract-deployments/blob/main/axelar-chains-config/info/devnet-amplifier.json#L409) (Code ID: `7`)
-    * [Voting verifier](https://github.com/axelarnetwork/axelar-contract-deployments/blob/main/axelar-chains-config/info/devnet-amplifier.json#L370) (Code ID: `6`)
-    * [Mutisig prover](https://github.com/axelarnetwork/axelar-contract-deployments/blob/main/axelar-chains-config/info/devnet-amplifier.json#L434) (Code ID: `8`)
+
+- [Gateway](https://github.com/axelarnetwork/axelar-contract-deployments/blob/main/axelar-chains-config/info/devnet-amplifier.json#L409) (Code ID: `7`)
+- [Voting verifier](https://github.com/axelarnetwork/axelar-contract-deployments/blob/main/axelar-chains-config/info/devnet-amplifier.json#L370) (Code ID: `6`)
+- [Mutisig prover](https://github.com/axelarnetwork/axelar-contract-deployments/blob/main/axelar-chains-config/info/devnet-amplifier.json#L434) (Code ID: `8`)
 
 #### Option 2: Build and deploy the contracts yourself
 
