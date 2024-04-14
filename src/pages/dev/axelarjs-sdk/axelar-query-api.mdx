@@ -28,13 +28,19 @@ IMPORTANT NOTES:
 
 * You must ensure the correct `gasLimit` is used for your gas estimation. The gas limit is equal to the execution gas cost on the destination chain. You can test out GMP calls to find the correct value.
 * The `minGasPrice` and `gasMultipler` parameters can be adjusted to enhance execution certainty of cross-chain transactions.
-* The response to the method gives a single value (in `wei`) of the total estimated gas required for the cross-chain call. In the GMPParams parameter, there is an option to show a full breakdown of fees instead by specifying `true` for `showDetailedFees`. If you do this, you will have to add the individual components of the fees yourself, 
-  e.g. `(baseFee + executionFeeWithMultiplier)` for regular way GMP calls, or `(baseFee + executionFeeWithMultiplier + expressFee)` for GMP Express calls
+* L2 chains. For execution of GMP calls where the destination chain is an EVM L2 chain, it is important to note that all L2 chains have an extra cost of posting the executed transaction back to the L1 chain. This `estimateGasFee` SDK method will aggregate that estimated cost for you. The parameters to call out specifically for L2s are:
+  - the `gasLimit` parameter, which are the actual gas units required to execute the tx on the L2 chain. You can check this empirically by looking at the gas used to execute the `AxelarExecutable` on the destination chain.
+  - the `executeData` parameter, which is the GMP data to be executed on the L2 destination chain. This is important for OP-stack chains, where the SDK queries a gas oracle contract with this executeData to retrieve the L1 fee, and if the parameter for `executeData` is not provided, a stub piece of `executeData` is used. 
+* The response to the method gives a single value (in `wei`) of the total estimated gas required for the cross-chain call. In the GMPParams parameter, there is an option to show a full breakdown of fees instead by specifying `true` for `showDetailedFees`. If you do this, you will have to add the individual components of the fees yourself, e.g. 
+  - `(baseFee + executionFeeWithMultiplier)` for regular way GMP calls,
+  - `(baseFee + executionFeeWithMultiplier + l1ExecutionFeeWithMultiplier)` for regular way GMP calls to any L2 chains,
+  - `(baseFee + executionFeeWithMultiplier + expressFee)` for GMP Express calls
 ```ts
 
   interface GMPParams {
     showDetailedFees: boolean;
-    transferAmount: number; // In terms of symbol, not unit denom, e.g. use 1 for 1 axlUSDC, not 1000000
+    transferAmount?: number; // In terms of symbol, not unit denom, e.g. use 1 for 1 axlUSDC, not 1000000
+    transferAmountInUnits?: string; // In terms of unit denom, not symbol, e.g. use 1000000 for 1 axlUSDC, not 1
     destinationContractAddress: string;
     sourceContractAddress: string;
     tokenSymbol: string;
@@ -44,9 +50,10 @@ IMPORTANT NOTES:
     baseFee: string;
     executionFee: string;
     executionFeeWithMultiplier: string;
+    l1ExecutionFeeWithMultiplier: string;
+    l1ExecutionFee: string;
     gasMultiplier: number;
-    gasLimit: number;
-    srcGasPrice: string;
+    gasLimit: BigNumberish;
     minGasPrice: string;
     apiResponse: any;
     isExpressSupported: boolean;
@@ -54,24 +61,27 @@ IMPORTANT NOTES:
 
   /**
    * Calculate estimated gas amount to pay for the gas receiver contract.
-   * @param sourceChainId
-   * @param destinationChainId
-   * @param sourceChainTokenSymbol
-   * @param gasLimit An estimated gas amount required to execute `executeWithToken` function. Equivalent to the execution gas cost on the destination chain
-   * @param gasMultiplier A multiplier used to create a buffer above the calculated gas fee, to account for potential slippage throughout tx execution, e.g. 1.1 = 10% buffer. Supports up to 3 decimal places. Default is `auto`.
-   * @param minGasPrice (Optional) A minimum value, in wei, for the gas price on the destination chain that is used to override the estimated gas price if it falls below this specified value. Default is `0`.
+   * @param sourceChainId Can be of the EvmChain enum or string. If string, should try to generalize to use the CHAINS constants (e.g. CHAINS.MAINNET.ETHEREUM)
+   * @param destinationChainId Can be of the EvmChain enum or string. If string, should try to generalize to use the CHAINS constants (e.g. CHAINS.MAINNET.ETHEREUM)
+   * @param gasLimit An estimated gas amount required to execute the `execute` or `executeWithToken` function.
+   * @param gasMultiplier (Optional) A multiplier used to create a buffer above the calculated gas fee, to account for potential slippage throughout tx execution, e.g. 1.1 = 10% buffer. supports up to 3 decimal places
+   * The default value is "auto", which uses the gas multiplier from the fee response
+   * @param sourceChainTokenSymbol (Optional) the gas token symbol on the source chain.
+   * @param minGasPrice (Optional) A minimum value, in wei, for the gas price on the destination chain that is used to override the estimated gas price if it falls below this specified value.
+   * @param executeData (Optional) The data to be executed on the destination chain. It's recommended to specify it if the destination chain is an L2 chain to calculate more accurate gas fee.
    * @param gmpParams (Optional) Additional parameters for GMP transactions, including the ability to see a detailed view of the fee response
    * @returns
    */
   public async estimateGasFee(
     sourceChainId: EvmChain | string,
     destinationChainId: EvmChain | string,
-    sourceChainTokenSymbol: GasToken | string,
-    gasLimit: number = DEFAULT_ESTIMATED_GAS,
-    gasMultiplier = auto,
+    gasLimit: BigNumberish,
+    gasMultiplier: number | "auto" = "auto",
+    sourceChainTokenSymbol?: GasToken | string,
     minGasPrice = "0",
+    executeData?: `0x${string}`,
     gmpParams?: GMPParams
-  ): Promise<string | AxelarQueryAPIFeeResponse> 
+  ): Promise<string | AxelarQueryAPIFeeResponse>
 ```
 
 #### getTransferFee
