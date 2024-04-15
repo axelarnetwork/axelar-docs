@@ -211,6 +211,16 @@
       "channel_id": "channel-78"
     },
     {
+      "from": "ojo",
+      "to": "axelarnet",
+      "channel_id": "channel-1"
+    },
+    {
+      "from": "axelarnet",
+      "to": "ojo",
+      "channel_id": "channel-144"
+    },
+    {
       "from": "osmosis",
       "to": "axelarnet",
       "channel_id": "channel-208"
@@ -621,6 +631,16 @@
       "from": "axelarnet",
       "to": "terra",
       "channel_id": "channel-84"
+    },
+    {
+      "from": "umee",
+      "to": "axelarnet",
+      "channel_id": "channel-3"
+    },
+    {
+      "from": "axelarnet",
+      "to": "umee",
+      "channel_id": "channel-466"
     },
     {
       "from": "xpla",
