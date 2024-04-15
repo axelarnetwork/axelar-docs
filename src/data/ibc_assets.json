@@ -663,6 +663,14 @@
       "image": "/images/assets/stars.svg",
       "decimals": 6,
       "transfer_fee": 2.1
+    },
+    {
+      "id": "uc4e",
+      "name": "C4E - C4E native asset",
+      "symbol": "C4E",
+      "image": "/images/assets/c4e.svg",
+      "decimals": 6,
+      "transfer_fee": 1.7
     }
   ],
   "testnet": [
