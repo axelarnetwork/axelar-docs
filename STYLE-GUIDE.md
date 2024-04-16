@@ -251,3 +251,5 @@ Implement the following to send an interchain transaction with Axelar:
 * **Token manager** is not a proper noun, unless specifying the `TokenManager` object (in which case it should be code font).
 * Refer to Axelar's Gas Service as **Axelar Gas Service**, **the Gas Service**, or **the `AxelarGasService` contract**, not as "Gas Services" or "the `GasService` contract."
 * Time format is always in [UTC](https://en.wikipedia.org/wiki/Coordinated_Universal_Time).
+* **dApp**: Lowercase d, uppercase A.
+* **Mainnet, testnet, devnet**: All one word. Capitalized at the beginning of a sentence, else lowercase.
