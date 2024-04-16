@@ -220,8 +220,17 @@ export const getNavigation = (section) => {
               href: "/dev/amplifier/introduction",
             },
             {
-              title: "Integrate a chain",
-              href: "/dev/amplifier/chain-integration",
+              title: "Chain Integration",
+              children: [
+                {
+                  title: "Introduction",
+                  href: "/dev/amplifier/chain-integration/introduction",
+                },
+                {
+                  title: "Integrate a Chain",
+                  href: "/dev/amplifier/chain-integration/integrate-a-chain",
+                },
+              ]
             },
             {
               title: "GMP with Amplifier example",

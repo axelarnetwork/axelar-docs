@@ -1,4 +1,4 @@
-# Integrate a chain with the Interchain Amplifier
+# Integrate a Chain
 
 import { Callout } from "/src/components/callout"
 
@@ -6,71 +6,12 @@ import { Callout } from "/src/components/callout"
 The Axelar Virtual Machine (AVM) and Amplifier are currently under active development, so these instructions are likely to change. Please check back frequently for updates.
 </Callout>
 
-## Integration Architecture
-To connect your chain to the Axelar network via the Interchain Amplifier, you'll need to build or instantiate 4 smart contracts and 1 relayer service. 
-
-- **Source Chain Gateway Contract**
-    - Built using the tech stack of your chain, you'll need to deploy a smart contract implementing the [Cross-Chain Gateway Protocol](https://github.com/axelarnetwork/cgp-spec).
-    - For EVM chains, you can re-use the existing [EVM Gateway](https://github.com/axelarnetwork/axelar-cgp-solidity).
-    - This contract serves as the primary API for developers sending messages from your chain.
-- **Verifier Contract**
-    - A smart contract on the Axelar network that verifies the validity of transactions on your chain. 
-    - Most integrators will begin by using or customizing a [Voting Verifier](https://github.com/axelarnetwork/axelar-amplifier/tree/main/contracts/voting-verifier) or can be customized to your needs for cases such as verification via ZK Proof.
-    - If you deploy a Voting Verifier, verifiers will need to support your chain and vote on the truth of source chain transactions.
-- **Gateway Contract**
-    - A gateway contract that exists on the Axelar network that will knows how to use your verifier contract to check the validity of a transaction and then knows how to forward transactions onto the Amplifier router.
-    - Most integrators will begin by using or customizing this [Gateway Contract](https://github.com/axelarnetwork/axelar-amplifier/tree/main/contracts/gateway).
-- **Prover Contract**
-    - A smart contract on the Axelar network that knows how to prove the validity of a transaction on your chain.
-    - Most integrators will begin by usign or customzing the [multisig prover](https://github.com/axelarnetwork/axelar-amplifier/tree/main/contracts/multisig-prover)
-- **Message Relayer**
-    - A service built with any tech stack that listens for events on your chain and relays them to the Axelar network.
-    - Get started with our [Message Relayer Example](https://github.com/axelarnetwork/axelar-examples/tree/main/examples/amplifier)
-
-
-The tutorial below will guide you through this process within the current Amplifier devnet. Contract deployment on testnet or mainnet will require governance proposal.
-
-## Integration Process
-Most integrators will follow the following process:
-
-1. Learn & understand Amplifier
-    - Follow the tutorial below to deploy standardize contracts to the devnet to understand the tools and basics of the process.
-1. Customize and deploy to devnet
-    - Build (or instantiate or customize) each of the [required contracts and the relayer](#integration-architecture).
-    - You may choose to change the logic of your verifier contract (for ZK use cases for example) or prover contract.
-1. Whitelist contracts 
-    - For the devnet [use the form](https://docs.google.com/forms/d/e/1FAIpQLSchD7P1WfdSCQfaZAoqX7DyqJOqYKxXle47yrueTbOgkKQDiQ/viewform) to ask to be whitelisted
-1. Become a [verifier](/validator/amplifier/verifier-onboarding) for your chain.
-    - To test your chain, you will need active verifiers to vote on messages from your chain
-1. Test your integration
-    - Make sure you can send and receive messages on your chain.
-1. Begin audit process
-    - You should audit your on-chain contracts.
-1. Propose to testnet  
-    - [Make on-chain proposals](/learn/cosmwasm-governance) on the testnet to create your CosmWasm smart contracts.
-        1. Proposal to store your CosmWasm code.
-        1. Proposal to instantiate your contracts.
-    - Make an on-chain proposal to add your chain to the Amplifier router.
-1. Test in testnet
-    - Ensure your contracts are working as expected.
-    - Verify with developers that they can send messages to and from your chain.
-1. Productionize your relayer
-    - Ensure your relayer is robust, fault-tolerant, and can handle the load of your chain.
-1. Propose to mainnet
-    - [Make on-chain proposals](/learn/cosmwasm-governance) on mainnet to create your CosmWasm smart contracts.
-        1. Proposal to store your CosmWasm code.
-        1. Proposal to instantiate your contracts.
-    - Make an on-chain proposal to add your chain to the Amplifier router.
-
-
-## Integration Tutorial
-
-### Prerequisites
+## Prerequisites
 
 - You should know how to deploy and interact with a CosmWasm contract. Refer to the [Osmosis CosmWasm testnet deployment tutorial](https://docs.osmosis.zone/cosmwasm/testnet/cosmwasm-deployment/) if you’d like a refresher — just replace `osmosisid` with `axelard` and use the `amd64` version if building on Linux and `arm64` version of the [contract optimizer](https://github.com/CosmWasm/optimizer) if you are working on a [Mac with Apple silicon](https://support.apple.com/en-us/116943). 
 - Run `--gas auto --gas-adjustment 1.5` to provide your transactions with sufficient gas.
 
-### Devnet information
+## Devnet information
 
 - Devnet RPC: `http://devnet-amplifier.axelar.dev:26657`
 - Devnet LCD (REST API/JSON RPC): `http://devnet-amplifier.axelar.dev:1317`
@@ -79,11 +20,11 @@ Most integrators will follow the following process:
 
 Other info can be found in [`devnet-amplifier.json`](https://github.com/axelarnetwork/axelar-contract-deployments/blob/main/axelar-chains-config/info/devnet-amplifier.json).
 
-### Get the `axelard` binary
+## Get the `axelard` binary
 
 Install the `v0.35.5 axelard` binary. You can either download the pre-built version or build it yourself from `axelar-core`.
 
-#### Option 1: Download the pre-built binary
+### Option 1: Download the pre-built binary
 
 1. Download the pre-built [`axelard` binary](https://github.com/axelarnetwork/axelar-core/releases/tag/v0.35.5) along with the latest version of the [`WasmVM`](https://github.com/CosmWasm/wasmvm/releases/tag/v1.3.1).
     - Intel Macs: [`axelard-darwin-amd64-v0.35.5`](https://github.com/axelarnetwork/axelar-core/releases/download/v0.35.5/axelard-darwin-amd64-v0.35.5) and [`libwasmvm.dylib`](https://github.com/CosmWasm/wasmvm/releases/download/v1.3.1/libwasmvm.dylib)
@@ -106,7 +47,7 @@ Install the `v0.35.5 axelard` binary. You can either download the pre-built vers
     xattr -d com.apple.quarantine [filename]
     ```
 
-#### Option 2: Build the binary yourself
+### Option 2: Build the binary yourself
 
 1. Clone the [`axelar-core` repo](https://github.com/axelarnetwork/axelar-core).
 1. Checkout the `v0.35.5` release tag.
@@ -133,13 +74,13 @@ Install the `v0.35.5 axelard` binary. You can either download the pre-built vers
     axelard q bank balances [your axelar wallet] —-node [RPC]
     ```
 
-### Onboard a chain to Amplifier
+## Onboard a chain to Amplifier
 
 Once you are running `ampd` and `tofnd`, you can onboard a chain to the Amplifier using the `gateway`, `voting verifier`, and `multisig prover` contracts. **This requires approval by the Interop Labs team.**
 
 You can either use the existing deployed contracts and their `code id`s, or build and deploy from the `axelar-examples` repo. 
 
-#### Option 1: Use existing deployed contracts
+### Option 1: Use existing deployed contracts
 
 Use the existing deployments for all three contracts, making note of the existing deployment's `code id`:
 
@@ -147,7 +88,7 @@ Use the existing deployments for all three contracts, making note of the existin
 - [Voting verifier](https://github.com/axelarnetwork/axelar-contract-deployments/blob/main/axelar-chains-config/info/devnet-amplifier.json#L370) (Code ID: `6`)
 - [Mutisig prover](https://github.com/axelarnetwork/axelar-contract-deployments/blob/main/axelar-chains-config/info/devnet-amplifier.json#L434) (Code ID: `8`)
 
-#### Option 2: Build and deploy the contracts yourself
+### Option 2: Build and deploy the contracts yourself
 
 1. Clone the [`axelar-amplifier` repo](https://github.com/axelarnetwork/axelar-amplifier).
 
@@ -239,15 +180,15 @@ Use the existing deployments for all three contracts, making note of the existin
 
 1. Send the chain’s gateway and multisig prover contract addresses to the Interop Labs team by filling out the [Axelar Amplifier Integration Form](https://docs.google.com/forms/d/e/1FAIpQLSchD7P1WfdSCQfaZAoqX7DyqJOqYKxXle47yrueTbOgkKQDiQ/viewform). The team will register the chain and gateway with the router and authorize the prover.
 
-#### Option 3: Deploy a custom implementation of the Amplifier contracts
+### Option 3: Deploy a custom implementation of the Amplifier contracts
 
 You can also deploy a custom implementation of the gateway, verifier, and prover contracts and optimize them with the [`Cosmwasm rust-optimizer`](https://github.com/CosmWasm/optimizer). Follow the same steps as Option 2 with your own implementations of the Amplifier contracts.
 
-### Add verifiers to your chain
+## Add verifiers to your chain
 
 Every new chain will need a verifier, which requires running `ampd` and `tofnd`. See [Become an Amplifier Verifier (Worker)](/validator/amplifier/verifier-onboarding) for detailed instructions on how to do this on your machine.
 
-### Begin routing messages
+## Begin routing messages
 
 Once your chain is registered with the protocol, it will need verifiers to begin routing messages. See [Become an Amplifier Verifier (Worker)](/validator/amplifier/verifier-onboarding) for instructions to onboard a verifier. Note that chain integrators will onboard on `devnet-amplifier` and not `devnet-verifier`.
 
