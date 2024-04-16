@@ -2,6 +2,11 @@
   "framework": null,
   "redirects": [
     {
+      "source": "/dev/amplifier/chain-integration",
+      "destination": "/dev/amplifier/chain-integration/introduction",
+      "permanent": true
+    },
+    {
       "source": "/dev/send-tokens/overview",
       "destination": "/dev/send-tokens/introduction",
       "permanent": true
