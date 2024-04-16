@@ -220,17 +220,12 @@ export const getNavigation = (section) => {
               href: "/dev/amplifier/introduction",
             },
             {
-              title: "Chain Integration",
-              children: [
-                {
-                  title: "Introduction",
-                  href: "/dev/amplifier/chain-integration/introduction",
-                },
-                {
-                  title: "Integrate a Chain",
-                  href: "/dev/amplifier/chain-integration/integrate-a-chain",
-                },
-              ]
+              title: "Integration Overview",
+              href: "/dev/amplifier/chain-integration/introduction",
+            },
+            {
+              title: "Integrate a Chain",
+              href: "/dev/amplifier/chain-integration/integrate-a-chain",
             },
             {
               title: "GMP with Amplifier example",
@@ -620,7 +615,10 @@ export const getNavigation = (section) => {
           },
         ],
       },
-      { title: "Onboard your IBC chain", href: "/resources/ibc-chain-onboarding" },
+      {
+        title: "Onboard your IBC chain",
+        href: "/resources/ibc-chain-onboarding",
+      },
       { title: "Bug Bounty", href: "/resources/bug-bounty" },
     ],
   });
