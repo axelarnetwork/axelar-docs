@@ -76,7 +76,7 @@ Install the `v0.35.5 axelard` binary. You can either download the pre-built vers
 
 ## Onboard a chain to Amplifier
 
-Once you are running `ampd` and `tofnd`, you can onboard a chain to the Amplifier by instantiating the `gateway`, `voting verifier`, and `multisig prover` contracts. **This requires approval by the Interop Labs team.**
+Once you are running `ampd` and `tofnd`, you can onboard a chain to the Amplifier by instantiating the `gateway`, `voting verifier`, and `multisig prover` contracts.
 
 You can either use the existing deployed contracts and on the devnet via their `code_id`s, or build and store these contracts from the `axelar-examples` repo. A `code_id` is a CosmWasm identifier of a stored contract that can be instantiated. **You will need to insantinate the contracts no matter which option you choose.**
 
@@ -95,6 +95,7 @@ Use the existing deployments for all three contracts, making note of the existin
     ```bash
     git clone https://github.com/axelarnetwork/axelar-amplifier
     cd axelar-amplifier
+    git checkout ampd-v0.1.0
     ```
 
 1. Build the deployed `gateway`, `voting verifier`, and `multisig prover` contracts from [`devnet-amplifier.json`](https://github.com/axelarnetwork/axelar-contract-deployments/blob/main/axelar-chains-config/info/devnet-amplifier.json) using the [Cosmwasm `rust-optimizer`](https://github.com/CosmWasm/optimizer). From the root of the repo, run:
@@ -109,7 +110,7 @@ Use the existing deployments for all three contracts, making note of the existin
 1. Deploy the verifier:
 
     ```bash
-    axelard tx wasm store artifacts/voting_verifier.wasm --node http://devnet-amplifier.axelar.dev:26657 --from wallet --chain-id devnet-amplifier --gas auto --gas-adjustment 1.5 --keyring-backend test
+    axelard tx wasm store artifacts/voting_verifier.wasm --node http://devnet-amplifier.axelar.dev:26657 --from wallet --chain-id devnet-amplifier --gas-prices 0.007uamplifier --gas-adjustment 1.5 --keyring-backend test 
     ```
    
     Note the `code_id` in the output:
@@ -121,7 +122,7 @@ Use the existing deployments for all three contracts, making note of the existin
 1. Deploy the gateway:
 
     ```bash
-    axelard tx wasm store artifacts/gateway.wasm --node http://devnet-amplifier.axelar.dev:26657 --from wallet --chain-id devnet-amplifier --gas auto --gas-adjustment 1.5 --keyring-backend test
+    axelard tx wasm store artifacts/gateway.wasm --node http://devnet-amplifier.axelar.dev:26657 --from wallet --chain-id devnet-amplifier --gas auto --gas-adjustment 1.5 --gas-prices 0.007uamplifier --keyring-backend test
     ```
 
     Note the `code_id` in the output:
@@ -133,7 +134,7 @@ Use the existing deployments for all three contracts, making note of the existin
 1. Deploy the multisig prover:
 
     ```bash
-    axelard tx wasm store artifacts/multisig_prover.wasm --node http://devnet-amplifier.axelar.dev:26657 --from wallet --chain-id devnet-amplifier --gas auto --gas-adjustment 1.5 --keyring-backend test
+    axelard tx wasm store artifacts/multisig_prover.wasm --node http://devnet-amplifier.axelar.dev:26657 --from wallet --chain-id devnet-amplifier --gas auto --gas-adjustment 1.5 --gas-prices 0.007uamplifier  --keyring-backend test
     ```
 
     Note the `code_id` in the output:
