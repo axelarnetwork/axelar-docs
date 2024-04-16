@@ -156,12 +156,16 @@ export default ({ environment = "mainnet" }) => {
                               {chain_data?.name || chain}
                             </span>
                             <span className="whitespace-nowrap text-gray-400 dark:text-gray-500 text-xs font-medium">
-                              ID: {chain_data.network_id}
+                              ID: {chain_data?.network_id}
                             </span>
                           </div>
                         </div>
                       ) : c.id === "denom" ? (
-                        <div className="flex items-center text-base space-x-1.5">
+                        <div
+                          className={`flex items-center text-base space-x-1.5 ${
+                            id.length > 15 ? "wrap-text" : ""
+                          }`}
+                        >
                           <span className="whitespace-nowrap text-base font-semibold">
                             {id}
                           </span>

@@ -35,6 +35,7 @@ IMPORTANT NOTES:
   - `(baseFee + executionFeeWithMultiplier)` for regular way GMP calls,
   - `(baseFee + executionFeeWithMultiplier + l1ExecutionFeeWithMultiplier)` for regular way GMP calls to any L2 chains,
   - `(baseFee + executionFeeWithMultiplier + expressFee)` for GMP Express calls
+
 ```ts
 
   interface GMPParams {
@@ -124,7 +125,7 @@ public async getFeeForChainAndAsset(
 
 #### getDenomFromSymbol
 
-Get the denom for an asset given its symbol on a chain. For all the assets that Axelar supports natively, the network identifies the asset by a `denom`, while most EVM chains have a `symbol` for the asset. 
+Get the denom for an asset given its symbol on a chain. For all the assets that Axelar supports natively, the network identifies the asset by a `denom`, while most EVM chains have a `symbol` for the asset.
 
 The method below allows you to translate the asset symbol (as identified on an EVM chain) to the underlying denom.
 
@@ -156,7 +157,7 @@ For example, let's say you have Axelar's canonical testnet `aUSDC`. The symbol f
 
 #### getSymbolFromDenom
 
-Get the symbol for an asset on a given chain given its denom. For all the assets that Axelar supports natively, the network identifies the asset by a `denom`, while most EVM chains have a `symbol` for the asset. 
+Get the symbol for an asset on a given chain given its denom. For all the assets that Axelar supports natively, the network identifies the asset by a `denom`, while most EVM chains have a `symbol` for the asset.
 
 The method below allows you to translate the asset denom to the asset symbol (as identified on an EVM chain).
 

@@ -1,0 +1,28 @@
+# Introduction to the Interchain Amplifier
+
+import { Callout } from "/src/components/callout"
+
+<Callout>
+The Axelar Virtual Machine (AVM) and Amplifier are currently under active development, so these instructions are likely to change. Please check back frequently for updates.
+</Callout>
+
+The Interchain Amplifier enables dynamic application-level connections of new blockchains and services to the Axelar network. DApp developers gain access to more new blockchains faster. Integrators can use Amplifier to connect their own chains to the Axelar Network. This enables generalized connections between blockchains using different technology stacks (Solidity, Rust, etc), consensus mechanisms (Proof of Stake, L2s), and blockchains from many different communities.
+
+The Interchain Amplifier is a set of on-chain contracts and related services that enable integrators to easily connect chains and off-chain capabilities to the Axelar network. Developers can then seamlessly build applications that take advantage of these chains and capabilities.
+
+Integrators gain access to Axelar's interconnected network of chains and can "amplify" their resources by paying the cost equivalent to developing only one connection. They can establish connections between new ecosystems or existing chains to add new network properties, such as improved security or better delivery and availability.
+
+The Amplifier consists of the following, all on the Axelar network:
+
+- An on-chain message router
+- Gateways
+- CosmWasm methods for receiving and sending messages
+
+To connect to the Amplifier, integrators should:
+
+- Implement and deploy a Gateway to the Axelar Network
+- Work with verfiers to vote, prove, and attest to message validity
+- Provide relaying infrastructure to identify incoming messages and act on outgoing messages
+
+## DApp Developers
+Developers who are looking to send messages between chains connected via Amplifier don't need to worry about amplifier. They can use standard [General Message Passing (GMP)](/dev/general-message-passing/overview) to send messages between chains via a gateway available on the source chain. Amplifier will handle the verification, routing, and proving of messages between chains.

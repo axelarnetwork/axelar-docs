@@ -67,6 +67,12 @@
       "image": "/images/chains/crescent.svg"
     },
     {
+      "id": "dymension",
+      "name": "Dymension",
+      "network_id": "dymension",
+      "image": "/images/chains/dymension.svg"
+    },
+    {
       "id": "evmos",
       "name": "Evmos",
       "network_id": "evmos",
@@ -125,6 +131,12 @@
       "name": "Neutron",
       "network_id": "neutron",
       "image": "/images/chains/neutron.svg"
+    },
+    {
+      "id": "ojo",
+      "name": "Ojo",
+      "network_id": "ojo",
+      "image": "/images/chains/ojo.svg"
     },
     {
       "id": "osmosis",
@@ -297,6 +309,12 @@
       "image": "/images/chains/kujira.svg"
     },
     {
+      "id": "lava",
+      "name": "Lava",
+      "network_id": "lava",
+      "image": "/images/chains/lava.svg"
+    },
+    {
       "id": "neutron",
       "name": "Neutron",
       "network_id": "neutron",
@@ -357,6 +375,12 @@
       "image": "/images/chains/sei.svg"
     },
     {
+      "id": "sommelier",
+      "name": "Sommelier",
+      "network_id": "sommelier",
+      "image": "/images/chains/sommelier.svg"
+    },
+    {
       "id": "teritori",
       "name": "Teritori",
       "network_id": "teritori-2",
@@ -367,6 +391,12 @@
       "name": "Terra",
       "network_id": "terra-3",
       "image": "/images/chains/terra.svg"
+    },
+    {
+      "id": "umee",
+      "name": "Umee",
+      "network_id": "umee",
+      "image": "/images/chains/umee.svg"
     },
     {
       "id": "xpla",

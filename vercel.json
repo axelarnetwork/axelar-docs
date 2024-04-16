@@ -2,6 +2,67 @@
   "framework": null,
   "redirects": [
     {
+      "source": "/dev/send-tokens/overview",
+      "destination": "/dev/send-tokens/introduction",
+      "permanent": true
+    },
+    {
+      "source": "/resources/community/bug-bounty",
+      "destination": "/resources/bug-bounty",
+      "permanent": true
+    },
+    {
+      "source": "/bug-bounty",
+      "destination": "/resources/bug-bounty",
+      "permanent": true
+    },
+    {
+      "source": "/its/intro",
+      "destination": "/dev/send-tokens/interchain-tokens/intro"
+    },
+    {
+      "source": "/its/create-token",
+      "destination": "/dev/send-tokens/interchain-tokens/create-token"
+    },
+    {
+      "source": "/its/upgrade-token",
+      "destination": "/dev/send-tokens/interchain-tokens/upgrade-tokens"
+    },
+    {
+      "source": "/its/token-executable",
+      "destination": "/dev/send-tokens/interchain-tokens/interchain-token-executable"
+    },
+    {
+      "source": "/its/rate-limit",
+      "destination": "/dev/send-tokens/interchain-tokens/rate-limit"
+    },
+    {
+      "source": "/its/create-token-tutorial",
+      "destination": "/dev/send-tokens/interchain-tokens/developer-guides/programmatically-create-a-token"
+    },
+    {
+      "source": "/its/canonical-token-tutorial",
+      "destination": "/dev/send-tokens/interchain-tokens/developer-guides/programmatically-create-a-canonical-token"
+    },
+    {
+      "source": "/its/link-token-tutorial",
+      "destination": "/dev/send-tokens/interchain-tokens/developer-guides/link-custom-tokens-deployed-across-multiple-chains-into-interchain-tokens"
+    },
+    {
+      "source": "/dev/reference/interchain-token-service-rate-limit",
+      "destination": "/dev/send-tokens/interchain-tokens/rate-limit"
+    },
+    {
+      "source": "/dev/reference/glossary",
+      "destination": "/dev/send-tokens/glossary",
+      "permanent": true
+    },
+    {
+      "source": "/dev/glossary",
+      "destination": "/dev/send-tokens/glossary",
+      "permanent": true
+    },
+    {
       "source": "/resources/mainnet",
       "destination": "/resources/contract-addresses/mainnet",
       "permanent": true
@@ -13,12 +74,7 @@
     },
     {
       "source": "/resources/governance/community-pool-proposals",
-      "destination": " /resources/community/community-pool-proposals",
-      "permanent": true
-    },
-    {
-      "source": "/resources/bug-bounty",
-      "destination": "/resources/community/bug-bounty",
+      "destination": "/resources/community/community-pool-proposals",
       "permanent": true
     },
     {
@@ -67,7 +123,7 @@
       "permanent": true
     },
     {
-      "source": " /dev/general-message-passing/gas-services/pricing",
+      "source": "/dev/general-message-passing/gas-services/pricing",
       "destination": "/dev/gas-service/pricing",
       "permanent": true
     },
@@ -233,7 +289,7 @@
     },
     {
       "source": "/dev/build/tokens",
-      "destination": "/dev/send-tokens/overview",
+      "destination": "/dev/send-tokens/introduction",
       "permanent": true
     },
     {
@@ -247,18 +303,13 @@
       "permanent": true
     },
     {
-      "source": "/dev/axelar-sandbox/:path(.*)",
-      "destination": "/dev/general-message-passing/axelar-sandbox/:path",
-      "permanent": true
-    },
-    {
       "source": "/dev/build/5-min-starter-examples",
       "destination": "/dev/general-message-passing/examples",
       "permanent": true
     },
     {
       "source": "/dev/build/tokens",
-      "destination": "/dev/send-tokens/overview",
+      "destination": "/dev/send-tokens/introduction",
       "permanent": true
     },
     {
@@ -363,7 +414,7 @@
     },
     {
       "source": "/dev/general-message-passing/tokens",
-      "destination": "/dev/send-tokens/overview",
+      "destination": "/dev/send-tokens/introduction",
       "permanent": true
     },
     {
