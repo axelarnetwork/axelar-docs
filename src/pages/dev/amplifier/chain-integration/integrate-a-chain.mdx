@@ -107,10 +107,10 @@ Use the existing deployments for all three contracts, making note of the existin
     cosmwasm/optimizer:0.15.1
     ```
 
-1. Deploy the verifier:
+1. Deploy the voting verifier:
 
     ```bash
-    axelard tx wasm store artifacts/voting_verifier.wasm --node http://devnet-amplifier.axelar.dev:26657 --from wallet --chain-id devnet-amplifier --gas-prices 0.007uamplifier --gas-adjustment 1.5 --keyring-backend test 
+    axelard tx wasm store artifacts/voting_verifier.wasm --node http://devnet-amplifier.axelar.dev:26657 --from wallet --chain-id devnet-amplifier --gas auto --gas-adjustment 1.5 --gas-prices 0.007uamplifier --keyring-backend test 
     ```
    
     Note the `code_id` in the output:
