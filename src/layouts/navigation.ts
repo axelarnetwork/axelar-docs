@@ -620,6 +620,7 @@ export const getNavigation = (section) => {
           },
         ],
       },
+      { title: "Onboard your chain", href: "/resources/chain-onboarding" },
       { title: "Bug Bounty", href: "/resources/bug-bounty" },
     ],
   });
