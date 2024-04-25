@@ -1,11 +1,14 @@
 export default ({
-  settings: any = null,
+  providedSettings = null,
   title = "Add Custom Chain Config",
 }) => {
+  let settings;
   const addNetwork = async () => {
-    if (!settings) {
+    if (!providedSettings) {
       let field = document.getElementById("keplr_wallet_json_configuration");
+      console.log("field", field);
 
+      // re-layout the field
       try {
         const ugly = field.value;
         document.getElementById("keplr_wallet_json_configuration").value =
@@ -33,6 +36,8 @@ export default ({
           alert(error.message);
         }
       }
+    } else {
+      settings = providedSettings;
     }
     console.log("settings were determined to be", settings);
 
