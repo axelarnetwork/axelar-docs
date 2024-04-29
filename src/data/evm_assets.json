@@ -3626,6 +3626,13 @@
           "transfer_fee": 10.0
         },
         {
+          "chain": "mantle",
+          "address": "0x4e914bbDCDE0f455A8aC9d59d3bF739c46287Ed2",
+          "symbol": "axlSOMM",
+          "decimals": 6,
+          "transfer_fee": 67.0
+        },
+        {
           "chain": "optimism",
           "address": "0x4e914bbDCDE0f455A8aC9d59d3bF739c46287Ed2",
           "symbol": "axlSOMM",
@@ -3638,6 +3645,13 @@
           "symbol": "axlSOMM",
           "decimals": 6,
           "transfer_fee": 10.0
+        },
+        {
+          "chain": "scroll",
+          "address": "0x4e914bbDCDE0f455A8aC9d59d3bF739c46287Ed2",
+          "symbol": "axlSOMM",
+          "decimals": 6,
+          "transfer_fee": 67.0
         }
       ]
     },
@@ -5324,6 +5338,21 @@
           "symbol": "C4E",
           "decimals": 6,
           "transfer_fee": 170.0
+        }
+      ]
+    },
+    {
+      "id": "unls",
+      "name": "NLS - NLS native asset",
+      "symbol": "NLS",
+      "image": "/images/assets/nls.svg",
+      "contracts": [
+        {
+          "chain": "ethereum",
+          "address": "0xb34e17562e4f1f63A2D4cF684eD8bC124e519771",
+          "symbol": "NLS",
+          "decimals": 6,
+          "transfer_fee": 1500.0
         }
       ]
     }
