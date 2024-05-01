@@ -671,6 +671,14 @@
       "image": "/images/assets/c4e.svg",
       "decimals": 6,
       "transfer_fee": 1.7
+    },
+    {
+      "id": "unls",
+      "name": "NLS - NLS native asset",
+      "symbol": "NLS",
+      "image": "/images/assets/nls.svg",
+      "decimals": 6,
+      "transfer_fee": 2.5
     }
   ],
   "testnet": [
