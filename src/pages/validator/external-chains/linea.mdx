@@ -50,14 +50,16 @@ cd $HOME
 <tabs>
   <tab-item title="Mainnet" class="bleed">
     ```bash 
-    mkdir -p $HOME/.linea/config cd $HOME/.linea/config wget -O
-    genesis.json https://docs.linea.build/files/genesis.json
+    mkdir -p $HOME/.linea/config
+    cd $HOME/.linea/config
+    wget -O genesis.json https://docs.linea.build/files/geth/mainnet/genesis.json
     ```
   </tab-item>
   <tab-item title="Testnet" class="bleed">
     ```bash
-    mkdir $HOME/.linea/config cd $HOME/.linea/config wget -O
-    genesis.json https://docs.linea.build/files/l2-genesis-uat.json
+    mkdir $HOME/.linea/config
+    cd $HOME/.linea/config
+    wget -O genesis.json https://docs.linea.build/files/geth/sepolia/genesis.json
     ```
   </tab-item>
 </tabs>
@@ -104,8 +106,8 @@ Set the necessary variables
   </tab-item>
   <tab-item title="Testnet" class="bleed">
     ```bash
-    NETWORK_ID="59140"
-    BOOTNODES="enode://db471f0bad1da4f5e48042d0411bc38d5a245cf30ff76191e454c9ff2e27e57d45009b9c6e50d582c44332b05f2d747a8e995aa20399e80c22b1abb069332dde@3.17.183.45:30303,enode://1b10ff18e0d5055111af8cffe083d8d123ebede1dd5d81b3f8ce069ead6f0e70ec3217a0fa163bebaf1cd87b78e8f630182d703e1aebde93996dd5f67fa89389@18.117.161.184:30303,enode://25a42af9d7573a6299b54bb3c2d6566e59079ab1b94b4d42aa44325252d85f45f0bfe8b40dd476a4ee30c7007b61ab34375875ffa668b73eccc9c32640b17e48@3.20.238.193:30303,enode://3dfed9020ade850dca85d2855d42bfb431d1dbfdaec529ad66773bff434e473c071849dddf9cd43f9c529777a384bf5293463baecd4aea7623e575877fd30024@3.18.97.19:30303,enode://68848179e1bfe737045d19734db8f83ce3f85739d551a1e4c4661486380f69677316445375323172e5fcdbd5e26ccbb94306b647b7ac0468de9e9e775a0fbed6@18.190.156.63:30303"
+    NETWORK_ID="59141"
+    BOOTNODES="enode://6f20afbe4397e51b717a7c1ad3095e79aee48c835eebd9237a3e8a16951ade1fe0e66e981e30ea269849fcb6ba03d838da37f524fabd2a557474194a2e2604fa@18.221.100.27:31002,enode://ce1e0d8e0500cb5c0ac56bdcdafb2d6320c3a2c5125b5ccf12f5dfc9b47ee74acbcafc32559017613136c9c36a0ce74ba4f83b7fb8244f099f3b15708d9d3129@3.23.75.47:31000,enode://1b026a5eb0ae74300f58987d235ef0e3a550df963345cb3574be3b0b54378bd11f14dfd515a8976f2c2d2826090e9507b8ccc24f896a9ffffffcabcfd996a733@3.129.120.128:31001"
     ```
   </tab-item>
 </tabs>
@@ -129,15 +131,12 @@ User=$USER
 ExecStart=/usr/bin/geth \
 --datadir $HOME/.linea/data \
 --networkid $NETWORK_ID \
---miner.gasprice 1000000000 \
---miner.gaslimit '0x3A2C940' \
 --rpc.allow-unprotected-txs \
 --txpool.accountqueue 50000 \
 --txpool.globalqueue 50000 \
 --txpool.globalslots 50000 \
---txpool.pricelimit 1000000000 \
---rpc.txfeecap 100 \
---gpo.maxprice 100000000000000 \
+--txpool.pricelimit 1000000 \
+--txpool.pricebump 1 \
 --txpool.nolocals \
 --http --http.addr "0.0.0.0" --http.port 8545 --http.corsdomain '*' --http.api 'web3,eth,txpool,net' --http.vhosts='*' \
 --ws --ws.addr "0.0.0.0" --ws.port 8546 --ws.origins '*' --ws.api 'eth,net,web3,txpool' \
