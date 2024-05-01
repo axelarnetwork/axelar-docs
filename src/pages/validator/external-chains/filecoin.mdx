@@ -82,11 +82,11 @@ Download the latest pruned snapshot.
 
 <tabs>
 <tab-item title="Mainnet">
- <pre><code>aria2c -x5 https://snapshots.mainnet.filops.net/minimal/latest.zst</code></pre>
+ <pre><code>aria2c -x5 https://forest-archive.chainsafe.dev/latest/mainnet/</code></pre>
 
 </tab-item>
 <tab-item title="Testnet">
- <pre><code>aria2c -x5 https://snapshots.hyperspace.yoga/hyperspace-latest-pruned.car</code></pre>
+ <pre><code>aria2c -x5 https://forest-archive.chainsafe.dev/latest/calibnet/</code></pre>
 
 </tab-item>
 </tabs>
@@ -94,7 +94,7 @@ Download the latest pruned snapshot.
 Import the snapshot
 
 ```bash
-lotus daemon --import-snapshot path/to/snapshot.car --halt-after-import
+lotus daemon --import-snapshot path/to/snapshot.car.zst --halt-after-import
 ```
 
 Modify the lotus config file `~/.lotus/config.toml`. First, enable the Eth RPC needed by vald. Also set the P2P configuration to use a static port with your public IP.
