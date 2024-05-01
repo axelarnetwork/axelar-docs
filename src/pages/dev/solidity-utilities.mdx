@@ -32,7 +32,7 @@ In order to pass in data for a contract's constructor arguments you must encode 
 
 For example to deploy a contract with a constructor that takes in two arguments, a `uint256` and an `address`, you could call the `deploy()` function as follows:
 
-```
+```solidity
 function deployContract() external {
     Create3Deployer.deploy(
         keccak256(bytes("<my salt>")),
