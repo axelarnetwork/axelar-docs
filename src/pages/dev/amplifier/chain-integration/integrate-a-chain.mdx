@@ -84,9 +84,9 @@ You can either use the existing deployed contracts and on the devnet via their `
 
 Use the existing deployments for all three contracts, making note of the existing deployment's `code_id`:
 
-- [Gateway](https://github.com/axelarnetwork/axelar-contract-deployments/blob/main/axelar-chains-config/info/devnet-amplifier.json#L409) (code_id: `7`)
-- [Voting verifier](https://github.com/axelarnetwork/axelar-contract-deployments/blob/main/axelar-chains-config/info/devnet-amplifier.json#L370) (code_id: `6`)
-- [Mutisig prover](https://github.com/axelarnetwork/axelar-contract-deployments/blob/main/axelar-chains-config/info/devnet-amplifier.json#L434) (code_id: `8`)
+- Voting verifier(code_id: `124`)
+- Gateway (code_id: `125`)
+- Mutisig prover (code_id: `126`)
 
 ### Option 2: Build and deploy the contracts yourself
 
@@ -174,7 +174,7 @@ Use the existing deployments for all three contracts, making note of the existin
         --from wallet \
         --gas auto --gas-adjustment 1.5 --gas-prices 0.007uamplifier \
         --chain-id devnet-amplifier \
-        --node http://devnet-amplifier.axelar.dev:26657 \
+        --node http://devnet-amplifier.axelar.dev:26657
     ```
 
     Remember to save your `code_id`.
@@ -188,7 +188,7 @@ Use the existing deployments for all three contracts, making note of the existin
         --from wallet \
         --gas auto --gas-adjustment 1.5 --gas-prices 0.007uamplifier \
         --chain-id devnet-amplifier \
-        --node http://devnet-amplifier.axelar.dev:26657 \
+        --node http://devnet-amplifier.axelar.dev:26657
     ```
 
     Remember to save your `code_id`.
@@ -201,17 +201,37 @@ You can also deploy a custom implementation of the gateway, verifier, and prover
         
 1. Instantiate the voting verifier:
 
+    Set your parameters.
     ```bash
-    axelard tx wasm instantiate [voting verifier CODE ID] \
-        '{"service_registry_address":"axelar1hrpna9v7vs3stzyd4z3xf00676kf78zpe2u5ksvljswn2vnjp3ystlgl4x","service_name":"validators","source_gateway_address":"0xCa85f85C72df5f8428a440887CA7c449D94e0D0c","confirmation_height":1,"block_expiry":10,"source_chain":"test","rewards_address":"axelar1wkwy0xh89ksdgj9hr347dyd2dw7zesmtrue6kfzyml4vdtz6e5ws2pvc5e","voting_threshold":["9","10"]}' \
+    export VERIFIER_CODE_ID=124 # Set your Code ID
+    export MY_WALLET_ADDRESS="axelar14r0xzwz8hmkshau39dyja5kx503dx6zu52623h"
+    export MY_SOURCE_CHAIN_GATEWAY_ADDRESS="0xCa85f85C72df5f8428a440887CA7c449D94e0D0c"
+    ```
+
+    ```bash
+    axelard tx wasm instantiate $VERIFIER_CODE_ID \
+        '{
+            "governance_address": "axelar1zlr7e5qf3sz7yf890rkh9tcnu87234k6k7ytd9",
+            "service_registry_address":"axelar1c9fkszt5lq34vvvlat3fxj6yv7ejtqapz04e97vtc9m5z9cwnamq8zjlhz",
+            "service_name":"validators",
+            "source_gateway_address":"'"$MY_SOURCE_CHAIN_GATEWAY_ADDRESS"'",
+            "voting_threshold":["1","1"],
+            "block_expiry":10,
+            "confirmation_height":1,
+            "source_chain":"test",
+            "rewards_address":"axelar1vaj9sfzc3z0gpel90wu4ljutncutv0wuhvvwfsh30rqxq422z89qnd989l"
+        }' \
         --keyring-backend test \
         --from wallet \
         --gas auto --gas-adjustment 1.5 --gas-prices 0.007uamplifier \
         --chain-id devnet-amplifier \
         --node http://devnet-amplifier.axelar.dev:26657 \
         --label test-voting-verifier \
-        --admin [your wallet address]
+        --admin $MY_WALLET_ADDRESS
     ```
+
+    { /* message_id_format is coming soon should be HexTxHashAndEventIndex (0) or 
+    Base58TxDigestAndEventIndex (1), */}
     
     Search the output of this command and note the `_contract_address`. It will be in the in `logs.events` property. You'll need to do this for each instantiation to use in future steps.
 
@@ -253,32 +273,65 @@ You can also deploy a custom implementation of the gateway, verifier, and prover
     
 1. Instantiate the gateway:
 
+    Set your parameters, including the gateway address from the previous step.
     ```bash
-    axelard tx wasm instantiate [gateway CODE ID] \
-        '{"verifier_address":"axelar1x3960tw9cml6xsqtvzt4gmw3scauaxdd83rhs9dmlpjfjf9z9s7qjx8g0j","router_address":"axelar1fmsa0f5rs5jyauama96k0umzkktemqawrtn28zrjc0rvx47f68fqckxwuj"}' \
+    export GATEWAY_CODE_ID=125 # Set your Code ID
+    export MY_VERIFIER_ADDRESS="0xCa85f85C72df5f8428a440887CA7c449D94e0D0c"
+    ```
+    Now instantiate the contract.
+    
+    ```bash
+    axelard tx wasm instantiate $GATEWAY_CODE_ID \
+        '{
+            "verifier_address": "'"$MY_VERIFIER_ADDRESS"'",
+            "router_address": "axelar14jjdxqhuxk803e9pq64w4fgf385y86xxhkpzswe9crmu6vxycezst0zq8y"
+        }' \
         --keyring-backend test \
         --from wallet \
         --gas auto --gas-adjustment 1.5 --gas-prices 0.007uamplifier \
         --chain-id devnet-amplifier \
         --node http://devnet-amplifier.axelar.dev:26657 \
         --label test-gateway \
-        --admin [your wallet address]
+        --admin $MY_WALLET_ADDRESS
     ```
 
     Search the output of this command and note the `_contract_address`. 
 
 1. Instantiate the multisig prover:
 
+    Set your parameters, including the gateway address from the previous step.
     ```bash
-    axelard tx wasm instantiate [multisig prover CODE ID] \
-        '{"admin_address": "axelar1zlr7e5qf3sz7yf890rkh9tcnu87234k6k7ytd9","gateway_address":"axelar1rcmvfsn77pd6m04ctqj3wcu66pvrw9p265cdl72w4zarfup2rv7qpryg7d","multisig_address":"axelar1ufs3tlq4umljk0qfe8k5ya0x6hpavn897u2cnf9k0en9jr7qarqqa9263g","service_registry_address":"axelar1hrpna9v7vs3stzyd4z3xf00676kf78zpe2u5ksvljswn2vnjp3ystlgl4x","voting_verifier_address":"axelar1x3960tw9cml6xsqtvzt4gmw3scauaxdd83rhs9dmlpjfjf9z9s7qjx8g0j","destination_chain_id": "43113","signing_threshold": ["4","5"],"service_name": "validators","chain_name":"test","worker_set_diff_threshold": 1,"encoder": "abi","key_type": "ecdsa"}' \
+    export PROVER_CODE_ID=126 # Set your Code ID
+    export MY_GATEWAY_ADDRESS="axelar1ufs3tlq4umljk0qfe8k5ya0x6hpavn897u2cnf9k0en9jr7qarqqa9263g"
+    export MY_CHAIN_ID=43113
+    ```
+    Now instantiate the contract.
+
+    ```bash
+    axelard tx wasm instantiate $PROVER_CODE_ID \
+        '{
+            "admin_address": "'"$MY_WALLET_ADDRESS"'",
+            "governance_address": "axelar1zlr7e5qf3sz7yf890rkh9tcnu87234k6k7ytd9",
+            "gateway_address": "'"$MY_GATEWAY_ADDRESS"'",
+            "multisig_address": "axelar19jxy26z0qnnspa45y5nru0l5rmy9d637z5km2ndjxthfxf5qaswst9290r",
+            "coordinator_address":"axelar1m2498n4h2tskcsmssjnzswl5e6eflmqnh487ds47yxyu6y5h4zuqr9zk4g",
+            "service_registry_address":"axelar1c9fkszt5lq34vvvlat3fxj6yv7ejtqapz04e97vtc9m5z9cwnamq8zjlhz",
+            "voting_verifier_address": "'"$MY_VERIFIER_ADDRESS"'",
+            "destination_chain_id": "'"$MY_CHAIN_ID"'",
+            "signing_threshold": ["1","1"],
+            "service_name": "validators",
+            "chain_name":"test",
+            "worker_set_diff_threshold": 1,
+            "encoder": "abi",
+            "key_type": "ecdsa"
+        }' \
         --keyring-backend test \
         --from wallet \
         --gas auto --gas-adjustment 1.5 --gas-prices 0.007uamplifier \
         --chain-id devnet-amplifier \
         --node http://devnet-amplifier.axelar.dev:26657 \
         --label test-prover  \
-        --admin [your wallet address]
+        --admin $MY_WALLET_ADDRESS
     ```
 
    Search the output of this command and note the `_contract_address`.
