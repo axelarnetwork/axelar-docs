@@ -84,7 +84,7 @@ You can either use the existing deployed contracts and on the devnet via their `
 
 Use the existing deployments for all three contracts, making note of the existing deployment's `code_id`:
 
-- Voting verifier(code_id: `124`)
+- Voting verifier (code_id: `124`)
 - Gateway (code_id: `125`)
 - Mutisig prover (code_id: `126`)
 
@@ -95,7 +95,7 @@ Use the existing deployments for all three contracts, making note of the existin
     ```bash
     git clone https://github.com/axelarnetwork/axelar-amplifier
     cd axelar-amplifier
-    git checkout ampd-v0.1.0
+    git checkout ampd-v0.2.0
     ```
 
 1. Build the `gateway`, `voting verifier`, and `multisig prover` contracts from using the [CosmWasm `rust-optimizer`](https://github.com/CosmWasm/optimizer). From the root of the repo, run:
@@ -273,7 +273,7 @@ You can also deploy a custom implementation of the gateway, verifier, and prover
     
 1. Instantiate the gateway:
 
-    Set your parameters, including the gateway address from the previous step.
+    Set your parameters, including the verifier address from the previous step.
     ```bash
     export GATEWAY_CODE_ID=125 # Set your Code ID
     export MY_VERIFIER_ADDRESS="0xCa85f85C72df5f8428a440887CA7c449D94e0D0c"
