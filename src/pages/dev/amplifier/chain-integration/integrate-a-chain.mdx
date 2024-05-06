@@ -115,7 +115,7 @@ Use the existing deployments for all three contracts, making note of the existin
         --from wallet \
         --gas auto --gas-adjustment 1.5 --gas-prices 0.007uamplifier \
         --chain-id devnet-amplifier \
-        --node http://devnet-amplifier.axelar.dev:26657 \
+        --node http://devnet-amplifier.axelar.dev:26657
     ```
    
     Each `wasm store` transaction will store your smart contract on the blockchain. You should look in the response to find the `code_id` in `logs.events`. This gives you a number representing where your smart contract is stored, which will be needed to instantiate it.
