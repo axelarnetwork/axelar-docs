@@ -14,7 +14,7 @@
       "symbol": "AXL",
       "image": "/images/assets/axl.svg",
       "decimals": 6,
-      "transfer_fee": 0.01
+      "transfer_fee": 0.017
     },
     {
       "id": "dai-wei",
@@ -38,7 +38,7 @@
       "symbol": "WBTC",
       "image": "/images/assets/wbtc.svg",
       "decimals": 8,
-      "transfer_fee": 4.2e-06
+      "transfer_fee": 1.7e-06
     },
     {
       "id": "weth-wei",
@@ -46,7 +46,7 @@
       "symbol": "WETH",
       "image": "/images/assets/weth.svg",
       "decimals": 18,
-      "transfer_fee": 6.2e-05
+      "transfer_fee": 3.2e-05
     },
     {
       "id": "wmai-wei",
@@ -78,7 +78,7 @@
       "symbol": "wstETH",
       "image": "/images/assets/wsteth.svg",
       "decimals": 18,
-      "transfer_fee": 5.7e-05
+      "transfer_fee": 2.9e-05
     },
     {
       "id": "wusdm-wei",
@@ -166,7 +166,7 @@
       "symbol": "cbETH",
       "image": "/images/assets/cbeth.svg",
       "decimals": 18,
-      "transfer_fee": 6.2e-05
+      "transfer_fee": 3.2e-05
     },
     {
       "id": "sfrxeth-wei",
@@ -174,7 +174,7 @@
       "symbol": "sfrxETH",
       "image": "/images/assets/sfrxeth.svg",
       "decimals": 18,
-      "transfer_fee": 5.7e-05
+      "transfer_fee": 2.9e-05
     },
     {
       "id": "frxeth-wei",
@@ -182,7 +182,7 @@
       "symbol": "frxETH",
       "image": "/images/assets/frxeth.svg",
       "decimals": 18,
-      "transfer_fee": 6.2e-05
+      "transfer_fee": 3.2e-05
     },
     {
       "id": "sfrax-wei",
@@ -206,7 +206,7 @@
       "symbol": "rETH",
       "image": "/images/assets/reth.svg",
       "decimals": 18,
-      "transfer_fee": 5.7e-05
+      "transfer_fee": 2.9e-05
     },
     {
       "id": "arb-wei",
@@ -414,7 +414,7 @@
       "symbol": "WAVAX",
       "image": "/images/assets/wavax.svg",
       "decimals": 18,
-      "transfer_fee": 0.01
+      "transfer_fee": 0.003
     },
     {
       "id": "wglmr-wei",
@@ -422,7 +422,7 @@
       "symbol": "WGLMR",
       "image": "/images/assets/wglmr.svg",
       "decimals": 18,
-      "transfer_fee": 0.19
+      "transfer_fee": 0.29
     },
     {
       "id": "wbnb-wei",
@@ -430,7 +430,7 @@
       "symbol": "WBNB",
       "image": "/images/assets/wbnb.svg",
       "decimals": 18,
-      "transfer_fee": 0.0004
+      "transfer_fee": 0.00018
     },
     {
       "id": "wftm-wei",
@@ -438,7 +438,7 @@
       "symbol": "WFTM",
       "image": "/images/assets/wftm.svg",
       "decimals": 18,
-      "transfer_fee": 0.36
+      "transfer_fee": 0.15
     },
     {
       "id": "uatom",
@@ -502,7 +502,7 @@
       "symbol": "LINK",
       "image": "/images/assets/link.svg",
       "decimals": 18,
-      "transfer_fee": 0.015
+      "transfer_fee": 0.0074
     },
     {
       "id": "frax-wei",
@@ -673,12 +673,36 @@
       "transfer_fee": 1.7
     },
     {
+      "id": "yum-wei",
+      "name": "YUM - Yum",
+      "symbol": "YUM",
+      "image": "/images/assets/yum.svg",
+      "decimals": 18,
+      "transfer_fee": 5.0
+    },
+    {
       "id": "unls",
       "name": "NLS - NLS native asset",
       "symbol": "NLS",
       "image": "/images/assets/nls.svg",
       "decimals": 6,
       "transfer_fee": 2.5
+    },
+    {
+      "id": "metal-wei",
+      "name": "METAL - METAL",
+      "symbol": "METAL",
+      "image": "/images/assets/metal.svg",
+      "decimals": 18,
+      "transfer_fee": 2.7
+    },
+    {
+      "id": "mee-wei",
+      "name": "MEE - MEE Governance Token",
+      "symbol": "MEE",
+      "image": "/images/assets/mee.svg",
+      "decimals": 18,
+      "transfer_fee": 4.2
     }
   ],
   "testnet": [
