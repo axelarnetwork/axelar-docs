@@ -633,16 +633,6 @@
       "channel_id": "channel-84"
     },
     {
-      "from": "umee",
-      "to": "axelarnet",
-      "channel_id": "channel-3"
-    },
-    {
-      "from": "axelarnet",
-      "to": "umee",
-      "channel_id": "channel-466"
-    },
-    {
       "from": "xpla",
       "to": "axelarnet",
       "channel_id": "channel-0"

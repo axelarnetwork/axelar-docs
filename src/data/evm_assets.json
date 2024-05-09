@@ -5342,6 +5342,28 @@
       ]
     },
     {
+      "id": "yum-wei",
+      "name": "YUM - Yum",
+      "symbol": "YUM",
+      "image": "/images/assets/yum.svg",
+      "contracts": [
+        {
+          "chain": "arbitrum",
+          "address": "0x9F41b34f42058a7b74672055a5fae22c4b113Fd1",
+          "symbol": "YUM",
+          "decimals": 18,
+          "transfer_fee": 500.0
+        },
+        {
+          "chain": "ethereum",
+          "address": "0xcE682c89C63d2850Cb2ca898E44D6c7c30d897a6",
+          "symbol": "YUM",
+          "decimals": 18,
+          "transfer_fee": 3000.0
+        }
+      ]
+    },
+    {
       "id": "unls",
       "name": "NLS - NLS native asset",
       "symbol": "NLS",
@@ -5353,6 +5375,78 @@
           "symbol": "NLS",
           "decimals": 6,
           "transfer_fee": 1500.0
+        }
+      ]
+    },
+    {
+      "id": "metal-wei",
+      "name": "METAL - METAL",
+      "symbol": "METAL",
+      "image": "/images/assets/metal.svg",
+      "contracts": [
+        {
+          "chain": "binance",
+          "address": "0x6238825dcb3F6EcCf22A468faf36393753191043",
+          "symbol": "METAL",
+          "decimals": 18,
+          "transfer_fee": 40.0
+        },
+        {
+          "chain": "ethereum",
+          "address": "0x27C1D5925852c40ee712A089112E62A68d0cfFC0",
+          "symbol": "METAL",
+          "decimals": 18,
+          "transfer_fee": 1600.0
+        },
+        {
+          "chain": "immutable",
+          "address": "0x2A644D2d996820ce5Ca4256cc68E53F4DE29B444",
+          "symbol": "METAL",
+          "decimals": 18,
+          "transfer_fee": 40.0
+        },
+        {
+          "chain": "polygon",
+          "address": "0x200C234721b5e549c3693CCc93cF191f90dC2aF9",
+          "symbol": "METAL",
+          "decimals": 18,
+          "transfer_fee": 40.0
+        }
+      ]
+    },
+    {
+      "id": "mee-wei",
+      "name": "MEE - MEE Governance Token",
+      "symbol": "MEE",
+      "image": "/images/assets/mee.svg",
+      "contracts": [
+        {
+          "chain": "avalanche",
+          "address": "0x38CF645DEE7d0c0E36A0f020c418405101955C7d",
+          "symbol": "MEE",
+          "decimals": 18,
+          "transfer_fee": 64.0
+        },
+        {
+          "chain": "ethereum",
+          "address": "0xB468Fd557B9F996D0fc89952e94D0F8491279DBf",
+          "symbol": "MEE",
+          "decimals": 18,
+          "transfer_fee": 2500.0
+        },
+        {
+          "chain": "immutable",
+          "address": "0x9f6884b94c36cb32519440F0497E12a8F0dE7130",
+          "symbol": "MEE",
+          "decimals": 18,
+          "transfer_fee": 64.0
+        },
+        {
+          "chain": "polygon",
+          "address": "0xEB7eaB87837f4Dad1bb80856db9E4506Fc441f3D",
+          "symbol": "MEE",
+          "decimals": 18,
+          "transfer_fee": 64.0
         }
       ]
     }
