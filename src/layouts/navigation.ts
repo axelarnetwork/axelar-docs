@@ -152,7 +152,7 @@ export const getNavigation = (section) => {
             },
             {
               title: "On-Chain Estimation",
-              href: "/dev/gas-service/on-chain",
+              href: "/dev/gas-service/on-chain-estimation",
             },
           ],
         },
