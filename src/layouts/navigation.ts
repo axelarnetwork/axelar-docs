@@ -83,7 +83,8 @@ export const getNavigation = (section) => {
               title: "Monitor Transaction State",
               href: "/dev/general-message-passing/monitoring",
             },
-            { title: "Axelar Executable",
+            {
+              title: "Axelar Executable",
               href: "/dev/general-message-passing/executable"
             },
             {
@@ -138,7 +139,7 @@ export const getNavigation = (section) => {
               href: "/dev/gas-service/intro",
             },
             {
-              title: "Pay Gas",
+              title: "Estimate and Pay Gas",
               href: "/dev/gas-service/pay-gas",
             },
             {
