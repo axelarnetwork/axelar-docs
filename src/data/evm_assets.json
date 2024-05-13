@@ -5355,11 +5355,25 @@
           "transfer_fee": 500.0
         },
         {
+          "chain": "base",
+          "address": "0x9F41b34f42058a7b74672055a5fae22c4b113Fd1",
+          "symbol": "YUM",
+          "decimals": 18,
+          "transfer_fee": 500.0
+        },
+        {
           "chain": "ethereum",
           "address": "0xcE682c89C63d2850Cb2ca898E44D6c7c30d897a6",
           "symbol": "YUM",
           "decimals": 18,
           "transfer_fee": 3000.0
+        },
+        {
+          "chain": "optimism",
+          "address": "0x9F41b34f42058a7b74672055a5fae22c4b113Fd1",
+          "symbol": "YUM",
+          "decimals": 18,
+          "transfer_fee": 500.0
         }
       ]
     },
