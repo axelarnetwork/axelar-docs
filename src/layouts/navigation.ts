@@ -83,6 +83,9 @@ export const getNavigation = (section) => {
               title: "Monitor Transaction State",
               href: "/dev/general-message-passing/monitoring",
             },
+            { title: "Axelar Executable",
+              href: "/dev/general-message-passing/executable"
+            },
             {
               title: "Verify GMP Transaction",
               href: "/dev/general-message-passing/verify-gmp-tx",
