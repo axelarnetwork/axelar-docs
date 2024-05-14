@@ -105,11 +105,11 @@ See [Estimate and Pay Gas](/dev/gas-service/pay-gas) for more details.
 
 The gas price set will determine how quickly the transaction will be included in the next block. A higher gas price will lead to faster inclusion, while a lower gas price might cause slow or even failed transactions if the network is busy.
 
-## Broadcast transaction
+### Broadcast transaction
 
 After crafting a transaction with the appropriate gas fee and price, the relayer needs to broadcast it to the network. This process involves signing the transaction with the relayer's account private key and sending it to the network. The network nodes then validate and include it in the upcoming blocks.
 
-## React to transaction failures
+### React to transaction failures (optional)
 
 The relayer can optionally react to transaction failures. Some failures types include the following:
 
