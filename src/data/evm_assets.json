@@ -77,6 +77,13 @@
           "transfer_fee": 10.0
         },
         {
+          "chain": "immutable",
+          "address": "0xEB466342C4d449BC9f53A865D5Cb90586f405215",
+          "symbol": "axlUSDC",
+          "decimals": 6,
+          "transfer_fee": 1.5
+        },
+        {
           "chain": "kava",
           "address": "0xEB466342C4d449BC9f53A865D5Cb90586f405215",
           "symbol": "axlUSDC",
@@ -5355,11 +5362,25 @@
           "transfer_fee": 500.0
         },
         {
+          "chain": "base",
+          "address": "0x9F41b34f42058a7b74672055a5fae22c4b113Fd1",
+          "symbol": "YUM",
+          "decimals": 18,
+          "transfer_fee": 500.0
+        },
+        {
           "chain": "ethereum",
           "address": "0xcE682c89C63d2850Cb2ca898E44D6c7c30d897a6",
           "symbol": "YUM",
           "decimals": 18,
           "transfer_fee": 3000.0
+        },
+        {
+          "chain": "optimism",
+          "address": "0x9F41b34f42058a7b74672055a5fae22c4b113Fd1",
+          "symbol": "YUM",
+          "decimals": 18,
+          "transfer_fee": 500.0
         }
       ]
     },
