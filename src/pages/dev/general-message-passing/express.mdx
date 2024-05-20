@@ -55,7 +55,18 @@ Interchain Tokens that were deployed via the [Interchain Token Service](https://
 
 ## Fees
 
-Express transactions require an [additional fee](/dev/gas-service/pricing#callcontractwithtokenexpress-gmp-express) of **$1 USD per call** alongside existing GMP fees. This extra fee acts as insurance for the Express relayer for assuming the risk of an Express transaction. If the fee is not paid, the transaction will revert to a regular non-Express GMP transaction.
+[Express transactions](/dev/general-message-passing/express) incur an additional **insurance fee** alongside existing GMP overhead fees. This extra fee acts as insurance for the Express relayer for assuming the risk of an Express transaction. If the fee is not paid, the transaction will revert to a regular non-Express GMP transaction. If the fee is not paid, the transaction will revert to a regular non-Express GMP transaction.
+
+`callContractWithTokenExpress()`: Fees for GMP express include all of the same fees as `callContractWithToken()`, plus:
+
+- An **Express fee** that covers relayer/reorg risk
+- Gas used to execute the express method
+
+For GMP Express transactions, the total refund will then be:
+
+**Refund** = **Gas deposit** - **Express fee** - **Gas used to execute express method** - **Network base fee** - **Execution fee** - **approximate gas to process the refund**.
+
+Gas estimated to transfer the refund is usually a bit higher than the actual gas used.
 
 ### Estimate gas costs for an Express transaction
 
