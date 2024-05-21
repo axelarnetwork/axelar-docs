@@ -29,20 +29,20 @@ To connect your chain to the Axelar network via the Interchain Amplifier, you'll
 ### Axelar gateway contract
 
 - This is a smart contract on the Axelar network that checks the validity of a transaction with the verifier contract and forwards it to the Amplifier router.
-- Most integrators will begin by using or customizing the Axelar [Gateway contract](https://github.com/axelarnetwork/axelar-amplifier/tree/main/contracts/gateway) (current version: 0.2.0).
+- Most integrators will begin by using or customizing the Axelar [Gateway contract](https://github.com/axelarnetwork/axelar-amplifier/tree/main/contracts/gateway).
 - [Instantiation parameters](https://github.com/axelarnetwork/axelar-amplifier/blob/main/contracts/gateway/src/msg.rs) can be found on GitHub.
 
 ### Voting verifier contract
 
 - This is a smart contract on the Axelar network that verifies the validity of transactions on your chain.
-- Most integrators will begin by using or customizing the Axelar [Voting Verifier contract](https://github.com/axelarnetwork/axelar-amplifier/tree/main/contracts/voting-verifier) (current version: 0.3.0), which can be customized to your needs for cases such as verification via ZK Proof.
+- Most integrators will begin by using or customizing the Axelar [Voting Verifier contract](https://github.com/axelarnetwork/axelar-amplifier/tree/main/contracts/voting-verifier), which can be customized to your needs for cases such as verification via ZK Proof.
 - [Instantiation parameters](https://github.com/axelarnetwork/axelar-amplifier/blob/main/contracts/voting-verifier/src/msg.rs) can be found on GitHub.
 - If you deploy a Voting Verifier contract, verifiers will need to support your chain and vote on the truth of source chain transactions.
 
 ### Multisig prover contract
 
 - This is a smart contract on the Axelar network that knows how to prove the validity of a transaction on your chain.
-- Most integrators will begin by using or customizing the Axelar [Multisig Prover contract](https://github.com/axelarnetwork/axelar-amplifier/tree/main/contracts/multisig-prover) (current version: 0.3.0).
+- Most integrators will begin by using or customizing the Axelar [Multisig Prover contract](https://github.com/axelarnetwork/axelar-amplifier/tree/main/contracts/multisig-prover).
 - [Instantiation parameters](https://github.com/axelarnetwork/axelar-amplifier/blob/main/contracts/multisig-prover/src/msg.rs) can be found on GitHub.
 
 The [chain integration tutorial](/dev/amplifier/chain-integration/integrate-a-chain) will guide you through this process on the current Amplifier devnet, which requires submitting a [chain integration form](https://docs.google.com/forms/d/e/1FAIpQLSchD7P1WfdSCQfaZAoqX7DyqJOqYKxXle47yrueTbOgkKQDiQ/viewform) to the Interop Labs team at the end. Contract deployment on testnet or mainnet will require a governance proposal.
