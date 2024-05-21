@@ -228,8 +228,8 @@ export const getNavigation = (section) => {
               href: "/dev/amplifier/introduction",
             },
             {
-              title: "Integration Overview",
-              href: "/dev/amplifier/chain-integration/introduction",
+              title: "Chain Integration Developer Guide",
+              href: "/dev/amplifier/chain-integration/developer-guide",
             },
             {
               title: "Integrate a Chain",
