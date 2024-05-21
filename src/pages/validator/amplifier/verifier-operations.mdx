@@ -1,0 +1,46 @@
+# Verifier operations
+
+import { Callout } from "/src/components/callout"
+
+<Callout>
+The Axelar Virtual Machine (AVM) and Amplifier are currently under active development, so these instructions are likely to change. Please check back frequently for updates.
+</Callout>
+
+## Approvals
+
+### Approve a verifier or verifier set
+
+Each verifier in a verifier set must use `ampd` to bond and register chain support themselves. On testnet and mainnet, community governance will call the following to authorize them:
+
+```bash
+axelard tx wasm execute [service registry address] '{"authorize_workers":{"workers":[list of worker addresses], "service_name":[service-name]}}' --from key --gas auto --gas-adjustment 2
+```
+
+## Rewards
+
+There is one [rewards contract](https://github.com/axelarnetwork/axelar-amplifier/blob/main/contracts/rewards/src/msg.rs) for all chain integrations. Rewards are paid out in $AXL.
+
+### How rewards are calculated
+
+Every action earns rewards within `n` epochs. `n` more epochs will be paid out based on what has already been paid. There is a single global parameter for each epoch called `rewards_per_epoch`, in `Uint128`. Later, there will be one per pool. 
+
+Verifiers must hit a [PLACEHOLDER] threshold for payout.
+
+### Check a rewards pool
+
+To check a rewards pool:
+
+```bash
+axelard tx wasm execute $CONTRACT_ADDRESS '' --from validator --gas auto --gas-adjustment 2
+axelard q wasm contract-state smart [rewards contract address] '{"rewards_pool":{"pool_id":{"chain_name":[chain-name],"contract":[address of voting verifier or multisig]}}}'
+```
+
+`contract` is the address of the voting verifier for the chain when querying for voting rewards, but the global multisig (not multisig-prover) address when querying for signing.
+
+### Add rewards to a pool or chain
+
+To add rewards to a pool:
+
+```bash
+axelard tx wasm execute [rewards contract address] '{"add_rewards":{"pool_id":{"chain_name":[chain-name],"contract":[address of voting verifier or multisig]}}}' --amount [amount to add] --from [key] --gas auto --gas-adjustment 2 
+```
