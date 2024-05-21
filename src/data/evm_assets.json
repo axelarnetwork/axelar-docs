@@ -5480,7 +5480,7 @@
       "image": "/images/assets/ausdc.svg",
       "contracts": [
         {
-          "chain": "arbitrum-sepolia",
+          "chain": "arbitrum-amoy",
           "address": "0xA2Ba06a76eC793d1Faf23Cc8220A887402b27331",
           "symbol": "aUSDC",
           "decimals": 6,
@@ -5494,7 +5494,7 @@
           "transfer_fee": 0.1
         },
         {
-          "chain": "base-sepolia",
+          "chain": "base-amoy",
           "address": "0x254d06f33bDc5b8ee05b2ea472107E300226659A",
           "symbol": "aUSDC",
           "decimals": 6,
@@ -5508,14 +5508,14 @@
           "transfer_fee": 0.1
         },
         {
-          "chain": "blast-sepolia",
+          "chain": "blast-amoy",
           "address": "0x254d06f33bDc5b8ee05b2ea472107E300226659A",
           "symbol": "aUSDC",
           "decimals": 6,
           "transfer_fee": 0.1
         },
         {
-          "chain": "ethereum-sepolia",
+          "chain": "ethereum-amoy",
           "address": "0x254d06f33bDc5b8ee05b2ea472107E300226659A",
           "symbol": "aUSDC",
           "decimals": 6,
@@ -5550,14 +5550,14 @@
           "transfer_fee": 0.1
         },
         {
-          "chain": "linea-sepolia",
+          "chain": "linea-amoy",
           "address": "0x254d06f33bDc5b8ee05b2ea472107E300226659A",
           "symbol": "aUSDC",
           "decimals": 6,
           "transfer_fee": 0.1
         },
         {
-          "chain": "mantle-sepolia",
+          "chain": "mantle-amoy",
           "address": "0xAa03872057AD496Bd6f3eE85b85e1e4DABdb1a5d",
           "symbol": "aUSDC",
           "decimals": 6,
@@ -5571,7 +5571,7 @@
           "transfer_fee": 0.1
         },
         {
-          "chain": "optimism-sepolia",
+          "chain": "optimism-amoy",
           "address": "0x254d06f33bDc5b8ee05b2ea472107E300226659A",
           "symbol": "aUSDC",
           "decimals": 6,
@@ -5585,7 +5585,7 @@
           "transfer_fee": 0.1
         },
         {
-          "chain": "polygon-sepolia",
+          "chain": "polygon-amoy",
           "address": "0x254d06f33bDc5b8ee05b2ea472107E300226659A",
           "symbol": "aUSDC",
           "decimals": 6,
@@ -5621,7 +5621,7 @@
       "image": "/images/assets/axl.svg",
       "contracts": [
         {
-          "chain": "arbitrum-sepolia",
+          "chain": "arbitrum-amoy",
           "address": "0x6822d8A56904A746C4812e3E54998295F4667e76",
           "symbol": "wAXL",
           "decimals": 6,
@@ -5635,7 +5635,7 @@
           "transfer_fee": 0.1
         },
         {
-          "chain": "base-sepolia",
+          "chain": "base-amoy",
           "address": "0x23ee2343B892b1BB63503a4FAbc840E0e2C6810f",
           "symbol": "wAXL",
           "decimals": 6,
@@ -5649,14 +5649,14 @@
           "transfer_fee": 0.1
         },
         {
-          "chain": "blast-sepolia",
+          "chain": "blast-amoy",
           "address": "0x23ee2343B892b1BB63503a4FAbc840E0e2C6810f",
           "symbol": "wAXL",
           "decimals": 6,
           "transfer_fee": 0.1
         },
         {
-          "chain": "ethereum-sepolia",
+          "chain": "ethereum-amoy",
           "address": "0x23ee2343B892b1BB63503a4FAbc840E0e2C6810f",
           "symbol": "wAXL",
           "decimals": 6,
@@ -5691,14 +5691,14 @@
           "transfer_fee": 0.1
         },
         {
-          "chain": "linea-sepolia",
+          "chain": "linea-amoy",
           "address": "0x23ee2343B892b1BB63503a4FAbc840E0e2C6810f",
           "symbol": "wAXL",
           "decimals": 6,
           "transfer_fee": 0.1
         },
         {
-          "chain": "mantle-sepolia",
+          "chain": "mantle-amoy",
           "address": "0xA3A2b6F3b34F513BA0084D504E8a6162bd7C7EE6",
           "symbol": "wAXL",
           "decimals": 6,
@@ -5712,7 +5712,7 @@
           "transfer_fee": 0.1
         },
         {
-          "chain": "optimism-sepolia",
+          "chain": "optimism-amoy",
           "address": "0x23ee2343B892b1BB63503a4FAbc840E0e2C6810f",
           "symbol": "wAXL",
           "decimals": 6,
@@ -5726,7 +5726,7 @@
           "transfer_fee": 0.1
         },
         {
-          "chain": "polygon-sepolia",
+          "chain": "polygon-amoy",
           "address": "0x23ee2343B892b1BB63503a4FAbc840E0e2C6810f",
           "symbol": "wAXL",
           "decimals": 6,
@@ -5762,7 +5762,7 @@
       "image": "/images/assets/wsteth.svg",
       "contracts": [
         {
-          "chain": "polygon-sepolia",
+          "chain": "polygon-amoy",
           "address": "0x9cfB13E6c11054ac9fcB92BA89644F30775436e4",
           "symbol": "axl-wstETH",
           "decimals": 18,
@@ -5792,7 +5792,7 @@
       "image": "/images/assets/wmatic.svg",
       "contracts": [
         {
-          "chain": "arbitrum-sepolia",
+          "chain": "arbitrum-amoy",
           "address": "0xa98742504D7764b36aC2e3B62006f387d138b88B",
           "symbol": "WMATIC",
           "decimals": 18,
@@ -5806,7 +5806,7 @@
           "transfer_fee": 0.07
         },
         {
-          "chain": "base-sepolia",
+          "chain": "base-amoy",
           "address": "0x21ba4f6aEdA155DD77Cc33Fb93646910543F0380",
           "symbol": "WMATIC",
           "decimals": 18,
@@ -5820,14 +5820,14 @@
           "transfer_fee": 0.07
         },
         {
-          "chain": "blast-sepolia",
+          "chain": "blast-amoy",
           "address": "0x21ba4f6aEdA155DD77Cc33Fb93646910543F0380",
           "symbol": "WMATIC",
           "decimals": 18,
           "transfer_fee": 0.07
         },
         {
-          "chain": "ethereum-sepolia",
+          "chain": "ethereum-amoy",
           "address": "0x21ba4f6aEdA155DD77Cc33Fb93646910543F0380",
           "symbol": "WMATIC",
           "decimals": 18,
@@ -5862,14 +5862,14 @@
           "transfer_fee": 0.07
         },
         {
-          "chain": "linea-sepolia",
+          "chain": "linea-amoy",
           "address": "0x21ba4f6aEdA155DD77Cc33Fb93646910543F0380",
           "symbol": "WMATIC",
           "decimals": 18,
           "transfer_fee": 0.07
         },
         {
-          "chain": "mantle-sepolia",
+          "chain": "mantle-amoy",
           "address": "0x5e372F445C6afc91Aaca0d6C0Fa170d5f8F30f49",
           "symbol": "WMATIC",
           "decimals": 18,
@@ -5883,7 +5883,7 @@
           "transfer_fee": 0.07
         },
         {
-          "chain": "optimism-sepolia",
+          "chain": "optimism-amoy",
           "address": "0x21ba4f6aEdA155DD77Cc33Fb93646910543F0380",
           "symbol": "WMATIC",
           "decimals": 18,
@@ -5897,7 +5897,7 @@
           "transfer_fee": 0.07
         },
         {
-          "chain": "polygon-sepolia",
+          "chain": "polygon-amoy",
           "address": "0x21ba4f6aEdA155DD77Cc33Fb93646910543F0380",
           "symbol": "WMATIC",
           "decimals": 18,
@@ -5933,7 +5933,7 @@
       "image": "/images/assets/wavax.svg",
       "contracts": [
         {
-          "chain": "arbitrum-sepolia",
+          "chain": "arbitrum-amoy",
           "address": "0x12e5E00075acd8dBfa00576Da30ea81b8c3038a0",
           "symbol": "WAVAX",
           "decimals": 18,
@@ -5947,7 +5947,7 @@
           "transfer_fee": 0.001
         },
         {
-          "chain": "base-sepolia",
+          "chain": "base-amoy",
           "address": "0x2a87806561C550ba2dA9677c5323413E6e539740",
           "symbol": "WAVAX",
           "decimals": 18,
@@ -5961,14 +5961,14 @@
           "transfer_fee": 0.001
         },
         {
-          "chain": "blast-sepolia",
+          "chain": "blast-amoy",
           "address": "0x2a87806561C550ba2dA9677c5323413E6e539740",
           "symbol": "WAVAX",
           "decimals": 18,
           "transfer_fee": 0.001
         },
         {
-          "chain": "ethereum-sepolia",
+          "chain": "ethereum-amoy",
           "address": "0x2a87806561C550ba2dA9677c5323413E6e539740",
           "symbol": "WAVAX",
           "decimals": 18,
@@ -6003,14 +6003,14 @@
           "transfer_fee": 0.001
         },
         {
-          "chain": "linea-sepolia",
+          "chain": "linea-amoy",
           "address": "0x2a87806561C550ba2dA9677c5323413E6e539740",
           "symbol": "WAVAX",
           "decimals": 18,
           "transfer_fee": 0.001
         },
         {
-          "chain": "mantle-sepolia",
+          "chain": "mantle-amoy",
           "address": "0xf3280d7a127Bb743918040fB99108728388e3c9e",
           "symbol": "WAVAX",
           "decimals": 18,
@@ -6024,7 +6024,7 @@
           "transfer_fee": 0.001
         },
         {
-          "chain": "optimism-sepolia",
+          "chain": "optimism-amoy",
           "address": "0x2a87806561C550ba2dA9677c5323413E6e539740",
           "symbol": "WAVAX",
           "decimals": 18,
@@ -6038,7 +6038,7 @@
           "transfer_fee": 0.001
         },
         {
-          "chain": "polygon-sepolia",
+          "chain": "polygon-amoy",
           "address": "0x2a87806561C550ba2dA9677c5323413E6e539740",
           "symbol": "WAVAX",
           "decimals": 18,
@@ -6074,7 +6074,7 @@
       "image": "/images/assets/wftm.svg",
       "contracts": [
         {
-          "chain": "arbitrum-sepolia",
+          "chain": "arbitrum-amoy",
           "address": "0x0075fBA58E4A23Fb1f6EAf43EBA88D0E64580a70",
           "symbol": "WFTM",
           "decimals": 18,
@@ -6088,7 +6088,7 @@
           "transfer_fee": 0.08
         },
         {
-          "chain": "base-sepolia",
+          "chain": "base-amoy",
           "address": "0x594D8b81eC765410536ab59E98091700b99508D8",
           "symbol": "WFTM",
           "decimals": 18,
@@ -6102,14 +6102,14 @@
           "transfer_fee": 0.08
         },
         {
-          "chain": "blast-sepolia",
+          "chain": "blast-amoy",
           "address": "0x594D8b81eC765410536ab59E98091700b99508D8",
           "symbol": "WFTM",
           "decimals": 18,
           "transfer_fee": 0.08
         },
         {
-          "chain": "ethereum-sepolia",
+          "chain": "ethereum-amoy",
           "address": "0x594D8b81eC765410536ab59E98091700b99508D8",
           "symbol": "WFTM",
           "decimals": 18,
@@ -6144,14 +6144,14 @@
           "transfer_fee": 0.08
         },
         {
-          "chain": "linea-sepolia",
+          "chain": "linea-amoy",
           "address": "0x594D8b81eC765410536ab59E98091700b99508D8",
           "symbol": "WFTM",
           "decimals": 18,
           "transfer_fee": 0.08
         },
         {
-          "chain": "mantle-sepolia",
+          "chain": "mantle-amoy",
           "address": "0xd7ba4DE2d9cDF1D34D0aE608F3725Aed1A32821E",
           "symbol": "WFTM",
           "decimals": 18,
@@ -6165,7 +6165,7 @@
           "transfer_fee": 0.08
         },
         {
-          "chain": "optimism-sepolia",
+          "chain": "optimism-amoy",
           "address": "0x594D8b81eC765410536ab59E98091700b99508D8",
           "symbol": "WFTM",
           "decimals": 18,
@@ -6179,7 +6179,7 @@
           "transfer_fee": 0.08
         },
         {
-          "chain": "polygon-sepolia",
+          "chain": "polygon-amoy",
           "address": "0x594D8b81eC765410536ab59E98091700b99508D8",
           "symbol": "WFTM",
           "decimals": 18,
@@ -6215,7 +6215,7 @@
       "image": "/images/assets/wbnb.svg",
       "contracts": [
         {
-          "chain": "arbitrum-sepolia",
+          "chain": "arbitrum-amoy",
           "address": "0x109E2C78C68F6388F6f50841C9A175BaC139B3d7",
           "symbol": "WBNB",
           "decimals": 18,
@@ -6229,7 +6229,7 @@
           "transfer_fee": 0.0003
         },
         {
-          "chain": "base-sepolia",
+          "chain": "base-amoy",
           "address": "0xA9A2D8F279ABC436a18DBB1df3FB233039935D0A",
           "symbol": "WBNB",
           "decimals": 18,
@@ -6243,14 +6243,14 @@
           "transfer_fee": 0.0003
         },
         {
-          "chain": "blast-sepolia",
+          "chain": "blast-amoy",
           "address": "0xA9A2D8F279ABC436a18DBB1df3FB233039935D0A",
           "symbol": "WBNB",
           "decimals": 18,
           "transfer_fee": 0.0003
         },
         {
-          "chain": "ethereum-sepolia",
+          "chain": "ethereum-amoy",
           "address": "0xA9A2D8F279ABC436a18DBB1df3FB233039935D0A",
           "symbol": "WBNB",
           "decimals": 18,
@@ -6285,14 +6285,14 @@
           "transfer_fee": 0.0003
         },
         {
-          "chain": "linea-sepolia",
+          "chain": "linea-amoy",
           "address": "0xA9A2D8F279ABC436a18DBB1df3FB233039935D0A",
           "symbol": "WBNB",
           "decimals": 18,
           "transfer_fee": 0.0003
         },
         {
-          "chain": "mantle-sepolia",
+          "chain": "mantle-amoy",
           "address": "0x500c333DC86813F930299a68B990F57D1ca6e243",
           "symbol": "WBNB",
           "decimals": 18,
@@ -6306,7 +6306,7 @@
           "transfer_fee": 0.0003
         },
         {
-          "chain": "optimism-sepolia",
+          "chain": "optimism-amoy",
           "address": "0xA9A2D8F279ABC436a18DBB1df3FB233039935D0A",
           "symbol": "WBNB",
           "decimals": 18,
@@ -6320,7 +6320,7 @@
           "transfer_fee": 0.0003
         },
         {
-          "chain": "polygon-sepolia",
+          "chain": "polygon-amoy",
           "address": "0xA9A2D8F279ABC436a18DBB1df3FB233039935D0A",
           "symbol": "WBNB",
           "decimals": 18,
@@ -6356,7 +6356,7 @@
       "image": "/images/assets/wdev.svg",
       "contracts": [
         {
-          "chain": "arbitrum-sepolia",
+          "chain": "arbitrum-amoy",
           "address": "0x757eFF1c2096cF0f95F699E6E72a6bf5Ff572664",
           "symbol": "WDEV",
           "decimals": 18,
@@ -6370,7 +6370,7 @@
           "transfer_fee": 0.04
         },
         {
-          "chain": "base-sepolia",
+          "chain": "base-amoy",
           "address": "0x4B13D583F45Aa01fb2bE18a7AAfE14DE183B1Ac9",
           "symbol": "WDEV",
           "decimals": 18,
@@ -6384,14 +6384,14 @@
           "transfer_fee": 0.04
         },
         {
-          "chain": "blast-sepolia",
+          "chain": "blast-amoy",
           "address": "0x4B13D583F45Aa01fb2bE18a7AAfE14DE183B1Ac9",
           "symbol": "WDEV",
           "decimals": 18,
           "transfer_fee": 0.04
         },
         {
-          "chain": "ethereum-sepolia",
+          "chain": "ethereum-amoy",
           "address": "0x4B13D583F45Aa01fb2bE18a7AAfE14DE183B1Ac9",
           "symbol": "WDEV",
           "decimals": 18,
@@ -6426,14 +6426,14 @@
           "transfer_fee": 0.04
         },
         {
-          "chain": "linea-sepolia",
+          "chain": "linea-amoy",
           "address": "0x4B13D583F45Aa01fb2bE18a7AAfE14DE183B1Ac9",
           "symbol": "WDEV",
           "decimals": 18,
           "transfer_fee": 0.04
         },
         {
-          "chain": "mantle-sepolia",
+          "chain": "mantle-amoy",
           "address": "0xe9a3a0E5C9cFed51E1D60d57e10DeE4478415e52",
           "symbol": "WDEV",
           "decimals": 18,
@@ -6447,7 +6447,7 @@
           "transfer_fee": 0.04
         },
         {
-          "chain": "optimism-sepolia",
+          "chain": "optimism-amoy",
           "address": "0x4B13D583F45Aa01fb2bE18a7AAfE14DE183B1Ac9",
           "symbol": "WDEV",
           "decimals": 18,
@@ -6461,7 +6461,7 @@
           "transfer_fee": 0.04
         },
         {
-          "chain": "polygon-sepolia",
+          "chain": "polygon-amoy",
           "address": "0x4B13D583F45Aa01fb2bE18a7AAfE14DE183B1Ac9",
           "symbol": "WDEV",
           "decimals": 18,
