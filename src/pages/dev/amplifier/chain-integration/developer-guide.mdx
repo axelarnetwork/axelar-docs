@@ -1,4 +1,4 @@
-# Chain Integration on the Axelar Amplifier
+# Chain Integration developer guide
 
 import { Callout } from "/src/components/callout"
 
@@ -82,7 +82,7 @@ Audit your on-chain contracts.
     - A proposal to store your CosmWasm code
     - A proposal to instantiate your contracts
 
-1. Make an on-chain proposal to add your chain to the Amplifier router.
+1. Make an on-chain proposal to add your chain to the Amplifier router. A router uses the governance method [`RegisterChain()`](https://github.com/axelarnetwork/axelar-amplifier/blob/main/packages/router-api/src/msg.rs#L13) to find and register new chain integrations. The chain name is then used to fund rewards and connect verifiers.
 
 **8. Test in testnet**
 
@@ -98,4 +98,25 @@ Ensure your relayer is robust, fault-tolerant, and can handle the load of your c
     - A proposal to store your CosmWasm code
     - A proposal to instantiate your contracts
 
-1. Make an on-chain proposal to add your chain to the Amplifier router.
+1. Make an on-chain proposal to add your chain to the Amplifier router. A router uses the governance method [`RegisterChain()`](https://github.com/axelarnetwork/axelar-amplifier/blob/main/packages/router-api/src/msg.rs#L13) to find and register new chain integrations. The chain name is then used to fund rewards and connect verifiers.
+
+## Manage the rewards pool
+
+### Check status of a rewards pool
+
+Use the following command to check the status of a rewards pool:
+
+```bash
+axelard tx wasm execute $CONTRACT_ADDRESS '' --from validator --gas auto --gas-adjustment 2
+axelard q wasm contract-state smart [rewards contract address] '{"rewards_pool":{"pool_id":{"chain_name":[chain-name],"contract":[address of voting verifier or multisig]}}}' --node $RPC
+```
+
+When querying for voting rewards, `contract` is the address of the voting verifier.
+
+### Add rewards to a pool
+
+Use the following command to add voting rewards to a pool:
+
+```bash
+axelard tx wasm execute [rewards contract address] '{"add_rewards":{"pool_id":{"chain_name":[chain-name],"contract":[address of voting verifier or multisig]}}}' --amount [amount to add] --from [key] --gas auto --gas-adjustment 2
+```
