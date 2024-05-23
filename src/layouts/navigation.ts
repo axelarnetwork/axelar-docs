@@ -83,7 +83,8 @@ export const getNavigation = (section) => {
               title: "Monitor Transaction State",
               href: "/dev/general-message-passing/monitoring",
             },
-            { title: "Axelar Executable",
+            {
+              title: "Axelar Executable",
               href: "/dev/general-message-passing/executable"
             },
             {
@@ -131,6 +132,10 @@ export const getNavigation = (section) => {
           ],
         },
         {
+          title: "EVM Relayer",
+          href: "/dev/evm-relayer",
+        },
+        {
           title: "Gas Service",
           children: [
             {
@@ -155,7 +160,7 @@ export const getNavigation = (section) => {
             },
             {
               title: "On-Chain Estimation",
-              href: "/dev/gas-service/on-chain",
+              href: "/dev/gas-service/on-chain-estimation",
             },
           ],
         },
