@@ -24,7 +24,7 @@ There is one [rewards contract](https://github.com/axelarnetwork/axelar-amplifie
 
 Every action earns rewards within `n` epochs. `n` more epochs will be paid out based on what has already been paid. There is a single global parameter for each epoch called `rewards_per_epoch`, in `Uint128`. Later, there will be one per pool. 
 
-There is a [threshold of weighted votes](https://github.com/axelarnetwork/axelar-amplifier/blob/main/contracts/voting-verifier/src/msg.rs#L25) required for voting to be considered complete for a particular message. Verifiers must hit that threshold for payout.
+A [threshold of weighted votes](https://github.com/axelarnetwork/axelar-amplifier/blob/main/contracts/voting-verifier/src/msg.rs#L25) is required for voting to be considered complete for a particular message. Verifiers must hit that threshold for payout.
 
 ### Check a rewards pool
 
