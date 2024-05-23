@@ -18,13 +18,13 @@ axelard tx wasm execute [service registry address] '{"authorize_workers":{"worke
 
 ## Rewards
 
-There is one [rewards contract](https://github.com/axelarnetwork/axelar-amplifier/blob/main/contracts/rewards/src/msg.rs) for all chain integrations. Rewards are paid out in $AXL.
+There is one [rewards contract](https://github.com/axelarnetwork/axelar-amplifier/blob/main/doc/src/contracts/rewards.md) for all chain integrations. Rewards are paid out in $AXL.
 
 ### How rewards are calculated
 
 Every action earns rewards within `n` epochs. `n` more epochs will be paid out based on what has already been paid. There is a single global parameter for each epoch called `rewards_per_epoch`, in `Uint128`. Later, there will be one per pool. 
 
-Verifiers must hit a [PLACEHOLDER] threshold for payout.
+There is a [threshold of weighted votes](https://github.com/axelarnetwork/axelar-amplifier/blob/main/contracts/voting-verifier/src/msg.rs#L25) required for voting to be considered complete for a particular message. Verifiers must hit that threshold for payout.
 
 ### Check a rewards pool
 
@@ -35,7 +35,7 @@ axelard tx wasm execute $CONTRACT_ADDRESS '' --from validator --gas auto --gas-a
 axelard q wasm contract-state smart [rewards contract address] '{"rewards_pool":{"pool_id":{"chain_name":[chain-name],"contract":[address of voting verifier or multisig]}}}'
 ```
 
-`contract` is the address of the voting verifier for the chain when querying for voting rewards, but the global multisig (not multisig-prover) address when querying for signing.
+`contract` is the address of the voting verifier for the chain when querying for voting rewards, but the global multisig (not multisig prover) address when querying for signing.
 
 ### Add rewards to a pool or chain
 
