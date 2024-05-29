@@ -132,6 +132,10 @@ export const getNavigation = (section) => {
           ],
         },
         {
+          title: "EVM Relayer",
+          href: "/dev/evm-relayer",
+        },
+        {
           title: "Gas Service",
           children: [
             {
