@@ -84,6 +84,10 @@ export const getNavigation = (section) => {
               href: "/dev/general-message-passing/monitoring",
             },
             {
+              title: "Axelar Executable",
+              href: "/dev/general-message-passing/executable"
+            },
+            {
               title: "Verify GMP Transaction",
               href: "/dev/general-message-passing/verify-gmp-tx",
             },
@@ -128,6 +132,10 @@ export const getNavigation = (section) => {
           ],
         },
         {
+          title: "EVM Relayer",
+          href: "/dev/evm-relayer",
+        },
+        {
           title: "Gas Service",
           children: [
             {
@@ -152,7 +160,7 @@ export const getNavigation = (section) => {
             },
             {
               title: "On-Chain Estimation",
-              href: "/dev/gas-service/on-chain",
+              href: "/dev/gas-service/on-chain-estimation",
             },
           ],
         },
@@ -220,17 +228,12 @@ export const getNavigation = (section) => {
               href: "/dev/amplifier/introduction",
             },
             {
-              title: "Chain Integration",
-              children: [
-                {
-                  title: "Introduction",
-                  href: "/dev/amplifier/chain-integration/introduction",
-                },
-                {
-                  title: "Integrate a Chain",
-                  href: "/dev/amplifier/chain-integration/integrate-a-chain",
-                },
-              ]
+              title: "Integration Overview",
+              href: "/dev/amplifier/chain-integration/introduction",
+            },
+            {
+              title: "Integrate a Chain",
+              href: "/dev/amplifier/chain-integration/integrate-a-chain",
             },
             {
               title: "GMP with Amplifier example",
@@ -620,7 +623,10 @@ export const getNavigation = (section) => {
           },
         ],
       },
-      { title: "Onboard your IBC chain", href: "/resources/ibc-chain-onboarding" },
+      {
+        title: "Onboard your IBC chain",
+        href: "/resources/ibc-chain-onboarding",
+      },
       { title: "Bug Bounty", href: "/resources/bug-bounty" },
     ],
   });
