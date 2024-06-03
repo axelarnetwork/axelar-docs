@@ -27,19 +27,19 @@ These instructions require you to [install and use Docker](https://docs.docker.c
     
 1. Download [`ampd`](https://github.com/axelarnetwork/axelar-amplifier/tree/main/ampd#worker-onboarding), the off-chain daemon responsible for voting and signing with the amplifier protocol. 
 
-    We recommend downloading the `ampd` [binary](https://github.com/axelarnetwork/axelar-amplifier/releases/tag/ampd-v0.1.0) ([Linux](https://github.com/axelarnetwork/axelar-amplifier/releases/download/ampd-v0.1.0/ampd-linux-amd64-v0.1.0), [Apple Silicon Mac](https://github.com/axelarnetwork/axelar-amplifier/releases/download/ampd-v0.1.0/ampd-darwin-arm64-v0.1.0), [Intel Mac](https://github.com/axelarnetwork/axelar-amplifier/releases/download/ampd-v0.1.0/ampd-darwin-amd64-v0.1.0)). All instructions in this tutorial will assume you have a binary in your `PATH` named `ampd`.
+    We recommend downloading the `ampd` [binary](https://github.com/axelarnetwork/axelar-amplifier/releases/tag/ampd-v0.4.0) ([Linux](https://github.com/axelarnetwork/axelar-amplifier/releases/download/ampd-v0.4.0/ampd-linux-amd64-v0.4.0), [Apple Silicon Mac](https://github.com/axelarnetwork/axelar-amplifier/releases/download/ampd-v0.4.0/ampd-darwin-arm64-v0.4.0), [Intel Mac](https://github.com/axelarnetwork/axelar-amplifier/releases/download/ampd-v0.4.0/ampd-darwin-amd64-v0.4.0)). All instructions in this tutorial will assume you have a binary in your `PATH` named `ampd`.
 
         - You can add the `ampd` binary to your path with `sudo ln -s <BINARY NAME> /usr/local/bin/ampd`.
         - Alternatively, you can set an alias with `alias ampd=<BINARY PATH>` and restart your terminal. 
         
-    You should make the binary executable with `chmod a+x ./ampd-darwin-arm64-v0.1.0`, customizing the binary name to match the one you downloaded.
+    You should make the binary executable with `chmod a+x ./ampd-darwin-arm64-v0.4.0`, customizing the binary name to match the one you downloaded.
 
-    If you don't want to add it to your path, you can refer to the binary directly in every command in this tutorial, such as `~/ampd-linux-amd64-v0.1.0 <command>`.
+    If you don't want to add it to your path, you can refer to the binary directly in every command in this tutorial, such as `~/ampd-linux-amd64-v04.0 <command>`.
 
-    If you get a security warning while trying to run `ampd` on Mac, you can disable the [gatekeeper](https://support.apple.com/guide/security/gatekeeper-and-runtime-protection-sec5599b66df/web) for a single binary with `sudo xattr -d com.apple.quarantine ./ampd-darwin-arm64-v0.1.0` or disable gatekeeper globally with `sudo spctl --master-disable`.
+    If you get a security warning while trying to run `ampd` on Mac, you can disable the [gatekeeper](https://support.apple.com/guide/security/gatekeeper-and-runtime-protection-sec5599b66df/web) for a single binary with `sudo xattr -d com.apple.quarantine ./ampd-darwin-arm64-v0.4.0` or disable gatekeeper globally with `sudo spctl --master-disable`.
 
     There are two other ways to install `ampd`. 
-        - You can use [`ampd` from Docker](https://hub.docker.com/r/axelarnet/axelar-ampd). Make sure you pull the `0.1.0` version and `amd64` platform specifically, i.e. `docker pull axelarnet/axelar-ampd:v0.1.0 --platform amd64`. 
+        - You can use [`ampd` from Docker](https://hub.docker.com/r/axelarnet/axelar-ampd). Make sure you pull the `0.4.0` version and `amd64` platform specifically, i.e. `docker pull axelarnet/axelar-ampd:v0.4.0 --platform amd64`. 
         - You can install `ampd` from source by cloning and building the [Axelar Amplifier repository](https://github.com/axelarnetwork/axelar-amplifier).
 
 `ampd` needs access to a locally running `tofnd` instance in order to onboard as a verifier or run the daemon. See the [tofnd repository](https://github.com/axelarnetwork/tofnd) for more info.
@@ -48,13 +48,13 @@ These instructions require you to [install and use Docker](https://docs.docker.c
 
     The following is an example `config.toml` file for the verifier devnet:
 
-    ```bash
+    ```toml
     tm_jsonrpc="http://devnet-verifiers.axelar.dev:26657"
     tm_grpc="tcp://devnet-verifiers.axelar.dev:9090"
     event_buffer_cap=1000
 
     [service_registry]
-    cosmwasm_contract="axelar1hrpna9v7vs3stzyd4z3xf00676kf78zpe2u5ksvljswn2vnjp3ystlgl4x"
+    cosmwasm_contract="axelar1qk00h5atutpsv900x202pxx42npjr9thg58dnqpa72f2p7m2luas9x8txw"
 
     [broadcast]
     batch_gas_limit="1000000"
@@ -73,13 +73,19 @@ These instructions require you to [install and use Docker](https://docs.docker.c
     url="http://127.0.0.1:50051"
 
     [[handlers]]
-    cosmwasm_contract="axelar1ufs3tlq4umljk0qfe8k5ya0x6hpavn897u2cnf9k0en9jr7qarqqa9263g"
+    cosmwasm_contract="axelar15nczwuqh0zcu6syeqsc4td6dphql7n2p7cgkl9raz97z5s3zdjrsc8we9y"
     type="MultisigSigner"
 
     [[handlers]]
     chain_name="avalanche"
     chain_rpc_url="https://avalanche-fuji-c-chain-rpc.publicnode.com"
-    cosmwasm_contract="axelar1466nf3zuxpya8q9emxukd7vftaf6h4psr0a07srl5zw74zh84yjq4687qd"
+    cosmwasm_contract="axelar1elaymnd2epmfr498h2x9p2nezc4eklv95uv92u9csfs8wl75w7yqdc0h67"
+    type="EvmMsgVerifier"
+
+    [[handlers]]
+    chain_name="fantom"
+    chain_rpc_url="https://rpc.ankr.com/fantom_testnet/"
+    cosmwasm_contract="axelar17fa8wruwmk2y0h32wrg5rxwespvcvz5zc2hjnczz58tnmg8enh0sunsshp"
     type="EvmMsgVerifier"
     ```
 

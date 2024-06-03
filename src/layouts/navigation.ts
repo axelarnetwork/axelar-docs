@@ -143,7 +143,7 @@ export const getNavigation = (section) => {
               href: "/dev/gas-service/intro",
             },
             {
-              title: "Pay Gas",
+              title: "Estimate and Pay Gas",
               href: "/dev/gas-service/pay-gas",
             },
             {
@@ -358,6 +358,7 @@ export const getNavigation = (section) => {
             { title: "Optimism", href: "/validator/external-chains/optimism" },
             { title: "Polygon", href: "/validator/external-chains/polygon" },
             { title: "Scroll", href: "/validator/external-chains/scroll" },
+            { title: "Sui", href: "/validator/external-chains/sui" },
           ],
         },
         {
