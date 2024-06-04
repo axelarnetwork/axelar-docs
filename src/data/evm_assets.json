@@ -5585,7 +5585,7 @@
           "transfer_fee": 0.1
         },
         {
-          "chain": "polygon-sepolia",
+          "chain": "polygon-amoy",
           "address": "0x254d06f33bDc5b8ee05b2ea472107E300226659A",
           "symbol": "aUSDC",
           "decimals": 6,
@@ -5726,7 +5726,7 @@
           "transfer_fee": 0.1
         },
         {
-          "chain": "polygon-sepolia",
+          "chain": "polygon-amoy",
           "address": "0x23ee2343B892b1BB63503a4FAbc840E0e2C6810f",
           "symbol": "wAXL",
           "decimals": 6,
@@ -5762,7 +5762,7 @@
       "image": "/images/assets/wsteth.svg",
       "contracts": [
         {
-          "chain": "polygon-sepolia",
+          "chain": "polygon-amoy",
           "address": "0x9cfB13E6c11054ac9fcB92BA89644F30775436e4",
           "symbol": "axl-wstETH",
           "decimals": 18,
@@ -5897,7 +5897,7 @@
           "transfer_fee": 0.07
         },
         {
-          "chain": "polygon-sepolia",
+          "chain": "polygon-amoy",
           "address": "0x21ba4f6aEdA155DD77Cc33Fb93646910543F0380",
           "symbol": "WMATIC",
           "decimals": 18,
@@ -6038,7 +6038,7 @@
           "transfer_fee": 0.001
         },
         {
-          "chain": "polygon-sepolia",
+          "chain": "polygon-amoy",
           "address": "0x2a87806561C550ba2dA9677c5323413E6e539740",
           "symbol": "WAVAX",
           "decimals": 18,
@@ -6179,7 +6179,7 @@
           "transfer_fee": 0.08
         },
         {
-          "chain": "polygon-sepolia",
+          "chain": "polygon-amoy",
           "address": "0x594D8b81eC765410536ab59E98091700b99508D8",
           "symbol": "WFTM",
           "decimals": 18,
@@ -6320,7 +6320,7 @@
           "transfer_fee": 0.0003
         },
         {
-          "chain": "polygon-sepolia",
+          "chain": "polygon-amoy",
           "address": "0xA9A2D8F279ABC436a18DBB1df3FB233039935D0A",
           "symbol": "WBNB",
           "decimals": 18,
@@ -6461,7 +6461,7 @@
           "transfer_fee": 0.04
         },
         {
-          "chain": "polygon-sepolia",
+          "chain": "polygon-amoy",
           "address": "0x4B13D583F45Aa01fb2bE18a7AAfE14DE183B1Ac9",
           "symbol": "WDEV",
           "decimals": 18,
