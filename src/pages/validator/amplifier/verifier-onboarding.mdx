@@ -98,7 +98,7 @@ Prior to running the `ampd` daemon, you will need to set up your wallet with dev
 1. Determine your verifier address:
 
     ```bash
-    ampd worker-address
+    ampd verifier-address
     ```
 
 1. Fund your verifier address.
@@ -115,7 +115,7 @@ Prior to running the `ampd` daemon, you will need to set up your wallet with dev
 1. Bond your verifier:
 
     ```bash
-    ampd bond-worker validators 100 uverifiers
+    ampd bond-verifier validators 100 uverifiers
     ```
 
     Bonded verifiers will stay bonded until they unbond or are removed by governance.
