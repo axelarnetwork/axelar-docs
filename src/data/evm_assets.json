@@ -5470,6 +5470,148 @@
           "transfer_fee": 64.0
         }
       ]
+    },
+    {
+      "id": "uxprt",
+      "name": "XPRT - XPRT native asset",
+      "symbol": "XPRT",
+      "image": "/images/assets/xprt.svg",
+      "contracts": [
+        {
+          "chain": "arbitrum",
+          "address": "0xc7Edf7B7b3667a06992508e7B156eff794a9e1c8",
+          "symbol": "XPRT",
+          "decimals": 6,
+          "transfer_fee": 42.0
+        },
+        {
+          "chain": "avalanche",
+          "address": "0xe9ED8e918A20937E2C6B6f9d9a249dc6E99D3D3e",
+          "symbol": "XPRT",
+          "decimals": 6,
+          "transfer_fee": 6.2
+        },
+        {
+          "chain": "base",
+          "address": "0xc7Edf7B7b3667a06992508e7B156eff794a9e1c8",
+          "symbol": "XPRT",
+          "decimals": 6,
+          "transfer_fee": 42.0
+        },
+        {
+          "chain": "binance",
+          "address": "0xd060040976a02f0e330d3ADFEb5dc418f41Da80A",
+          "symbol": "XPRT",
+          "decimals": 6,
+          "transfer_fee": 6.2
+        },
+        {
+          "chain": "blast",
+          "address": "0xc7Edf7B7b3667a06992508e7B156eff794a9e1c8",
+          "symbol": "XPRT",
+          "decimals": 6,
+          "transfer_fee": 42.0
+        },
+        {
+          "chain": "celo",
+          "address": "0xc7Edf7B7b3667a06992508e7B156eff794a9e1c8",
+          "symbol": "XPRT",
+          "decimals": 6,
+          "transfer_fee": 6.2
+        },
+        {
+          "chain": "ethereum",
+          "address": "0xD454b59f16D42667Be2fA55292d16647E27f40C4",
+          "symbol": "XPRT",
+          "decimals": 6,
+          "transfer_fee": 250.0
+        },
+        {
+          "chain": "fantom",
+          "address": "0xd060040976a02f0e330d3ADFEb5dc418f41Da80A",
+          "symbol": "XPRT",
+          "decimals": 6,
+          "transfer_fee": 6.2
+        },
+        {
+          "chain": "filecoin",
+          "address": "0xc7Edf7B7b3667a06992508e7B156eff794a9e1c8",
+          "symbol": "XPRT",
+          "decimals": 6,
+          "transfer_fee": 6.2
+        },
+        {
+          "chain": "fraxtal",
+          "address": "0xc7Edf7B7b3667a06992508e7B156eff794a9e1c8",
+          "symbol": "XPRT",
+          "decimals": 6,
+          "transfer_fee": 42.0
+        },
+        {
+          "chain": "kava",
+          "address": "0xc7Edf7B7b3667a06992508e7B156eff794a9e1c8",
+          "symbol": "XPRT",
+          "decimals": 6,
+          "transfer_fee": 6.2
+        },
+        {
+          "chain": "linea",
+          "address": "0xc7Edf7B7b3667a06992508e7B156eff794a9e1c8",
+          "symbol": "XPRT",
+          "decimals": 6,
+          "transfer_fee": 42.0
+        },
+        {
+          "chain": "mantle",
+          "address": "0xc7Edf7B7b3667a06992508e7B156eff794a9e1c8",
+          "symbol": "XPRT",
+          "decimals": 6,
+          "transfer_fee": 42.0
+        },
+        {
+          "chain": "moonbeam",
+          "address": "0xD454b59f16D42667Be2fA55292d16647E27f40C4",
+          "symbol": "XPRT",
+          "decimals": 6,
+          "transfer_fee": 6.2
+        },
+        {
+          "chain": "optimism",
+          "address": "0xc7Edf7B7b3667a06992508e7B156eff794a9e1c8",
+          "symbol": "XPRT",
+          "decimals": 6,
+          "transfer_fee": 42.0
+        },
+        {
+          "chain": "polygon",
+          "address": "0xc690C48E3a64d8b59E54aD4202DF3cb95a85dB79",
+          "symbol": "XPRT",
+          "decimals": 6,
+          "transfer_fee": 6.2
+        },
+        {
+          "chain": "scroll",
+          "address": "0xc7Edf7B7b3667a06992508e7B156eff794a9e1c8",
+          "symbol": "XPRT",
+          "decimals": 6,
+          "transfer_fee": 42.0
+        }
+      ]
+    },
+    {
+      "id": "nftl-wei",
+      "name": "NFTL - Nifty League",
+      "symbol": "NFTL",
+      "image": "/images/assets/nftl.svg",
+      "contracts": [
+        {
+          "chain": "ethereum",
+          "address": "0x3c8D2FCE49906e11e71cB16Fa0fFeB2B16C29638",
+          "symbol": "NFTL",
+          "decimals": 18,
+          "transfer_fee": 30000.0
+        }
+      ]
     }
   ],
   "testnet": [
@@ -5537,6 +5679,13 @@
         },
         {
           "chain": "fraxtal",
+          "address": "0x254d06f33bDc5b8ee05b2ea472107E300226659A",
+          "symbol": "aUSDC",
+          "decimals": 6,
+          "transfer_fee": 0.1
+        },
+        {
+          "chain": "immutable",
           "address": "0x254d06f33bDc5b8ee05b2ea472107E300226659A",
           "symbol": "aUSDC",
           "decimals": 6,
@@ -6580,6 +6729,21 @@
           "symbol": "XION",
           "decimals": 6,
           "transfer_fee": 10.0
+        }
+      ]
+    },
+    {
+      "id": "nftl-wei",
+      "name": "NFTL - Nifty League",
+      "symbol": "NFTL",
+      "image": "/images/assets/nftl.svg",
+      "contracts": [
+        {
+          "chain": "ethereum-sepolia",
+          "address": "0x0d312E74ba71bff163A07DdD2b6847CefF49dD1e",
+          "symbol": "NFTL",
+          "decimals": 18,
+          "transfer_fee": 50.0
         }
       ]
     }
