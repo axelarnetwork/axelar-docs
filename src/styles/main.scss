@@ -221,7 +221,7 @@ article {
   padding-left: 8px;
 }
 a.active,
-tabs li.active {
+tabs .tab-bar li.active {
   color: rgb(0, 107, 230);
   background-color: rgb(240, 247, 255);
   font-weight: bold;
@@ -235,7 +235,7 @@ tabs li.active {
 }
 
 /* Component Styles */
-tabs li {
+tabs .tab-bar li {
   display: inline;
   border: 1px solid grey;
   padding: 8px;
@@ -243,7 +243,7 @@ tabs li {
   margin-right: -1px;
   border-bottom: none;
 }
-tabs ul {
+tabs .tab-bar ul {
   margin-bottom: 4px;
   margin-left: -16px;
 }
@@ -252,7 +252,7 @@ tabs tab-item {
   padding: 16px;
   border-radius: 0 8px 8px 8px;
 }
-tabs button {
+tabs .tab-bar button {
   border: 0px;
   background-color: transparent;
   color: inherit;

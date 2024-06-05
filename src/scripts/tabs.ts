@@ -17,6 +17,7 @@ export const addTabs = () => {
     let currentIndex = 0;
 
     let titleBar = document.createElement("div");
+    titleBar.classList.add("tab-bar");
     titleBar.innerHTML = `
         <ul role="tablist">
           ${convertedTabs
@@ -45,6 +46,7 @@ export const addTabs = () => {
         )
       );
       if (currentIndex === -1) {
+        console.error("tab not found");
         currentIndex = 0;
       }
     };
@@ -68,7 +70,10 @@ export const addTabs = () => {
     [...titleBar.children[0].children].map((button) => {
       button.addEventListener("click", () => {
         currentIndex = [...titleBar.children[0].children].indexOf(button);
-        localStorage["savedTabChoice"] = (<HTMLButtonElement>button).innerText;
+        // This MUST be trimmed, otherwise there's an extra space at the end and nothing matches
+        localStorage["savedTabChoice"] = (<HTMLButtonElement>(
+          button
+        )).innerText.trim();
         for (let renderer of window.savedTabRenderers) {
           renderer();
         }
