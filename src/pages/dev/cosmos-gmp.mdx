@@ -14,7 +14,7 @@ Cosmos GMP works by sending and receiving through [IBC's memo field](https://med
 
 ## Messages from EVM to CosmWasm
 
-To send a message from an EVM chain to a Cosmos CosmWasm contract, the payload must be encoded before calling the [standard](./gmp-messages) `payNativeGasForContractCall` and `callContract` methods (or [token-including equivalents](./gmp-tokens-with-messages)). You must also specify the destination method you are calling.
+To send a message from an EVM chain to a Cosmos CosmWasm contract, the payload must be encoded before calling the [standard](/dev/general-message-passing/gmp-messages) `payNativeGasForContractCall` and `callContract` methods (or [token-including equivalents](/dev/general-message-passing/gmp-tokens-with-messages)). You must also specify the destination method you are calling.
 
 The payload must specify:
 
