@@ -31,16 +31,6 @@
       "channel_id": "channel-111"
     },
     {
-      "from": "aura",
-      "to": "axelarnet",
-      "channel_id": "channel-4"
-    },
-    {
-      "from": "axelarnet",
-      "to": "aura",
-      "channel_id": "channel-104"
-    },
-    {
       "from": "bitsong",
       "to": "axelarnet",
       "channel_id": "channel-30"
