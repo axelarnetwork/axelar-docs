@@ -1,0 +1,22 @@
+# ITS Roadmap
+
+## Background
+
+Prior to the release of the Axelar [Interchain Token Service](https://github.com/axelarnetwork/interchain-token-service) (ITS), Axelar allowed for only the transfer of gateway tokens between chains. These gateway tokens are manually registered in Axelar’s consensus the list of these gateway tokens can be found [here](https://docs.axelar.dev/resources/contract-addresses/mainnet#assets). With the release of ITS, now any team can provide multichain functionality to their token, whether its deploying a fresh new token on multiple chains or wiring up a pre deployed token to ITS to provide bridging functionality for the token. Unlike gateway tokens, ITS tokens are not minted on the Axelar chain itself rather they are sent between chains via Axelar [General Message Passing (GMP)](https://docs.axelar.dev/dev/general-message-passing/overview). 
+
+
+## ITS Today
+
+With the release of ITS each registered chain has an instance of the [ITS contract](https://github.com/axelarnetwork/interchain-token-service) deployed on it. This ITS contract registers tokens across multiple chains via a unique `interchainTokenId`. TokenManagers which are deployed. Each chain your token is registered to will have its own [tokenManager](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/token-manager/TokenManager.sol) for that chain. The token manager handles multichain operations such as minting/burning the tokens and locking the tokens (in the event of a lock/unlock bridging pattern). 
+
+### Ownership
+
+ITS token integrations come in two types. Custom tokens, which are tokens that are deployed separately with any functionality the developer has in mind built into it. ITS can handle any custom token as long as that token has external `mint` and `burn` functions for it to interact with. The other token type is an [InterchainToken](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/interchain-token/InterchainToken.sol) that can be deployed straight from ITS itself.  This allows for a integration to ITS for teams that simply want something like a simple wrapped token on a specific blockchain. 
+In both of these cases ITS requires an `allowance` to be able to mint/burn tokens when conducting an multichain transfer.
+The ITS contract itself will soon be undergoing an upgrade that will transfer control of the contract to the [public governance of the Axelar community](https://docs.axelar.dev/learn/evm-governance#evm-contract-governance)
+
+## ITS Going Forward
+With the arrival of [cosmwasm functionality on the Axelar chain itself](https://www.axelar.network/blog/axelar-virtual-machine-future-of-interoperability) this provides an opportunity for major improvements to ITS as well
+
+### ITS Hub
+The ITS Hub will serve as the homebase for ITS on the Axelar chain itself. The ITS Hub will allow ITS to be extended beyond the current chains its deployed on to any new [Amplifier Chains](https://docs.axelar.dev/dev/amplifier/introduction) that are being integrated with Axelar, this includes non-smart-contract chains. It will also allow for the integration of previously discussed gateway tokens with ITS as well. By having one hub for ITS on the Axelar chain tracking balances, flow limits, and other related data will no longer be fragmented across different chains with different instances of ITS.

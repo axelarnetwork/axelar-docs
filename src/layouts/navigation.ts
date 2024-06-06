@@ -33,7 +33,11 @@ export const getNavigation = (section) => {
                 },
                 {
                   title: "Rate Limit",
-                  href: "/dev/reference/interchain-token-service-rate-limit",
+                  href: "/dev/send-tokens/interchain-tokens/rate-limit",
+                },
+                {
+                  title: "Roadmap",
+                  href: "/dev/send-tokens/interchain-tokens/roadmap",
                 },
                 {
                   title: "Developer Guides",
