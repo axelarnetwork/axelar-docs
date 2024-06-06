@@ -8,23 +8,18 @@ The Axelar Virtual Machine (AVM) and Amplifier are currently under active develo
 
 ## Integration architecture
 
-To connect your chain to the Axelar network via the Interchain Amplifier, you'll need to build or instantiate a [message relayer](/dev/amplifier/chain-integration/introduction#message-relayer) service and the following four smart contracts:
+To connect your chain to the Axelar network via the Interchain Amplifier, you'll need to build or instantiate the following four smart contracts along with a [message relayer](/dev/amplifier/chain-integration/introduction#message-relayer) service:
 
 - [Source chain gateway](/dev/amplifier/chain-integration/introduction#source-chain-gateway-contract)
 - [Axelar gateway](/dev/amplifier/chain-integration/introduction#axelar-gateway-contract)
 - [Voting verifier](/dev/amplifier/chain-integration/introduction#verifier-contract)
 - [Multisig prover](/dev/amplifier/chain-integration/introduction#prover-contract)
 
-### Message relayer
-
-- This is a service built with any tech stack that listens for events on your chain and relays them to the Axelar network.
-- For a detailed implementation, see the [Message Relayer example](https://github.com/axelarnetwork/axelar-examples/tree/main/examples/amplifier) on GitHub.
-
 ### Source chain gateway contract
 
 - This is the gateway contract for your source chain, built using the same tech stack as that chain. It serves as the primary API for developers sending messages from your chain.
 - The contract must implement the [Axelar Amplifier Gateway](https://github.com/axelarnetwork/axelar-gmp-sdk-solidity/tree/main/contracts/gateway).
-- EVM chains can re-use the existing [EVM Gateway](https://github.com/axelarnetwork/axelar-cgp-solidity).
+- EVM chains can re-use the existing [EVM Gateway](https://github.com/axelarnetwork/axelar-cgp-solidity/blob/main/contracts/AxelarGateway.sol).
 
 ### Axelar gateway contract
 
@@ -43,6 +38,11 @@ To connect your chain to the Axelar network via the Interchain Amplifier, you'll
 - Most integrators will begin by using or customizing the Axelar [Multisig Prover contract](https://github.com/axelarnetwork/axelar-amplifier/blob/main/doc/src/contracts/multisig_prover.md).
 
 The [chain integration tutorial](/dev/amplifier/chain-integration/integrate-a-chain) will guide you through this process on the current Amplifier devnet, which requires submitting a [chain integration form](https://docs.google.com/forms/d/e/1FAIpQLSchD7P1WfdSCQfaZAoqX7DyqJOqYKxXle47yrueTbOgkKQDiQ/viewform) to the Interop Labs team at the end. Contract deployment on testnet or mainnet will require a governance proposal.
+
+### Message relayer
+
+- This is a service built with any tech stack that listens for events on your chain and relays them to the Axelar network.
+- For a detailed implementation, see the [Message Relayer example](https://github.com/axelarnetwork/axelar-examples/tree/main/examples/amplifier) on GitHub.
 
 ## Integration process
 
