@@ -1,4 +1,4 @@
-# Become an Amplifier Verifier (Worker)
+# Become an Amplifier Verifier
 
 import { Callout } from "/src/components/callout"
 
@@ -92,7 +92,7 @@ Prior to running the `ampd` daemon, you will need to set up your wallet with dev
 1. Determine your verifier address:
 
     ```bash
-    ampd worker-address
+    ampd verifier-address
     ```
 
 1. Fund your verifier address.
@@ -110,7 +110,7 @@ Prior to running the `ampd` daemon, you will need to set up your wallet with dev
 1. Bond your verifier:
 
     ```bash
-    ampd bond-worker validators 100 uverifiers
+    ampd bond-verifier validators 100 uverifiers
     ```
 
     Bonded verifiers will stay bonded until they unbond or are removed by governance.
@@ -139,15 +139,15 @@ Prior to running the `ampd` daemon, you will need to set up your wallet with dev
 
     Running `ampd` without any command will run the daemon. A state file will be created if it doesn't yet exist. Its default location is `~/.ampd/state.json`, which can be overridden by passing `--state [path]`
 
-## Check if your verifier is in an active worker set
+## Check if your verifier is in an active verifier set
 
-Query the prover to get the active worker set. From here, you can check to see if your verifier is in the set:
+Query the prover to get the active verifier set. From here, you can check to see if your verifier is in the set:
 
 ```bash
-axelard q wasm contract-state smart $PROVER_AVALANCHE '"get_worker_set"' --node $RPC
+axelard q wasm contract-state smart $PROVER_AVALANCHE '"get_verifier_set"' --node $RPC
 ```
 
-Active worker sets are the same as signers unless there is a worker set update in progress, because the prover requires a few extra steps before active worker sets can be confirmed as signers.
+Active verifier sets are the same as signers unless there is a verifier set update in progress, because the prover requires a few extra steps before active verifier sets can be confirmed as signers.
 
 ## Productionizing
 
