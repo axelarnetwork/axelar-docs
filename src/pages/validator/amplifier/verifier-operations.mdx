@@ -13,7 +13,16 @@ The Axelar Virtual Machine (AVM) and Amplifier are currently under active develo
 Each verifier in a verifier set must use `ampd` to bond and register chain support themselves. On testnet and mainnet, community governance will call the following to authorize them:
 
 ```bash
-axelard tx wasm execute [service registry address] '{"authorize_workers":{"workers":[list of worker addresses], "service_name":[service-name]}}' --from key --gas auto --gas-adjustment 2
+axelard tx wasm execute [service registry address] \
+'{"authorize_verifiers": \
+    { \
+
+        "verifiers":[list of verifier addresses], \
+        "service_name":[service-name] \
+    } \
+}' \
+--from key \
+--gas auto --gas-adjustment 2 \
 ```
 
 ## Rewards
@@ -22,17 +31,23 @@ There is one [rewards contract](https://github.com/axelarnetwork/axelar-amplifie
 
 ### How rewards are calculated
 
-Every action earns rewards within `n` epochs. `n` more epochs will be paid out based on what has already been paid. There is a single global parameter for each epoch called `rewards_per_epoch`, in `Uint128`. Later, there will be one per pool. 
+Every action earns rewards within `n` epochs. `n` more epochs will be paid out based on what has already been paid. There is a single global parameter for each epoch called `rewards_per_epoch`, in `Uint128`. 
 
-A [threshold of weighted votes](https://github.com/axelarnetwork/axelar-amplifier/blob/main/contracts/voting-verifier/src/msg.rs#L25) is required for voting to be considered complete for a particular message. Verifiers must hit that threshold for payout.
+A [threshold of weighted votes](https://github.com/axelarnetwork/axelar-amplifier/blob/main/contracts/voting-verifier/src/msg.rs#L25) is required for voting to be considered complete for a particular message.
 
 ### Check a rewards pool
 
 To check a rewards pool:
 
 ```bash
-axelard tx wasm execute $CONTRACT_ADDRESS '' --from validator --gas auto --gas-adjustment 2
-axelard q wasm contract-state smart [rewards contract address] '{"rewards_pool":{"pool_id":{"chain_name":[chain-name],"contract":[address of voting verifier or multisig]}}}'
+axelard q wasm contract-state smart [rewards contract address] \
+'{"rewards_pool":
+    {"pool_id": \
+        { \
+            "chain_name": \[chain-name],"contract":[address of voting verifier or multisig] \
+        } \
+    } \
+}' \
 ```
 
 `contract` is the address of the voting verifier for the chain when querying for voting rewards, but the global multisig (not multisig prover) address when querying for signing.
@@ -42,5 +57,16 @@ axelard q wasm contract-state smart [rewards contract address] '{"rewards_pool":
 To add rewards to a pool:
 
 ```bash
-axelard tx wasm execute [rewards contract address] '{"add_rewards":{"pool_id":{"chain_name":[chain-name],"contract":[address of voting verifier or multisig]}}}' --amount [amount to add] --from [key] --gas auto --gas-adjustment 2 
+axelard tx wasm execute [rewards contract address] \
+'{"add_rewards":\
+    {"pool_id": \
+        {"chain_name": \
+            [chain-name], \
+            "contract":[address of voting verifier or multisig] \
+        } \
+    } \
+}' \
+--amount [amount to add] \
+--from [key] \
+--gas auto --gas-adjustment 2 \ 
 ```
