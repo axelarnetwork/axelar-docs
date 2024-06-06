@@ -41,10 +41,11 @@ To check a rewards pool:
 
 ```bash
 axelard q wasm contract-state smart [rewards contract address] \
-'{"rewards_pool":
+'{"rewards_pool": \
     {"pool_id": \
         { \
-            "chain_name": \[chain-name],"contract":[address of voting verifier or multisig] \
+            "chain_name": [chain-name], \
+            "contract":[address of voting verifier or multisig] \
         } \
     } \
 }' \
@@ -58,10 +59,10 @@ To add rewards to a pool:
 
 ```bash
 axelard tx wasm execute [rewards contract address] \
-'{"add_rewards":\
+'{"add_rewards": \
     {"pool_id": \
-        {"chain_name": \
-            [chain-name], \
+        { \
+            "chain_name":[chain-name], \
             "contract":[address of voting verifier or multisig] \
         } \
     } \
