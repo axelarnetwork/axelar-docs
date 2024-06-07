@@ -409,7 +409,7 @@ export const getNavigation = (section) => {
           title: "Amplifier",
           children: [
             {
-              title: "Become a Verifier (Worker)",
+              title: "Become a Verifier",
               href: "/validator/amplifier/verifier-onboarding",
             },
           ],
