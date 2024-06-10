@@ -327,7 +327,7 @@ You can also deploy a custom implementation of the gateway, verifier, and prover
             "verifier_set_diff_threshold": 1,
             "encoder": "abi",
             "key_type": "ecdsa"
-            "domain_separator": ${randomHash()}
+            "domain_separator":[hash of (chain-name + router-address + axelar-chain-id)]
         }' \
         --keyring-backend test \
         --from wallet \
