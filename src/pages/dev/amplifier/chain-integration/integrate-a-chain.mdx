@@ -311,6 +311,10 @@ You can also deploy a custom implementation of the gateway, verifier, and prover
     ```
     Now instantiate the contract.
 
+    <Callout>
+    The `domain_separator` is the hash of the chain name, router address, and Axelar chain ID coded in command line JSON as an array of bytes.
+    </Callout>
+
     ```bash
     axelard tx wasm instantiate $PROVER_CODE_ID \
         '{
@@ -321,13 +325,13 @@ You can also deploy a custom implementation of the gateway, verifier, and prover
             "coordinator_address":"axelar1m2498n4h2tskcsmssjnzswl5e6eflmqnh487ds47yxyu6y5h4zuqr9zk4g",
             "service_registry_address":"axelar1c9fkszt5lq34vvvlat3fxj6yv7ejtqapz04e97vtc9m5z9cwnamq8zjlhz",
             "voting_verifier_address": "'"$MY_VERIFIER_ADDRESS"'",
-            "destination_chain_id": "'"$MY_CHAIN_ID"'",
             "signing_threshold": ["1","1"],
             "service_name": "validators",
             "chain_name":"test",
-            "worker_set_diff_threshold": 1,
+            "verifier_set_diff_threshold": 1,
             "encoder": "abi",
-            "key_type": "ecdsa"
+            "key_type": "ecdsa",
+            "domain_separator":[hash(chain_name, router_address, MY_CHAIN_ID)]
         }' \
         --keyring-backend test \
         --from wallet \
