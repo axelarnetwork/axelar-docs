@@ -2,7 +2,9 @@
 
 ## Background
 
-Prior to the release of the Axelar [Interchain Token Service](https://github.com/axelarnetwork/interchain-token-service) (ITS), Axelar allowed for the transfer of gateway tokens between chains, although GMP token transfer was possible an out of the box service did not exist for it. These gateway tokens are manually registered in Axelar’s consensus the list of these gateway tokens can be found [here](https://docs.axelar.dev/resources/contract-addresses/mainnet#assets). With the release of ITS, now any team can provide multichain functionality to their token, whether its deploying a fresh new token on multiple chains or wiring up a pre deployed token to ITS to provide bridging functionality for the token. Unlike gateway tokens, ITS tokens are not minted on the Axelar chain itself rather they are sent between chains via Axelar [General Message Passing (GMP)](https://docs.axelar.dev/dev/general-message-passing/overview). 
+Prior to the release of the Axelar [Interchain Token Service](https://github.com/axelarnetwork/interchain-token-service) (ITS), Axelar allowed for the transfer of **gateway tokens** between chains. It was possible for developers to build custom token transfer with GMP, ITS was designed to make this much easier and to provide a standard for new tokens. Gateway tokens are different because they are registered in Axelar’s consensus.  You can find [a list of gateway tokens](/resources/contract-addresses/mainnet#assets). 
+
+With the release of ITS, now any team can provide multichain functionality to their token, whether its deploying a fresh new token on multiple chains or wiring up an existing token to ITS to provide bridging functionality . Unlike gateway tokens, ITS tokens are not minted on the Axelar chain itself rather they are sent between chains via Axelar [General Message Passing (GMP)](/dev/general-message-passing/overview). 
 
 
 ## ITS Today
