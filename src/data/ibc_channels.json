@@ -31,16 +31,6 @@
       "channel_id": "channel-111"
     },
     {
-      "from": "aura",
-      "to": "axelarnet",
-      "channel_id": "channel-4"
-    },
-    {
-      "from": "axelarnet",
-      "to": "aura",
-      "channel_id": "channel-104"
-    },
-    {
       "from": "bitsong",
       "to": "axelarnet",
       "channel_id": "channel-30"
@@ -553,6 +543,16 @@
       "channel_id": "channel-382"
     },
     {
+      "from": "nillion",
+      "to": "axelarnet",
+      "channel_id": "channel-2"
+    },
+    {
+      "from": "axelarnet",
+      "to": "nillion",
+      "channel_id": "channel-510"
+    },
+    {
       "from": "odin",
       "to": "axelarnet",
       "channel_id": "channel-5"
@@ -661,6 +661,16 @@
       "from": "axelarnet",
       "to": "terra",
       "channel_id": "channel-84"
+    },
+    {
+      "from": "warden",
+      "to": "axelarnet",
+      "channel_id": "channel-1"
+    },
+    {
+      "from": "axelarnet",
+      "to": "warden",
+      "channel_id": "channel-502"
     },
     {
       "from": "xpla",

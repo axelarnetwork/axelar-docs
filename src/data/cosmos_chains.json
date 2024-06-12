@@ -19,12 +19,6 @@
       "image": "/images/chains/archway.svg"
     },
     {
-      "id": "aura",
-      "name": "Aura",
-      "network_id": "aura",
-      "image": "/images/chains/aura.svg"
-    },
-    {
       "id": "axelarnet",
       "name": "Axelar",
       "network_id": "axelarnet",
@@ -345,6 +339,12 @@
       "image": "/images/chains/nibiru.svg"
     },
     {
+      "id": "nillion",
+      "name": "Nillion",
+      "network_id": "nillion",
+      "image": "/images/chains/nillion.svg"
+    },
+    {
       "id": "odin",
       "name": "Odin",
       "network_id": "odin",
@@ -409,6 +409,12 @@
       "name": "Terra",
       "network_id": "terra-3",
       "image": "/images/chains/terra.svg"
+    },
+    {
+      "id": "warden",
+      "name": "Warden",
+      "network_id": "warden",
+      "image": "/images/chains/warden.svg"
     },
     {
       "id": "xpla",
