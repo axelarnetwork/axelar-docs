@@ -312,7 +312,7 @@ You can also deploy a custom implementation of the gateway, verifier, and prover
     Now instantiate the contract.
 
     <Callout>
-    The `domain_separator` is the hash of the chain name, router address, and Axelar chain ID coded in command line JSON as an array of bytes.
+    The `domain_separator` is a 32-bit length byte array derived from the hash of the chain name, router address, and Axelar chain ID.
     </Callout>
 
     ```bash
