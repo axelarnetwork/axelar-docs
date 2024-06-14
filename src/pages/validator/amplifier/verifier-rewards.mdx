@@ -5,3 +5,76 @@ import { Callout } from "/src/components/callout"
 A verifier can get rewards whenever it posts a signature or votes on an event from an external chain. When this happens, the voting verifier and multisig contracts send messages to the [verifier rewards contract](https://github.com/axelarnetwork/axelar-amplifier/tree/main/contracts/rewards), which is responsible for tracking event participation based on rewards params, such as storing the event in the correct window, ignoring the event if it was too late, and associating the event with the correct chain.
 
 Participation is assessed per epoch, lengths of time configurable by governance. The end blocker or scheduler or some other automated component then sends a message to the rewards contract to process rewards for the most recent window. Rewards are calculated based on a percentage of all traffic for a given chain and paid out in AXL.
+
+<p align="center"><img src="/images/verifier-rewards-contract-architecture.png" width="650"/></p>
+
+## Voting flow
+
+<p align="center"><img src="/images/verifier-rewards-voting-flow.png" width="750"/></p>
+
+1. The relayer picks up a `callContract()` event and calls `verify_messages()` on the Axelar gateway.
+1. The Axelar gateway calls `verify_messages()` on the voting verifier, which begins the voting process with the verifier set.
+1. Once enough votes have been cast for the message, a `record_participation()` event is emitted to the rewards contract.
+1. The rewards contract keeps a tally of how many events each verifier correctly participated in.
+
+## Signing flow
+
+<p align="center"><img src="/images/verifier-rewards-signing-flow.png" width="750"/></p>
+
+The destination chain uses the prover rather than the voting verifier to pass the message.
+
+1. The multisig prover gets the messages and their contents from the gateway and calls `start_signing_session()` on the multisig contract, which begins the signing process with the verifier set.
+1. Registered chains, who have their own sets of verifiers, become aware that there is a signing session for the chain they support with their public keys and start signing.
+1. Once enough signatures have been gathered, a signed batch will be created and eventually relayed back to the source chain.
+1. If a verifier signed during a certain grace period, the multisig contract emits a `record_participation()` event to the rewards contract.
+1. The rewards contract keeps a tally of how many events each verifier correctly participated in.
+
+Parameters
+
+The following parameters are first configured during [contract instantiation](https://github.com/axelarnetwork/axelar-amplifier/blob/6fd3612716fc6cf3b421ebe53939a71341731047/contracts/voting-verifier/src/msg.rs#L13) and can be modified through governance:
+
+- `epoch_duration` — How often rewards are calculated, specified in number of blocks. For example, an `epoch_duration` of 500 blocks will reward verifiers for their participation in each 500-block window.
+- `rewards_per_epoch` — The total number of tokens distributed as rewards per epoch, split equally amongst all participating verifiers for a given epoch. The same for both signing and voting.
+- `initial_epoch_num` — A time period over which the reward amount is fixed.
+
+## Rewards pools
+
+Each integrated chain has one pool for signing and one pool for voting. Rewards are funded per pool, and both pools must be funded to configure rewards for a new chain.
+
+Rewards are cumulative rather than by epoch. When rewards are added to a pool, they go into the pool for all epochs, including future epochs and past epochs that haven’t been claimed. This way, it doesn’t go to zero. Even if it does go to zero, it means that distributing rewards will only fail until someone adds rewards to the pool.
+
+If a pool is short of funds, rewards will not be distributed until there are enough funds in the pool to cover a payout. You should ensure that a pool always has enough funds so that verifiers can get their rewards on time.
+
+## Check the funds in a pool
+
+Use `rewards_pool()` to check the funds in a pool:
+
+```bash
+axelard q wasm contract-state smart "[rewards contract address]" '{"rewards_pool":{"pool_id":{"chain_name": "[chain-name]","contract":"[address of voting verifier or multisig contract]"}}}'
+```
+
+## Add funds to a pool
+
+Use `add_rewards()` add funds to a pool:
+
+```bash
+axelard tx wasm execute "[rewards contract address]" '{"add_rewards":{"pool_id": {"chain_name":"[chain-name]","contract":"[address of voting verifier or multisig contract]"}}}' --amount [amount to add] --from [key] --gas auto --gas-adjustment 2
+```
+
+Anyone can increase the number of funds in a rewards pool at any time.
+
+## Distribute rewards
+
+Use `distribute_rewards()` to distribute rewards from a pool:
+
+```bash
+axelard tx wasm execute "[rewards contract address]" '{"distribute_rewards":{"pool_id":{"chain_name":"[chain-name]","contract":"[address of voting verifier or multisig contract]"}, "epoch_count":10}}' --from [key] --gas auto --gas-adjustment 2
+```
+
+Rewards are distributed to validators with a participation rate greater than the threshold as the epoch closes. Rewards are calculated based on the time passed since the last event and the total number of validators, and split equally amongst all participating validators in the epoch.
+
+`epoch_count` is the maximum number of historical epochs for which to distribute rewards, starting with the oldest. If not specified, rewards will be distributed for 10 epochs.
+
+<Callout>
+While you can manually call `distribute_rewards()` and trigger rewards distribution, it is designed to be called automatically by the end blocker.
+</Callout>
