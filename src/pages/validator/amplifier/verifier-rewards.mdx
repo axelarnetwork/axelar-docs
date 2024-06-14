@@ -1,0 +1,7 @@
+# Verifier Rewards
+
+import { Callout } from "/src/components/callout"
+
+A verifier can get rewards whenever it posts a signature or votes on an event from an external chain. When this happens, the voting verifier and multisig contracts send messages to the [verifier rewards contract](https://github.com/axelarnetwork/axelar-amplifier/tree/main/contracts/rewards), which is responsible for tracking event participation based on rewards params, such as storing the event in the correct window, ignoring the event if it was too late, and associating the event with the correct chain.
+
+Participation is assessed per epoch, lengths of time configurable by governance. The end blocker or scheduler or some other automated component then sends a message to the rewards contract to process rewards for the most recent window. Rewards are calculated based on a percentage of all traffic for a given chain and paid out in AXL.
