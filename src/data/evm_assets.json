@@ -5920,6 +5920,42 @@
       ]
     },
     {
+      "id": "sepolia-wsteth-wei",
+      "name": "wstETH - Wrapped liquid staked Ether 2.0",
+      "symbol": "wstETH",
+      "image": "/images/assets/wsteth.svg",
+      "contracts": [
+        {
+          "chain": "arbitrum-sepolia",
+          "address": "0xa190ff582011eFEa55A87209F85D6f411D07d052",
+          "symbol": "wstETH",
+          "decimals": 18,
+          "transfer_fee": 6e-05
+        },
+        {
+          "chain": "ethereum-sepolia",
+          "address": "0xB82381A3fBD3FaFA77B3a7bE693342618240067b",
+          "symbol": "wstETH",
+          "decimals": 18,
+          "transfer_fee": 6e-05
+        },
+        {
+          "chain": "optimism-sepolia",
+          "address": "0x04f9c3c252B280C92530490c6E02a3DD06651C2F",
+          "symbol": "wstETH",
+          "decimals": 18,
+          "transfer_fee": 6e-05
+        },
+        {
+          "chain": "polygon-sepolia",
+          "address": "0x04f9c3c252B280C92530490c6E02a3DD06651C2F",
+          "symbol": "wstETH",
+          "decimals": 18,
+          "transfer_fee": 6e-05
+        }
+      ]
+    },
+    {
       "id": "celo-wei",
       "name": "CELO - Celo native asset",
       "symbol": "CELO",
