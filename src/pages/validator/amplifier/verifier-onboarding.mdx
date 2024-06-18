@@ -12,10 +12,11 @@ By running a **verifier** for a chain integration with Axelar's Amplifier, you w
 
 A verifier uses `ampd`, an off-chain daemon responsible for voting and signing with the Amplifier protocol, and `tofnd`, a threshold cryptography library that `ampd` depends on.
 
-There are two ways to set up and run a verifier:
+There are three ways to set up and run a verifier:
 
-- **Option 1: Binaries** -- This method requires you to install and run the `tofnd` and `ampd` binaries on your local machine.
-- **Option 2: Docker** -- Use [Docker](https://docs.docker.com/engine/install/) to set up `tofnd` and `ampd`.
+- **Option 1: Source** -- Clone and build directly from the GitHub source code.
+- **Option 2: Binaries** -- This method requires you to install and run the `tofnd` and `ampd` binaries on your local machine.
+- **Option 3: Docker** -- Use [Docker](https://docs.docker.com/engine/install/) to set up `tofnd` and `ampd`.
 
 ## Set up `tofnd`
 
@@ -23,8 +24,12 @@ There are two ways to set up and run a verifier:
 
 <tabs>
 
+<tab-item title="Source">
+Install `ampd` from source by cloning and building the [`tofnd` repository](https://github.com/axelarnetwork/tofnd).
+</tab-item>
+
 <tab-item title="Binary">
-Download the [`tofnd` binary](https://github.com/axelarnetwork/axelar-amplifier/releases/tag/ampd-v0.4.0) depending on the type of machine you have:
+Download the [`tofnd` binary](https://github.com/axelarnetwork/tofnd/releases) depending on the type of machine you have:
     - Linux: [`tofnd-linux-amd64-v0.10.5`](https://github.com/axelarnetwork/tofnd/releases/download/v0.10.5/tofnd-linux-amd64-v0.10.5)
     - Apple Silicon Mac: [`tofnd-darwin-arm64-v0.10.5`](https://github.com/axelarnetwork/tofnd/releases/download/v0.10.5/tofnd-darwin-arm64-v0.10.5)
     - Intel Mac: [`tofnd-darwin-amd64-v0.10.5`](https://github.com/axelarnetwork/tofnd/releases/download/v0.10.5/tofnd-darwin-amd64-v0.10.5)
@@ -39,7 +44,6 @@ docker run -p 50051:50051 --env MNEMONIC_CMD=auto --env NOPASSWORD=true -v tofnd
 ```
 
 Leave this process running in the background, and perform additional commands in a new terminal window or shell.
-
 </tab-item>
 
 </tabs>
@@ -47,6 +51,10 @@ Leave this process running in the background, and perform additional commands in
 ## Set up `ampd`
 
 <tabs>
+
+<tab-item title="Source">
+Install `ampd` from source by cloning and building the [`axelar-amplifier` repository](https://github.com/axelarnetwork/axelar-amplifier).
+</tab-item>
 
 <tab-item title="Binary">
 Download the [`ampd` binary](https://github.com/axelarnetwork/axelar-amplifier/releases/tag/ampd-v0.4.0) depending on the type of machine you have:
@@ -63,16 +71,19 @@ docker pull axelarnet/axelar-ampd:v0.4.0
 ```
 </tab-item>
 
-<tab-item title="Source">
-Install `ampd` from source by cloning and building the [`axelar-amplifier` repository](https://github.com/axelarnetwork/axelar-amplifier).
-</tab-item>
-
 </tabs>
 
 ## Add `ampd` to your `PATH`
 
 This will allow you to begin commands with `ampd`.
 
+<tabs>
+
+<tab-item title="Source">
+TODO: Add source instructions
+</tab-item>
+
+<tab-item title="Binary">
 1. Add a symbolic link named `ampd` to the `ampd` binary on your machine:
 
     ```bash
@@ -100,6 +111,13 @@ For example, to determine the verifier address without the `ampd` alias on an Ap
 ```bash
 ~/ampd-darwin-arm64-v0.4.0 verifier-address
 ```
+</tab-item>
+
+<tab-item title="Docker">
+TODO: Add Docker instructions
+</tab-item>
+
+</tabs>
 
 ## Configure the verifier
 
