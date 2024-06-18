@@ -5612,6 +5612,133 @@
           "transfer_fee": 30000.0
         }
       ]
+    },
+    {
+      "id": "ubtsg",
+      "name": "BTSG - BTSG native asset",
+      "symbol": "BTSG",
+      "image": "/images/assets/btsg.svg",
+      "contracts": [
+        {
+          "chain": "arbitrum",
+          "address": "0x225Cf2027458F534C29C95A679e885B4E8BDDdf7",
+          "symbol": "BTSG",
+          "decimals": 6,
+          "transfer_fee": 1000.0
+        },
+        {
+          "chain": "avalanche",
+          "address": "0x615d89C167A38afecA108c2AD9E1e65F09E2EE29",
+          "symbol": "BTSG",
+          "decimals": 6,
+          "transfer_fee": 150.0
+        },
+        {
+          "chain": "base",
+          "address": "0x225Cf2027458F534C29C95A679e885B4E8BDDdf7",
+          "symbol": "BTSG",
+          "decimals": 6,
+          "transfer_fee": 1000.0
+        },
+        {
+          "chain": "binance",
+          "address": "0xceBd6A207FEFfc6140AE37a2D2B3b3818F1aF0Ad",
+          "symbol": "BTSG",
+          "decimals": 6,
+          "transfer_fee": 150.0
+        },
+        {
+          "chain": "blast",
+          "address": "0x225Cf2027458F534C29C95A679e885B4E8BDDdf7",
+          "symbol": "BTSG",
+          "decimals": 6,
+          "transfer_fee": 1000.0
+        },
+        {
+          "chain": "celo",
+          "address": "0x225Cf2027458F534C29C95A679e885B4E8BDDdf7",
+          "symbol": "BTSG",
+          "decimals": 6,
+          "transfer_fee": 150.0
+        },
+        {
+          "chain": "ethereum",
+          "address": "0x2140f9DD6253417389699f396CaFC0e47597410a",
+          "symbol": "BTSG",
+          "decimals": 6,
+          "transfer_fee": 6000.0
+        },
+        {
+          "chain": "fantom",
+          "address": "0xceBd6A207FEFfc6140AE37a2D2B3b3818F1aF0Ad",
+          "symbol": "BTSG",
+          "decimals": 6,
+          "transfer_fee": 150.0
+        },
+        {
+          "chain": "filecoin",
+          "address": "0x225Cf2027458F534C29C95A679e885B4E8BDDdf7",
+          "symbol": "BTSG",
+          "decimals": 6,
+          "transfer_fee": 150.0
+        },
+        {
+          "chain": "fraxtal",
+          "address": "0x225Cf2027458F534C29C95A679e885B4E8BDDdf7",
+          "symbol": "BTSG",
+          "decimals": 6,
+          "transfer_fee": 1000.0
+        },
+        {
+          "chain": "kava",
+          "address": "0x225Cf2027458F534C29C95A679e885B4E8BDDdf7",
+          "symbol": "BTSG",
+          "decimals": 6,
+          "transfer_fee": 150.0
+        },
+        {
+          "chain": "linea",
+          "address": "0x225Cf2027458F534C29C95A679e885B4E8BDDdf7",
+          "symbol": "BTSG",
+          "decimals": 6,
+          "transfer_fee": 1000.0
+        },
+        {
+          "chain": "mantle",
+          "address": "0x225Cf2027458F534C29C95A679e885B4E8BDDdf7",
+          "symbol": "BTSG",
+          "decimals": 6,
+          "transfer_fee": 1000.0
+        },
+        {
+          "chain": "moonbeam",
+          "address": "0x2140f9DD6253417389699f396CaFC0e47597410a",
+          "symbol": "BTSG",
+          "decimals": 6,
+          "transfer_fee": 150.0
+        },
+        {
+          "chain": "optimism",
+          "address": "0x225Cf2027458F534C29C95A679e885B4E8BDDdf7",
+          "symbol": "BTSG",
+          "decimals": 6,
+          "transfer_fee": 1000.0
+        },
+        {
+          "chain": "polygon",
+          "address": "0x86C74A05e735eB72f81e4bb415AaF0e3d0c1c413",
+          "symbol": "BTSG",
+          "decimals": 6,
+          "transfer_fee": 150.0
+        },
+        {
+          "chain": "scroll",
+          "address": "0x225Cf2027458F534C29C95A679e885B4E8BDDdf7",
+          "symbol": "BTSG",
+          "decimals": 6,
+          "transfer_fee": 1000.0
+        }
+      ]
     }
   ],
   "testnet": [
