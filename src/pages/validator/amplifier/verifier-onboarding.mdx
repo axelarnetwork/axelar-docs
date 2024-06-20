@@ -25,7 +25,7 @@ There are three ways to set up and run a verifier:
 <tabs>
 
 <tab-item title="Source">
-Install `ampd` from source by cloning and building the [`tofnd` repository](https://github.com/axelarnetwork/tofnd).
+Install `tofnd` from source by cloning and building the [`tofnd` repository](https://github.com/axelarnetwork/tofnd).
 </tab-item>
 
 <tab-item title="Binary">
@@ -76,15 +76,8 @@ docker run axelarnet/axelar-ampd:v0.4.0 verifier-address
 
 ## Add `ampd` to your `PATH`
 
-This will allow you to begin commands with `ampd`.
+This will allow you to begin commands with `ampd`. If you set up `ampd` through source or Docker, make sure to build a binary first.
 
-<tabs>
-
-<tab-item title="Source">
-TODO: Add source instructions
-</tab-item>
-
-<tab-item title="Binary">
 1. Add a symbolic link named `ampd` to the `ampd` binary on your machine:
 
     ```bash
@@ -112,13 +105,6 @@ For example, to determine the verifier address without the `ampd` alias on an Ap
 ```bash
 ~/ampd-darwin-arm64-v0.4.0 verifier-address
 ```
-</tab-item>
-
-<tab-item title="Docker">
-TODO: Add Docker instructions
-</tab-item>
-
-</tabs>
 
 ## Configure the verifier
 
