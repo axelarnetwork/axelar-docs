@@ -10,16 +10,16 @@ The [`InterchainTokenService`](https://github.com/axelarnetwork/interchain-token
 
 There are three types of Interchain Token integrations:
 
-- [Canonical Interchain Tokens](/dev/send-tokens/glossary#canonical-interchain-token) — Interchain Tokens that exist on the chain they were originally deployed on. The Token Manager duplicates this token by deploying it on other chains, accepting the original as the standard across all chains. 
-- [Custom tokens](/dev/send-tokens/glossary#custom-token) — ERC-20 tokens that are designed to serve specific use cases within the blockchain ecosystem. They are deployed with custom functionality along with the required minting and burning `TokenManager` functions.
-- [Standardized Interchain Tokens](/dev/send-tokens/glossary#standardized-token) — ERC-20 tokens from a contract that implements the `IInterchainToken` and `IStandardizedToken` interfaces. Standardized tokens can be deployed by the Interchain Token Service.
+- [Standardized Interchain Tokens](/dev/send-tokens/glossary#standardized-token) — ERC-20 tokens that are deployed through the Interchain Token Service from a contract that implements the `IInterchainToken` and `IStandardizedToken` interfaces. They have the same address on all chains, with native bridging and no lock/unlock functionality.
+- [Canonical Interchain Tokens](/dev/send-tokens/glossary#canonical-interchain-token) — Tokens originally deployed on one chain that now have interchain capabilities through ITS. ITS wraps the token on the original chain to give it these capabilities, then duplicates the wrapped original on all other chains.
+- [Custom tokens](/dev/send-tokens/glossary#custom-token) — Interchain Tokens that are designed to serve specific use cases within the blockchain ecosystem. They are deployed with custom functionality along with the required minting and burning `TokenManager` functions.
 
 ## The future of ITS
 
 ### Migration to governance
 
-The `InterchainTokenService` contract will soon be managed through [EVM contract governance](/learn/evm-governance).
+The `InterchainTokenService` contract will soon be managed through [EVM contract governance](/learn/evm-governance) rather than through a single account.
 
 ### ITS Hub
 
-The new [Axelar Virtual Machine](https://www.axelar.network/blog/axelar-virtual-machine-future-of-interoperability) and [Interchain Amplifier](/dev/amplifier/introduction) provide an opportunity for a major overhaul for the Interchain Token Service. Interop Labs is developing a new **ITS Hub** to extend multichain functionality and accessibility, which will serve as the homebase for the Interchain Token Service on the Axelar blockchain, handling all multichain functionality such as tracking balances and flow limits. The ITS hub extends ITS capabilities to all chains integrating with the Interchain Amplifier, including the ones not built with smart contracts.
+The new [Axelar Virtual Machine](https://www.axelar.network/blog/axelar-virtual-machine-future-of-interoperability) and [Interchain Amplifier](/dev/amplifier/introduction) provide a major overhaul opportunity for the Interchain Token Service. Interop Labs is developing a new **ITS Hub** that will serve as the homebase for the Interchain Token Service on the Axelar blockchain. All token transfers between ITS-enabled chains will be routed through this hub. The ITS hub extends ITS capabilities such as tracking balances and flow limits to all chains integrating with the Interchain Amplifier, including ones not built with smart contracts.
