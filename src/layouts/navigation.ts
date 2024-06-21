@@ -36,10 +36,6 @@ export const getNavigation = (section) => {
                   href: "/dev/send-tokens/interchain-tokens/rate-limit",
                 },
                 {
-                  title: "Roadmap",
-                  href: "/dev/send-tokens/interchain-tokens/roadmap",
-                },
-                {
                   title: "Developer Guides",
                   children: [
                     {
@@ -61,6 +57,10 @@ export const getNavigation = (section) => {
             {
               title: "Glossary",
               href: "/dev/send-tokens/glossary",
+            },
+            {
+              title: "Roadmap",
+              href: "/dev/send-tokens/roadmap",
             },
           ],
         },
