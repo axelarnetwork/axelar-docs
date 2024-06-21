@@ -10,7 +10,9 @@ The Interchain Token Service is a [smart contract](https://github.com/axelarnetw
 
 ## Canonical Interchain Token
 
-In the context of Axelar’s Interchain Token Service, a canonical interchain token is an interchain token built from a token that already exists on a chain. The token manager “duplicates” this token by deploying it on other chains, accepting the “original” as the standard across all chains. This standardization ensures consistent behavior and enables interoperability between blockchains, allowing cross-chain transactions and interactions within blockchain networks that support various chains. Thus, every ERC-20 token can only have one canonical chain. It will be deployed to all other chains as a [standardized token](/dev/send-tokens/glossary#standardized-token).
+A canonical Interchain Token is a token originally deployed on one chain that now has interchain capabilities through ITS. The Interchain Token Service wraps the token on the original chain to give it these capabilities, then duplicates the wrapped original on all other chains. This standardization ensures consistent behavior and enables interoperability between blockchains, allowing cross-chain transactions and interactions within blockchain networks that support various chains.
+
+Every ERC-20 token can only have one canonical chain. It will be deployed to all other chains as a [standardized token](/dev/send-tokens/glossary#standardized-token).
 
 ## Custom Token
 
