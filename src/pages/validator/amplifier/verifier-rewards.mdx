@@ -10,6 +10,10 @@ Contributions are assessed per epoch (a length of time configured by governance)
 
 <p align="center"><img src="/images/verifier-rewards-contract-architecture.png" width="650"/></p>
 
+<Callout>
+The `EndBlocker` is code that executes at the end of each block so that rewards are distributed automatically. It has not yet been implemented in the Axelar Amplifier.
+</Callout>
+
 ## Voting flow
 
 <p align="center"><img src="/images/verifier-rewards-voting-flow.png" width="750"/></p>
@@ -37,11 +41,6 @@ Each integrated chain has two pools that must be funded independently. There is 
 
 Reward pools are not tied to an epoch. If earned rewards are not claimed, they will continue to grow. If rewards are being earned but the pool has not been sufficiently funded, these rewards can be funded and claimed at a later date. Integrators should ensure that pools always have enough funds so that verifiers can get their rewards quickly.
 
-## Contract reference
-
-You can get chain names and the addresses of the rewards, voting verifier, and multisig contracts through [`devnet-verifiers.json`](https://github.com/axelarnetwork/axelar-contract-deployments/blob/019d41f81b506d35fa89ffd9ebb3a02719563e09/axelar-chains-config/info/devnet-verifiers.json) or [`devnet-amplifier.json`](https://github.com/axelarnetwork/axelar-contract-deployments/blob/019d41f81b506d35fa89ffd9ebb3a02719563e09/axelar-chains-config/info/devnet-amplifier.json).
-
-
 ## Rewards calculation
 
 Rewards are calculated through the following parameters, which are first configured during [contract instantiation](https://github.com/axelarnetwork/axelar-amplifier/blob/6fd3612716fc6cf3b421ebe53939a71341731047/contracts/voting-verifier/src/msg.rs#L13). These parameters can be modified through governance:
@@ -59,9 +58,9 @@ Use `rewards_pool()` to check the funds in a pool:
 <tab-item title="<code>devnet-verifiers</code>">
     ```bash
     export REWARDS_CONTRACT_ADDRESS="axelar1guczj53xxl4347adagh23eelyhnxvugw2nqq0q0dr6kws7q35jyqqnan33"
-    export CHAIN_NAME="fantom"
-    export VOTING_VERIFIER_CONTRACT_ADDRESS="axelar1elaymnd2epmfr498h2x9p2nezc4eklv95uv92u9csfs8wl75w7yqdc0h67"
-    export MULTISIG_CONTRACT_ADDRESS="0x7eeE33A59Db27d762AA1Fa31b26efeE0dABa1132"
+    export CHAIN_NAME="avalanche"
+    export VOTING_VERIFIER_OR_MULTISIG_CONTRACT_ADDRESS="axelar1elaymnd2epmfr498h2x9p2nezc4eklv95uv92u9csfs8wl75w7yqdc0h67" || "0x7eeE33A59Db27d762AA1Fa31b26efeE0dABa1132"
+    export RPC="http://devnet-amplifier.axelar.dev:26657"
     ```
 </tab-item>
 
@@ -69,29 +68,33 @@ Use `rewards_pool()` to check the funds in a pool:
     ```bash
     export REWARDS_CONTRACT_ADDRESS="axelar1vaj9sfzc3z0gpel90wu4ljutncutv0wuhvvwfsh30rqxq422z89qnd989l"
     export CHAIN_NAME="fantom"
-    export VOTING_VERIFIER_CONTRACT_ADDRESS="axelar1ty7mx0cllgz8xuvhn2j7e3qy8999ssgmjtktyqetl335em0g88lq6rjhl2"
-    export MULTISIG_CONTRACT_ADDRESS="axelar19jxy26z0qnnspa45y5nru0l5rmy9d637z5km2ndjxthfxf5qaswst9290r"
+    export VOTING_VERIFIER_OR_MULTISIG_CONTRACT_ADDRESS="axelar1elaymnd2epmfr498h2x9p2nezc4eklv95uv92u9csfs8wl75w7yqdc0h67" || "0x7eeE33A59Db27d762AA1Fa31b26efeE0dABa1132"
+    export RPC="http://devnet-amplifier.axelar.dev:26657"
     ```
 </tab-item>
 
 </tabs>
 
+<Callout>
+You can get the addresses of the rewards, voting verifier, and multisig contracts through [`devnet-verifiers.json`](https://github.com/axelarnetwork/axelar-contract-deployments/blob/019d41f81b506d35fa89ffd9ebb3a02719563e09/axelar-chains-config/info/devnet-verifiers.json) or [`devnet-amplifier.json`](https://github.com/axelarnetwork/axelar-contract-deployments/blob/019d41f81b506d35fa89ffd9ebb3a02719563e09/axelar-chains-config/info/devnet-amplifier.json).
+</Callout>
+
 ```bash
-axelard q wasm contract-state smart REWARDS_CONTRACT_ADDRESS \
-'{
-"rewards_pool":
-{
-"pool_id":
-{
-"chain_name":CHAIN_NAME,
-"contract":VOTING_VERIFIER_CONTRACT_ADDRESS || MULTISIG_CONTRACT_ADDRESS
-}
-}
-}'
---from [key] \
---gas auto \
---gas-adjustment 2 \
---node $RPC
+axelard q wasm contract-state smart $REWARDS_CONTRACT_ADDRESS \
+    '{
+        "rewards_pool":
+            {
+                "pool_id":
+                    {
+                        "chain_name":"'"$CHAIN_NAME"'",
+                        "contract":"'"$VOTING_VERIFIER_OR_MULTISIG_CONTRACT_ADDRESS"'"
+                    }
+            }
+    }'
+    --keyring-backend test \
+    --from wallet \
+    --gas auto --gas-adjustment 1.5 --gas-prices 0.007uamplifier \
+    --node $RPC
 ```
 
 ## Distribute rewards
@@ -103,40 +106,44 @@ Use `distribute_rewards()` to distribute rewards from a pool:
 <tab-item title="<code>devnet-verifiers</code>">
     ```bash
     export REWARDS_CONTRACT_ADDRESS="axelar1guczj53xxl4347adagh23eelyhnxvugw2nqq0q0dr6kws7q35jyqqnan33"
-    export CHAIN_NAME="fantom"
-    export VOTING_VERIFIER_CONTRACT_ADDRESS="axelar1elaymnd2epmfr498h2x9p2nezc4eklv95uv92u9csfs8wl75w7yqdc0h67"
-    export MULTISIG_CONTRACT_ADDRESS="0x7eeE33A59Db27d762AA1Fa31b26efeE0dABa1132"
+    export CHAIN_NAME="avalanche"
+    export VOTING_VERIFIER_OR_MULTISIG_CONTRACT_ADDRESS="axelar1elaymnd2epmfr498h2x9p2nezc4eklv95uv92u9csfs8wl75w7yqdc0h67" || "0x7eeE33A59Db27d762AA1Fa31b26efeE0dABa1132"
+    export RPC="http://devnet-amplifier.axelar.dev:26657"
     ```
 </tab-item>
 
 <tab-item title="<code>devnet-amplifier</code>">
     ```bash
     export REWARDS_CONTRACT_ADDRESS="axelar1vaj9sfzc3z0gpel90wu4ljutncutv0wuhvvwfsh30rqxq422z89qnd989l"
-    export CHAIN_NAME="fantom"
-    export VOTING_VERIFIER_CONTRACT_ADDRESS="axelar1ty7mx0cllgz8xuvhn2j7e3qy8999ssgmjtktyqetl335em0g88lq6rjhl2"
-    export MULTISIG_CONTRACT_ADDRESS="axelar19jxy26z0qnnspa45y5nru0l5rmy9d637z5km2ndjxthfxf5qaswst9290r"
+    export CHAIN_NAME="avalanche"
+    export VOTING_VERIFIER_OR_MULTISIG_CONTRACT_ADDRESS="axelar1elaymnd2epmfr498h2x9p2nezc4eklv95uv92u9csfs8wl75w7yqdc0h67" || "0x7eeE33A59Db27d762AA1Fa31b26efeE0dABa1132"
+    export RPC="http://devnet-amplifier.axelar.dev:26657"
     ```
 </tab-item>
 
 </tabs>
 
+<Callout>
+You can get the addresses of the rewards, voting verifier, and multisig contracts through [`devnet-verifiers.json`](https://github.com/axelarnetwork/axelar-contract-deployments/blob/019d41f81b506d35fa89ffd9ebb3a02719563e09/axelar-chains-config/info/devnet-verifiers.json) or [`devnet-amplifier.json`](https://github.com/axelarnetwork/axelar-contract-deployments/blob/019d41f81b506d35fa89ffd9ebb3a02719563e09/axelar-chains-config/info/devnet-amplifier.json).
+</Callout>
+
 ```bash
-axelard tx wasm execute REWARDS_CONTRACT_ADDRESS \
-'{
-"distribute_rewards":
-{
-"pool_id":
-{
-"chain_name":CHAIN_NAME,
-"contract":VOTING_VERIFIER_CONTRACT_ADDRESS || MULTISIG_CONTRACT_ADDRESS
-},
-"epoch_count":10
-}
-}' \
---from [key] \
---gas auto \
---gas-adjustment 2 \
---node $RPC
+axelard tx wasm execute $REWARDS_CONTRACT_ADDRESS \
+    '{
+        "distribute_rewards":
+            {
+                "pool_id":
+                    {
+                        "chain_name":"'"$CHAIN_NAME"'",
+                        "contract":"'"$VOTING_VERIFIER_OR_MULTISIG_CONTRACT_ADDRESS"'"
+                    },
+                "epoch_count":10
+            }
+    }' \
+    --keyring-backend test \
+    --from wallet \
+    --gas auto --gas-adjustment 1.5 --gas-prices 0.007uamplifier \
+    --node $RPC
 ```
 
 Rewards are distributed to verifiers with a participation rate greater than the threshold as the epoch closes. Rewards are calculated based on the time passed since the last event and the total number of verifiers, and split equally amongst all participating verifiers in the epoch.
