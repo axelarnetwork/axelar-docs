@@ -240,6 +240,10 @@ export const getNavigation = (section) => {
               href: "/dev/amplifier/chain-integration/integrate-a-chain",
             },
             {
+              title: "Add Rewards",
+              href: "/dev/amplifier/add-rewards",
+            },
+            {
               title: "GMP with Amplifier example",
               href: "/dev/amplifier/gmp-example",
             },
