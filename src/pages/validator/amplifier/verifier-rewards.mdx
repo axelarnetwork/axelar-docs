@@ -148,4 +148,4 @@ axelard tx wasm execute $REWARDS_CONTRACT_ADDRESS \
 
 Rewards are distributed to verifiers with a participation rate greater than the threshold as the epoch closes. Rewards are calculated based on the time passed since the last event and the total number of verifiers, and split equally amongst all participating verifiers in the epoch.
 
-`epoch_count` is the maximum number of historical epochs for which to distribute rewards, starting with the oldest. If not specified, rewards will be distributed for 10 epochs.
+`epoch_count` is the maximum number of historical epochs for which to distribute rewards, starting with the oldest. If not specified, rewards will be distributed for the last 10 epochs.
