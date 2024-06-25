@@ -2,9 +2,11 @@
 
 import { Callout } from "/src/components/callout"
 
-A verifier can get rewards whenever it posts a signature or votes on an event from an external chain. When this happens, the voting verifier and multisig contracts send messages to the [verifier rewards contract](https://github.com/axelarnetwork/axelar-amplifier/tree/main/contracts/rewards), which is responsible for tracking event participation based on rewards params, such as storing the event in the correct window, ignoring the event if it was too late, and associating the event with the correct chain.
+Verifiers are responsible for securing transactions with chains connected to the Axelar Network via the [Axelar Amplifier](/dev/amplifier/introduction). Verifiers vote on the truthfulness of transactions posted to the network and create signatures for outgoing messages. In compensation for these activities and the associated decentralized node running costs, verifiers earn rewards provided by each chain integrator.
 
-Participation is assessed per epoch, lengths of time configurable by governance. The end blocker or scheduler or some other automated component then sends a message to the rewards contract to process rewards for the most recent window. Rewards are calculated based on a percentage of all traffic for a given chain and paid out in AXL.
+Rewards are calculated based on counted contributions. A contribution is counted whenever a poll ends based on the verifiers who voted, and when a verifier signs an event. Contributions are tracked in the [verifier rewards contract](https://github.com/axelarnetwork/axelar-amplifier/tree/main/contracts/rewards).
+
+Contributions are assessed per epoch (a length of time configured by governance). At the conclusion of an epoch, a message can be sent to the rewards contract to process rewards for the most recent window. Rewards are calculated based on a percentage of all traffic for a given chain and paid in AXL.
 
 <p align="center"><img src="/images/verifier-rewards-contract-architecture.png" width="650"/></p>
 
@@ -29,52 +31,113 @@ The destination chain uses the prover rather than the voting verifier to pass th
 1. If a verifier signed during a certain grace period, the multisig contract emits a `record_participation()` event to the rewards contract.
 1. The rewards contract keeps a tally of how many events each verifier correctly participated in.
 
-Parameters
-
-The following parameters are first configured during [contract instantiation](https://github.com/axelarnetwork/axelar-amplifier/blob/6fd3612716fc6cf3b421ebe53939a71341731047/contracts/voting-verifier/src/msg.rs#L13) and can be modified through governance:
-
-- `epoch_duration` — How often rewards are calculated, specified in number of blocks. For example, an `epoch_duration` of 500 blocks will reward verifiers for their participation in each 500-block window.
-- `rewards_per_epoch` — The total number of tokens distributed as rewards per epoch, split equally amongst all participating verifiers for a given epoch. The same for both signing and voting.
-- `initial_epoch_num` — A time period over which the reward amount is fixed.
-
 ## Rewards pools
 
-Each integrated chain has one pool for signing and one pool for voting. Rewards are funded per pool, and both pools must be funded to configure rewards for a new chain.
+Each integrated chain has two pools that must be funded independently. There is one rewards pool for signing and one pool for voting.
 
-Rewards are cumulative rather than by epoch. When rewards are added to a pool, they go into the pool for all epochs, including future epochs and past epochs that haven’t been claimed. This way, it doesn’t go to zero. Even if it does go to zero, it means that distributing rewards will only fail until someone adds rewards to the pool.
+Reward pools are not tied to an epoch. If earned rewards are not claimed, they will continue to grow. If rewards are being earned but the pool has not been sufficiently funded, these rewards can be funded and claimed at a later date. Integrators should ensure that pools always have enough funds so that verifiers can get their rewards quickly.
 
-If a pool is short of funds, rewards will not be distributed until there are enough funds in the pool to cover a payout. You should ensure that a pool always has enough funds so that verifiers can get their rewards on time.
+## Contract reference
+
+You can get chain names and the addresses of the rewards, voting verifier, and multisig contracts through devnet-verifiers.json or devnet-amplifier.json. 
+
+## Rewards calculation
+
+Rewards are calculated through the following parameters, which are first configured during [contract instantiation](https://github.com/axelarnetwork/axelar-amplifier/blob/6fd3612716fc6cf3b421ebe53939a71341731047/contracts/voting-verifier/src/msg.rs#L13). These parameters can be modified through governance:
+
+- [`epoch_duration`](https://github.com/axelarnetwork/axelar-amplifier/blob/6d6b974e1a911b17b2d019cb14c5ceb748cc244a/contracts/rewards/src/msg.rs#L21) — How often rewards are calculated, specified in number of blocks. For example, an `epoch_duration` of 500 blocks will reward verifiers for their participation in each 500-block window.
+- [`rewards_per_epoch`](https://github.com/axelarnetwork/axelar-amplifier/blob/6d6b974e1a911b17b2d019cb14c5ceb748cc244a/contracts/rewards/src/msg.rs#L24) — The total number of tokens distributed as rewards per epoch, split equally amongst all participating verifiers for a given epoch. The same for both signing and voting.
+- [`participation_threshold`](https://github.com/axelarnetwork/axelar-amplifier/blob/6d6b974e1a911b17b2d019cb14c5ceb748cc244a/contracts/rewards/src/msg.rs#L30C9-L30C32) — The participation threshold that verifiers must meet to receive given rewards in a given epoch, specified as a fraction between 0 (exclusive) and 1 (exclusive). Verifiers must participate in at least this fraction of all events in a given epoch to receive rewards. Participation is reset at the beginning of each epoch, so participation in previous epochs does not affect rewards for future epochs.
 
 ## Check the funds in a pool
 
 Use `rewards_pool()` to check the funds in a pool:
 
+<tabs>
+
+<tab-item title="<code>devnet-verifiers</code>">
+    ```bash
+    export REWARDS_CONTRACT_ADDRESS="axelar1guczj53xxl4347adagh23eelyhnxvugw2nqq0q0dr6kws7q35jyqqnan33"
+    export CHAIN_NAME="fantom"
+    export VOTING_VERIFIER_CONTRACT_ADDRESS="axelar1elaymnd2epmfr498h2x9p2nezc4eklv95uv92u9csfs8wl75w7yqdc0h67"
+    export MULTISIG_CONTRACT_ADDRESS="0x7eeE33A59Db27d762AA1Fa31b26efeE0dABa1132"
+    ```
+</tab-item>
+
+<tab-item title="<code>devnet-amplifier</code>">
+    ```bash
+    export REWARDS_CONTRACT_ADDRESS="axelar1vaj9sfzc3z0gpel90wu4ljutncutv0wuhvvwfsh30rqxq422z89qnd989l"
+    export CHAIN_NAME="fantom"
+    export VOTING_VERIFIER_CONTRACT_ADDRESS="axelar1ty7mx0cllgz8xuvhn2j7e3qy8999ssgmjtktyqetl335em0g88lq6rjhl2"
+    export MULTISIG_CONTRACT_ADDRESS="axelar19jxy26z0qnnspa45y5nru0l5rmy9d637z5km2ndjxthfxf5qaswst9290r"
+    ```
+</tab-item>
+
+</tabs>
+
 ```bash
-axelard q wasm contract-state smart "[rewards contract address]" '{"rewards_pool":{"pool_id":{"chain_name": "[chain-name]","contract":"[address of voting verifier or multisig contract]"}}}'
+axelard q wasm contract-state smart REWARDS_CONTRACT_ADDRESS \
+'{
+"rewards_pool":
+{
+"pool_id":
+{
+"chain_name":CHAIN_NAME,
+"contract":VOTING_VERIFIER_CONTRACT_ADDRESS || MULTISIG_CONTRACT_ADDRESS
+}
+}
+}'
+--from [key] \
+--gas auto \
+--gas-adjustment 2 \
+--node $RPC
 ```
-
-## Add funds to a pool
-
-Use `add_rewards()` add funds to a pool:
-
-```bash
-axelard tx wasm execute "[rewards contract address]" '{"add_rewards":{"pool_id": {"chain_name":"[chain-name]","contract":"[address of voting verifier or multisig contract]"}}}' --amount [amount to add] --from [key] --gas auto --gas-adjustment 2
-```
-
-Anyone can increase the number of funds in a rewards pool at any time.
 
 ## Distribute rewards
 
 Use `distribute_rewards()` to distribute rewards from a pool:
 
+<tabs>
+
+<tab-item title="<code>devnet-verifiers</code>">
+    ```bash
+    export REWARDS_CONTRACT_ADDRESS="axelar1guczj53xxl4347adagh23eelyhnxvugw2nqq0q0dr6kws7q35jyqqnan33"
+    export CHAIN_NAME="fantom"
+    export VOTING_VERIFIER_CONTRACT_ADDRESS="axelar1elaymnd2epmfr498h2x9p2nezc4eklv95uv92u9csfs8wl75w7yqdc0h67"
+    export MULTISIG_CONTRACT_ADDRESS="0x7eeE33A59Db27d762AA1Fa31b26efeE0dABa1132"
+    ```
+</tab-item>
+
+<tab-item title="<code>devnet-amplifier</code>">
+    ```bash
+    export REWARDS_CONTRACT_ADDRESS="axelar1vaj9sfzc3z0gpel90wu4ljutncutv0wuhvvwfsh30rqxq422z89qnd989l"
+    export CHAIN_NAME="fantom"
+    export VOTING_VERIFIER_CONTRACT_ADDRESS="axelar1ty7mx0cllgz8xuvhn2j7e3qy8999ssgmjtktyqetl335em0g88lq6rjhl2"
+    export MULTISIG_CONTRACT_ADDRESS="axelar19jxy26z0qnnspa45y5nru0l5rmy9d637z5km2ndjxthfxf5qaswst9290r"
+    ```
+</tab-item>
+
+</tabs>
+
 ```bash
-axelard tx wasm execute "[rewards contract address]" '{"distribute_rewards":{"pool_id":{"chain_name":"[chain-name]","contract":"[address of voting verifier or multisig contract]"}, "epoch_count":10}}' --from [key] --gas auto --gas-adjustment 2
+axelard tx wasm execute REWARDS_CONTRACT_ADDRESS \
+'{
+"distribute_rewards":
+{
+"pool_id":
+{
+"chain_name":CHAIN_NAME,
+"contract":VOTING_VERIFIER_CONTRACT_ADDRESS || MULTISIG_CONTRACT_ADDRESS
+},
+"epoch_count":10
+}
+}' \
+--from [key] \
+--gas auto \
+--gas-adjustment 2 \
+--node $RPC
 ```
 
-Rewards are distributed to validators with a participation rate greater than the threshold as the epoch closes. Rewards are calculated based on the time passed since the last event and the total number of validators, and split equally amongst all participating validators in the epoch.
+Rewards are distributed to verifiers with a participation rate greater than the threshold as the epoch closes. Rewards are calculated based on the time passed since the last event and the total number of verifiers, and split equally amongst all participating verifiers in the epoch.
 
 `epoch_count` is the maximum number of historical epochs for which to distribute rewards, starting with the oldest. If not specified, rewards will be distributed for 10 epochs.
-
-<Callout>
-While you can manually call `distribute_rewards()` and trigger rewards distribution, it is designed to be called automatically by the end blocker.
-</Callout>
