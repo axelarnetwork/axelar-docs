@@ -12,7 +12,7 @@ Reward pools are not tied to an epoch. If earned rewards are not claimed, they w
 
 ## Contract reference
 
-You can get chain names and the addresses of the rewards, voting verifier, and multisig contracts through [`devnet-verifiers.json`](https://github.com/axelarnetwork/axelar-contract-deployments/blob/019d41f81b506d35fa89ffd9ebb3a02719563e09/axelar-chains-config/info/devnet-verifiers.json) or [`devnet-amplifier.json`](https://github.com/axelarnetwork/axelar-contract-deployments/blob/019d41f81b506d35fa89ffd9ebb3a02719563e09/axelar-chains-config/info/devnet-amplifier.json).
+You can get the addresses of the rewards, voting verifier, and multisig contracts through [`devnet-verifiers.json`](https://github.com/axelarnetwork/axelar-contract-deployments/blob/019d41f81b506d35fa89ffd9ebb3a02719563e09/axelar-chains-config/info/devnet-verifiers.json) or [`devnet-amplifier.json`](https://github.com/axelarnetwork/axelar-contract-deployments/blob/019d41f81b506d35fa89ffd9ebb3a02719563e09/axelar-chains-config/info/devnet-amplifier.json).
 
 ## Check the funds in a pool
 
@@ -23,9 +23,10 @@ Use `rewards_pool()` to check the funds in a pool:
 <tab-item title="<code>devnet-verifiers</code>">
     ```bash
     export REWARDS_CONTRACT_ADDRESS="axelar1guczj53xxl4347adagh23eelyhnxvugw2nqq0q0dr6kws7q35jyqqnan33"
-    export CHAIN_NAME="fantom"
+    export CHAIN_NAME="avalanche"
     export VOTING_VERIFIER_CONTRACT_ADDRESS="axelar1elaymnd2epmfr498h2x9p2nezc4eklv95uv92u9csfs8wl75w7yqdc0h67"
     export MULTISIG_CONTRACT_ADDRESS="0x7eeE33A59Db27d762AA1Fa31b26efeE0dABa1132"
+    export RPC="http://devnet-amplifier.axelar.dev:26657"
     ```
 </tab-item>
 
@@ -35,27 +36,28 @@ Use `rewards_pool()` to check the funds in a pool:
     export CHAIN_NAME="fantom"
     export VOTING_VERIFIER_CONTRACT_ADDRESS="axelar1ty7mx0cllgz8xuvhn2j7e3qy8999ssgmjtktyqetl335em0g88lq6rjhl2"
     export MULTISIG_CONTRACT_ADDRESS="axelar19jxy26z0qnnspa45y5nru0l5rmy9d637z5km2ndjxthfxf5qaswst9290r"
+    export RPC="http://devnet-amplifier.axelar.dev:26657"
     ```
 </tab-item>
 
 </tabs>
 
 ```bash
-axelard q wasm contract-state smart REWARDS_CONTRACT_ADDRESS \
-'{
-"rewards_pool":
-{
-"pool_id":
-{
-"chain_name":CHAIN_NAME,
-"contract":VOTING_VERIFIER_CONTRACT_ADDRESS || MULTISIG_CONTRACT_ADDRESS
-}
-}
-}'
---from [key] \
---gas auto \
---gas-adjustment 2 \
---node $RPC
+axelard q wasm contract-state smart $REWARDS_CONTRACT_ADDRESS \
+    '{
+        "rewards_pool":
+            {
+                "pool_id":
+                    {
+                        "chain_name":"'"$CHAIN_NAME"'",
+                        "contract":"'"$VOTING_VERIFIER_CONTRACT_ADDRESS"'" || "'"$MULTISIG_CONTRACT_ADDRESS"'"
+                    }
+            }
+    }'
+    --keyring-backend test \
+    --from wallet \
+    --gas auto --gas-adjustment 1.5 --gas-prices 0.007uamplifier \
+    --node $RPC
 ```
 
 ## Add funds to a pool
@@ -67,40 +69,41 @@ Use `add_rewards()` add funds to a pool:
 <tab-item title="<code>devnet-verifiers</code>">
     ```bash
     export REWARDS_CONTRACT_ADDRESS="axelar1guczj53xxl4347adagh23eelyhnxvugw2nqq0q0dr6kws7q35jyqqnan33"
-    export CHAIN_NAME="fantom"
+    export CHAIN_NAME="avalanche"
     export VOTING_VERIFIER_CONTRACT_ADDRESS="axelar1elaymnd2epmfr498h2x9p2nezc4eklv95uv92u9csfs8wl75w7yqdc0h67"
     export MULTISIG_CONTRACT_ADDRESS="0x7eeE33A59Db27d762AA1Fa31b26efeE0dABa1132"
+    export RPC="http://devnet-amplifier.axelar.dev:26657"
     ```
 </tab-item>
 
 <tab-item title="<code>devnet-amplifier</code>">
     ```bash
     export REWARDS_CONTRACT_ADDRESS="axelar1vaj9sfzc3z0gpel90wu4ljutncutv0wuhvvwfsh30rqxq422z89qnd989l"
-    export CHAIN_NAME="fantom"
+    export CHAIN_NAME="avalanche"
     export VOTING_VERIFIER_CONTRACT_ADDRESS="axelar1ty7mx0cllgz8xuvhn2j7e3qy8999ssgmjtktyqetl335em0g88lq6rjhl2"
     export MULTISIG_CONTRACT_ADDRESS="axelar19jxy26z0qnnspa45y5nru0l5rmy9d637z5km2ndjxthfxf5qaswst9290r"
+    export RPC="http://devnet-amplifier.axelar.dev:26657"
     ```
 </tab-item>
 
 </tabs>
 
 ```bash
-axelard tx wasm execute REWARDS_CONTRACT_ADDRESS \
-'{
-"add_rewards":
-{
-"pool_id":
-{
-"chain_name":CHAIN_NAME,
-"contract":"VOTING_VERIFIER_CONTRACT_ADDRESS || MULTISIG_CONTRACT_ADDRESS
-}
-}
-}' \
---amount [amount to add] \
---from [key] \
---gas auto \
---gas-adjustment 2 \
---node $RPC
+axelard tx wasm execute $REWARDS_CONTRACT_ADDRESS \
+    '{
+        "add_rewards":
+            {
+                "pool_id":
+                    {
+                        "chain_name":"'"$CHAIN_NAME"'",
+                        "contract":"'"$VOTING_VERIFIER_CONTRACT_ADDRESS"'" || "'"$MULTISIG_CONTRACT_ADDRESS"'"
+                    }
+            }
+    }' \
+    --keyring-backend test \
+    --from wallet \
+    --gas auto --gas-adjustment 1.5 --gas-prices 0.007uamplifier \
+    --node $RPC
 ```
 
-Anyone can increase the number of funds in a rewards pool at any time.
+Anyone can add funds to a rewards pool at any time.
