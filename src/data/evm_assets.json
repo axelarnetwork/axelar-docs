@@ -5612,6 +5612,305 @@
           "transfer_fee": 30000.0
         }
       ]
+    },
+    {
+      "id": "arbitrum-weth-wei",
+      "name": "WETH - Wrapped Ether",
+      "symbol": "WETH",
+      "image": "/images/assets/weth.svg",
+      "contracts": [
+        {
+          "chain": "arbitrum",
+          "address": "0x82aF49447D8a07e3bd95BD0d56f35241523fBab1",
+          "symbol": "WETH",
+          "decimals": 18,
+          "transfer_fee": 0.0032
+        }
+      ]
+    },
+    {
+      "id": "base-weth-wei",
+      "name": "WETH - Wrapped Ether",
+      "symbol": "WETH",
+      "image": "/images/assets/weth.svg",
+      "contracts": [
+        {
+          "chain": "base",
+          "address": "0x4200000000000000000000000000000000000006",
+          "symbol": "WETH",
+          "decimals": 18,
+          "transfer_fee": 0.0032
+        }
+      ]
+    },
+    {
+      "id": "polygon-weth-wei",
+      "name": "WETH - Wrapped Ether",
+      "symbol": "WETH",
+      "image": "/images/assets/weth.svg",
+      "contracts": [
+        {
+          "chain": "polygon",
+          "address": "0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619",
+          "symbol": "WETH",
+          "decimals": 18,
+          "transfer_fee": 0.00048
+        }
+      ]
+    },
+    {
+      "id": "ubtsg",
+      "name": "BTSG - BTSG native asset",
+      "symbol": "BTSG",
+      "image": "/images/assets/btsg.svg",
+      "contracts": [
+        {
+          "chain": "arbitrum",
+          "address": "0x225Cf2027458F534C29C95A679e885B4E8BDDdf7",
+          "symbol": "BTSG",
+          "decimals": 6,
+          "transfer_fee": 1000.0
+        },
+        {
+          "chain": "avalanche",
+          "address": "0x615d89C167A38afecA108c2AD9E1e65F09E2EE29",
+          "symbol": "BTSG",
+          "decimals": 6,
+          "transfer_fee": 150.0
+        },
+        {
+          "chain": "base",
+          "address": "0x225Cf2027458F534C29C95A679e885B4E8BDDdf7",
+          "symbol": "BTSG",
+          "decimals": 6,
+          "transfer_fee": 1000.0
+        },
+        {
+          "chain": "binance",
+          "address": "0xceBd6A207FEFfc6140AE37a2D2B3b3818F1aF0Ad",
+          "symbol": "BTSG",
+          "decimals": 6,
+          "transfer_fee": 150.0
+        },
+        {
+          "chain": "blast",
+          "address": "0x225Cf2027458F534C29C95A679e885B4E8BDDdf7",
+          "symbol": "BTSG",
+          "decimals": 6,
+          "transfer_fee": 1000.0
+        },
+        {
+          "chain": "celo",
+          "address": "0x225Cf2027458F534C29C95A679e885B4E8BDDdf7",
+          "symbol": "BTSG",
+          "decimals": 6,
+          "transfer_fee": 150.0
+        },
+        {
+          "chain": "ethereum",
+          "address": "0x2140f9DD6253417389699f396CaFC0e47597410a",
+          "symbol": "BTSG",
+          "decimals": 6,
+          "transfer_fee": 6000.0
+        },
+        {
+          "chain": "fantom",
+          "address": "0xceBd6A207FEFfc6140AE37a2D2B3b3818F1aF0Ad",
+          "symbol": "BTSG",
+          "decimals": 6,
+          "transfer_fee": 150.0
+        },
+        {
+          "chain": "filecoin",
+          "address": "0x225Cf2027458F534C29C95A679e885B4E8BDDdf7",
+          "symbol": "BTSG",
+          "decimals": 6,
+          "transfer_fee": 150.0
+        },
+        {
+          "chain": "fraxtal",
+          "address": "0x225Cf2027458F534C29C95A679e885B4E8BDDdf7",
+          "symbol": "BTSG",
+          "decimals": 6,
+          "transfer_fee": 1000.0
+        },
+        {
+          "chain": "kava",
+          "address": "0x225Cf2027458F534C29C95A679e885B4E8BDDdf7",
+          "symbol": "BTSG",
+          "decimals": 6,
+          "transfer_fee": 150.0
+        },
+        {
+          "chain": "linea",
+          "address": "0x225Cf2027458F534C29C95A679e885B4E8BDDdf7",
+          "symbol": "BTSG",
+          "decimals": 6,
+          "transfer_fee": 1000.0
+        },
+        {
+          "chain": "mantle",
+          "address": "0x225Cf2027458F534C29C95A679e885B4E8BDDdf7",
+          "symbol": "BTSG",
+          "decimals": 6,
+          "transfer_fee": 1000.0
+        },
+        {
+          "chain": "moonbeam",
+          "address": "0x2140f9DD6253417389699f396CaFC0e47597410a",
+          "symbol": "BTSG",
+          "decimals": 6,
+          "transfer_fee": 150.0
+        },
+        {
+          "chain": "optimism",
+          "address": "0x225Cf2027458F534C29C95A679e885B4E8BDDdf7",
+          "symbol": "BTSG",
+          "decimals": 6,
+          "transfer_fee": 1000.0
+        },
+        {
+          "chain": "polygon",
+          "address": "0x86C74A05e735eB72f81e4bb415AaF0e3d0c1c413",
+          "symbol": "BTSG",
+          "decimals": 6,
+          "transfer_fee": 150.0
+        },
+        {
+          "chain": "scroll",
+          "address": "0x225Cf2027458F534C29C95A679e885B4E8BDDdf7",
+          "symbol": "BTSG",
+          "decimals": 6,
+          "transfer_fee": 1000.0
+        }
+      ]
+    },
+    {
+      "id": "usaga",
+      "name": "SAGA - Axelar Wrapped SAGA",
+      "symbol": "SAGA",
+      "image": "/images/assets/saga.svg",
+      "contracts": [
+        {
+          "chain": "arbitrum",
+          "address": "0x86e650048A20E0646d14E974d76109e16a0605d7",
+          "symbol": "axlSAGA",
+          "decimals": 6,
+          "transfer_fee": 7.2
+        },
+        {
+          "chain": "avalanche",
+          "address": "0x3b3D6C857476Fc2f275906D39568d622B74d96a0",
+          "symbol": "axlSAGA",
+          "decimals": 6,
+          "transfer_fee": 1.1
+        },
+        {
+          "chain": "base",
+          "address": "0x86e650048A20E0646d14E974d76109e16a0605d7",
+          "symbol": "axlSAGA",
+          "decimals": 6,
+          "transfer_fee": 7.2
+        },
+        {
+          "chain": "binance",
+          "address": "0x15C6cadcc3B920D7D811c1Bbec96FA5e6f449eF9",
+          "symbol": "axlSAGA",
+          "decimals": 6,
+          "transfer_fee": 1.1
+        },
+        {
+          "chain": "blast",
+          "address": "0x86e650048A20E0646d14E974d76109e16a0605d7",
+          "symbol": "axlSAGA",
+          "decimals": 6,
+          "transfer_fee": 7.2
+        },
+        {
+          "chain": "celo",
+          "address": "0x86e650048A20E0646d14E974d76109e16a0605d7",
+          "symbol": "axlSAGA",
+          "decimals": 6,
+          "transfer_fee": 1.1
+        },
+        {
+          "chain": "ethereum",
+          "address": "0xF42fCFfc27A5B8d0afEC45659407B82f9F32fA98",
+          "symbol": "axlSAGA",
+          "decimals": 6,
+          "transfer_fee": 43.0
+        },
+        {
+          "chain": "fantom",
+          "address": "0x15C6cadcc3B920D7D811c1Bbec96FA5e6f449eF9",
+          "symbol": "axlSAGA",
+          "decimals": 6,
+          "transfer_fee": 1.1
+        },
+        {
+          "chain": "filecoin",
+          "address": "0x86e650048A20E0646d14E974d76109e16a0605d7",
+          "symbol": "axlSAGA",
+          "decimals": 6,
+          "transfer_fee": 1.1
+        },
+        {
+          "chain": "fraxtal",
+          "address": "0x86e650048A20E0646d14E974d76109e16a0605d7",
+          "symbol": "axlSAGA",
+          "decimals": 6,
+          "transfer_fee": 7.2
+        },
+        {
+          "chain": "kava",
+          "address": "0x86e650048A20E0646d14E974d76109e16a0605d7",
+          "symbol": "axlSAGA",
+          "decimals": 6,
+          "transfer_fee": 1.1
+        },
+        {
+          "chain": "linea",
+          "address": "0x86e650048A20E0646d14E974d76109e16a0605d7",
+          "symbol": "axlSAGA",
+          "decimals": 6,
+          "transfer_fee": 7.2
+        },
+        {
+          "chain": "mantle",
+          "address": "0x86e650048A20E0646d14E974d76109e16a0605d7",
+          "symbol": "axlSAGA",
+          "decimals": 6,
+          "transfer_fee": 7.2
+        },
+        {
+          "chain": "moonbeam",
+          "address": "0xF42fCFfc27A5B8d0afEC45659407B82f9F32fA98",
+          "symbol": "axlSAGA",
+          "decimals": 6,
+          "transfer_fee": 1.1
+        },
+        {
+          "chain": "optimism",
+          "address": "0x86e650048A20E0646d14E974d76109e16a0605d7",
+          "symbol": "axlSAGA",
+          "decimals": 6,
+          "transfer_fee": 7.2
+        },
+        {
+          "chain": "polygon",
+          "address": "0xfA23FDB1648534797165fe52dc09e4e7e25C737a",
+          "symbol": "axlSAGA",
+          "decimals": 6,
+          "transfer_fee": 1.1
+        },
+        {
+          "chain": "scroll",
+          "address": "0x86e650048A20E0646d14E974d76109e16a0605d7",
+          "symbol": "axlSAGA",
+          "decimals": 6,
+          "transfer_fee": 7.2
+        }
+      ]
     }
   ],
   "testnet": [
