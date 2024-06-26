@@ -8,53 +8,119 @@ The Axelar Virtual Machine (AVM) and Amplifier are currently under active develo
 
 By running a **verifier** for a chain integration with Axelar's Amplifier, you will be responsible for voting on the validity of transactions on the Axelar network and signing command batches for a given chain.
 
-## Prerequisites
+## `tofnd` and `ampd`
 
-These instructions require you to [install and use Docker](https://docs.docker.com/engine/install/). Please ensure you have a recent version installed on your system.
+A verifier uses `ampd`, an off-chain daemon responsible for voting and signing with the Amplifier protocol, and `tofnd`, a threshold cryptography library that `ampd` depends on.
 
+There are three ways to set up and run a verifier:
 
-## Setup and configuration
+- **Option 1: Source** -- Clone and build directly from the GitHub source code.
+- **Option 2: Binaries** -- This method requires you to install and run the `tofnd` and `ampd` binaries on your local machine.
+- **Option 3: Docker** -- Use [Docker](https://docs.docker.com/engine/install/) to set up `tofnd` and `ampd`.
 
-1. Pull and run `tofnd` the latest version of `tofnd`:
+## Set up `tofnd`
+
+`ampd` needs access to a locally running `tofnd` instance in order to onboard as a verifier or run the daemon. See the [tofnd repository](https://github.com/axelarnetwork/tofnd) for more information.
+
+<tabs>
+
+<tab-item title="Source">
+Install `tofnd` from source by cloning and building the [`tofnd` repository](https://github.com/axelarnetwork/tofnd).
+</tab-item>
+
+<tab-item title="Binary">
+Download the [`tofnd` binary](https://github.com/axelarnetwork/tofnd/releases) depending on the type of machine you have:
+    - Linux: [`tofnd-linux-amd64-v0.10.5`](https://github.com/axelarnetwork/tofnd/releases/download/v0.10.5/tofnd-linux-amd64-v0.10.5)
+    - Apple Silicon Mac: [`tofnd-darwin-arm64-v0.10.5`](https://github.com/axelarnetwork/tofnd/releases/download/v0.10.5/tofnd-darwin-arm64-v0.10.5)
+    - Intel Mac: [`tofnd-darwin-amd64-v0.10.5`](https://github.com/axelarnetwork/tofnd/releases/download/v0.10.5/tofnd-darwin-amd64-v0.10.5)
+</tab-item>
+
+<tab-item title="Docker">
+Pull and run the latest version of `tofnd` from Docker:
+
+```bash
+docker pull haiyizxx/tofnd:latest
+docker run -p 50051:50051 --env MNEMONIC_CMD=auto --env NOPASSWORD=true -v tofnd:/.tofnd haiyizxx/tofnd:latest
+```
+
+Leave this process running in the background, and perform additional commands in a new terminal window or shell.
+</tab-item>
+
+</tabs>
+
+## Set up `ampd`
+
+<tabs>
+
+<tab-item title="Source">
+Install `ampd` from source by cloning and building the [`axelar-amplifier` repository](https://github.com/axelarnetwork/axelar-amplifier).
+</tab-item>
+
+<tab-item title="Binary">
+Download the [`ampd` binary](https://github.com/axelarnetwork/axelar-amplifier/releases/tag/ampd-v0.4.0) depending on the type of machine you have:
+    - Linux: [`ampd-linux-amd64-v0.4.0`](https://github.com/axelarnetwork/axelar-amplifier/releases/download/ampd-v0.4.0/ampd-linux-amd64-v0.4.0)
+    - Apple Silicon Mac: [`ampd-darwin-arm64-v0.4.0`](https://github.com/axelarnetwork/axelar-amplifier/releases/download/ampd-v0.4.0/ampd-darwin-arm64-v0.4.0)
+    - Intel Mac: [`ampd-darwin-amd64-v0.4.0`](https://github.com/axelarnetwork/axelar-amplifier/releases/download/ampd-v0.4.0/ampd-darwin-amd64-v0.4.0)
+</tab-item>
+
+<tab-item title="Docker">
+From [Docker](https://hub.docker.com/r/axelarnet/axelar-ampd), pull and run the `0.4.0` version of `ampd`:
+
+```bash
+docker pull axelarnet/axelar-ampd:v0.4.0
+docker run axelarnet/axelar-ampd:v0.4.0 verifier-address
+```
+</tab-item>
+
+</tabs>
+
+## Add `ampd` to your `PATH`
+
+This will allow you to begin commands with `ampd`. If you set up `ampd` through source or Docker, make sure to build a binary first.
+
+1. Add a symbolic link named `ampd` to the `ampd` binary on your machine:
 
     ```bash
-    docker pull haiyizxx/tofnd:latest
-    docker run -p 50051:50051 --env MNEMONIC_CMD=auto --env NOPASSWORD=true -v tofnd:/.tofnd haiyizxx/tofnd:latest
+    sudo ln -s <BINARY NAME> /usr/local/bin/ampd
     ```
-    
-    Leave this process running in the background, and perform additional commands in a new terminal window or shell.
 
-    
-1. Download [`ampd`](https://github.com/axelarnetwork/axelar-amplifier/tree/main/ampd#worker-onboarding), the off-chain daemon responsible for voting and signing with the amplifier protocol. 
-
-    We recommend downloading the `ampd` [binary](https://github.com/axelarnetwork/axelar-amplifier/releases/tag/ampd-v0.1.0) ([Linux](https://github.com/axelarnetwork/axelar-amplifier/releases/download/ampd-v0.1.0/ampd-linux-amd64-v0.1.0), [Apple Silicon Mac](https://github.com/axelarnetwork/axelar-amplifier/releases/download/ampd-v0.1.0/ampd-darwin-arm64-v0.1.0), [Intel Mac](https://github.com/axelarnetwork/axelar-amplifier/releases/download/ampd-v0.1.0/ampd-darwin-amd64-v0.1.0)). All instructions in this tutorial will assume you have a binary in your `PATH` named `ampd`.
-
-        - You can add the `ampd` binary to your path with `sudo ln -s <BINARY NAME> /usr/local/bin/ampd`.
-        - Alternatively, you can set an alias with `alias ampd=<BINARY PATH>` and restart your terminal. 
-        
-    You should make the binary executable with `chmod a+x ./ampd-darwin-arm64-v0.1.0`, customizing the binary name to match the one you downloaded.
-
-    If you don't want to add it to your path, you can refer to the binary directly in every command in this tutorial, such as `~/ampd-linux-amd64-v0.1.0 <command>`.
-
-    If you get a security warning while trying to run `ampd` on Mac, you can disable the [gatekeeper](https://support.apple.com/guide/security/gatekeeper-and-runtime-protection-sec5599b66df/web) for a single binary with `sudo xattr -d com.apple.quarantine ./ampd-darwin-arm64-v0.1.0` or disable gatekeeper globally with `sudo spctl --master-disable`.
-
-    There are two other ways to install `ampd`. 
-        - You can use [`ampd` from Docker](https://hub.docker.com/r/axelarnet/axelar-ampd). Make sure you pull the `0.1.0` version and `amd64` platform specifically, i.e. `docker pull axelarnet/axelar-ampd:v0.1.0 --platform amd64`. 
-        - You can install `ampd` from source by cloning and building the [Axelar Amplifier repository](https://github.com/axelarnetwork/axelar-amplifier).
-
-`ampd` needs access to a locally running `tofnd` instance in order to onboard as a verifier or run the daemon. See the [tofnd repository](https://github.com/axelarnetwork/tofnd) for more info.
-
-1. Create an ampd configuration file at `~/.ampd/config.toml` (or choose a different location and refer to your chosen location later in ampd commands such as `ampd -config /home/me/devnet-verifiers.toml`). This configuration file tells `ampd` how to connect to your local `tofnd`, how to talk to the devnet and the Amplifier smart contracts, and includes a default configuration for verifying transactions on the Avalanche testnet.
-
-    The following is an example `config.toml` file for the verifier devnet:
+1. Run the following to add an alias called `ampd` to the binary:
 
     ```bash
+    alias ampd=<BINARY PATH>
+    ```
+
+1. Make the binary executable:
+
+    ```bash
+    chmod a+x ./ampd-darwin-arm64-v0.4.0
+    ```
+
+1. Restart your terminal.
+
+All instructions in this tutorial will assume you have a binary in your `PATH` named `ampd`. If you don't want to add `ampd` to your `PATH`, you can refer to the binary directly in every command in this tutorial, replacing `ampd` with the `ampd` version that corresponds with your machine.
+
+For example, to determine the verifier address without the `ampd` alias on an Apple Silicon Mac, you would run:
+
+```bash
+~/ampd-darwin-arm64-v0.4.0 verifier-address
+```
+
+## Configure the verifier
+
+Create an `ampd` configuration file at `~/.ampd/config.toml`.
+
+This configuration file tells `ampd` how to connect to your local `tofnd`, how to talk to the devnet and the Amplifier smart contracts, and includes a default configuration for verifying transactions on the Avalanche testnet.
+
+The following is an example `config.toml` file for the verifier devnet:
+
+    ```toml
     tm_jsonrpc="http://devnet-verifiers.axelar.dev:26657"
     tm_grpc="tcp://devnet-verifiers.axelar.dev:9090"
     event_buffer_cap=1000
 
     [service_registry]
-    cosmwasm_contract="axelar1hrpna9v7vs3stzyd4z3xf00676kf78zpe2u5ksvljswn2vnjp3ystlgl4x"
+    cosmwasm_contract="axelar1qk00h5atutpsv900x202pxx42npjr9thg58dnqpa72f2p7m2luas9x8txw"
 
     [broadcast]
     batch_gas_limit="1000000"
@@ -73,17 +139,28 @@ These instructions require you to [install and use Docker](https://docs.docker.c
     url="http://127.0.0.1:50051"
 
     [[handlers]]
-    cosmwasm_contract="axelar1ufs3tlq4umljk0qfe8k5ya0x6hpavn897u2cnf9k0en9jr7qarqqa9263g"
+    cosmwasm_contract="axelar15nczwuqh0zcu6syeqsc4td6dphql7n2p7cgkl9raz97z5s3zdjrsc8we9y"
     type="MultisigSigner"
 
     [[handlers]]
     chain_name="avalanche"
     chain_rpc_url="https://avalanche-fuji-c-chain-rpc.publicnode.com"
-    cosmwasm_contract="axelar1466nf3zuxpya8q9emxukd7vftaf6h4psr0a07srl5zw74zh84yjq4687qd"
+    cosmwasm_contract="axelar1elaymnd2epmfr498h2x9p2nezc4eklv95uv92u9csfs8wl75w7yqdc0h67"
     type="EvmMsgVerifier"
+
     ```
 
 See the [`ampd` README](https://github.com/axelarnetwork/axelar-amplifier/blob/main/ampd/README.md) on GitHub for instructions on formatting a `config` file for your own projects.
+
+You can choose a different location for `config.toml` and refer to your chosen location rather than to `~/.ampd` in `ampd` commands. For example, if you saved your the config file in `/home/me/`, you would run:
+
+```bash
+ampd -config /home/me/devnet-verifiers.toml
+```
+
+<Callout>
+If you get a transport error with an `ampd` command, make sure that you have `tofnd` running in the background.
+</Callout>
 
 ## Fund your wallet
 
@@ -92,8 +169,12 @@ Prior to running the `ampd` daemon, you will need to set up your wallet with dev
 1. Determine your verifier address:
 
     ```bash
-    ampd worker-address
+    ampd verifier-address
     ```
+
+    <Callout>
+    If you get a security warning while trying to run `ampd` on an Apple Silicon Mac, you can disable the [gatekeeper](https://support.apple.com/guide/security/gatekeeper-and-runtime-protection-sec5599b66df/web) for a single binary with `sudo xattr -d com.apple.quarantine ./ampd-darwin-arm64-v0.4.0` or disable gatekeeper globally with `sudo spctl --master-disable`.
+    </Callout>
 
 1. Fund your verifier address.
 
@@ -105,11 +186,12 @@ Prior to running the `ampd` daemon, you will need to set up your wallet with dev
         !faucet devnet-verifiers [my verifier address]
         ```
 
-## Activate and run your verifier
+## Activate and run the verifier
+
 1. Bond your verifier:
 
     ```bash
-    ampd bond-worker validators 100 uverifiers
+    ampd bond-verifier validators 100 uverifiers
     ```
 
     Bonded verifiers will stay bonded until they unbond or are removed by governance.
@@ -126,7 +208,7 @@ Prior to running the `ampd` daemon, you will need to set up your wallet with dev
     ampd register-chain-support validators avalanche
     ```
 
-    Multiple chain names can be passed, separated by a space (`ampd register-chain-support [service name] [chains]...`). Note, any chain you want to support here must be configured in your ampd `config.toml` file. 
+    Multiple chain names can be passed, separated by a space (`ampd register-chain-support [service name] [chains]...`). Note that any chain you want to support here must be configured in your ampd `config.toml` file.
 
 1. Authorize your verifier.
 
@@ -136,7 +218,7 @@ Prior to running the `ampd` daemon, you will need to set up your wallet with dev
 
 1. Run the `ampd` daemon.
 
-    Running `ampd` without any command will run the daemon. A state file will be created if it doesn't yet exist. Its default location is `~/.ampd/state.json`, which can be overridden by passing `--state [path]`
+    Running `ampd` without any command will run the daemon. A state file will be created if it doesn't yet exist. Its default location is `~/.ampd/state.json`, which can be overridden by passing `--state [path]`.
 
 ## Productionizing
 

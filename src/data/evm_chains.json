@@ -959,14 +959,14 @@
       "image": "/images/chains/mantle.svg"
     },
     {
-      "id": "polygon-sepolia",
-      "name": "Polygon Sepolia",
+      "id": "polygon-amoy",
+      "name": "Polygon Amoy",
       "chain_id": 80002,
-      "network_id": "polygon-sepolia",
+      "network_id": "polygon-amoy",
       "provider_params": [
         {
           "chainId": "0x13882",
-          "chainName": "Polygon Sepolia",
+          "chainName": "Polygon Amoy",
           "rpcUrls": [
             "https://rpc-amoy.polygon.technology"
           ],

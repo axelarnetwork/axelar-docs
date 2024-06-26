@@ -703,6 +703,62 @@
       "image": "/images/assets/mee.svg",
       "decimals": 18,
       "transfer_fee": 4.2
+    },
+    {
+      "id": "uxprt",
+      "name": "XPRT - XPRT native asset",
+      "symbol": "XPRT",
+      "image": "/images/assets/xprt.svg",
+      "decimals": 6,
+      "transfer_fee": 0.42
+    },
+    {
+      "id": "nftl-wei",
+      "name": "NFTL - Nifty League",
+      "symbol": "NFTL",
+      "image": "/images/assets/nftl.svg",
+      "decimals": 18,
+      "transfer_fee": 50.0
+    },
+    {
+      "id": "arbitrum-weth-wei",
+      "name": "WETH - Wrapped Ether",
+      "symbol": "WETH",
+      "image": "/images/assets/weth.svg",
+      "decimals": 18,
+      "transfer_fee": 3.2e-05
+    },
+    {
+      "id": "base-weth-wei",
+      "name": "WETH - Wrapped Ether",
+      "symbol": "WETH",
+      "image": "/images/assets/weth.svg",
+      "decimals": 18,
+      "transfer_fee": 3.2e-05
+    },
+    {
+      "id": "polygon-weth-wei",
+      "name": "WETH - Wrapped Ether",
+      "symbol": "WETH",
+      "image": "/images/assets/weth.svg",
+      "decimals": 18,
+      "transfer_fee": 3.2e-05
+    },
+    {
+      "id": "ubtsg",
+      "name": "BTSG - BTSG native asset",
+      "symbol": "BTSG",
+      "image": "/images/assets/btsg.svg",
+      "decimals": 6,
+      "transfer_fee": 10.0
+    },
+    {
+      "id": "usaga",
+      "name": "SAGA - Axelar Wrapped SAGA",
+      "symbol": "SAGA",
+      "image": "/images/assets/saga.svg",
+      "decimals": 6,
+      "transfer_fee": 0.072
     }
   ],
   "testnet": [
@@ -724,6 +780,14 @@
     },
     {
       "id": "wsteth-wei",
+      "name": "wstETH - Wrapped liquid staked Ether 2.0",
+      "symbol": "wstETH",
+      "image": "/images/assets/wsteth.svg",
+      "decimals": 18,
+      "transfer_fee": 3e-05
+    },
+    {
+      "id": "sepolia-wsteth-wei",
       "name": "wstETH - Wrapped liquid staked Ether 2.0",
       "symbol": "wstETH",
       "image": "/images/assets/wsteth.svg",
@@ -809,6 +873,14 @@
       "image": "/images/assets/ntrn.svg",
       "decimals": 6,
       "transfer_fee": 0.03
+    },
+    {
+      "id": "nftl-wei",
+      "name": "NFTL - Nifty League",
+      "symbol": "NFTL",
+      "image": "/images/assets/nftl.svg",
+      "decimals": 18,
+      "transfer_fee": 20.0
     }
   ]
 }
