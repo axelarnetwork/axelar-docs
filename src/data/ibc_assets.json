@@ -721,6 +721,30 @@
       "transfer_fee": 50.0
     },
     {
+      "id": "arbitrum-weth-wei",
+      "name": "WETH - Wrapped Ether",
+      "symbol": "WETH",
+      "image": "/images/assets/weth.svg",
+      "decimals": 18,
+      "transfer_fee": 3.2e-05
+    },
+    {
+      "id": "base-weth-wei",
+      "name": "WETH - Wrapped Ether",
+      "symbol": "WETH",
+      "image": "/images/assets/weth.svg",
+      "decimals": 18,
+      "transfer_fee": 3.2e-05
+    },
+    {
+      "id": "polygon-weth-wei",
+      "name": "WETH - Wrapped Ether",
+      "symbol": "WETH",
+      "image": "/images/assets/weth.svg",
+      "decimals": 18,
+      "transfer_fee": 3.2e-05
+    },
+    {
       "id": "ubtsg",
       "name": "BTSG - BTSG native asset",
       "symbol": "BTSG",

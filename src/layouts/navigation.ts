@@ -36,10 +36,6 @@ export const getNavigation = (section) => {
                   href: "/dev/send-tokens/interchain-tokens/rate-limit",
                 },
                 {
-                  title: "Roadmap",
-                  href: "/dev/send-tokens/interchain-tokens/roadmap",
-                },
-                {
                   title: "Developer Guides",
                   children: [
                     {
@@ -61,6 +57,10 @@ export const getNavigation = (section) => {
             {
               title: "Glossary",
               href: "/dev/send-tokens/glossary",
+            },
+            {
+              title: "Roadmap",
+              href: "/dev/send-tokens/roadmap",
             },
           ],
         },
@@ -240,6 +240,10 @@ export const getNavigation = (section) => {
               href: "/dev/amplifier/chain-integration/integrate-a-chain",
             },
             {
+              title: "Add Rewards",
+              href: "/dev/amplifier/add-rewards",
+            },
+            {
               title: "GMP with Amplifier example",
               href: "/dev/amplifier/gmp-example",
             },
@@ -415,6 +419,10 @@ export const getNavigation = (section) => {
             {
               title: "Become a verifier",
               href: "/validator/amplifier/verifier-onboarding",
+            },
+            {
+              title: "Verifier Rewards",
+              href: "/validator/amplifier/verifier-rewards",
             },
           ],
         },

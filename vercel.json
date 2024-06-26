@@ -2,6 +2,11 @@
   "framework": null,
   "redirects": [
     {
+      "source": "/dev/send-tokens/interchain-tokens/roadmap",
+      "destination": "/dev/send-tokens/roadmap",
+      "permanent": true
+    },
+    {
       "source": "/dev/gas-service/on-chain",
       "destination": "/dev/gas-service/on-chain-estimation",
       "permanent": true
