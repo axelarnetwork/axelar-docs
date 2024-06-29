@@ -240,6 +240,10 @@ export const getNavigation = (section) => {
               href: "/dev/amplifier/chain-integration/integrate-a-chain",
             },
             {
+              title: "Governance Proposals",
+              href: "/dev/amplifier/chain-integration/governance-proposals",
+            },
+            {
               title: "Add Rewards",
               href: "/dev/amplifier/add-rewards",
             },
