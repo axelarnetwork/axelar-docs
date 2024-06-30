@@ -12,50 +12,61 @@ $link-text: rgb(33, 100, 207);
   padding: 0;
   box-sizing: border-box;
 }
+
 body {
   font-size: 16px;
   font-family: $font;
   line-height: 28px;
   color: $text;
 }
+
 a {
   color: $text;
   text-decoration: none;
 }
+
 a:hover {
   color: grey;
 }
+
 .link-text-icon {
   margin-left: 4px;
 }
+
 button {
   font-family: $font;
 
   font-size: 16px;
+
   &:hover {
     cursor: pointer;
   }
 }
+
 article a,
 article a:hover,
 #toc a,
 #toc a:hover {
   color: $link-text;
 }
+
 h1 {
   font-size: 2.25rem;
   font-weight: 700;
   margin: 1rem 0;
 }
+
 h2 {
   font-size: 1.8rem;
   font-weight: 700;
   margin: 1rem 0;
   margin-top: 45px;
 }
+
 h3 {
   font-size: 24px;
 }
+
 h1,
 h2,
 h3,
@@ -63,9 +74,11 @@ h4,
 h5 {
   color: rgb(15, 23, 42);
   line-height: 1.2em;
+
   &:hover .anchor-icon {
     opacity: 1;
   }
+
   .anchor-icon {
     opacity: 0;
     margin-left: 8px;
@@ -73,12 +86,15 @@ h5 {
     color: $text;
   }
 }
+
 h3 {
   line-height: 64px;
 }
+
 p {
   margin: 1rem 0;
 }
+
 img {
   max-width: 100%;
 }
@@ -91,11 +107,13 @@ nav {
   max-width: $page-width;
   margin: 0px auto;
 }
+
 nav a {
   margin: 16px;
   text-decoration: none;
   color: $text;
 }
+
 .site-logo,
 .site-logo.active {
   color: $text;
@@ -104,10 +122,12 @@ nav a {
   font-size: 34px;
   font-weight: bold;
 }
+
 ol,
 ul {
   padding-left: 16px;
 }
+
 footer {
   padding: 32px 0;
   background-color: rgb(243, 244, 246);
@@ -120,9 +140,11 @@ footer {
     max-width: $page-width;
     margin: 0px auto;
   }
-  & > div {
+
+  &>div {
     padding: 16px;
   }
+
   & .footer-links {
     display: flex;
     justify-content: space-between;
@@ -131,21 +153,26 @@ footer {
     flex: 1;
   }
 }
+
 // TODO: All non-card links should have this, need to reformat cards
 footer a:hover {
   text-decoration: underline;
 }
+
 main {
   margin: 16px;
 }
+
 #page {
   display: flex;
   max-width: $page-width;
   margin: 0px auto;
 }
+
 main {
   min-height: calc(100vh - 360px - $nav-size - 32px);
 }
+
 #search {
   flex-grow: 1;
 }
@@ -154,15 +181,18 @@ ol li,
 ul li {
   margin-bottom: 4px;
 }
+
 .mainBody {
   flex: 1;
   min-width: 0;
   display: flex;
   width: calc(100vw - 32px - 300px);
 }
+
 article {
   overflow-x: hidden;
 }
+
 .sideNav {
   width: 300px;
   line-height: 32px;
@@ -174,13 +204,16 @@ article {
     border-radius: 2px;
   }
 }
-.sideNav > div {
+
+.sideNav>div {
   margin-bottom: 32px;
 }
+
 .sideNav .nav-header {
   font-size: 1.2em;
   padding-left: 0;
 }
+
 .sideNav .nav-group-header {
   display: flex;
   justify-content: space-between;
@@ -192,12 +225,15 @@ article {
     color: rgb(17, 24, 39);
   }
 }
+
 .sideNav .nav-group-header svg {
   transition: transform 0.3s ease-in-out;
 }
+
 .sideNav .nav-group-header.expanded svg {
   transform: rotate(90deg);
 }
+
 .sideNav div.group:not(.expanded) {
   display: none;
 }
@@ -207,35 +243,41 @@ article {
   color: rgb(107, 114, 128);
   padding-left: 8px;
 }
+
 .sideNav a:hover {
   background-color: rgb(243, 244, 246);
   color: rgb(17, 24, 39);
 }
+
 .nav-header {
   display: block;
   font-weight: bold;
 }
+
 .sideNav div.group {
   margin-left: 16px;
   border-left: 1px solid #ccc;
   padding-left: 8px;
 }
+
 a.active,
-tabs li.active {
+tabs .tab-bar li.active {
   color: rgb(0, 107, 230);
   background-color: rgb(240, 247, 255);
   font-weight: bold;
 }
+
 .feedback svg {
   height: 24px;
   width: 24px;
 }
+
 .feedback svg:hover {
   color: blue;
 }
 
 /* Component Styles */
-tabs li {
+tabs .tab-bar li {
   display: inline;
   border: 1px solid grey;
   padding: 8px;
@@ -243,23 +285,28 @@ tabs li {
   margin-right: -1px;
   border-bottom: none;
 }
-tabs ul {
+
+tabs .tab-bar ul {
   margin-bottom: 4px;
   margin-left: -16px;
 }
+
 tabs tab-item {
   border: 1px solid grey;
   padding: 16px;
   border-radius: 0 8px 8px 8px;
 }
-tabs button {
+
+tabs .tab-bar button {
   border: 0px;
   background-color: transparent;
   color: inherit;
 }
+
 tab-item {
   display: none;
 }
+
 tab-item.active {
   display: block;
 }
@@ -271,9 +318,11 @@ h1 .anchor-icon {
 body pre[class*="language-"] {
   border-width: 1px;
 }
+
 div.code-toolbar {
   color: white;
 }
+
 #toc {
   display: block;
   position: sticky;
@@ -281,11 +330,13 @@ div.code-toolbar {
   padding-left: 1rem;
   height: fit-content;
   font-weight: bold;
+
   ul {
     list-style-type: none;
     padding-left: 1.2rem;
   }
-  > ul {
+
+  >ul {
     width: 300px;
     padding-left: 0;
     font-weight: normal;
@@ -300,19 +351,23 @@ div.code-toolbar {
   margin: 16px 0;
   padding-right: 32px;
 }
+
 .callout.warning {
   background-color: rgb(255, 247, 237);
   color: rgb(154, 52, 18);
   border: 1px solid #ffedd5;
 }
+
 .callout.error {
   background-color: rgb(254, 226, 226);
   color: rgb(185, 28, 28);
   border: 1px solid #ffedd5;
 }
+
 .copy-capable {
   display: inline;
 }
+
 .copy-capable button {
   width: 16px;
   height: 16px;
@@ -334,16 +389,19 @@ table {
     border-radius: 8px 0 0 0;
     border: 0px solid transparent;
   }
+
   thead th:last-child {
     border-radius: 0 8px 0 0;
     border: 0px solid transparent;
   }
+
   td,
   th {
     border: 1px solid transparent;
     padding: 16px;
     line-height: 24px;
   }
+
   th {
     background-color: rgb(243, 244, 246);
     font-weight: bold;
@@ -360,6 +418,7 @@ table {
     background-color: rgb(249, 250, 251);
   }
 }
+
 astro-island button {
   border: none;
 }
@@ -380,7 +439,8 @@ astro-island button {
   border: 0px;
   padding: 16px;
 }
-.resources td > .flex {
+
+.resources td>.flex {
   flex-direction: column;
   justify-content: left;
 }
@@ -391,6 +451,7 @@ astro-island button {
   grid-auto-flow: row;
   display: grid;
 }
+
 .ibc-channels .border {
   border: 1px solid rgb(229, 231, 235);
   border-radius: 8px;
@@ -399,7 +460,8 @@ astro-island button {
   align-items: center;
   padding: 8px;
 }
-.ibc-channels .border > * {
+
+.ibc-channels .border>* {
   font-size: 0.8em;
 }
 
@@ -411,6 +473,7 @@ astro-island button {
   opacity: 0;
   transition: opacity 0.5s ease-in-out;
 }
+
 .toast span {
   background-color: #b8b8b8;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
@@ -418,13 +481,16 @@ astro-island button {
   border-radius: 8px;
   margin: 0px auto;
 }
+
 .toast.show {
   opacity: 1;
   transition: opacity 0.5s ease-in-out;
 }
+
 .flex {
   display: flex;
 }
+
 .card-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -434,6 +500,7 @@ astro-island button {
   grid-auto-flow: row;
   margin-top: 32px;
 }
+
 .card {
   padding: 16px;
   border: 1px solid rgb(229, 231, 235);
@@ -443,18 +510,22 @@ astro-island button {
   flex-direction: column;
   color: inherit;
 }
+
 .card:hover {
   box-shadow: 0 0 10px #ddd;
   color: inherit;
 }
+
 .card div:nth-child(1) {
   font-weight: bold;
   display: flex;
   align-items: center;
 }
+
 .card div:nth-child(2) {
   flex-grow: 1;
 }
+
 .card span {
   color: #1b62d6;
 }
@@ -467,33 +538,41 @@ astro-island button {
   flex-direction: column;
   display: flex;
 }
-.resource-card > * {
+
+.resource-card>* {
   margin-top: 4px;
 }
-.resource-card > div > div > div {
+
+.resource-card>div>div>div {
   margin-left: 8px;
 }
-.resource-card > div > button {
+
+.resource-card>div>button {
   border: 0;
   padding: 6px;
   border-radius: 8px;
 }
+
 .resource-grid,
 .ibc-channels {
   display: flex;
   flex-wrap: wrap;
   gap: 1rem;
 }
-.resource-grid > div,
-.ibc-channels > div {
+
+.resource-grid>div,
+.ibc-channels>div {
   flex: 1 1 320px;
 }
+
 .asset-table {
   overflow-x: scroll;
+
   &::-webkit-scrollbar {
     display: none;
   }
 }
+
 .sticky-col {
   position: -webkit-sticky;
   position: sticky;
@@ -508,21 +587,27 @@ astro-island button {
 .flex {
   display: flex;
 }
+
 .flex-col {
   flex-direction: column;
 }
+
 .font-semibold {
   font-weight: 600;
 }
+
 .justify-between {
   justify-content: space-between;
 }
+
 .items-start {
   align-items: flex-start;
 }
+
 .items-center {
   align-items: center;
 }
+
 .border-none {
   border: none;
 }
@@ -534,20 +619,24 @@ astro-island button {
   align-items: center;
   flex-grow: 1;
 }
+
 .desktop-nav .active {
   border-bottom: 1px solid blue;
   background-color: inherit;
   color: inherit;
   font-weight: inherit;
 }
+
 .desktop-nav .active:hover {
   color: grey;
 }
+
 #search-results {
   display: none;
   z-index: 5;
   padding: 32px;
 }
+
 #search-results.show {
   display: block;
   position: absolute;
@@ -560,18 +649,22 @@ astro-island button {
   border: 1px solid rgb(229, 231, 235);
   border-radius: 6px;
 }
+
 .ais-SearchBox-input {
   width: calc(100% - 16px);
   box-shadow: none;
 }
+
 .ais-SearchBox-form:before {
   background: url(/images/icon-search-light.svg);
   top: 45%;
   left: 2%;
 }
+
 .asset-icon {
   flex-wrap: wrap;
 }
+
 .chain-icon {
   flex-wrap: wrap;
 }
@@ -580,6 +673,7 @@ astro-island button {
 .asset-icon img {
   margin-right: 4px;
 }
+
 .dropdown {
   position: relative;
   font-size: 14px;
@@ -606,9 +700,11 @@ astro-island button {
     span {
       font-weight: 700;
     }
+
     img {
       margin-right: 8px;
     }
+
     svg.toggle {
       margin: 0 0 0 8px;
       width: 20px;
@@ -645,26 +741,32 @@ astro-island button {
       display: flex;
       align-items: center;
       justify-content: flex-start;
+
       &:hover {
         background-color: rgb(243, 244, 246);
       }
+
       img {
         margin-right: 8px;
       }
+
       &:not(:first-child):hover {
         cursor: pointer;
       }
     }
   }
 }
+
 .add-to-metamask {
   padding: 6px 8px;
   background-color: rgb(243, 244, 246);
   border: 0px solid transparent;
   border-radius: 8px;
+
   &:hover {
     background-color: rgb(229, 231, 235);
   }
+
   & img {
     min-width: 12px;
     min-height: 12px;
@@ -678,6 +780,7 @@ astro-island button {
 .copy {
   cursor: pointer;
 }
+
 .copy:hover {
   opacity: 0.8;
 }
@@ -685,6 +788,7 @@ astro-island button {
 .lightButton {
   display: none;
 }
+
 .darkButton {
   display: block;
 }
@@ -703,36 +807,45 @@ astro-island button {
     display: none;
   }
 }
+
 @media (max-width: 768px) {
   .card-grid {
     display: flex;
     flex-direction: column;
   }
 }
+
 @media (max-width: 650px) {
   #page {
     padding: 8px;
   }
+
   .mobile {
     display: block;
   }
+
   .nomobile {
     display: none;
   }
+
   #menu {
     flex-grow: 1;
     justify-content: right;
     display: flex;
   }
+
   #menu #menu-open {
     display: block;
   }
+
   #menu #menu-close {
     display: none;
   }
+
   #menu.open #menu-open {
     display: none;
   }
+
   #menu.open #menu-close {
     display: block;
   }
@@ -740,6 +853,7 @@ astro-island button {
   .sideNav {
     display: none;
   }
+
   .sideNav.show {
     position: absolute;
     display: block;

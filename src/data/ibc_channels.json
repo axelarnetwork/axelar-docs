@@ -1,16 +1,6 @@
 {
   "mainnet": [
     {
-      "from": "acrechain",
-      "to": "axelarnet",
-      "channel_id": "channel-5"
-    },
-    {
-      "from": "axelarnet",
-      "to": "acrechain",
-      "channel_id": "channel-51"
-    },
-    {
       "from": "agoric",
       "to": "axelarnet",
       "channel_id": "channel-9"
@@ -31,14 +21,24 @@
       "channel_id": "channel-111"
     },
     {
-      "from": "aura",
+      "from": "bitsong",
       "to": "axelarnet",
-      "channel_id": "channel-4"
+      "channel_id": "channel-30"
     },
     {
       "from": "axelarnet",
-      "to": "aura",
-      "channel_id": "channel-104"
+      "to": "bitsong",
+      "channel_id": "channel-145"
+    },
+    {
+      "from": "c4e",
+      "to": "axelarnet",
+      "channel_id": "channel-0"
+    },
+    {
+      "from": "axelarnet",
+      "to": "c4e",
+      "channel_id": "channel-141"
     },
     {
       "from": "bitsong",
@@ -301,6 +301,16 @@
       "channel_id": "channel-29"
     },
     {
+      "from": "saga",
+      "to": "axelarnet",
+      "channel_id": "channel-24"
+    },
+    {
+      "from": "axelarnet",
+      "to": "saga",
+      "channel_id": "channel-146"
+    },
+    {
       "from": "secret-snip",
       "to": "axelarnet",
       "channel_id": "channel-61"
@@ -553,6 +563,16 @@
       "channel_id": "channel-382"
     },
     {
+      "from": "nillion",
+      "to": "axelarnet",
+      "channel_id": "channel-2"
+    },
+    {
+      "from": "axelarnet",
+      "to": "nillion",
+      "channel_id": "channel-510"
+    },
+    {
       "from": "odin",
       "to": "axelarnet",
       "channel_id": "channel-5"
@@ -661,6 +681,16 @@
       "from": "axelarnet",
       "to": "terra",
       "channel_id": "channel-84"
+    },
+    {
+      "from": "warden",
+      "to": "axelarnet",
+      "channel_id": "channel-1"
+    },
+    {
+      "from": "axelarnet",
+      "to": "warden",
+      "channel_id": "channel-502"
     },
     {
       "from": "xpla",
