@@ -156,7 +156,7 @@ export default ({ environment = "mainnet" }) => {
                               {chain_data?.name || chain}
                             </span>
                             <span className="whitespace-nowrap text-gray-400 dark:text-gray-500 text-xs font-medium">
-                              ID: {chain_data.network_id}
+                              ID: {chain_data?.network_id}
                             </span>
                           </div>
                         </div>

@@ -19,16 +19,22 @@
       "image": "/images/chains/archway.svg"
     },
     {
-      "id": "aura",
-      "name": "Aura",
-      "network_id": "aura",
-      "image": "/images/chains/aura.svg"
-    },
-    {
       "id": "axelarnet",
       "name": "Axelar",
       "network_id": "axelarnet",
       "image": "/images/chains/axelar.svg"
+    },
+    {
+      "id": "bitsong",
+      "name": "Bitsong",
+      "network_id": "bitsong",
+      "image": "/images/chains/bitsong.svg"
+    },
+    {
+      "id": "c4e",
+      "name": "C4E",
+      "network_id": "c4e",
+      "image": "/images/chains/c4e.svg"
     },
     {
       "id": "carbon",
@@ -131,6 +137,18 @@
       "name": "Neutron",
       "network_id": "neutron",
       "image": "/images/chains/neutron.svg"
+    },
+    {
+      "id": "nolus",
+      "name": "Nolus",
+      "network_id": "nolus",
+      "image": "/images/chains/nolus.svg"
+    },
+    {
+      "id": "ojo",
+      "name": "Ojo",
+      "network_id": "ojo",
+      "image": "/images/chains/ojo.svg"
     },
     {
       "id": "osmosis",
@@ -321,6 +339,12 @@
       "image": "/images/chains/nibiru.svg"
     },
     {
+      "id": "nillion",
+      "name": "Nillion",
+      "network_id": "nillion",
+      "image": "/images/chains/nillion.svg"
+    },
+    {
       "id": "odin",
       "name": "Odin",
       "network_id": "odin",
@@ -385,6 +409,12 @@
       "name": "Terra",
       "network_id": "terra-3",
       "image": "/images/chains/terra.svg"
+    },
+    {
+      "id": "warden",
+      "name": "Warden",
+      "network_id": "warden",
+      "image": "/images/chains/warden.svg"
     },
     {
       "id": "xpla",

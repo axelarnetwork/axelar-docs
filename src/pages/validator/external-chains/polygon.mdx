@@ -11,7 +11,7 @@ Set up your Polygon Mainnet or Testnet (Mumbai) node.
 - MacOS or Ubuntu 18.04+
 - Build-essential packages
 - Golang 1.17+
-- [Official Documentation](https://docs.polygon.technology/docs/integrate/full-node-binaries)
+- [Official Documentation](https://docs.polygon.technology/pos/how-to/full-node/full-node-binaries)
 
 ## Install required dependencies
 
@@ -33,180 +33,148 @@ Install the [latest version of golang](https://go.dev/doc/install).
 
 Polygon node consists of 2 layers, Heimdall and Bor. Heimdall is a fork of tendermint and runs in parallel to the Ethereum network, monitoring contracts, and Bor is a fork of go-Ethereum and producing blocks shuffled by Heimdall nodes. You need to install and run both binaries in the correct order, as explained in the following steps.
 
-### 1. Install Heimdall
-
-Please make sure you checkout the [latest release tag](https://github.com/maticnetwork/heimdall/tags), depending on the network (Mainnet/Testnet). In this tutorial, we are using `v0.2.9`
+Install the latest versions for the network accordingly [heimdall latest release tag](https://github.com/maticnetwork/heimdall/tags) and [bor latest release tag](https://github.com/maticnetwork/bor/tags)
 
 ```bash
-cd ~/
-git clone https://github.com/maticnetwork/heimdall
-cd heimdall
-git checkout v0.2.9
-make install
-
-# Verify the correct version
-heimdalld version --long
+# These are examples - check their docs and release page to opt for the right version
+HEIMDALL_RELEASE=v1.0.5
+BOR_RELEASE=v1.2.8
 ```
+
+### 1. Install Heimdall
+
+<tabs>
+    <tab-item title="Mainnet" class="bleed">
+        ```bash
+        curl -L https://raw.githubusercontent.com/maticnetwork/install/main/heimdall.sh | bash -s -- $HEIMDALL_RELEASE mainnet sentry
+        ```
+    </tab-item>
+    <tab-item title="Testnet" class="bleed">
+        ```bash
+        curl -L https://raw.githubusercontent.com/maticnetwork/install/main/heimdall.sh | bash -s -- $HEIMDALL_RELEASE amoy sentry
+        ```
+    </tab-item>
+</tabs>
 
 ### 2. Install Bor
 
-Please make sure you checkout the [latest release tag](https://github.com/maticnetwork/bor/tags). In this tutorial we are using `v0.2.16`
 
+<tabs>
+    <tab-item title="Mainnet" class="bleed">
+        ```bash
+        curl -L curl -L https://raw.githubusercontent.com/maticnetwork/install/main/bor.sh | bash -s -- $BOR_RELEASE mainnet sentry
+        ```
+    </tab-item>
+    <tab-item title="Testnet" class="bleed">
+        ```bash
+        curl -L curl -L https://raw.githubusercontent.com/maticnetwork/install/main/bor.sh | bash -s -- $BOR_RELEASE amoy sentry
+        ```
+    </tab-item>
+</tabs>
+
+
+
+## Check Versions
 ```bash
-cd ~/
-git clone https://github.com/maticnetwork/bor
-cd bor
-git checkout v0.2.16
-make bor-all
-sudo ln -nfs ~/bor/build/bin/bor /usr/bin/bor
-sudo ln -nfs ~/bor/build/bin/bootnode /usr/bin/bootnode
-
-# Verify the correct version
+heimdalld version --long
 bor version
 ```
 
 ## Setup and configure node
 
-### 1. Setup launch directory
+### 1. Configure Bor seeds
+<tabs>
+    <tab-item title="Mainnet" class="bleed">
+        ```bash
+        sed -i 's|.*\[p2p.discovery\]|  \[p2p.discovery\] |g' /var/lib/bor/config.toml
+        sed -i 's|.*bootnodes =.*|    bootnodes = ["enode://b8f1cc9c5d4403703fbf377116469667d2b1823c0daf16b7250aa576bacf399e42c3930ccfcb02c5df6879565a2b8931335565f0e8d3f8e72385ecf4a4bf160a@3.36.224.80:30303", "enode://8729e0c825f3d9cad382555f3e46dcff21af323e89025a0e6312df541f4a9e73abfa562d64906f5e59c51fe6f0501b3e61b07979606c56329c020ed739910759@54.194.245.5:30303"]|g' /var/lib/bor/config.toml
+        chown bor /var/lib/bor
+        ```
+    </tab-item>
+    <tab-item title="Testnet" class="bleed">
+        ```bash
+        # The Bor seeds don’t need to be configured manually for Amoy testnet since they’ve already been included at genesis.
+        ```
+    </tab-item>
+</tabs>
 
-Replace the `<network-name>` below with the network you are joining.
-Available networks: `mainnet-v1` and `testnet-v4`.
 
-```bash
-cd ~/
-git clone https://github.com/maticnetwork/launch
 
-mkdir -p node
-cp -rf launch/<network-name>/sentry/sentry/* ~/node
-
-# Example for Mainnet:
-# cp -rf launch/mainnet-v1/sentry/sentry/* ~/node
-```
-
-### 2. Setup network directories
-
-```bash
-# Heimdall
-cd ~/node/heimdall
-bash setup.sh
-
-# Bor
-cd ~/node/bor
-bash setup.sh
-```
-
-### 3. Setup service files
-
-Again, replace the `<network-name>` below with the network you are joining.
+### 2. Update service config user permission
 
 ```bash
-# Download service file
-cd ~/node
-wget https://raw.githubusercontent.com/maticnetwork/launch/master/<network-name>/service.sh
-
-# Generate Metadata
-sudo mkdir -p /etc/matic
-sudo chmod -R 777 /etc/matic/
-touch /etc/matic/metadata
-
-# Generate service file and copy them into systemd directory
-cd ~/node
-bash service.sh
-sudo cp *.service /etc/systemd/system/
-```
-
-### 4. Setup config files
-
-Open the `~/.heimdalld/config/config.toml` and edit the following flags:
-
-```bash
-moniker=<enter unique identifier>
-
-#Mainnet:
-seeds="f4f605d60b8ffaaf15240564e58a81103510631c@159.203.9.164:26656,4fb1bc820088764a564d4f66bba1963d47d82329@44.232.55.71:26656,902484e868c6a4bace1bb3cf4b6ba1667561b158@18.228.218.160:26656,afc41bd37d549186cec915c5a4feb3071871cdc1@18.228.98.237:26656,587df41fb0198d72a9e153c608b2c0d840551429@35.182.147.162:26656,ad7bc1c45641454893c74b50357a1bd87778bb50@52.60.36.93:26656"
-
-#Testnet:
-seeds="4cd60c1d76e44b05f7dfd8bab3f447b119e87042@54.147.31.250:26656,b18bbe1f3d8576f4b73d9b18976e71c65e839149@34.226.134.117:26656"
-
-Change the value of Pex to true
-Change the value of Prometheus to true
-Set the max_open_connections value to 100
-```
-
-Open the `~/.heimdalld/config/heimdall-config.toml` and edit:
-
-```bash
-eth_rpc_url = <insert an RPC endpoint for a fully synced Ethereum mainnet node or Goerli testnet node, i.e Infura.>
-```
-
-Open the `~/node/bor/start.sh` and add/change the following flags to start parameters:
-
-```bash
---http --http.addr '0.0.0.0' \
-
-#Mainnet:
---bootnodes "enode://0cb82b395094ee4a2915e9714894627de9ed8498fb881cec6db7c65e8b9a5bd7f2f25cc84e71e89d0947e51c76e85d0847de848c7782b13c0255247a6758178c@44.232.55.71:30303,enode://88116f4295f5a31538ae409e4d44ad40d22e44ee9342869e7d68bdec55b0f83c1530355ce8b41fbec0928a7d75a5745d528450d30aec92066ab6ba1ee351d710@159.203.9.164:30303"
-
-#Testnet:
---bootnodes "enode://320553cda00dfc003f499a3ce9598029f364fbb3ed1222fdc20a94d97dcc4d8ba0cd0bfa996579dcc6d17a534741fb0a5da303a90579431259150de66b597251@54.147.31.250:30303"
-```
-
-To enable Archive mode you can also add the following flags in the start.sh file
-```bash
---gcmode 'archive' \
---ws --ws.port 8546 --ws.addr 0.0.0.0 --ws.origins '*' \
+sed -i 's/User=heimdall/User=$USER/g' /lib/systemd/system/heimdalld.service
+sed -i 's/User=bor/User=$$USER/g' /lib/systemd/system/bor.service
 ```
 
 
-### 5. Download maintained snapshots
+### 3. Open port to public
 
-<Callout emoji="ℹ️">
-  Syncing Heimdall and Bor services can take several days to sync fully. Alternatively, you can use snapshots to reduce the sync time to a few hours. If you wish to sync the node from the start, then you can skip this step.
-</Callout>
-
-To use the snapshots, please visit [Polygon Chains Snapshots](https://snapshots.matic.today/) and download the latest available snapshot for Heimdall and Bor. Replace the `snapshot-link` below with the full path to the snapshot of the network you're joining.
-
+Open the `/var/lib/bor/config.toml` and edit host address under jsonrpc.http
 ```bash
-wget <snapshot-link-heimdall> -O - | tar -xzf - -C ~/.heimdalld/data/
-wget <snapshot-link-bor> -O - | tar -xzf - -C ~/.bor/data/bor/chaindata
-# If needed, change the path depending on your server configuration.
+[jsonrpc]
+    ipcpath = "/var/lib/bor/bor.ipc"
+    # ipcdisable = false
+    # gascap = 50000000
+    # evmtimeout = "5s"
+    # txfeecap = 5.0
+    # allow-unprotected-txs = false
+    # enabledeprecatedpersonal = false
+    [jsonrpc.http]
+        enabled = true
+        port = 8545
+        host =  "0.0.0.0" # change this to "0.0.0.0" from "127.0.0.1"
+        api = ["eth", "net", "web3", "txpool", "bor"]
+        vhosts = ["*"]
+        corsdomain = ["*"]
 ```
 
-## Start the Polygon services
+## Sync from snapshot
 
-After completing all of the previous steps, your node should be configured and ready to launch with the previously created service files.
+### Bor
+```bash
+mkdir "/var/lib/bor/chaindata"
+```
+<tabs>
+    <tab-item title="Mainnet" class="bleed">
+        ```bash
+        curl -L https://snapshot-download.polygon.technology/snapdown.sh | bash -s -- --network mainnet --client bor --extract-dir /var/lib/bor/chaindata --validate-checksum true
+        ```
+    </tab-item>
+    <tab-item title="Testnet" class="bleed">
+        ```bash
+        curl -L https://snapshot-download.polygon.technology/snapdown.sh | bash -s -- --network amoy --client bor --extract-dir /var/lib/bor/chaindata --validate-checksum true
+        ```
+    </tab-item>
+</tabs>
 
-### 1. Start Heimdalld
+### Heimdall
+<tabs>
+    <tab-item title="Mainnet" class="bleed">
+        ```bash
+        curl -L https://snapshot-download.polygon.technology/snapdown.sh | bash -s -- --network mainnet --client heimdall --extract-dir /var/lib/heimdall/data --validate-checksum true
+        ```
+    </tab-item>
+    <tab-item title="Testnet" class="bleed">
+        ```bash
+        curl -L https://snapshot-download.polygon.technology/snapdown.sh | bash -s -- --network amoy --client heimdall --extract-dir /var/lib/heimdall/data --validate-checksum true
+        ```
+    </tab-item>
+</tabs>
 
+## Start the services
 ```bash
 sudo service heimdalld start
-sudo service heimdalld-rest-server start
-```
-
-<Callout type="warning" emoji="⚠️">
-  Important: You need to wait for Heimdall node to fully sync with the network before starting the Bor service!
-</Callout>
-
-You can check the status of `heimdalld` service or follow the logs with:
-
-```bash
-sudo service heimdalld status
-journalctl -u heimdalld.service -f
-```
-
-### 2. Start Bor
-
-Once `heimdalld` is synced with the [latest block height](https://wallet.polygon.technology/staking/), then you can start the `bor` service file:
-
-```bash
 sudo service bor start
-
-# Check status and logs
-sudo service bor status
-journalctl -u bor.service -f
+```
+## Check logs
+```bash
+journalctl -u heimdalld.service -f -n 100 -o cat
+journalctl -u heimdalld-rest-server.service -f -n 100 -o cat
+journalctl -u bor.service -f -n 100 -o cat
 ```
 
-## Test your Polygon RPC connection
+## Verify RPC
 
 Once your `Bor` node is fully synced, you can run a cURL request to see the status of your node:
 
@@ -216,7 +184,7 @@ curl -H "Content-Type: application/json" -d '{"id":1, "jsonrpc":"2.0", "method":
 
 If the node is successfully synced, the output from above will print `{"jsonrpc":"2.0","id":1,"result":false}`
 
-### Configure vald
+## Configure vald
 
 In order for `vald` to connect to your node, your `rpc_addr` should be exposed in
 vald's `config.toml`

@@ -957,6 +957,54 @@
         }
       ],
       "image": "/images/chains/mantle.svg"
+    },
+    {
+      "id": "polygon-amoy",
+      "name": "Polygon Amoy",
+      "chain_id": 80002,
+      "network_id": "polygon-amoy",
+      "provider_params": [
+        {
+          "chainId": "0x13882",
+          "chainName": "Polygon Amoy",
+          "rpcUrls": [
+            "https://rpc-amoy.polygon.technology"
+          ],
+          "nativeCurrency": {
+            "name": "Polygon",
+            "symbol": "MATIC",
+            "decimals": 18
+          },
+          "blockExplorerUrls": [
+            "https://amoy.polygonscan.com"
+          ]
+        }
+      ],
+      "image": "/images/chains/polygon.svg"
+    },
+    {
+      "id": "linea-sepolia",
+      "name": "Linea Sepolia",
+      "chain_id": 59141,
+      "network_id": "linea-sepolia",
+      "provider_params": [
+        {
+          "chainId": "0xE705",
+          "chainName": "Linea Sepolia",
+          "rpcUrls": [
+            "https://rpc.sepolia.linea.build"
+          ],
+          "nativeCurrency": {
+            "name": "Ether",
+            "symbol": "ETH",
+            "decimals": 18
+          },
+          "blockExplorerUrls": [
+            "https://sepolia.lineascan.build"
+          ]
+        }
+      ],
+      "image": "/images/chains/linea.svg"
     }
   ]
 }

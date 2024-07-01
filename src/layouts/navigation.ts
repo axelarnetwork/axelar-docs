@@ -33,7 +33,7 @@ export const getNavigation = (section) => {
                 },
                 {
                   title: "Rate Limit",
-                  href: "/dev/reference/interchain-token-service-rate-limit",
+                  href: "/dev/send-tokens/interchain-tokens/rate-limit",
                 },
                 {
                   title: "Developer Guides",
@@ -57,6 +57,10 @@ export const getNavigation = (section) => {
             {
               title: "Glossary",
               href: "/dev/send-tokens/glossary",
+            },
+            {
+              title: "Roadmap",
+              href: "/dev/send-tokens/roadmap",
             },
           ],
         },
@@ -82,6 +86,10 @@ export const getNavigation = (section) => {
             {
               title: "Monitor Transaction State",
               href: "/dev/general-message-passing/monitoring",
+            },
+            {
+              title: "Axelar Executable",
+              href: "/dev/general-message-passing/executable"
             },
             {
               title: "Verify GMP Transaction",
@@ -128,6 +136,10 @@ export const getNavigation = (section) => {
           ],
         },
         {
+          title: "EVM Relayer",
+          href: "/dev/evm-relayer",
+        },
+        {
           title: "Gas Service",
           children: [
             {
@@ -135,7 +147,7 @@ export const getNavigation = (section) => {
               href: "/dev/gas-service/intro",
             },
             {
-              title: "Pay Gas",
+              title: "Estimate and Pay Gas",
               href: "/dev/gas-service/pay-gas",
             },
             {
@@ -149,6 +161,10 @@ export const getNavigation = (section) => {
             {
               title: "Transaction Pricing",
               href: "/dev/gas-service/pricing",
+            },
+            {
+              title: "On-Chain Estimation",
+              href: "/dev/gas-service/on-chain-estimation",
             },
           ],
         },
@@ -216,8 +232,16 @@ export const getNavigation = (section) => {
               href: "/dev/amplifier/introduction",
             },
             {
-              title: "Integrate a chain",
-              href: "/dev/amplifier/chain-integration",
+              title: "Integration Overview",
+              href: "/dev/amplifier/chain-integration/introduction",
+            },
+            {
+              title: "Integrate a Chain",
+              href: "/dev/amplifier/chain-integration/integrate-a-chain",
+            },
+            {
+              title: "Add Rewards",
+              href: "/dev/amplifier/add-rewards",
             },
             {
               title: "GMP with Amplifier example",
@@ -342,6 +366,7 @@ export const getNavigation = (section) => {
             { title: "Optimism", href: "/validator/external-chains/optimism" },
             { title: "Polygon", href: "/validator/external-chains/polygon" },
             { title: "Scroll", href: "/validator/external-chains/scroll" },
+            { title: "Sui", href: "/validator/external-chains/sui" },
           ],
         },
         {
@@ -394,6 +419,10 @@ export const getNavigation = (section) => {
             {
               title: "Become a verifier",
               href: "/validator/amplifier/verifier-onboarding",
+            },
+            {
+              title: "Verifier Rewards",
+              href: "/validator/amplifier/verifier-rewards",
             },
           ],
         },
@@ -612,6 +641,10 @@ export const getNavigation = (section) => {
             href: " /resources/community/community-pool-proposals",
           },
         ],
+      },
+      {
+        title: "Onboard your IBC chain",
+        href: "/resources/ibc-chain-onboarding",
       },
       { title: "Bug Bounty", href: "/resources/bug-bounty" },
     ],

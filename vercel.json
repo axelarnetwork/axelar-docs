@@ -2,6 +2,21 @@
   "framework": null,
   "redirects": [
     {
+      "source": "/dev/send-tokens/interchain-tokens/roadmap",
+      "destination": "/dev/send-tokens/roadmap",
+      "permanent": true
+    },
+    {
+      "source": "/dev/gas-service/on-chain",
+      "destination": "/dev/gas-service/on-chain-estimation",
+      "permanent": true
+    },
+    {
+      "source": "/dev/amplifier/chain-integration",
+      "destination": "/dev/amplifier/chain-integration/introduction",
+      "permanent": true
+    },
+    {
       "source": "/dev/send-tokens/overview",
       "destination": "/dev/send-tokens/introduction",
       "permanent": true
@@ -49,7 +64,7 @@
       "destination": "/dev/send-tokens/interchain-tokens/developer-guides/link-custom-tokens-deployed-across-multiple-chains-into-interchain-tokens"
     },
     {
-      "source": "/dev/reference/interchain-token-service-rate-limit",
+      "source": "/dev/send-tokens/interchain-tokens/rate-limit",
       "destination": "/dev/send-tokens/interchain-tokens/rate-limit"
     },
     {
