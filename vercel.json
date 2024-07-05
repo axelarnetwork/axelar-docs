@@ -64,7 +64,7 @@
       "destination": "/dev/send-tokens/interchain-tokens/developer-guides/link-custom-tokens-deployed-across-multiple-chains-into-interchain-tokens"
     },
     {
-      "source": "/dev/send-tokens/interchain-tokens/rate-limit",
+      "source": "/dev/reference/interchain-token-service-rate-limit",
       "destination": "/dev/send-tokens/interchain-tokens/rate-limit"
     },
     {
