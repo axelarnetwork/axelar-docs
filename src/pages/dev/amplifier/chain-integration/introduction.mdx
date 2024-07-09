@@ -18,7 +18,7 @@ To connect your chain to the Axelar network via the Interchain Amplifier, you'll
     - Most integrators will begin by using or customizing a [Voting Verifier](https://github.com/axelarnetwork/axelar-amplifier/tree/main/contracts/voting-verifier) or can be customized to your needs for cases such as verification via ZK Proof.
     - If you deploy a Voting Verifier, verifiers will need to support your chain and vote on the truth of source chain transactions.
 - **Gateway Contract**
-    - A gateway contract that exists on the Axelar network that will knows how to use your verifier contract to check the validity of a transaction and then knows how to forward transactions onto the Amplifier router.
+    - A gateway contract that exists on the Axelar network that will know how to use your verifier contract to check the validity of a transaction and then knows how to forward transactions onto the Amplifier router.
     - Most integrators will begin by using or customizing this [Gateway Contract](https://github.com/axelarnetwork/axelar-amplifier/tree/main/contracts/gateway).
 - **Prover Contract**
     - A smart contract on the Axelar network that knows how to prove the validity of a transaction on your chain.
