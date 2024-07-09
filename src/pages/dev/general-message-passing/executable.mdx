@@ -11,11 +11,11 @@ The [Axelar Executable Contract](https://github.com/axelarnetwork/axelar-gmp-sdk
     import "@axelar-network/axelar-gmp-sdk-solidity/contracts/executable/AxelarExecutable.sol";
     ```
     
-2. Inherit Axelar Executable Functions: 
+1. Inherit Axelar Executable Functions: 
 
-```solidity
-contract MyContract is AxelarExecutable {}
-```
+    ```solidity
+    contract MyContract is AxelarExecutable {}
+    ```
 
 1. Implement the `virtual` functions defined in Axelar Executable on your own contracts. The functions you implement on your own contract will be automatically triggered by an Axelar relayer on the destination chain once the multichain transaction arrives on the destination chain
 
