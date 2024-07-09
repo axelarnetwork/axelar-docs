@@ -85,9 +85,9 @@ You can either use the existing deployed contracts and on the devnet via their `
 
 Use the existing deployments for all three contracts, making note of the existing deployment's `code_id`:
 
-- Voting verifier (code_id: `234`)
-- Gateway (code_id: `235`)
-- Mutisig prover (code_id: `236`)
+- Voting verifier (code_id: `500`)
+- Gateway (code_id: `493`)
+- Mutisig prover (code_id: `495`)
 
 ### Option 2: Build and deploy the contracts yourself
 
@@ -206,7 +206,7 @@ You can also deploy a custom implementation of the gateway, verifier, and prover
 
     Set your parameters.
     ```bash
-    export VERIFIER_CODE_ID=234 # Set your Code ID
+    export VERIFIER_CODE_ID=500 # Set your Code ID
     export MY_WALLET_ADDRESS="axelar14r0xzwz8hmkshau39dyja5kx503dx6zu52623h"
     export MY_SOURCE_CHAIN_GATEWAY_ADDRESS="0xCa85f85C72df5f8428a440887CA7c449D94e0D0c"
     ```
@@ -214,7 +214,7 @@ You can also deploy a custom implementation of the gateway, verifier, and prover
     ```bash
     axelard tx wasm instantiate $VERIFIER_CODE_ID \
         '{
-            "governance_address": "axelar1zlr7e5qf3sz7yf890rkh9tcnu87234k6k7ytd9",
+            "governance_address": "axelar1zlr7e5qf3sz7yf890rkh9tcnu87500k6k7ytd9",
             "service_registry_address":"axelar1c9fkszt5lq34vvvlat3fxj6yv7ejtqapz04e97vtc9m5z9cwnamq8zjlhz",
             "service_name":"validators",
             "source_gateway_address":"'"$MY_SOURCE_CHAIN_GATEWAY_ADDRESS"'",
@@ -279,7 +279,7 @@ You can also deploy a custom implementation of the gateway, verifier, and prover
 
     Set your parameters, including the verifier address from the previous step.
     ```bash
-    export GATEWAY_CODE_ID=235 # Set your Code ID
+    export GATEWAY_CODE_ID=493 # Set your Code ID
     export MY_VERIFIER_ADDRESS="axelar1x3960tw9cml6xsqtvzt4gmw3scauaxdd83rhs9dmlpjfjf9z9s7qjx8g0j"
     ```
     Now instantiate the contract.
@@ -305,7 +305,7 @@ You can also deploy a custom implementation of the gateway, verifier, and prover
 
     Set your parameters, including the gateway address from the previous step.
     ```bash
-    export PROVER_CODE_ID=236 # Set your Code ID
+    export PROVER_CODE_ID=495 # Set your Code ID
     export MY_GATEWAY_ADDRESS="axelar1ufs3tlq4umljk0qfe8k5ya0x6hpavn897u2cnf9k0en9jr7qarqqa9263g"
     export MY_CHAIN_ID=43113
     ```
@@ -319,7 +319,7 @@ You can also deploy a custom implementation of the gateway, verifier, and prover
     axelard tx wasm instantiate $PROVER_CODE_ID \
         '{
             "admin_address": "'"$MY_WALLET_ADDRESS"'",
-            "governance_address": "axelar1zlr7e5qf3sz7yf890rkh9tcnu87234k6k7ytd9",
+            "governance_address": "axelar1zlr7e5qf3sz7yf890rkh9tcnu87500k6k7ytd9",
             "gateway_address": "'"$MY_GATEWAY_ADDRESS"'",
             "multisig_address": "axelar19jxy26z0qnnspa45y5nru0l5rmy9d637z5km2ndjxthfxf5qaswst9290r",
             "coordinator_address":"axelar1m2498n4h2tskcsmssjnzswl5e6eflmqnh487ds47yxyu6y5h4zuqr9zk4g",
