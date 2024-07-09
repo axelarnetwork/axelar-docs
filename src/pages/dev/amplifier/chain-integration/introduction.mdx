@@ -26,6 +26,12 @@ To connect your chain to the Axelar network via the Interchain Amplifier, you'll
 - **Message Relayer**
     - A service built with any tech stack that listens for events on your chain and relays them to the Axelar network.
     - Get started with our [Message Relayer Example](https://github.com/axelarnetwork/axelar-examples/tree/main/examples/amplifier)
+    - Setup your relayer to send data to the Axelarscan API (TBD) related to transactions with your network
+- **Governance Contract**
+    - A source chain contract that can receive messages from the Axelar Network representing governance decisions, such as updating your gateway.
+- **Gas Table Updater**
+    - A service that updates the gas table, so that gas price estimations involving your chain are accurate.
+
 
 
 The [chain integration tutorial](/dev/amplifier/chain-integration/integrate-a-chain) will guide you through this process within the current Amplifier DevNet. Contract deployment on Testnet or Mainnet will require governance proposal.
