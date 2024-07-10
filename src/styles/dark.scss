@@ -2,6 +2,7 @@ html.dark body {
   $dark-link: #c8ffda;
   $dark-line: #1f2937;
   $dark-text: #dadada;
+  $dark-link-orange: #ff6313;
   $dark-background: #111111;
   $gradient-subtle: linear-gradient(186deg,
       rgba(84, 84, 84, 0.2) 9.05%,
@@ -11,7 +12,7 @@ html.dark body {
   background-color: $dark-background;
 
   a {
-    color: $dark-link;
+    color: $dark-link-orange;
   }
 
   .article a,
@@ -36,7 +37,7 @@ html.dark body {
   h3,
   h4,
   h5 {
-    color: white;
+    color: $dark-link;
 
     .anchor-icon {
       color: $dark-text;
