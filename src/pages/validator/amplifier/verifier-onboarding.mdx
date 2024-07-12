@@ -27,22 +27,32 @@ There are three ways to set up and run a verifier:
 <tab-item title="Source">
 Install `tofnd` from source by cloning and building the [`tofnd` repository](https://github.com/axelarnetwork/tofnd).
 
-Create a default mneumonic and configuration in `~/.tofnd/` with:
+```bash
+git clone git@github.com:axelarnetwork/tofnd.git --recursive
+cd tofnd
+cargo build --release --locked
+```
+
+This will create a binary in the `target/release` directory. You can move this binary to a location in your `PATH` or run it directly from the `target/release` directory.
+
+Create a default mneumonic and configuration in `~/.tofnd/`, then back it up and delete it.
 
 ```bash
-~/Downloads/tofnd*-v0.10.5 -m create
+tofnd -m create
+mv ~/.tofnd/export ~/.tofnd/export-new-location
 ```
 </tab-item>
 
 <tab-item title="Binary">
 Download the [`tofnd` binary](https://github.com/axelarnetwork/tofnd/releases) depending on the type of machine you have:
-    - Linux: [`tofnd-linux-amd64-v0.10.5`](https://github.com/axelarnetwork/tofnd/releases/download/v0.10.5/tofnd-linux-amd64-v0.10.5)
-    - Apple Mac (AMD64 or ARM): [`tofnd-darwin-amd64-v0.10.5`](https://github.com/axelarnetwork/tofnd/releases/download/v0.10.5/tofnd-darwin-amd64-v0.10.5)
+    - Linux: [`tofnd-linux-amd64-v1.0.0`](https://github.com/axelarnetwork/tofnd/releases/download/v1.0.0/tofnd-linux-amd64-v1.0.0)
+    - Apple Mac (AMD64 or ARM): [`tofnd-darwin-amd64-v1.0.0`](https://github.com/axelarnetwork/tofnd/releases/download/v1.0.0/tofnd-darwin-amd64-v1.0.0)
 
-Create a default mneumonic and configuration in `~/.tofnd/` with:
+Create a default mneumonic and configuration in `~/.tofnd/`, then back it up and delete it.
 
 ```bash
-~/Downloads/tofnd*-v0.10.5 -m create
+~/Downloads/tofnd*-v1.0.0 -m create
+mv ~/.tofnd/export ~/.tofnd/export-new-location
 ```
 </tab-item>
 
@@ -50,8 +60,8 @@ Create a default mneumonic and configuration in `~/.tofnd/` with:
 Pull and run the latest version of `tofnd` from Docker:
 
 ```bash
-docker pull axelarnet/tofnd:v0.10.5
-docker run -p 50051:50051 --env MNEMONIC_CMD=auto --env NOPASSWORD=true --env ADDRESS=0.0.0.0 -v tofnd:/.tofnd axelarnet/tofnd:v0.10.5
+docker pull axelarnet/tofnd:v1.0.0
+docker run -p 50051:50051 --env MNEMONIC_CMD=auto --env NOPASSWORD=true --env ADDRESS=0.0.0.0 -v tofnd:/.tofnd axelarnet/tofnd:v1.0.0
 ```
 
 Leave this process running in the background, and perform additional commands in a new terminal window or shell.
