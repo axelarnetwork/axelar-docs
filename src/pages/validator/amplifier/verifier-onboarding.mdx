@@ -45,13 +45,13 @@ mv ~/.tofnd/export ~/.tofnd/export-new-location
 
 <tab-item title="Binary">
 Download the [`tofnd` binary](https://github.com/axelarnetwork/tofnd/releases) depending on the type of machine you have:
-    - Linux: [`tofnd-linux-amd64-v1.0.0`](https://github.com/axelarnetwork/tofnd/releases/download/v1.0.0/tofnd-linux-amd64-v1.0.0)
-    - Apple Mac (AMD64 or ARM): [`tofnd-darwin-amd64-v1.0.0`](https://github.com/axelarnetwork/tofnd/releases/download/v1.0.0/tofnd-darwin-amd64-v1.0.0)
+    - Linux: [`tofnd-linux-amd64-v1.0.1`](https://github.com/axelarnetwork/tofnd/releases/download/v1.0.1/tofnd-linux-amd64-v1.0.1)
+    - Apple Mac (AMD64 or ARM): [`tofnd-darwin-amd64-v1.0.1`](https://github.com/axelarnetwork/tofnd/releases/download/v1.0.1/tofnd-darwin-amd64-v1.0.1)
 
 Create a default mneumonic and configuration in `~/.tofnd/`, then back it up and delete it.
 
 ```bash
-~/Downloads/tofnd*-v1.0.0 -m create
+~/Downloads/tofnd*-v1.0.1 -m create
 mv ~/.tofnd/export ~/.tofnd/export-new-location
 ```
 </tab-item>
@@ -60,8 +60,8 @@ mv ~/.tofnd/export ~/.tofnd/export-new-location
 Pull and run the latest version of `tofnd` from Docker:
 
 ```bash
-docker pull axelarnet/tofnd:v1.0.0
-docker run -p 50051:50051 --env MNEMONIC_CMD=auto --env NOPASSWORD=true --env ADDRESS=0.0.0.0 -v tofnd:/.tofnd axelarnet/tofnd:v1.0.0
+docker pull axelarnet/tofnd:v1.0.1
+docker run -p 50051:50051 --env MNEMONIC_CMD=auto --env NOPASSWORD=true --env ADDRESS=0.0.0.0 -v tofnd:/.tofnd axelarnet/tofnd:v1.0.1
 ```
 
 Leave this process running in the background, and perform additional commands in a new terminal window or shell.
