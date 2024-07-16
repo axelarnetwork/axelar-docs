@@ -1,102 +1,90 @@
 # Community Pool Proposals
 
-The Axelar network has a [community pool](https://www.mintscan.io/axelar/proposals) of funds to support community projects that benefit developers and users. These funds are provided by decentralized governance. Create a governance proposal on-chain which can be voted upon. If there is a successful resolution of the proposal, the funds will automatically be provided.
+import { Callout } from "/src/components/callout";
 
-## Share your community pool spending proposal
-We ask teams to create an application on our [community forum](https://community.axelar.network/c/governance2/33) before submitting any on-chain proposals to provide additional information and background about your proposal.
+Axelar has an on-chain, governance-managed [pool of funds](https://www.mintscan.io/axelar/proposals) reserved for community projects that benefit developers and users. Proposals require a 2,000 AXL deposit. Anyone from the Axelar community can submit a proposal for consideration.
 
-1. Create an application on the [Community Grants section](https://community.axelar.network/c/governance2/33) of Axelar’s Governance Forum, which should include the following [information](https://community.axelar.network/t/about-the-community-grants-program/2271).
+## Prerequisites
 
-2. The Governance Forum will remain open to the community for a temperature check to ask questions, gauge sentiment and for the proposer to make any edits to the proposal for **7 days** after posting. During this time, please engage with all community questions and feedback, and be prepared to amend the proposal where necessary.
+- Access to the [Axelar command-line interface](/learn/cli)
+- 2,000 AXL for each proposal, either from a local wallet or through a community member who can fund the proposal within one hour of submission
+- A running [RPC endpoint](/resources/rpc/resources) or [Axelar node](/node/config-node)
 
-3. Once the feedback window has passed, you can submit the Proposal for an on-chain governance vote.
+## Get funding for a project
 
-## On-chain governance proposal
-Once a Governance Forum proposal has been live for the required temperature check and the feedback window has closed, you can submit an on-chain proposal to be voted on. Governance proposals are submitted on-chain using `axelard` (the [Axelar CLI](/learn/cli)).
+1. Create a project introduction on the [Governance and Grants section](https://community.axelar.network/c/governance2/33) of the [Axelar Governance Forum](https://community.axelar.network/) using the [provided template](https://community.axelar.network/t/community-pool-grants-program/2271#grant-template-3). This introduction helps the community to understand your project.
+1. The introduction will be open on the Forum for **7 days**. During this time, community members can ask questions and give feedback, and you will be able to edit the post. Please engage with all responses, and be prepared to amend the proposal where necessary.
+1. Once the feedback window has passed, you can submit a proposal for an on-chain governance vote using the [Axelar CLI](https://docs.axelar.dev/learn/cli) (`axelard`). Include a brief summary of your proposal, along with a link to the project introduction.
+1. After submission, proposals will be voted on by all token holders for **3 days** (**72 hours**). Validators can vote on behalf of the token holders if they abstain from participating, but the token holder’s vote will overwrite their validator’s vote for their amount of stake.
+1. If the vote passes, funds will be sent from the community pool to the Axelar wallet associated with the successful proposal ([example](https://www.mintscan.io/axelar/proposals/29)), along with a refund of the 2,000 AXL deposit. The Axelar Network currently requires a 33.4% quorum of staked tokens (query with `axelard q gov params`).
 
-### Prerequisites
+<Callout emoji="⚠️">
+  **All proposals that reach quorum will have their deposit refunded, even if
+  the vote fails.** If a proposal does not reach quorum, the deposit will not be
+  refunded.
+</Callout>
 
-* You must have [axelard](/node/config-node#download-binaries-and-initialize-configuration)
-* You must have an account with at least **2,000AXL** balance or find a community member that can fund the **2,000AXL**  deposit on your behalf within 1 hour of posting a proposal.
-* You must choose an [RPC endpoint](/resources) or run an Axelar node
+## Proposal Types
 
+- `CommunityPoolSpend` — For general community proposals
+- `SoftwareUpgrade` — For node software updates
+- `ParameterChange` — For changes to the configuration of the Axelar network
 
-### Create a local wallet
-If you don't already have a local wallet, you can create one. You can also [send AXL from your local wallets](https://github.com/axelarnetwork/axelar-core/blob/main/docs/cli/axelard_tx_bank_send.md).
+## Create a local wallet
 
-```bash
-# create an account named `wallet` and save the generated mnemonic
-$ axelard keys add wallet 
-# enter passphrase
+You will need a local wallet for all transactions associated with the proposal. This wallet will receive the funds and deposit refund if the proposal passes.
 
-# display key address 
-$ axelard keys list
-
-# fund the wallet with 2,000 AXL
-
-# For example, if you have another local wallet, you could transfer the funds with the following command
-# Alternatively, you can send funds via the Keplr wallet or get them from a CEX (Centralized Exchange) 
-# and check the balance on Axelarscan. However, use the following command to send the funds back.
-$ axelard tx bank send [account_with_fund_address] [wallet_address] 2000000000uaxl
-```
-
-### Submit a proposal
-Now that you have a account named `wallet` with 2,000AXL, you can submit a proposal on-chain. Access the Axelar's RPC providers [here](/resources)
+To create a local wallet, run:
 
 ```bash
-$ axelard tx gov submit-proposal community-pool-spend <file> --from wallet --chain-id axelar-dojo-1 --node <RPC Endpoint> --gas auto --gas-adjustment 1.2
+axelard keys add wallet
 ```
 
+This creates an account named `wallet`. Enter (create) a passphrase. The `address` returned will be your new local wallet address. To display your local wallet address(es), run:
 
-`<file>` → JSON file with following format
-
-```json
-{
-    "title": "<title>",
-    "description": "This proposal withdraw funds from community pool for <purpose> as mentioned here:\n<link>",
-	"amount": "<amount_in_uaxl>", # 20000000000uaxl = 20000AXL
-	"recipient": "<fund_recipient_address>",
-	"deposit": "2000000000uaxl"
-}
-
+```bash
+axelard keys list
 ```
 
-Once the proposal reaches quorum and passes or fails (without `NoWithVeto`), the deposit will be refunded. To deposit AXL, follow the [deposit process](https://github.com/axelarnetwork/axelar-core/blob/main/docs/cli/axelard_query_gov_deposit.md). Without quorum it will not be refunded.
+## Fund your local wallet
 
+Once you’ve created a local wallet, you’ll need to fund it with 2,000 AXL for the deposit. You can send funds from your Keplr wallet or from a centralized exchange (CEX) and check your wallet’s balance on Axelarscan. You can also [send AXL from another local wallet](https://github.com/axelarnetwork/axelar-core/blob/main/docs/cli/axelard_tx_bank_send.md) with the following command:
 
-## General Proposal Information
+```bash
+axelard tx bank send [account_with_fund_address] [wallet_address] 2000000000uaxl # 20000000000uaxl = 20000AXL
+```
 
-### Voting Period
+## Submit a proposal
 
-3 days (72 hours) for all mainnet proposals.
+1. In your terminal, create a variable for the proposal such as GOV_PROPOSAL and set its value to the path of your JSON file:Once the 7-day feedback period has passed, create a JSON file with the proposal and save it to a file, such as `gov-proposal.json`:
 
-The Axelar Network currently requires a 33.4% quorum of staked tokens (query with `./axelard q gov params`). If a proposal does not reach quorum, it will fail and **the deposit will not be refunded**.
+   ```bash
+   {
+       "title": "[title]",
+       "description": "This proposal withdraw funds from community pool for <purpose> as mentioned here:\n[link]",
+       "amount": "[amount_in_uaxl]", # 20000000000uaxl = 20000AXL
+       "recipient": "[fund_recipient_address]",
+       "deposit": "2000000000uaxl"
+   }
+   ```
 
-### Proposal Types
+1. In your terminal, create a variable for the proposal such as GOV_PROPOSAL and set its value to the path of your JSON file:
 
-* `CommunityPoolSpend` → this is the correct type for all community proposals. 
-* `SoftwareUpgrade` - node software updates
-* `ParameterChange` - Axelar network configuration changes
+   ```bash
+   export GOV_PROPOSAL="/Users/you/Projects/Axelar/gov-proposal.json"
+   ```
 
-### Total Deposit
+1. [Submit the proposal](https://github.com/axelarnetwork/axelar-core/blob/main/docs/cli/axelard_tx_gov_submit-proposal.md) as a JSON file:
 
-2,000 AXL
+   ```bash
+   export CHAIN_ID="axelartestnet-lisbon-3"
+   export RPC="https://axelartest-rpc.quickapi.com:443"
+   ```
 
-### Description
-
-Include a brief summary of the proposal with a link to the finalize proposal posted to the Community section on Axelar’s Governance Forum
-
-* **Voting:** proposals are voted on by all token holders. Validators can vote on behalf of the token holders if they abstain from participating, however the token holder’s vote overwrites their validator’s vote for their amount of stake. 
-* **Remittance:** upon passing the vote, funds will be sent the Axelar wallet associated with the successful proposal, funded via Axelar’s on-chain community pool. 
-
-> **Example of a successful proposal:** https://www.mintscan.io/axelar/proposals/29
-
-## FAQ
-
-**Who can submit a proposal?**
-
-Anyone from Axelar’s community can submit a proposal for consideration. Proposals require a 2,000 AXL deposit.
-
-**What’s the purpose of a community proposal?**
-
-Community proposals are meant to decentralize the governance process on Axelar, create the opportunity for AXL holders, stakers and the larger Axelar ecosystem to propose incentives they would like to see funded.
+   ```bash
+   $ axelard tx gov submit-proposal community-pool-spend $GOV_PROPOSAL \
+       --from wallet \
+       --chain-id $CHAIN_ID \
+       --node $RPC \
+       --gas auto --gas-adjustment 1.2
+   ```
