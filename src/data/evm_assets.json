@@ -5911,6 +5911,133 @@
           "transfer_fee": 7.2
         }
       ]
+    },
+    {
+      "id": "ulava",
+      "name": "LAVA - Axelar Wrapped LAVA",
+      "symbol": "LAVA",
+      "image": "/images/assets/lava.svg",
+      "contracts": [
+        {
+          "chain": "arbitrum",
+          "address": "0x11e969e9B3f89cB16D686a03Cd8508C9fC0361AF",
+          "symbol": "LAVA",
+          "decimals": 6,
+          "transfer_fee": 590.0
+        },
+        {
+          "chain": "avalanche",
+          "address": "0x654877D1C2ca16e417e99eF906Ca1Ba96B8cfE4C",
+          "symbol": "LAVA",
+          "decimals": 6,
+          "transfer_fee": 88.0
+        },
+        {
+          "chain": "base",
+          "address": "0x11e969e9B3f89cB16D686a03Cd8508C9fC0361AF",
+          "symbol": "LAVA",
+          "decimals": 6,
+          "transfer_fee": 590.0
+        },
+        {
+          "chain": "binance",
+          "address": "0xFfeB8287dE7DC756067e171e9919c730f0636680",
+          "symbol": "LAVA",
+          "decimals": 6,
+          "transfer_fee": 88.0
+        },
+        {
+          "chain": "blast",
+          "address": "0x11e969e9B3f89cB16D686a03Cd8508C9fC0361AF",
+          "symbol": "LAVA",
+          "decimals": 6,
+          "transfer_fee": 590.0
+        },
+        {
+          "chain": "celo",
+          "address": "0x11e969e9B3f89cB16D686a03Cd8508C9fC0361AF",
+          "symbol": "LAVA",
+          "decimals": 6,
+          "transfer_fee": 88.0
+        },
+        {
+          "chain": "ethereum",
+          "address": "0x8b21c0E5672F8937177d9a74B0d87AD7974BDA5D",
+          "symbol": "LAVA",
+          "decimals": 6,
+          "transfer_fee": 3500.0
+        },
+        {
+          "chain": "fantom",
+          "address": "0xFfeB8287dE7DC756067e171e9919c730f0636680",
+          "symbol": "LAVA",
+          "decimals": 6,
+          "transfer_fee": 88.0
+        },
+        {
+          "chain": "filecoin",
+          "address": "0x11e969e9B3f89cB16D686a03Cd8508C9fC0361AF",
+          "symbol": "LAVA",
+          "decimals": 6,
+          "transfer_fee": 88.0
+        },
+        {
+          "chain": "fraxtal",
+          "address": "0x11e969e9B3f89cB16D686a03Cd8508C9fC0361AF",
+          "symbol": "LAVA",
+          "decimals": 6,
+          "transfer_fee": 590.0
+        },
+        {
+          "chain": "kava",
+          "address": "0x11e969e9B3f89cB16D686a03Cd8508C9fC0361AF",
+          "symbol": "LAVA",
+          "decimals": 6,
+          "transfer_fee": 88.0
+        },
+        {
+          "chain": "linea",
+          "address": "0x11e969e9B3f89cB16D686a03Cd8508C9fC0361AF",
+          "symbol": "LAVA",
+          "decimals": 6,
+          "transfer_fee": 590.0
+        },
+        {
+          "chain": "mantle",
+          "address": "0x11e969e9B3f89cB16D686a03Cd8508C9fC0361AF",
+          "symbol": "LAVA",
+          "decimals": 6,
+          "transfer_fee": 590.0
+        },
+        {
+          "chain": "moonbeam",
+          "address": "0x8b21c0E5672F8937177d9a74B0d87AD7974BDA5D",
+          "symbol": "LAVA",
+          "decimals": 6,
+          "transfer_fee": 88.0
+        },
+        {
+          "chain": "optimism",
+          "address": "0x11e969e9B3f89cB16D686a03Cd8508C9fC0361AF",
+          "symbol": "LAVA",
+          "decimals": 6,
+          "transfer_fee": 590.0
+        },
+        {
+          "chain": "polygon",
+          "address": "0x1da37a2B6e275e05A16859A4C070E82428Ef9Da5",
+          "symbol": "LAVA",
+          "decimals": 6,
+          "transfer_fee": 88.0
+        },
+        {
+          "chain": "scroll",
+          "address": "0x11e969e9B3f89cB16D686a03Cd8508C9fC0361AF",
+          "symbol": "LAVA",
+          "decimals": 6,
+          "transfer_fee": 590.0
+        }
+      ]
     }
   ],
   "testnet": [
