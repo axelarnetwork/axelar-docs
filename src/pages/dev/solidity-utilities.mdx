@@ -2,7 +2,7 @@
 
 import { Callout } from '/src/components/callout'
 
-To facilitate interchain development, we have provided some Solidity utilites. These can be found [here](https://github.com/axelarnetwork/axelar-gmp-sdk-solidity). Each of these is described below, along with their proposed use. To further assist with the development process the [Axelar Chain's Config](https://www.npmjs.com/package/@axelar-network/axelar-chains-config) package has been made available to provide easy access to all the relevant Axelar configurations on each blockchain Axelar is available on.
+To facilitate interchain development, we have provided some Solidity utilities. These can be found [here](https://github.com/axelarnetwork/axelar-gmp-sdk-solidity). Each of these is described below, along with their proposed use. To further assist with the development process the [Axelar Chain's Config](https://www.npmjs.com/package/@axelar-network/axelar-chains-config) package has been made available to provide easy access to all the relevant Axelar configurations on each blockchain Axelar is available on.
 
 <Callout emoji="📝">
 Note: When deploying a contract with this tool, the msg.sender in the constructor of the app's contract will be the deployer contract address and not the wallet address. So msg.sender should not be used for setting the owner etc. when using these. Instead it should be passed in as a constructor arg
@@ -74,7 +74,7 @@ For those who may be using [Create2 Deployer](https://github.com/axelarnetwork/a
 
 #### Create2Deployer JS
 
-The above can be used directly, but we also provide a script to execute this functionality from a Jasvscript file. Simply import [`create2Deployer.js`](https://github.com/axelarnetwork/axelar-gmp-sdk-solidity/blob/main/scripts/create2Deployer.js). The following methods are exported from from the `create2Deployer.js` file:
+The above can be used directly, but we also provide a script to execute this functionality from a Javascript file. Simply import [`create2Deployer.js`](https://github.com/axelarnetwork/axelar-gmp-sdk-solidity/blob/main/scripts/create2Deployer.js). The following methods are exported from from the `create2Deployer.js` file:
 
 - `async estimateGasForDeploy(contractJson, args = [])`: estimates the gas needed to deploy a contract with a certain `contractJson` and `args`
 - `async estimateGasForDeployAndInit(contractJson, args = [], initArgs = [])`: estimates the gas needed to deploy a contract with a certain `contractJson` and `args`, and to have the `init(...initArgs)` called as part of the deployment.

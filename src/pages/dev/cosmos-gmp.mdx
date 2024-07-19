@@ -166,7 +166,7 @@ pub fn multi_send_to_evm(
 
 For a Cosmos blockchain to support receiving GMP messages (naively or via CosmWasm), it should implement the appropriate middleware in Go as part of the consensus layer.
 
-If you have CosmWasm on your Cosmos chain and want to be able to receieve and deliver messages, install [Osmosis IBC-hooks](https://github.com/osmosis-labs/osmosis/tree/main/x/ibc-hooks).
+If you have CosmWasm on your Cosmos chain and want to be able to receive and deliver messages, install [Osmosis IBC-hooks](https://github.com/osmosis-labs/osmosis/tree/main/x/ibc-hooks).
 
 If you don’t support CosmWasm on your Cosmos chain, you'll need to implement and install your own Axelar GMP module to receive and execute messages. See our [sample reference implementation](https://github.com/axelarnetwork/evm-cosmos-gmp-sample/tree/main/native-integration/sample-middleware).
 
