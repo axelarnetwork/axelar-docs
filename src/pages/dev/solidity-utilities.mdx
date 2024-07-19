@@ -74,7 +74,7 @@ For those who may be using [Create2 Deployer](https://github.com/axelarnetwork/a
 
 #### Create2Deployer JS
 
-The above can be used directly, but we also provide a script to execute this functionality from a Javascript file. Simply import [`create2Deployer.js`](https://github.com/axelarnetwork/axelar-gmp-sdk-solidity/blob/main/scripts/create2Deployer.js). The following methods are exported from from the `create2Deployer.js` file:
+The above can be used directly, but we also provide a script to execute this functionality from a JavaScript file. Simply import [`create2Deployer.js`](https://github.com/axelarnetwork/axelar-gmp-sdk-solidity/blob/main/scripts/create2Deployer.js). The following methods are exported from from the `create2Deployer.js` file:
 
 - `async estimateGasForDeploy(contractJson, args = [])`: estimates the gas needed to deploy a contract with a certain `contractJson` and `args`
 - `async estimateGasForDeployAndInit(contractJson, args = [], initArgs = [])`: estimates the gas needed to deploy a contract with a certain `contractJson` and `args`, and to have the `init(...initArgs)` called as part of the deployment.
