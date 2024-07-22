@@ -24,8 +24,9 @@ Other info can be found in [`devnet-amplifier.json`](https://github.com/axelarne
 
 Install the `v0.35.5 axelard` binary. You can either download the pre-built version or build it yourself from `axelar-core`.
 
-### Option 1: Download the pre-built binary
+<tabs>
 
+<tab-item title="Download">
 1. Download the pre-built [`axelard` binary](https://github.com/axelarnetwork/axelar-core/releases/tag/v0.35.5) along with the latest version of the [`WasmVM`](https://github.com/CosmWasm/wasmvm/releases/tag/v1.3.1).
     - Intel Macs: [`axelard-darwin-amd64-v0.35.5`](https://github.com/axelarnetwork/axelar-core/releases/download/v0.35.5/axelard-darwin-amd64-v0.35.5) and [`libwasmvm.dylib`](https://github.com/CosmWasm/wasmvm/releases/download/v1.3.1/libwasmvm.dylib)
     - [Macs with Apple silicon](https://support.apple.com/en-us/116943): [`axelard-darwin-arm64-v0.35.5`](https://github.com/axelarnetwork/axelar-core/releases/download/v0.35.5/axelard-darwin-arm64-v0.35.5) and [`libwasmvm.dylib`](https://github.com/CosmWasm/wasmvm/releases/download/v1.3.1/libwasmvm.dylib)
@@ -45,9 +46,9 @@ Install the `v0.35.5 axelard` binary. You can either download the pre-built vers
     ```bash
     xattr -d com.apple.quarantine [filename]
     ```
+</tab-item>
 
-### Option 2: Build the binary yourself
-
+<tab-item title="Build">
 1. Clone the [`axelar-core` repo](https://github.com/axelarnetwork/axelar-core).
 1. Checkout the `v0.35.5` release tag.
 1. Run `make build`.
@@ -68,12 +69,14 @@ Install the `v0.35.5 axelard` binary. You can either download the pre-built vers
     !faucet devnet-amplifier [your axelar wallet address]
     ```
 
-
 1. Query your account balance by running:
 
     ```bash
     axelard q bank balances [your axelar wallet address] --node http://devnet-amplifier.axelar.dev:26657
     ```
+</tab-item>
+
+</tabs>
 
 ## Onboard a chain to Amplifier
 
@@ -81,16 +84,16 @@ Once you are running `ampd` and `tofnd`, you can onboard a chain to the Amplifie
 
 You can either use the existing deployed contracts and on the devnet via their `code_id`s, or build and store these contracts from the `axelar-examples` repo. A `code_id` is a CosmWasm identifier of a stored contract that can be instantiated. **You will need to instantiate the contracts no matter which option you choose.**
 
-### Option 1: Use existing deployed contracts
-
+<tabs>
+<tab-item title="Use pre-deployed contracts">
 Use the existing deployments for all three contracts, making note of the existing deployment's `code_id`:
 
 - Voting verifier (code_id: `500`)
 - Gateway (code_id: `493`)
 - Mutisig prover (code_id: `495`)
+</tab-item>
 
-### Option 2: Build and deploy the contracts yourself
-
+<tab-item title="Build and deploy contracts">
 1. Clone the [`axelar-amplifier` repo](https://github.com/axelarnetwork/axelar-amplifier).
 
     ```bash
@@ -195,9 +198,9 @@ Use the existing deployments for all three contracts, making note of the existin
     ```
 
     Remember to save your `code_id`.
+</tab-item>
 
-### Option 3: Deploy a custom implementation of the Amplifier contracts
-
+<tab-item title="Use custom implementation">
 You can also deploy a custom implementation of the gateway, verifier, and prover contracts and optimize them with the [`Cosmwasm rust-optimizer`](https://github.com/CosmWasm/optimizer). Follow the same steps as Option 2 with your own implementations of the Amplifier contracts.
 
 ## Instantiate the contracts
@@ -346,6 +349,9 @@ You can also deploy a custom implementation of the gateway, verifier, and prover
 
 
 1. Send the chain’s gateway and multisig prover contract addresses to the Interop Labs team by filling out the [Axelar Amplifier Integration Form](https://docs.google.com/forms/d/e/1FAIpQLSchD7P1WfdSCQfaZAoqX7DyqJOqYKxXle47yrueTbOgkKQDiQ/viewform). The team will register the chain and gateway with the router and authorize the prover.
+</tab-item>
+
+</tabs>
 
 ## Add verifiers to your chain
 
@@ -354,4 +360,3 @@ Every new chain will need a verifier, which requires running `ampd` and `tofnd`.
 ## Begin routing messages
 
 Once your chain is registered with the protocol, it will need verifiers to begin routing messages. See [Become an Amplifier Verifier (Worker)](/validator/amplifier/verifier-onboarding) for instructions to onboard a verifier. Note that chain integrators will onboard on `devnet-amplifier` and not `devnet-verifier`.
-
