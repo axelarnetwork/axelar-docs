@@ -211,7 +211,7 @@ axelard tx gov submit-proposal instantiate-contract $CODE_ID \
 "verifier_set_diff_threshold": 1,
 "encoder": "abi",
 "key_type": "ecdsa",
-"domain_separator": [hash($CHAIN_NAME, $ADMIN_ADDRESS, 505)]
+"domain_separator": "6973c72935604464b28827141b0a463af8e3487616de69c5aa0c785392c9fb9f" # Hash of chain name, admin address, and code ID converted into a String in hex format without `0x`.
     }' \
     --title="Instantiate prover contract for [chain name]" \
     --description="Instantiate prover contract for [chain name]" \
@@ -283,7 +283,7 @@ export RPC="http://devnet-amplifier.axelar.dev:26657"
 axelard tx gov submit-proposal execute-contract $ROUTER_CONTRACT_ADDRESS \
     '{
         "register_chain": {
-            "chain":"test",
+            "chain":"[Chain name]",
             "gateway_address": "[chain gateway address]",
             "msg_id_format": "hex_tx_hash_and_event_index"
         }
@@ -334,7 +334,7 @@ You can track the status of your proposal with the `proposal_id` given in the ou
 
 ## Costs
 
-Each proposal requires a 2,000 AXL deposit to submit. These funds will be refunded if votes reach quorum. The Axelar Network currently requires a 33.4% quorum for staked tokens.
+Each proposal requires a 2,000 AXL deposit to submit. These funds will be refunded if votes reach quorum. The Axelar Network currently requires a 33.4% quorum of staked tokens.
 
 ## Voting period
 
