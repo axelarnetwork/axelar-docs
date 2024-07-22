@@ -59,6 +59,12 @@ To create a custom Interchain Token:
 1. Call [`transferMintership()`](https://github.com/axelarnetwork/interchain-token-service/blob/9223108211b977d9138fdd67d5b4a641fc35c18c/contracts/utils/Minter.sol#L31) on your token to transfer the minter role to the Token Manager. This must be done for all chains that the token is on, using the same deployer address and salt.
 1. Call [`interchainTransfer()`](https://github.com/axelarnetwork/interchain-token-service/blob/9223108211b977d9138fdd67d5b4a641fc35c18c/contracts/interfaces/IInterchainTokenService.sol#L210) to transfer Interchain Tokens between chains via the Interchain Token Service.
 
+<Callout emoji="🚨">
+   The key used to deploy custom tokens (`deployTokenManager`) is critical for security. If that key is compromised, then that token can be compromised across multiple chains. 
+  * Interchain native tokens can only be deployed to more chains via the same deployer key, so that needs to be retained.
+  * Tokens registered on ITS should be careful about giving mint/burn permissions to other contracts. For example, shared mint permission with the Polygon native bridge is not supported (the Polygon native bridge only looks for burns, which ITS uses, meaning it can allow duplicate sends).
+</Callout>
+
 Tokens can move between chains seamlessly, as the `TokenManager` contract will mint and burn tokens as needed. If the `minter` parameter consists of empty bytes when you deployed your token, deploy a [Mint/Burn](/dev/send-tokens/glossary#mintburn) [token manager](/dev/send-tokens/glossary#token-manager) for existing tokens on all chains. Otherwise, use a [Lock/Unlock](/dev/send-tokens/glossary#lockunlock) token manager. Call `transferMintership()` on the token to change the token minter to another address.
 
 If you want to build a token with the `IInterchainToken` feature yourself, make sure that your token implements the [`IInterchainTokenStandard`](https://github.com/axelarnetwork/interchain-token-service/blob/v1.0.0/contracts/interfaces/IInterchainTokenStandard.sol) interface so you can offer the [`interchainTransfer()`](https://github.com/axelarnetwork/interchain-token-service/blob/9edc4318ac1c17231e65886eea72c0f55469d7e5/contracts/interfaces/IInterchainTokenStandard.sol#L19) and [`interchainTransferFrom()`](https://github.com/axelarnetwork/interchain-token-service/blob/9edc4318ac1c17231e65886eea72c0f55469d7e5/contracts/interfaces/IInterchainTokenStandard.sol#L36) methods directly on it.

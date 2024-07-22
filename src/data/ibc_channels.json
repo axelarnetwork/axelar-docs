@@ -191,6 +191,16 @@
       "channel_id": "channel-14"
     },
     {
+      "from": "lava",
+      "to": "axelarnet",
+      "channel_id": "channel-0"
+    },
+    {
+      "from": "axelarnet",
+      "to": "lava",
+      "channel_id": "channel-156"
+    },
+    {
       "from": "migaloo",
       "to": "axelarnet",
       "channel_id": "channel-53"

@@ -1,6 +1,6 @@
 # EVM Relayer
 
-The Axelar EVM relayer facilitates communication between different EVM-compatible chains on the Axlear network. Both [legacy and EIP-1559 transaction types](https://www.youtube.com/watch?v=MGemhK9t44Q) are supported.
+The Axelar EVM relayer facilitates communication between different EVM-compatible chains on the Axelar network. Both [legacy and EIP-1559 transaction types](https://www.youtube.com/watch?v=MGemhK9t44Q) are supported.
 
 Each chain has a relayer queue that receives transaction data. These queues serve as the relayer’s entry point. The Axelar network has multiple instances of the EVM relayer service running in parallel, waiting to pick up and process messages. This way, multiple transactions can be executed simultaneously. The relayer will try to broadcast the payload until it is either included in a block or has hit the maximum number of attempts. If a process unexpectedly stops or gets killed in the middle of a relay, an internal database will recover the payload and the transaction will be re-tried when the process is back up.
 

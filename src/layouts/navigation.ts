@@ -452,6 +452,12 @@ export const getNavigation = (section) => {
         ],
       },
       {
+        title: "Static configs",
+        children: [
+          { title: "Static configs", href: "/resources/static-configs/static-configs" }
+        ],
+      },
+      {
         title: "Tokens",
         children: [
           { title: "Stake AXL tokens", href: "/resources/tokens/stake-axl" },

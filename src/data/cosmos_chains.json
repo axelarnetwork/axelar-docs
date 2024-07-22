@@ -1,12 +1,6 @@
 {
   "mainnet": [
     {
-      "id": "acrechain",
-      "name": "Acrechain",
-      "network_id": "acre",
-      "image": "/images/chains/acrechain.svg"
-    },
-    {
       "id": "agoric",
       "name": "Agoric",
       "network_id": "agoric",
@@ -127,6 +121,12 @@
       "image": "/images/chains/kujira.svg"
     },
     {
+      "id": "lava",
+      "name": "Lava",
+      "network_id": "lava",
+      "image": "/images/chains/lava.svg"
+    },
+    {
       "id": "migaloo",
       "name": "Migaloo",
       "network_id": "migaloo",
@@ -179,6 +179,12 @@
       "name": "Regen",
       "network_id": "regen",
       "image": "/images/chains/regen.svg"
+    },
+    {
+      "id": "saga",
+      "name": "Saga",
+      "network_id": "saga",
+      "image": "/images/chains/saga.svg"
     },
     {
       "id": "secret-snip",
