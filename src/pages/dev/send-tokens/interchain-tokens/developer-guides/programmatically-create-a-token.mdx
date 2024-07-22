@@ -173,7 +173,7 @@ async function registerAndDeploy() {
   const symbol = "NIT";
   const decimals = 18;
 
-  // Intial token supply
+  // Initial token supply
   const initialSupply = ethers.utils.parseEther("1000");
 
   // Get a signer to sign the transaction
@@ -416,7 +416,7 @@ async function transferTokens() {
   // Calculate gas amount
   const gasAmount = await gasEstimator();
 
-  // Initate transfer via token
+  // Initiate transfer via token
   const transfer = await interchainToken.interchainTransfer(
     "Polygon", // Destination chain
     "0x510e5EA32386B7C48C4DEEAC80e86859b5e2416C", // Update with your own wallet address
