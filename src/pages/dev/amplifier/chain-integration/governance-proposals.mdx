@@ -275,7 +275,7 @@ axelard tx gov submit-proposal store-instantiate [path to contract as wasm binar
 
 ```bash
 export ROUTER_CONTRACT_ADDRESS="axelar14jjdxqhuxk803e9pq64w4fgf385y86xxhkpzswe9crmu6vxycezst0zq8y"
-export NETWORK_GOV_ADDRESS="axelar10d07y265gmmuvt4z0w9aw880jnsr700j7v9daj"
+export ROUTER_GOV_ADDRESS="axelar1zlr7e5qf3sz7yf890rkh9tcnu87234k6k7ytd9"
 export RPC="http://devnet-amplifier.axelar.dev:26657"
 ```
 
@@ -290,7 +290,7 @@ axelard tx gov submit-proposal execute-contract $ROUTER_CONTRACT_ADDRESS \
     }' \
     --title="Register [chain name] chain with the Amplifier router" \
     --description="Register [chain name] chain with the Amplifier router" \
-    --run-as $NETWORK_GOV_ADDRESS \
+    --run-as $ROUTER_GOV_ADDRESS \
     --deposit=2000000000uamplifier \
     --keyring-backend test \
     --from wallet \
@@ -305,7 +305,7 @@ Once the feedback period has passed, submit the proposal on the command line:
 
 ```bash
 export MULTISIG_CONTRACT_ADDRESS="axelar1ufs3tlq4umljk0qfe8k5ya0x6hpavn897u2cnf9k0en9jr7qarqqa9263g"
-export NETWORK_GOV_ADDRESS="axelar10d07y265gmmuvt4z0w9aw880jnsr700j7v9daj"
+export MULTISIG_GOV_ADDRESS="axelar1zlr7e5qf3sz7yf890rkh9tcnu87234k6k7ytd9"
 export RPC="http://devnet-amplifier.axelar.dev:26657"
 ```
 
@@ -319,7 +319,7 @@ axelard tx gov submit-proposal execute-contract $MULTISIG_CONTRACT_ADDRESS \
     }' \
     --title="Authorize [chain name] prover with the Amplifier multisig contract" \
     --description="Authorize [chain name] prover with the Amplifier multisig contract" \
-    --run-as $NETWORK_GOV_ADDRESS \
+    --run-as $MULTISIG_GOV_ADDRESS \
     --deposit=2000000000uamplifier \
     --keyring-backend test \
     --from wallet \
