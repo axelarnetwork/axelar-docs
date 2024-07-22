@@ -82,7 +82,7 @@ To build the `axelard` binary from source:
 
 ## Onboard a chain with Amplifier
 
-Once you are running `ampd` and `tofnd`, you can onboard a chain with the Amplifier by instantiating the `gateway`, `voting verifier`, and `multisig prover` contracts.
+You can onboard a chain with the Amplifier by instantiating the `gateway`, `voting verifier`, and `multisig prover` contracts.
 
 You can either use the existing deployed contracts and on the devnet via their `code_id`s (CosmWasm identifiers for stored contracts that can be instantiated), or build and store these contracts from the `axelar-examples` repo. **You will need to instantiate the contracts no matter which option you choose.**
 
@@ -185,7 +185,7 @@ Use the existing deployments for all three contracts, making note of the existin
         --node http://devnet-amplifier.axelar.dev:26657
     ```
 
-    Remember to save your `code_id`s.
+    Remember to save your contract's `code_id`.
 
 
 1. Deploy the multisig prover:
@@ -199,7 +199,7 @@ Use the existing deployments for all three contracts, making note of the existin
         --node http://devnet-amplifier.axelar.dev:26657
     ```
 
-    Remember to save your `code_id`s.
+    Remember to save your contract's `code_id`.
 </tab-item>
 
 <tab-item title="Use custom implementation">
@@ -210,9 +210,10 @@ You can also deploy a custom implementation of the gateway, verifier, and prover
 
 ## Instantiate the contracts
         
-1. Instantiate the voting verifier:
+### Instantiate the voting verifier
 
-    Set your parameters.
+1. Instantiate the voting verifier contract on the command line.
+
     ```bash
     export VERIFIER_CODE_ID=500 # Set your Code ID
     export MY_WALLET_ADDRESS="axelar14r0xzwz8hmkshau39dyja5kx503dx6zu52623h"
@@ -245,7 +246,7 @@ You can also deploy a custom implementation of the gateway, verifier, and prover
     {/* message_id_format is coming soon should be HexTxHashAndEventIndex (0) or
    Base58TxDigestAndEventIndex (1), */}
     
-    Search the output of this command and note the `_contract_address`. It will be in the in `logs.events` property. You'll need to do this for each instantiation to use in future steps.
+1. Search the output of this command and note the `_contract_address`. It will be in the in `logs.events` property. You'll need to do this for each instantiation to use in future steps.
 
     ```bash
     {
@@ -283,14 +284,15 @@ You can also deploy a custom implementation of the gateway, verifier, and prover
     }
     ```
     
-1. Instantiate the gateway:
+### Instantiate the gateway
 
-    Set your parameters, including the verifier address from the previous step.
+1. Instantiate the gateway contract on the command line with the verifier address from the previous step.
+
     ```bash
     export GATEWAY_CODE_ID=493 # Set your Code ID
     export MY_VERIFIER_ADDRESS="axelar1x3960tw9cml6xsqtvzt4gmw3scauaxdd83rhs9dmlpjfjf9z9s7qjx8g0j"
     ```
-    Now instantiate the contract.
+1. Instantiate the contract.
     
     ```bash
     axelard tx wasm instantiate $GATEWAY_CODE_ID \
@@ -307,20 +309,21 @@ You can also deploy a custom implementation of the gateway, verifier, and prover
         --admin $MY_WALLET_ADDRESS
     ```
 
-    Search the output of this command and note the `_contract_address`. 
+1. Search the output of this command and note the `_contract_address`. 
 
-1. Instantiate the multisig prover:
+## Instantiate the multisig prover
 
-    Set your parameters, including the gateway address from the previous step.
+1. Instantiate the multisig prover contract on the command line with the gateway address from the previous step.
+
     ```bash
     export PROVER_CODE_ID=495 # Set your Code ID
     export MY_GATEWAY_ADDRESS="axelar1ufs3tlq4umljk0qfe8k5ya0x6hpavn897u2cnf9k0en9jr7qarqqa9263g"
     export MY_CHAIN_ID=43113
     ```
-    Now instantiate the contract.
+1. Instantiate the contract.
 
     <Callout>
-    The `domain_separator` is a 32-length byte array derived from the hash of the chain name, router address, and Axelar chain ID.
+    The `domain_separator` is a String in hex format without `0x`, such as "598ba04d225cec385d1ce3cf3c9a076af803aa5c614bc0e0d176f04ac8d28f55". It is derived from the hash of the chain name, router address, and Axelar chain ID.
     </Callout>
 
     ```bash
@@ -350,10 +353,11 @@ You can also deploy a custom implementation of the gateway, verifier, and prover
         --admin $MY_WALLET_ADDRESS
     ```
 
-   Search the output of this command and note the `_contract_address`.
+1. Search the output of this command and note the `_contract_address`.
 
+## Whitelist your contract addresses
 
-1. Send the chain’s gateway and multisig prover contract addresses to the Interop Labs team by filling out the [Axelar Amplifier Integration Form](https://docs.google.com/forms/d/e/1FAIpQLSchD7P1WfdSCQfaZAoqX7DyqJOqYKxXle47yrueTbOgkKQDiQ/viewform). The team will register the chain and gateway with the router and authorize the prover.
+Send the chain’s gateway and multisig prover contract addresses to the Interop Labs team by filling out the [Axelar Amplifier Integration Form](https://docs.google.com/forms/d/e/1FAIpQLSchD7P1WfdSCQfaZAoqX7DyqJOqYKxXle47yrueTbOgkKQDiQ/viewform). The team will register the chain and gateway with the router and authorize the prover.
 
 ## Add verifiers to your chain
 
