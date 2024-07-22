@@ -41,26 +41,6 @@
       "channel_id": "channel-141"
     },
     {
-      "from": "bitsong",
-      "to": "axelarnet",
-      "channel_id": "channel-30"
-    },
-    {
-      "from": "axelarnet",
-      "to": "bitsong",
-      "channel_id": "channel-145"
-    },
-    {
-      "from": "c4e",
-      "to": "axelarnet",
-      "channel_id": "channel-0"
-    },
-    {
-      "from": "axelarnet",
-      "to": "c4e",
-      "channel_id": "channel-141"
-    },
-    {
       "from": "carbon",
       "to": "axelarnet",
       "channel_id": "channel-7"
