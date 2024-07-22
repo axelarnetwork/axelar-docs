@@ -9,7 +9,6 @@ The Axelar Virtual Machine (AVM) and Amplifier are currently under active develo
 ## Prerequisites
 
 - You should know how to deploy and interact with a CosmWasm contract. Refer to the [Osmosis CosmWasm testnet deployment tutorial](https://docs.osmosis.zone/cosmwasm/testnet/cosmwasm-deployment/) if you’d like a refresher — just replace `osmosisid` with `axelard` and use the `amd64` version if building on Linux and `arm64` version of the [contract optimizer](https://github.com/CosmWasm/optimizer) if you are working on a [Mac with Apple silicon](https://support.apple.com/en-us/116943). 
-- Run `--gas auto --gas-adjustment 1.5` to provide your transactions with sufficient gas.
 
 ## Devnet information
 
@@ -17,8 +16,7 @@ The Axelar Virtual Machine (AVM) and Amplifier are currently under active develo
 - Devnet LCD (REST API/JSON RPC): `http://devnet-amplifier.axelar.dev:1317`
 - Devnet gRPC: `devnet-amplifier.axelar.dev:9090`
 - Chain ID: `devnet-amplifier`
-
-Other info can be found in [`devnet-amplifier.json`](https://github.com/axelarnetwork/axelar-contract-deployments/blob/main/axelar-chains-config/info/devnet-amplifier.json).
+- Connected chains and contracts: [`devnet-amplifier.json`](https://github.com/axelarnetwork/axelar-contract-deployments/blob/main/axelar-chains-config/info/devnet-amplifier.json)
 
 ## Get the `axelard` binary
 
@@ -27,6 +25,8 @@ Install the `v0.35.5 axelard` binary. You can either download the pre-built vers
 <tabs>
 
 <tab-item title="Download">
+To use the pre-built `axelard` binary:
+
 1. Download the pre-built [`axelard` binary](https://github.com/axelarnetwork/axelar-core/releases/tag/v0.35.5) along with the latest version of the [`WasmVM`](https://github.com/CosmWasm/wasmvm/releases/tag/v1.3.1).
     - Intel Macs: [`axelard-darwin-amd64-v0.35.5`](https://github.com/axelarnetwork/axelar-core/releases/download/v0.35.5/axelard-darwin-amd64-v0.35.5) and [`libwasmvm.dylib`](https://github.com/CosmWasm/wasmvm/releases/download/v1.3.1/libwasmvm.dylib)
     - [Macs with Apple silicon](https://support.apple.com/en-us/116943): [`axelard-darwin-arm64-v0.35.5`](https://github.com/axelarnetwork/axelar-core/releases/download/v0.35.5/axelard-darwin-arm64-v0.35.5) and [`libwasmvm.dylib`](https://github.com/CosmWasm/wasmvm/releases/download/v1.3.1/libwasmvm.dylib)
@@ -48,7 +48,9 @@ Install the `v0.35.5 axelard` binary. You can either download the pre-built vers
     ```
 </tab-item>
 
-<tab-item title="Build">
+<tab-item title="Build from source">
+To build the `axelard` binary from source:
+
 1. Clone the [`axelar-core` repo](https://github.com/axelarnetwork/axelar-core).
 1. Checkout the `v0.35.5` release tag.
 1. Run `make build`.
@@ -78,11 +80,11 @@ Install the `v0.35.5 axelard` binary. You can either download the pre-built vers
 
 </tabs>
 
-## Onboard a chain to Amplifier
+## Onboard a chain with Amplifier
 
-Once you are running `ampd` and `tofnd`, you can onboard a chain to the Amplifier by instantiating the `gateway`, `voting verifier`, and `multisig prover` contracts.
+Once you are running `ampd` and `tofnd`, you can onboard a chain with the Amplifier by instantiating the `gateway`, `voting verifier`, and `multisig prover` contracts.
 
-You can either use the existing deployed contracts and on the devnet via their `code_id`s, or build and store these contracts from the `axelar-examples` repo. A `code_id` is a CosmWasm identifier of a stored contract that can be instantiated. **You will need to instantiate the contracts no matter which option you choose.**
+You can either use the existing deployed contracts and on the devnet via their `code_id`s (CosmWasm identifiers for stored contracts that can be instantiated), or build and store these contracts from the `axelar-examples` repo. **You will need to instantiate the contracts no matter which option you choose.**
 
 <tabs>
 <tab-item title="Use pre-deployed contracts">
@@ -183,7 +185,7 @@ Use the existing deployments for all three contracts, making note of the existin
         --node http://devnet-amplifier.axelar.dev:26657
     ```
 
-    Remember to save your `code_id`.
+    Remember to save your `code_id`s.
 
 
 1. Deploy the multisig prover:
@@ -197,11 +199,14 @@ Use the existing deployments for all three contracts, making note of the existin
         --node http://devnet-amplifier.axelar.dev:26657
     ```
 
-    Remember to save your `code_id`.
+    Remember to save your `code_id`s.
 </tab-item>
 
 <tab-item title="Use custom implementation">
 You can also deploy a custom implementation of the gateway, verifier, and prover contracts and optimize them with the [`Cosmwasm rust-optimizer`](https://github.com/CosmWasm/optimizer). Follow the same steps as Option 2 with your own implementations of the Amplifier contracts.
+</tab-item>
+
+</tabs>
 
 ## Instantiate the contracts
         
@@ -349,9 +354,6 @@ You can also deploy a custom implementation of the gateway, verifier, and prover
 
 
 1. Send the chain’s gateway and multisig prover contract addresses to the Interop Labs team by filling out the [Axelar Amplifier Integration Form](https://docs.google.com/forms/d/e/1FAIpQLSchD7P1WfdSCQfaZAoqX7DyqJOqYKxXle47yrueTbOgkKQDiQ/viewform). The team will register the chain and gateway with the router and authorize the prover.
-</tab-item>
-
-</tabs>
 
 ## Add verifiers to your chain
 
