@@ -192,20 +192,20 @@ The following is an example `config.toml` file for the verifier devnet:
     ```toml
     tm_jsonrpc="http://devnet-verifiers.axelar.dev:26657"
     tm_grpc="tcp://devnet-verifiers.axelar.dev:9090"
-    event_buffer_cap=1000
+    event_buffer_cap=10000
 
     [service_registry]
     cosmwasm_contract="axelar1qk00h5atutpsv900x202pxx42npjr9thg58dnqpa72f2p7m2luas9x8txw"
 
     [broadcast]
-    batch_gas_limit="1000000"
+    batch_gas_limit="20000000"
     broadcast_interval="1s"
     chain_id="devnet-verifiers"
     gas_adjustment="2"
     gas_price="0.00005uverifiers"
     queue_cap="1000"
-    tx_fetch_interval="600ms"
-    tx_fetch_max_retries="10"
+    tx_fetch_interval="1000ms"
+    tx_fetch_max_retries="15"
 
     [tofnd_config]
     batch_gas_limit="10000000"
