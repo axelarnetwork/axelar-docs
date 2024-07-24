@@ -322,10 +322,6 @@ You can also deploy a custom implementation of the gateway, verifier, and prover
     ```
 1. Instantiate the contract.
 
-    <Callout>
-    The `domain_separator` is a String in hex format without `0x`, such as "598ba04d225cec385d1ce3cf3c9a076af803aa5c614bc0e0d176f04ac8d28f55". It is derived from the hash of the chain name, router address, and Axelar chain ID.
-    </Callout>
-
     ```bash
     axelard tx wasm instantiate $PROVER_CODE_ID \
         '{
@@ -342,7 +338,7 @@ You can also deploy a custom implementation of the gateway, verifier, and prover
             "verifier_set_diff_threshold": 1,
             "encoder": "abi",
             "key_type": "ecdsa",
-            "domain_separator":[hash(chain_name, router_address, MY_CHAIN_ID)]
+            "domain_separator": "6973c72935604464b28827141b0a463af8e3487616de69c5aa0c785392c9fb9f" # Hash of chain name, admin address, and code ID. Value must be a String in hex format without `0x`.
         }' \
         --keyring-backend test \
         --from wallet \
