@@ -240,6 +240,10 @@ export const getNavigation = (section) => {
               href: "/dev/amplifier/chain-integration/integrate-a-chain",
             },
             {
+              title: "Governance Proposals",
+              href: "/dev/amplifier/chain-integration/governance-proposals",
+            },
+            {
               title: "Add Rewards",
               href: "/dev/amplifier/add-rewards",
             },
@@ -449,6 +453,12 @@ export const getNavigation = (section) => {
         children: [
           { title: "RPC Endpoints", href: "/resources/rpc/resources" },
           { title: "Free Public RPC", href: "/resources/rpc/lava-iprpc" },
+        ],
+      },
+      {
+        title: "Static configs",
+        children: [
+          { title: "Static configs", href: "/resources/static-configs/static-configs" }
         ],
       },
       {

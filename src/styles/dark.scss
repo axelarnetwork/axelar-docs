@@ -3,83 +3,99 @@ html.dark body {
   $dark-line: #1f2937;
   $dark-text: #dadada;
   $dark-background: #111111;
-  $gradient-subtle: linear-gradient(
-    186deg,
-    rgba(84, 84, 84, 0.2) 9.05%,
-    rgba(85, 85, 85, 0) 144.24%
-  );
+  $gradient-subtle: linear-gradient(186deg,
+      rgba(84, 84, 84, 0.2) 9.05%,
+      rgba(85, 85, 85, 0) 144.24%);
 
   color: $dark-text;
   background-color: $dark-background;
+
   a {
     color: $dark-link;
   }
+
   .article a,
   article a:hover,
   #toc a,
   #toc a:hover {
     color: $dark-link;
   }
+
   a.active,
   tabs li.active {
     color: black;
     background-color: $dark-link;
   }
+
   .card span {
     color: $dark-link;
   }
+
   h1,
   h2,
   h3,
   h4,
   h5 {
-    color: $dark-link;
+    color: white;
+
     .anchor-icon {
       color: $dark-text;
     }
   }
+
   .site-logo,
   .site-logo.active {
     color: white;
     background-color: transparent;
   }
+
   .desktop-nav .active {
     color: rgba($dark-background, 0.85);
     border-color: $dark-link;
   }
+
   nav {
     border-color: $dark-line;
   }
+
   nav a {
     color: $dark-text;
   }
+
   footer {
     background-color: rgb(23, 23, 23);
     color: $dark-text;
   }
+
   footer a {
     color: white;
     opacity: 0.8;
     text-transform: uppercase;
     font-size: 14px;
   }
+
   .sideNav * {
     color: $dark-text;
   }
+
   .sideNav {
+
     .nav-group-header:hover,
     .nav-group-header:hover span {
       color: white;
       background-color: transparent;
     }
+
     a:hover {
       color: white;
       background-color: transparent;
     }
+
     a.active:hover {
       background-color: $dark-link;
       color: rgba($dark-background, 0.85);
     }
+
     @media screen and (max-width: 650px) {
       &.show {
         background-color: $dark-background;
@@ -97,89 +113,107 @@ html.dark body {
     tr {
       border-bottom: 2px solid rgb(48, 48, 49);
     }
+
     tr:nth-child(2n + 1) td {
       background-color: #111111;
     }
+
     tr:nth-child(2n + 2) td {
       background-color: #1d1f22;
     }
   }
+
   .ais-SearchBox-form,
   .ais-SearchBox-form input {
     background-color: #1d1f22;
     border-color: rgb(48, 48, 49);
     color: white;
   }
+
   .ais-SearchBox-form:before {
     background: url(/images/icon-search-dark.svg);
   }
+
   .ais-Hits-item {
     background: #1d1f22;
   }
+
   #search-results.show {
     background-color: transparent;
     top: 32px;
     border-width: 0;
   }
+
   .ais-Hits {
     border: 3px solid rgb(105, 105, 105);
     border-radius: 16px;
 
     background: #1d1f22;
   }
+
   .ais-Hits a {
     color: $dark-text;
   }
+
   .ais-Hits-item:hover {
     opacity: 0.8;
   }
+
   // first hits item
   .ais-Hits-item:first-child {
     border-top-left-radius: 16px;
     border-top-right-radius: 16px;
   }
+
   .ais-Snippet-highlighted,
   .ais-Highlight-highlighted {
     color: #6cafdc;
   }
+
   .card:hover {
     box-shadow: 0 0 10px rgba(#64806d, 0.3);
     border-color: #3c4c41;
     color: inherit;
   }
+
   .card {
     border-color: $dark-line;
     color: $dark-text;
-    background: radial-gradient(
-        54.1% 100% at 49.37% 100%,
+    background: radial-gradient(54.1% 100% at 49.37% 100%,
         rgba(79, 120, 101, 0.2) 0%,
-        rgba(53, 255, 243, 0) 100%
-      ),
+        rgba(53, 255, 243, 0) 100%),
       rgba(6, 37, 44, 0.1);
   }
+
   .card span {
     color: $dark-link;
   }
+
   .ibc-channels {
-    > div {
+    >div {
       background: $gradient-subtle;
     }
+
     .border {
       border-color: $dark-line;
     }
   }
+
   .sideNav div.group {
     border-color: $dark-line;
   }
+
   .resource-card {
     border-color: $dark-line;
     background: $gradient-subtle;
   }
+
   .callout.warning {
     background-color: #291700;
     color: #ffba64;
     border-color: #643700;
   }
+
   .callout.error {
     background-color: #321515;
     color: #fecaca;
@@ -189,26 +223,33 @@ html.dark body {
   pre[class*="language-"] {
     border-color: $dark-line;
   }
+
   div.code-toolbar {
     color: white;
   }
+
   .lightButton {
     display: block;
   }
+
   .darkButton {
     display: none;
   }
+
   .dropdown button {
     background-color: #000;
     color: #f3f4f6;
     border-color: rgba(white, 0.25);
   }
+
   .dropdown .dropdown-menu {
     background-color: black;
   }
+
   .dropdown .dropdown-menu *:hover {
     background-color: rgb(17, 24, 39);
   }
+
   .colored-svg {
     color: white;
   }
