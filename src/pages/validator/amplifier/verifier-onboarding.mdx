@@ -222,12 +222,14 @@ The following is an example `config.toml` file for the verifier devnet:
     chain_rpc_url="https://avalanche-fuji-c-chain-rpc.publicnode.com"
     cosmwasm_contract="axelar1elaymnd2epmfr498h2x9p2nezc4eklv95uv92u9csfs8wl75w7yqdc0h67"
     type="EvmMsgVerifier"
+    chain_finalization="RPCFinalizedBlock"
 
     [[handlers]]
     chain_name="ethereum-sepolia"
     chain_rpc_url="https://rpc.ankr.com/eth_sepolia"
     cosmwasm_contract="axelar1sxujcvele5eqtx0xc4wuy6jr0m28y0yt8spn7efc3527vc2j2xrqk6wkay"
     type="EvmMsgVerifier"
+    chain_finalization="RPCFinalizedBlock"
     ```
 
 See the [`ampd` README](https://github.com/axelarnetwork/axelar-amplifier/blob/main/ampd/README.md) on GitHub for instructions on formatting a `config` file for your own projects.
