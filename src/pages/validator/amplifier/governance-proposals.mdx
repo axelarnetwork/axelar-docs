@@ -26,25 +26,25 @@ Once the feedback period has passed, submit the proposal on the command line:
 
 ```bash
 export VERIFIER_AXELAR_ADDRESS="[your verifier axelar address]"
-export SERVICE_REGISTRY_ADDRESS="axelar19vvhwq57656hqfczhxw3r874l29jtd3uns4fsu"
-export NETWORK_GOV_ADDRESS="axelar10d07y265gmmuvt4z0w9aw880jnsr700j7v9daj"
-export RPC="http://devnet-verifiers.axelar.dev:26657" 
+export SERVICE_REGISTRY_ADDRESS="axelar1qk00h5atutpsv900x202pxx42npjr9thg58dnqpa72f2p7m2luas9x8txw"
+export NETWORK_GOV_ADDRESS="axelar19vvhwq57656hqfczhxw3r874l29jtd3uns4fsu"
+export CHAIN_NAME="[your chain name]"
 ```
 
 ```bash
-axelard tx gov submit-proposal execute-contract $SERVICE_REGISTRY_ADDRESS \
+axelard tx wasm execute $SERVICE_REGISTRY_ADDRESS \
     '{
         "authorize_verifiers":{
-            "workers":[
-                "$VERIFIER_AXELAR_ADDRESS"
+            "verifiers":[
+                "'"$VERIFIER_AXELAR_ADDRESS"'"
             ],
             "service_name":"validators"
         }
-    }' \
-    --title="Change [chain name]'s verifier set" \
-    --description="Change [chain name]'s verifier set" \
+    }'
+    --title="Change "'"$CHAIN_NAME"'"'s verifier set" \
+    --description="Change "'"$CHAIN_NAME"'"'s verifier set" \
     --run-as $NETWORK_GOV_ADDRESS \
-    --deposit=100000000uverifiers \
+    --deposit=1000000000uverifiers \
     --keyring-backend test \
     --from wallet \
     --gas auto --gas-adjustment 1.5 --gas-prices 0.007uamplifier \
