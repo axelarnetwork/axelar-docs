@@ -50,31 +50,78 @@ export RPC="http://devnet-amplifier.axelar.dev:26657"
 
 ```bash
 axelard tx gov submit-proposal instantiate-contract $CODE_ID \
-'{
-    "governance_address": "axelar10d07y265gmmuvt4z0w9aw880jnsr700j7v9daj",
-    "service_registry_address": "axelar1c9fkszt5lq34vvvlat3fxj6yv7ejtqapz04e97vtc9m5z9cwnamq8zjlhz",
-    "service_name":"validators",
-    "source_gateway_address":"0xeE9E463Fd8bE9AF266e1B143C27F7D42648f4006",
-    "voting_threshold":["1","1"],
-    "block_expiry":10,
-    "confirmation_height":1,
-    "source_chain":"ethereum-sepolia",
-"rewards_address":"axelar1vaj9sfzc3z0gpel90wu4ljutncutv0wuhvvwfsh30rqxq422z89qnd989l",
-    "msg_id_format":"hex_tx_hash_and_event_index"
-}' \
---title="Instantiate verifier contract for [chain name]" \
---description="Instantiate verifier contract for [chain name]" \
---run-as $NETWORK_GOV_ADDRESS \
---label "[chain name]" \
---deposit=2000000000uamplifier \
---keyring-backend test \
---from wallet \
---gas auto --gas-adjustment 1.5 --gas-prices 0.007uamplifier \
---chain-id=devnet-amplifier \
---no-admin \
---node $RPC
+    '{
+        "governance_address": "axelar10d07y265gmmuvt4z0w9aw880jnsr700j7v9daj",
+        "service_registry_address": "axelar1c9fkszt5lq34vvvlat3fxj6yv7ejtqapz04e97vtc9m5z9cwnamq8zjlhz",
+        "service_name":"validators",
+        "source_gateway_address":"0xeE9E463Fd8bE9AF266e1B143C27F7D42648f4006",
+        "voting_threshold":["1","1"],
+        "block_expiry":10,
+        "confirmation_height":1,
+        "source_chain":"ethereum-sepolia",
+    "rewards_address":"axelar1vaj9sfzc3z0gpel90wu4ljutncutv0wuhvvwfsh30rqxq422z89qnd989l",
+        "msg_id_format":"hex_tx_hash_and_event_index"
+    }' \
+    --title="Instantiate verifier contract for [chain name]" \
+    --description="Instantiate verifier contract for [chain name]" \
+    --run-as $NETWORK_GOV_ADDRESS \
+    --label "[chain name]" \
+    --deposit=2000000000uamplifier \
+    --keyring-backend test \
+    --from wallet \
+    --gas auto --gas-adjustment 1.5 --gas-prices 0.007uamplifier \
+    --chain-id=devnet-amplifier \
+    --no-admin \
+    --node $RPC
 ```
 
+</tab-item>
+
+<tab-item title="Non-EVM integrators">
+
+Once the feedback period has passed, submit the proposal with the [proper instantiation parameters](https://github.com/axelarnetwork/axelar-amplifier/blob/deab56a75209a158c082cbf9b77caf500eb4ec7c/contracts/voting-verifier/src/msg.rs#L9):
+
+```bash
+export CHAIN_NAME="[chain name]"
+export NETWORK_GOV_ADDRESS="axelar10d07y265gmmuvt4z0w9aw880jnsr700j7v9daj"
+export RPC="http://devnet-amplifier.axelar.dev:26657"
+```
+
+```bash
+axelard tx gov submit-proposal store-instantiate [path to verifier contract as wasm binary or gzip] \
+    '{
+        "governance_address": "axelar10d07y265gmmuvt4z0w9aw880jnsr700j7v9daj",
+        "service_registry_address": "axelar1c9fkszt5lq34vvvlat3fxj6yv7ejtqapz04e97vtc9m5z9cwnamq8zjlhz",
+        "service_name":"validators",
+        "source_gateway_address":"0xeE9E463Fd8bE9AF266e1B143C27F7D42648f4006",
+        "voting_threshold":["1","1"],
+        "block_expiry":10,
+        "confirmation_height":1,
+        "source_chain":"ethereum-sepolia",
+    "rewards_address":"axelar1vaj9sfzc3z0gpel90wu4ljutncutv0wuhvvwfsh30rqxq422z89qnd989l",
+        "msg_id_format":"hex_tx_hash_and_event_index"
+    }' \
+    --title="Instantiate verifier contract for "'"$CHAIN_NAME"'" \
+    --description="Instantiate verifier contract for "'"$CHAIN_NAME"'" \
+    --run-as $NETWORK_GOV_ADDRESS \
+    --label "'"$CHAIN_NAME"'" \
+    --deposit=2000000000uamplifier \
+    --keyring-backend test \
+    --from wallet \
+    --gas auto --gas-adjustment 1.5 --gas-prices 0.007uamplifier \
+    --chain-id=devnet-amplifier \
+    --no-admin \
+    --node $RPC \
+    --code-source-url "https://github.com/axelarnetwork/axelar-amplifier/tree/service-registry-v0.4.1/contracts/voting-verifier" \
+    --builder "cosmwasm/optimizer:0.16.0" \
+    --code-hash "4e6a37e923a48d97fa85d03911728ceee81490f4c869e64eb2bd68152bfc6448"
+```
+
+The `--code-source-url`, `--builder`, and `--code-hash` flags are currently mandatory when submitting a `store-instantiate` governance proposal.
+
+- `--code-source-url` -- A string containing the URL to the GitHub repo pointing to the Axelar contract being instantiated.
+- `--builder` -- A string representing the Docker image for the optimizer that was used to build the bytecode, such as `"cosmwasm/workspace-optimizer:0.16.0"`.
+- `--code-hash` -- The SHA hash of the bytecode. You can eithr get this as part of the optimizer output when building the bytecode, or by running `shasum -a 256 [path to your .wasm file]`.
 </tab-item>
 
 </tabs>
@@ -112,6 +159,46 @@ axelard tx gov submit-proposal instantiate-contract $CODE_ID \
 ```
 </tab-item>
 
+<tab-item title="Non-EVM integrators">
+
+Once the feedback period has passed, submit the proposal with the [proper instantiation parameters](https://github.com/axelarnetwork/axelar-amplifier/blob/deab56a75209a158c082cbf9b77caf500eb4ec7c/contracts/gateway/src/msg.rs#L4):
+
+```bash
+export CODE_ID=493
+export CHAIN_NAME="[chain name]"
+export NETWORK_GOV_ADDRESS="axelar10d07y265gmmuvt4z0w9aw880jnsr700j7v9daj"
+export RPC="http://devnet-amplifier.axelar.dev:26657"
+```
+
+```bash
+axelard tx gov submit-proposal store-instantiate [path to gateway contract as wasm binary or gzip] \
+    '{
+        "verifier_address": "axelar1e6jnuljng6aljk0tjct6f0hl9tye6l0n9p067pwx2374h82dmr0s9qcqy9",
+        "router_address": "axelar14jjdxqhuxk803e9pq64w4fgf385y86xxhkpzswe9crmu6vxycezst0zq8y"
+    }' \
+    --title="Instantiate gateway contract for "'"$CHAIN_NAME"'" \
+    --description="Instantiate gateway contract for "'"$CHAIN_NAME"'" \
+    --run-as $NETWORK_GOV_ADDRESS \
+    --label "'"$CHAIN_NAME"'" \
+    --deposit=2000000000uamplifier \
+    --keyring-backend test \
+    --from wallet \
+    --gas auto --gas-adjustment 1.5 --gas-prices 0.007uamplifier \
+    --chain-id=devnet-amplifier \
+    --no-admin \
+    --node $RPC \
+    --code-source-url "https://github.com/axelarnetwork/axelar-amplifier/tree/service-registry-v0.4.1/contracts/gateway" \
+    --builder "cosmwasm/optimizer:0.16.0" \
+    --code-hash "c2c627899e00ac9ee2631b22c13866078e200774e15931d565c7b9c40cab9d53"
+```
+
+The `--code-source-url`, `--builder`, and `--code-hash` flags are currently mandatory when submitting a `store-instantiate` governance proposal.
+
+- `--code-source-url` -- A string containing the URL to the GitHub repo pointing to the Axelar contract being instantiated.
+- `--builder` -- A string representing the Docker image for the optimizer that was used to build the bytecode, such as `"cosmwasm/workspace-optimizer:0.16.0"`.
+- `--code-hash` -- The SHA hash of the bytecode. You can eithr get this as part of the optimizer output when building the bytecode, or by running `shasum -a 256 [path to your .wasm file]`.
+</tab-item>
+
 </tabs>
 
 ## Proposal to instantiate the prover contract
@@ -131,20 +218,20 @@ export RPC="http://devnet-amplifier.axelar.dev:26657"
 ```bash
 axelard tx gov submit-proposal instantiate-contract $CODE_ID \
     '{
-"admin_address": "axelar1zlr7e5qf3sz7yf890rkh9tcnu87234k6k7ytd9", # Prover admin address
-"governance_address": "axelar1zlr7e5qf3sz7yf890rkh9tcnu87234k6k7ytd9",
-"gateway_address": "axelar1hdx49xndyxzrs3t5jkzart00taqysu6kmaf77waxv8regwxxpp4qcsea2w"
-"multisig_address": "axelar19jxy26z0qnnspa45y5nru0l5rmy9d637z5km2ndjxthfxf5qaswst9290r",
-"coordinator_address":"axelar1m2498n4h2tskcsmssjnzswl5e6eflmqnh487ds47yxyu6y5h4zuqr9zk4g",
-"service_registry_address":"axelar1c9fkszt5lq34vvvlat3fxj6yv7ejtqapz04e97vtc9m5z9cwnamq8zjlhz",
-"voting_verifier_address": "axelar1zlr7e5qf3sz7yf890rkh9tcnu87234k6k7ytd9", # Ethereum Sepolia voting verifier governance address
-"signing_threshold": ["1","1"],
-"service_name": "validators",
-"chain_name": "[chain name]",
-"verifier_set_diff_threshold": 1,
-"encoder": "abi",
-"key_type": "ecdsa",
-"domain_separator": "6973c72935604464b28827141b0a463af8e3487616de69c5aa0c785392c9fb9f" # Hash of chain name, admin address, and code ID. Value must be a String in hex format without `0x`.
+        "admin_address": "axelar1zlr7e5qf3sz7yf890rkh9tcnu87234k6k7ytd9", # Prover admin address
+        "governance_address": "axelar1zlr7e5qf3sz7yf890rkh9tcnu87234k6k7ytd9",
+        "gateway_address": "axelar1hdx49xndyxzrs3t5jkzart00taqysu6kmaf77waxv8regwxxpp4qcsea2w"
+        "multisig_address": "axelar19jxy26z0qnnspa45y5nru0l5rmy9d637z5km2ndjxthfxf5qaswst9290r",
+        "coordinator_address":"axelar1m2498n4h2tskcsmssjnzswl5e6eflmqnh487ds47yxyu6y5h4zuqr9zk4g",
+        "service_registry_address":"axelar1c9fkszt5lq34vvvlat3fxj6yv7ejtqapz04e97vtc9m5z9cwnamq8zjlhz",
+        "voting_verifier_address": "axelar1zlr7e5qf3sz7yf890rkh9tcnu87234k6k7ytd9", # Ethereum Sepolia voting verifier governance address
+        "signing_threshold": ["1","1"],
+        "service_name": "validators",
+        "chain_name": "[chain name]",
+        "verifier_set_diff_threshold": 1,
+        "encoder": "abi",
+        "key_type": "ecdsa",
+        "domain_separator": "6973c72935604464b28827141b0a463af8e3487616de69c5aa0c785392c9fb9f" # Hash of chain name, admin address, and code ID. Value must be a String in hex format without `0x`.
     }' \
     --title="Instantiate prover contract for [chain name]" \
     --description="Instantiate prover contract for [chain name]" \
@@ -158,6 +245,57 @@ axelard tx gov submit-proposal instantiate-contract $CODE_ID \
     --admin="axelar1zlr7e5qf3sz7yf890rkh9tcnu87234k6k7ytd9"
     --node $RPC
 ```
+</tab-item>
+
+<tab-item title="Non-EVM integrators">
+
+Once the feedback period has passed, submit the proposal with the [proper instantiation parameters](https://github.com/axelarnetwork/axelar-amplifier/blob/deab56a75209a158c082cbf9b77caf500eb4ec7c/contracts/multisig-prover/src/msg.rs#L12):
+
+```bash
+export CHAIN_NAME="[chain name]"
+export NETWORK_GOV_ADDRESS="axelar10d07y265gmmuvt4z0w9aw880jnsr700j7v9daj"
+export RPC="http://devnet-amplifier.axelar.dev:26657"
+```
+
+```bash
+axelard tx gov submit-proposal store-instantiate [path to prover contract as wasm binary or gzip] \
+    '{
+        "admin_address": "axelar1zlr7e5qf3sz7yf890rkh9tcnu87234k6k7ytd9", # Prover admin address
+        "governance_address": "axelar1zlr7e5qf3sz7yf890rkh9tcnu87234k6k7ytd9",
+        "gateway_address": "axelar1hdx49xndyxzrs3t5jkzart00taqysu6kmaf77waxv8regwxxpp4qcsea2w"
+        "multisig_address": "axelar19jxy26z0qnnspa45y5nru0l5rmy9d637z5km2ndjxthfxf5qaswst9290r",
+        "coordinator_address":"axelar1m2498n4h2tskcsmssjnzswl5e6eflmqnh487ds47yxyu6y5h4zuqr9zk4g",
+        "service_registry_address":"axelar1c9fkszt5lq34vvvlat3fxj6yv7ejtqapz04e97vtc9m5z9cwnamq8zjlhz",
+        "voting_verifier_address": "axelar1zlr7e5qf3sz7yf890rkh9tcnu87234k6k7ytd9", # Ethereum Sepolia voting verifier governance address
+        "signing_threshold": ["1","1"],
+        "service_name": "validators",
+        "chain_name": "[chain name]",
+        "verifier_set_diff_threshold": 1,
+        "encoder": "abi",
+        "key_type": "ecdsa",
+        "domain_separator": "6973c72935604464b28827141b0a463af8e3487616de69c5aa0c785392c9fb9f" # Hash of chain name, admin address, and code ID. Value must be a String in hex format without `0x`.
+    }' \
+    --title="Instantiate prover contract for [chain name]" \
+    --description="Instantiate prover contract for [chain name]" \
+    --run-as $NETWORK_GOV_ADDRESS \
+    --label "[chain name]" \
+    --deposit=2000000000uamplifier \
+    --keyring-backend test \
+    --from wallet \
+    --gas auto --gas-adjustment 1.5 --gas-prices 0.007uamplifier \
+    --chain-id=devnet-amplifier \
+    --admin="axelar1zlr7e5qf3sz7yf890rkh9tcnu87234k6k7ytd9"
+    --node $RPC \
+    --code-source-url "https://github.com/axelarnetwork/axelar-amplifier/tree/service-registry-v0.4.1/contracts/multisig-prover" \
+    --builder "cosmwasm/optimizer:0.16.0" \
+    --code-hash "bb1b731be9d900c6a8535d3c6007e15b606ea302d361007a5c50021d0adcd07f"
+```
+
+The `--code-source-url`, `--builder`, and `--code-hash` flags are currently mandatory when submitting a `store-instantiate` governance proposal.
+
+- `--code-source-url` -- A string containing the URL to the GitHub repo pointing to the Axelar contract being instantiated.
+- `--builder` -- A string representing the Docker image for the optimizer that was used to build the bytecode, such as `"cosmwasm/workspace-optimizer:0.16.0"`.
+- `--code-hash` -- The SHA hash of the bytecode. You can eithr get this as part of the optimizer output when building the bytecode, or by running `shasum -a 256 [path to your .wasm file]`.
 </tab-item>
 
 </tabs>
