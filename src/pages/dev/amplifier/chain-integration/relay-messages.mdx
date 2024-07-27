@@ -1,0 +1,111 @@
+# Relay messages with Amplifier
+
+import { Callout } from "/src/components/callout"
+
+Chains integrated with Amplifier can [pass GMP messages](https://docs.axelar.dev/dev/general-message-passing/overview) to one another through the following flow:
+
+1. When a user sends a message to the chain, a `callContract` event is emitted.
+1. The relayer picks up the event and calls [`VerifyMessages`](https://github.com/axelarnetwork/axelar-amplifier/blob/f76dc8a775b8bb529cf50147bab9259d1ec7f784/packages/gateway-api/src/msg.rs#L9) on the chain’s [Axelar (internal) gateway contract](https://github.com/axelarnetwork/axelar-amplifier/blob/main/doc/src/contracts/gateway.md).
+1. For chains that rely on verifier votes, the Axelar gateway calls [`VerifyMessages`](https://github.com/axelarnetwork/axelar-amplifier/blob/f76dc8a775b8bb529cf50147bab9259d1ec7f784/packages/gateway-api/src/msg.rs#L9) on the voting verifier, which prompts verifiers to begin voting.
+1. Once a threshold of successful votes have been cast for the message, an event is emitted.
+1. A relayer hears the event and calls [`RouteMessages`](https://github.com/axelarnetwork/axelar-amplifier/blob/f76dc8a775b8bb529cf50147bab9259d1ec7f784/packages/gateway-api/src/msg.rs#L14) on the chain’s Axelar gateway.
+1. The chain’s Axelar gateway passes the messages to the Amplifier router.
+1. The router passes the message to the destination chain’s Axelar gateway.
+1. The chain’s prover calls [`ConstructProof`](https://github.com/axelarnetwork/axelar-amplifier/blob/f76dc8a775b8bb529cf50147bab9259d1ec7f784/contracts/multisig-prover/src/msg.rs#L61), which starts the process of creating a signed batch that can be relayed back to the source chain. This method also passes the now-outbound message from the gateway to the prover.
+1. The prover starts a signing session with the multisig contract.
+1. Verifiers participate in the signing session.
+1. Once enough signatures have been submitted, the relayer gets the fully signed proof from the prover and relays the proof to the destination chain to approve the transactions.
+1. A relayer can now execute any approved transactions on the destination chain.
+
+## Verify messages
+
+<Callout>
+This is temporarily permissioned to the admin contract established by the network.
+</Callout>
+
+[`VerifyMessages`](https://github.com/axelarnetwork/axelar-amplifier/blob/f76dc8a775b8bb529cf50147bab9259d1ec7f784/packages/gateway-api/src/msg.rs#L9) is a command on the gateway that prompts verifiers to begin voting so that a message can be verified and then routed. It takes a vector of messages to be verified.
+
+```bash
+export RPC="http://devnet-verifiers.axelar.dev:26657"
+```
+
+```bash
+axelard tx wasm execute axelar1vnfn0e4vnn58ydpm05wqcc9zp8t5ztwd5rw5f895lykqaezmuccqujmwl2 \
+    '{
+       "verify_messages": [
+            {
+                "cc_id": {
+                    "chain":"avalanche",
+                    "id":"0x711f8485591d0350dc87f9cb1e807887b91c3fc197f15b95e692a5170146113f-0"
+                },
+                "destination_chain":"ethereum-sepolia",
+                "destination_address":"0x8f8dedd09E23E22E1555e9D2C25D7c7332291919",
+                "source_address":"0x0a3b8dc7706c47b6dd87d771df63875b1c5cd867",
+                "payload_hash":"220f68445e3cec114bff50cd6b251e3deabc7684b10280c2116b20bcc6795a96"
+            }
+       ]
+    }' \
+    --keyring-backend test  \
+    --from wallet  \
+    --gas auto --gas-adjustment 1.5 --gas-prices 0.007uverifiers  \
+    --chain-id=devnet-verifiers \
+    --node $RPC
+```
+
+## Route messages
+
+[`RouteMessages`](https://github.com/axelarnetwork/axelar-amplifier/blob/f76dc8a775b8bb529cf50147bab9259d1ec7f784/packages/gateway-api/src/msg.rs#L14) is a command on the gateway that routes successfully verified messages to the destination chain. It takes a vector of verified messages to be routed.
+
+```bash
+export RPC="http://devnet-verifiers.axelar.dev:26657"
+```
+
+```bash
+axelard tx wasm execute axelar1vnfn0e4vnn58ydpm05wqcc9zp8t5ztwd5rw5f895lykqaezmuccqujmwl2 \
+    '{
+       "route_messages": [
+            {
+                "cc_id": {
+                    "chain":"avalanche",
+                    "id":"7C7C74495FFD6CCC6B4B5E7069CF2495485F59E9CA5E8222DA486CE08DADC7E8-0"
+                },
+                "destination_chain":"ethereum-sepolia",
+                "destination_address":"0x8f8dedd09E23E22E1555e9D2C25D7c7332291919",
+                "source_address":"0x0a3b8dc7706c47b6dd87d771df63875b1c5cd867",
+                "payload_hash":"220f68445e3cec114bff50cd6b251e3deabc7684b10280c2116b20bcc6795a96"
+            }
+       ]
+    }' \
+    --keyring-backend test  \
+    --from wallet  \
+    --gas auto --gas-adjustment 1.5 --gas-prices 0.007uverifiers  \
+    --chain-id=devnet-verifiers \
+    --node $RPC
+```
+
+## Construct a proof
+
+[`ConstructProof`](https://github.com/axelarnetwork/axelar-amplifier/blob/f76dc8a775b8bb529cf50147bab9259d1ec7f784/contracts/multisig-prover/src/msg.rs#L61) takes a vector of CrossChainIDs and builds a proof that includes the messages to be routed so that the message can be relayed to the destination gateway. It also passes the message from the gateway to the prover.
+
+```bash
+export RPC="http://devnet-amplifier.axelar.dev:26657"
+```
+
+```bash
+axelard tx wasm execute axelar1g6520uhs8u37el40wqngf60z06mjgk6z7nezytd2mxrmh7yesnmsyc0zjw \
+    '{
+       "construct_proof": [
+            {
+                "cc_id": {
+                    "chain":"avalanche",
+                    "id":"7C7C74495FFD6CCC6B4B5E7069CF2495485F59E9CA5E8222DA486CE08DADC7E8-0"
+                }
+            }
+       ]
+    }' \
+    --keyring-backend test  \
+    --from wallet  \
+    --gas auto --gas-adjustment 1.5 --gas-prices 0.007uamplifier  \
+    --chain-id=devnet-amplifier \
+    --node $RPC
+```
