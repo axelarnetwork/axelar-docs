@@ -44,12 +44,14 @@ If you are integrating an EVM chain, you can submit a proposal to instantiate th
 
 ```bash
 export CODE_ID=500
+export CHAIN_NAME="[chain name]"
 export NETWORK_GOV_ADDRESS="axelar10d07y265gmmuvt4z0w9aw880jnsr700j7v9daj"
 export RPC="http://devnet-amplifier.axelar.dev:26657"
 ```
 
 ```bash
 axelard tx gov submit-proposal instantiate-contract $CODE_ID \
+
     '{
         "governance_address": "axelar10d07y265gmmuvt4z0w9aw880jnsr700j7v9daj",
         "service_registry_address": "axelar1c9fkszt5lq34vvvlat3fxj6yv7ejtqapz04e97vtc9m5z9cwnamq8zjlhz",
@@ -135,6 +137,7 @@ If you are integrating an EVM chain, you can submit a proposal to instantiate th
 
 ```bash
 export CODE_ID=493
+export CHAIN_NAME="[chain name]"
 export NETWORK_GOV_ADDRESS="axelar10d07y265gmmuvt4z0w9aw880jnsr700j7v9daj"
 export RPC="http://devnet-amplifier.axelar.dev:26657"
 ```
@@ -145,10 +148,10 @@ axelard tx gov submit-proposal instantiate-contract $CODE_ID \
         "verifier_address": "axelar1e6jnuljng6aljk0tjct6f0hl9tye6l0n9p067pwx2374h82dmr0s9qcqy9",
         "router_address": "axelar14jjdxqhuxk803e9pq64w4fgf385y86xxhkpzswe9crmu6vxycezst0zq8y"
     }' \
-    --title="Instantiate gateway contract for [chain name]" \
-    --description="Instantiate gateway contract for [chain name]" \
+    --title="Instantiate gateway contract for "'"$CHAIN_NAME"'" \
+    --description="Instantiate gateway contract for "'"$CHAIN_NAME"'" \
     --run-as $NETWORK_GOV_ADDRESS \
-    --label "[chain name]" \
+    --label "'"$CHAIN_NAME"'" \
     --deposit=2000000000uamplifier \
     --keyring-backend test \
     --from wallet \
@@ -233,10 +236,10 @@ axelard tx gov submit-proposal instantiate-contract $CODE_ID \
         "key_type": "ecdsa",
         "domain_separator": "6973c72935604464b28827141b0a463af8e3487616de69c5aa0c785392c9fb9f" # Hash of chain name, admin address, and code ID. Value must be a String in hex format without `0x`.
     }' \
-    --title="Instantiate prover contract for [chain name]" \
-    --description="Instantiate prover contract for [chain name]" \
+    --title="Instantiate prover contract for "'"$CHAIN_NAME"'" \
+    --description="Instantiate prover contract for "'"$CHAIN_NAME"'" \
     --run-as $NETWORK_GOV_ADDRESS \
-    --label "[chain name]" \
+    --label "'"$CHAIN_NAME"'" \
     --deposit=2000000000uamplifier \
     --keyring-backend test \
     --from wallet \
@@ -304,6 +307,7 @@ The `--code-source-url`, `--builder`, and `--code-hash` flags are currently mand
 
 ```bash
 export ROUTER_CONTRACT_ADDRESS="axelar14jjdxqhuxk803e9pq64w4fgf385y86xxhkpzswe9crmu6vxycezst0zq8y"
+export CHAIN_NAME="[chain name]"
 export ROUTER_GOV_ADDRESS="axelar1zlr7e5qf3sz7yf890rkh9tcnu87234k6k7ytd9"
 export RPC="http://devnet-amplifier.axelar.dev:26657"
 ```
@@ -312,13 +316,13 @@ export RPC="http://devnet-amplifier.axelar.dev:26657"
 axelard tx gov submit-proposal execute-contract $ROUTER_CONTRACT_ADDRESS \
     '{
         "register_chain": {
-            "chain":"[Chain name]",
+            "chain":"'"$CHAIN_NAME"'",
             "gateway_address": "[chain gateway address]",
             "msg_id_format": "hex_tx_hash_and_event_index"
         }
     }' \
-    --title="Register [chain name] chain with the Amplifier router" \
-    --description="Register [chain name] chain with the Amplifier router" \
+    --title="Register "'"$CHAIN_NAME"'" chain with the Amplifier router" \
+    --description="Register "'"$CHAIN_NAME"'" chain with the Amplifier router" \
     --run-as $ROUTER_GOV_ADDRESS \
     --deposit=2000000000uamplifier \
     --keyring-backend test \
@@ -334,6 +338,8 @@ Once the feedback period has passed, submit the proposal on the command line:
 
 ```bash
 export MULTISIG_CONTRACT_ADDRESS="axelar1ufs3tlq4umljk0qfe8k5ya0x6hpavn897u2cnf9k0en9jr7qarqqa9263g"
+export CHAIN_PROVER_ADDRESS="[chain prover address]"
+export CHAIN_NAME="[chain name]"
 export MULTISIG_GOV_ADDRESS="axelar1zlr7e5qf3sz7yf890rkh9tcnu87234k6k7ytd9"
 export RPC="http://devnet-amplifier.axelar.dev:26657"
 ```
@@ -343,11 +349,11 @@ axelard tx gov submit-proposal execute-contract $MULTISIG_CONTRACT_ADDRESS \
     '{
         "authorize_caller":
             {
-            "contract_address":"[chain prover address]"
+            "contract_address":"'"$CHAIN_PROVER_ADDRESS"'"
             }
     }' \
-    --title="Authorize [chain name] prover with the Amplifier multisig contract" \
-    --description="Authorize [chain name] prover with the Amplifier multisig contract" \
+    --title="Authorize "'"$CHAIN_NAME"'" prover with the Amplifier multisig contract" \
+    --description="Authorize "'"$CHAIN_NAME"'" prover with the Amplifier multisig contract" \
     --run-as $MULTISIG_GOV_ADDRESS \
     --deposit=2000000000uamplifier \
     --keyring-backend test \
