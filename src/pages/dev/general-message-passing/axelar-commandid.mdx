@@ -1,0 +1,128 @@
+# The Axelar `CommandID`
+
+Ensuring the authenticity and integrity of messages is crucial in cross-chain communication. The `CommandID` in the [Axelar network](https://www.axelar.network/) plays a significant role in this process, acting as a unique identifier for interchain messages. 
+
+This guide explains what an Axelar `CommandID` is, how it is generated, and its importance in the  [Solidity Axelar GMP SDK](https://github.com/axelarnetwork/axelar-gmp-sdk-solidity).
+
+## What is the Axelar `CommandID`?
+
+Axelar `CommandID` is a unique identifier assigned to each message or command that facilitates interchain communication. It ensures that each message can be tracked, verified, and validated across different blockchain networks, preventing issues such as replay attacks or message tampering.
+
+## How is an Axelar `CommandID` generated?
+
+Generating an Axelar `CommandID` involves combining specific attributes of the message, such as the `sourceChain`, `messageId`, and other relevant data, and then hashing this combination to produce a unique identifier. This process ensures that each `CommandID` is unique for the message it represents.
+
+### Solidity Implementation
+
+In the provided Solidity contract, the `messageToCommandId()` function generates the `CommandID`. 
+
+Here's how it works:
+
+```solidity
+/**
+ * @notice Compute the commandId for a message.
+ * @param sourceChain The name of the source chain as registered on Axelar.
+ * @param messageId The unique message id for the message.
+ * @return The commandId for the message.
+ */
+function messageToCommandId(string calldata sourceChain, string calldata messageId) public pure returns (bytes32) {
+    // Axelar doesn't allow `sourceChain` to contain '_', hence this encoding is unambiguous
+    return keccak256(bytes(string.concat(sourceChain, '_', messageId)));
+}
+```
+
+This function takes two parameters: `sourceChain` and `messageId`. It concatenates these parameters with an underscore (`_`) separator, ensuring the combination is unique and unambiguous. The concatenated string is then hashed using `keccak256` to produce the `CommandID`. You can view the source code [here](https://github.com/axelarnetwork/axelar-gmp-sdk-solidity/blob/1db893b373ec9fcd7cf838ebea4b3a7a24585791/contracts/gateway/BaseAmplifierGateway.sol#L103C14-L103C32).
+
+### Go implementation
+
+The `CommandID` is generated similarly by hashing relevant data in the Go implementation. 
+
+Here's an example function for generating a `CommandID`:
+
+```go
+// NewCommandID generates a new CommandID using the provided data and chain ID
+func NewCommandID(data []byte, chainID sdk.Int) []byte {
+    return crypto.Keccak256(data, chainID.Bytes())
+}
+```
+
+This function combines the provided data and chain ID, then hashes the combination using `Keccak256()` to produce the `CommandID`. The source code for this can be found [here](https://github.com/axelarnetwork/axelar-core/blob/main/x/evm/types/command.go).
+
+### Example commands
+
+Here are a few examples of command creation in the provided Go code:
+
+- Burn Token:
+
+```go
+// NewBurnTokenCommand creates a command to burn tokens with the given burner's information
+func NewBurnTokenCommand(chainID sdk.Int, keyID multisig.KeyID, height int64, burnerInfo BurnerInfo, isTokenExternal bool) Command {
+    heightBytes := make([]byte, 8)
+    binary.LittleEndian.PutUint64(heightBytes, uint64(height))
+
+    burnTokenMaxGasCost := burnInternalTokenMaxGasCost
+    if isTokenExternal {
+        burnTokenMaxGasCost = burnExternalTokenMaxGasCost
+    }
+
+    return Command{
+        ID:         NewCommandID(append(burnerInfo.Salt.Bytes(), heightBytes...), chainID),
+        Type:       COMMAND_TYPE_BURN_TOKEN,
+        Params:     createBurnTokenParams(burnerInfo.Symbol, common.Hash(burnerInfo.Salt)),
+        KeyID:      keyID,
+        MaxGasCost: uint32(burnTokenMaxGasCost),
+    }
+}
+```
+
+- Deploy Token:
+
+```go
+// NewDeployTokenCommand creates a command to deploy a token
+func NewDeployTokenCommand(chainID sdk.Int, keyID multisig.KeyID, asset string, tokenDetails TokenDetails, address Address, dailyMintLimit sdk.Uint) Command {
+    return Command{
+        ID:         NewCommandID([]byte(fmt.Sprintf("%s_%s", asset, tokenDetails.Symbol)), chainID),
+        Type:       COMMAND_TYPE_DEPLOY_TOKEN,
+        Params:     createDeployTokenParams(tokenDetails.TokenName, tokenDetails.Symbol, tokenDetails.Decimals, tokenDetails.Capacity, address, dailyMintLimit),
+        KeyID:      keyID,
+        MaxGasCost: deployTokenMaxGasCost,
+    }
+}
+```
+
+## Importance of the  `CommandID` for message verification
+
+The `CommandID` is key for verifying the authenticity and integrity of interchain messages. When a message is received on the destination chain, the `CommandID` allows the system to:
+
+1. **Verify Message Approval:**
+The `isMessageApproved()` function checks if a message has been approved by comparing the stored message hash with the calculated hash using the `CommandID`.
+    
+    ```solidity
+    function isMessageApproved(
+        string calldata sourceChain,
+        string calldata messageId,
+        string calldata sourceAddress,
+        address contractAddress,
+        bytes32 payloadHash
+    ) external view override returns (bool) {
+        bytes32 commandId = messageToCommandId(sourceChain, messageId);
+        return _isMessageApproved(commandId, sourceChain, sourceAddress, contractAddress, payloadHash);
+    }
+    ```
+    
+2. **Prevent Replay Attacks:**
+The `validateMessage()` function ensures that a message can only be executed once by marking it as executed after validation.
+    
+    ```solidity
+    function validateMessage(
+        string calldata sourceChain,
+        string calldata messageId,
+        string calldata sourceAddress,
+        bytes32 payloadHash
+    ) external override returns (bool valid) {
+        bytes32 commandId = messageToCommandId(sourceChain, messageId);
+        valid = _validateMessage(commandId, sourceChain, sourceAddress, payloadHash);
+    }
+    ```
+
+Refer to more detailed information on how Axelar verifies GMP transactions [here](https://docs.axelar.dev/dev/general-message-passing/verify-gmp-tx).
