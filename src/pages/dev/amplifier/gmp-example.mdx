@@ -1,13 +1,13 @@
 # General Message Passing with Amplifier Example
 
-This example shows the execution of a GMP call from the Ethereum Sepolia to the Avalanche Fuji testnets.
+This example shows the execution of a GMP call from the Avalanche Fuji to the Ethereum Sepolia testnets.
 
 ## Prerequisites
 
-You will need:
+You should:
 
-- An [`axelard` node](/dev/amplifier/chain-integration) that is [connected to the devnet](/validator/amplifier/verifier-onboarding)
-- A [Solidity contract](https://github.com/cjcobb23/axelar-examples/blob/main/examples/evm/call-contract/CallContract.sol) deployed to the Ethereum Sepolia and Avalanche Fuji testnets
+- Know how to deploy and interact with a CosmWasm contract. Refer to the [Osmosis CosmWasm testnet deployment tutorial](https://docs.osmosis.zone/cosmwasm/testnet/cosmwasm-deployment/) if you’d like a refresher — just replace `osmosisid` with `axelard` and use the `amd64` version if building on Linux and `arm64` version of the [contract optimizer](https://github.com/CosmWasm/optimizer) if you are working on a [Mac with Apple silicon](https://support.apple.com/en-us/116943).
+- Have gone through the [Amplifier chain integration tutorial](https://docs.axelar.dev/dev/amplifier/chain-integration/integrate-a-chain).
 
 ## Helpful references
 
@@ -22,72 +22,85 @@ Use `callContract()` to execute the contract call on Ethereum Sepolia, then loca
 
 ### Verify messages at the source chain gateway
 
-Once the transaction is finalized on the source chain, call `verify_messages()` at the source chain’s `AxelarGateway`:
+Once the transaction is finalized on the source chain, call `verify_messages` at the source chain’s Axelar gateway:
 
 ```bash
-axelard tx wasm execute axelar18csycs4vm6varkp00apuqlsm7v4twg8jsljk8wfdd7cghr7g4rtsltrlkp \
-  '{
-      "verify_messages":
-        [
-          {
-            "cc_id":
-              {
-                "chain":"ethereum-sepolia",
-                "id":"0xeafbc1283699c49ba4f79ec43d8749fd82ca4ee14c236787dd25a2f7d4932daa-60"
-              },
-            "destination_chain":"avalanche",
-            "destination_address":"0xCa85f85C72df5f8428a440887CA7c449D94e0D0c",
-            "source_address":"0x6F4f1eb0546872c4BE7bCe4EaD35f24119A5DA77",
-            "payload_hash":"64b8427717b2ce8573a0c37e03e30ec683c2fe57dcee4d426d22cf43c7692675"
-          }
-        ]
-  }' \
-  --from validator \
-  --gas auto --gas-adjustment 1.5
+export RPC="http://devnet-verifiers.axelar.dev:26657"
 ```
 
-Wait for verification, which usually takes 1-3 blocks. Then call `route_messages()`:
-
 ```bash
-axelard tx wasm execute axelar18csycs4vm6varkp00apuqlsm7v4twg8jsljk8wfdd7cghr7g4rtsltrlkp \
-  '{
-    "route_messages":
-      [
-          {
-            "cc_id":
-              {
-                "chain":"ethereum-sepolia",
-                "id":"0xeafbc1283699c49ba4f79ec43d8749fd82ca4ee14c236787dd25a2f7d4932daa-60"
-              },
-            "destination_chain":"avalanche",
-            "destination_address":"0xCa85f85C72df5f8428a440887CA7c449D94e0D0c",
-            "source_address":"0x6F4f1eb0546872c4BE7bCe4EaD35f24119A5DA77",
-            "payload_hash":"64b8427717b2ce8573a0c37e03e30ec683c2fe57dcee4d426d22cf43c7692675"
-          }
-      ]
-  }' \
-  --from validator \
-  --gas auto --gas-adjustment 1.5
+axelard tx wasm execute axelar1vnfn0e4vnn58ydpm05wqcc9zp8t5ztwd5rw5f895lykqaezmuccqujmwl2 \
+    '{
+       "verify_messages": [
+            {
+                "cc_id": {
+                    "chain":"avalanche",
+                    "id":"0x711f8485591d0350dc87f9cb1e807887b91c3fc197f15b95e692a5170146113f-0"
+                },
+                "destination_chain":"ethereum-sepolia",
+                "destination_address":"0x8f8dedd09E23E22E1555e9D2C25D7c7332291919",
+                "source_address":"0x0a3b8dc7706c47b6dd87d771df63875b1c5cd867",
+                "payload_hash":"220f68445e3cec114bff50cd6b251e3deabc7684b10280c2116b20bcc6795a96"
+            }
+       ]
+    }' \
+    --keyring-backend test  \
+    --from wallet  \
+    --gas auto --gas-adjustment 1.5 --gas-prices 0.007uverifiers  \
+    --chain-id=devnet-verifiers \
+    --node $RPC
 ```
 
-Call `construct_proof()` at the multisig-prover corresponding to the destination chain:
+Wait for verification, which usually takes 1-3 blocks. Then call `route_messages`:
 
 ```bash
-axelard tx wasm execute axelar1qum2tr7hh4y7ruzew68c64myjec0dq2s2njf6waja5t0w879lutqv062tl \
+export RPC="http://devnet-verifiers.axelar.dev:26657"
+```
+
+```bash
+axelard tx wasm execute axelar1vnfn0e4vnn58ydpm05wqcc9zp8t5ztwd5rw5f895lykqaezmuccqujmwl2 \
+    '{
+       "route_messages": [
+            {
+                "cc_id": {
+                    "chain":"avalanche",
+                    "id":"7C7C74495FFD6CCC6B4B5E7069CF2495485F59E9CA5E8222DA486CE08DADC7E8-0"
+                },
+                "destination_chain":"ethereum-sepolia",
+                "destination_address":"0x8f8dedd09E23E22E1555e9D2C25D7c7332291919",
+                "source_address":"0x0a3b8dc7706c47b6dd87d771df63875b1c5cd867",
+                "payload_hash":"220f68445e3cec114bff50cd6b251e3deabc7684b10280c2116b20bcc6795a96"
+            }
+       ]
+    }' \
+    --keyring-backend test  \
+    --from wallet  \
+    --gas auto --gas-adjustment 1.5 --gas-prices 0.007uverifiers  \
+    --chain-id=devnet-verifiers \
+    --node $RPC
+```
+
+Call `construct_proof` on the multisig prover corresponding to the destination chain:
+
+```bash
+axelard tx wasm execute axelar1g6520uhs8u37el40wqngf60z06mjgk6z7nezytd2mxrmh7yesnmsyc0zjw \
   '{
     "construct_proof":
       {
         "message_ids":
           [
             {
-              "chain":"ethereum-sepolia",
-              "id":"0xeafbc1283699c49ba4f79ec43d8749fd82a4ee14c236787dd25a2f7d4932daa-60"
+              "chain":"avalanche",
+              "id":"7C7C74495FFD6CCC6B4B5E7069CF2495485F59E9CA5E8222DA486CE08DADC7E8-0"
             }
           ]
       }
   }' \
-  --from validator \
-  --gas auto --gas-adjustment 1.5
+  --keyring-backend test  \
+  --from wallet  \
+  --gas auto --gas-adjustment 1.5 --gas-prices 0.007uamplifier  \
+  --chain-id=devnet-amplifier \
+  --node $RPC
 ```
 
 Note the `multisig_session_id` in the output:
@@ -98,7 +111,7 @@ Note the `multisig_session_id` in the output:
 
 ### Retrieve the signed batch of messages
 
-Wait for signing to complete, which usually takes 1-3 blocks. Then call `get_proof()`:
+Wait for signing to complete, which usually takes 1-3 blocks. Then call `get_proof`:
 
 ```bash
 axelard q wasm contract-state smart axelar1qum2tr7hh4y7ruzew68c64myjec0dq2s2njf6waja5t0w879lutqv062tl \
