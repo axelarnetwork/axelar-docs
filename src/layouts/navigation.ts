@@ -88,8 +88,12 @@ export const getNavigation = (section) => {
               href: "/dev/general-message-passing/monitoring",
             },
             {
+              title: "Axelar CommandID",
+              href: "/dev/general-message-passing/axelar-commandid",
+            },
+            {
               title: "Axelar Executable",
-              href: "/dev/general-message-passing/executable"
+              href: "/dev/general-message-passing/executable",
             },
             {
               title: "Verify GMP Transaction",
@@ -425,6 +429,10 @@ export const getNavigation = (section) => {
               href: "/validator/amplifier/verifier-onboarding",
             },
             {
+              title: "Governance Proposals",
+              href: "/validator/amplifier/governance-proposals",
+            },
+            {
               title: "Verifier Rewards",
               href: "/validator/amplifier/verifier-rewards",
             },
@@ -454,7 +462,10 @@ export const getNavigation = (section) => {
       {
         title: "Static configs",
         children: [
-          { title: "Static configs", href: "/resources/static-configs/static-configs" }
+          {
+            title: "Static configs",
+            href: "/resources/static-configs/static-configs",
+          },
         ],
       },
       {
