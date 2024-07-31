@@ -429,6 +429,10 @@ export const getNavigation = (section) => {
               href: "/validator/amplifier/verifier-onboarding",
             },
             {
+              title: "Governance Proposals",
+              href: "/validator/amplifier/governance-proposals",
+            },
+            {
               title: "Verifier Rewards",
               href: "/validator/amplifier/verifier-rewards",
             },
