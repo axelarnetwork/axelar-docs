@@ -97,6 +97,8 @@ Leave this process running in the background, and perform additional commands in
 <tab-item title="Docker">
 From [Docker](https://hub.docker.com/r/axelarnet/axelar-ampd), pull and run the `0.6.0` version of `ampd`:
 
+
+
 ```bash
 docker pull axelarnet/axelar-ampd:v0.6.0
 docker run axelarnet/axelar-ampd:v0.6.0 verifier-address
@@ -105,6 +107,9 @@ docker run axelarnet/axelar-ampd:v0.6.0 verifier-address
 </tab-item>
 
 </tabs>
+<Callout>
+The address for your verifier node will also be the address that rewards are sent to (this will change in the future). You should make sure to claim and move any available rewards regularly to mitigate any associated risks.
+</Callout>
 
 ## Add `ampd` to your `PATH`
 
