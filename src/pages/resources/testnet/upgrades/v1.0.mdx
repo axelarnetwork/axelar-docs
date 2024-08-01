@@ -1,4 +1,4 @@
-# Testnet upgrade: v1.0.1
+# Testnet upgrade: v1.0.0
 
 import { Callout } from '/src/components/callout'
 
@@ -31,7 +31,7 @@ You will need to compile `axelard` from source, or upgrade to Ubuntu 22.04.
   `wasmvm` lib will be auto-downloaded to `$AXELARD_HOME/lib` but you'll need to add it to `LD_LIBRARY_PATH` before running the script.
 </Callout>
 
-1. If you're a validator or have delegated to one, please vote for the upgrade proposal via
+1. If you're a validator or have delegated to one, you can vote for the upgrade proposal, while it's active, via
 
 ```bash
 axelard tx gov vote 99 yes --from validator
@@ -64,7 +64,7 @@ cp -r ~/.axelar_testnet/.core/data ~/.axelar-lisbon-3-upgrade-0.35/.core/data
 5. If you're a validator also restart `vald` with `v1.0.1` and `tofnd` with `v0.10.1`.
 
 <Callout type="warning" emoji="⚠️">
-  [`tofnd` 1.0 has been released](https://github.com/axelarnetwork/tofnd/releases), but we recommend adopting `v1.0.1` of `tofnd` as part of a secondary migration.
+  [`tofnd` 1.0.1 has been released](https://github.com/axelarnetwork/tofnd/releases), but we recommend adopting `v1.0.1` of `tofnd` over the coming days, independently from the upgrade.
 </Callout>
 
 Example using join scripts in [axelarate-community git repo](https://github.com/axelarnetwork/axelarate-community):
