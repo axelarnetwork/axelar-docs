@@ -499,150 +499,144 @@ export const getNavigation = (section) => {
         title: "Upgrades",
         children: [
           {
-            title: "Mainnet",
+            title: "Mainnet axelard",
             children: [
               {
-                title: "Axelard",
-                children: [
-                  {
-                    title: "v0.35",
-                    href: "/resources/mainnet/upgrades/v35",
-                  },
-                  {
-                    title: "v0.34",
-                    href: "/resources/mainnet/upgrades/v34",
-                  },
-                  {
-                    title: "v0.33",
-                    href: "/resources/mainnet/upgrades/v33",
-                  },
-                  {
-                    title: "v0.31",
-                    href: "/resources/mainnet/upgrades/v31",
-                  },
-                  {
-                    title: "v0.29",
-                    href: "/resources/mainnet/upgrades/v29",
-                  },
-                  {
-                    title: "v0.28",
-                    href: "/resources/mainnet/upgrades/v28",
-                  },
-                  {
-                    title: "v0.26",
-                    href: "/resources/mainnet/upgrades/v26",
-                  },
-                  {
-                    title: "v0.24",
-                    href: "/resources/mainnet/upgrades/v24",
-                  },
-                  {
-                    title: "v0.21",
-                    href: "/resources/mainnet/upgrades/v21",
-                  },
-                  {
-                    title: "v0.20",
-                    href: "/resources/mainnet/upgrades/v20",
-                  },
-                  {
-                    title: "v0.19",
-                    href: "/resources/mainnet/upgrades/v19",
-                  },
-                  {
-                    title: "v0.18",
-                    href: "/resources/mainnet/upgrades/v18",
-                  },
-                  {
-                    title: "v0.17",
-                    href: "/resources/mainnet/upgrades/v17",
-                  },
-                  {
-                    title: "v0.16",
-                    href: "/resources/mainnet/upgrades/v16",
-                  },
-                ],
+                title: "v0.35",
+                href: "/resources/mainnet/upgrades/v35",
+              },
+              {
+                title: "v0.34",
+                href: "/resources/mainnet/upgrades/v34",
+              },
+              {
+                title: "v0.33",
+                href: "/resources/mainnet/upgrades/v33",
+              },
+              {
+                title: "v0.31",
+                href: "/resources/mainnet/upgrades/v31",
+              },
+              {
+                title: "v0.29",
+                href: "/resources/mainnet/upgrades/v29",
+              },
+              {
+                title: "v0.28",
+                href: "/resources/mainnet/upgrades/v28",
+              },
+              {
+                title: "v0.26",
+                href: "/resources/mainnet/upgrades/v26",
+              },
+              {
+                title: "v0.24",
+                href: "/resources/mainnet/upgrades/v24",
+              },
+              {
+                title: "v0.21",
+                href: "/resources/mainnet/upgrades/v21",
+              },
+              {
+                title: "v0.20",
+                href: "/resources/mainnet/upgrades/v20",
+              },
+              {
+                title: "v0.19",
+                href: "/resources/mainnet/upgrades/v19",
+              },
+              {
+                title: "v0.18",
+                href: "/resources/mainnet/upgrades/v18",
+              },
+              {
+                title: "v0.17",
+                href: "/resources/mainnet/upgrades/v17",
+              },
+              {
+                title: "v0.16",
+                href: "/resources/mainnet/upgrades/v16",
               },
             ],
           },
           {
-            title: "Testnet",
+            title: "Testnet axelard",
             children: [
               {
-                title: "Axelard",
-                children: [
-                  {
-                    title: "v0.35",
-                    href: "/resources/testnet/upgrades/v35",
-                  },
-                  {
-                    title: "v0.34",
-                    href: "/resources/testnet/upgrades/v34",
-                  },
-                  {
-                    title: "v0.33",
-                    href: "/resources/testnet/upgrades/v33",
-                  },
-                  {
-                    title: "v0.32",
-                    href: "/resources/testnet/upgrades/v32",
-                  },
-                  {
-                    title: "v0.31",
-                    href: "/resources/testnet/upgrades/v31",
-                  },
-                  {
-                    title: "v0.29",
-                    href: "/resources/testnet/upgrades/v29",
-                  },
-                  {
-                    title: "v0.28",
-                    href: "/resources/testnet/upgrades/v28",
-                  },
-                  {
-                    title: "v0.27",
-                    href: "/resources/testnet/upgrades/v27",
-                  },
-                  {
-                    title: "v0.26",
-                    href: "/resources/testnet/upgrades/v26",
-                  },
-                  {
-                    title: "v0.25",
-                    href: "/resources/testnet/upgrades/v25",
-                  },
-                  {
-                    title: "v0.24",
-                    href: "/resources/testnet/upgrades/v24",
-                  },
-                  {
-                    title: "v0.23",
-                    href: "/resources/testnet/upgrades/v23",
-                  },
-                  {
-                    title: "v0.22",
-                    href: "/resources/testnet/upgrades/v22",
-                  },
-                  {
-                    title: "v0.21",
-                    href: "/resources/testnet/upgrades/v21",
-                  },
-                  {
-                    title: "v0.20",
-                    href: "/resources/testnet/upgrades/v20",
-                  },
-                  {
-                    title: "v0.19",
-                    href: "/resources/testnet/upgrades/v19",
-                  },
-                  {
-                    title: "v0.18",
-                    href: "/resources/testnet/upgrades/v18",
-                  },
-                  {
-                    title: "v0.17",
-                    href: "/resources/testnet/upgrades/v17",
-                  },
-                ],
+                title: "v1.0",
+                href: "/resources/testnet/upgrades/v1.0",
+              },
+              {
+                title: "v0.35",
+                href: "/resources/testnet/upgrades/v35",
+              },
+              {
+                title: "v0.34",
+                href: "/resources/testnet/upgrades/v34",
+              },
+              {
+                title: "v0.33",
+                href: "/resources/testnet/upgrades/v33",
+              },
+              {
+                title: "v0.32",
+                href: "/resources/testnet/upgrades/v32",
+              },
+              {
+                title: "v0.31",
+                href: "/resources/testnet/upgrades/v31",
+              },
+              {
+                title: "v0.29",
+                href: "/resources/testnet/upgrades/v29",
+              },
+              {
+                title: "v0.28",
+                href: "/resources/testnet/upgrades/v28",
+              },
+              {
+                title: "v0.27",
+                href: "/resources/testnet/upgrades/v27",
+              },
+              {
+                title: "v0.26",
+                href: "/resources/testnet/upgrades/v26",
+              },
+              {
+                title: "v0.25",
+                href: "/resources/testnet/upgrades/v25",
+              },
+              {
+                title: "v0.24",
+                href: "/resources/testnet/upgrades/v24",
+              },
+              {
+                title: "v0.23",
+                href: "/resources/testnet/upgrades/v23",
+              },
+              {
+                title: "v0.22",
+                href: "/resources/testnet/upgrades/v22",
+              },
+              {
+                title: "v0.21",
+                href: "/resources/testnet/upgrades/v21",
+              },
+              {
+                title: "v0.20",
+                href: "/resources/testnet/upgrades/v20",
+              },
+              {
+                title: "v0.19",
+                href: "/resources/testnet/upgrades/v19",
+              },
+              {
+                title: "v0.18",
+                href: "/resources/testnet/upgrades/v18",
+              },
+              {
+                title: "v0.17",
+                href: "/resources/testnet/upgrades/v17",
               },
             ],
           },
