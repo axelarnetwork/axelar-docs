@@ -2,7 +2,7 @@
 
 import { Callout } from '/src/components/callout'
 
-## About the v1.0.1 upgrade
+## About the v1.0.0 upgrade
 
 This release finalizes initial support for [Amplifier](/dev/amplifier/introduction).
 
@@ -16,7 +16,7 @@ Changes since 0.35.x:
 
 See all the changes in the [`axelar-core` release notes](https://github.com/axelarnetwork/axelar-core/releases).
 
-Upgrade height `14625900` [countdown](https://www.mintscan.io/axelar-testnet/block/14625900)
+Upgrade height `14625900` at approximately **11AM Eastern Time (15:00 UTC) on August 1st, 2024** ([countdown](https://www.mintscan.io/axelar-testnet/block/14625900)) 
 
 <Callout type="warning" emoji="⚠️">
 As of v1.0.0, the `axelard` [binary releases](https://github.com/axelarnetwork/axelar-core/releases) require `GLIBC_2.34`, which is not present on Ubuntu 20.04.
@@ -60,8 +60,8 @@ cp -r ~/.axelar_testnet/.core/data ~/.axelar-lisbon-3-upgrade-0.35/.core/data
   excluding them from any data backups.
 </Callout>
 
-4. Restart your `axelard` node with the new `v1.0.1` build.
-5. If you're a validator also restart `vald` with `v1.0.1` and `tofnd` with `v0.10.1`.
+4. Restart your `axelard` node with the new `v1.0.0` build.
+5. If you're a validator also restart `vald` with `v1.0.0` and `tofnd` with `v0.10.1`.
 
 <Callout type="warning" emoji="⚠️">
   [`tofnd` 1.0.1 has been released](https://github.com/axelarnetwork/tofnd/releases), but we recommend adopting `v1.0.1` of `tofnd` over the coming days, independently from the upgrade.
@@ -73,7 +73,7 @@ Example using join scripts in [axelarate-community git repo](https://github.com/
 # in axelarate-community repo (https://github.com/axelarnetwork/axelarate-community)
 git checkout main
 git pull
-KEYRING_PASSWORD="pw-1" ./scripts/node.sh -n testnet -a v1.0.1
+KEYRING_PASSWORD="pw-1" ./scripts/node.sh -n testnet -a v1.0.0
 # For validators, restart vald/tofnd
-KEYRING_PASSWORD="pw-1" TOFND_PASSWORD="pw-2" ./scripts/validator-tools-host.sh -n testnet -a v1.0.1 -q v0.10.1
+KEYRING_PASSWORD="pw-1" TOFND_PASSWORD="pw-2" ./scripts/validator-tools-host.sh -n testnet -a v1.0.0 -q v0.10.1
 ```
