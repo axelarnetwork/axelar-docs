@@ -193,7 +193,10 @@ Create an `ampd` configuration file at `~/.ampd/config.toml`.
 
 This configuration file tells `ampd` how to connect to your local `tofnd`, how to talk to the devnet and the Amplifier smart contracts, and includes a default configuration for verifying transactions on the Avalanche testnet.
 
-The following is an example `config.toml` file for the verifier devnet:
+The following are an example `config.toml` files:
+
+<tabs>
+<tab-item title="devnet-verifiers">
 
     ```toml
     tm_jsonrpc="http://devnet-verifiers.axelar.dev:26657"
@@ -251,6 +254,110 @@ The following is an example `config.toml` file for the verifier devnet:
     type="EvmVerifierSetVerifier"
     chain_finalization="RPCFinalizedBlock"
     ```
+</tab-item>
+<tab-item title="devnet-amplifier">
+   ```toml
+   tm_jsonrpc="http://devnet-amplifier.axelar.dev:26657"
+   tm_grpc="tcp://devnet-amplifier.axelar.dev:9090"
+   event_buffer_cap=10000
+
+   [service_registry]
+   cosmwasm_contract="axelar1c9fkszt5lq34vvvlat3fxj6yv7ejtqapz04e97vtc9m5z9cwnamq8zjlhz"
+
+   [broadcast]
+   batch_gas_limit="20000000"
+   broadcast_interval="1s"
+   chain_id="devnet-amplifier"
+   gas_adjustment="2"
+   gas_price="0.00005uamplifier"
+   queue_cap="1000"
+   tx_fetch_interval="1000ms"
+   tx_fetch_max_retries="15"
+
+   [tofnd_config]
+   batch_gas_limit="10000000"
+   key_uid="axelar"
+   party_uid="ampd"
+   url="http://127.0.0.1:50051"
+
+   [[handlers]]
+   cosmwasm_contract="axelar15nczwuqh0zcu6syeqsc4td6dphql7n2p7cgkl9raz97z5s3zdjrsc8we9y"
+   type="MultisigSigner"
+
+   [[handlers]]
+   chain_name="avalanche"
+   chain_rpc_url="https://avalanche-fuji-c-chain-rpc.publicnode.com"
+   cosmwasm_contract="axelar1ty7mx0cllgz8xuvhn2j7e3qy8999ssgmjtktyqetl335em0g88lq6rjhl2"
+   type="EvmMsgVerifier"
+   chain_finalization="RPCFinalizedBlock"
+
+   [[handlers]]
+   chain_name="ethereum-sepolia"
+   chain_rpc_url="https://rpc.ankr.com/eth_sepolia"
+   cosmwasm_contract="axelar1e6jnuljng6aljk0tjct6f0hl9tye6l0n9p067pwx2374h82dmr0s9qcqy9"
+   type="EvmMsgVerifier"
+   chain_finalization="RPCFinalizedBlock"
+
+   [[handlers]]
+   chain_name="avalanche"
+   chain_rpc_url="https://avalanche-fuji-c-chain-rpc.publicnode.com"
+   cosmwasm_contract="axelar1ty7mx0cllgz8xuvhn2j7e3qy8999ssgmjtktyqetl335em0g88lq6rjhl2"
+   type="EvmVerifierSetVerifier"
+
+   [[handlers]]
+   chain_name="ethereum-sepolia"
+   chain_rpc_url="https://rpc.ankr.com/eth_sepolia"
+   cosmwasm_contract="axelar1e6jnuljng6aljk0tjct6f0hl9tye6l0n9p067pwx2374h82dmr0s9qcqy9"
+   type="EvmVerifierSetVerifier"
+   ```
+</tab-item>
+<tab-item title="testnet">
+   ```toml
+   # replace with your Axelar testnet node
+   tm_jsonrpc="http://127.0.0.1:26657"
+   tm_grpc="tcp://127.0.0.1:9090"
+   event_buffer_cap=100000
+
+   [service_registry]
+   cosmwasm_contract=[TBD]
+
+   [broadcast]
+   batch_gas_limit="20000000"
+   broadcast_interval="1s"
+   chain_id="axelar-testnet-lisbon-3"
+   gas_adjustment="2"
+   gas_price="0.007uaxl"
+   queue_cap="1000"
+   tx_fetch_interval="1000ms"
+   tx_fetch_max_retries="15"
+
+   [tofnd_config]
+   batch_gas_limit="10000000"
+   key_uid="axelar"
+   party_uid="ampd"
+   url="http://127.0.0.1:50051"
+
+   [[handlers]]
+   cosmwasm_contract="[TBD]"
+   type="MultisigSigner"
+
+   # For each supported chain
+   [[handlers]]
+   chain_name="[chain name]"
+   chain_rpc_url="[node rpc url]"
+   cosmwasm_contract="[voting verifier address]"
+   chain_finalization="[RPCFinalizedBlock or ConfirmationHeight]"
+   type="EvmMsgVerifier"
+
+   [[handlers]]
+   chain_name="[chain name]"
+   chain_rpc_url="[node rpc url]"
+   cosmwasm_contract="[voting verifier address]"
+   chain_finalization=["RPCFinalizedBlock" or "ConfirmationHeight"]
+   type="EvmVerifierSetVerifier"
+   ```
+</tab-item>
+</tabs>
 
 See the [`ampd` README](https://github.com/axelarnetwork/axelar-amplifier/blob/main/ampd/README.md) on GitHub for instructions on formatting a `config` file for your own projects.
 
@@ -337,3 +444,4 @@ ampd --help
 ## Feedback
 
 If you have any feedback or would like to report a bug, please file an issue in the [Axelar Developer Support repository](https://github.com/axelarnetwork/support/issues).
+
