@@ -1,0 +1,53 @@
+# Verifier Rotations
+
+One type of message the network can sign and prove to a destination chain is a message containing an update to the verifier set. To make an update to the verifier set for a chain, the previous verifier set must sign a message communicating the changes.
+
+## Check if a verifier is in an active set
+
+[`query_get_verifier_set()`](https://github.com/axelarnetwork/axelar-amplifier/blob/3a184af756addf2b2e4ed2797933a0e583a6d0f4/contracts/multisig-prover/src/contract.rs#L301) is a function on the multisig prover that gets the active verifier set for a chain. The active verifier set is the same as the signer set unless there is a verifier set update in progress, since the prover requires a few extra steps before active verifier sets can be confirmed as signers.
+
+```bash
+export CHAIN_MULTISIG_PROVER_ADDRESS="axelar1xz4cya4qm2ws6nzperhvc40wdjcq4872fl6d3j2s4cytyx8j80eqenv87g"
+export RPC="http://devnet-verifiers.axelar.dev:26657"
+```
+
+```bash
+axelard q wasm contract-state smart $CHAIN_MULTISIG_PROVER_ADDRESS \
+    '"query_get_verifier_set"'
+    --keyring-backend test  \
+    --from wallet  \
+    --gas auto --gas-adjustment 1.5  --gas-prices 0.007uverifiers  \
+    --node $RPC
+```
+
+## Get proof of a verifier set change
+
+[`get_proof`](https://github.com/axelarnetwork/axelar-amplifier/blob/f76dc8a775b8bb529cf50147bab9259d1ec7f784/contracts/multisig-prover/src/msg.rs#L81) communicates with a destination chain that a [verifier set has been changed](https://github.com/axelarnetwork/axelar-amplifier/blob/main/doc/src/contracts/multisig_prover.md#update-and-confirm-verifierset-sequence-diagram), and tells the destination chain that it must accept signatures from these new verifiers.
+
+```bash
+export MULTISIG_SESSION_ID="3457"
+```
+
+```bash
+axelard q wasm contract-state smart $CHAIN_MULTISIG_PROVER_ADDRESS \
+    '{
+        "get_proof":{
+            "multisig_session_id":"'"$MULTISIG_SESSION_ID"'"
+        }
+    }' \
+    --node $RPC
+```
+
+## Rotate signers (update verifiers) for a given chain
+
+When a verifier set is rotated for a given chain, the existing signers verify the new signers. 
+This is temporarily permissioned to the admin contract established by the network.
+
+```bash
+axelard tx wasm execute $CHAIN_MULTISIG_PROVER_ADDRESS \
+    '"update_verifier_set"' \
+    --from wallet
+    --gas auto --gas-adjustment 1.5 --gas-prices 0.007uverifiers \
+    --chain-id=devnet-verifiers \
+    --node $RPC
+```
