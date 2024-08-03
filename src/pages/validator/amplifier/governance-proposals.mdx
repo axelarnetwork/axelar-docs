@@ -42,8 +42,8 @@ axelard tx gov submit-proposal execute-contract $SERVICE_REGISTRY_ADDRESS \
             "service_name":"validators"
         }
     }' \
-    --title="Add "'"$CHAIN_NAME"'"'s verifier" \
-    --description="Add "'"$CHAIN_NAME"'"'s verifier" \
+    --title="Change "'"$CHAIN_NAME"'"'s verifier set" \
+    --description="Change "'"$CHAIN_NAME"'"'s verifier set" \
     --run-as $NETWORK_GOV_ADDRESS \
     --deposit=100000000uverifiers \
     --keyring-backend test \
