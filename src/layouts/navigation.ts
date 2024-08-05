@@ -436,6 +436,10 @@ export const getNavigation = (section) => {
               title: "Verifier Rewards",
               href: "/validator/amplifier/verifier-rewards",
             },
+            {
+              title: "Verifier Rotations",
+              href: "/validator/amplifier/verifier-rotations"
+            },
           ],
         },
       ],
