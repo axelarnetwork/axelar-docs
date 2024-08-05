@@ -252,7 +252,7 @@ export const getNavigation = (section) => {
               href: "/dev/amplifier/add-rewards",
             },
             {
-              title: "GMP with Amplifier example",
+              title: "GMP with Amplifier Example",
               href: "/dev/amplifier/gmp-example",
             },
           ],
@@ -425,7 +425,7 @@ export const getNavigation = (section) => {
           title: "Amplifier",
           children: [
             {
-              title: "Become a verifier",
+              title: "Become a Verifier",
               href: "/validator/amplifier/verifier-onboarding",
             },
             {
@@ -450,7 +450,7 @@ export const getNavigation = (section) => {
     header: "Resources",
     children: [
       {
-        title: "Contract addresses",
+        title: "Contract Addresses",
         children: [
           { title: "Mainnet", href: "/resources/contract-addresses/mainnet" },
           { title: "Testnet", href: "/resources/contract-addresses/testnet" },
@@ -464,10 +464,10 @@ export const getNavigation = (section) => {
         ],
       },
       {
-        title: "Static configs",
+        title: "Static Configs",
         children: [
           {
-            title: "Static configs",
+            title: "Static Configs",
             href: "/resources/static-configs/static-configs",
           },
         ],
@@ -475,9 +475,9 @@ export const getNavigation = (section) => {
       {
         title: "Tokens",
         children: [
-          { title: "Stake AXL tokens", href: "/resources/tokens/stake-axl" },
+          { title: "Stake AXL Tokens", href: "/resources/tokens/stake-axl" },
           {
-            title: "Wrap / unwrap tokens",
+            title: "Wrap / Unwrap Tokens",
             href: "/resources/tokens/wrapped-tokens",
           },
         ],
@@ -656,7 +656,7 @@ export const getNavigation = (section) => {
         ],
       },
       {
-        title: "Onboard your IBC chain",
+        title: "Onboard Your IBC chain",
         href: "/resources/ibc-chain-onboarding",
       },
       { title: "Bug Bounty", href: "/resources/bug-bounty" },
