@@ -440,6 +440,10 @@ export const getNavigation = (section) => {
               href: "/validator/amplifier/verifier-onboarding",
             },
             {
+              title: "Security Expectations",
+              href: "/validator/amplifier/verifier-security-expectations",
+            },
+            {
               title: "Governance Proposals",
               href: "/validator/amplifier/governance-proposals",
             },
