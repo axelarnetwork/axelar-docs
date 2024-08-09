@@ -1,0 +1,210 @@
+# Flow Gateway Node setup
+
+import { Callout } from "/src/components/callout"
+
+## Prerequisites
+
+- Ubuntu (tested on 18.04 and 20.04)
+- `sudo apt-get install wget liblz4-tool aria2 jq -y`
+- [Official Documentation](https://developers.flow.com/networks/node-ops/access-onchain-data/access-nodes/access-node-setup)
+- Go
+
+## Generate Node Information
+
+```bash
+# get the binary
+curl -sL -O storage.googleapis.com/flow-genesis-bootstrap/boot-tools.tar
+# untar it
+tar -xvf boot-tools.tar
+# verify sha256sum: a06e3e9b2443c6755214150e9e101b70dd48ae30ffcfcbbcc471ba430cb104bf
+sha256sum ./boot-tools/bootstrap
+# create a directory
+mkdir ./bootstrap
+# Use a fully qualified domain name for YOUR_NODE_ADDRESS_GOES_HERE. Please also include the port number in the network address e.g. flowaccess.mycompany.com:3569
+./boot-tools/bootstrap key --address "<YOUR_NODE_ADDRESS_GOES_HERE>:3569" --role access -o ./bootstrap
+```
+Get you node id
+
+```bash
+cat ./bootstrap/public-root-information/node-id && echo ""
+```
+All your private keys should be in the bootstrap folder created earlier. Please take a back up of the entire folder.
+
+## Stake 100 FLOW
+The minimum 100 is required to prevent certain vulnerabilities in the smart contract that are a result of having a zero minimum stake requirement.
+Follow this [guide](https://developers.flow.com/networks/flow-port/staking-guide#stake-a-node) to stake using [Flow Port](https://port.flow.com)
+All fields required are generated here:
+```bash
+cat ./bootstrap/public-root-information/node-info.pub.* | jq
+```
+```json
+{
+  "Role": "access",
+  "Address": "flowaccess.mycompany.com:3569",
+  "NodeID": "e737ec6efbd26ef43bf676911cdc5a11ba15fc6562d05413e6589fccdd6c06d5",
+  "Weight": 0,
+  "NetworkPubKey": "f493a74704f6961ae7903e062ecd58d990672858eff99aece7bfbccf3aa02de8f1a624ecbf21a01e8b2f4a5854c231fbe218edd7762a34fea881f3958a215305",
+  "StakingPubKey": "ae8dcf81f3a70d72036b7ba2c586ed37ed0eb82b9c0a4aab998a8420f98894f94c14f84fa716e93654d3940fc0c8ff4d19b504c90a5b4918b28f421e9d3659dc2b7e246025ebeffea0d83cceefe315d7ed346dbe412fdac51b64997d97d29f7e"
+}
+```
+Create an address to use with the faucet [here](https://testnet-faucet.onflow.org) on testnet
+
+## Verify That Your Node ID Was Selected
+
+On Wednesday at around 12:00 UTC, the staking auction for the current epoch will end and five nodes from candidate list of nodes will be chosen at random by the staking contract to be part of the next epoch.
+If all 5 slots have been taken from the previous epoch, then no new access nodes will be chosen
+
+There are several ways to verify whether your node was chosen as explained below
+When you stake the node, the tokens will show up under the tokensCommitted bucket. After the staking auction ends, if the node is selected, the tokens remain in the tokensCommitted bucket and are moved to the tokensStaked bucket at the end of the epoch. If the node is not selected, the tokens are moved to the tokensUnstaked bucket.
+
+```bash
+# install flow cli
+sh -ci "$(curl -fsSL https://raw.githubusercontent.com/onflow/flow-cli/master/install.sh)"
+echo 'export PATH="$PATH:/root/.local/bin"' >> ~/.profile
+source ~/.profile
+```
+<tabs>
+    <tab-item title="Mainnet">
+        ```bash
+        # You can check the balance using Flow Cli. Once you have downloaded and installed Flow Cli, you can query the account balance using the command
+        flow accounts staking-info your_account_address -n mainnet
+        ```
+    </tab-item>
+    <tab-item title="Testnet">
+        ```bash
+        # You can check the balance using Flow Cli. Once you have downloaded and installed Flow Cli, you can query the account balance using the command
+        flow accounts staking-info your_account_address -n testnet
+        ```
+    </tab-item>
+</tabs>
+
+Look for the Tokens Staked field in the response of the above command to verify
+
+## Get binaries
+```bash
+curl -sL -O storage.googleapis.com/flow-genesis-bootstrap/binary/access/app
+chmod +x app
+mv app /usr/bin/access-node
+```
+
+## Create services
+
+Use `systemctl` to set up services for `Access Node`, `Gateway`
+
+### axelard
+
+```bash
+NODE_ID=$(cat ./bootstrap/public-root-information/node-info.pub.* | jq -r .NodeID)
+mkdir -p /var/flow/data/protocol
+mv bootstrap /var/flow/
+sudo tee <<EOF >/dev/null /etc/systemd/system/access-node.service
+[Unit]
+Description=Access Node daemon
+After=network-online.target
+
+[Service]
+User=$USER
+ExecStart=/usr/bin/access-node \
+  --nodeid=$NODE_ID \
+  --bootstrapdir=/var/flow/bootstrap \
+  --datadir=/var/flow/data/protocol \
+  --rpc-addr=0.0.0.0:9099 \
+  --http-addr=0.0.0.0:8088 \
+  --collection-ingress-port=9000 \
+  --script-addr=execution-001.mainnet24.nodes.onflow.org:9000 \
+  --historical-access-addr=access-001.mainnet23.nodes.onflow.org:9000,access-001.mainnet22.nodes.onflow.org:9000,access-001.mainnet21.nodes.onflow.org:9000,access-001.mainnet20.nodes.onflow.org:9000,access-001.mainnet19.nodes.onflow.org:9000,access-001.mainnet18.nodes.onflow.org:9000,access-001.mainnet17.nodes.onflow.org:9000,access-001.mainnet16.nodes.onflow.org:9000,access-001.mainnet15.nodes.onflow.org:9000,access-001.mainnet14.nodes.onflow.org:9000,access-001.mainnet13.nodes.onflow.org:9000,access-001.mainnet12.nodes.onflow.org:9000,access-001.mainnet11.nodes.onflow.org:9000,access-001.mainnet10.nodes.onflow.org:9000,access-001.mainnet9.nodes.onflow.org:9000,access-001.mainnet8.nodes.onflow.org:9000,access-001.mainnet7.nodes.onflow.org:9000,access-001.mainnet6.nodes.onflow.org:9000,access-001.mainnet5.nodes.onflow.org:9000,access-001.mainnet4.nodes.onflow.org:9000,access-001.mainnet3.nodes.onflow.org:9000,access-001.mainnet2.nodes.onflow.org:9000,access-001.mainnet1.nodes.onflow.org:9000 \
+  --preferred-execution-node-ids=9686399a8a5418a12e762cfaeff2ea348c2137f554560917760e0d47acf2cda4,160241f88cbfaa0f361cf64adb0a1c9fc19dec1daf4b96550cd67b7a9fb26cd9,4ab025ab974e7ad7f344fbd16e5fbcb17fb8769fc8849b9d241ae518787695bd,2b396b7fab0102f104a2af7e095b145cc14da28f863564802e158afc3e07e638,6c6af0933b710655ec553f4bead3b01c5e0a3ffd1194ee536efb926b356c54aa,a080e6f3003f21d35f7ed0afc3096ab21381087a91992d7508f7be869c6edd32,92dab49c5d89fa2f0619f99131d6406a94c5f214a198aafab41241322f9bf173 \
+  --rpc-metrics-enabled=true \
+  --bind=0.0.0.0:3569 \
+  --rest-addr=0.0.0.0:8071 \
+  --execution-data-sync-enabled=true \
+  --execution-data-dir=/var/flow/data/execution_data \
+  --execution-data-indexing-enabled=true \
+  --execution-state-dir=/var/flow/data/execution_state \
+  --circuit-breaker-enabled=true \
+  --dht-enabled=false \
+  --grpc-compressor=gzip \
+  --herocache-metrics-collector=true \
+  --supports-observer=true \
+  --public-network-address=0.0.0.0:3570 \
+  --secretsdir=/var/flow/data/secrets \
+  --admin-addr=localhost:9002 \
+  --secure-rpc-addr=0.0.0.0:29999 \
+  --tracer-enabled=false \
+  --profiler-dir=/var/flow/data/profiler
+Restart=always
+RestartSec=3
+LimitNOFILE=4096
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+cat /etc/systemd/system/access-node.service
+sudo systemctl enable access-node
+```
+## Build gateway
+```bash
+git clone https://github.com/onflow/flow-evm-gateway.git
+go build -o evm-gateway cmd/main/main.go
+mv evm-gateway /usr/bin/
+```
+
+### Gateway
+
+```bash
+sudo tee <<EOF >/dev/null /etc/systemd/system/gateway.service
+[Unit]
+Description=Gateway daemon
+After=network-online.target
+
+[Service]
+User=$USER
+ExecStart=/usr/bin/evm-gateway \
+--access-node-grpc-host access.previewnet.nodes.onflow.org:9000 \
+--flow-network-id flow-previewnet \
+--coinbase FACF71692421039876a5BB4F10EF7A439D8ef61E \
+--coa-address f8d6e0586b0a20c7 \
+--coa-key 2619878f0e2ff438d17835c2a4561cb87b4d24d72d12ec34569acd0dd4af7c21 \
+--coa-resource-create \
+--gas-price 0
+Restart=always
+RestartSec=3
+LimitNOFILE=4096
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+cat /etc/systemd/system/gateway.service
+sudo systemctl enable gateway
+```
+
+## Start all services
+
+Order of operations:
+
+1. `access-node`: ensure it's fully synced before proceeding
+3. `gateway`
+
+Compare the flow height explorer [testnet](https://testnet.flowdiver.io/)
+```bash
+flow blocks get latest --host localhost:9000
+```
+
+```bash
+sudo systemctl daemon-reload
+sudo systemctl restart access-node
+sudo systemctl restart gateway
+```
+
+## Check logs
+
+```bash
+# change log settings to persistent if not already
+sed -i 's/#Storage=auto/Storage=persistent/g' /etc/systemd/journald.conf
+sudo systemctl restart systemd-journald
+
+journalctl -u access-node.service -f -n 100
+journalctl -u gateway.service -f -n 100
+```
