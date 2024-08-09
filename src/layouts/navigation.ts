@@ -192,7 +192,18 @@ export const getNavigation = (section) => {
         },
         {
           title: "Cosmos GMP",
-          href: "/dev/cosmos-gmp",
+          children: [
+            { title: "Introduction", href: "/dev/cosmos-gmp/overview" },
+            {
+              title: "Developer Guides",
+              children: [
+                {
+                  title: "Cross-Chain Messaging: EVM to Cosmos",
+                  href: "/dev/cosmos-gmp/developer-guides/cross-chain-messaging-evm-to-cosmos",
+                },
+              ],
+            },
+          ],
         },
         {
           title: "Indexers",
@@ -438,7 +449,7 @@ export const getNavigation = (section) => {
             },
             {
               title: "Verifier Rotations",
-              href: "/validator/amplifier/verifier-rotations"
+              href: "/validator/amplifier/verifier-rotations",
             },
           ],
         },
