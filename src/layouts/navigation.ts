@@ -255,6 +255,15 @@ export const getNavigation = (section) => {
               title: "GMP with Amplifier Example",
               href: "/dev/amplifier/gmp-example",
             },
+            {
+              title: "Chain RPC Setup",
+              children: [
+                {
+                  title: "Configure companion processes",
+                  href: "/dev/amplifier/chains/soroban",
+                }
+              ],
+            }
           ],
         },
         {
