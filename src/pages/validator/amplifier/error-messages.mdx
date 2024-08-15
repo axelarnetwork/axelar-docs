@@ -1,6 +1,12 @@
 # Common Amplifier Error Messages
 
+import { Callout } from "/src/components/callout"
+
 The following are some common error messages encountered when working with verifiers and relayers on the Amplifier.
+
+<Callout type="error">
+  These errors may be caused by other issues. The reasons given are based off of known causes only.
+</Callout>
 
 ## Verifiers
 
@@ -12,9 +18,9 @@ The following are some common error messages encountered when working with verif
 
 - **axelard cannot be opened because the developer cannot be verified** (Mac) — Disable the gatekeeper for a single binary with `sudo xattr -d com.apple.quarantine ~/Downloads/ampd-darwin-arm64-v0.6.0`, or disable gatekeeper globally with `sudo spctl --master-disable`.
 
-- `error trying to connect: received corrupt message` — Your RPC server doesn’t support HTTPS. Try HTTP instead.
+- `error trying to connect: received corrupt message` — Your RPC server may not support HTTPS. Try HTTP instead.
 
-- `error trying to connect: invalid dnsname` — Your IP-addressed server doesn’t support HTTPS. Use `http://` instead.
+- `error trying to connect: invalid dnsname` — Your IP-addressed server may not support HTTPS. Use `http://` instead.
 
 ## Message relayers
 
