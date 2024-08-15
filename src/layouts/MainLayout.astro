@@ -5,6 +5,7 @@ const { title, description, image, hidden } = Astro.props.frontmatter || Astro.p
 
 const shownTitle = title ? title + ` | Axelar Documentation` : 'Axelar Documentation';
 const shownDescription = description || 'The Axelar Documentation tells you how to get started and be successful using Axelar. Axelar allows developers to build interchain dApps that connect to any blockchain. ';
+const canonicalURL = new URL(Astro.url.pathname, 'https://docs.axelar.dev');
 ---
 <!DOCTYPE html>
 <html lang="en">
@@ -21,6 +22,7 @@ const shownDescription = description || 'The Axelar Documentation tells you how 
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="img/png" href="/images/favicon.png"/>
+    <link rel="canonical" href={canonicalURL}>
     <title>{shownTitle}</title>
     <meta content={shownTitle} property="og:title">
     <meta content={shownTitle} property="twitter:title">
