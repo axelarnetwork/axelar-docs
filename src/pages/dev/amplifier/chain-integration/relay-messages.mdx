@@ -40,8 +40,8 @@ axelard tx wasm execute $SOURCE_CHAIN_GATEWAY \
        "verify_messages": [
             {
                 "cc_id": {
-                    "chain":"'"$CHAIN_NAME"'",
-                    "id":"'"$TX_HASH-$TX_EVENT"'"
+                    "source_chain":"'"$CHAIN_NAME"'",
+                    "message_id":"'"$TX_HASH-$TX_EVENT"'"
                 },
                 "destination_chain":"'"$DESTINATION_CHAIN"'",
                 "destination_address":"'"$DESTINATION_ADDRESS"'",
