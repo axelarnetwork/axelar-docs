@@ -1,0 +1,23 @@
+# Common Amplifier Error Messages
+
+The following are some common error messages encountered when working with verifiers and relayers on the Amplifier.
+
+## Verifiers
+
+- `command not found: axelard` — The symlink or alias to `axelard` is not working. Use full binary name instead for commands, such as `./axelard` version instead of `axelard version`.
+
+- `command not found: tofnd` — The symlink or alias to `tofnd` is not working. Use full binary name instead for commands, such as `tofnd-darwin-[version] --help` instead of `tofnd --help`.
+
+- `connection failed: transport error` — Make sure that you have tofnd running in the background.
+
+- **axelard cannot be opened because the developer cannot be verified** (Mac) — Disable the gatekeeper for a single binary with `sudo xattr -d com.apple.quarantine ~/Downloads/ampd-darwin-arm64-v0.6.0`, or disable gatekeeper globally with `sudo spctl --master-disable`.
+
+- `error trying to connect: received corrupt message` — Your RPC server doesn’t support HTTPS. Try HTTP instead.
+
+- `error trying to connect: invalid dnsname` — Your IP-addressed server doesn’t support HTTPS. Use `http://` instead.
+
+## Message relayers
+
+- `Generic error: Querier contract error: codespace` —  The message that was supposed to be routed can’t be found. Search for `unfit_for_routing` in your terminal output to see if the message was actually routed. The transaction will succeed even with unsuccessful routing.
+
+- `message index: 0` — There are no new messages to confirm.
