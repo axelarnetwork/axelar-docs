@@ -60,11 +60,11 @@
       "value": [
         {
           "title": "Swagger 1",
-          "value": "https://lcd-axelar.imperator.co/static/swagger/"
+          "value": "https://lcd-axelar.imperator.co/static/"
         },
         {
           "title": "Swagger 2",
-          "value": "https://axelar-lcd.quickapi.com/static/swagger/"
+          "value": "https://axelar-lcd.quickapi.com/static/"
         },
         {
           "title": "OpenAPI 1",
@@ -312,7 +312,7 @@
       "value": [
         {
           "title": "Swagger",
-          "value": "https://lcd-axelar-testnet.imperator.co/static/swagger/"
+          "value": "https://lcd-axelar-testnet.imperator.co/static/"
         },
         {
           "title": "OpenAPI",

@@ -35,7 +35,7 @@ The destination chain uses the prover rather than the voting verifier to pass th
 1. If a verifier signed during a certain grace period, the multisig contract emits a `record_participation()` event to the rewards contract.
 1. The rewards contract keeps a tally of how many events each verifier correctly participated in.
 
-## Rewards pools
+## Reward pools
 
 Each integrated chain has two pools that must be funded independently. There is one rewards pool for signing and one pool for voting.
 
@@ -70,6 +70,14 @@ Use `rewards_pool()` to check the funds in a pool:
     export CHAIN_NAME="fantom"
     export VOTING_VERIFIER_OR_MULTISIG_CONTRACT_ADDRESS="axelar1elaymnd2epmfr498h2x9p2nezc4eklv95uv92u9csfs8wl75w7yqdc0h67" || "0x7eeE33A59Db27d762AA1Fa31b26efeE0dABa1132"
     export RPC="http://devnet-amplifier.axelar.dev:26657"
+    ```
+</tab-item>
+<tab-item title="<code>testnet</code>">
+    ```bash
+    export REWARDS_CONTRACT_ADDRESS="axelar1harq5xe68lzl2kx4e5ch4k8840cgqnry567g0fgw7vt2atcuugrqfa7j5z"
+    export CHAIN_NAME="test-avalanche"
+    export VOTING_VERIFIER_OR_MULTISIG_CONTRACT_ADDRESS="axelar1hupk5du59cgu4ps5s637rhakwsq0060ycdp57j2ccevna7wqqzrqnfrr0p" || "0x7eeE33A59Db27d762AA1Fa31b26efeE0dABa1132"
+    export RPC="https://tm.axelar-testnet.lava.build:443"
     ```
 </tab-item>
 
@@ -118,6 +126,14 @@ Use `distribute_rewards()` to distribute rewards from a pool:
     export CHAIN_NAME="avalanche"
     export VOTING_VERIFIER_OR_MULTISIG_CONTRACT_ADDRESS="axelar1elaymnd2epmfr498h2x9p2nezc4eklv95uv92u9csfs8wl75w7yqdc0h67" || "0x7eeE33A59Db27d762AA1Fa31b26efeE0dABa1132"
     export RPC="http://devnet-amplifier.axelar.dev:26657"
+    ```
+</tab-item>
+<tab-item title="<code>testnet</code>">
+    ```bash
+    export REWARDS_CONTRACT_ADDRESS="axelar1harq5xe68lzl2kx4e5ch4k8840cgqnry567g0fgw7vt2atcuugrqfa7j5z"
+    export CHAIN_NAME="test-avalanche"
+    export VOTING_VERIFIER_OR_MULTISIG_CONTRACT_ADDRESS="axelar1hupk5du59cgu4ps5s637rhakwsq0060ycdp57j2ccevna7wqqzrqnfrr0p" || "0x7eeE33A59Db27d762AA1Fa31b26efeE0dABa1132"
+    export RPC="https://tm.axelar-testnet.lava.build:443"
     ```
 </tab-item>
 
