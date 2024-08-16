@@ -51,10 +51,7 @@ axelard q wasm contract-state smart $REWARDS_CONTRACT_ADDRESS \
                         "contract":"'"$VOTING_VERIFIER_OR_MULTISIG_CONTRACT_ADDRESS"'"
                     }
             }
-    }'
-    --keyring-backend test \
-    --from wallet \
-    --gas auto --gas-adjustment 1.5 --gas-prices 0.007uamplifier \
+    }' \
     --node $RPC
 ```
 
