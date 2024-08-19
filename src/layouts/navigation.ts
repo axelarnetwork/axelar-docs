@@ -270,6 +270,10 @@ export const getNavigation = (section) => {
               title: "GMP with Amplifier Example",
               href: "/dev/amplifier/gmp-example",
             },
+            {
+              title: "Common Error Messages",
+              href: "/dev/amplifier/chain-integration/error-messages",
+            },
           ],
         },
         {
@@ -458,6 +462,10 @@ export const getNavigation = (section) => {
             {
               title: "Verifier Rotations",
               href: "/validator/amplifier/verifier-rotations",
+            },
+            {
+              title: "Common Error Messages",
+              href: "/validator/amplifier/error-messages",
             },
           ],
         },
