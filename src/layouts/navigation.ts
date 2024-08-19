@@ -259,6 +259,10 @@ export const getNavigation = (section) => {
               href: "/dev/amplifier/chain-integration/governance-proposals",
             },
             {
+              title: "Relay Messages",
+              href: "/dev/amplifier/chain-integration/relay-messages",
+            },
+            {
               title: "Add Rewards",
               href: "/dev/amplifier/add-rewards",
             },
