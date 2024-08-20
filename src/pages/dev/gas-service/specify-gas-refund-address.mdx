@@ -1,4 +1,4 @@
-# How to Specify Refund Address for a Contract Call
+# Specify the refund address for a contract call
 
 When using [Axelar's General Message Passing (GMP)](https://docs.axelar.dev/dev/general-message-passing/overview) for multichain communication, you can specify a refund address for unused gas. [Axelar's Gas Service](https://docs.axelar.dev/dev/gas-service/intro), with an off-chain relayer implementation, refunds any unused gas to a specified refund address. Here's a guide on how to specify this refund address in your Solidity contract.
 
@@ -13,7 +13,7 @@ Before we dive into the implementation, it's important to understand how refunds
 3. The refund is automatically calculated and sent to the specified refund address.
 4. Refunds are made on the source chain.
 
-## Specifying the refund address
+## Specify the refund address
 
 In this [`CallContract`](https://github.com/axelarnetwork/axelar-examples/blob/main/examples/evm/call-contract/CallContract.sol) [example](https://github.com/axelarnetwork/axelar-examples/tree/main/examples/evm/call-contract) the refund address is specified in the `setRemoteValue` function:
 
@@ -39,7 +39,7 @@ function setRemoteValue(
 
 The last parameter of `payNativeGasForContractCall()` is the refund address. In this case, it's set to `msg.sender`, meaning any refund will go to the address that called the `setRemoteValue()` function.
 
-## Customizing the Refund Address
+## Customize the refund address
 
 You can customize the refund address by replacing `msg.sender` with any valid address. For example:
 
@@ -83,7 +83,7 @@ You can customize the refund address by replacing `msg.sender` with any valid ad
    }
    ```
 
-## Tracking Refund Status
+## Track the refund status
 
 After specifying the refund address, you can track the refund status on [Axelarscan](https://axelarscan.io/).
 
