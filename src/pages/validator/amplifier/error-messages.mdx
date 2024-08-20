@@ -16,7 +16,7 @@ The following are some common error messages encountered when working with verif
 
 - `connection failed: transport error` — `ampd` can't connect to `tofnd`. Make sure that you have tofnd running in the background and that the port and hots `tofnd` is listening on match the information in your `ampd` config file.
 
-- **axelard cannot be opened because the developer cannot be verified** (Mac) — Disable the gatekeeper for a single binary with `sudo xattr -d com.apple.quarantine ~/Downloads/ampd-darwin-arm64-v0.6.0`, or disable gatekeeper globally with `sudo spctl --master-disable`.
+- **axelard cannot be opened because the developer cannot be verified** (Mac) — Disable the gatekeeper for a single binary with `sudo xattr -d com.apple.quarantine ~/Downloads/ampd-darwin-arm64-v1.0.0`, or disable gatekeeper globally with `sudo spctl --master-disable`.
 
 - `error trying to connect: received corrupt message` — Your RPC server may not support HTTPS. Try HTTP instead.
 
