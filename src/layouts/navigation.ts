@@ -163,6 +163,10 @@ export const getNavigation = (section) => {
               href: "/dev/gas-service/refund",
             },
             {
+              title: "Specify Gas Refund Address",
+              href: "/dev/gas-service/specify-gas-refund-address",
+            },
+            {
               title: "Transaction Pricing",
               href: "/dev/gas-service/pricing",
             },
