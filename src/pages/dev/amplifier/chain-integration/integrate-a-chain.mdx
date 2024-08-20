@@ -101,7 +101,7 @@ Use the existing deployments for all three contracts, making note of the existin
     ```bash
     git clone https://github.com/axelarnetwork/axelar-amplifier
     cd axelar-amplifier
-    git checkout ampd-v0.6.0
+    git checkout ampd-v1.0.0
     ```
 
 1. Build the `gateway`, `voting verifier`, and `multisig prover` contracts from using the [CosmWasm `rust-optimizer`](https://github.com/CosmWasm/optimizer). From the root of the repo, run:
@@ -121,7 +121,7 @@ Use the existing deployments for all three contracts, making note of the existin
     axelard tx wasm store artifacts/voting_verifier.wasm \
         --keyring-backend test \
         --from wallet \
-        --gas auto --gas-adjustment 1.5 --gas-prices 0.007uamplifier \
+        --gas auto --gas-adjustment 1.5 --gas-prices 0.00005uamplifier \
         --chain-id devnet-amplifier \
         --node http://devnet-amplifier.axelar.dev:26657
     ```
@@ -180,7 +180,7 @@ Use the existing deployments for all three contracts, making note of the existin
     axelard tx wasm store artifacts/gateway.wasm \
         --keyring-backend test \
         --from wallet \
-        --gas auto --gas-adjustment 1.5 --gas-prices 0.007uamplifier \
+        --gas auto --gas-adjustment 1.5 --gas-prices 0.00005uamplifier\
         --chain-id devnet-amplifier \
         --node http://devnet-amplifier.axelar.dev:26657
     ```
@@ -194,7 +194,7 @@ Use the existing deployments for all three contracts, making note of the existin
     axelard tx wasm store artifacts/multisig_prover.wasm \
         --keyring-backend test \
         --from wallet \
-        --gas auto --gas-adjustment 1.5 --gas-prices 0.007uamplifier \
+        --gas auto --gas-adjustment 1.5 --gas-prices 0.00005uamplifier\
         --chain-id devnet-amplifier \
         --node http://devnet-amplifier.axelar.dev:26657
     ```
@@ -232,19 +232,20 @@ You can also deploy a custom implementation of the gateway, verifier, and prover
             "confirmation_height":1,
             "source_chain":"test",
             "rewards_address":"axelar1vaj9sfzc3z0gpel90wu4ljutncutv0wuhvvwfsh30rqxq422z89qnd989l",
-            "msg_id_format":"hex_tx_hash_and_event_index"
+            "msg_id_format":"hex_tx_hash_and_event_index",
+            "address_format": "eip55"
         }' \
         --keyring-backend test \
         --from wallet \
-        --gas auto --gas-adjustment 1.5 --gas-prices 0.007uamplifier \
+        --gas auto --gas-adjustment 1.5 --gas-prices 0.00005uamplifier\
         --chain-id devnet-amplifier \
         --node http://devnet-amplifier.axelar.dev:26657 \
         --label test-voting-verifier \
         --admin $MY_WALLET_ADDRESS
     ```
 
-    {/* message_id_format is coming soon should be HexTxHashAndEventIndex (0) or
-   Base58TxDigestAndEventIndex (1), */}
+    [Valid Message IDs](https://github.com/axelarnetwork/axelar-amplifier/blob/main/packages/axelar-wasm-std/src/msg_id/mod.rs#L43) and [Valid Address Formats](https://github.com/axelarnetwork/axelar-amplifier/blob/main/packages/axelar-wasm-std/src/address.rs#L17) can be found in the Amplifier source.
+    
     
 1. Search the output of this command and note the `_contract_address`. It will be in the in `logs.events` property. You'll need to do this for each instantiation to use in future steps.
 
@@ -302,7 +303,7 @@ You can also deploy a custom implementation of the gateway, verifier, and prover
         }' \
         --keyring-backend test \
         --from wallet \
-        --gas auto --gas-adjustment 1.5 --gas-prices 0.007uamplifier \
+        --gas auto --gas-adjustment 1.5 --gas-prices 0.00005uamplifier\
         --chain-id devnet-amplifier \
         --node http://devnet-amplifier.axelar.dev:26657 \
         --label test-gateway \
@@ -342,7 +343,7 @@ You can also deploy a custom implementation of the gateway, verifier, and prover
         }' \
         --keyring-backend test \
         --from wallet \
-        --gas auto --gas-adjustment 1.5 --gas-prices 0.007uamplifier \
+        --gas auto --gas-adjustment 1.5 --gas-prices 0.00005uamplifier\
         --chain-id devnet-amplifier \
         --node http://devnet-amplifier.axelar.dev:26657 \
         --label test-prover  \
