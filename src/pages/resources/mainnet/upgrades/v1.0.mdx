@@ -1,11 +1,13 @@
-# Mainnet upgrade: v1.0
+# Mainnet upgrade: v1.0.1
 
 import { Callout } from '/src/components/callout'
 
-## About the v1.0 upgrade
+## About the `axelard` v1.0.1 upgrade
 
-This release finalizes initial support for [Amplifier](/dev/amplifier/introduction).
+This release enables mainnet deployment for [Amplifier](/dev/amplifier/introduction).
 
+
+## Changelog
 Changes since 0.35.x:
 - Various fixes that improve stability
 - New queries in the axelarnet module to query the IBC path for a chain and the chain by IBC path
@@ -16,10 +18,10 @@ Changes since 0.35.x:
 
 See all the changes in the [`axelar-core` release notes](https://github.com/axelarnetwork/axelar-core/releases).
 
-Upgrade height `14216700` at approximately **3:00PM UTC on August 27th, 2024** ([countdown](https://www.mintscan.io/axelar-testnet/block/14625900)) 
+Upgrade height `14216700` at approximately **3:00PM UTC on August 27th, 2024** ([countdown](https://www.mintscan.io/axelar/block/14216700)) 
 
 <Callout type="warning" emoji="⚠️">
-As of v1.0.0, the `axelard` [binary releases](https://github.com/axelarnetwork/axelar-core/releases) require `GLIBC_2.34`, which is not present on Ubuntu 20.04.
+As of v1.0.1, the `axelard` [binary releases](https://github.com/axelarnetwork/axelar-core/releases) require `GLIBC_2.34`, which is not present on Ubuntu 20.04.
 
 You will need to compile `axelard` from source, or upgrade to Ubuntu 22.04.
 </Callout>
