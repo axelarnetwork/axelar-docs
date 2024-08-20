@@ -1,0 +1,90 @@
+# Specify the refund address for a contract call
+
+When using [Axelar's General Message Passing (GMP)](https://docs.axelar.dev/dev/general-message-passing/overview) for multichain communication, you can specify a refund address for unused gas. [Axelar's Gas Service](https://docs.axelar.dev/dev/gas-service/intro), with an off-chain relayer implementation, refunds any unused gas to a specified refund address. Here's a guide on how to specify this refund address in your Solidity contract.
+
+## Understanding the refund mechanism
+
+Axelar allows users to prepay gas fees required for relaying messages or executing smart contracts across different blockchains. If the gas paid exceeds the actual amount used, the excess is refunded to the sender's address. You can set the refund address in your contract when paying for the gas to direct this refund to a specific address.
+
+Before we dive into the implementation, it's important to understand how refunds work:
+
+1. When you prepay gas using `payNativeGasForContractCall()` or `payNativeGasForContractCallWithToken()`, you might overpay.
+2. The excess is refunded if the actual gas used is less than what you paid.
+3. The refund is automatically calculated and sent to the specified refund address.
+4. Refunds are made on the source chain.
+
+## Specify the refund address
+
+In this [`CallContract`](https://github.com/axelarnetwork/axelar-examples/blob/main/examples/evm/call-contract/CallContract.sol) [example](https://github.com/axelarnetwork/axelar-examples/tree/main/examples/evm/call-contract) the refund address is specified in the `setRemoteValue` function:
+
+```solidity
+function setRemoteValue(
+    string calldata destinationChain,
+    string calldata destinationAddress,
+    string calldata _message
+) external payable {
+    require(msg.value > 0, 'Gas payment is required');
+
+    bytes memory payload = abi.encode(_message);
+    gasService.payNativeGasForContractCall{ value: msg.value }(
+        address(this),
+        destinationChain,
+        destinationAddress,
+        payload,
+        msg.sender// This is where the refund address is specified
+    );
+    gateway.callContract(destinationChain, destinationAddress, payload);
+}
+```
+
+The last parameter of `payNativeGasForContractCall()` is the refund address. In this case, it's set to `msg.sender`, meaning any refund will go to the address that called the `setRemoteValue()` function.
+
+## Customize the refund address
+
+You can customize the refund address by replacing `msg.sender` with any valid address. For example:
+
+1. To refund to a specific address:
+
+   ```solidity
+   address specificRefundAddress = 0x1234...;
+   gasService.payNativeGasForContractCall{ value: msg.value }(
+
+   // ... other parameters ...
+       specificRefundAddress
+   );
+   ```
+
+2. To refund to the contract itself:
+
+   ```solidity
+   gasService.payNativeGasForContractCall{ value: msg.value }(
+
+   // ... other parameters ...
+       address(this)
+   );
+
+   ```
+
+3. To allow the caller to specify a refund address:
+
+   ```solidity
+   function setRemoteValue
+   // ... other parameters ...
+       address refundAddress
+   ) external payable {
+
+   // ... other code ...
+       gasService.payNativeGasForContractCall{ value: msg.value }(
+
+   // ... other parameters ...
+           refundAddress
+       );
+   // ... other code ...
+   }
+   ```
+
+## Track the refund status
+
+After specifying the refund address, you can track the refund status on [Axelarscan](https://axelarscan.io/).
+
+Choosing the correct refund address is important for your contract's functionality and user experience. Always ensure that the refund address is valid and accessible.
