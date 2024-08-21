@@ -22,7 +22,7 @@ Changes since 0.35.x:
 
 See all the changes in the [`axelar-core` release notes](https://github.com/axelarnetwork/axelar-core/releases).
 
-Upgrade height `14216700` at approximately **3:00PM UTC on August 27th, 2024** ([countdown](https://www.mintscan.io/axelar/block/14216700)) 
+Upgrade height `14231100` at approximately **2:30PM UTC on August 28th, 2024** ([countdown](https://www.mintscan.io/axelar/block/14231100)) 
 
 <Callout type="warning" emoji="⚠️">
 As of v1.0.2, the `axelard` [binary releases](https://github.com/axelarnetwork/axelar-core/releases) require `GLIBC_2.34`, which is not present on Ubuntu 20.04.
@@ -38,10 +38,10 @@ You will need to compile `axelard` from source, or upgrade to Ubuntu 22.04.
 1. If you're a validator or have delegated to one, you can vote for the upgrade proposal, while it's active, via
 
 ```bash
-axelard tx gov vote 220 yes --from validator
+axelard tx gov vote 221 yes --from validator
 ```
 
-2. Wait for the proposed upgrade block, `14216700`. Your node will panic at that block height with a log: `{"level":"error","module":"consensus","err":"UPGRADE \"v1.0\" NEEDED at height: 14216700", ...}`. Stop your node after chain halt.
+2. Wait for the proposed upgrade block, `14231100`. Your node will panic at that block height with a log: `{"level":"error","module":"consensus","err":"UPGRADE \"v1.0\" NEEDED at height: 14216700", ...}`. Stop your node after chain halt.
 
 ```bash
 pkill -f 'axelard start'
