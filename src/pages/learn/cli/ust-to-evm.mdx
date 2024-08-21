@@ -35,7 +35,7 @@ Use a web wallet such as Keplr. See [Transfer Terra assets to EVM chains using S
 ### IBC from the terminal
 
 You need shell access to a Terra node with at least `{AMOUNT}` balance of UST tokens in an account called `terra-validator`.
-Get `{TERRA_TO_AXELAR_CHANNEL_ID}` from [Testnet Resources](/resources/testnet) or [Mainnet Resources](/resources/mainnet).
+Get `{TERRA_TO_AXELAR_CHANNEL_ID}` from [Testnet Resources](/resources/testnet) or [Mainnet Resources](/resources/mainnet/).
 
 ```bash
 terrad tx ibc-transfer transfer transfer {TERRA_TO_AXELAR_CHANNEL_ID} {AXELAR_TEMP_ADDR} --packet-timeout-timestamp 0 --packet-timeout-height "0-20000" {AMOUNT}uusd --gas-prices 0.15uusd --from terra-validator -y -b block
@@ -57,7 +57,7 @@ Wait a few minutes then check your MetaMask for the UST tokens. Don't forget to 
 The remaining steps are needed only if there are no active third-party monitoring tools and you wish to complete the process manually.
 </Callout>
 
-Verify the IBC transaction by checking the balances of `{AXELAR_TEMP_ADDR}` as per [Basic node management](/node/basic). Output should contain something like:
+Verify the IBC transaction by checking the balances of `{AXELAR_TEMP_ADDR}` as per [Basic node management](/node/basic/). Output should contain something like:
 
 ```
 balances:
@@ -69,7 +69,7 @@ balances:
   Note: You will not see `UST`, `uusd` or a similar token denomination for `{IBC_DENOM}`. IBC token denominations look something like `ibc/6F4968A73F90CF7DE6394BF937D6DF7C7D162D74D839C13F53B41157D315E05F`
 </Callout>
 
-Get `{IBC_DENOM}` from [Testnet Resources](/resources/testnet) or [Mainnet Resources](/resources/mainnet).
+Get `{IBC_DENOM}` from [Testnet Resources](/resources/testnet) or [Mainnet Resources](/resources/mainnet/).
 
 The remaining steps are similar to [Transfer AXL tokens from Axelar to an EVM chain using the terminal](./axl-to-evm).
 
@@ -117,7 +117,7 @@ Before you click "confirm": select "EDIT", change "Gas Limit" to 5000000, and "S
 
 ### 1. Documentation
 
-[Testnet Resources](/resources/testnet), [Mainnet Resources](/resources/mainnet).
+[Testnet Resources](/resources/testnet), [Mainnet Resources](/resources/mainnet/).
 
 ### 2. Terminal
 
