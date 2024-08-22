@@ -145,3 +145,6 @@ function stripTags(html) {
   // Replace all HTML tags with an empty string.
   return html.replace(regex, "");
 }
+
+// (Add any changes or updates needed for generate-search-index.js here)
+
