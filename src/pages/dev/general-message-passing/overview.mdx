@@ -601,7 +601,7 @@ Suppose the paid gas (step 2) is insufficient to approve or execute on the desti
 
 ### On Axelar Network
 
-1. A [relayer](/learn/network/flow#message-processing-and-relayers) monitors the `ContractCall` event and submits a transaction to the Axelar network to request validation. The relayer also stores the `payload` in a database, keyed by `hash(payload)` for later retrieval.
+1. A [relayer](/learn/network/flow/#message-processing-and-relayers) monitors the `ContractCall` event and submits a transaction to the Axelar network to request validation. The relayer also stores the `payload` in a database, keyed by `hash(payload)` for later retrieval.
 
 1. Axelar validators then [vote](https://axelarscan.io/evm-poll/434420) on-chain to validate the `ContractCall` event content.
 

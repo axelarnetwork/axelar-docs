@@ -16,8 +16,8 @@ A deposit address is a temporary special address created and monitored by **Axel
 
 <Callout emoji="ℹ️">
 IMPORTANT NOTE: When making your deposit, please ensure that the amount is **greater than the cross-chain relayer gas fee**
-- A table of fees is listed here: [mainnet](/resources/contract-addresses/mainnet#cross-chain-relayer-gas-fee) | [testnet](/resources/contract-addresses/testnet#cross-chain-relayer-gas-fee).
-- Alternatively, they can be programmatically queried in the SDK's [AxelarQueryAPI](/dev/axelarjs-sdk/axelar-query-api#gettransferfee).
+- A table of fees is listed here: [mainnet](/resources/contract-addresses/mainnet#cross-chain-relayer-gas-fee/) | [testnet](/resources/contract-addresses/testnet#cross-chain-relayer-gas-fee/).
+- Alternatively, they can be programmatically queried in the SDK's [AxelarQueryAPI](/dev/axelarjs-sdk/axelar-query-api/#gettransferfee).
 </Callout>
 
 3. Axelar relayers observe the deposit transaction on the source chain and complete it on the destination chain, assuming the amount exceeds the requisite fee.
@@ -33,7 +33,7 @@ To find the chain ids we support you can check the resources section. You can fi
 
 ### 2. Install the AxelarJs SDK
 
-The AxelarJS SDK is an `npm` dependency that helps to make requests to the Axelar network. The SDK is essentially a wrapper around various API endpoints. One of the endpoints allows you to generate a deposit address. Alternatively, you can create a deposit address using the [CLI instead of the SDK](/learn/cli).
+The AxelarJS SDK is an `npm` dependency that helps to make requests to the Axelar network. The SDK is essentially a wrapper around various API endpoints. One of the endpoints allows you to generate a deposit address. Alternatively, you can create a deposit address using the [CLI instead of the SDK](/learn/cli/).
 
 ```bash
 npm i @axelar-network/axelarjs-sdk

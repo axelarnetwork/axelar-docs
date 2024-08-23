@@ -1,6 +1,6 @@
 # Increase Gas
 
-On occasion the prepaid gas to the Gas Receiver contract could be insufficient, such as when the destination chain is congested with transfers. When this happens, the application can resubmit a new amount of gas to pay for the transaction through [Axelarscan](http://axelarscan.io), the [AxelarJS SDK](/dev/axelarjs-sdk/intro), or via a direct invocation of the [`AxelarGasService` contract](https://github.com/axelarnetwork/axelar-gmp-sdk-solidity/blob/ad37802dc6d62fff3ab589f2605f7a3e566977dd/contracts/interfaces/IAxelarGasService.sol).
+On occasion the prepaid gas to the Gas Receiver contract could be insufficient, such as when the destination chain is congested with transfers. When this happens, the application can resubmit a new amount of gas to pay for the transaction through [Axelarscan](http://axelarscan.io), the [AxelarJS SDK](/dev/axelarjs-sdk/intro/), or via a direct invocation of the [`AxelarGasService` contract](https://github.com/axelarnetwork/axelar-gmp-sdk-solidity/blob/ad37802dc6d62fff3ab589f2605f7a3e566977dd/contracts/interfaces/IAxelarGasService.sol).
 
 ## Add gas via the `AxelarGasService` contract
 
@@ -24,7 +24,7 @@ function addNativeGas(
 ) external payable override;
 ```
 
-In JavaScript or TypeScript, the SDK [abstracts a method that can be invoked directly in a web application](/dev/axelarjs-sdk/tx-status-query-recovery#21-native-gas-payment).
+In JavaScript or TypeScript, the SDK [abstracts a method that can be invoked directly in a web application](/dev/axelarjs-sdk/tx-status-query-recovery/#21-native-gas-payment).
 
 
 ### `addGas()`
@@ -49,7 +49,7 @@ function addGas(
 ) external override;
 ```
 
-In JavaScript or TypeScript, the SDK [abstracts a method that can be invoked directly in a web application](/dev/axelarjs-sdk/tx-status-query-recovery#22-erc-20-gas-payment). It is similar to a native gas payment, except with Axelar-supported ERC-20 tokens instead of native tokens. Make sure that the ERC-20 tokens you use are supported by Axelar.
+In JavaScript or TypeScript, the SDK [abstracts a method that can be invoked directly in a web application](/dev/axelarjs-sdk/tx-status-query-recovery/#22-erc-20-gas-payment). It is similar to a native gas payment, except with Axelar-supported ERC-20 tokens instead of native tokens. Make sure that the ERC-20 tokens you use are supported by Axelar.
 
 - [Supported mainnet chains](/resources/contract-addresses/mainnet/)
 - [Supported testnet chains](/resources/contract-addresses/testnet/)
