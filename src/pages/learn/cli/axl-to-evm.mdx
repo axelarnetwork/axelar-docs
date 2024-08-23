@@ -7,21 +7,21 @@ Transfer AXL tokens from Axelar to an EVM chain using the terminal.
 ## Prerequisites
 
 - Skill level: intermediate
-- You have downloaded the Axelar blockchain and are comfortable with [Basic node management](/node/basic).
+- You have downloaded the Axelar blockchain and are comfortable with [Basic node management](/node/basic/).
 - Your Axelar node has an account named `my_account` that you control. Let `{MY_ADDR}` denote the address of your `my_account` account.
 - Select an EVM chain `{EVM_CHAIN}` from: Ethereum, Avalanche, Fantom, Moonbeam, Polygon.
-- Complete steps from [MetaMask for EVM chains](/resources/metamask) to connect your MetaMask to `{EVM_CHAIN}`.
+- Complete steps from [MetaMask for EVM chains](/resources/metamask/) to connect your MetaMask to `{EVM_CHAIN}`.
 - You need both AXL tokens and `{EVM_CHAIN}` tokens to pay transaction fees.
   - **Testnet:**
-    - Get some `{EVM_CHAIN}` testnet tokens as per [MetaMask for EVM chains](/resources/metamask).
+    - Get some `{EVM_CHAIN}` testnet tokens as per [MetaMask for EVM chains](/resources/metamask/).
     - Get some AXL tokens from the Axelar faucets: [testnet](https://faucet.testnet.axelar.dev/).
   - **Mainnet:** You are responsible for obtaining your own tokens.
 - `{EVM_DEST_ADDR}` is an address controlled by you on the external EVM chain `{EVM_CHAIN}`. (In your MetaMask, for example.) This is where your AXL tokens will be sent.
-- `{AMOUNT}` is the amount of AXL tokens you wish to transfer, denominated in `uaxl`. Recall that `1 AXL = 1000000 uaxl`. See [Testnet Resources](/resources/testnet) or [Mainnet Resources](/resources/mainnet) for minimum transfer amounts.
+- `{AMOUNT}` is the amount of AXL tokens you wish to transfer, denominated in `uaxl`. Recall that `1 AXL = 1000000 uaxl`. See [Testnet Resources](/resources/contract-addresses/testnet/) or [Mainnet Resources](/resources/contract-addresses/mainnet/) for minimum transfer amounts.
 
 ## Send AXL tokens from Axelar to an EVM chain
 
-Optional: Verify that your `my_account` account has sufficient balance as per [Basic node management](/node/basic).
+Optional: Verify that your `my_account` account has sufficient balance as per [Basic node management](/node/basic/).
 
 Link your `{EVM_DEST_ADDR}` to a new temporary deposit address on Axelar:
 
@@ -50,7 +50,7 @@ axelard tx bank send my_account {AXELAR_TEMP_ADDR} {AMOUNT}uaxl --from my_accoun
 <Callout emoji="📝">
   Note: Third-party monitoring tools will automatically complete the remaining steps of this process.
 
-Wait a few minutes then check your MetaMask for the AXL tokens. Don't forget to import the AXL token into MetaMask so you can see your balance as described in [MetaMask for EVM chains](/resources/metamask).
+Wait a few minutes then check your MetaMask for the AXL tokens. Don't forget to import the AXL token into MetaMask so you can see your balance as described in [MetaMask for EVM chains](/resources/metamask/).
 </Callout>
 
 <Callout type="warning" emoji="⚠️">
@@ -103,7 +103,7 @@ Before you click "confirm": select "EDIT", change "Gas Limit" to 5000000, and "S
 
 ### 1. Documentation
 
-[Testnet Resources](/resources/testnet), [Mainnet Resources](/resources/mainnet).
+[Testnet Resources](/resources/contract-addresses/testnet/), [Mainnet Resources](/resources/contract-addresses/mainnet/).
 
 ### 2. Terminal
 

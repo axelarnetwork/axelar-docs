@@ -4,14 +4,14 @@ Instructions to set up your base node.
 
 ## Requirements
 
-- [Setup your Axelar validator](/validator/setup)
+- [Setup your Axelar validator](/validator/setup/overview/)
 - Minimum hardware requirements: 8 AWS vCPU+, 8GB RAM, 512GB of SSD free storage space.
 - MacOS or Ubuntu 22.04 (tested on 22.04)
 - [Official Documentation](https://github.com/base-org/node)
 
 ## Prerequisites
 
-- [Common Docker Compose Commands](./optimism#common-node-operations)
+- [Common Docker Compose Commands](/validator/external-chains/optimism/#common-node-operations/)
 ```bash
 sudo apt-get install jq -y
 snap install docker
@@ -54,7 +54,7 @@ OP_NODE_L1_ETH_RPC=https://rpc.sepolia.org
 # [required] replace with your preferred L1 CL beacon endpoint:
 OP_NODE_L1_BEACON=https://your.sepolia.beacon.node/endpoint-here
 ```
-You can setup a beacon endpoint using the instructions [here](./ethereum#install-a-consensus-layer-client), make sure to expose the endpoint to public
+You can setup a beacon endpoint using the instructions [here](/validator/external-chains/ethereum/#install-a-consensus-layer-client/), make sure to expose the endpoint to public
 In lighthouse this needs passing of `--http-address 0.0.0.0` while starting the service
 
 ## Start the node

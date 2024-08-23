@@ -16,8 +16,8 @@ A deposit address is a temporary special address created and monitored by **Axel
 
 <Callout emoji="ℹ️">
 IMPORTANT NOTE: When making your deposit, please ensure that the amount is **greater than the cross-chain relayer gas fee**
-- A table of fees is listed here: [mainnet](../../resources/mainnet#cross-chain-relayer-gas-fee) | [testnet](../../resources/testnet#cross-chain-relayer-gas-fee).
-- Alternatively, they can be programmatically queried in the SDK's [AxelarQueryAPI](../axelarjs-sdk/axelar-query-api#gettransferfee).
+- A table of fees is listed here: [mainnet](/resources/contract-addresses/mainnet#cross-chain-relayer-gas-fee/) | [testnet](/resources/contract-addresses/testnet#cross-chain-relayer-gas-fee/).
+- Alternatively, they can be programmatically queried in the SDK's [AxelarQueryAPI](/dev/axelarjs-sdk/axelar-query-api/#gettransferfee).
 </Callout>
 
 3. Axelar relayers observe the deposit transaction on the source chain and complete it on the destination chain, assuming the amount exceeds the requisite fee.
@@ -29,11 +29,11 @@ To help you write clean code, you can use the `Environment` and `CHAINS` constan
 
 Most methods in the sdk require you to work with chain ids instead of chain names. **Chain ids are unique per Environment** and are _specific to Axelar_. For instance, Ethereum will have a chain id of `ethereum` on mainnet but `ethereum-2` on testnet. In the same way Osmosis will be `osmosis` on mainnet but `osmosis-4` on tesnet. However some chains will have no difference between the chain names and chain ids.
 
-To find the chain ids we support you can check the resources section. You can find the **testnet chain information** [here](/resources/testnet) and **mainnet chain information** [there](/resources/mainnet)
+To find the chain ids we support you can check the resources section. You can find the **testnet chain information** [here](/resources/contract-addresses/testnet/) and **mainnet chain information** [there](/resources/contract-addresses/mainnet/)
 
 ### 2. Install the AxelarJs SDK
 
-The AxelarJS SDK is an `npm` dependency that helps to make requests to the Axelar network. The SDK is essentially a wrapper around various API endpoints. One of the endpoints allows you to generate a deposit address. Alternatively, you can create a deposit address using the [CLI instead of the SDK](../../learn/cli).
+The AxelarJS SDK is an `npm` dependency that helps to make requests to the Axelar network. The SDK is essentially a wrapper around various API endpoints. One of the endpoints allows you to generate a deposit address. Alternatively, you can create a deposit address using the [CLI instead of the SDK](/learn/cli/).
 
 ```bash
 npm i @axelar-network/axelarjs-sdk
@@ -81,7 +81,7 @@ async function main() {
 main();
 ```
 
-You can look up asset denominations on our [resources page](/resources/mainnet#assets).
+You can look up asset denominations on our [resources page](/resources/contract-addresses/mainnet/#assets).
 
 ### 5. Generate a deposit address
 
@@ -244,7 +244,7 @@ const depositAddress = await sdk.getDepositAddress({
 
 Once the deposit address has been generated, the user can make a token transfer (on blockchain) to the deposit address. The transfer will be picked up by the Axelar network and relayed to the destination chain.
 
-(2) For all the assets that Axelar supports natively, the network identifies the asset by a `denom`. If you are accustomed to the `symbol` typically used on EVM chains, you will have to convert that `symbol` to a `denom`. The SDK has an API method you can use to convert symbol to denom: [getDenomFromSymbol](./axelar-query-api#getdenomfromsymbol) 
+(2) For all the assets that Axelar supports natively, the network identifies the asset by a `denom`. If you are accustomed to the `symbol` typically used on EVM chains, you will have to convert that `symbol` to a `denom`. The SDK has an API method you can use to convert symbol to denom: [getDenomFromSymbol](/dev/axelarjs-sdk/axelar-query-api/#getdenomfromsymbol) 
 
 (3) Chain IDs (as recognized by Axelar) must be used here. For example, in testnet, the chain ID for `Osmosis` is `osmosis-5`. 
 

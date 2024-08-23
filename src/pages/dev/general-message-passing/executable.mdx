@@ -21,7 +21,7 @@ The [Axelar Executable Contract](https://github.com/axelarnetwork/axelar-gmp-sdk
 
 ## GMP Message vs. GMP Message With Token
 
-There are two relevant functions that can be overriden from AxelarExecutable. The function you want to override depends on whether your sending a GMP message or a GMP message WITH a [Gateway Token](https://docs.axelar.dev/resources/contract-addresses/mainnet#assets). These two functions are [_execute()](https://github.com/axelarnetwork/axelar-gmp-sdk-solidity/blob/be86ab9a171f8e12d7695127cf1a6ca867fa1b09/contracts/executable/AxelarExecutable.sol#L55) and [_executeWithToken()](https://github.com/axelarnetwork/axelar-gmp-sdk-solidity/blob/be86ab9a171f8e12d7695127cf1a6ca867fa1b09/contracts/executable/AxelarExecutable.sol#L61)
+There are two relevant functions that can be overriden from AxelarExecutable. The function you want to override depends on whether your sending a GMP message or a GMP message WITH a [Gateway Token](/resources/contract-addresses/mainnet#assets). These two functions are [_execute()](https://github.com/axelarnetwork/axelar-gmp-sdk-solidity/blob/be86ab9a171f8e12d7695127cf1a6ca867fa1b09/contracts/executable/AxelarExecutable.sol#L55) and [_executeWithToken()](https://github.com/axelarnetwork/axelar-gmp-sdk-solidity/blob/be86ab9a171f8e12d7695127cf1a6ca867fa1b09/contracts/executable/AxelarExecutable.sol#L61)
 
 ```solidity
 /*** For GMP Message ***/

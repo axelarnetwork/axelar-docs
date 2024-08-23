@@ -349,7 +349,7 @@ There’s a lot of new code added here. Let’s try to understand it, step by st
 - Swap native token to USDC with low-level contract call.
 - Send the USDC to the destination chain via CCTP
 - Construct the swap payload to send to the **AxelarGateway** contract. The payload will be relayed by Axelar Relayer service to the destination contract. The destination contract address is defined by `addSibling` function.
-- Pay gas to the **AxelarGasService** contract with the native token. The required amount will be calculated off-chain by using [AxelarJS-SDK](https://docs.axelar.dev/dev/axelarjs-sdk/intro) on the client side. See more information about it [here](https://docs.axelar.dev/dev/axelarjs-sdk/axelar-query-api#estimategasfee).
+- Pay gas to the **AxelarGasService** contract with the native token. The required amount will be calculated off-chain by using [AxelarJS-SDK](/dev/axelarjs-sdk/intro) on the client side. See more information about it [here](/dev/axelarjs-sdk/axelar-query-api#estimategasfee).
 - Send `destinationChain`, `destinationContractAddress`and `payload` to the **AxelarGateway** contract.
 
 **Step 4** — Upgrade a contract to extend **AxelarExecutable** interface and override `_execute` function, so the contract can be called by Axelar Executor service at the destination chain.
