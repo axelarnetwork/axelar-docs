@@ -1,6 +1,6 @@
 # Relay messages with Amplifier
 
-Chains integrated with Amplifier can [pass GMP messages](https://docs.axelar.dev/dev/general-message-passing/overview) to one another through the following flow:
+Chains integrated with Amplifier can [pass GMP messages](/dev/general-message-passing/overview) to one another through the following flow:
 
 1. When a user sends a message to the chain, a `callContract` event is emitted.
 1. The relayer picks up the event and calls [`verify_messages`](https://github.com/axelarnetwork/axelar-amplifier/blob/f76dc8a775b8bb529cf50147bab9259d1ec7f784/packages/gateway-api/src/msg.rs#L9) on the chain's [Axelar (internal) gateway contract](https://github.com/axelarnetwork/axelar-amplifier/blob/main/doc/src/contracts/gateway.md).

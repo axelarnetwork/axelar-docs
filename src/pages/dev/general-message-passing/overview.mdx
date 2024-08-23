@@ -19,9 +19,9 @@ With GMP, you can:
 
 
 ### Prerequisites
-- For GMP to work, chains A and B must be EVM or Cosmos with a deployed Axelar Gateway contract. We're adding new chains and chain technology stacks all of the time. This document primarily focuses on EVM chains and Solidity code, but you can [learn about interacting with Cosmos GMP](./cosmos-gmp).
+- For GMP to work, chains A and B must be EVM or Cosmos with a deployed Axelar Gateway contract. We're adding new chains and chain technology stacks all of the time. This document primarily focuses on EVM chains and Solidity code, but you can [learn about interacting with Cosmos GMP](/dev/cosmos-gmp/overview/).
 - The application's executable contract must be deployed on the destination contract.
-- The application must be on one of Axelar's supported EVM chains. See [chain names](../reference/mainnet-chain-names) for a list of EVM chains that have an Axelar Gateway deployed. The list is updated as new chains are added.
+- The application must be on one of Axelar's supported EVM chains. See [chain names](/dev/reference/mainnet-chain-names/) for a list of EVM chains that have an Axelar Gateway deployed. The list is updated as new chains are added.
 
 ## Flow architecture (in steps)
 <div class="colored-svg">
@@ -601,7 +601,7 @@ Suppose the paid gas (step 2) is insufficient to approve or execute on the desti
 
 ### On Axelar Network
 
-1. A [relayer](https://docs.axelar.dev/learn/network/flow#message-processing-and-relayers) monitors the `ContractCall` event and submits a transaction to the Axelar network to request validation. The relayer also stores the `payload` in a database, keyed by `hash(payload)` for later retrieval.
+1. A [relayer](/learn/network/flow#message-processing-and-relayers) monitors the `ContractCall` event and submits a transaction to the Axelar network to request validation. The relayer also stores the `payload` in a database, keyed by `hash(payload)` for later retrieval.
 
 1. Axelar validators then [vote](https://axelarscan.io/evm-poll/434420) on-chain to validate the `ContractCall` event content.
 

@@ -2,7 +2,7 @@
 
 Cross-chain messaging allows seamless communication and interaction between different blockchain ecosystems, from Ethereum Virtual Machine (EVM)-based chains to Cosmos-based chains.
 
-Axelar has long been the best way to connect EVM and Cosmos chains via bridged assets. With [General Message Passing](https://docs.axelar.dev/dev/general-message-passing/overview), that connection goes beyond bridging, supporting a new generation of cross-chain applications that combine the best of Cosmos and EVM.
+Axelar has long been the best way to connect EVM and Cosmos chains via bridged assets. With [General Message Passing](/dev/general-message-passing/overview/), that connection goes beyond bridging, supporting a new generation of cross-chain applications that combine the best of Cosmos and EVM.
 
 In this tutorial, you will learn how to:
 
@@ -15,7 +15,7 @@ In this tutorial, you will learn how to:
 
 ## Prerequisites
 
-- Practical understanding of [how to build a CosmWasm contrac](https://docs.cosmwasm.com/docs/getting-started/intro/)t
+- Practical understanding of [how to build a CosmWasm contract](https://docs.cosmwasm.com/docs/getting-started/intro/)
 - Basic understanding of [how to build EVM smart contract](https://hacken.io/discover/create-smart-contract/)
 - Install `osmosisd` CLI
   - Download and install the `osmosisd` CLI by following the instructions [here](https://docs.osmosis.zone/osmosis-core/osmosisd). If the installation wizard does not work, build from the source using the following commands:
@@ -46,13 +46,13 @@ CosmWasm contracts provide advanced smart contract capabilities within the Cosmo
 
 ## What is Axelar Cosmos general message passing (GMP)
 
-[General Message Passing (GMP)](https://docs.axelar.dev/dev/general-message-passing/overview) empowers developers with the ability to build interchain-native applications that make cross-chain function calls and synchronize state in a way that is completely abstracted for the user.
+[General Message Passing (GMP)](/dev/general-message-passing/overview/) empowers developers with the ability to build interchain-native applications that make cross-chain function calls and synchronize state in a way that is completely abstracted for the user.
 
 In simpler terms, Axelar GMP enables developers to build applications that integrate functions (such as smart contracts) hosted on various connected chains, similar to using Lego bricks.
 
 Axelar has expanded General Message Passing (GMP) to support Cosmos blockchains. With Axelar, you can now send and receive messages on EVM chains and Cosmos chains. Messages sent to Cosmos chains can be received by [CosmWasm smart contracts](https://github.com/axelarnetwork/evm-cosmos-gmp-sample/tree/main/cosmwasm-integration/) (on blockchains with CosmWasm support), or those messages can be received [natively at the consensus layer as part of Go code](https://github.com/axelarnetwork/evm-cosmos-gmp-sample/tree/main/native-integration).
 
-Cosmos GMP works by sending and receiving through [IBC’s memo field](https://medium.com/the-interchain-foundation/moving-beyond-simple-token-transfers-d42b2b1dc29b). Cosmos chains that support GMP should [integrate the appropriate middleware](https://docs.axelar.dev/dev/cosmos-gmp#chain-support) and [verify the message source](https://docs.axelar.dev/dev/cosmos-gmp#establishing-a-path-of-trust).
+Cosmos GMP works by sending and receiving through [IBC’s memo field](https://medium.com/the-interchain-foundation/moving-beyond-simple-token-transfers-d42b2b1dc29b). Cosmos chains that support GMP should [integrate the appropriate middleware](/dev/cosmos-gmp/overview/#chain-support) and [verify the message source](/dev/cosmos-gmp/overview/#establishing-a-path-of-trust).
 
 ## Project setup and installation
 
@@ -378,7 +378,7 @@ You can proceed to compile the smart contract. Click the compile icon, and then 
 
 ### Deploy contract
 
-Deploying the smart contract to Avalanche testnets requires specifying both the Axelar Gateway Service and the Gas Service contract in the argument. [Here is the list](https://docs.axelar.dev/resources/contract-addresses/testnet) of Axelar Gas Service and Gateway contracts for all the chains currently supported by Axelar.
+Deploying the smart contract to Avalanche testnets requires specifying both the Axelar Gateway Service and the Gas Service contract in the argument. [Here is the list](/resources/contract-addresses/testnet/) of Axelar Gas Service and Gateway contracts for all the chains currently supported by Axelar.
 
 This contract you want to deploy requires the Gas Service, Gateway, and Chain Name, which will be passed on to the constructor before deployment, as shown below.
 
@@ -786,7 +786,7 @@ By mastering these steps, you can effectively create interoperable decentralized
 
 ## Reference
 
-- [Axelar Cosmos General Message Passing](https://docs.axelar.dev/dev/cosmos-gmp)
+- [Axelar Cosmos General Message Passing](/dev/cosmos-gmp/overview/)
 - [Axelarscan Testnet](https://testnet.axelarscan.io/)
 - [Osmosis Testnet Faucet](https://faucet.testnet.osmosis.zone/)
 - [Osmosis Testnet Explorer](https://mintscan.io/osmosis-testnet)

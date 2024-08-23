@@ -41,7 +41,7 @@ Axelar network supports General Message Passing, but certain major assets (e.g.,
 
 ### Key rotations on the network
 
-Validators of the Axelar network maintain keys that allow them to coauthorize cross-chain requests, a process similar to how validators coauthorize every block on the blockchain. Validators are strongly encouraged to implement best practices for isolating these keys, and are [required to rotate them periodically](https://docs.axelar.dev/validator/operations/mnemonic-rotation). These key rotations secure the network against a persistent attacker, who might try to accumulate malicious keys by compromising validators sequentially.
+Validators of the Axelar network maintain keys that allow them to coauthorize cross-chain requests, a process similar to how validators coauthorize every block on the blockchain. Validators are strongly encouraged to implement best practices for isolating these keys, and are [required to rotate them periodically](/validator/operations/mnemonic-rotation). These key rotations secure the network against a persistent attacker, who might try to accumulate malicious keys by compromising validators sequentially.
 
 ### Audits
 
@@ -51,7 +51,7 @@ In addition, all Axelar network code and contracts are open-source, meaning anyo
 
 ## Application-level security add-ons
 
-On top of the above security measures, Axelar supports Turing-complete [General Message Passing](https://docs.axelar.dev/dev/gmp-overview). This functionality enables application developers to build their own custom cross-chain security policies. For instance, a DeFi application may impose additional limits on the volume of transferred funds, repeat transactions, co-authoring large transfers, etc. These application-specific features can work alongside the network requirements to deliver an even stronger security guarantee.
+On top of the above security measures, Axelar supports Turing-complete [General Message Passing](/dev/general-message-passing/overview/). This functionality enables application developers to build their own custom cross-chain security policies. For instance, a DeFi application may impose additional limits on the volume of transferred funds, repeat transactions, co-authoring large transfers, etc. These application-specific features can work alongside the network requirements to deliver an even stronger security guarantee.
 
 ## Summary conclusion
 
