@@ -10,8 +10,8 @@ If the prepaid gas is insufficient, you might see `NOT ENOUGH GAS` or other mess
 
 There are two options to recover the transfer.
 
-1. Manually execute the payload at the destination chain via [Axelarscan UI](/dev/general-message-passing/recovery#manually-execute-a-transfer) or [AxelarJS SDK](/dev/axelarjs-sdk/tx-status-query-recovery#1-execute-manually).
-2. Add more gas to the gas receiver on the source chain via [Axelarscan UI](/dev/general-message-passing/recovery#increase-gas-payment-to-the-gas-receiver-on-the-source-chain) or [AxelarJS SDK](/dev/axelarjs-sdk/tx-status-query-recovery#2-increase-gas-payment).
+1. Manually execute the payload at the destination chain via [Axelarscan UI](/dev/general-message-passing/debug/transaction-recovery/#manually-execute-a-transfer) or [AxelarJS SDK](/dev/axelarjs-sdk/tx-status-query-recovery#1-execute-manually).
+2. Add more gas to the gas receiver on the source chain via [Axelarscan UI](/dev/general-message-passing/debug/transaction-recovery/#increase-gas-payment-to-the-gas-receiver-on-the-source-chain) or [AxelarJS SDK](/dev/axelarjs-sdk/tx-status-query-recovery#2-increase-gas-payment).
 
 ### 2. Error in the destination contract logic
 
@@ -28,5 +28,5 @@ Transaction execution was reverted. Please check the implementation of the desti
 </Callout>
 
 <Callout emoji="ℹ️">
-  If you get `Nonce Expired` or other messages indicating that nonce has already been used. It means that the nonce given in the transaction has already been consumed for the address on a blockchain. This error mostly happens when the same address submits multiple calls in a short period. We suggest you try [manually executing](/dev/general-message-passing/recovery#manually-execute-a-transfer) it once again.
+  If you get `Nonce Expired` or other messages indicating that nonce has already been used. It means that the nonce given in the transaction has already been consumed for the address on a blockchain. This error mostly happens when the same address submits multiple calls in a short period. We suggest you try [manually executing](/dev/general-message-passing/debug/transaction-recovery/#manually-execute-a-transfer) it once again.
 </Callout>

@@ -81,7 +81,7 @@ async function main() {
 main();
 ```
 
-You can look up asset denominations on our [resources page](/resources/mainnet#assets).
+You can look up asset denominations on our [resources page](/resources/contract-addresses/mainnet/#assets).
 
 ### 5. Generate a deposit address
 
@@ -244,7 +244,7 @@ const depositAddress = await sdk.getDepositAddress({
 
 Once the deposit address has been generated, the user can make a token transfer (on blockchain) to the deposit address. The transfer will be picked up by the Axelar network and relayed to the destination chain.
 
-(2) For all the assets that Axelar supports natively, the network identifies the asset by a `denom`. If you are accustomed to the `symbol` typically used on EVM chains, you will have to convert that `symbol` to a `denom`. The SDK has an API method you can use to convert symbol to denom: [getDenomFromSymbol](./axelar-query-api#getdenomfromsymbol) 
+(2) For all the assets that Axelar supports natively, the network identifies the asset by a `denom`. If you are accustomed to the `symbol` typically used on EVM chains, you will have to convert that `symbol` to a `denom`. The SDK has an API method you can use to convert symbol to denom: [getDenomFromSymbol](/dev/axelarjs-sdk/axelar-query-api/#getdenomfromsymbol) 
 
 (3) Chain IDs (as recognized by Axelar) must be used here. For example, in testnet, the chain ID for `Osmosis` is `osmosis-5`. 
 

@@ -570,7 +570,7 @@ function _execute(string calldata sourceChain, string calldata sourceAddress, by
 ### At the source chain
 
 1. You call a `callContract` (or `callContractWithToken`) function on the Axelar Gateway contract to initiate a call. Once the call is initiated, the user can see its status at https://axelarscan.io/gmp/[txHash] or programmatically track it via the [AxelarJS SDK](/dev/axelarjs-sdk/tx-status-query-recovery#query-transaction-status-by-txhash).
-1. You prepay the [gas for the decentralized Axelar consensus](./gas-services/pay-gas) and the necessary transactions to approve and execute on the destination chain.
+1. You prepay the [gas for the decentralized Axelar consensus](/dev/gas-service/pay-gas/) and the necessary transactions to approve and execute on the destination chain.
 1. The call enters the Axelar Gateway from the source chain.
 
 ### At the Axelar network

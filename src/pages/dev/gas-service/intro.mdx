@@ -28,7 +28,7 @@ The Gas Service supports relaying two-way calls, when a message is sent from the
 
 Once the outbound call is executed on chain B and sends another call to return a message to chain A, Axelar will automatically pay the gas for the return transaction.
 
-If the remaining gas amount is insufficient for the return trip, the [**Insufficient Fee** tag](/dev/general-message-passing/monitoring) will show up on Axelarscan. The return call will not be relayed until more gas is added via [Axelarscan](/dev/general-message-passing/recovery#increase-gas-payment-to-the-gas-receiver-on-the-source-chain) or the [AxelarJS SDK](/dev/axelarjs-sdk/tx-status-query-recovery#2-increase-gas-payment).
+If the remaining gas amount is insufficient for the return trip, the [**Insufficient Fee** tag](/dev/general-message-passing/monitoring) will show up on Axelarscan. The return call will not be relayed until more gas is added via [Axelarscan](/dev/general-message-passing/debug/transaction-recovery/#increase-gas-payment-to-the-gas-receiver-on-the-source-chain) or the [AxelarJS SDK](/dev/axelarjs-sdk/tx-status-query-recovery#2-increase-gas-payment).
 
 ### Sending messages from a single transaction to multiple destination chains 
 
