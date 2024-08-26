@@ -84,6 +84,50 @@ axelard tx gov submit-proposal instantiate-contract $CODE_ID \
 
 </tab-item>
 
+<tab-item title="Non-EVM integrators">
+Once the feedback period has passed, submit the proposal with the [proper instantiation parameters](https://github.com/axelarnetwork/axelar-amplifier/blob/deab56a75209a158c082cbf9b77caf500eb4ec7c/contracts/voting-verifier/src/msg.rs#L9):
+
+```bash
+export INTERCHAIN_GOV_ADDRESS="axelar10d07y265gmmuvt4z0w9aw880jnsr700j7v9daj"
+export AXELAR_SERVICE_REGISTRY_ADDRESS="axelar1c9fkszt5lq34vvvlat3fxj6yv7ejtqapz04e97vtc9m5z9cwnamq8zjlhz"
+export SOURCE_GATEWAY_ADDRESS="0xeE9E463Fd8bE9AF266e1B143C27F7D42648f4006"
+export SOURCE_CHAIN_NAME="ethereum-sepolia"
+export REWARDS_ADDRESS="axelar1vaj9sfzc3z0gpel90wu4ljutncutv0wuhvvwfsh30rqxq422z89qnd989l"
+export MSG_ID_FORMAT="hex_tx_hash_and_event_index"
+export CHAIN_NAME="AmplifiedChain"
+export NETWORK_GOV_ADDRESS="axelar10d07y265gmmuvt4z0w9aw880jnsr700j7v9daj"
+export RPC="http://devnet-amplifier.axelar.dev:26657"
+```
+
+```bash
+axelard tx gov submit-proposal store-instantiate [path to verifier contract as wasm binary or gzip] \
+    '{
+        "governance_address": "'"$INTERCHAIN_GOV_ADDRESS"'",
+        "service_registry_address": "'"$AXELAR_SERVICE_REGISTRY_ADDRESS"'",
+        "service_name":"validators",
+        "source_gateway_address":"'"$SOURCE_GATEWAY_ADDRESS"'",
+        "voting_threshold":["1","1"],
+        "block_expiry":10,
+        "confirmation_height":1,
+        "source_chain":"'"$SOURCE_CHAIN_NAME"'",
+    "rewards_address":"'"$REWARDS_ADDRESS"'",
+        "msg_id_format":"'"$MSG_ID_FORMAT"'"
+    }' \
+    --title="Instantiate verifier contract for "'"$CHAIN_NAME"'" \
+    --description="Instantiate verifier contract for "'"$CHAIN_NAME"'" \
+    --run-as $NETWORK_GOV_ADDRESS \
+    --label "'"$CHAIN_NAME"'" \
+    --deposit=1000000000uamplifier \
+    --keyring-backend test \
+    --from wallet \
+    --gas auto --gas-adjustment 1.5 --gas-prices 0.007uamplifier \
+    --chain-id=devnet-amplifier \
+    --no-admin \
+    --node $RPC
+```
+
+</tab-item>
+
 </tabs>
 
 ## Proposal to instantiate the gateway contract
