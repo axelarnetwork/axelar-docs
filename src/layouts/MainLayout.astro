@@ -1,5 +1,7 @@
 ---
 import "../styles/main.scss";
+import AskCookbook from "../components/AskCookbook.astro";
+
 
 const { title, description, image, hidden } = Astro.props.frontmatter || Astro.props;
 
@@ -162,7 +164,6 @@ const canonicalURL = new URL(Astro.url.pathname, 'https://docs.axelar.dev');
       </div>
     <div style="text-align:center; font-size: 12px;">&copy; 2024 Axelar Foundation. All Rights Reserved.</div>
     </footer>
-    
-
+    <AskCookbook />
   </body>
 </html>
