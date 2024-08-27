@@ -2,6 +2,13 @@
 
 import { Callout } from "/src/components/callout"
 
+
+<Callout>
+  These instructions are undergoing active revision. Please see the [latest official documentation](https://docs-git-vishal-accessnodesetupupdate-onflow.vercel.app/networks/node-ops/access-onchain-data/access-nodes/access-node-setup) for setting up a permissionless flow access node.
+
+  The permissionless access node doesn't require any stake.
+</Callout>
+
 ## Prerequisites
 
 - Ubuntu (tested on 18.04 and 20.04)
@@ -31,6 +38,10 @@ cat ./bootstrap/public-root-information/node-id && echo ""
 All your private keys should be in the bootstrap folder created earlier. Please take a back up of the entire folder.
 
 ## Stake 100 FLOW
+<Callout>
+  Stake is not required when using a permissionless access node. See the warning at the top of the page for more information.
+</Callout>
+
 The minimum 100 is required to prevent certain vulnerabilities in the smart contract that are a result of having a zero minimum stake requirement.
 Follow this [guide](https://developers.flow.com/networks/flow-port/staking-guide#stake-a-node) to stake using [Flow Port](https://port.flow.com)
 All fields required are generated here:
