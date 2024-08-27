@@ -389,6 +389,7 @@ export const getNavigation = (section) => {
             { title: "Ethereum", href: "/validator/external-chains/ethereum/" },
             { title: "Fantom", href: "/validator/external-chains/fantom/" },
             { title: "Filecoin", href: "/validator/external-chains/filecoin/" },
+            { title: "Flow", href: "/validator/external-chains/flow/" },
             { title: "Fraxtal", href: "/validator/external-chains/fraxtal/" },
             {
               title: "Immutable zkEVM",
