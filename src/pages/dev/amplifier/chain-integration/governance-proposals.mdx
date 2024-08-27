@@ -64,7 +64,7 @@ axelard tx gov submit-proposal instantiate-contract $CODE_ID \
     "service_name":"validators",
     "source_gateway_address":"'"$SOURCE_GATEWAY_ADDRESS"'",
     "voting_threshold":["1","1"],
-    "block_expiry":10,
+    "block_expiry":"10",
     "confirmation_height":1,
     "source_chain":"'"$SOURCE_CHAIN_NAME"'",
     "rewards_address":"'"$REWARDS_ADDRESS"'",
@@ -144,20 +144,20 @@ export DOMAIN_SEPARATOR="6973c72935604464b28827141b0a463af8e3487616de69c5aa0c785
 ```bash
 axelard tx gov submit-proposal instantiate-contract $CODE_ID \
     '{
-"admin_address": "'"$MULTISIG_PROVER_ADMIN_ADDRESS"'",
-"governance_address": "'"$MULTISIG_PROVER_GOV_ADDRESS"'",
-"gateway_address": "'"$SOURCE_GATEWAY_ADDRESS"'",
-"multisig_address": "'"MULTISIG_PROVER_ADDRESS"'",
-"coordinator_address":"'"$AXELAR_COORDINATOR_ADDRESS"'",
-"service_registry_address":"'"$AXELAR_SERVICE_REGISTRY_ADDRESS"'",
-"voting_verifier_address": "'"$SOURCE_VERIFIER_GOV_ADDRESS"'",
-"signing_threshold": ["1","1"],
-"service_name": "validators",
-"chain_name": "'"$CHAIN_NAME"'",
-"verifier_set_diff_threshold": 1,
-"encoder": "abi",
-"key_type": "ecdsa",
-"domain_separator": "'"$DOMAIN_SEPARATOR"'"
+        "admin_address": "'"$MULTISIG_PROVER_ADMIN_ADDRESS"'",
+        "governance_address": "'"$MULTISIG_PROVER_GOV_ADDRESS"'",
+        "gateway_address": "'"$SOURCE_GATEWAY_ADDRESS"'",
+        "multisig_address": "'"MULTISIG_PROVER_ADDRESS"'",
+        "coordinator_address":"'"$AXELAR_COORDINATOR_ADDRESS"'",
+        "service_registry_address":"'"$AXELAR_SERVICE_REGISTRY_ADDRESS"'",
+        "voting_verifier_address": "'"$SOURCE_VERIFIER_GOV_ADDRESS"'",
+        "signing_threshold": ["1","1"],
+        "service_name": "validators",
+        "chain_name": "'"$CHAIN_NAME"'",
+        "verifier_set_diff_threshold": 1,
+        "encoder": "abi",
+        "key_type": "ecdsa",
+        "domain_separator": "'"$DOMAIN_SEPARATOR"'"
     }' \
     --title="Instantiate prover contract for $CHAIN_NAME" \
     --description="Instantiate prover contract for $CHAIN_NAME" \
@@ -168,7 +168,7 @@ axelard tx gov submit-proposal instantiate-contract $CODE_ID \
     --from wallet \
     --gas auto --gas-adjustment 1.5 --gas-prices 0.00005uamplifier \
     --chain-id=devnet-amplifier \
-    --admin="axelar1zlr7e5qf3sz7yf890rkh9tcnu87234k6k7ytd9"
+    --admin="axelar1zlr7e5qf3sz7yf890rkh9tcnu87234k6k7ytd9" \
     --node $RPC
 ```
 </tab-item>
