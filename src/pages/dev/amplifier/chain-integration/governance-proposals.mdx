@@ -71,10 +71,10 @@ axelard tx gov submit-proposal instantiate-contract $CODE_ID \
     "msg_id_format":"'"$MSG_ID_FORMAT"'",
     "address_format":"'"$ADDRESS_FORMAT"'"
 }' \
---title="Instantiate verifier contract for "'"$CHAIN_NAME"'" \
---description="Instantiate verifier contract for "'"$CHAIN_NAME"'" \
+--title="Instantiate verifier contract for $CHAIN_NAME" \
+--description="Instantiate verifier contract for $CHAIN_NAME" \
 --run-as $NETWORK_GOV_ADDRESS \
---label "'"$CHAIN_NAME"'" \
+--label "$CHAIN_NAME" \
 --deposit=100000000uamplifier \
 --keyring-backend test \
 --from wallet \
@@ -107,10 +107,10 @@ axelard tx gov submit-proposal instantiate-contract $CODE_ID \
         "verifier_address": "'"$VOTING_VERIFIER_ADDRESS"'",
         "router_address": "'"$AXELAR_ROUTER_ADDRESS"'"
     }' \
-    --title="Instantiate gateway contract for "'"$CHAIN_NAME"'" \
-    --description="Instantiate gateway contract for "'"$CHAIN_NAME"'" \
+    --title="Instantiate gateway contract for $CHAIN_NAME" \
+    --description="Instantiate gateway contract for $CHAIN_NAME" \
     --run-as $NETWORK_GOV_ADDRESS \
-    --label "'"$CHAIN_NAME"'" \
+    --label "$CHAIN_NAME" \
     --deposit=100000000uamplifier \
     --keyring-backend test \
     --from wallet \
@@ -159,10 +159,10 @@ axelard tx gov submit-proposal instantiate-contract $CODE_ID \
 "key_type": "ecdsa",
 "domain_separator": "'"$DOMAIN_SEPARATOR"'"
     }' \
-    --title="Instantiate prover contract for "'"$CHAIN_NAME"'" \
-    --description="Instantiate prover contract for "'"$CHAIN_NAME"'" \
+    --title="Instantiate prover contract for $CHAIN_NAME" \
+    --description="Instantiate prover contract for $CHAIN_NAME" \
     --run-as $NETWORK_GOV_ADDRESS \
-    --label "'"$CHAIN_NAME"'" \
+    --label "$CHAIN_NAME" \
     --deposit=100000000uamplifier \
     --keyring-backend test \
     --from wallet \
@@ -191,8 +191,8 @@ axelard tx gov submit-proposal execute-contract $ROUTER_CONTRACT_ADDRESS \
             "msg_id_format": "'"$MSG_ID_FORMAT"'"
         }
     }' \
-    --title="Register "'"$CHAIN_NAME"'" chain with the Amplifier router" \
-    --description="Register "'"$CHAIN_NAME"'" chain with the Amplifier router" \
+    --title="Register $CHAIN_NAME chain with the Amplifier router" \
+    --description="Register $CHAIN_NAME chain with the Amplifier router" \
     --run-as $ROUTER_GOV_ADDRESS \
     --deposit=100000000uamplifier \
     --keyring-backend test \
@@ -220,8 +220,8 @@ axelard tx gov submit-proposal execute-contract $MULTISIG_CONTRACT_ADDRESS \
             "contract_address":"'"$CHAIN_PROVER_ADDRESS"'"
             }
     }' \
-    --title="Authorize "'"$CHAIN_NAME"'" prover with the Amplifier multisig contract" \
-    --description="Authorize "'"$CHAIN_NAME"'" prover with the Amplifier multisig contract" \
+    --title="Authorize $CHAIN_NAME prover with the Amplifier multisig contract" \
+    --description="Authorize $CHAIN_NAME prover with the Amplifier multisig contract" \
     --run-as $MULTISIG_GOV_ADDRESS \
     --deposit=100000000uamplifier \
     --keyring-backend test \
