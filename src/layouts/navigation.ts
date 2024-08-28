@@ -34,8 +34,12 @@ export const getNavigation = (section) => {
                   ]
                 },
                 {
-                  title: "Upgrade Token",
+                  title: "TODO BEN Upgrade Token",
                   href: "/dev/send-tokens/interchain-tokens/upgrade-tokens/",
+                },
+                {
+                  title: "Token Manager",
+                  href: "/dev/send-tokens/interchain-tokens/token-manager/",
                 },
                 {
                   title: "Interchain Token Executable",
