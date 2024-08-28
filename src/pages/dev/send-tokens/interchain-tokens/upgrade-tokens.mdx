@@ -1,4 +1,4 @@
-# Upgrade existing tokens into Interchain Token(s)
+# Integrate existing tokens with the Interchain Token Service
 
 import { Callout } from "/src/components/callout";
 
@@ -9,11 +9,9 @@ import { Callout } from "/src/components/callout";
   access the interactive form through the wizard.
 </Callout>
 
-If you already have an ERC-20 token on one or more blockchains, you can turn it into an Interchain Token by deploying [Token Managers](/dev/send-tokens/glossary/#token-manager). Token Managers can be either [Lock/Release](/dev/send-tokens/glossary/#lockunlock) or [Mint/Burn](/dev/send-tokens/glossary/#mintburn). Canonical tokens are registered under the local chain's Lock/Release token manager and mint/burn on remote chains. They can be deployed to remote chains by anyone and don't depend on a deployer address/salt.
+If you already have a custom-built ERC-20 token on one or more blockchains, you can integrate it with the Interchain Token Service (ITS) by deploying [Token Managers](/dev/send-tokens/glossary/#token-manager). There are a number of different Token Manager types to choose from, depending on how you want the token to be integrated to ITS.
 
 The Interchain Token Service is deployed to [`0xB5FB4BE02232B1bBA4dC8f81dc24C26980dE9e3C`](https://etherscan.io/address/0xB5FB4BE02232B1bBA4dC8f81dc24C26980dE9e3C) while the Interchain Token Factory is deployed to [`0x83a93500d23Fbc3e82B410aD07A6a9F7A0670D66`](https://etherscan.io/address/0x83a93500d23Fbc3e82B410aD07A6a9F7A0670D66).
-
-Now, let's explore how to transform existing tokens into Interchain Tokens.
 
 <Callout emoji="🚨">
   **NOTE:** The security of your token is limited to the security of the chains
@@ -23,11 +21,11 @@ Now, let's explore how to transform existing tokens into Interchain Tokens.
 
 ## Canonical Tokens (Simple wrappers)
 
-If you own an ERC-20 token on a single chain and want a wrapped, bridgeable version on other chains, register it as a [Canonical Token](/dev/send-tokens/glossary/#canonical-interchain-token) with the [Interchain Token Service](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/InterchainTokenService.sol) using the [Interchain Token Factory contract](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/InterchainTokenFactory.sol). Each token can only be registered a single time as a canonical chain.
+If you own an ERC-20 token on a single chain and want a wrapped, bridgeable version on other chains, register it as a [Canonical Token](/dev/send-tokens/glossary/#canonical-interchain-token) with the [Interchain Token Service](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/InterchainTokenService.sol) using the [Interchain Token Factory contract](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/InterchainTokenFactory.sol). Each token can only be registered a single time as a canonical chain on its "home chain".
 
 Want to try this out? [Use Remix to create your own ERC-20](https://remix.ethereum.org/axelarnetwork/axelar-docs/blob/main/public/samples/interchain-token-simple.sol) and register your token on the [Interchain Token Portal](https://testnet.interchain.axelar.dev).
 
-You can also do this directly via the `InterchainTokenService.sol` using `InterchainTokenFactory.sol` to register canonical tokens and deploy remote canonical tokens.
+You can also do this directly via the `InterchainTokenService.sol` using the `InterchainTokenFactory.sol` to register canonical tokens and deploy remote canonical tokens.
 
 Follow these steps to register your token as a canonical token:
 

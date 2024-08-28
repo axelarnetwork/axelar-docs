@@ -1,12 +1,12 @@
-# Rate Limit in Interchain Token Service
+# Flow Limit in Interchain Token Service
 
 ## Overview
 
-`FlowLimit` ensures the stability and security of interchain operations by setting constraints on the volume of tokens that can be transferred within a specified time frame. This prevents system abuse and overload, which is crucial in Interchain transfers. `FlowLimit` is managed by the [`FlowLimit` contract](https://github.com/axelarnetwork/interchain-token-service/blob/v1.0.0/contracts/utils/FlowLimit.sol), a core component of the [Interchain Token Service (ITS)](https://github.com/axelarnetwork/interchain-token-service/blob/v1.0.0/contracts/InterchainTokenService.sol) designed to regulate the flow of tokens across different blockchains. 
+A `FlowLimit` ensures the stability and security of interchain operations by setting constraints on the volume of tokens that can be transferred within a specified time frame. This prevents system abuse and overload, which is crucial in Interchain transfers, and can be used to prevent transfers of a token on a chain that is undergoing an emergency situation. Flow limits are managed by the [`FlowLimit` contract](https://github.com/axelarnetwork/interchain-token-service/blob/v1.0.0/contracts/utils/FlowLimit.sol).
 
-The `FlowLimit` contract is [integrated](https://github.com/axelarnetwork/interchain-token-service/blob/0a00533f19197a285d6bddc8ec0c2e908094ebfe/contracts/InterchainTokenService.sol#L520) into the token manager contracts within the Interchain Token Service. These token managers, responsible for handling tokens before and after interchain transfers, utilize the `FlowLimit` functionalities to regulate token transfers and maintain system integrity.
+The `FlowLimit` contract is [used by](https://github.com/axelarnetwork/interchain-token-service/blob/v1.0.0/contracts/token-manager/TokenManager.sol#L15) the [token manager contract](https://github.com/axelarnetwork/interchain-token-service/blob/v1.0.0/contracts/token-manager/TokenManager.sol#L21). These token managers, use the `FlowLimit` functionalities to set cross-chain transfer volume going in and out of a given blockchain.
 
-This guide provides a comprehensive understanding of how the `FlowLimit` contract operates within the context of [Interchain](https://github.com/axelarnetwork/interchain-token-service/blob/v1.0.0/contracts/InterchainTokenService.sol) token transfers.
+This guide provides a comprehensive understanding of how the `FlowLimit` contract operates within the context of [Interchain token transfers](https://github.com/axelarnetwork/interchain-token-service/blob/v1.0.0/contracts/InterchainTokenService.sol#L455).
 
 ## Core Aspects
 
