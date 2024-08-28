@@ -542,6 +542,10 @@ export const getNavigation = (section) => {
             title: "Mainnet axelard",
             children: [
               {
+                title: "v1.0",
+                href: "/resources/mainnet/upgrades/v1.0/",
+              },
+              {
                 title: "v0.35",
                 href: "/resources/mainnet/upgrades/v35/",
               },
