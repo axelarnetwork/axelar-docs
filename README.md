@@ -22,7 +22,7 @@ These links redirect to pages in the documentation whose slugs may otherwise be 
 ### ITS
 
 - **Introduction:** https://docs.axelar.dev/its/intro
-- **Create Token:** https://docs.axelar.dev/its/create-token
+- **Quickstart:** https://docs.axelar.dev/its/create-token
 - **Upgrade Token:** https://docs.axelar.dev/its/upgrade-token
 - **Interchain Token Executable:** https://docs.axelar.dev/its/token-executable
 - **Rate Limit:** https://docs.axelar.dev/its/rate-limit
