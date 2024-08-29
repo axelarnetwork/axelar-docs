@@ -1,1 +1,6 @@
 # Token Managers
+
+
+- Approve the Interchain Token Service to spend tokens by calling the `approve` method on your token, specifying the Interchain Token Service address and the amount to be approved. Then, proceed to transfer Interchain Tokens between chains via the Interchain Token Service by calling the [`interchainTransfer`](https://github.com/axelarnetwork/interchain-token-service/blob/9223108211b977d9138fdd67d5b4a641fc35c18c/contracts/interfaces/IInterchainTokenService.sol#L210) method
+
+If pre-mint is needed, you must make ERC20 approval to the Interchain Token Factory contract. When tokens are moved from the origin chain to another chain, the token will be locked on the origin chain and minted on the destination chain. If you moved tokens directly from one non-origin chain to another, the token would be burned on the source chain and minted on the destination chain.
