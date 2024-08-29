@@ -29,7 +29,7 @@ For general message passing, Axelar's gas service allows the user/dApp to pay al
     * Costs related to delivering any possible refund on the destination chain
 2. **Execution Fee (i.e. the gas to execute the `_execute` method on the destination chain)** - The execution fee is variable depending on the chains involved, and the complexity of your `_execute` method.
 
-The `estimateGasFee` method in the [AxelarJS SDK](../axelarjs-sdk/axelar-query-api#estimategasfee) calculates this total cost for you.
+The `estimateGasFee` method in the [AxelarJS SDK](/dev/axelarjs-sdk/axelar-query-api/#estimategasfee) calculates this total cost for you.
 
 ### Notable Considerations
 #### EXECUTION FEE
@@ -61,7 +61,7 @@ The `estimateGasFee` method can be used (yet again) to determine the amount of g
 
 Transactions may intermittently stall on their way from a source chain to a destination chain. Common root causes for stalled transactions included: 1 - failure to send a valid transaction from the source chain into the Axelar network for processing; 2 - insufficient gas payments paid by the user;  3 - transaction revert on the destination chain. 
 
-Every transaction can be seen on Axelarscan with a detailed view of where transactions get "stuck", so one can start there to debug such circumstances. Axelarscan and the AxelarJS SDK expose two approaches to recover stalled transactions: 1. manual execution of the transaction on the destination chain, or 2. add gas for transactions. More details can be found [here](../general-message-passing/debug/error-debugging) for debugging and [here](../general-message-passing/recovery) and recovery.
+Every transaction can be seen on Axelarscan with a detailed view of where transactions get "stuck", so one can start there to debug such circumstances. Axelarscan and the AxelarJS SDK expose two approaches to recover stalled transactions: 1. manual execution of the transaction on the destination chain, or 2. add gas for transactions. More details can be found [here](/dev/general-message-passing/debug/error-debugging/) for debugging and [here](/dev/general-message-passing/debug/transaction-recovery/) and recovery.
 
 ## callContractWithToken (General Message Passing)
 Fees for `callContractWithToken` are almost identical to those of `callContract`, but have an increased execution cost due to the additional gas cost of minting/releasing tokens.

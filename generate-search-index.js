@@ -37,9 +37,9 @@ function walk(dir) {
       // remove file extension, order matters here
       const url = filepath
         .replace("src/pages", "")
-        .replace(".astro", "")
-        .replace(".mdx", "")
-        .replace(".md", "");
+        .replace(".astro", "/")
+        .replace(".mdx", "/")
+        .replace(".md", "/");
       const mtime = stats.mtime.toISOString();
       const sha = crypto.createHash("sha256");
       sha.update(url);

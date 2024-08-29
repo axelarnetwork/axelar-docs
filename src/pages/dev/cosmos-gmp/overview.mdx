@@ -198,5 +198,6 @@ When you receive a packet on Cosmos chain, you'll need to verify:
 1. The EVM source chain and address.
 
    When a message has an EVM source, the chain and address are passed in differently for CosmWasm and Native GMP.
+
    - **CosmWasm**: When you build your CosmWasm contract, you can define `source_chain` and/or `source_address` as arguments for their `wasm` method. And pass in the correct `source_chain` and/or `source_address` as an argument from the EVM contract. The Axelar network will validate that these values are accurate and not being spoofed by the sender.
    - **Native GMP**: The GMP call will be sent by the Axelar GMP account to the cosmos chain. Make sure that it is [formatted correctly](https://github.com/axelarnetwork/axelar-core/blob/main/x/axelarnet/types/evm_translator.go#L55) in the IBC memo that contains validated source chain/address values.

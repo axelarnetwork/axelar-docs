@@ -1,9 +1,11 @@
 # Introduction to the Interchain Amplifier
 
-import { Callout } from "/src/components/callout"
+import { Callout } from '/src/components/callout'
 
 <Callout>
-The Axelar Virtual Machine (AVM) and Amplifier are currently under active development, so these instructions are likely to change. Please check back frequently for updates.
+  The Axelar Virtual Machine (AVM) and Amplifier are currently under active
+  development, so these instructions are likely to change. Please check back
+  frequently for updates.
 </Callout>
 
 The Interchain Amplifier enables dynamic application-level connections of new blockchains and services to the Axelar network. dApp developers gain access to more new blockchains faster. Integrators can use Amplifier to connect their own chains to the Axelar Network. This enables generalized connections between blockchains using different technology stacks (Solidity, Rust, etc), consensus mechanisms (Proof of Stake, L2s), and blockchains from many different communities.
@@ -28,7 +30,15 @@ To connect to the Amplifier, integrators should:
 
 The following diagram shows how the Amplifier handles General Message Passing:
 
-![](/images/amplifier-gmp-message-flow.png)
+
+<object
+  type="image/svg+xml"
+  data="/images/assets/amplifier_diagram.svg"
+  width="1000"
+  height="1000"
+>
+  Your browser does not support SVG
+</object>
 
 See the [GMP with Amplifier example](/dev/amplifier/gmp-example) for additional details.
 

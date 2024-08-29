@@ -1,3 +1,4 @@
 User-agent: *
 Allow: /
 Disallow:
+Sitemap: https://docs.axelar.dev/sitemap-0.xml

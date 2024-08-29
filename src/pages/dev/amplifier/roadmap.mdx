@@ -1,0 +1,83 @@
+# Amplifier Roadmap
+
+The [Interchain Amplifier](/dev/amplifier/introduction/) will be rolled out in several phases, gradually unlocking its full potential as a permissionless method to onboard new chains onto the Axelar network. This document outlines the exact capabilities that become available with each phase, providing a clear look at what developers and integrators can do with Amplifier in their projects. Once complete, all features will be available on both testnet and mainnet.
+
+## Complete
+
+### Phase 1: Support for native CosmWasm smart contracts on the Axelar network
+
+The Axelar network will natively support CosmWasm smart contracts, providing the infrastructure necessary to deploy Amplifier contracts through governance.
+
+**Available features**
+
+- The ability to deploy smart contracts to the Axelar network via governance proposals.
+
+**Not yet supported**
+
+- Support for Amplifier on the Axelar network. This will be enabled in [Phase 2](/dev/amplifier/roadmap/#phase-2-support-for-amplifier-functionality-on-the-axelar-network).
+- Amplifier functionality. This will be enabled in [Phase 3](/dev/amplifier/roadmap/#phase-3-amplifier-smart-contracts-release).
+- The actual CosmWasm contracts to be used with the Amplifier. These will be released in [Phase 3](/dev/amplifier/roadmap/#phase-3-amplifier-smart-contracts-release).
+
+### Phase 2: Support for Amplifier functionality on the Axelar network
+
+The Axelar network will be updated to v1.0 at the consensus layer. This release does not yet enable the Amplifier itself, but it will enable Axelar to support all of the required Amplifier functionality, including using validator stakes in the blockchain's decision-making process.
+
+**Available features**
+
+- The Axelar network will support Amplifier functionality.
+
+**Not yet supported**
+
+- The CosmWasm contracts to be used with Amplifier. These will be released in [Phase 3](/dev/amplifier/roadmap/#phase-3-amplifier-smart-contracts-release).
+Amplifier availability on the Axelar network.
+
+## In Progress
+
+### Phase 3: Amplifier smart contracts release
+
+The [smart contracts powering Amplifier](https://github.com/axelarnetwork/axelar-amplifier/tree/main/doc/src/contracts) will be deployed and instantiated. Verifiers and chain integrators will be able to onboard to the Axelar network by deploying the Amplifier contracts via governance proposals.
+
+**Available features**
+
+- [Chain integrators](/dev/amplifier/chain-integration/introduction/) can join the Axelar network.
+- [Verifiers](/validator/amplifier/verifier-onboarding/) can join the Axelar network.
+
+**Not yet supported**
+
+- Automatic relaying for new chains. This will become available in [Phase 5](/dev/amplifier/roadmap/#phase-5-amplifier-connected-chains-have-their-own-relayers). Before Phase 5, new chains must either have [their own custom-built relayers](/dev/amplifier/chain-integration/relay-messages/) or be integrated with existing ones.
+
+### Phase 4: Connect new chains with Amplifier 
+
+Onboarded chain integrators will be able to connect new chains to the Axelar network through Amplifier.
+
+**Available features**
+
+- Developers will be able to [send GMP messages](/dev/amplifier/gmp-example/) to and from the newly connected chain.
+
+**Not yet supported**
+
+- Automatic relaying for new chains. This will become available in [Phase 5](/dev/amplifier/roadmap/#phase-5-amplifier-connected-chains-have-their-own-relayers). Before Phase 5, new chains must either have [their own custom-built relayers](/dev/amplifier/chain-integration/relay-messages/) or be integrated with existing ones.
+
+### Phase 5: Amplifier-connected chains have their own relayers
+
+New chains will be able to run their own relayers that send transactions to and react to events from the Axelar Virtual Machine.
+
+**Available features**
+
+- Automatic relaying for new chains, as supported by the Axelar network.
+
+**Not yet supported**
+
+- The Interchain Token Service (ITS) and ITS tokens. These will become available in [Phase 6](/dev/amplifier/roadmap/#phase-6-amplifier-connected-chains-can-use-its).
+
+### Phase 6: Amplifier-connected chains can use ITS 
+
+With the [ITS Hub](/dev/send-tokens/roadmap/#its-hub), ITS tokens can be transferred to and created from non-EVM chains. The ITS Hub routes ITS calls across both consensus and Amplifier chains, including non-smart contract chains.
+
+**Available features**
+
+- Sending ITS tokens to new chains
+- Creating ITS tokens on new chains
+- Extending ITS tokens from existing chains to new chains
+- Conducting token swaps with Squid
+

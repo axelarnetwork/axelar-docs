@@ -2,9 +2,9 @@ import { Callout } from "/src/components/callout";
 
 # Programmatically Create a Canonical Interchain Token Using the Interchain Token Service
 
-If you have an [ERC-20](https://docs.openzeppelin.com/contracts/4.x/erc20) token on one or more blockchains and you want to make the token interoperable across chains, the [Interchain Token Service](https://docs.axelar.dev/dev/send-tokens/interchain-tokens/intro) provides a solution. You can transform an ERC-20 token into an Interchain Token by deploying a [token manager](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/token-manager/TokenManager.sol).
+If you have an [ERC-20](https://docs.openzeppelin.com/contracts/4.x/erc20) token on one or more blockchains and you want to make the token interoperable across chains, the [Interchain Token Service](/dev/send-tokens/interchain-tokens/intro/) provides a solution. You can transform an ERC-20 token into an Interchain Token by deploying a [token manager](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/token-manager/TokenManager.sol).
 
-If you would like to create a wrapped, bridgeable version of your ERC-20 token on other chains, you can register it as a [Canonical Interchain Token](https://docs.axelar.dev/dev/send-tokens/interchain-tokens/upgrade-tokens#canonical-tokens-simple-wrappers) using the [`InterchainTokenFactory`](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/InterchainTokenFactory.sol) [contract](https://etherscan.io/address/0x83a93500d23Fbc3e82B410aD07A6a9F7A0670D66).
+If you would like to create a wrapped, bridgeable version of your ERC-20 token on other chains, you can register it as a [Canonical Interchain Token](/dev/send-tokens/interchain-tokens/upgrade-tokens/#canonical-tokens-simple-wrappers) using the [`InterchainTokenFactory`](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/InterchainTokenFactory.sol) [contract](https://etherscan.io/address/0x83a93500d23Fbc3e82B410aD07A6a9F7A0670D66).
 
 **Each token can only be registered once as a Canonical Interchain Token.** This ensures unique and streamlined token management across different blockchains. Though you can register your Canonical Interchain Token directly through the [Interchain Token Portal](https://testnet.interchain.axelar.dev/), there are times where you may want to do so programmatically, such as when you have already deployed a token on one chain and wish to deploy a wrapped version of that token on another chain.
 
@@ -488,11 +488,11 @@ Great job making it this far! To show your support to the author of this tutoria
 
 You can also explore other functionalities of the Interchain Token Service, such as:
 
-- [Transforming an existing token into an Interchain token](https://docs.axelar.dev/dev/send-tokens/interchain-tokens/upgrade-tokens#canonical-tokens-simple-wrappers)
-- [Turn deployed tokens on multiple chains into Interchain Tokens](https://docs.axelar.dev/dev/send-tokens/interchain-tokens/upgrade-tokens#link-deployed-tokens-on-multiple-chains-into-interchain-tokens)
+- [Transforming an existing token into an Interchain token](/dev/send-tokens/interchain-tokens/upgrade-tokens/#canonical-tokens-simple-wrappers)
+- [Turn deployed tokens on multiple chains into Interchain Tokens](/dev/send-tokens/interchain-tokens/upgrade-tokens/#link-deployed-tokens-on-multiple-chains-into-interchain-tokens)
 
 ## References
 
-- [Interchain Token Service Documentation](https://docs.axelar.dev/dev/send-tokens/interchain-tokens/intro)
+- [Interchain Token Service Documentation](/dev/send-tokens/interchain-tokens/intro/)
 - [Interchain Tokens GitHub Repository](https://github.com/axelarnetwork/interchain-token-service/tree/main)
 - [AxelarJS SDK](https://github.com/axelar-network/axelarjs-sdk)

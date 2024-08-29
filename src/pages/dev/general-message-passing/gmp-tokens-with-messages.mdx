@@ -8,17 +8,16 @@ import { Callout } from "/src/components/callout"
   height="315"
   src="https://www.youtube.com/embed/VkdRSrf4cmY"
   title="YouTube video player"
-  frameBorder="0"
   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
   allowFullScreen
 ></iframe>
 
 To call chain B from chain A and send some tokens along the way, the user needs to call `callContractWithToken` on the gateway of chain A, specifying:
 
-- The destination chain, which must be an EVM chain from [Chain names](/dev/reference/mainnet-chain-names).
+- The destination chain, which must be an EVM chain from [Chain names](/dev/reference/mainnet-chain-names/).
 - The destination contract address, which must inherit from `AxelarExecutable` defined in [AxelarExecutable.sol](https://github.com/axelarnetwork/axelar-gmp-sdk-solidity/blob/main/contracts/executables/AxelarExecutable.sol).
 - The payload `bytes` to pass to the destination contract.
-- The symbol of the token to transfer, which must be a supported asset ([Mainnet](../reference/mainnet-contract-addresses) | [Testnet](../reference/testnet-contract-addresses)).
+- The symbol of the token to transfer, which must be a supported asset ([Mainnet](/resources/contract-addresses/mainnet/) | [Testnet](/resources/contract-addresses/testnet/)).
 - The amount of the token to transfer.
 
 <Callout emoji="🚨">

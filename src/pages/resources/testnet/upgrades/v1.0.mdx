@@ -1,8 +1,8 @@
-# Testnet upgrade: v1.0.0
+# Testnet upgrade: v1.0
 
 import { Callout } from '/src/components/callout'
 
-## About the v1.0.0 upgrade
+## About the v1.0 upgrade
 
 This release finalizes initial support for [Amplifier](/dev/amplifier/introduction).
 
@@ -73,7 +73,7 @@ Example using join scripts in [axelarate-community git repo](https://github.com/
 # in axelarate-community repo (https://github.com/axelarnetwork/axelarate-community)
 git checkout main
 git pull
-KEYRING_PASSWORD="pw-1" ./scripts/node.sh -n testnet -a v1.0.0
+KEYRING_PASSWORD="pw-1" ./scripts/node.sh -n testnet -a v1.0.2
 # For validators, restart vald/tofnd
-KEYRING_PASSWORD="pw-1" TOFND_PASSWORD="pw-2" ./scripts/validator-tools-host.sh -n testnet -a v1.0.0 -q v0.10.1
+KEYRING_PASSWORD="pw-1" TOFND_PASSWORD="pw-2" ./scripts/validator-tools-host.sh -n testnet -a v1.0.2 -q v0.10.1
 ```

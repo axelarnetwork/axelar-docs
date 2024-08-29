@@ -44,6 +44,12 @@ tofnd -m create
 mv ~/.tofnd/export ~/.tofnd/export-new-location
 ```
 
+Now run tofnd.
+
+```bash
+tofnd
+```
+
 </tab-item>
 
 <tab-item title="Binary">
@@ -58,6 +64,12 @@ Create a default mnemonic and configuration in `~/.tofnd/`, then back it up and 
 mv ~/.tofnd/export ~/.tofnd/export-new-location
 ```
 
+Now run tofnd.
+
+```bash
+tofnd
+```
+
 </tab-item>
 
 <tab-item title="Docker">
@@ -68,10 +80,11 @@ docker pull axelarnet/tofnd:v1.0.1
 docker run -p 50051:50051 --env MNEMONIC_CMD=auto --env NOPASSWORD=true --env ADDRESS=0.0.0.0 -v tofnd:/.tofnd axelarnet/tofnd:v1.0.1
 ```
 
-Leave this process running in the background, and perform additional commands in a new terminal window or shell.
 </tab-item>
 
 </tabs>
+
+Leave this process running in the background, and perform additional commands in a new terminal window or shell.
 
 ## Set up `ampd`
 
@@ -84,24 +97,24 @@ Leave this process running in the background, and perform additional commands in
 
 <tab-item title="Binary">
   Download the [`ampd`
-  binary](https://github.com/axelarnetwork/axelar-amplifier/releases/tag/ampd-v0.6.0)
+  binary](https://github.com/axelarnetwork/axelar-amplifier/releases/tag/ampd-v1.0.0)
   depending on the type of machine you have:
   - Linux:
-  [`ampd-linux-amd64-v0.6.0`](https://github.com/axelarnetwork/axelar-amplifier/releases/download/ampd-v0.6.0/ampd-linux-amd64-v0.6.0)
+  [`ampd-linux-amd64-v1.0.0`](https://github.com/axelarnetwork/axelar-amplifier/releases/download/ampd-v1.0.0/ampd-linux-amd64-v1.0.0)
   - Apple Silicon Mac:
-  [`ampd-darwin-arm64-v0.6.0`](https://github.com/axelarnetwork/axelar-amplifier/releases/download/ampd-v0.6.0/ampd-darwin-arm64-v0.6.0)
+  [`ampd-darwin-arm64-v1.0.0`](https://github.com/axelarnetwork/axelar-amplifier/releases/download/ampd-v1.0.0/ampd-darwin-arm64-v1.0.0)
   - Intel Mac:
-  [`ampd-darwin-amd64-v0.6.0`](https://github.com/axelarnetwork/axelar-amplifier/releases/download/ampd-v0.6.0/ampd-darwin-amd64-v0.6.0)
+  [`ampd-darwin-amd64-v1.0.0`](https://github.com/axelarnetwork/axelar-amplifier/releases/download/ampd-v1.0.0/ampd-darwin-amd64-v1.0.0)
 </tab-item>
 
 <tab-item title="Docker">
-From [Docker](https://hub.docker.com/r/axelarnet/axelar-ampd), pull and run the `0.6.0` version of `ampd`:
+From [Docker](https://hub.docker.com/r/axelarnet/axelar-ampd), pull and run the `1.0.0` version of `ampd`:
 
 
 
 ```bash
-docker pull axelarnet/axelar-ampd:v0.6.0
-docker run axelarnet/axelar-ampd:v0.6.0 verifier-address
+docker pull axelarnet/axelar-ampd:v1.0.0
+docker run axelarnet/axelar-ampd:v1.0.0 verifier-address
 ```
 
 </tab-item>
@@ -121,30 +134,30 @@ This will allow you to begin commands with `ampd`. If you set up `ampd` through 
 1. Add a symbolic link named `ampd` in your binaries folder.:
 
     ```bash
-    sudo ln -s ~/Downloads/ampd-*-v0.6.0 /usr/local/bin/ampd
+    sudo ln -s ~/Downloads/ampd-*-v1.0.0 /usr/local/bin/ampd
     ```
 
 1. Make the binary executable:
 
    ```bash
-   chmod a+x ~/Downloads/ampd-*-v0.6.0
+   chmod a+x ~/Downloads/ampd-*-v1.0.0
    ```
 
 1. Restart your terminal.
 
-1. Run `ampd --version` to make sure that the right version of `ampd` is being used. It should be `ampd 0.6.0`.
+1. Run `ampd --version` to make sure that the right version of `ampd` is being used. It should be `ampd 1.0.0`.
 
 </tab-item>
 
 <tab-item title="<code>bash</code> alias">
    <Callout>
-   Replace `ampd-darwin-arm64-v0.6.0` with the [`ampd` binary you downloaded](/validator/amplifier/verifier-onboarding#set-up-ampd).
+   Replace `ampd-darwin-arm64-v1.0.0` with the [`ampd` binary you downloaded](/validator/amplifier/verifier-onboarding#set-up-ampd).
    </Callout>
 
 1. Add an alias to `ampd` at the end of the `.bashrc` file on your machine:
 
    ```bash
-   echo "ampd=~/Downloads/ampd-darwin-arm64-v0.6.0" >> ~/.bashrc
+   echo "ampd=~/Downloads/ampd-darwin-arm64-v1.0.0" >> ~/.bashrc
    ```
 
 1. Save and close the file.
@@ -157,18 +170,18 @@ This will allow you to begin commands with `ampd`. If you set up `ampd` through 
 
 1. Restart your terminal.
 
-1. Run `ampd --version` to make sure that the right version of `ampd` was installed on your machine. It should be `ampd 0.6.0`.
+1. Run `ampd --version` to make sure that the right version of `ampd` was installed on your machine. It should be `ampd 1.0.0`.
 
 </tab-item>
 
 <tab-item title="<code>zsh</code> alias">
    <Callout>
-   Replace `ampd-darwin-arm64-v0.6.0` with the [`ampd` binary you downloaded](/validator/amplifier/verifier-onboarding#set-up-ampd).
+   Replace `ampd-darwin-arm64-v1.0.0` with the [`ampd` binary you downloaded](/validator/amplifier/verifier-onboarding#set-up-ampd).
    </Callout>
 1. Add an alias to `ampd` at the end of the `.zshrc` file on your machine:
 
     ```bash
-    echo "ampd=~/Downloads/ampd-darwin-arm64-v0.6.0" >> ~/.zshrc
+    echo "ampd=~/Downloads/ampd-darwin-arm64-v1.0.0" >> ~/.zshrc
     ```
 
 1. Save and close the file.
@@ -181,7 +194,7 @@ This will allow you to begin commands with `ampd`. If you set up `ampd` through 
 
 1. Restart your terminal.
 
-1. Run `ampd --version` to make sure that the right version of `ampd` was installed on your machine. It should be `ampd 0.6.0`.
+1. Run `ampd --version` to make sure that the right version of `ampd` was installed on your machine. It should be `ampd 1.0.0`.
 
 </tab-item>
 
@@ -225,21 +238,7 @@ The following are an example `config.toml` files:
     [[handlers]]
     cosmwasm_contract="axelar15nczwuqh0zcu6syeqsc4td6dphql7n2p7cgkl9raz97z5s3zdjrsc8we9y"
     type="MultisigSigner"
-
-    [[handlers]]
-    chain_name="avalanche"
-    chain_rpc_url="https://avalanche-fuji-c-chain-rpc.publicnode.com"
-    cosmwasm_contract="axelar1elaymnd2epmfr498h2x9p2nezc4eklv95uv92u9csfs8wl75w7yqdc0h67"
-    type="EvmMsgVerifier"
-    chain_finalization="RPCFinalizedBlock"
     
-    [[handlers]]
-    chain_name="avalanche"
-    chain_rpc_url="https://avalanche-fuji-c-chain-rpc.publicnode.com"
-    cosmwasm_contract="axelar1elaymnd2epmfr498h2x9p2nezc4eklv95uv92u9csfs8wl75w7yqdc0h67"
-    type="EvmVerifierSetVerifier"
-    chain_finalization="RPCFinalizedBlock"
-
     [[handlers]]
     chain_name="ethereum-sepolia"
     chain_rpc_url="https://rpc.ankr.com/eth_sepolia"
@@ -253,6 +252,20 @@ The following are an example `config.toml` files:
     cosmwasm_contract="axelar1sxujcvele5eqtx0xc4wuy6jr0m28y0yt8spn7efc3527vc2j2xrqk6wkay"
     type="EvmVerifierSetVerifier"
     chain_finalization="RPCFinalizedBlock"
+    
+    [[handlers]]
+    chain_name="avalanche"
+    chain_rpc_url="https://avalanche-fuji-c-chain-rpc.publicnode.com"
+    cosmwasm_contract="axelar1elaymnd2epmfr498h2x9p2nezc4eklv95uv92u9csfs8wl75w7yqdc0h67"
+    type="EvmMsgVerifier"
+    chain_finalization="ConfirmationHeight"
+    
+    [[handlers]]
+    chain_name="avalanche"
+    chain_rpc_url="https://avalanche-fuji-c-chain-rpc.publicnode.com"
+    cosmwasm_contract="axelar1elaymnd2epmfr498h2x9p2nezc4eklv95uv92u9csfs8wl75w7yqdc0h67"
+    type="EvmVerifierSetVerifier"
+    chain_finalization="ConfirmationHeight"
     ```
 </tab-item>
 <tab-item title="devnet-amplifier">
@@ -285,13 +298,6 @@ The following are an example `config.toml` files:
    type="MultisigSigner"
 
    [[handlers]]
-   chain_name="avalanche"
-   chain_rpc_url="https://avalanche-fuji-c-chain-rpc.publicnode.com"
-   cosmwasm_contract="axelar1ty7mx0cllgz8xuvhn2j7e3qy8999ssgmjtktyqetl335em0g88lq6rjhl2"
-   type="EvmMsgVerifier"
-   chain_finalization="RPCFinalizedBlock"
-
-   [[handlers]]
    chain_name="ethereum-sepolia"
    chain_rpc_url="https://rpc.ankr.com/eth_sepolia"
    cosmwasm_contract="axelar1e6jnuljng6aljk0tjct6f0hl9tye6l0n9p067pwx2374h82dmr0s9qcqy9"
@@ -299,15 +305,22 @@ The following are an example `config.toml` files:
    chain_finalization="RPCFinalizedBlock"
 
    [[handlers]]
-   chain_name="avalanche"
-   chain_rpc_url="https://avalanche-fuji-c-chain-rpc.publicnode.com"
-   cosmwasm_contract="axelar1ty7mx0cllgz8xuvhn2j7e3qy8999ssgmjtktyqetl335em0g88lq6rjhl2"
+   chain_name="ethereum-sepolia"
+   chain_rpc_url="https://rpc.ankr.com/eth_sepolia"
+   cosmwasm_contract="axelar1e6jnuljng6aljk0tjct6f0hl9tye6l0n9p067pwx2374h82dmr0s9qcqy9"
    type="EvmVerifierSetVerifier"
 
    [[handlers]]
-   chain_name="ethereum-sepolia"
-   chain_rpc_url="https://rpc.ankr.com/eth_sepolia"
-   cosmwasm_contract="axelar1e6jnuljng6aljk0tjct6f0hl9tye6l0n9p067pwx2374h82dmr0s9qcqy9"
+   chain_name="avalanche"
+   chain_rpc_url="https://avalanche-fuji-c-chain-rpc.publicnode.com"
+   cosmwasm_contract="axelar1ty7mx0cllgz8xuvhn2j7e3qy8999ssgmjtktyqetl335em0g88lq6rjhl2"
+   type="EvmMsgVerifier"
+   chain_finalization="RPCFinalizedBlock"
+
+   [[handlers]]
+   chain_name="avalanche"
+   chain_rpc_url="https://avalanche-fuji-c-chain-rpc.publicnode.com"
+   cosmwasm_contract="axelar1ty7mx0cllgz8xuvhn2j7e3qy8999ssgmjtktyqetl335em0g88lq6rjhl2"
    type="EvmVerifierSetVerifier"
    ```
 </tab-item>
@@ -319,7 +332,7 @@ The following are an example `config.toml` files:
    event_buffer_cap=100000
 
    [service_registry]
-   cosmwasm_contract=[TBD]
+   cosmwasm_contract="axelar1rpj2jjrv3vpugx9ake9kgk3s2kgwt0y60wtkmcgfml5m3et0mrls6nct9m"
 
    [broadcast]
    batch_gas_limit="20000000"
@@ -338,28 +351,56 @@ The following are an example `config.toml` files:
    url="http://127.0.0.1:50051"
 
    [[handlers]]
-   cosmwasm_contract="[TBD]"
+   cosmwasm_contract="axelar14a4ar5jh7ue4wg28jwsspf23r8k68j7g5d6d3fsttrhp42ajn4xq6zayy5"
    type="MultisigSigner"
 
-   # For each supported chain
    [[handlers]]
-   chain_name="[chain name]"
-   chain_rpc_url="[node rpc url]"
-   cosmwasm_contract="[voting verifier address]"
-   chain_finalization="[RPCFinalizedBlock or ConfirmationHeight]"
+   chain_name="test-sepolia"
+   chain_rpc_url="https://rpc.ankr.com/eth_sepolia"
+   cosmwasm_contract="axelar1r4rmvn83vrfj4evy5l8cv2nat2v0whm36ds3crn2mhlq8ufmhvts9467zz"
+   chain_finalization="RPCFinalizedBlock"
    type="EvmMsgVerifier"
 
    [[handlers]]
-   chain_name="[chain name]"
-   chain_rpc_url="[node rpc url]"
-   cosmwasm_contract="[voting verifier address]"
-   chain_finalization=["RPCFinalizedBlock" or "ConfirmationHeight"]
+   chain_name="test-sepolia"
+   chain_rpc_url="https://rpc.ankr.com/eth_sepolia"
+   cosmwasm_contract="axelar1r4rmvn83vrfj4evy5l8cv2nat2v0whm36ds3crn2mhlq8ufmhvts9467zz"
+   chain_finalization="RPCFinalizedBlock"
    type="EvmVerifierSetVerifier"
+
+   [[handlers]]
+   chain_name="test-avalanche"
+   chain_rpc_url="https://api.avax-test.network/ext/bc/C/rpc"
+   cosmwasm_contract="axelar1hupk5du59cgu4ps5s637rhakwsq0060ycdp57j2ccevna7wqqzrqnfrr0p"
+   chain_finalization="ConfirmationHeight"
+   type="EvmMsgVerifier"
+
+   [[handlers]]
+   chain_name="test-avalanche"
+   chain_rpc_url="https://api.avax-test.network/ext/bc/C/rpc"
+   cosmwasm_contract="axelar1hupk5du59cgu4ps5s637rhakwsq0060ycdp57j2ccevna7wqqzrqnfrr0p"
+   chain_finalization="ConfirmationHeight"
+   type="EvmVerifierSetVerifier"
+
+   # For each supported chain
+   #[[handlers]]
+   #chain_name="[chain name]"
+   #chain_rpc_url="[node rpc url]"
+   #cosmwasm_contract="[voting verifier address]"
+   #chain_finalization="[RPCFinalizedBlock or ConfirmationHeight]"
+   #type="EvmMsgVerifier"
+
+   #[[handlers]]
+   #chain_name="[chain name]"
+   #chain_rpc_url="[node rpc url]"
+   #cosmwasm_contract="[voting verifier address]"
+   #chain_finalization=["RPCFinalizedBlock" or "ConfirmationHeight"]
+   #type="EvmVerifierSetVerifier"
    ```
 </tab-item>
 </tabs>
 
-See the [`ampd` README](https://github.com/axelarnetwork/axelar-amplifier/blob/main/ampd/README.md) on GitHub for instructions on formatting a `config` file for your own projects.
+See the [`ampd` README](https://github.com/axelarnetwork/axelar-amplifier/blob/main/ampd/README.md) on GitHub for instructions on formatting a `config` file for your own projects. For `chain_finalization`, if the chain supports the `finalized` tag via the RPC API, choose `RPCFinalizedBlock`, otherwise choose `ConfirmationHeight`.
 
 <Callout>
   If you get a transport error with an `ampd` command, make sure that you have
@@ -381,7 +422,7 @@ Prior to running the `ampd` daemon, you will need to set up your wallet with dev
      Silicon Mac, you can disable the
      [gatekeeper](https://support.apple.com/guide/security/gatekeeper-and-runtime-protection-sec5599b66df/web)
      for a single binary with `sudo xattr -d com.apple.quarantine
-     ~/Downloads/ampd-darwin-arm64-v0.6.0` or disable gatekeeper globally with
+     ~/Downloads/ampd-darwin-arm64-v1.0.0` or disable gatekeeper globally with
      `sudo spctl --master-disable`.
    </Callout>
 
@@ -403,7 +444,7 @@ Prior to running the `ampd` daemon, you will need to set up your wallet with dev
    ampd bond-verifier validators 100 uverifiers
    ```
 
-   Bonded verifiers will stay bonded until they unbond or are removed by governance.
+   Bonded verifiers will stay bonded until they unbond or are removed by governance. The bond for testnet is 100000000000uaxl (100k AXL).
 
 1. Register your public key with `ecdsa` or `ed25519`:
 

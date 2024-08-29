@@ -6,7 +6,7 @@ This example shows the execution of a GMP call from the Ethereum Sepolia to the 
 
 You will need:
 
-- An [`axelard` node](/dev/amplifier/chain-integration) that is [connected to the devnet](/validator/amplifier/verifier-onboarding)
+- An [`axelard` node](/dev/amplifier/chain-integration/introduction/) that is [connected to the devnet](/validator/amplifier/verifier-onboarding/)
 - A [Solidity contract](https://github.com/cjcobb23/axelar-examples/blob/main/examples/evm/call-contract/CallContract.sol) deployed to the Ethereum Sepolia and Avalanche Fuji testnets
 
 ## Helpful references
@@ -32,8 +32,8 @@ axelard tx wasm execute axelar18csycs4vm6varkp00apuqlsm7v4twg8jsljk8wfdd7cghr7g4
           {
             "cc_id":
               {
-                "chain":"ethereum-sepolia",
-                "id":"0xeafbc1283699c49ba4f79ec43d8749fd82ca4ee14c236787dd25a2f7d4932daa-60"
+                "source_chain":"ethereum-sepolia",
+                "message_id":"0xeafbc1283699c49ba4f79ec43d8749fd82ca4ee14c236787dd25a2f7d4932daa-60"
               },
             "destination_chain":"avalanche",
             "destination_address":"0xCa85f85C72df5f8428a440887CA7c449D94e0D0c",
@@ -56,8 +56,8 @@ axelard tx wasm execute axelar18csycs4vm6varkp00apuqlsm7v4twg8jsljk8wfdd7cghr7g4
           {
             "cc_id":
               {
-                "chain":"ethereum-sepolia",
-                "id":"0xeafbc1283699c49ba4f79ec43d8749fd82ca4ee14c236787dd25a2f7d4932daa-60"
+                "source_chain":"ethereum-sepolia",
+                "message_id":"0xeafbc1283699c49ba4f79ec43d8749fd82ca4ee14c236787dd25a2f7d4932daa-60"
               },
             "destination_chain":"avalanche",
             "destination_address":"0xCa85f85C72df5f8428a440887CA7c449D94e0D0c",
@@ -80,8 +80,8 @@ axelard tx wasm execute axelar1qum2tr7hh4y7ruzew68c64myjec0dq2s2njf6waja5t0w879l
         "message_ids":
           [
             {
-              "chain":"ethereum-sepolia",
-              "id":"0xeafbc1283699c49ba4f79ec43d8749fd82a4ee14c236787dd25a2f7d4932daa-60"
+              "source_chain":"ethereum-sepolia",
+              "message_id":"0xeafbc1283699c49ba4f79ec43d8749fd82a4ee14c236787dd25a2f7d4932daa-60"
             }
           ]
       }
@@ -103,7 +103,7 @@ Wait for signing to complete, which usually takes 1-3 blocks. Then call `get_pro
 ```bash
 axelard q wasm contract-state smart axelar1qum2tr7hh4y7ruzew68c64myjec0dq2s2njf6waja5t0w879lutqv062tl \
   '{
-    "get_proof":
+    "proof":
       {
         "multisig_session_id":"1"
       }
