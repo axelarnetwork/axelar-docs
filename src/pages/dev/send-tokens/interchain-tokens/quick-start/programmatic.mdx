@@ -23,7 +23,7 @@ import { Callout } from '/src/components/callout'
 </Callout>
 
 
-### Deploy interchain token with ITS
+### Deploy new interchain token with ITS
 If you are starting fresh and want to deploy a brand new token that will have bridging from day one, then ITS offers you the ability to deploy a token directly through its own contract.
 1. Install the [Axelar ITS](https://www.npmjs.com/package/@axelar-network/interchain-token-service) dependency
    ```bash
@@ -45,16 +45,16 @@ If you are starting fresh and want to deploy a brand new token that will have br
 1. Deploy a remote interchain token
     ```solidity
     bytes32 tokenId = its.deployRemoteInterchainToken{value: msg.value}(
-        "ethereum", //originalChainName
+        'Ethereum', //originalChainName
         0xabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefab, //salt
         msg.sender, //address to distribute token on dest chain
-        "avalanche", //destinationChain
+        "Avalanche", //destinationChain
         msg.value //gas sent for deployment
     )
     ```
     [deploy a remote interchain token](https://github.com/axelarnetwork/interchain-token-service/blob/9edc4318ac1c17231e65886eea72c0f55469d7e5/contracts/InterchainTokenFactory.sol#L163) as a cross-chain transaction. The token that is created will be connected to ITS upon deployment.
 
-### Integrate interchain token with ITS
+### Integrate existing interchain token with ITS
 
 If you own an ERC-20 token on a single chain and want a wrapped, bridgeable version on other chains, register it as a [Canonical Token](/dev/send-tokens/glossary/#canonical-interchain-token) with the [Interchain Token Service](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/InterchainTokenService.sol) using the [Interchain Token Factory contract](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/InterchainTokenFactory.sol). Each token can only be registered a single time as a canonical chain on its "home chain". This can be done via the [ITS Portal](/dev/send-tokens/interchain-tokens/quick-start/no-code/) no-code solution, but it can also be done directly via the contract.
 1. Install the [Axelar ITS](https://www.npmjs.com/package/@axelar-network/interchain-token-service) dependency
@@ -73,9 +73,9 @@ If you own an ERC-20 token on a single chain and want a wrapped, bridgeable vers
 1. Deploy a remote canonical interchain token
     ```solidity
     bytes32 tokenId = its.deployRemoteCanonicalInterchainToken{value: msg.value}(
-        'ethereum', //originalChain
+        'Ethereum', //originalChain
         myTokenAddress, //originalTokenAddress
-        'avalanche', //destinationChain
+        'Avalanche', //destinationChain
         msg.value //gas sent for deployment
     )
     ```
@@ -85,7 +85,7 @@ If you own an ERC-20 token on a single chain and want a wrapped, bridgeable vers
 
 Custom tokens are tokens that are deployed on their own as opposed to tokens deployed via ITS itself. Once integrated with ITS across different chains, custom tokens will become bridgeable between different blockchains.
 
-### Integrate a custom token with ITS
+### Integrate an existing custom token with ITS
 
 1. Install the [Axelar ITS](https://www.npmjs.com/package/@axelar-network/interchain-token-service) dependency
 
@@ -141,7 +141,7 @@ Custom tokens are tokens that are deployed on their own as opposed to tokens dep
    ```solidity
    its.interchainTransfer{value: msg.value}(
        interchainTokenId, //tokenId
-       'ethereum',  //destinationChain
+       'Ethereum',  //destinationChain
        address(1), //receiver address
        123, //amount
        0x, //metadata
