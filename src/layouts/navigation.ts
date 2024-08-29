@@ -29,7 +29,7 @@ export const getNavigation = (section) => {
                     },
                     {
                       title: "Programmatic",
-                      href: "/dev/send-tokens/interchain-tokens//quick-start/programmatic/"
+                      href: "/dev/send-tokens/interchain-tokens/quick-start/programmatic/"
                     }
                   ]
                 },
