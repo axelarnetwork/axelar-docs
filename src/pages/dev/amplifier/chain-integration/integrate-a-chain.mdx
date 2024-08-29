@@ -338,7 +338,7 @@ You can also deploy a custom implementation of the gateway, verifier, and prover
             "verifier_set_diff_threshold": 1,
             "encoder": "abi",
             "key_type": "ecdsa",
-            "domain_separator": "6973c72935604464b28827141b0a463af8e3487616de69c5aa0c785392c9fb9f" # Hash of chain name, admin address, and code ID. Value must be a String in hex format without `0x`.
+            "domain_separator": "6973c72935604464b28827141b0a463af8e3487616de69c5aa0c785392c9fb9f"
         }' \
         --keyring-backend test \
         --from wallet \
@@ -348,6 +348,8 @@ You can also deploy a custom implementation of the gateway, verifier, and prover
         --label test-prover  \
         --admin $MY_WALLET_ADDRESS
     ```
+
+The `domain_separator` is a hash of chain name, admin address, and code ID. Value must be a String in hex format without `0x`.
 
 1. Search the output of this command and note the `_contract_address`.
 
