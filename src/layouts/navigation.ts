@@ -255,6 +255,10 @@ export const getNavigation = (section) => {
               href: "/dev/amplifier/introduction/",
             },
             {
+              title: "Roadmap",
+              href: "/dev/amplifier/roadmap/",
+            },
+            {
               title: "Integration Overview",
               href: "/dev/amplifier/chain-integration/introduction/",
             },
