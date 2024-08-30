@@ -25,7 +25,7 @@ These links redirect to pages in the documentation whose slugs may otherwise be 
 - **Quickstart:** https://docs.axelar.dev/its/create-token
 - **Upgrade Token:** https://docs.axelar.dev/its/upgrade-token
 - **Interchain Token Executable:** https://docs.axelar.dev/its/token-executable
-- **Rate Limit:** https://docs.axelar.dev/its/rate-limit
+- **Flow Limit:** https://docs.axelar.dev/its/flow-limit
 - **Programmatically Create a Token:** https://docs.axelar.dev/its/create-token-tutorial
 - **Programmatically Create a Canonical Token:** https://docs.axelar.dev/its/canonical-token-tutorial
 - **Link Custom Tokens into Interchain Tokens:** https://docs.axelar.dev/its/link-token-tutorial

@@ -40,7 +40,7 @@ If you are starting fresh and want to deploy a brand new token that will have br
         msg.sender //address receiving initially minted tokens
     )
     ```
-    [deploy an interchain token](https://github.com/axelarnetwork/interchain-token-service/blob/9edc4318ac1c17231e65886eea72c0f55469d7e5/contracts/InterchainTokenFactory.sol#L118) on the same chain. This token is connected to ITS upon deployment.
+    [deploy an interchain token](https://github.com/axelarnetwork/interchain-token-service/blob/9edc4318ac1c17231e65886eea72c0f55469d7e5/contracts/InterchainTokenFactory.sol#L118) on the same chain. This token will be connected to ITS upon deployment.
 
 1. Deploy a remote interchain token
     ```solidity
@@ -52,11 +52,11 @@ If you are starting fresh and want to deploy a brand new token that will have br
         msg.value //gas sent for deployment
     )
     ```
-    [deploy a remote interchain token](https://github.com/axelarnetwork/interchain-token-service/blob/9edc4318ac1c17231e65886eea72c0f55469d7e5/contracts/InterchainTokenFactory.sol#L163) as a cross-chain transaction. The token that is created will be connected to ITS upon deployment.
+    [deploy a remote interchain token](https://github.com/axelarnetwork/interchain-token-service/blob/9edc4318ac1c17231e65886eea72c0f55469d7e5/contracts/InterchainTokenFactory.sol#L163) as a cross-chain transaction. This token will be connected to ITS upon deployment.
 
 ### Integrate existing interchain token with ITS
 
-If you own an ERC-20 token on a single chain and want a wrapped, bridgeable version on other chains, register it as a [Canonical Token](/dev/send-tokens/glossary/#canonical-interchain-token) with the [Interchain Token Service](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/InterchainTokenService.sol) using the [Interchain Token Factory contract](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/InterchainTokenFactory.sol). Each token can only be registered a single time as a canonical chain on its "home chain". This can be done via the [ITS Portal](/dev/send-tokens/interchain-tokens/quick-start/no-code/) no-code solution, but it can also be done directly via the contract.
+If you own an ERC-20 token on a single chain and want a wrapped, bridgeable version on other chains, register it as a [Canonical Interchain Token](/dev/send-tokens/glossary/#canonical-interchain-token) using the [Interchain Token Factory contract](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/InterchainTokenFactory.sol#L20). Each token can only be registered a single time as a canonical chain on its "home chain". This can be done via the [ITS Portal](/dev/send-tokens/interchain-tokens/quick-start/no-code/) no-code solution, but it can also be done directly via the contract.
 1. Install the [Axelar ITS](https://www.npmjs.com/package/@axelar-network/interchain-token-service) dependency
    ```bash
    npm i @axelar-network/interchain-token-service
@@ -79,11 +79,11 @@ If you own an ERC-20 token on a single chain and want a wrapped, bridgeable vers
         msg.value //gas sent for deployment
     )
     ```
-    The [deploy remote canonical interchain](https://github.com/axelarnetwork/interchain-token-service/blob/9edc4318ac1c17231e65886eea72c0f55469d7e5/contracts/InterchainTokenFactory.sol#L257) token will deploy a token that will be connected to your token that you registered on the home chain. Tokens being bridged out of the home chain will be locked there and tokens on the remote chains can be traced back to a locked token on the home chain. 
+    The [deploy remote canonical interchain](https://github.com/axelarnetwork/interchain-token-service/blob/9edc4318ac1c17231e65886eea72c0f55469d7e5/contracts/InterchainTokenFactory.sol#L257) token will deploy a token that will be connected to your token that you registered on the home chain. Tokens being bridged out of the home chain will be locked there and tokens on the remote blockchains can be traced back to a locked token on the home chain. 
 
 ## Custom Token
 
-Custom tokens are tokens that are deployed on their own as opposed to tokens deployed via ITS itself. Once integrated with ITS across different chains, custom tokens will become bridgeable between different blockchains.
+Custom tokens are tokens that are deployed on their own as opposed to tokens deployed via ITS itself. These tokens are then integrated with ITS across different chains by deploying a token manager for those tokens. Once a custom token has a token manager deployed for a given chain it becomes bridgeable between different blockchains also have a token connected to a token manager and shares the same [interchainTokenId](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/InterchainTokenService.sol#L228).
 
 ### Integrate an existing custom token with ITS
 
