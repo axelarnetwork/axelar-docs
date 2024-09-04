@@ -90,9 +90,9 @@ You can either use the existing deployed contracts and on the devnet via their `
 <tab-item title="Use pre-deployed contracts">
 Use the existing deployments for all three contracts, making note of the existing deployment's `code_id`:
 
-- Voting verifier (code_id: `500`)
-- Gateway (code_id: `493`)
-- Mutisig prover (code_id: `495`)
+- Voting verifier (code_id: `626`)
+- Gateway (code_id: `616`)
+- Mutisig prover (code_id: `618`)
 </tab-item>
 
 <tab-item title="Build and deploy contracts">
@@ -215,7 +215,7 @@ You can also deploy a custom implementation of the gateway, verifier, and prover
 1. Instantiate the voting verifier contract on the command line. See the [testnet](https://github.com/axelarnetwork/axelar-contract-deployments/blob/main/axelar-chains-config/info/testnet.json), [devnet-amplifier](https://github.com/axelarnetwork/axelar-contract-deployments/blob/main/axelar-chains-config/info/devnet-amplifier.json), or [devnet-verifiers](https://github.com/axelarnetwork/axelar-contract-deployments/blob/main/axelar-chains-config/info/devnet-verifiers.json) configurations for the correct `code_id`.
 
     ```bash
-    export VERIFIER_CODE_ID=500 # Set your Code ID
+    export VERIFIER_CODE_ID=626
     export MY_WALLET_ADDRESS="axelar14r0xzwz8hmkshau39dyja5kx503dx6zu52623h"
     export MY_SOURCE_CHAIN_GATEWAY_ADDRESS="0xCa85f85C72df5f8428a440887CA7c449D94e0D0c"
     ```
@@ -228,7 +228,7 @@ You can also deploy a custom implementation of the gateway, verifier, and prover
             "service_name":"validators",
             "source_gateway_address":"'"$MY_SOURCE_CHAIN_GATEWAY_ADDRESS"'",
             "voting_threshold":["1","1"],
-            "block_expiry":10,
+            "block_expiry":"10",
             "confirmation_height":1,
             "source_chain":"test",
             "rewards_address":"axelar1vaj9sfzc3z0gpel90wu4ljutncutv0wuhvvwfsh30rqxq422z89qnd989l",
@@ -244,9 +244,8 @@ You can also deploy a custom implementation of the gateway, verifier, and prover
         --admin $MY_WALLET_ADDRESS
     ```
 
-    [Valid Message IDs](https://github.com/axelarnetwork/axelar-amplifier/blob/main/packages/axelar-wasm-std/src/msg_id/mod.rs#L43) and [Valid Address Formats](https://github.com/axelarnetwork/axelar-amplifier/blob/main/packages/axelar-wasm-std/src/address.rs#L17) can be found in the Amplifier source.
-    
-    
+   Valid [`MessageID`s](https://github.com/axelarnetwork/axelar-amplifier/blob/main/packages/axelar-wasm-std/src/msg_id/mod.rs#L43) and [`AddressFormat`s](https://github.com/axelarnetwork/axelar-amplifier/blob/main/packages/axelar-wasm-std/src/address.rs#L17) can be found in the Amplifier source code.
+
 1. Search the output of this command and note the `_contract_address`. It will be in the in `logs.events` property. You'll need to do this for each instantiation to use in future steps.
 
     ```bash
@@ -285,12 +284,12 @@ You can also deploy a custom implementation of the gateway, verifier, and prover
     }
     ```
     
-### Instantiate the gateway
+## Instantiate the gateway
 
 1. Instantiate the gateway contract on the command line with the verifier address from the previous step.
 
     ```bash
-    export GATEWAY_CODE_ID=493 # Set your Code ID
+    export GATEWAY_CODE_ID=616
     export MY_VERIFIER_ADDRESS="axelar1x3960tw9cml6xsqtvzt4gmw3scauaxdd83rhs9dmlpjfjf9z9s7qjx8g0j"
     ```
 1. Instantiate the contract.
@@ -317,7 +316,7 @@ You can also deploy a custom implementation of the gateway, verifier, and prover
 1. Instantiate the multisig prover contract on the command line with the gateway address from the previous step.
 
     ```bash
-    export PROVER_CODE_ID=495 # Set your Code ID
+    export PROVER_CODE_ID=618
     export MY_GATEWAY_ADDRESS="axelar1ufs3tlq4umljk0qfe8k5ya0x6hpavn897u2cnf9k0en9jr7qarqqa9263g"
     export MY_CHAIN_ID=43113
     ```
@@ -339,7 +338,7 @@ You can also deploy a custom implementation of the gateway, verifier, and prover
             "verifier_set_diff_threshold": 1,
             "encoder": "abi",
             "key_type": "ecdsa",
-            "domain_separator": "6973c72935604464b28827141b0a463af8e3487616de69c5aa0c785392c9fb9f" # Hash of chain name, admin address, and code ID. Value must be a String in hex format without `0x`.
+            "domain_separator": "6973c72935604464b28827141b0a463af8e3487616de69c5aa0c785392c9fb9f"
         }' \
         --keyring-backend test \
         --from wallet \
@@ -349,6 +348,8 @@ You can also deploy a custom implementation of the gateway, verifier, and prover
         --label test-prover  \
         --admin $MY_WALLET_ADDRESS
     ```
+
+The `domain_separator` is a hash of chain name, admin address, and code ID. Value must be a String in hex format without `0x`.
 
 1. Search the output of this command and note the `_contract_address`.
 
