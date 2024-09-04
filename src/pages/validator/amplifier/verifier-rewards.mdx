@@ -59,7 +59,7 @@ Use `rewards_pool()` to check the funds in a pool:
     ```bash
     export REWARDS_CONTRACT_ADDRESS="axelar1guczj53xxl4347adagh23eelyhnxvugw2nqq0q0dr6kws7q35jyqqnan33"
     export CHAIN_NAME="avalanche"
-    export VOTING_VERIFIER_OR_MULTISIG_CONTRACT_ADDRESS="axelar1elaymnd2epmfr498h2x9p2nezc4eklv95uv92u9csfs8wl75w7yqdc0h67" || "0x7eeE33A59Db27d762AA1Fa31b26efeE0dABa1132"
+    export VOTING_VERIFIER_OR_MULTISIG_CONTRACT_ADDRESS="axelar1elaymnd2epmfr498h2x9p2nezc4eklv95uv92u9csfs8wl75w7yqdc0h67" # or "axelar1qt0gkcrvcpv765k8ec4tl2svvg6hd3e3td8pvg2fsncrt3dzjefswsq3w2"
     export RPC="http://devnet-amplifier.axelar.dev:26657"
     ```
 </tab-item>
@@ -68,7 +68,7 @@ Use `rewards_pool()` to check the funds in a pool:
     ```bash
     export REWARDS_CONTRACT_ADDRESS="axelar1vaj9sfzc3z0gpel90wu4ljutncutv0wuhvvwfsh30rqxq422z89qnd989l"
     export CHAIN_NAME="fantom"
-    export VOTING_VERIFIER_OR_MULTISIG_CONTRACT_ADDRESS="axelar1elaymnd2epmfr498h2x9p2nezc4eklv95uv92u9csfs8wl75w7yqdc0h67" || "0x7eeE33A59Db27d762AA1Fa31b26efeE0dABa1132"
+    export VOTING_VERIFIER_OR_MULTISIG_CONTRACT_ADDRESS="axelar1ty7mx0cllgz8xuvhn2j7e3qy8999ssgmjtktyqetl335em0g88lq6rjhl2" # or "axelar1g6520uhs8u37el40wqngf60z06mjgk6z7nezytd2mxrmh7yesnmsyc0zjw"
     export RPC="http://devnet-amplifier.axelar.dev:26657"
     ```
 </tab-item>
@@ -76,7 +76,7 @@ Use `rewards_pool()` to check the funds in a pool:
     ```bash
     export REWARDS_CONTRACT_ADDRESS="axelar1harq5xe68lzl2kx4e5ch4k8840cgqnry567g0fgw7vt2atcuugrqfa7j5z"
     export CHAIN_NAME="test-avalanche"
-    export VOTING_VERIFIER_OR_MULTISIG_CONTRACT_ADDRESS="axelar1hupk5du59cgu4ps5s637rhakwsq0060ycdp57j2ccevna7wqqzrqnfrr0p" || "0x7eeE33A59Db27d762AA1Fa31b26efeE0dABa1132"
+    export VOTING_VERIFIER_OR_MULTISIG_CONTRACT_ADDRESS="axelar1hupk5du59cgu4ps5s637rhakwsq0060ycdp57j2ccevna7wqqzrqnfrr0p"# or  "axelar1l5k8wlzmkmtnvjvs9x77wdcfweucwgums9e8fh0d8cy76ymqc5aqzguqnn"
     export RPC="https://tm.axelar-testnet.lava.build:443"
     ```
 </tab-item>
@@ -98,10 +98,7 @@ axelard q wasm contract-state smart $REWARDS_CONTRACT_ADDRESS \
                         "contract":"'"$VOTING_VERIFIER_OR_MULTISIG_CONTRACT_ADDRESS"'"
                     }
             }
-    }'
-    --keyring-backend test \
-    --from wallet \
-    --gas auto --gas-adjustment 1.5 --gas-prices 0.007uamplifier \
+    }' \
     --node $RPC
 ```
 
