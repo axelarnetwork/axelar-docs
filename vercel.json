@@ -2,6 +2,16 @@
   "framework": null,
   "redirects": [
     {
+      "source": "/dev/send-tokens/interchain-tokens/upgrade-tokens/",
+      "destination": "/dev/send-tokens/interchain-tokens/intro/",
+      "permanent": true
+    },
+    {
+      "source": "/dev/send-tokens/interchain-tokens/create-token/",
+      "destination": "/dev/send-tokens/interchain-tokens/intro/",
+      "permanent": true
+    },
+    {
       "source": "/dev/send-tokens/interchain-tokens/roadmap",
       "destination": "/dev/send-tokens/roadmap",
       "permanent": true
