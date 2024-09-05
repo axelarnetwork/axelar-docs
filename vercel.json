@@ -46,10 +46,6 @@
       "destination": "/dev/send-tokens/interchain-tokens/intro/"
     },
     {
-      "source": "/its/create-token",
-      "destination": "/dev/send-tokens/interchain-tokens/create-token/"
-    },
-    {
       "source": "/its/upgrade-token",
       "destination": "/dev/send-tokens/interchain-tokens/upgrade-tokens/"
     },

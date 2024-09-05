@@ -22,7 +22,8 @@ These links redirect to pages in the documentation whose slugs may otherwise be 
 ### ITS
 
 - **Introduction:** https://docs.axelar.dev/its/intro
-- **Quickstart:** https://docs.axelar.dev/its/create-token
+- **No-Code ITS Setup:** https://docs.axelar.dev/dev/send-tokens/interchain-tokens/quick-start/no-code/
+- **Programmatic ITS Setup:** https://docs.axelar.dev/dev/send-tokens/interchain-tokens/quick-start/programmatic/
 - **Upgrade Token:** https://docs.axelar.dev/its/upgrade-token
 - **Interchain Token Executable:** https://docs.axelar.dev/its/token-executable
 - **Flow Limit:** https://docs.axelar.dev/its/flow-limit
