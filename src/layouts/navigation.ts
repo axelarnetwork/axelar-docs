@@ -296,6 +296,15 @@ export const getNavigation = (section) => {
               title: "Common Error Messages",
               href: "/dev/amplifier/chain-integration/error-messages/",
             },
+            {
+              title: "Chain RPC Setup",
+              children: [
+                {
+                  title: "Configure companion processes",
+                  href: "/dev/amplifier/chains/soroban",
+                }
+              ],
+            }
           ],
         },
         {
