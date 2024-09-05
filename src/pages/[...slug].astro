@@ -6,6 +6,7 @@ import Section from '../layouts/Section.astro';
 export async function getStaticPaths() {
     const docs = await getCollection('docs');
 
+
     return docs?.map((doc) => ({
         params: { slug: doc.slug },
         props: { doc },
@@ -15,10 +16,11 @@ export async function getStaticPaths() {
 
 const { doc } = Astro.props;
 
+
+
 const {Content}  = await  doc.render()
 
 ---
 
-
-    <Content />
+ <Content />
 
