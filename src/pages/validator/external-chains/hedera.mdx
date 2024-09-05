@@ -1,0 +1,94 @@
+# Hedera
+
+import { Callout } from "/src/components/callout";
+
+Instructions to set up your Hedera mirror node.
+
+### Requirements
+
+- [Setup your Axelar validator](/validator/setup/overview/)
+- Minimum hardware requirements: CPUs: 4 cores RAM: 16 GB Storage (SSD): 500 GB
+- Ubuntu 20.04 LTS or later
+- [Official Documentation](https://docs.hedera.com/hedera/core-concepts/mirror-nodes/run-your-own-beta-mirror-node)
+
+### Prerequisites
+
+- An Amazon Web Services account/Google Cloud Platform account.
+- [Docker](https://docs.docker.com/engine/install/) (>= v20.10.x) installed on your machine.
+
+### Clone Hedera Mirror Node Repository
+Open your terminal and run the following commands
+```bash
+git clone https://github.com/hashgraph/hedera-mirror-node
+cd hedera-mirror-node
+```
+
+### Configure Mirror Node
+
+The application.yml file is the main configuration file for the Hedera Mirror Node. We'll update that file with GCP/AWS Secret and Access keys and the type of Hedera Network we want to mirror.
+
+```application.toml
+hedera:
+  mirror:
+    importer:
+      downloader:
+        accessKey: Enter access key from your GCP/AWS account
+        cloudProvider: "GCP/s3" #Choose GCP for google or s3 for AWS
+        secretKey: Enter secret key from your GCP/AWS account
+        gcpProjectId: ENTER GCP PROJECT ID HERE / N/A for AWS
+      network: PREVIEWNET/TESTNET/MAINNET #Pick one network
+```
+
+### Run Your Mirror Node
+
+```bash
+docker compose up
+```
+
+### Check Logs
+
+Logs should appear like this
+
+```bash
+importer-1  | 2024-09-05T14:10:43.832Z  INFO pool-8-thread-2 c.h.m.i.p.b.BatchInserter Copied 1 rows to transaction table in 388.7 μs
+importer-1  | 2024-09-05T14:10:43.833Z  INFO pool-8-thread-2 c.h.m.i.p.r.e.s.SqlEntityListener Completed batch inserts in 11.59 ms
+importer-1  | 2024-09-05T14:10:43.833Z  INFO pool-8-thread-2 c.h.m.i.p.r.RecordFileParser Successfully processed 1 items from 2019-10-11T16_39_21.323930Z.rcd in 11.69 ms
+importer-1  | 2024-09-05T14:10:43.948Z  INFO pool-8-thread-2 c.h.m.i.p.b.BatchInserter Copied 7 rows to crypto_transfer table in 664.4 μs
+importer-1  | 2024-09-05T14:10:43.957Z  INFO pool-8-thread-2 c.h.m.i.p.b.BatchInserter Copied 3 rows to entity_temp table in 8.886 ms
+importer-1  | 2024-09-05T14:10:43.958Z  INFO pool-8-thread-2 c.h.m.i.p.b.BatchInserter Copied 1 rows to record_file table in 483.7 μs
+importer-1  | 2024-09-05T14:10:43.958Z  INFO pool-8-thread-2 c.h.m.i.p.b.TransactionHashBatchInserter Copied 1 rows from 1 shards to transaction_hash table in 653.0 μs
+importer-1  | 2024-09-05T14:10:43.959Z  INFO pool-8-thread-2 c.h.m.i.p.b.BatchInserter Copied 1 rows to transaction table in 486.9 μs
+importer-1  | 2024-09-05T14:10:43.959Z  INFO pool-8-thread-2 c.h.m.i.p.r.e.s.SqlEntityListener Completed batch inserts in 11.39 ms
+importer-1  | 2024-09-05T14:10:43.959Z  INFO pool-8-thread-2 c.h.m.i.p.r.RecordFileParser Successfully processed 1 items from 2019-10-11T16_39_31.290027001Z.rcd in 11.50 ms
+importer-1  | 2024-09-05T14:10:44.539Z  INFO scheduling-4 c.h.m.i.d.r.RecordFileDownloader No new signature files to download after file: 2019-10-11T16_39_31.290027001Z.rcd. Retrying in 0.5 s
+```
+
+### Verify RPC
+
+```bash
+ curl http://localhost:5551/api/v1/transactions?limit=1
+```
+
+### Configure vald
+
+In order for `vald` to connect to your node, your `rpc_addr` should be exposed in
+vald's `config.toml`
+
+<tabs>
+    <tab-item title="Mainnet">
+        ```bash
+        [[axelar_bridge_evm]]
+        name = "hedera"
+        rpc_addr = "http://IP:PORT"
+        start-with-bridge = true
+        ```
+    </tab-item>
+    <tab-item title="Testnet">
+        ```bash
+        [[axelar_bridge_evm]]
+        name = "hedera"
+        rpc_addr = "http://IP:PORT"
+        start-with-bridge = true
+        ```
+    </tab-item>
+</tabs>
