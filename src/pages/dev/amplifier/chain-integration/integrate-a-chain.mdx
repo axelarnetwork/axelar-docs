@@ -20,24 +20,24 @@ The Axelar Virtual Machine (AVM) and Amplifier are currently under active develo
 
 ## Get the `axelard` binary
 
-Install the `v1.0.1 axelard` binary. You can either download the pre-built version or build it yourself from `axelar-core`.
+Install the `v1.0.2 axelard` binary. You can either download the pre-built version or build it yourself from `axelar-core`.
 
 <tabs>
 
 <tab-item title="Download">
 To use the pre-built `axelard` binary:
 
-1. Download the pre-built [`axelard` binary](https://github.com/axelarnetwork/axelar-core/releases/tag/v1.0.1) along with the latest version of the [`WasmVM`](https://github.com/CosmWasm/wasmvm/releases/tag/v1.3.1).
-    - Intel Macs: [`axelard-darwin-amd64-v1.0.1`](https://github.com/axelarnetwork/axelar-core/releases/download/v1.0.1/axelard-darwin-amd64-v1.0.1) and [`libwasmvm.dylib`](https://github.com/CosmWasm/wasmvm/releases/download/v1.3.1/libwasmvm.dylib)
-    - [Macs with Apple silicon](https://support.apple.com/en-us/116943): [`axelard-darwin-arm64-v1.0.1`](https://github.com/axelarnetwork/axelar-core/releases/download/v1.0.1/axelard-darwin-arm64-v1.0.1) and [`libwasmvm.dylib`](https://github.com/CosmWasm/wasmvm/releases/download/v1.3.1/libwasmvm.dylib)
-    - Linux: [`axelard-linux-amd64-v1.0.1`](https://github.com/axelarnetwork/axelar-core/releases/download/v1.0.1/axelard-linux-amd64-v1.0.1) and [`libwasmvm.x86_64.so`](https://github.com/CosmWasm/wasmvm/releases/download/v1.3.1/libwasmvm.x86_64.so)
+1. Download the pre-built [`axelard` binary](https://github.com/axelarnetwork/axelar-core/releases/tag/v1.0.2) along with the latest version of the [`WasmVM`](https://github.com/CosmWasm/wasmvm/releases/tag/v1.3.1).
+    - Intel Macs: [`axelard-darwin-amd64-v1.0.2`](https://github.com/axelarnetwork/axelar-core/releases/download/v1.0.2/axelard-darwin-amd64-v1.0.2) and [`libwasmvm.dylib`](https://github.com/CosmWasm/wasmvm/releases/download/v1.3.1/libwasmvm.dylib)
+    - [Macs with Apple silicon](https://support.apple.com/en-us/116943): [`axelard-darwin-arm64-v1.0.2`](https://github.com/axelarnetwork/axelar-core/releases/download/v1.0.2/axelard-darwin-arm64-v1.0.2) and [`libwasmvm.dylib`](https://github.com/CosmWasm/wasmvm/releases/download/v1.3.1/libwasmvm.dylib)
+    - Linux: [`axelard-linux-amd64-v1.0.2`](https://github.com/axelarnetwork/axelar-core/releases/download/v1.0.2/axelard-linux-amd64-v1.0.2) and [`libwasmvm.x86_64.so`](https://github.com/CosmWasm/wasmvm/releases/download/v1.3.1/libwasmvm.x86_64.so)
 
 1. Add the folder containing the library to `LD_LIBRARY_PATH`:
 
     ```bash
     export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:~/[your-path]
-    ln -s axelard-darwin-arm64-v1.0.1 axelard
-    chmod a+x axelard-darwin-arm64-v1.0.1 
+    ln -s axelard-darwin-arm64-v1.0.2 axelard
+    chmod a+x axelard-darwin-arm64-v1.0.2 
     ```
 
     If you run into a Mac warning telling you that either the `axelard` binary or the `WasmVM` cannot be verified, you can disable it by running:
@@ -52,7 +52,7 @@ To use the pre-built `axelard` binary:
 To build the `axelard` binary from source:
 
 1. Clone the [`axelar-core` repo](https://github.com/axelarnetwork/axelar-core).
-1. Checkout the `v1.0.1` release tag.
+1. Checkout the `v1.0.2` release tag.
 1. Run `make build`.
 </tab-item>
 
