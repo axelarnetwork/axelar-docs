@@ -70,27 +70,3 @@ importer-1  | 2024-09-05T14:10:44.539Z  INFO scheduling-4 c.h.m.i.d.r.RecordFile
 ```bash
  curl http://localhost:5551/api/v1/transactions?limit=1
 ```
-
-### Configure vald
-
-In order for `vald` to connect to your node, your `rpc_addr` should be exposed in
-vald's `config.toml`
-
-<tabs>
-    <tab-item title="Mainnet">
-        ```bash
-        [[axelar_bridge_evm]]
-        name = "hedera"
-        rpc_addr = "http://IP:PORT"
-        start-with-bridge = true
-        ```
-    </tab-item>
-    <tab-item title="Testnet">
-        ```bash
-        [[axelar_bridge_evm]]
-        name = "hedera"
-        rpc_addr = "http://IP:PORT"
-        start-with-bridge = true
-        ```
-    </tab-item>
-</tabs>
