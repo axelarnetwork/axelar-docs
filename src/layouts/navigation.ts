@@ -20,20 +20,30 @@ export const getNavigation = (section) => {
                   href: "/dev/send-tokens/interchain-tokens/intro/",
                 },
                 {
-                  title: "Create Token",
-                  href: "/dev/send-tokens/interchain-tokens/create-token/",
+                  title: "Quick Start",
+                  href: "/dev/send-tokens/interchain-tokens/quick-start/",
+                  children: [
+                    {
+                      title: "No Code",
+                      href: "/dev/send-tokens/interchain-tokens/quick-start/no-code/"
+                    },
+                    {
+                      title: "Programmatic",
+                      href: "/dev/send-tokens/interchain-tokens/quick-start/programmatic/"
+                    }
+                  ]
                 },
                 {
-                  title: "Upgrade Token",
-                  href: "/dev/send-tokens/interchain-tokens/upgrade-tokens/",
+                  title: "Token Manager",
+                  href: "/dev/send-tokens/interchain-tokens/token-manager/",
                 },
                 {
                   title: "Interchain Token Executable",
                   href: "/dev/send-tokens/interchain-tokens/interchain-token-executable/",
                 },
                 {
-                  title: "Rate Limit",
-                  href: "/dev/send-tokens/interchain-tokens/rate-limit/",
+                  title: "Flow Limit",
+                  href: "/dev/send-tokens/interchain-tokens/flow-limit/",
                 },
                 {
                   title: "Developer Guides",
@@ -286,6 +296,15 @@ export const getNavigation = (section) => {
               title: "Common Error Messages",
               href: "/dev/amplifier/chain-integration/error-messages/",
             },
+            {
+              title: "Chain RPC Setup",
+              children: [
+                {
+                  title: "Configure companion processes",
+                  href: "/dev/amplifier/chains/soroban",
+                }
+              ],
+            }
           ],
         },
         {
