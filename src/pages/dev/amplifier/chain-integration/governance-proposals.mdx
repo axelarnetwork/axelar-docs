@@ -100,7 +100,7 @@ export NETWORK_GOV_ADDRESS="axelar10d07y265gmmuvt4z0w9aw880jnsr700j7v9daj"
 export RPC="http://devnet-amplifier.axelar.dev:26657"
 export CODE_SOURCE_URL="https://github.com/axelarnetwork/axelar-amplifier/tree/service-registry-v0.4.1/contracts/voting-verifier"
 export BUILDER="cosmwasm/optimizer:0.16.0"
-export CODE_HASH="4e6a37e923a48d97fa85d03911728ceee81490f4c869e64eb2bd68152bfc6448"
+export CODE_HASH="4e6a37e923a48d97fa85d03911728ceee81490f4c869e64eb2bd68152bfc6448" # shasum -a 256 [path to verifier contract as wasm binary or gzip]
 ```
 
 ```bash
@@ -180,7 +180,7 @@ export CHAIN_NAME="AmplifiedChain"
 export RPC="http://devnet-amplifier.axelar.dev:26657"
 export CODE_SOURCE_URL="https://github.com/axelarnetwork/axelar-amplifier/tree/service-registry-v0.4.1/contracts/gateway"
 export BUILDER="cosmwasm/optimizer:0.16.0"
-export CODE_HASH="C2C627899E00AC9EE2631B22C13866078E200774E15931D565C7B9C40CAB9D53"
+export CODE_HASH="c2c627899e00ac9ee2631b22c13866078e200774e15931d565c7b9c40cab9d53" # shasum -a 256 [path to gateway contract as wasm binary or gzip]
 ```
 
 ```bash
@@ -227,20 +227,20 @@ export DOMAIN_SEPARATOR="6973c72935604464b28827141b0a463af8e3487616de69c5aa0c785
 ```bash
 axelard tx gov submit-proposal instantiate-contract $CODE_ID \
     '{
-"admin_address": "'"$MULTISIG_PROVER_ADMIN_ADDRESS"'",
-"governance_address": "'"$MULTISIG_PROVER_GOV_ADDRESS"'",
-"gateway_address": "'"$SOURCE_GATEWAY_ADDRESS"'",
-"multisig_address": "'"MULTISIG_PROVER_ADDRESS"'",
-"coordinator_address":"'"$AXELAR_COORDINATOR_ADDRESS"'",
-"service_registry_address":"'"$AXELAR_SERVICE_REGISTRY_ADDRESS"'",
-"voting_verifier_address": "'"$SOURCE_VERIFIER_GOV_ADDRESS"'",
-"signing_threshold": ["1","1"],
-"service_name": "validators",
-"chain_name": "'"$CHAIN_NAME"'",
-"verifier_set_diff_threshold": 1,
-"encoder": "abi",
-"key_type": "ecdsa",
-"domain_separator": "'"$DOMAIN_SEPARATOR"'"
+        "admin_address": "'"$MULTISIG_PROVER_ADMIN_ADDRESS"'",
+        "governance_address": "'"$MULTISIG_PROVER_GOV_ADDRESS"'",
+        "gateway_address": "'"$SOURCE_GATEWAY_ADDRESS"'",
+        "multisig_address": "'"MULTISIG_PROVER_ADDRESS"'",
+        "coordinator_address":"'"$AXELAR_COORDINATOR_ADDRESS"'",
+        "service_registry_address":"'"$AXELAR_SERVICE_REGISTRY_ADDRESS"'",
+        "voting_verifier_address": "'"$SOURCE_VERIFIER_GOV_ADDRESS"'",
+        "signing_threshold": ["1","1"],
+        "service_name": "validators",
+        "chain_name": "'"$CHAIN_NAME"'",
+        "verifier_set_diff_threshold": 1,
+        "encoder": "abi",
+        "key_type": "ecdsa",
+        "domain_separator": "'"$DOMAIN_SEPARATOR"'"
     }' \
     --title="Instantiate prover contract for "'"$CHAIN_NAME"'" \
     --description="Instantiate prover contract for "'"$CHAIN_NAME"'" \
@@ -267,37 +267,43 @@ export MULTISIG_PROVER_ADDRESS="axelar19jxy26z0qnnspa45y5nru0l5rmy9d637z5km2ndjx
 export AXELAR_COORDINATOR_ADDRESS="axelar1m2498n4h2tskcsmssjnzswl5e6eflmqnh487ds47yxyu6y5h4zuqr9zk4g"
 export SOURCE_VERIFIER_GOV_ADDRESS="axelar1zlr7e5qf3sz7yf890rkh9tcnu87234k6k7ytd9"
 export DOMAIN_SEPARATOR="6973c72935604464b28827141b0a463af8e3487616de69c5aa0c785392c9fb9f" # Hash of chain name, admin address, and code ID. Value must be a String in hex format without `0x`.
+export CODE_SOURCE_URL="https://github.com/axelarnetwork/axelar-amplifier/tree/service-registry-v0.4.1/contracts/multisig-prover"
+export BUILDER="cosmwasm/optimizer:0.16.0"
+export CODE_HASH="bb1b731be9d900c6a8535d3c6007e15b606ea302d361007a5c50021d0adcd07f" # shasum -a 256 [path to prover contract as wasm binary or gzip]
 ```
 
 ```bash
 axelard tx gov submit-proposal store-instantiate [path to prover contract as wasm binary or gzip] \
     '{
-"admin_address": "'"$MULTISIG_PROVER_ADMIN_ADDRESS"'",
-"governance_address": "'"$MULTISIG_PROVER_GOV_ADDRESS"'",
-"gateway_address": "'"$SOURCE_GATEWAY_ADDRESS"'",
-"multisig_address": "'"MULTISIG_PROVER_ADDRESS"'",
-"coordinator_address":"'"$AXELAR_COORDINATOR_ADDRESS"'",
-"service_registry_address":"'"$AXELAR_SERVICE_REGISTRY_ADDRESS"'",
-"voting_verifier_address": "'"$SOURCE_VERIFIER_GOV_ADDRESS"'",
-"signing_threshold": ["1","1"],
-"service_name": "validators",
-"chain_name": "'"$CHAIN_NAME"'",
-"verifier_set_diff_threshold": 1,
-"encoder": "abi",
-"key_type": "ecdsa",
-"domain_separator": "'"$DOMAIN_SEPARATOR"'"
+        "admin_address": "'"$MULTISIG_PROVER_ADMIN_ADDRESS"'",
+        "governance_address": "'"$MULTISIG_PROVER_GOV_ADDRESS"'",
+        "gateway_address": "'"$SOURCE_GATEWAY_ADDRESS"'",
+        "multisig_address": "'"MULTISIG_PROVER_ADDRESS"'",
+        "coordinator_address":"'"$AXELAR_COORDINATOR_ADDRESS"'",
+        "service_registry_address":"'"$AXELAR_SERVICE_REGISTRY_ADDRESS"'",
+        "voting_verifier_address": "'"$SOURCE_VERIFIER_GOV_ADDRESS"'",
+        "signing_threshold": ["1","1"],
+        "service_name": "validators",
+        "chain_name": "'"$CHAIN_NAME"'",
+        "verifier_set_diff_threshold": 1,
+        "encoder": "abi",
+        "key_type": "ecdsa",
+        "domain_separator": "'"$DOMAIN_SEPARATOR"'"
     }' \
-    --title="Instantiate prover contract for "'"$CHAIN_NAME"'" \
-    --description="Instantiate prover contract for "'"$CHAIN_NAME"'" \
+    --title="Store and instantiate prover contract for $CHAIN_NAME" \
+    --description="Store and instantiate prover contract for $CHAIN_NAME" \
     --run-as $NETWORK_GOV_ADDRESS \
-    --label "'"$CHAIN_NAME"'" \
+    --label $CHAIN_NAME \
     --deposit=100000000uamplifier \
     --keyring-backend test \
     --from wallet \
     --gas auto --gas-adjustment 1.5 --gas-prices 0.007uamplifier \
     --chain-id=devnet-amplifier \
-    --admin="axelar1zlr7e5qf3sz7yf890rkh9tcnu87234k6k7ytd9"
-    --node $RPC
+    --admin="axelar1zlr7e5qf3sz7yf890rkh9tcnu87234k6k7ytd9" \
+    --node $RPC \
+    --code-source-url $CODE_SOURCE_URL \
+    --builder $BUILDER \
+    --code-hash $CODE_HASH
 ```
 </tab-item>
 </tabs>
