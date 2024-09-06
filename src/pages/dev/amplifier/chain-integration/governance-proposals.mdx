@@ -4,7 +4,7 @@ import { Callout } from "/src/components/callout"
 
 New chains are onboarded to the Axelar Amplifier through [community governance](/resources/community/community-pool-proposals). In general, you will need to submit five governance proposals to integrate your chain: 
 
-- Proposal to instantiate the verifier contract
+- Proposal to instantiate the voting verifier contract
 - Proposal to instantiate the gateway contract
 - Proposal to instantiate the prover contract
 - Proposal to register your chain with the router
@@ -28,13 +28,13 @@ You will need to introduce your chain to the community in order for Axelar token
 - Pre-deployed source chain gateway address
 - Plan for funding rewards pools
 
-All of your on-chain proposals will refer back to this introduction, so make sure to be thorough. You should stay present and engage with any questions or comments during the seven-day feedback period, which can include public comments as well as a security council review. When the feedback period is over, submit your on-chain governance proposals to finish the integration of your chain.
+All of your on-chain proposals will refer back to this introduction, so make sure to be thorough. You should stay present and engage with any questions or comments during the seven-day feedback period, which can include public comments as well as review by a designated advisory committee. When the feedback period is over, submit your on-chain governance proposals to finish the integration of your chain.
 
 <Callout>
 Examples were created with contracts on the `ethereum-sepolia` chain. Please refer to [`devnet-amplifier.json`](https://github.com/axelarnetwork/axelar-contract-deployments/blob/main/axelar-chains-config/info/devnet-amplifier.json) for contracts associated with other chains.
 </Callout>
 
-## Proposal to instantiate the verifier contract
+## Proposal to instantiate the voting verifier contract
 
 <tabs>
 
@@ -77,7 +77,7 @@ axelard tx gov submit-proposal instantiate-contract $CODE_ID \
 --deposit=100000000uamplifier \
 --keyring-backend test \
 --from wallet \
---gas auto --gas-adjustment 1.5 --gas-prices 0.007uamplifier \
+--gas auto --gas-adjustment 1.5 --gas-prices 0.00005uamplifier \
 --chain-id=devnet-amplifier \
 --no-admin \
 --node $RPC
@@ -156,14 +156,14 @@ axelard tx gov submit-proposal instantiate-contract $CODE_ID \
         "verifier_address": "'"$VOTING_VERIFIER_ADDRESS"'",
         "router_address": "'"$AXELAR_ROUTER_ADDRESS"'"
     }' \
-    --title="Instantiate gateway contract for "'"$CHAIN_NAME"'" \
-    --description="Instantiate gateway contract for "'"$CHAIN_NAME"'" \
+    --title="Instantiate gateway contract for $CHAIN_NAME" \
+    --description="Instantiate gateway contract for $CHAIN_NAME" \
     --run-as $NETWORK_GOV_ADDRESS \
-    --label "'"$CHAIN_NAME"'" \
+    --label "$CHAIN_NAME" \
     --deposit=100000000uamplifier \
     --keyring-backend test \
     --from wallet \
-    --gas auto --gas-adjustment 1.5 --gas-prices 0.007uamplifier \
+    --gas auto --gas-adjustment 1.5 --gas-prices 0.00005uamplifier \
     --chain-id=devnet-amplifier \
     --no-admin \
     --node $RPC
@@ -242,16 +242,16 @@ axelard tx gov submit-proposal instantiate-contract $CODE_ID \
         "key_type": "ecdsa",
         "domain_separator": "'"$DOMAIN_SEPARATOR"'"
     }' \
-    --title="Instantiate prover contract for "'"$CHAIN_NAME"'" \
-    --description="Instantiate prover contract for "'"$CHAIN_NAME"'" \
+    --title="Instantiate prover contract for $CHAIN_NAME" \
+    --description="Instantiate prover contract for $CHAIN_NAME" \
     --run-as $NETWORK_GOV_ADDRESS \
-    --label "'"$CHAIN_NAME"'" \
+    --label "$CHAIN_NAME" \
     --deposit=100000000uamplifier \
     --keyring-backend test \
     --from wallet \
-    --gas auto --gas-adjustment 1.5 --gas-prices 0.007uamplifier \
+    --gas auto --gas-adjustment 1.5 --gas-prices 0.00005uamplifier \
     --chain-id=devnet-amplifier \
-    --admin="axelar1zlr7e5qf3sz7yf890rkh9tcnu87234k6k7ytd9"
+    --admin="axelar1zlr7e5qf3sz7yf890rkh9tcnu87234k6k7ytd9" \
     --node $RPC
 ```
 </tab-item>
@@ -324,13 +324,13 @@ axelard tx gov submit-proposal execute-contract $ROUTER_CONTRACT_ADDRESS \
             "msg_id_format": "'"$MSG_ID_FORMAT"'"
         }
     }' \
-    --title="Register "'"$CHAIN_NAME"'" chain with the Amplifier router" \
-    --description="Register "'"$CHAIN_NAME"'" chain with the Amplifier router" \
+    --title="Register $CHAIN_NAME chain with the Amplifier router" \
+    --description="Register $CHAIN_NAME chain with the Amplifier router" \
     --run-as $ROUTER_GOV_ADDRESS \
     --deposit=100000000uamplifier \
     --keyring-backend test \
     --from wallet \
-    --gas auto --gas-adjustment 1.5 --gas-prices 0.007uamplifier \
+    --gas auto --gas-adjustment 1.5 --gas-prices 0.00005uamplifier \
     --chain-id=devnet-amplifier \
     --node $RPC
 ```
@@ -353,13 +353,13 @@ axelard tx gov submit-proposal execute-contract $MULTISIG_CONTRACT_ADDRESS \
             "contract_address":"'"$CHAIN_PROVER_ADDRESS"'"
             }
     }' \
-    --title="Authorize "'"$CHAIN_NAME"'" prover with the Amplifier multisig contract" \
-    --description="Authorize "'"$CHAIN_NAME"'" prover with the Amplifier multisig contract" \
+    --title="Authorize $CHAIN_NAME prover with the Amplifier multisig contract" \
+    --description="Authorize $CHAIN_NAME prover with the Amplifier multisig contract" \
     --run-as $MULTISIG_GOV_ADDRESS \
     --deposit=100000000uamplifier \
     --keyring-backend test \
     --from wallet \
-    --gas auto --gas-adjustment 1.5 --gas-prices 0.007uamplifier \
+    --gas auto --gas-adjustment 1.5 --gas-prices 0.00005uamplifier \
     --chain-id=devnet-amplifier \
     --node $RPC
 ```

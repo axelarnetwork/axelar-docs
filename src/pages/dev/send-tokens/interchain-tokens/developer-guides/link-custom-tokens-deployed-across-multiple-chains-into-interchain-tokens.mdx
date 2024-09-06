@@ -18,7 +18,7 @@ In this tutorial, you will:
 You will need:
 
 - A basic understanding of [Solidity](https://www.tutorialspoint.com/solidity/index.htm) and [JavaScript](https://www.w3schools.com/js/)
-- A [wallet](https://metamask.io/) with FTM and MATIC funds for testing. If you don’t have these funds, you can get FTM from the [Fantom faucet](https://faucet.fantom.network/) and MATIC from the Mumbai faucets ([1](https://faucet.polygon.technology/), [2](https://mumbaifaucet.com/)).
+- A [wallet](https://metamask.io/) with FTM and MATIC funds for testing. If you don’t have these funds, you can get FTM from the [Fantom faucet](https://faucet.fantom.network/) and MATIC from the Polygon faucets ([1](https://faucet.polygon.technology/), [2](https://www.alchemy.com/faucets/polygon-amoy)).
 
 ## Deploy an ERC-20 token on the Fantom and Polygon testnets
 
@@ -99,7 +99,7 @@ Next, set up the ABIs for the [Interchain Token Service](https://github.com/axel
 Create a folder named `utils`. Inside the folder, create the following new files and add the respective ABIs:
 
 - Add the [Interchain Token Service ABI](https://gist.github.com/Olanetsoft/2a632784e6753d34ca7ffc4f73bf58ed) to `interchainTokenServiceABI.json`.
-- Add your custom token ABI to `customTokenABI**.**json`. You can get this from [FTMScan](https://testnet.ftmscan.com/) or [PolygonScan](https://mumbai.polygonscan.com/) with the address of your deployed token if your contract is verified. Otherwise, you can get it from the same service you deployed the `SimpleCustomToken` on.
+- Add your custom token ABI to `customTokenABI**.**json`. You can get this from [FTMScan](https://testnet.ftmscan.com/) or [PolygonScan](https://amoy.polygonscan.com/) with the address of your deployed token if your contract is verified. Otherwise, you can get it from the same service you deployed the `SimpleCustomToken` on.
 
 ## Set up an RPC for the local chain
 
@@ -144,7 +144,7 @@ module.exports = {
       accounts: [PRIVATE_KEY],
     },
     polygon: {
-      url: "https://rpc.ankr.com/polygon_mumbai",
+      url: "https://polygon-amoy.drpc.org	",
       chainId: 80001,
       accounts: [PRIVATE_KEY],
     },
@@ -354,7 +354,7 @@ async function gasEstimator() {
 
 ### Perform remote token manager deployment
 
-Create a `deployRemoteTokenManager()` function. This will deploy the remote Token Manager on the Polygon Mumbai testnet. Make sure to change the salts to the value you saved from a previous step.
+Create a `deployRemoteTokenManager()` function. This will deploy the remote Token Manager on the Polygon testnet. Make sure to change the salts to the value you saved from a previous step.
 
 ```JavaScript
 //...
@@ -456,7 +456,7 @@ When deploying the token manager to a preferred chain other than the local chain
 
 ### Check the transaction on the Axelar testnet scanner
 
-Check the [Axelarscan testnet scanner](https://testnet.axelarscan.io/) to see if you have successfully deployed the remote token manager on the Polygon Mumbai testnet. It should look something like [this](https://testnet.axelarscan.io/gmp/0x5dbba37f7741d19ca872bb4b2a29523baa002a3d6f0f31834bc34d6d6ca633f5).
+Check the [Axelarscan testnet scanner](https://testnet.axelarscan.io/) to see if you have successfully deployed the remote token manager on the Polygon testnet. It should look something like [this](https://testnet.axelarscan.io/gmp/0x5dbba37f7741d19ca872bb4b2a29523baa002a3d6f0f31834bc34d6d6ca633f5).
 
 Add gas if needed. Ensure that Axelar shows a successful transaction before continuing to the next step.
 
@@ -604,7 +604,7 @@ grantRoleTxn:  0xb3d4c9264faabe137595a9032b3958a07d24c308df5c8c3e45d711d7b9df448
 
 ### Check the transaction on the Polygon testnet scanner
 
-Check the [Polygon testnet scanner](https://mumbai.polygonscan.com/) to see if you have successfully [transferred Mint access to the Token Manager address](https://mumbai.polygonscan.com/tx/0xb3d4c9264faabe137595a9032b3958a07d24c308df5c8c3e45d711d7b9df4488).
+Check the [Polygon testnet scanner](https://amoy.polygonscan.com/) to see if you have successfully transferred Mint access to the Token Manager address.
 
 ## Transfer your token between chains
 
@@ -686,7 +686,7 @@ If you see this, it means that your interchain transfer has been successful! �
 
 ### Check the transaction on the Axelar testnet scanner
 
-Check the [Axelarscan testnet scanner](https://testnet.axelarscan.io/) to see if you have successfully transferred SCT from the [Fantom testnet](https://testnet.ftmscan.com/token/0x8D4a6B2A784749BBc412A41C1440C5A67EAB57EE) to the [Polygon testnet](https://mumbai.polygonscan.com/token/0x7884ac325fa7aedB8A4d7bBD92671e8699f49108). It should look something like [this](https://testnet.axelarscan.io/gmp/0x65258117e8133397b047a6192cf69a1b48f59b0cb806be1c0fa5a7c1efd747ef).
+Check the [Axelarscan testnet scanner](https://testnet.axelarscan.io/) to see if you have successfully transferred SCT from the [Fantom testnet](https://testnet.ftmscan.com/token/0x8D4a6B2A784749BBc412A41C1440C5A67EAB57EE) to the Polygon testnet. It should look something like [this](https://testnet.axelarscan.io/gmp/0x65258117e8133397b047a6192cf69a1b48f59b0cb806be1c0fa5a7c1efd747ef).
 
 ## Congratulations!
 
@@ -696,10 +696,15 @@ Great job making it this far! To show your support to the author of this tutoria
 
 ## What’s next
 
-You can also explore other functionalities of the Interchain Token Service, such as:
+For further examples utilizing the Interchain Token Service, check out the following in the [`axelar-examples`](https://github.com/axelarnetwork/axelar-examples/tree/main) repo on GitHub:
 
-- [Transforming an existing token into an Interchain token](/dev/send-tokens/interchain-tokens/upgrade-tokens/#canonical-tokens-simple-wrappers)
-- [Create a new Interchain Token using the portal](/dev/send-tokens/interchain-tokens/create-token/#create-a-new-interchain-token-using-the-interchain-token-portal)
+- [`its-custom-token`](https://github.com/axelarnetwork/axelar-examples/tree/main/examples/evm/its-custom-token) — Demonstrates how to use the ITS with a custom token implementation.
+- [`its-interchain-token`](https://github.com/axelarnetwork/axelar-examples/tree/main/examples/evm/its-interchain-token) — Demonstrates how to deploy Interchain Tokens that are connected across EVM chains and how to send some tokens across.
+- [`its-canonical-token`](https://github.com/axelarnetwork/axelar-examples/tree/main/examples/evm/its-canonical-token) - Demonstrates how to deploy canonical Interchain Token and send cross-chain transfer for these tokens.
+- [`its-lock-unlock-fee`](https://github.com/axelarnetwork/axelar-examples/tree/main/examples/evm/its-lock-unlock-fee) Demonstrates how to deploy deploy interchain  token with lock/unlock_fee token manager type.
+- [`its-executable`](https://github.com/axelarnetwork/axelar-examples/tree/main/examples/evm/its-executable) Demonstrates how to deploy interchain token and send a cross-chain transfer along with a message.
+- [`its-mint-burn-from`](https://github.com/axelarnetwork/axelar-examples/tree/main/examples/evm/its-mint-burn-from) Demonstrates how to deploy interchain token with uses `burnFrom()` on token being bridged rather than `burn()`.
+
 
 ## References
 

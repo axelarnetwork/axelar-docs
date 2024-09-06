@@ -159,11 +159,12 @@ uint256 \_amount
 
 ## Content format
 
+* Always put parentheses after a method name.
 * Use bold, italic, and code font when appropriate.
 * Product names should not have any special font formatting.
-* Always put parentheses after a method name.
+* All links should be root-relative (`/dev/path/to/`, `validator/path/to`) and end with a `/`.
 
-## Method names
+### Method names
 
 * Method names should always include parentheses, so that they are not confused with properties.
 
@@ -214,7 +215,8 @@ uint256 \_amount
 
 |  **Recommended**  |  **Not recommended** |
 | --- | --- |
-|  `Create a [custom token](/dev/glossary#custom-token).`  |  `Create a [custom token](../../reference/glossary/#custom-token).`  |
+|  `Make sure you've gone through the [Amplifier chain integration tutorial](/dev/amplifier/chain-integration/integrate-a-chain/).`  |   `Make sure you've gone through the [Amplifier chain integration tutorial](/dev/amplifier/chain-integration/integrate-a-chain).`  |
+|  `Create a [custom token](/dev/glossary/#custom-token).`  |  `Create a [custom token](../../reference/glossary#custom-token).`  |
 
 ### Lists
 

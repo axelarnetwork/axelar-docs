@@ -20,20 +20,30 @@ export const getNavigation = (section) => {
                   href: "/dev/send-tokens/interchain-tokens/intro/",
                 },
                 {
-                  title: "Create Token",
-                  href: "/dev/send-tokens/interchain-tokens/create-token/",
+                  title: "Quick Start",
+                  href: "/dev/send-tokens/interchain-tokens/quick-start/",
+                  children: [
+                    {
+                      title: "No Code",
+                      href: "/dev/send-tokens/interchain-tokens/quick-start/no-code/"
+                    },
+                    {
+                      title: "Programmatic",
+                      href: "/dev/send-tokens/interchain-tokens/quick-start/programmatic/"
+                    }
+                  ]
                 },
                 {
-                  title: "Upgrade Token",
-                  href: "/dev/send-tokens/interchain-tokens/upgrade-tokens/",
+                  title: "Token Manager",
+                  href: "/dev/send-tokens/interchain-tokens/token-manager/",
                 },
                 {
                   title: "Interchain Token Executable",
                   href: "/dev/send-tokens/interchain-tokens/interchain-token-executable/",
                 },
                 {
-                  title: "Rate Limit",
-                  href: "/dev/send-tokens/interchain-tokens/rate-limit/",
+                  title: "Flow Limit",
+                  href: "/dev/send-tokens/interchain-tokens/flow-limit/",
                 },
                 {
                   title: "Developer Guides",
@@ -255,6 +265,10 @@ export const getNavigation = (section) => {
               href: "/dev/amplifier/introduction/",
             },
             {
+              title: "Roadmap",
+              href: "/dev/amplifier/roadmap/",
+            },
+            {
               title: "Integration Overview",
               href: "/dev/amplifier/chain-integration/introduction/",
             },
@@ -282,6 +296,15 @@ export const getNavigation = (section) => {
               title: "Common Error Messages",
               href: "/dev/amplifier/chain-integration/error-messages/",
             },
+            {
+              title: "Chain RPC Setup",
+              children: [
+                {
+                  title: "Configure companion processes",
+                  href: "/dev/amplifier/chains/soroban",
+                }
+              ],
+            }
           ],
         },
         {
@@ -389,7 +412,9 @@ export const getNavigation = (section) => {
             { title: "Ethereum", href: "/validator/external-chains/ethereum/" },
             { title: "Fantom", href: "/validator/external-chains/fantom/" },
             { title: "Filecoin", href: "/validator/external-chains/filecoin/" },
+            { title: "Flow", href: "/validator/external-chains/flow/" },
             { title: "Fraxtal", href: "/validator/external-chains/fraxtal/" },
+            { title: "Hedera", href: "/validator/external-chains/hedera/" },
             {
               title: "Immutable zkEVM",
               href: "/validator/external-chains/immutable/",
@@ -540,6 +565,10 @@ export const getNavigation = (section) => {
           {
             title: "Mainnet axelard",
             children: [
+              {
+                title: "v1.0",
+                href: "/resources/mainnet/upgrades/v1.0/",
+              },
               {
                 title: "v0.35",
                 href: "/resources/mainnet/upgrades/v35/",
