@@ -25,13 +25,13 @@ export const getNavigation = (section) => {
                   children: [
                     {
                       title: "No Code",
-                      href: "/dev/send-tokens/interchain-tokens/quick-start/no-code/"
+                      href: "/dev/send-tokens/interchain-tokens/quick-start/no-code/",
                     },
                     {
                       title: "Programmatic",
-                      href: "/dev/send-tokens/interchain-tokens/quick-start/programmatic/"
-                    }
-                  ]
+                      href: "/dev/send-tokens/interchain-tokens/quick-start/programmatic/",
+                    },
+                  ],
                 },
                 {
                   title: "Token Manager",
@@ -302,9 +302,9 @@ export const getNavigation = (section) => {
                 {
                   title: "Configure companion processes",
                   href: "/dev/amplifier/chains/soroban",
-                }
+                },
               ],
-            }
+            },
           ],
         },
         {
@@ -566,7 +566,7 @@ export const getNavigation = (section) => {
             children: [
               {
                 title: "v1.0",
-                href: "/resources/mainnet/upgrades/v1.0/",
+                href: "/resources/mainnet/upgrades/v10/",
               },
               {
                 title: "v0.35",
@@ -631,7 +631,7 @@ export const getNavigation = (section) => {
             children: [
               {
                 title: "v1.0",
-                href: "/resources/testnet/upgrades/v1.0/",
+                href: "/resources/testnet/upgrades/v10/",
               },
               {
                 title: "v0.35",
