@@ -119,7 +119,7 @@ axelard tx gov submit-proposal store-instantiate [path to verifier contract as w
         "address_format": "'"$ADDRESS_FORMAT"'"
     }' \
     --title="Store and instantiate verifier contract for $CHAIN_NAME" \
-    --description="Instantiate verifier contract for $CHAIN_NAME" \
+    --description="Store and instantiate verifier contract for $CHAIN_NAME" \
     --run-as $NETWORK_GOV_ADDRESS \
     --label "$CHAIN_NAME" \
     --deposit=100000000uamplifier \
@@ -144,8 +144,10 @@ If you are integrating an EVM chain, you can submit a proposal to instantiate th
 
 ```bash
 export CODE_ID=616
-export VOTING_VERIFIER_ADDRESS="axelar1e6jnuljng6aljk0tjct6f0hl9tye6l0n9p067pwx2374h82dmr0s9qcqy9"
+export VOTING_VERIFIER_ADDRESS="axelar1x3960tw9cml6xsqtvzt4gmw3scauaxdd83rhs9dmlpjfjf9z9s7qjx8g0j"
 export AXELAR_ROUTER_ADDRESS="axelar14jjdxqhuxk803e9pq64w4fgf385y86xxhkpzswe9crmu6vxycezst0zq8y"
+export CHAIN_NAME="AmplifiedChain"
+export RPC="http://devnet-amplifier.axelar.dev:26657"
 ```
 
 ```bash
@@ -172,8 +174,13 @@ axelard tx gov submit-proposal instantiate-contract $CODE_ID \
 Once the feedback period has passed, submit the proposal with the [proper instantiation parameters](https://github.com/axelarnetwork/axelar-amplifier/blob/deab56a75209a158c082cbf9b77caf500eb4ec7c/contracts/gateway/src/msg.rs#L4):
 
 ```bash
-export VOTING_VERIFIER_ADDRESS="axelar1e6jnuljng6aljk0tjct6f0hl9tye6l0n9p067pwx2374h82dmr0s9qcqy9"
+export VOTING_VERIFIER_ADDRESS="axelar1x3960tw9cml6xsqtvzt4gmw3scauaxdd83rhs9dmlpjfjf9z9s7qjx8g0j"
 export AXELAR_ROUTER_ADDRESS="axelar14jjdxqhuxk803e9pq64w4fgf385y86xxhkpzswe9crmu6vxycezst0zq8y"
+export CHAIN_NAME="AmplifiedChain"
+export RPC="http://devnet-amplifier.axelar.dev:26657"
+export CODE_SOURCE_URL="https://github.com/axelarnetwork/axelar-amplifier/tree/service-registry-v0.4.1/contracts/gateway"
+export BUILDER="cosmwasm/optimizer:0.16.0"
+export CODE_HASH="C2C627899E00AC9EE2631B22C13866078E200774E15931D565C7B9C40CAB9D53"
 ```
 
 ```bash
@@ -182,17 +189,20 @@ axelard tx gov submit-proposal store-instantiate [path to gateway contract as wa
         "verifier_address": "'"$VOTING_VERIFIER_ADDRESS"'",
         "router_address": "'"$AXELAR_ROUTER_ADDRESS"'"
     }' \
-    --title="Instantiate gateway contract for "'"$CHAIN_NAME"'" \
-    --description="Instantiate gateway contract for "'"$CHAIN_NAME"'" \
+    --title="Store and instantiate gateway contract for $CHAIN_NAME" \
+    --description="Store and instantiate gateway contract for $CHAIN_NAME" \
     --run-as $NETWORK_GOV_ADDRESS \
-    --label "'"$CHAIN_NAME"'" \
+    --label "$CHAIN_NAME" \
     --deposit=100000000uamplifier \
     --keyring-backend test \
     --from wallet \
     --gas auto --gas-adjustment 1.5 --gas-prices 0.007uamplifier \
     --chain-id=devnet-amplifier \
     --no-admin \
-    --node $RPC
+    --node $RPC \
+    --code-source-url $CODE_SOURCE_URL \
+    --builder $BUILDER \
+    --code-hash $CODE_HASH
 ```
 </tab-item>
 </tabs>
