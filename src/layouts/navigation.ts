@@ -259,8 +259,8 @@ export const getNavigation = (section) => {
               title: "Chain RPC Setup",
               children: [
                 {
-                  title: "Configure companion processes",
-                  href: "/dev/amplifier/chains/soroban",
+                  title: "Flow",
+                  href: "/dev/amplifier/chains/flow",
                 }
               ],
             }
