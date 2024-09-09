@@ -4,7 +4,7 @@ import { Callout } from "/src/components/callout";
 
 If you have an [ERC-20](https://docs.openzeppelin.com/contracts/4.x/erc20) token on one or more blockchains and you want to make the token interoperable across chains, the [Interchain Token Service](/dev/send-tokens/interchain-tokens/intro/) provides a solution. You can transform an ERC-20 token into an Interchain Token by deploying a [token manager](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/token-manager/TokenManager.sol).
 
-If you would like to create a wrapped, bridgeable version of your ERC-20 token on other chains, you can register it as a [Canonical Interchain Token](/dev/send-tokens/interchain-tokens/upgrade-tokens/#canonical-tokens-simple-wrappers) using the [`InterchainTokenFactory`](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/InterchainTokenFactory.sol) [contract](https://etherscan.io/address/0x83a93500d23Fbc3e82B410aD07A6a9F7A0670D66).
+If you would like to create a wrapped, bridgeable version of your ERC-20 token on other chains, you can register it as a [Canonical Interchain Token](/dev/send-tokens/interchain-tokens/quick-start/programmatic/#integrate-existing-interchain-token-with-its) using the [`InterchainTokenFactory`](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/InterchainTokenFactory.sol) [contract](https://etherscan.io/address/0x83a93500d23Fbc3e82B410aD07A6a9F7A0670D66).
 
 **Each token can only be registered once as a Canonical Interchain Token.** This ensures unique and streamlined token management across different blockchains. Though you can register your Canonical Interchain Token directly through the [Interchain Token Portal](https://testnet.interchain.axelar.dev/), there are times where you may want to do so programmatically, such as when you have already deployed a token on one chain and wish to deploy a wrapped version of that token on another chain.
 
@@ -486,10 +486,15 @@ Great job making it this far! To show your support to the author of this tutoria
 
 ## What’s next
 
-You can also explore other functionalities of the Interchain Token Service, such as:
+For further examples utilizing the Interchain Token Service, check out the following in the [`axelar-examples`](https://github.com/axelarnetwork/axelar-examples/tree/main) repo on GitHub:
 
-- [Transforming an existing token into an Interchain token](/dev/send-tokens/interchain-tokens/upgrade-tokens/#canonical-tokens-simple-wrappers)
-- [Turn deployed tokens on multiple chains into Interchain Tokens](/dev/send-tokens/interchain-tokens/upgrade-tokens/#link-deployed-tokens-on-multiple-chains-into-interchain-tokens)
+- [`its-custom-token`](https://github.com/axelarnetwork/axelar-examples/tree/main/examples/evm/its-custom-token) — Demonstrates how to use the ITS with a custom token implementation.
+- [`its-interchain-token`](https://github.com/axelarnetwork/axelar-examples/tree/main/examples/evm/its-interchain-token) — Demonstrates how to deploy Interchain Tokens that are connected across EVM chains and how to send some tokens across.
+- [`its-canonical-token`](https://github.com/axelarnetwork/axelar-examples/tree/main/examples/evm/its-canonical-token) - Demonstrates how to deploy canonical Interchain Token and send cross-chain transfer for these tokens.
+- [`its-lock-unlock-fee`](https://github.com/axelarnetwork/axelar-examples/tree/main/examples/evm/its-lock-unlock-fee) Demonstrates how to deploy deploy interchain  token with lock/unlock_fee token manager type.
+- [`its-executable`](https://github.com/axelarnetwork/axelar-examples/tree/main/examples/evm/its-executable) Demonstrates how to deploy interchain token and send a cross-chain transfer along with a message.
+- [`its-mint-burn-from`](https://github.com/axelarnetwork/axelar-examples/tree/main/examples/evm/its-mint-burn-from) Demonstrates how to deploy interchain token with uses `burnFrom()` on token being bridged rather than `burn()`.
+
 
 ## References
 
