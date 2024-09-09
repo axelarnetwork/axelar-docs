@@ -2,18 +2,12 @@
 
 import { Callout } from "/src/components/callout"
 
-
-<Callout>
-  These instructions are undergoing active revision. Please see the [latest official documentation](https://docs-git-vishal-accessnodesetupupdate-onflow.vercel.app/networks/node-ops/access-onchain-data/access-nodes/access-node-setup) for setting up a permissionless flow access node.
-
-  The permissionless access node doesn't require any stake.
-</Callout>
-
 ## Prerequisites
 
 - Ubuntu (tested on 18.04 and 20.04)
 - `sudo apt-get install wget liblz4-tool aria2 jq -y`
 - [Official Documentation](https://developers.flow.com/networks/node-ops/access-onchain-data/access-nodes/access-node-setup)
+- [Official Documentation](https://github.com/onflow/flow-evm-gateway/blob/main/README.md)
 - Go
 
 ## Generate Node Information
@@ -38,12 +32,9 @@ cat ./bootstrap/public-root-information/node-id && echo ""
 All your private keys should be in the bootstrap folder created earlier. Please take a back up of the entire folder.
 
 ## Stake 100 FLOW
-<Callout>
-  Stake is not required when using a permissionless access node. See the warning at the top of the page for more information.
-</Callout>
-
 The minimum 100 is required to prevent certain vulnerabilities in the smart contract that are a result of having a zero minimum stake requirement.
 Follow this [guide](https://developers.flow.com/networks/flow-port/staking-guide#stake-a-node) to stake using [Flow Port](https://port.flow.com)
+
 All fields required are generated here:
 ```bash
 cat ./bootstrap/public-root-information/node-info.pub.* | jq
@@ -74,6 +65,9 @@ sh -ci "$(curl -fsSL https://raw.githubusercontent.com/onflow/flow-cli/master/in
 echo 'export PATH="$PATH:/root/.local/bin"' >> ~/.profile
 source ~/.profile
 ```
+
+You can check via Flow Port or using flow accounts staking-info
+
 <tabs>
     <tab-item title="Mainnet">
         ```bash
@@ -102,12 +96,28 @@ mv app /usr/bin/access-node
 
 Use `systemctl` to set up services for `Access Node`, `Gateway`
 
-### axelard
+### Access Node
+<tabs>
+    <tab-item title="Mainnet">
+        ```bash
+        # Define the variables
+        NODE_ID=$(cat ./bootstrap/public-root-information/node-info.pub.* | jq -r .NodeID)
+        DYNAMIC_ACCESS_ADDRESS="secure.mainnet.nodes.onflow.org:9001"
+        DYNAMIC_ACCESS_PUBLICKEY="28a0d9edd0de3f15866dfe4aea1560c4504fe313fc6ca3f63a63e4f98d0e295144692a58ebe7f7894349198613f65b2d960abf99ec2625e247b1c78ba5bf2eae"
+        ```
+    </tab-item>
+    <tab-item title="Testnet">
+        ```bash
+        # Define the variables
+        NODE_ID=$(cat ./bootstrap/public-root-information/node-info.pub.* | jq -r .NodeID)
+        DYNAMIC_ACCESS_ADDRESS="secure.testnet.nodes.onflow.org:9001"
+        DYNAMIC_ACCESS_PUBLICKEY="ba69f7d2e82b9edf25b103c195cd371cf0cc047ef8884a9bbe331e62982d46daeebf836f7445a2ac16741013b192959d8ad26998aff12f2adc67a99e1eb2988d"
+
+        ```
+    </tab-item>
+</tabs>
 
 ```bash
-NODE_ID=$(cat ./bootstrap/public-root-information/node-info.pub.* | jq -r .NodeID)
-mkdir -p /var/flow/data/protocol
-mv bootstrap /var/flow/
 sudo tee <<EOF >/dev/null /etc/systemd/system/access-node.service
 [Unit]
 Description=Access Node daemon
@@ -116,33 +126,23 @@ After=network-online.target
 [Service]
 User=$USER
 ExecStart=/usr/bin/access-node \
-  --nodeid=$NODE_ID \
-  --bootstrapdir=/var/flow/bootstrap \
-  --datadir=/var/flow/data/protocol \
-  --rpc-addr=0.0.0.0:9099 \
-  --http-addr=0.0.0.0:8088 \
-  --collection-ingress-port=9000 \
-  --script-addr=execution-001.mainnet24.nodes.onflow.org:9000 \
-  --historical-access-addr=access-001.mainnet23.nodes.onflow.org:9000,access-001.mainnet22.nodes.onflow.org:9000,access-001.mainnet21.nodes.onflow.org:9000,access-001.mainnet20.nodes.onflow.org:9000,access-001.mainnet19.nodes.onflow.org:9000,access-001.mainnet18.nodes.onflow.org:9000,access-001.mainnet17.nodes.onflow.org:9000,access-001.mainnet16.nodes.onflow.org:9000,access-001.mainnet15.nodes.onflow.org:9000,access-001.mainnet14.nodes.onflow.org:9000,access-001.mainnet13.nodes.onflow.org:9000,access-001.mainnet12.nodes.onflow.org:9000,access-001.mainnet11.nodes.onflow.org:9000,access-001.mainnet10.nodes.onflow.org:9000,access-001.mainnet9.nodes.onflow.org:9000,access-001.mainnet8.nodes.onflow.org:9000,access-001.mainnet7.nodes.onflow.org:9000,access-001.mainnet6.nodes.onflow.org:9000,access-001.mainnet5.nodes.onflow.org:9000,access-001.mainnet4.nodes.onflow.org:9000,access-001.mainnet3.nodes.onflow.org:9000,access-001.mainnet2.nodes.onflow.org:9000,access-001.mainnet1.nodes.onflow.org:9000 \
-  --preferred-execution-node-ids=9686399a8a5418a12e762cfaeff2ea348c2137f554560917760e0d47acf2cda4,160241f88cbfaa0f361cf64adb0a1c9fc19dec1daf4b96550cd67b7a9fb26cd9,4ab025ab974e7ad7f344fbd16e5fbcb17fb8769fc8849b9d241ae518787695bd,2b396b7fab0102f104a2af7e095b145cc14da28f863564802e158afc3e07e638,6c6af0933b710655ec553f4bead3b01c5e0a3ffd1194ee536efb926b356c54aa,a080e6f3003f21d35f7ed0afc3096ab21381087a91992d7508f7be869c6edd32,92dab49c5d89fa2f0619f99131d6406a94c5f214a198aafab41241322f9bf173 \
-  --rpc-metrics-enabled=true \
-  --bind=0.0.0.0:3569 \
-  --rest-addr=0.0.0.0:8071 \
-  --execution-data-sync-enabled=true \
-  --execution-data-dir=/var/flow/data/execution_data \
-  --execution-data-indexing-enabled=true \
-  --execution-state-dir=/var/flow/data/execution_state \
-  --circuit-breaker-enabled=true \
-  --dht-enabled=false \
-  --grpc-compressor=gzip \
-  --herocache-metrics-collector=true \
-  --supports-observer=true \
-  --public-network-address=0.0.0.0:3570 \
-  --secretsdir=/var/flow/data/secrets \
-  --admin-addr=localhost:9002 \
-  --secure-rpc-addr=0.0.0.0:29999 \
-  --tracer-enabled=false \
-  --profiler-dir=/var/flow/data/profiler
+--nodeid=$NODE_ID \
+--bootstrapdir=$PWD/bootstrap \
+--datadir=$PWD/data/protocol \
+--secretsdir=$PWD/data/secrets \
+--execution-data-dir=$PWD/data/execution_data \
+--rpc-addr=0.0.0.0:9000 \
+--secure-rpc-addr=0.0.0.0:9001 \
+--http-addr=0.0.0.0:8000 \
+--rest-addr=0.0.0.0:8070 \
+--admin-addr=localhost:9002 \
+--bind=0.0.0.0:3569 \
+--dht-enabled=false \
+--grpc-compressor=gzip \
+--profiler-dir=$PWD/data/profiler \
+--dynamic-startup-access-address=$DYNAMIC_ACCESS_ADDRESS \
+--dynamic-startup-access-publickey=$DYNAMIC_ACCESS_PUBLICKEY \
+--dynamic-startup-epoch-phase=EpochPhaseStaking
 Restart=always
 RestartSec=3
 LimitNOFILE=4096
@@ -154,14 +154,57 @@ EOF
 cat /etc/systemd/system/access-node.service
 sudo systemctl enable access-node
 ```
+
 ## Build gateway
 ```bash
 git clone https://github.com/onflow/flow-evm-gateway.git
+cd flow-evm-gateway
 go build -o evm-gateway cmd/main/main.go
 mv evm-gateway /usr/bin/
 ```
 
-### Gateway
+### EVM Gateway
+
+Each EVM Gateway operator needs to create an account on Flow as well as an account on EVM. The first one will be used to pay for fees on Flow, which means it needs to be sufficiently funded and monitored for balance (it shouldn’t fall to 0 without refunding it, as of now the node doesn’t monitor these, but will be added in the future, however, the funding won’t so it should be done manually). The second EVM account will be used to get refunded fees on EVM. That account shouldn’t have to be monitored for balance as the balance will always grow.
+```bash
+flow keys generate
+```
+It will generate an output like this
+```bash
+🔴️ Store private key safely and don't share with anyone!
+Private Key              5438b13e290b257f0c41e3b23fbf3b5f5f6d4e9b2d3797430d2d2d5484db9b37
+Public Key               9b85626369efe380ebd701f7189f2746fda26d09e1b63cb003bd84a5d33b662685c56427a0526a670efa88b0cb8da371cf9dc1de5ac6bbffb56e327a5c16e708
+Mnemonic                 sustain limb elbow awkward onion crouch truth trial until poverty famous feel
+Derivation Path          m/44'/539'/0'/0/0
+Signature Algorithm      ECDSA_P256
+```
+
+Visit https://faucet.flow.com, and use the generated Public Key, to create and fund your Flow account. Make sure to use the Flow address and the Private Key for the --coa-address & --coa-key flags.
+
+<tabs>
+    <tab-item title="Mainnet">
+        ```bash
+        ACCESS_NODE_GRPC_HOST="your_domian:9000"
+        FLOW_NETWORK_ID="flow-mainnet"
+        INIT_CADENCE_HEIGHT="211176670" # to be confirmed
+        COINBASE="your_evm_address_without_0x"
+        COA_ADDRESS="your_flow_address"
+        COA_KEY="your_private_key"
+        GAS_PRICE="100" # feel free to experiment with different values
+        ```
+    </tab-item>
+    <tab-item title="Testnet">
+        ```bash
+        ACCESS_NODE_GRPC_HOST="your_domian:9000"
+        FLOW_NETWORK_ID="flow-testnet"
+        INIT_CADENCE_HEIGHT="211176670"
+        COINBASE="your_evm_address_without_0x"
+        COA_ADDRESS="your_flow_address"
+        COA_KEY="your_private_key"
+        GAS_PRICE="100" # feel free to experiment with different values
+        ```
+    </tab-item>
+</tabs>
 
 ```bash
 sudo tee <<EOF >/dev/null /etc/systemd/system/gateway.service
@@ -172,13 +215,15 @@ After=network-online.target
 [Service]
 User=$USER
 ExecStart=/usr/bin/evm-gateway \
---access-node-grpc-host access.previewnet.nodes.onflow.org:9000 \
---flow-network-id flow-previewnet \
---coinbase FACF71692421039876a5BB4F10EF7A439D8ef61E \
---coa-address f8d6e0586b0a20c7 \
---coa-key 2619878f0e2ff438d17835c2a4561cb87b4d24d72d12ec34569acd0dd4af7c21 \
---coa-resource-create \
---gas-price 0
+--access-node-grpc-host=$ACCESS_NODE_GRPC_HOST \
+--flow-network-id=$FLOW_NETWORK_ID \
+--init-cadence-height=$INIT_CADENCE_HEIGHT \
+--ws-enabled=true \
+--coa-resource-create=true \
+--coinbase=$COINBASE \
+--coa-address=$COA_ADDRESS \
+--coa-key=$COA_KEY \
+--gas-price=$GAS_PRICE
 Restart=always
 RestartSec=3
 LimitNOFILE=4096
@@ -198,15 +243,20 @@ Order of operations:
 1. `access-node`: ensure it's fully synced before proceeding
 3. `gateway`
 
-Compare the flow height explorer [testnet](https://testnet.flowdiver.io/)
-```bash
-flow blocks get latest --host localhost:9000
-```
-
 ```bash
 sudo systemctl daemon-reload
 sudo systemctl restart access-node
 sudo systemctl restart gateway
+```
+
+For access node, Compare the flow height explorer [mainnet](https://flowdiver.io/) [testnet](https://testnet.flowdiver.io/)
+```bash
+flow blocks get latest --host localhost:9000
+```
+
+For gateway
+```bash
+curl -s -XPOST 'localhost:8545' --header 'Content-Type: application/json' --data-raw '{"jsonrpc":"2.0","method":"eth_blockNumber","params":[],"id":1}' | jq
 ```
 
 ## Check logs
@@ -218,4 +268,17 @@ sudo systemctl restart systemd-journald
 
 journalctl -u access-node.service -f -n 100
 journalctl -u gateway.service -f -n 100
+```
+Logs should look like
+```bash
+{"level":"info","component":"ingestion","cadence-height":211179523,"cadence-event-length":1,"time":"2024-09-07T15:35:08Z","message":"received new cadence evm events"}
+{"level":"info","component":"ingestion","hash":"0xa3e86dbe8a454d7f84908fc3af5ea3e335f4ab33bce8127f43243eb987505020","evm-height":2853,"cadence-height":211179523,"cadence-id":"872cda9894505a8357daa493d45fa99d2632b8a36a556e013df01506c5f893da","parent-hash":"0xa9b37ac67550b5b96490270b49b78fca35ff701b92bf37a6b7f6193050681bf4","tx-hashes-root":"0x56e81f171bcc55a6ff8345e692c0f86e5b48e01b996cadc001622fb5e363b421","time":"2024-09-07T15:35:08Z","message":"new evm block executed event"}
+{"level":"info","component":"ingestion","cadence-height":211179524,"cadence-event-length":1,"time":"2024-09-07T15:35:08Z","message":"received new cadence evm events"}
+{"level":"info","component":"ingestion","hash":"0x0c7706407fd79496a845c2a337ecbf551fb670ba5ff864e42d94b6897d71474b","evm-height":2854,"cadence-height":211179524,"cadence-id":"5bd1d53fe3e3125d980dee8d9a75b8998d64d1710acacc1f4df0ad52ab4140f6","parent-hash":"0xa3e86dbe8a454d7f84908fc3af5ea3e335f4ab33bce8127f43243eb987505020","tx-hashes-root":"0x56e81f171bcc55a6ff8345e692c0f86e5b48e01b996cadc001622fb5e363b421","time":"2024-09-07T15:35:08Z","message":"new evm block executed event"}
+{"level":"info","component":"ingestion","cadence-height":211179525,"cadence-event-length":1,"time":"2024-09-07T15:35:08Z","message":"received new cadence evm events"}
+{"level":"info","component":"ingestion","hash":"0x42d7665cc17c04170eb77e2b14f7adbfbf30a5ac65d5b36a98a2857798a7a33f","evm-height":2855,"cadence-height":211179525,"cadence-id":"df6a5ddbd669f56c44dc1f4c6701e00c323eedc6a6cd0a14593aeeed9000ea25","parent-hash":"0x0c7706407fd79496a845c2a337ecbf551fb670ba5ff864e42d94b6897d71474b","tx-hashes-root":"0x56e81f171bcc55a6ff8345e692c0f86e5b48e01b996cadc001622fb5e363b421","time":"2024-09-07T15:35:08Z","message":"new evm block executed event"}
+{"level":"info","component":"ingestion","cadence-height":211179526,"cadence-event-length":1,"time":"2024-09-07T15:35:08Z","message":"received new cadence evm events"}
+{"level":"info","component":"ingestion","hash":"0x7e248dd506b721faeece565382d1f310665c2faa5a0882b49f039b73eddb0b34","evm-height":2856,"cadence-height":211179526,"cadence-id":"d34dc88006ebd8ce3e82af11d9668f864c7a9a274e4583c392fe367fc210294c","parent-hash":"0x42d7665cc17c04170eb77e2b14f7adbfbf30a5ac65d5b36a98a2857798a7a33f","tx-hashes-root":"0x56e81f171bcc55a6ff8345e692c0f86e5b48e01b996cadc001622fb5e363b421","time":"2024-09-07T15:35:08Z","message":"new evm block executed event"}
+{"level":"info","component":"ingestion","cadence-height":211179527,"cadence-event-length":1,"time":"2024-09-07T15:35:08Z","message":"received new cadence evm events"}
+{"level":"info","component":"ingestion","hash":"0x133702b182bdff543bfccd0bf380b28a6b4a9de2c1d2123b14601b522bd49a33","evm-height":2857,"cadence-height":211179527,"cadence-id":"e886a98d565f11119f6f38950145c7c86ebf438dbd6c296d88bfac8d72857ccc","parent-hash":"0x7e248dd506b721faeece565382d1f310665c2faa5a0882b49f039b73eddb0b34","tx-hashes-root":"0x56e81f171bcc55a6ff8345e692c0f86e5b48e01b996cadc001622fb5e363b421","time":"2024-09-07T15:35:08Z","message":"new evm block executed event"}
 ```
