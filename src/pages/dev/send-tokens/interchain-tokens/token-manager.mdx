@@ -1,6 +1,6 @@
 # Token Managers
 
-[Token Managers](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/token-manager/TokenManager.sol#L22) are contracts that facilitate the connection between your interchain token to the Interchain Token Service (ITS). The manager is the `msg.sender` of the transactions being executed on the token while it is being bridged.
+[Token Managers](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/token-manager/TokenManager.sol#L22) are contracts that facilitate the connection between your interchain token to the Interchain Token Service (ITS). For certain manager types, such as `mint/burn` Token Manager, the manager is the `msg.sender` of the transaction being executed on the destination chain for the token when it is bridged in.
 
 ## Token Manager Types
 There are different [types](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/interfaces/ITokenManagerType.sol#L10) of token managers available for developers to offer different types of integrations to ITS. These are; `nativeInterchain`, `mintBurnFrom`, `lockUnlock`, `lockUnlockFee`, `mintBurn`, and `gateway`.
