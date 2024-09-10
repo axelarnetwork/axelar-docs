@@ -17,7 +17,7 @@
       "permanent": true
     },
     {
-      "source": "/dev/send-tokens/interchain-tokens/create-token",
+      "source": "/dev/send-tokens/interchain-tokens/create-token/:path*",
       "destination": "/dev/send-tokens/interchain-tokens/intro/",
       "permanent": true
     },
