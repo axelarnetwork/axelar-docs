@@ -51,4 +51,5 @@ Token Managers handle the flow limits for a token's ITS integration. A `flowLimi
 
 For each cross-chain transaction that goes through ITS the `flowIn` & `flowAmount` amount are increased to track the [inflow](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/TokenHandler.sol#L51) and [outflow](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/TokenHandler.sol#L120) of tokens. To [set](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/token-manager/TokenManager.sol#L167) the `flowLimit` of a given token the caller must be a registered [flowLimiter](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/utils/RolesConstants.sol#L13). 
 
-More info on `flowLimits` can be found [here](/dev/send-tokens/interchain-tokens/rate-limit/)
+For more information on `flowLimit`s, see [Flow Limit in Interchain Token Service
+](/dev/send-tokens/interchain-tokens/flow-limit/)
