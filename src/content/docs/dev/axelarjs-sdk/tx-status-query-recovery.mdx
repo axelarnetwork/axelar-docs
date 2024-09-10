@@ -2,7 +2,7 @@
 
 import { Callout } from "/src/components/callout"
 
-Transactions can occasionally get stuck in the pipeline from a source to destination chain, mostly from one of the two following reasons:
+Transactions can occasionally get stuck in the pipeline from a source to destination chain, mostly for one of the two following reasons:
 
 - The transaction is not relayed from the source chain into the Axelar network for processing.
 - The transaction fails to get executed on the destination chain.
@@ -118,13 +118,14 @@ const response = await sdk.manualRelayToDestChain(
 Possible response values are:
 
 ```ts
-interface ApproveGatewayResponse {
+export interface GMPRecoveryResponse {
   success: boolean;
   error?: ApproveGatewayError | string;
   confirmTx?: AxelarTxResponse;
-  createPendingTransferTx?: AxelarTxResponse;
   signCommandTx?: AxelarTxResponse;
+  routeMessageTx?: AxelarTxResponse;
   approveTx?: any;
+  infoLogs?: string[];
 }
 ```
 
@@ -163,11 +164,7 @@ Possible response values are:
 
 ## Increase gas payment
 
-You can increase the gas payment using a native token or an ERC-20 token.
-
-### Native gas payment
-
-Invoking this method will execute the `addNativeGas()` method on the `GasReceiver` contract on the source chain of your cross-chain transaction to increase the amount of the gas payment in the source chain native token. The amount to be added is automatically calculated based on many factors, such as the token price of the source and destination chains and the current gas price at the destination chain. This can be overridden by specifying the amount in the `options`.
+Call `addNativeGas()` to increase the gas payment using the source chain's native token. The amount to be added will be automatically calculated based on factors such as the token price of the source and destination chains and the current gas price at the destination chain. This can be overridden by specifying the amount in the `options`.
 
 ```ts
 import {
@@ -196,63 +193,6 @@ if (success) {
   console.log("Added native gas tx:", transaction?.transactionHash);
 } else {
   console.log("Cannot add native gas", error);
-}
-```
-
-Possible response values are:
-
-```ts
-{
-    success: "success" | "failed",
-    data: ethers.ContractReceipt | undefined,
-    error: string | undefined
-}
-```
-
-### ERC-20 gas payment
-
-Use an ERC-20 token for gas payment. Supported tokens are limited on the [testnet](/resources/contract-addresses/testnet/) and [mainnet](/resources/contract-addresses/mainnet/).
-
-```ts
-import {
-  AxelarGMPRecoveryAPI,
-  Environment,
-  AddGasOptions,
-  EvmChain,
-  GAS_RECEIVER,
-} from "@axelar-network/axelarjs-sdk";
-import { ethers } from "ethers";
-
-// Optional
-const options: AddGasOptions = {
-  amount: "10000000", // The amount of gas to be added. If not specified, the sdk will calculate the amount to be paid.
-  refundAddress: "", // The address to get refunded gas. If not specified, the default value is the tx sender address.
-  estimatedGasUsed: 700000, // An amount of gas to execute `executeWithToken` or `execute` function of the custom destination contract. If not specified, the default value is 700000.
-  evmWalletDetails: { useWindowEthereum: true, privateKey: "0x" }, // A wallet to send an `addNativeGas` transaction. If not specified, the default value is { useWindowEthereum: true}.
-};
-
-const environment = Environment.TESTNET; // Can be `Environment.TESTNET` or `Environment.MAINNET`
-const api = new AxelarGMPRecoveryAPI({ environment });
-
-// Approve gas token to the Gas Receiver contract
-const gasToken = "0xGasTokenAddress";
-const erc20 = new ethers.Contract(gasToken, erc20Abi, gasPayer);
-await erc20
-  .approve(GAS_RECEIVER[environment][EvmChain.AVALANCHE], amount)
-  .then((tx) => tx.wait());
-
-// Send `addGas` transaction
-const { success, transaction, error } = await api.addGas(
-  EvmChain.AVALANCHE,
-  "0xSourceTxHash",
-  gasToken,
-  options
-);
-
-if (success) {
-  console.log("Added gas tx:", transaction?.transactionHash);
-} else {
-  console.log("Cannot add gas", error);
 }
 ```
 
