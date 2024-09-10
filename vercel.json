@@ -2,6 +2,11 @@
   "framework": null,
   "redirects": [
     {
+      "source": "/dev/amplifier/chain-integration/relay-messages/",
+      "destination": "/dev/amplifier/chain-integration/relay-messages/manual/",
+      "permanent": true
+    },
+    {
       "source": "/dev/send-tokens/interchain-tokens/rate-limit/",
       "destination": "/dev/send-tokens/interchain-tokens/flow-limit/",
       "permanent": true

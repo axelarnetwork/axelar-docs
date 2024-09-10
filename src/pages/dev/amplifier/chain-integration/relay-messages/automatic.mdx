@@ -1,0 +1,33 @@
+# Automatically relay messages with the Amplifier API
+
+import { Callout } from "/src/components/callout"
+
+<Callout>
+If you wish to relay messages manually, check out [Manually relay messages through Amplifier](/dev/amplifier/chain-integration/relay-messages/).
+</Callout>
+
+Chains connected through the Amplifier must be able to send and receive GMP data with the Axelar Virtual Machine (AVM). The Amplifier API relayer is the component responsible for delivering this data. It does this through two distinct workflows:
+
+- Subscription (outgoing messages) — The relayer detects outgoing GMP messages from the chain to the AVM and publishes them to the GMP API so that they can be verified, routed, signed, and delivered to the destination chain.
+- Inclusion (incoming messages) — The relayer receives incoming GMP messages from the AVM to the chain and executes them by writing the transaction payloads to a block on the Amplifier chain.
+
+The integrated chain will have to provide a Subscriber and Includer to interact with the Amplifier API.
+
+## Subscription
+
+The Subscriber makes sure that every message on the chain is detected and successfully published to the GMP API, thus allowing the GMP API to track a message’s lifecycle and ensure that all messages are delivered through the following steps:
+
+1. A transaction is made on the connected chain, producing a GMP call event.
+1. The subscriber detects the event and publishes it to the GMP API.
+1. The GMP API confirms that it has received the event.
+1. If the event becomes part of a chain re-org, the Subscriber re-submits it to the API.
+
+## Inclusion
+
+The Includer guarantees that messages are delivered by making sure that their payloads are included in a transaction in a block on the connected chain through the following steps:
+
+1. The relayer polls the Task API for new tasks and checks to see whether the tasks were already executed.
+1. The relayer translates the task payload into a transaction for the destination chain.
+1. The transaction is signed and sent to the RPC or node.
+1. The Includer monitors the transaction and reprices it if necessary.
+1. The relayer persists the task ID to recover from potential crashes.
