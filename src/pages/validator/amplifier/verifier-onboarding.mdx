@@ -209,65 +209,6 @@ This configuration file tells `ampd` how to connect to your local `tofnd`, how t
 The following are an example `config.toml` files:
 
 <tabs>
-<tab-item title="devnet-verifiers">
-
-    ```toml
-    tm_jsonrpc="http://devnet-verifiers.axelar.dev:26657"
-    tm_grpc="tcp://devnet-verifiers.axelar.dev:9090"
-    event_buffer_cap=10000
-
-    [service_registry]
-    cosmwasm_contract="axelar1qk00h5atutpsv900x202pxx42npjr9thg58dnqpa72f2p7m2luas9x8txw"
-
-    [broadcast]
-    batch_gas_limit="20000000"
-    broadcast_interval="1s"
-    chain_id="devnet-verifiers"
-    gas_adjustment="2"
-    gas_price="0.00005uverifiers"
-    queue_cap="1000"
-    tx_fetch_interval="1000ms"
-    tx_fetch_max_retries="15"
-
-    [tofnd_config]
-    batch_gas_limit="10000000"
-    key_uid="axelar"
-    party_uid="ampd"
-    url="http://127.0.0.1:50051"
-
-    [[handlers]]
-    cosmwasm_contract="axelar15nczwuqh0zcu6syeqsc4td6dphql7n2p7cgkl9raz97z5s3zdjrsc8we9y"
-    type="MultisigSigner"
-    
-    [[handlers]]
-    chain_name="ethereum-sepolia"
-    chain_rpc_url="https://rpc.ankr.com/eth_sepolia"
-    cosmwasm_contract="axelar1sxujcvele5eqtx0xc4wuy6jr0m28y0yt8spn7efc3527vc2j2xrqk6wkay"
-    type="EvmMsgVerifier"
-    chain_finalization="RPCFinalizedBlock"
-    
-    [[handlers]]
-    chain_name="ethereum-sepolia"
-    chain_rpc_url="https://rpc.ankr.com/eth_sepolia"
-    cosmwasm_contract="axelar1sxujcvele5eqtx0xc4wuy6jr0m28y0yt8spn7efc3527vc2j2xrqk6wkay"
-    type="EvmVerifierSetVerifier"
-    chain_finalization="RPCFinalizedBlock"
-    
-    [[handlers]]
-    chain_name="avalanche"
-    chain_rpc_url="https://avalanche-fuji-c-chain-rpc.publicnode.com"
-    cosmwasm_contract="axelar1elaymnd2epmfr498h2x9p2nezc4eklv95uv92u9csfs8wl75w7yqdc0h67"
-    type="EvmMsgVerifier"
-    chain_finalization="ConfirmationHeight"
-    
-    [[handlers]]
-    chain_name="avalanche"
-    chain_rpc_url="https://avalanche-fuji-c-chain-rpc.publicnode.com"
-    cosmwasm_contract="axelar1elaymnd2epmfr498h2x9p2nezc4eklv95uv92u9csfs8wl75w7yqdc0h67"
-    type="EvmVerifierSetVerifier"
-    chain_finalization="ConfirmationHeight"
-    ```
-</tab-item>
 <tab-item title="devnet-amplifier">
    ```toml
    tm_jsonrpc="http://devnet-amplifier.axelar.dev:26657"
@@ -398,6 +339,52 @@ The following are an example `config.toml` files:
    #type="EvmVerifierSetVerifier"
    ```
 </tab-item>
+<tab-item title="mainnet">
+   ```toml
+   # replace with your Axelar testnet node
+   tm_jsonrpc="http://127.0.0.1:26657"
+   tm_grpc="tcp://127.0.0.1:9090"
+   event_buffer_cap=100000
+
+   [service_registry]
+   cosmwasm_contract="axelar1rpj2jjrv3vpugx9ake9kgk3s2kgwt0y60wtkmcgfml5m3et0mrls6nct9m"
+
+   [broadcast]
+   batch_gas_limit="20000000"
+   broadcast_interval="1s"
+   chain_id="axelar-dojo-1"
+   gas_adjustment="2"
+   gas_price="0.007uaxl"
+   queue_cap="1000"
+   tx_fetch_interval="1000ms"
+   tx_fetch_max_retries="15"
+
+   [tofnd_config]
+   batch_gas_limit="10000000"
+   key_uid="axelar"
+   party_uid="ampd"
+   url="http://127.0.0.1:50051"
+
+   [[handlers]]
+   cosmwasm_contract="axelar14a4ar5jh7ue4wg28jwsspf23r8k68j7g5d6d3fsttrhp42ajn4xq6zayy5"
+   type="MultisigSigner"
+
+   # For each supported chain
+   #[[handlers]]
+   #chain_name="[chain name]"
+   #chain_rpc_url="[node rpc url]"
+   #cosmwasm_contract="[voting verifier address]"
+   #chain_finalization="[RPCFinalizedBlock or ConfirmationHeight]"
+   #type="EvmMsgVerifier"
+
+   #[[handlers]]
+   #chain_name="[chain name]"
+   #chain_rpc_url="[node rpc url]"
+   #cosmwasm_contract="[voting verifier address]"
+   #chain_finalization=["RPCFinalizedBlock" or "ConfirmationHeight"]
+   #type="EvmVerifierSetVerifier"
+   ```
+</tab-item>
 </tabs>
 
 See the [`ampd` README](https://github.com/axelarnetwork/axelar-amplifier/blob/main/ampd/README.md) on GitHub for instructions on formatting a `config` file for your own projects. For `chain_finalization`, if the chain supports the `finalized` tag via the RPC API, choose `RPCFinalizedBlock`, otherwise choose `ConfirmationHeight`.
@@ -428,20 +415,14 @@ Prior to running the `ampd` daemon, you will need to set up your wallet with dev
 
 1. Fund your verifier address.
 
-   1. Join the [Axelar Discord](https://discord.com/invite/axelar).
-   1. Get the Developer Role.
-   1. Go to the [#faucet channel](https://discord.com/channels/770814806105128977/1002423218772136056/1217885883152334918) and submit a request with your account to get 100 test tokens:
-
-      ```bash
-      !faucet devnet-verifiers [my verifier address]
-      ```
+   1. Fill out the [Amplifier Verifier Onboarding Form](https://docs.google.com/forms/d/e/1FAIpQLSfQQhk292yT9j8sJF5ARRIE8PpI3LjuFc8rr7xZW7posSLtJA/viewform) for your address to be whitelisted or to receive funds.
 
 ## Activate and run the verifier
 
 1. Bond your verifier:
 
    ```bash
-   ampd bond-verifier validators 100 uverifiers
+   ampd bond-verifier validators 100000000000 uaxl
    ```
 
    Bonded verifiers will stay bonded until they unbond or are removed by governance. The bond for testnet is 100000000000uaxl (100k AXL).
@@ -463,8 +444,6 @@ Prior to running the `ampd` daemon, you will need to set up your wallet with dev
 1. Authorize your verifier.
 
    This is dependent on the environment, and can be done via governance, or by the network operators.
-
-   For devnet, fill out the [Amplifier Verifier Onboarding Form](https://docs.google.com/forms/d/e/1FAIpQLSfQQhk292yT9j8sJF5ARRIE8PpI3LjuFc8rr7xZW7posSLtJA/viewform) for your address to be whitelisted.
 
 1. Run the `ampd` daemon.
 

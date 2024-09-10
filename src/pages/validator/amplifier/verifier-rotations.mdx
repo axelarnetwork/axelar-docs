@@ -8,7 +8,7 @@ Use `current_verifier_set` to get the active verifier set for an integrated chai
 
 ```bash
 export CHAIN_MULTISIG_PROVER_ADDRESS="axelar1xz4cya4qm2ws6nzperhvc40wdjcq4872fl6d3j2s4cytyx8j80eqenv87g"
-export RPC="http://devnet-verifiers.axelar.dev:26657"
+export RPC="https://tm.axelar-testnet.lava.build:443"
 ```
 
 ```bash
@@ -44,7 +44,7 @@ axelard tx wasm execute $CHAIN_MULTISIG_PROVER_ADDRESS \
     '"update_verifier_set"' \
     --from wallet
     --gas auto --gas-adjustment 1.5 --gas-prices 0.007uverifiers \
-    --chain-id=devnet-verifiers \
+    --chain-id axelar-testnet-lisbon-3 \
     --node $RPC
 ```
 
@@ -58,6 +58,6 @@ axelard tx wasm execute $CHAIN_MULTISIG_PROVER_ADDRESS \
     --keyring-backend test
     --from wallet
     --gas auto --gas-adjustment 1.5 --gas-prices 0.007uverifiers \
-    --chain-id=devnet-verifiers \
+    --chain-id axelar-testnet-lisbon-3 \
     --node $RPC
 ```
