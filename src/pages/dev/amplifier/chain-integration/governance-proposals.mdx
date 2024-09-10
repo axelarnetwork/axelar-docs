@@ -256,12 +256,16 @@ axelard tx gov submit-proposal instantiate-contract $CODE_ID \
 </tab-item>
 
 <tab-item title="Non-EVM integrators">
-Once the feedback period has passed, submit the proposal with the [proper instantiation parameters](https://github.com/axelarnetwork/axelar-amplifier/blob/deab56a75209a158c082cbf9b77caf500eb4ec7c/contracts/multisig-prover/src/msg.rs#L12):
+Once the feedback period has passed, submit the proposal with the [proper instantiation parameters](https://github.com/axelarnetwork/axelar-amplifier/blob/deab56a75209a158c082cbf9b77caf500eb4ec7c/contracts/multisig-prover/src/msg.rs#L12). 
+
+<Callout>
+You will need to wait until the proposal to instantiate your gateway contract passes to get the proper `gateway_address`.
+</Callout>
 
 ```bash
 export MULTISIG_PROVER_ADMIN_ADDRESS="axelar1zlr7e5qf3sz7yf890rkh9tcnu87234k6k7ytd9"
 export MULTISIG_PROVER_GOV_ADDRESS="axelar1zlr7e5qf3sz7yf890rkh9tcnu87234k6k7ytd9"
-export SOURCE_GATEWAY_ADDRESS="axelar1hdx49xndyxzrs3t5jkzart00taqysu6kmaf77waxv8regwxxpp4qcsea2w"
+export SOURCE_GATEWAY_ADDRESS="axelar1hdx49xndyxzrs3t5jkzart00taqysu6kmaf77waxv8regwxxpp4qcsea2w" # Get after proposal to instantiate gateway contract passes
 export MULTISIG_PROVER_ADDRESS="axelar19jxy26z0qnnspa45y5nru0l5rmy9d637z5km2ndjxthfxf5qaswst9290r"
 export AXELAR_COORDINATOR_ADDRESS="axelar1m2498n4h2tskcsmssjnzswl5e6eflmqnh487ds47yxyu6y5h4zuqr9zk4g"
 export SOURCE_VERIFIER_GOV_ADDRESS="axelar1zlr7e5qf3sz7yf890rkh9tcnu87234k6k7ytd9"
