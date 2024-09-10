@@ -499,7 +499,7 @@
       "permanent": true
     },
     {
-      "source": "/cli-docs/:version/:path*/",
+      "source": "/cli-docs/:version/",
       "destination": "https://github.com/axelarnetwork/axelar-core/blob/main/docs/cli/:path*.md",
       "permanent": true
     },
