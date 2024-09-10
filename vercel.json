@@ -12,11 +12,6 @@
       "permanent": true
     },
     {
-      "source": "/dev/send-tokens/interchain-tokens/create-token/",
-      "destination": "/dev/send-tokens/interchain-tokens/intro/",
-      "permanent": true
-    },
-    {
       "source": "/dev/send-tokens/interchain-tokens/create-token/:path*",
       "destination": "/dev/send-tokens/interchain-tokens/intro/",
       "permanent": true
