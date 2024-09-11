@@ -1,11 +1,11 @@
+# Axelar Docs
+
 - [Axelar Docs](#axelar-docs)
   - [Updating Navigation](#updating-navigation)
   - [How to Contribute to the Docs](#how-to-contribute-to-the-docs)
     - [Here's what you need to know to contribute to the Axelar documentation:](#heres-what-you-need-to-know-to-contribute-to-the-axelar-documentation)
   - [Short links](#short-links)
     - [ITS](#its)
-
-# Axelar Docs
 
 The official documentation website for [Axelar](https://github.com/axelarnetwork).
 
