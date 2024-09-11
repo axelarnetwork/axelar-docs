@@ -54,17 +54,7 @@ Rewards are calculated through the following parameters, which are first configu
 Use `rewards_pool()` to check the funds in a pool:
 
 <tabs>
-
-<tab-item title="<code>devnet-verifiers</code>">
-    ```bash
-    export REWARDS_CONTRACT_ADDRESS="axelar1guczj53xxl4347adagh23eelyhnxvugw2nqq0q0dr6kws7q35jyqqnan33"
-    export CHAIN_NAME="avalanche"
-    export VOTING_VERIFIER_OR_MULTISIG_CONTRACT_ADDRESS="axelar1elaymnd2epmfr498h2x9p2nezc4eklv95uv92u9csfs8wl75w7yqdc0h67" # or "axelar1qt0gkcrvcpv765k8ec4tl2svvg6hd3e3td8pvg2fsncrt3dzjefswsq3w2"
-    export RPC="http://devnet-amplifier.axelar.dev:26657"
-    ```
-</tab-item>
-
-<tab-item title="<code>devnet-amplifier</code>">
+<tab-item title="devnet-amplifier">
     ```bash
     export REWARDS_CONTRACT_ADDRESS="axelar1vaj9sfzc3z0gpel90wu4ljutncutv0wuhvvwfsh30rqxq422z89qnd989l"
     export CHAIN_NAME="fantom"
@@ -72,7 +62,7 @@ Use `rewards_pool()` to check the funds in a pool:
     export RPC="http://devnet-amplifier.axelar.dev:26657"
     ```
 </tab-item>
-<tab-item title="<code>testnet</code>">
+<tab-item title="testnet">
     ```bash
     export REWARDS_CONTRACT_ADDRESS="axelar1harq5xe68lzl2kx4e5ch4k8840cgqnry567g0fgw7vt2atcuugrqfa7j5z"
     export CHAIN_NAME="test-avalanche"
@@ -80,11 +70,10 @@ Use `rewards_pool()` to check the funds in a pool:
     export RPC="https://tm.axelar-testnet.lava.build:443"
     ```
 </tab-item>
-
 </tabs>
 
 <Callout>
-You can get the addresses of the rewards, voting verifier, and multisig contracts through [`devnet-verifiers.json`](https://github.com/axelarnetwork/axelar-contract-deployments/blob/019d41f81b506d35fa89ffd9ebb3a02719563e09/axelar-chains-config/info/devnet-verifiers.json) or [`devnet-amplifier.json`](https://github.com/axelarnetwork/axelar-contract-deployments/blob/019d41f81b506d35fa89ffd9ebb3a02719563e09/axelar-chains-config/info/devnet-amplifier.json).
+You can get the addresses of the rewards, voting verifier, and multisig contracts through [`devnet-amplifier.json`](https://github.com/axelarnetwork/axelar-contract-deployments/blob/019d41f81b506d35fa89ffd9ebb3a02719563e09/axelar-chains-config/info/devnet-amplifier.json).
 </Callout>
 
 ```bash
@@ -107,16 +96,6 @@ axelard q wasm contract-state smart $REWARDS_CONTRACT_ADDRESS \
 Use `distribute_rewards()` to distribute rewards from a pool:
 
 <tabs>
-
-<tab-item title="<code>devnet-verifiers</code>">
-    ```bash
-    export REWARDS_CONTRACT_ADDRESS="axelar1guczj53xxl4347adagh23eelyhnxvugw2nqq0q0dr6kws7q35jyqqnan33"
-    export CHAIN_NAME="avalanche"
-    export VOTING_VERIFIER_OR_MULTISIG_CONTRACT_ADDRESS="axelar1elaymnd2epmfr498h2x9p2nezc4eklv95uv92u9csfs8wl75w7yqdc0h67" || "0x7eeE33A59Db27d762AA1Fa31b26efeE0dABa1132"
-    export RPC="http://devnet-amplifier.axelar.dev:26657"
-    ```
-</tab-item>
-
 <tab-item title="<code>devnet-amplifier</code>">
     ```bash
     export REWARDS_CONTRACT_ADDRESS="axelar1vaj9sfzc3z0gpel90wu4ljutncutv0wuhvvwfsh30rqxq422z89qnd989l"
@@ -137,7 +116,7 @@ Use `distribute_rewards()` to distribute rewards from a pool:
 </tabs>
 
 <Callout>
-You can get the addresses of the rewards, voting verifier, and multisig contracts through [`devnet-verifiers.json`](https://github.com/axelarnetwork/axelar-contract-deployments/blob/019d41f81b506d35fa89ffd9ebb3a02719563e09/axelar-chains-config/info/devnet-verifiers.json) or [`devnet-amplifier.json`](https://github.com/axelarnetwork/axelar-contract-deployments/blob/019d41f81b506d35fa89ffd9ebb3a02719563e09/axelar-chains-config/info/devnet-amplifier.json).
+You can get the addresses of the rewards, voting verifier, and multisig contracts through [`devnet-amplifier.json`](https://github.com/axelarnetwork/axelar-contract-deployments/blob/019d41f81b506d35fa89ffd9ebb3a02719563e09/axelar-chains-config/info/devnet-amplifier.json).
 </Callout>
 
 ```bash
