@@ -5,7 +5,7 @@ import { Callout } from "/src/components/callout"
 Transactions can occasionally get stuck in the pipeline from a source to destination chain, mostly for one of the two following reasons:
 
 - The transaction is not relayed from the source chain into the Axelar network for processing.
-- The transaction fails to get executed on the destination chain.
+- The transaction fails to get executed on the destination chain due to flawed contract logic. 
 
 The [`AxelarGMPRecoveryAPI`](https://github.com/axelarnetwork/axelarjs-sdk/blob/main/src/libs/TransactionRecoveryApi/AxelarGMPRecoveryAPI.ts) module in the AxelarJS SDK can be used to troubleshoot:
 
@@ -39,7 +39,9 @@ const sdk = new AxelarGMPRecoveryAPI({
 
 ## Query transaction status by `txHash`
 
-See the status of a transaction by passing its `txHash` into [`queryTransactionStatus()`](https://github.com/axelarnetwork/axelarjs-sdk/blob/86bc55224f84f9539dd109e5dfd6b443a116eebe/src/libs/TransactionRecoveryApi/AxelarRecoveryApi.ts#L226):
+See the status of a transaction by passing its `txHash` into [`queryTransactionStatus()`](https://github.com/axelarnetwork/axelarjs-sdk/blob/86bc55224f84f9539dd109e5dfd6b443a116eebe/src/libs/TransactionRecoveryApi/AxelarRecoveryApi.ts#L226).
+
+The `eventIndex` is an optional parameter that can be passed in to query a specific internal transaction if several transactions have the same `txHash`.
 
 ```ts
 const txHash: string =
@@ -96,7 +98,7 @@ enum GasPaidStatus {
 
 ## Manually relay the transaction through the Axelar network
 
-Use [`manualRelayToDestChain()`](https://github.com/axelarnetwork/axelarjs-sdk/blob/86bc55224f84f9539dd109e5dfd6b443a116eebe/src/libs/TransactionRecoveryApi/AxelarGMPRecoveryAPI.ts#L453) to manually relay a transaction to the destination chain through the Axelar network. It will query the current transaction status and recover from source to destination if needed.
+Use [`manualRelayToDestChain()`](https://github.com/axelarnetwork/axelarjs-sdk/blob/86bc55224f84f9539dd109e5dfd6b443a116eebe/src/libs/TransactionRecoveryApi/AxelarGMPRecoveryAPI.ts#L453) to dislodge a transaction [stuck at the **Confirm** step](https://testnet.axelarscan.io/gmp/0x111ff754b85538afcfea5aa59d01f976eb9a7b7b45b483c3fb2c48833bf0780d-4). This function will manually relay a transaction to the destination chain through the Axelar network, query the current transaction status, and recover from source to destination if needed.
 
 ```ts
 const sourceTxHash = "0x..";
