@@ -4,10 +4,14 @@ We appreciate your interest in contributing to Axelar! This document `CONTRIBUTI
 
 ### Table of Contents
 
-- [Introduction](#introduction)
-- [Getting Started](#getting-started)
-- [How to Contribute](#how-to-contribute)
-- [Code of Conduct](#code-of-conduct)
+- [Contributing to Axelar](#contributing-to-axelar)
+  - [Table of Contents](#table-of-contents)
+  - [Getting Started](#getting-started)
+  - [How to Contribute](#how-to-contribute)
+  - [Code of Conduct](#code-of-conduct)
+    - [Our Standards:](#our-standards)
+    - [Our Responsibilities:](#our-responsibilities)
+  - [Project Structure](#project-structure)
 
 ### Getting Started
 
@@ -75,3 +79,8 @@ Unacceptable behavior includes:
 As project maintainers, we clarify the standards of acceptable behavior and take appropriate corrective action in response to unacceptable behavior.
 
 We also reserve the right to remove or reject any contributions that do not align with this Code of Conduct or to temporarily or permanently ban any contributor who exhibits inappropriate, threatening, offensive, or harmful behavior.
+
+### Project Structure
+
+- **`src/content/`**: All documentation content in Markdown format.
+- **`src/layouts/navigation.ts`**: Defines the navigation structure for the documentation site.
