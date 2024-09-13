@@ -112,7 +112,7 @@ function walk(dir) {
   }
 }
 
-walk("src/pages");
+walk("src/content/docs");
 
 //console.dir(sitemap, { maxArrayLength: null });
 
