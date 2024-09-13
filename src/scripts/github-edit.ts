@@ -8,7 +8,7 @@ export function getGithubEditUrl(Astro: Readonly<AstroGlobal>) {
   if (currentPage == "/") {
     return `https://github.com/axelarnetwork/axelar-docs/blob/main/src/pages/index.astro`;
   }
-  return `https://github.com/axelarnetwork/axelar-docs/edit/main/src/pages${currentPage.replace(
+  return `https://github.com/axelarnetwork/axelar-docs/edit/main/src/content/docs/${currentPage.replace(
     /\/$/,
     ""
   )}.mdx`;
