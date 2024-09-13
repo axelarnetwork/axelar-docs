@@ -10,6 +10,7 @@ import strip from "strip-markdown";
 import { exit } from "process";
 
 const client = algoliasearch("ECUG3H1E0M", process.env.ALGOLIA_KEY);
+const CONTENT_PATH = "src/content/docs";
 
 if (!process.env.ALGOLIA_KEY) {
   console.error("ALGOLIA_KEY not set");
@@ -36,7 +37,7 @@ function walk(dir) {
     ) {
       // remove file extension, order matters here
       const url = filepath
-        .replace("src/pages", "")
+        .replace(CONTENT_PATH, "")
         .replace(".astro", "/")
         .replace(".mdx", "/")
         .replace(".md", "/");
@@ -72,6 +73,11 @@ function walk(dir) {
       if (filepath.indexOf(".astro" > -1)) {
         content = stripTags(content);
       }
+      // Remove callout
+      content = content.replace(
+        /import\s*{\s*Callout\s*}\s*from\s*['"][^"']*['"]\s*;?/g,
+        ""
+      );
 
       // Fix newlines
       content = content.replace(/\n/g, " ");
@@ -112,9 +118,9 @@ function walk(dir) {
   }
 }
 
-walk("src/content/docs");
+walk(CONTENT_PATH);
 
-//console.dir(sitemap, { maxArrayLength: null });
+// console.dir(sitemap, { maxArrayLength: null });
 
 try {
   index
