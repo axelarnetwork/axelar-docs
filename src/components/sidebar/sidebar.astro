@@ -6,9 +6,7 @@ import RenderSidebar from "./render-sidebar";
 
 const docs = await getCollection("docs");
 const nav = generateNavigation(docs);
+const pathname = Astro.url.pathname;
 ---
 
-<div class="p-10 flex flex-col gap-20">
-  <p class="text-4xl">Navigation</p>
-  <RenderSidebar client:load nav={nav} />
-</div>
+<RenderSidebar client:load nav={nav} pathname={pathname} />

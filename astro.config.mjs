@@ -1,20 +1,19 @@
-import { defineConfig } from "astro/config";
-import react from "@astrojs/react";
 import mdx from "@astrojs/mdx";
-import remarkToc from "remark-toc";
-import { rehypeHeadingIds } from "@astrojs/markdown-remark";
-import rehypeSlug from "rehype-slug";
-import rehypeAutolinkHeadings from "rehype-autolink-headings";
-import { h, s } from "hastscript";
+import react from "@astrojs/react";
 import sitemap from "@astrojs/sitemap";
 import tailwind from "@astrojs/tailwind";
-const DEFAULT_LAYOUT = "/src/layouts/Section.astro";
-function setDefaultLayout() {
-  return function (_, file) {
-    const { frontmatter } = file.data.astro;
-    if (!frontmatter.layout) frontmatter.layout = DEFAULT_LAYOUT;
-  };
-}
+import { defineConfig } from "astro/config";
+import { h } from "hastscript";
+import rehypeAutolinkHeadings from "rehype-autolink-headings";
+import rehypeSlug from "rehype-slug";
+import remarkToc from "remark-toc";
+// const DEFAULT_LAYOUT = "/src/layouts/Section.astro";
+// function setDefaultLayout() {
+//   return function (_, file) {
+//     const { frontmatter } = file.data.astro;
+//     if (!frontmatter.layout) frontmatter.layout = DEFAULT_LAYOUT;
+//   };
+// }
 
 // https://astro.build/config
 export default defineConfig({
@@ -23,7 +22,6 @@ export default defineConfig({
   trailingSlash: "always",
   markdown: {
     remarkPlugins: [
-      setDefaultLayout,
       [
         remarkToc,
         {

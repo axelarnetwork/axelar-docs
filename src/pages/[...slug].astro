@@ -1,6 +1,6 @@
 ---
+import MainLayout from "@/layouts/MainLayout.astro";
 import { getCollection } from "astro:content";
-import Section from "../layouts/Section.astro";
 
 export async function getStaticPaths() {
   const docs = await getCollection("docs");
@@ -16,4 +16,8 @@ const { doc } = Astro.props;
 const { Content } = await doc.render();
 ---
 
-<Content />
+<MainLayout>
+  <article class="sub-container prose py-10">
+    <Content />
+  </article>
+</MainLayout>

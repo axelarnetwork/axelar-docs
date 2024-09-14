@@ -1,86 +1,72 @@
+import { ChevronDown, LayoutGrid } from "lucide-react";
 import React from "react";
 import type { Navigation } from "../../utils/generateNavigation";
-
-const mainNav = ["Dev", "Validator", "Node"];
-const RenderSidebar = ({ nav }: { nav: Navigation[] }) => {
-  const [current, setCurrent] = React.useState("Dev");
+const mainNav = ["dev", "validator", "node"];
+const RenderSidebar = ({
+  nav,
+  pathname,
+}: {
+  nav: Navigation[];
+  pathname: string;
+}) => {
+  const current = pathname.split("/")[1];
+  const currentNav = nav?.filter((item) => item.file === current);
+  const otherNav = nav?.filter((item) => !mainNav?.includes(item?.file ?? ""));
   return (
-    <div className="flex flex-col gap-10">
-      <div className="flex items-center divide-x divide-gray-700">
-        {mainNav?.map((item) => {
-          return (
-            <button
-              onClick={() => setCurrent(item)}
-              className={` px-5 py-3  ${
-                item === current ? "bg-blue-500" : "bg-black text-white"
-              }`}
-              key={item}
-            >
-              {item}
-            </button>
-          );
-        })}
-      </div>
-      <Nav nav={nav?.filter((item) => item.title === current)} index={0} />
-
-      <p className="font-bold text-2xl py-10">Others</p>
-      <Nav
-        nav={nav?.filter((item) => !mainNav?.includes(item.title))}
-        index={0}
-      />
-    </div>
+    <aside className="flex flex-col bg-background-neutral px-8 pb-9 pt-4 sidebar-scroll  overflow-y-auto w-[18.5rem] h-[calc(100dvh-80px)] top-[80px] sticky">
+      {currentNav?.length > 0 && <Nav nav={currentNav} index={0} />}
+      {otherNav?.length > 0 && <Nav nav={otherNav} index={0} />}
+    </aside>
   );
 };
 
 export default RenderSidebar;
 
-const Nav = ({ nav, index }: { nav: Navigation[]; index: number }) => {
+const NavDropDown = ({ item, index }: { item: Navigation; index: number }) => {
+  const [open, setOpen] = React.useState(false);
+  return (
+    <div className="flex  flex-col ">
+      <button
+        onClick={() => setOpen(!open)}
+        className="flex justify-between gap-3 p-1.5 hover:bg-gray  rounded text-sm items-center "
+        style={{
+          color: index === 0 ? "blue" : "black",
+        }}
+      >
+        <p className="flex-1 text-left">{item.title}</p>
+
+        <ChevronDown size={16} />
+      </button>
+      {open && <Nav nav={item.children} index={index + 1} />}
+    </div>
+  );
+};
+const Nav = ({ nav, index }: { nav?: Navigation[]; index: number }) => {
   return (
     <div
-      key={`index + ${Math.random()} + $`}
       style={{
-        paddingLeft: `${index * 20}px`,
-        display: "flex",
-        flexDirection: "column",
-        gap: "10px",
+        paddingLeft: `${index * 10}px`,
       }}
-      className="mt-3"
+      className="flex flex-col  "
     >
       {nav?.map((item, i) => {
         return item.children ? (
-          <div key={i}>
-            <p
-              className="font-bold flex gap-2  border-b "
-              style={{
-                color: index === 0 ? "blue" : "black",
-              }}
-            >
-              {item.title}
-
-              <svg
-                className="-rotate-90"
-                width="20"
-                height="20"
-                viewBox="0 0 20 20"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M6.66667 10H13.3333M6.66667 10L10 13.3333M6.66667 10L10 6.66667"
-                  stroke="black"
-                  stroke-width="1.5"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-              </svg>
-            </p>
-            <Nav nav={item.children} index={index + 1} />
-          </div>
+          index === 0 ? (
+            <div key={index} className="mt-5">
+              <div className="bg-gray mb-3 text-sm flex gap-2 items-center  px-2 py-1.5  rounded">
+                <LayoutGrid size={16} className="text-primary" />
+                <p>{item.title}</p>
+              </div>
+              <Nav nav={item.children} index={index + 1} />
+            </div>
+          ) : (
+            <NavDropDown item={item} index={index} key={i} />
+          )
         ) : (
           <a
             key={i}
             href={`/${item.href}/`}
-            className="underline text-blue-500"
+            className="text-sm p-1.5 hover:bg-gray rounded"
           >
             {item.title}
           </a>

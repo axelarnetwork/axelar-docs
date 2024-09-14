@@ -1,5 +1,6 @@
 ---
-import Section from "../layouts/Section.astro";
+import MainLayout from "@/layouts/MainLayout.astro";
+
 const title = "What is Axelar?";
 
 const cards = [
@@ -60,7 +61,7 @@ const learnMoreCards = [
 ];
 ---
 
-<Section>
+<MainLayout>
   <h1>What is Axelar?</h1>
   Axelar delivers secure cross-chain communication for Web3, enabling you to build
   Interchain dApps that grow beyond a single chain. <em>Secure</em> means Axelar
@@ -119,4 +120,4 @@ const learnMoreCards = [
       }
     </div>
   </div>
-</Section>
+</MainLayout>

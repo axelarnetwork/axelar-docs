@@ -34,7 +34,17 @@ const canonicalURL = new URL(Astro.url.pathname, "https://docs.axelar.dev");
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="img/png" href="/images/favicon.png" />
+    <link
+      href="https://api.fontshare.com/v2/css?f[]=clash-grotesk@1&display=swap"
+      rel="stylesheet"
+    />
     <link rel="canonical" href={canonicalURL} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
+      rel="stylesheet"
+    />
     <title>{shownTitle}</title>
     <meta content={shownTitle} property="og:title" />
     <meta content={shownTitle} property="twitter:title" />
@@ -89,14 +99,16 @@ const canonicalURL = new URL(Astro.url.pathname, "https://docs.axelar.dev");
   </head>
   <script src="/src/scripts/index.ts"></script>
 </html>
-<body>
+<body class="">
   <Header />
-  <div id="search-results"></div>
-  <main>
+  <!-- <div id="search-results"></div> -->
+  <main class="flex items-start">
     <Sidebar />
-    <slot />
+    <div class="flex-1 w-full overflow-x-hidden">
+      <slot />
+    </div>
   </main>
-  <footer>
+  <!-- <footer>
     <div class="columns">
       <div style="width:280px; line-height: 1.5;">
         <svg
@@ -172,5 +184,5 @@ const canonicalURL = new URL(Astro.url.pathname, "https://docs.axelar.dev");
     <div style="text-align:center; font-size: 12px;">
       &copy; 2024 Axelar Foundation. All Rights Reserved.
     </div>
-  </footer>
+  </footer> -->
 </body>
