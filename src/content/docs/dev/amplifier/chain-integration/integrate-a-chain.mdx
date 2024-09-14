@@ -37,20 +37,22 @@ To use the pre-built `axelard` binary:
 
 1.  Add the folder containing the library to `LD_LIBRARY_PATH`:
 
-        ```bash
+```bash
         export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:~/[your-path]
         ln -s axelard-darwin-arm64-v1.0.2 axelard
         chmod a+x axelard-darwin-arm64-v1.0.2
-        ```
+        
+```
 
         If you run into a Mac warning telling you that either the `axelard` binary or the `WasmVM` cannot be verified, you can disable it by running:
 
 
-        ```bash
+```bash
         xattr -d com.apple.quarantine [filename]
-        ```
+```
+     
 
-    </tab-item>
+</tab-item>
 
 <tab-item title="Build from source">
 To build the `axelard` binary from source:
@@ -58,7 +60,7 @@ To build the `axelard` binary from source:
 1. Clone the [`axelar-core` repo](https://github.com/axelarnetwork/axelar-core).
 1. Checkout the `v1.0.2` release tag.
 1. Run `make build`.
-   </tab-item>
+</tab-item>
 
 </tabs>
 
@@ -99,7 +101,7 @@ Use the existing deployments for all three contracts, making note of the existin
 - Voting verifier (code_id: `626`)
 - Gateway (code_id: `616`)
 - Mutisig prover (code_id: `618`)
-  </tab-item>
+</tab-item>
 
 <tab-item title="Build and deploy contracts">
 1. Clone the [`axelar-amplifier` repo](https://github.com/axelarnetwork/axelar-amplifier).
@@ -206,7 +208,7 @@ Use the existing deployments for all three contracts, making note of the existin
 
         Remember to save your contract's `code_id`.
 
-    </tab-item>
+</tab-item>
 
 <tab-item title="Use custom implementation">
   You can also deploy a custom implementation of the gateway, verifier, and

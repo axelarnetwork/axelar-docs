@@ -51,14 +51,16 @@ cd $HOME
     https://github.com/MystenLabs/sui-genesis/raw/main/mainnet/genesis.blob wget
     -O fullnode.yaml
     https://raw.githubusercontent.com/MystenLabs/sui/main/crates/sui-config/data/fullnode-template.yaml
-    ls ```
+    ls 
+```
   </tab-item>
   <tab-item title="Testnet" class="bleed">
     ```bash mkdir -p /opt/sui/config/ cd /opt/sui/config/ curl -fLJO
     https://github.com/MystenLabs/sui-genesis/raw/main/testnet/genesis.blob wget
     -O fullnode.yaml
     https://raw.githubusercontent.com/MystenLabs/sui/main/crates/sui-config/data/fullnode-template.yaml
-    ls ```
+    ls 
+```
   </tab-item>
 </tabs>
 
@@ -86,7 +88,8 @@ Edit the fullnode.yaml file to include peer nodes for state synchronization. App
     /dns/ssn01.mainnet.sui.rpcpool.com/udp/8084 peer-id:
     fadb7ccb0b7fc99223419176e707f5122fef4ea686eb8e80d1778588bf5a0bcd - address:
     /dns/ssn02.mainnet.sui.rpcpool.com/udp/8084 peer-id:
-    13783584a90025b87d4604f1991252221e5fd88cab40001642f4b00111ae9b7e ```
+    13783584a90025b87d4604f1991252221e5fd88cab40001642f4b00111ae9b7e 
+```
   </tab-item>
   <tab-item title="Testnet" class="bleed">
     ```yaml p2p-config: seed-peers: - address:
@@ -103,7 +106,8 @@ Edit the fullnode.yaml file to include peer nodes for state synchronization. App
     /dns/lhr-tnt-ssfn-00.testnet.sui.io/udp/8084 peer-id:
     9393d6056bb9c9d8475a3cf3525c747257f17c6a698a7062cbbd1875bc6ef71e - address:
     /dns/mel-tnt-ssfn-00.testnet.sui.io/udp/8084 peer-id:
-    c88742f46e66a11cb8c84aca488065661401ef66f726cb9afeb8a5786d83456e ```
+    c88742f46e66a11cb8c84aca488065661401ef66f726cb9afeb8a5786d83456e 
+```
   </tab-item>
 </tabs>
 
@@ -185,10 +189,12 @@ vald's `config.toml`
 <tabs>
   <tab-item title="Mainnet">
     ```bash [[axelar_bridge_evm]] name = "sui" rpc_addr = "http://IP:9000"
-    start-with-bridge = true ```
+    start-with-bridge = true 
+```
   </tab-item>
   <tab-item title="Testnet">
     ```bash [[axelar_bridge_evm]] name = "sui" rpc_addr = "http://IP:9000"
-    start-with-bridge = true ```
+    start-with-bridge = true 
+```
   </tab-item>
 </tabs>

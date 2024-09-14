@@ -78,12 +78,14 @@ You can check via Flow Port or using flow accounts staking-info
   <tab-item title="Mainnet">
     ```bash # You can check the balance using Flow Cli. Once you have downloaded
     and installed Flow Cli, you can query the account balance using the command
-    flow accounts staking-info your_account_address -n mainnet ```
+    flow accounts staking-info your_account_address -n mainnet 
+```
   </tab-item>
   <tab-item title="Testnet">
     ```bash # You can check the balance using Flow Cli. Once you have downloaded
     and installed Flow Cli, you can query the account balance using the command
-    flow accounts staking-info your_account_address -n testnet ```
+    flow accounts staking-info your_account_address -n testnet 
+```
   </tab-item>
 </tabs>
 
@@ -110,7 +112,7 @@ Use `systemctl` to set up services for `Access Node`, `Gateway`
         NODE_ID=$(cat ./bootstrap/public-root-information/node-info.pub.* | jq -r .NodeID)
         DYNAMIC_ACCESS_ADDRESS="secure.mainnet.nodes.onflow.org:9001"
         DYNAMIC_ACCESS_PUBLICKEY="28a0d9edd0de3f15866dfe4aea1560c4504fe313fc6ca3f63a63e4f98d0e295144692a58ebe7f7894349198613f65b2d960abf99ec2625e247b1c78ba5bf2eae"
-        ```
+```
     </tab-item>
     <tab-item title="Testnet">
         ```bash
@@ -119,7 +121,7 @@ Use `systemctl` to set up services for `Access Node`, `Gateway`
         DYNAMIC_ACCESS_ADDRESS="secure.testnet.nodes.onflow.org:9001"
         DYNAMIC_ACCESS_PUBLICKEY="ba69f7d2e82b9edf25b103c195cd371cf0cc047ef8884a9bbe331e62982d46daeebf836f7445a2ac16741013b192959d8ad26998aff12f2adc67a99e1eb2988d"
 
-        ```
+```
     </tab-item>
 
 </tabs>
@@ -198,14 +200,16 @@ Visit https://faucet.flow.com, and use the generated Public Key, to create and f
     FLOW_NETWORK_ID="flow-mainnet" INIT_CADENCE_HEIGHT="211176670" # to be
     confirmed COINBASE="your_evm_address_without_0x"
     COA_ADDRESS="your_flow_address" COA_KEY="your_private_key" GAS_PRICE="100" #
-    feel free to experiment with different values ```
+    feel free to experiment with different values 
+```
   </tab-item>
   <tab-item title="Testnet">
     ```bash ACCESS_NODE_GRPC_HOST="your_domian:9000"
     FLOW_NETWORK_ID="flow-testnet" INIT_CADENCE_HEIGHT="211176670"
     COINBASE="your_evm_address_without_0x" COA_ADDRESS="your_flow_address"
     COA_KEY="your_private_key" GAS_PRICE="100" # feel free to experiment with
-    different values ```
+    different values 
+```
   </tab-item>
 </tabs>
 

@@ -125,11 +125,13 @@ docker tag ghcr.io/immutable/go-ethereum/go-ethereum:latest geth
 <tabs>
   <tab-item title="Testnet">
     ```bash docker run \ --rm \ -v /opt/immutable-zkevm:/mnt/geth \ --name geth
-    \ geth immutable bootstrap rpc \ --zkevm testnet \ --datadir /mnt/geth ```
+    \ geth immutable bootstrap rpc \ --zkevm testnet \ --datadir /mnt/geth 
+```
   </tab-item>
   <tab-item title="Mainnet">
     ```bash docker run \ --rm \ -v /opt/immutable-zkevm:/mnt/geth \ --name geth
-    \ geth immutable bootstrap rpc \ --zkevm mainnet \ --datadir /mnt/geth ```
+    \ geth immutable bootstrap rpc \ --zkevm mainnet \ --datadir /mnt/geth 
+```
   </tab-item>
 </tabs>
 
@@ -137,16 +139,18 @@ docker tag ghcr.io/immutable/go-ethereum/go-ethereum:latest geth
 
 <tabs>
   <tab-item title="Testnet">
-    ```bash docker run \ -d \ --restart=always \ -v
+```bash docker run \ -d \ --restart=always \ -v
     /opt/immutable-zkevm:/mnt/geth \ --name geth \ -p 8545:8545 \ geth \ --zkevm
     testnet \ --config /etc/geth/testnet.toml \ --datadir /mnt/geth \ --http \
-    --http.port "8545" \ --http.addr "0.0.0.0" ```
+    --http.port "8545" \ --http.addr "0.0.0.0" 
+```
   </tab-item>
   <tab-item title="Mainnet">
     ```bash docker run \ -d \ --restart=always \ -v
     /opt/immutable-zkevm:/mnt/geth \ --name geth \ -p 8545:8545 \ geth \ --zkevm
     mainnet \ --config /etc/geth/mainnet.toml \ --datadir /mnt/geth \ --http \
-    --http.port "8545" \ --http.addr "0.0.0.0" ```
+    --http.port "8545" \ --http.addr "0.0.0.0" 
+```
   </tab-item>
 </tabs>
 
@@ -329,10 +333,12 @@ vald's `config.toml`
 <tabs>
   <tab-item title="Mainnet">
     ```bash [[axelar_bridge_evm]] name = "immutable" rpc_addr = "http://IP:PORT"
-    start-with-bridge = true ```
+    start-with-bridge = true 
+```
   </tab-item>
   <tab-item title="Testnet">
     ```bash [[axelar_bridge_evm]] name = "immutable" rpc_addr = "http://IP:PORT"
-    start-with-bridge = true ```
+    start-with-bridge = true 
+```
   </tab-item>
 </tabs>

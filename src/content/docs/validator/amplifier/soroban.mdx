@@ -60,17 +60,22 @@ SOROBAN_RELEASE=v21.4.1
 ### 1. Install Stellar Core
 
 <tabs>
-  <tab-item title="Mainnet" class="bleed">
+<tab-item title="Mainnet" class="bleed">
     ```bash git clone https://github.com/stellar/stellar-core.git cd
     stellar-core git checkout $STELLAR_RELEASE git submodule init git submodule
-    update ./autogen.sh ./configure make make check make install ```
-  </tab-item>
-  <tab-item title="Testnet" class="bleed">
+    update ./autogen.sh ./configure make make check make install 
+```
+</tab-item>
+<tab-item title="Testnet" class="bleed">
     ```bash git clone https://github.com/stellar/stellar-core.git cd
     stellar-core git checkout $STELLAR_RELEASE git submodule init git submodule
-    update ./autogen.sh ./configure make make check make install ```
-  </tab-item>
-</tabs>
+    update ./autogen.sh ./configure make make check make install 
+```
+
+</tab-item>
+                        </tabs>
+
+
 
 ### 2. Install Soroban
 
@@ -78,12 +83,14 @@ SOROBAN_RELEASE=v21.4.1
   <tab-item title="Mainnet" class="bleed">
     ```bash git clone https://github.com/stellar/stellar-core.git cd
     stellar-core git checkout $SOROBAN_RELEASE make build-soroban-rpc mv
-    soroban-rpc /usr/bin/ ```
-  </tab-item>
-  <tab-item title="Testnet" class="bleed">
+    soroban-rpc /usr/bin/ 
+```
+</tab-item>
+<tab-item title="Testnet" class="bleed">
     ```bash git clone https://github.com/stellar/stellar-core.git cd
     stellar-core git checkout $SOROBAN_RELEASE make build-soroban-rpc mv
-    soroban-rpc /usr/bin/ ```
+    soroban-rpc /usr/bin/ 
+```
   </tab-item>
 </tabs>
 
@@ -108,7 +115,7 @@ mkdir -p ~/.soroban/config
 Create ~/.stellar/config/core.toml and add
 
 <tabs>
-    <tab-item title="Mainnet" class="bleed">
+<tab-item title="Mainnet" class="bleed">
         ```bash
         HTTP_PORT=11626
         PUBLIC_HTTP_PORT=false
@@ -271,8 +278,8 @@ Create ~/.stellar/config/core.toml and add
         PUBLIC_KEY = "GA7DV63PBUUWNUFAF4GAZVXU2OZMYRATDLKTC7VTCG7AU4XUPN5VRX4A"
         ADDRESS = "stellar3.franklintempleton.com:11625"
         HISTORY = "curl -sf https://stellar-history-ins.franklintempleton.com/azinsshf401/{0} -o {1}"
-        ```
-    </tab-item>
+```
+</tab-item>
     <tab-item title="Testnet" class="bleed">
         ```bash
         HTTP_PORT=11626
@@ -307,8 +314,8 @@ Create ~/.stellar/config/core.toml and add
         PUBLIC_KEY="GC2V2EFSXN6SQTWVYA5EPJPBWWIMSD2XQNKUOHGEKB535AQE2I6IXV2Z"
         ADDRESS="core-testnet3.stellar.org"
         HISTORY="curl -sf http://history.stellar.org/prd/core-testnet/core_testnet_003/{0} -o {1}"
-        ```
-    </tab-item>
+```
+</tab-item>
 
 </tabs>
 
@@ -320,22 +327,25 @@ soroban-rpc gen-config-file >> config.toml
 ```
 
 <tabs>
-  <tab-item title="Mainnet" class="bleed">
+<tab-item title="Mainnet" class="bleed">
     ```bash # edit ~/.soroban/config.toml and uncomment and set to
     NETWORK_PASSPHRASE="Public Global Stellar Network ; September 2015" # update
     to ~/.stellar/config/core.toml CAPTIVE_CORE_CONFIG_PATH="" # update to
     ~/.stellar CAPTIVE_CORE_STORAGE_PATH = "" HISTORY_ARCHIVE_URLS =
     ["https://history.stellar.org/prd/core-live/core_live_001"]
-    STELLAR_CORE_BINARY_PATH = "/usr/local/bin/stellar-core" ```
-  </tab-item>
-  <tab-item title="Testnet" class="bleed">
+    STELLAR_CORE_BINARY_PATH = "/usr/local/bin/stellar-core" 
+```
+</tab-item>
+<tab-item title="Testnet" class="bleed">
     ```bash # edit ~/.soroban/config.toml and uncomment and set to
     NETWORK_PASSPHRASE="Test SDF Network ; September 2015" # update to
     ~/.stellar/config/core.toml CAPTIVE_CORE_CONFIG_PATH="" # update to
     ~/.stellar CAPTIVE_CORE_STORAGE_PATH = "" HISTORY_ARCHIVE_URLS =
     ["http://history.stellar.org/prd/core-testnet/core_testnet_001"]
-    STELLAR_CORE_BINARY_PATH = "/usr/local/bin/stellar-core" ```
-  </tab-item>
+    STELLAR_CORE_BINARY_PATH = "/usr/local/bin/stellar-core" 
+```
+</tab-item>
+
 </tabs>
 
 ### 2. Create a service

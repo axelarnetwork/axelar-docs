@@ -34,12 +34,14 @@ Note: Update your shell profile in accordance with the shell you are using
   <tab-item title="Mainnet">
     ```bash echo export ENVIRONMENT=mainnet >> $HOME/.profile echo export
     DOCKER_COMPOSE_FILE_LOCATION=$HOME/fraxtal-node/docker-compose.yml >>
-    $HOME/.profile ```
+    $HOME/.profile 
+```
   </tab-item>
   <tab-item title="Testnet">
     ```bash echo export ENVIRONMENT=testnet >> $HOME/.profile echo export
     DOCKER_COMPOSE_FILE_LOCATION=$HOME/fraxtal-node/testnet.docker-compose.yml
-    >> $HOME/.profile ```
+    >> $HOME/.profile 
+```
   </tab-item>
 </tabs>
 
@@ -55,13 +57,13 @@ source $HOME/.profile
     <tab-item title="Mainnet">
         ```bash
         cp .env.SAMPLE .env
-        ```
+```
 
     </tab-item>
     <tab-item title="Testnet">
         ```bash
         cp .env.testnet.SAMPLE .env.testnet
-        ```
+```
     </tab-item>
 
 </tabs>
@@ -211,10 +213,12 @@ vald's `config.toml`
 <tabs>
   <tab-item title="Mainnet">
     ```bash [[axelar_bridge_evm]] name = "fraxtal" rpc_addr = "http://IP:PORT"
-    start-with-bridge = true ```
+    start-with-bridge = true 
+```
   </tab-item>
   <tab-item title="Testnet">
     ```bash [[axelar_bridge_evm]] name = "fraxtal" rpc_addr = "http://IP:PORT"
-    start-with-bridge = true ```
+    start-with-bridge = true 
+```
   </tab-item>
 </tabs>

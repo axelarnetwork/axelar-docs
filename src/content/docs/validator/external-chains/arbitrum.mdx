@@ -48,12 +48,12 @@ Please provide the RPC URL of your synced [Ethereum node](/validator/external-ch
   <tab-item title="Mainnet">
   ```bash
   docker run --rm -it  -v /some/local/dir/arbitrum:/home/user/.arbitrum -p 0.0.0.0:8547:8547 -p 0.0.0.0:8548:8548 <LATEST_DOCKER_IMAGE> --parent-chain.connection.url <YOUR_ETH_RPC_URL> --chain.id=42161 --http.api=net,web3,eth,debug --http.corsdomain=* --http.addr=0.0.0.0 --http.vhosts=* --init.url="https://snapshot.arbitrum.foundation/arb1/nitro-archive.tar"
-  ```
+```
   </tab-item>
   <tab-item title="Sepolia Testnet">
   ```bash
   docker run --rm -it  -v /some/local/dir/arbitrum:/home/user/.arbitrum -p 0.0.0.0:8547:8547 -p 0.0.0.0:8548:8548 <LATEST_DOCKER_IMAGE> --parent-chain.connection.url <YOUR_ETH_RPC_URL> --chain.id=421613 --http.api=net,web3,eth,debug --http.corsdomain=* --http.addr=0.0.0.0 --http.vhosts=* --init.url="https://snapshot.arbitrum.foundation/sepolia/nitro-archive.tar"
-  ```
+```
   </tab-item>
 </tabs>
 
@@ -85,10 +85,13 @@ vald's `config.toml`
 <tabs>
   <tab-item title="Mainnet">
     ```bash [[axelar_bridge_evm]] name = "arbitrum" rpc_addr = "http://IP:PORT"
-    start-with-bridge = true ```
+    start-with-bridge = true 
+```
   </tab-item>
   <tab-item title="Goerli Testnet">
     ```bash [[axelar_bridge_evm]] name = "arbitrum" rpc_addr = "http://IP:PORT"
-    start-with-bridge = true ```
+    start-with-bridge = true 
+    
+```
   </tab-item>
 </tabs>

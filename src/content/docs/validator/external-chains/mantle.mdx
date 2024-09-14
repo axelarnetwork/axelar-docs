@@ -40,14 +40,14 @@ cd mantlenetworks
         mkdir -p mainnet/secret
         node -e "console.log(require('crypto').randomBytes(32).toString('hex'))" > mainnet/secret/jwt_secret_txt
         cast w n |grep -i "Private Key" |awk -F ": " '{print $2}' |sed 's/0x//' > mainnet/secret/p2p_node_key_txt
-        ```
+```
     </tab-item>
     <tab-item title="Testnet">
         ```bash
         mkdir sepolia/secret
         node -e "console.log(require('crypto').randomBytes(32).toString('hex'))" > sepolia/secret/jwt_secret_txt
         cast w n |grep -i "Private Key" |awk -F ": " '{print $2}' |sed 's/0x//' > sepolia/secret/p2p_node_key_txt
-        ```
+```
     </tab-item>
 </tabs>
 
@@ -77,12 +77,14 @@ Download the latest snapshot for a quicker sync: [Mainnet](https://github.com/ma
   <tab-item title="Mainnet">
     ```bash mkdir -p ./data/mainnet-geth tarball="[latest snapshot].tar" wget
     https://s3.ap-southeast-1.amazonaws.com/snapshot.mantle.xyz/${tarball}
-    tar vxf ${tarball} -C ./data/mainnet-geth ```
+    tar vxf ${tarball} -C ./data/mainnet-geth 
+```
   </tab-item>
   <tab-item title="Testnet">
     ```bash mkdir -p ./data/geth tarball="[latest snapshot].tar" wget
     https://s3.ap-southeast-1.amazonaws.com/static.testnet.mantle.xyz/${tarball}
-    tar vxf ${tarball} -C ./data/geth ```
+    tar vxf ${tarball} -C ./data/geth 
+```
   </tab-item>
 </tabs>
 
@@ -229,10 +231,13 @@ vald's `config.toml`
 <tabs>
   <tab-item title="Mainnet">
     ```bash [[axelar_bridge_evm]] name = "mantle" rpc_addr = "http://IP:PORT"
-    start-with-bridge = true ```
+    start-with-bridge = true 
+```
   </tab-item>
   <tab-item title="Testnet">
     ```bash [[axelar_bridge_evm]] name = "mantle" rpc_addr = "http://IP:PORT"
-    start-with-bridge = true ```
+    start-with-bridge = true 
+    
+```
   </tab-item>
 </tabs>
