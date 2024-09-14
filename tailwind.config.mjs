@@ -9,6 +9,9 @@ export default {
         sans: ["Inter", ...defaultTheme.fontFamily.sans],
         clash: ["Clash Grotesk", ...defaultTheme.fontFamily.sans],
       },
+      backgroundImage: {
+        "map-light": "url('/images/map.png')",
+      },
       colors: {
         background: {
           DEFAULT: "#FAFAFA",
@@ -19,6 +22,7 @@ export default {
         },
         gray: {
           DEFAULT: "#E1E1E1",
+          dark: "#868686",
         },
       },
     },

@@ -5,11 +5,11 @@
 
 @layer components {
     .container {
-      @apply mx-auto max-w-[2000px] self-center  px-7;
+      @apply mx-auto max-w-[2000px] self-center  px-4 md:px-7;
     }
     
     .sub-container {
-      @apply mx-auto max-w-[1200px] self-center  px-7;
+      @apply mx-auto max-w-[1200px] self-center px-4 md:px-7;
     }
     
     

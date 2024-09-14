@@ -7,7 +7,8 @@ import {
   permanentNav,
   type Navigation,
 } from "../../utils/generateNavigation";
-import Logo from "./logo.astro";
+import Logo from "./header-logo.astro";
+import MobileNavigation from "./MobileNavigation";
 
 const docs = await getCollection("docs");
 const nav = generateNavigation(docs);
@@ -22,12 +23,13 @@ const getUrl = (nav: Navigation) => {
 ---
 
 <header class="border-b bg-background-neutral sticky top-0 z-[11]">
-  <nav class="flex container w-full justify-between py-5">
+  <nav class="flex container items-center w-full justify-between py-4 md:py-5">
     <a href="/" class="flex items-center">
       <Logo />
     </a>
+    <MobileNavigation />
     <div
-      class="flex items-center tracking-wide gap-14 text-sm font-clash font-medium uppercase"
+      class="hidden md:flex items-center tracking-wide gap-14 text-sm font-clash font-medium uppercase"
     >
       {
         nav

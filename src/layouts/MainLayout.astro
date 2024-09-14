@@ -2,6 +2,7 @@
 import Sidebar from "@/components/sidebar/sidebar.astro";
 import Header from "@/components/header/header.astro";
 import "../styles/global.css";
+import Footer from "@/components/footer/footer.astro";
 const { title, description, image, hidden } =
   Astro.props.frontmatter || Astro.props;
 
@@ -99,13 +100,14 @@ const canonicalURL = new URL(Astro.url.pathname, "https://docs.axelar.dev");
   </head>
   <script src="/src/scripts/index.ts"></script>
 </html>
-<body class="">
+<body class="bg-background">
   <Header />
   <!-- <div id="search-results"></div> -->
   <main class="flex items-start">
     <Sidebar />
     <div class="flex-1 w-full overflow-x-hidden">
       <slot />
+      <Footer />
     </div>
   </main>
   <!-- <footer>
