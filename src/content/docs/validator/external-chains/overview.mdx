@@ -1,6 +1,6 @@
 # Overview
 
-import { Callout } from "/src/components/callout"
+import { Callout } from "/src/components/callout";
 
 As a validator for the Axelar network, your Axelar node will vote on the status of external blockchains such as Ethereum, Cosmos, etc. Specifically:
 
@@ -102,15 +102,21 @@ Be sure to set `start-with-bridge` to `true`.
 ## Restart your companion processes
 
 <Callout type="warning" emoji="⚠️">
-  Caution: Do not stop the `axelar-core` process. If you stop `axelar-core` then you risk downtime for Tendermint consensus, which can result in penalties.
+  Caution: Do not stop the `axelar-core` process. If you stop `axelar-core` then
+  you risk downtime for Tendermint consensus, which can result in penalties.
 </Callout>
 
 <Callout type="warning" emoji="⚠️">
-  Caution: If `vald`, `tofnd` are stopped for too long then your validator might fail to produce a heartbeat transaction when needed. The risk of this event can be reduced to near-zero if you promptly restart these processes shortly after a recent round of heartbeat transactions.
+  Caution: If `vald`, `tofnd` are stopped for too long then your validator might
+  fail to produce a heartbeat transaction when needed. The risk of this event
+  can be reduced to near-zero if you promptly restart these processes shortly
+  after a recent round of heartbeat transactions.
 </Callout>
 
 <Callout emoji="💡">
-  Tip: Heartbeat events are emitted every 50 blocks. Your validator typically responds to heartbeat events within 1-2 blocks. It should be safe to restart `vald`, `tofnd` at block heights that are 5-10 mod 50.
+  Tip: Heartbeat events are emitted every 50 blocks. Your validator typically
+  responds to heartbeat events within 1-2 blocks. It should be safe to restart
+  `vald`, `tofnd` at block heights that are 5-10 mod 50.
 </Callout>
 
 Stop your companion processes `vald`, `tofnd`.
@@ -154,6 +160,7 @@ axelard tx nexus register-chain-maintainer avalanche ethereum fantom moonbeam po
   Automatic deregistration
 
 Your validator could be automatically deregistered as a maintainer for chain C for poor performance. See [Automatic deregistration](#automatic-deregistration) below.
+
 </Callout>
 
 ## Deregister as chain maintainer from an external chain

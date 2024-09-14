@@ -1,0 +1,14 @@
+---
+import "@/styles/global.css";
+import { getCollection } from "astro:content";
+import { generateNavigation } from "../../utils/generateNavigation";
+import RenderSidebar from "./render-sidebar";
+
+const docs = await getCollection("docs");
+const nav = generateNavigation(docs);
+---
+
+<div class="p-10 flex flex-col gap-20">
+  <p class="text-4xl">Navigation</p>
+  <RenderSidebar client:load nav={nav} />
+</div>

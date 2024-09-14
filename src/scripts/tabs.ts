@@ -21,16 +21,18 @@ export const addTabs = () => {
     titleBar.innerHTML = `
         <ul role="tablist">
           ${convertedTabs
-        .map(
-          (tab, i) => `
+            .map(
+              (tab, i) => `
             <li class="nav-item" role="presentation">
-              <button class="nav-link ${i === 0 ? "active" : ""
-            }" data-bs-toggle="tab" type="button" role="tab" aria-controls="tab-${i}" aria-selected="true">${tab.title
-            }</button>
+              <button class="nav-link ${
+                i === 0 ? "active" : ""
+              }" data-bs-toggle="tab" type="button" role="tab" aria-controls="tab-${i}" aria-selected="true">${
+                tab.title
+              }</button>
             </li>
-          `
-        )
-        .join("")}
+          `,
+            )
+            .join("")}
         </ul>
       `;
 
@@ -40,8 +42,8 @@ export const addTabs = () => {
       tabs = [...titleBar.querySelectorAll("button")];
       currentIndex = tabs.indexOf(
         tabs.find(
-          (button) => button.innerText === localStorage["savedTabChoice"]
-        )
+          (button) => button.innerText === localStorage["savedTabChoice"],
+        ),
       );
       if (currentIndex === -1) {
         console.error("tab not found");
@@ -53,7 +55,7 @@ export const addTabs = () => {
     const render = () => {
       applySavedChoice();
       [...titleBar.children[0].children].map((button) =>
-        button.classList.remove("active")
+        button.classList.remove("active"),
       );
       titleBar.children[0].children[currentIndex].classList.add("active");
       const sections = tab.getElementsByTagName("tab-item");

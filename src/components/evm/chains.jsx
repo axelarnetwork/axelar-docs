@@ -13,26 +13,22 @@ export default ({ environment = "mainnet" }) => {
   return (
     <div className="resource-grid">
       {_evm_chains
-        .filter(c => !c?.is_staging)
+        .filter((c) => !c?.is_staging)
         .map((c, i) => {
-          const {
-            id,
-            chain_id,
-            network_id,
-            name,
-            provider_params,
-            image,
-          } = { ...c };
+          const { id, chain_id, network_id, name, provider_params, image } = {
+            ...c,
+          };
 
           const explorer_url = provider_params?.[0]?.blockExplorerUrls?.[0];
-          const gateway_contract_address = _gateways.find(_c => _c?.id === id)?.address;
-          const gas_service_address = _gas_services.find(_c => _c?.id === id)?.address;
+          const gateway_contract_address = _gateways.find(
+            (_c) => _c?.id === id,
+          )?.address;
+          const gas_service_address = _gas_services.find(
+            (_c) => _c?.id === id,
+          )?.address;
 
           return (
-            <div
-              key={i}
-              className="resource-card"
-            >
+            <div key={i} className="resource-card">
               <div className="flex items-start justify-between">
                 <div className="flex items-center">
                   {image && (
@@ -45,29 +41,20 @@ export default ({ environment = "mainnet" }) => {
                     />
                   )}
                   <div className="flex flex-col">
-                    <span className="text-base font-semibold">
-                      {name}
-                    </span>
+                    <span className="text-base font-semibold">{name}</span>
                     <span className="text-gray-400 dark:text-gray-500 text-sm font-medium">
                       Chain ID: {chain_id}
                     </span>
                   </div>
                 </div>
-                <AddChain 
-                  environment={environment}
-                  chain={id}
-                />
+                <AddChain environment={environment} chain={id} />
               </div>
               <div className="flex flex-col flex-wrap justify-between">
                 <span className="whitespace-nowrap text-sm text-gray-600 dark:text-gray-400">
                   Chain Name:
                 </span>
                 <div className="flex items-center text-sm space-x-1">
-                  <Copy
-                    size={18}
-                    title={network_id}
-                    value={network_id}
-                  />
+                  <Copy size={18} title={network_id} value={network_id} />
                 </div>
               </div>
               <div className="flex flex-col flex-wrap justify-between">
@@ -75,7 +62,7 @@ export default ({ environment = "mainnet" }) => {
                   Gateway Contract:
                 </span>
                 <div className="flex items-center text-sm space-x-1">
-                  {gateway_contract_address ?
+                  {gateway_contract_address ? (
                     <a
                       href={`${explorer_url}/address/${gateway_contract_address}`}
                       target="_blank"
@@ -84,11 +71,11 @@ export default ({ environment = "mainnet" }) => {
                     >
                       {ellipse(gateway_contract_address, 14)}
                     </a>
-                    :
+                  ) : (
                     <span className="text-gray-500 dark:text-white font-semibold">
                       -
                     </span>
-                  }
+                  )}
                   {gateway_contract_address && (
                     <Copy
                       size={18}
@@ -103,7 +90,7 @@ export default ({ environment = "mainnet" }) => {
                   Gas Service Contract:
                 </span>
                 <div className="flex items-center text-sm space-x-1">
-                  {gas_service_address ?
+                  {gas_service_address ? (
                     <a
                       href={`${explorer_url}/address/${gas_service_address}`}
                       target="_blank"
@@ -112,24 +99,19 @@ export default ({ environment = "mainnet" }) => {
                     >
                       {ellipse(gas_service_address, 14)}
                     </a>
-                    :
+                  ) : (
                     <span className="text-gray-500 dark:text-white font-semibold">
                       -
                     </span>
-                  }
+                  )}
                   {gas_service_address && (
-                    <Copy
-                      size={18}
-                      hide={true}
-                      value={gas_service_address}
-                    />
+                    <Copy size={18} hide={true} value={gas_service_address} />
                   )}
                 </div>
               </div>
             </div>
           );
-        })
-      }
+        })}
     </div>
   );
 };

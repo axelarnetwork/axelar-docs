@@ -27,8 +27,8 @@ export default ({ environment = "mainnet" }) => {
   const [chainData, setChainData] = useState(null);
   const [assetData, setAssetData] = useState(
     _evm_assets.find(
-      (a) => a?.id === (environment === "testnet" ? "uausdc" : "uusdc")
-    )
+      (a) => a?.id === (environment === "testnet" ? "uausdc" : "uusdc"),
+    ),
   );
 
   const assets = _evm_assets
@@ -43,8 +43,8 @@ export default ({ environment = "mainnet" }) => {
             };
           })
           .filter(
-            (a) => !chainData || equals_ignore_case(a.chain, chainData.id)
-          ) || []
+            (a) => !chainData || equals_ignore_case(a.chain, chainData.id),
+          ) || [],
     );
 
   return (
@@ -64,7 +64,7 @@ export default ({ environment = "mainnet" }) => {
               _evm_assets.findIndex(
                 (a) =>
                   (!assetData || a?.id === assetData.id) &&
-                  a?.contracts?.findIndex((_c) => _c?.chain === c?.id) > -1
+                  a?.contracts?.findIndex((_c) => _c?.chain === c?.id) > -1,
               ) < 0
             ) {
               setAssetData("");
@@ -118,8 +118,8 @@ export default ({ environment = "mainnet" }) => {
                           ? j === 0
                             ? "rounded-bl-lg"
                             : j === COLUMNS.length - 1
-                            ? "rounded-br-lg"
-                            : ""
+                              ? "rounded-br-lg"
+                              : ""
                           : ""
                       } border-none whitespace-nowrap py-3 px-4 ${
                         c.className || ""

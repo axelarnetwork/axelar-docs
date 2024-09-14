@@ -1,19 +1,19 @@
 # Mainnet
 
-import { Callout } from '/src/components/callout'
+import { Callout } from "/src/components/callout";
 
-import IBCChannels from '/src/components/ibc/channels'
-import TransferFeeCalculator from '/src/components/transfer-fee/calculator'
-import EVMChains from '/src/components/evm/chains'
-import EVMAssets from '/src/components/evm/assets'
-import UpgradePath from '/src/upgrade-path.md'
+import IBCChannels from "/src/components/ibc/channels";
+import TransferFeeCalculator from "/src/components/transfer-fee/calculator";
+import EVMChains from "/src/components/evm/chains";
+import EVMAssets from "/src/components/evm/assets";
+import UpgradePath from "/src/upgrade-path.md";
 
-| Variable              | Value     |
-| --------------------- | --------- |
+| Variable              | Value           |
+| --------------------- | --------------- |
 | `chain-id`            | `axelar-dojo-1` |
-| `axelar-core` version | `v1.0.2` |
-| `vald` version        | `v1.0.2` |
-| `tofnd` version       | `v1.0.1` |
+| `axelar-core` version | `v1.0.2`        |
+| `vald` version        | `v1.0.2`        |
+| `tofnd` version       | `v1.0.1`        |
 
 ## EVM contract addresses
 
@@ -32,8 +32,7 @@ import UpgradePath from '/src/upgrade-path.md'
 </div>
 
 <div className="space-y-1 mt-4">
-  ### Assets
-  Learn more about [wrapped assets like axlUSDC](/learn/axlusdc).
+  ### Assets Learn more about [wrapped assets like axlUSDC](/learn/axlusdc).
   <EVMAssets client:only environment="mainnet" />
 </div>
 

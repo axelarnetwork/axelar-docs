@@ -1,26 +1,19 @@
 ---
-import { getCollection } from 'astro:content';
-import Section from '../layouts/Section.astro';
-
+import { getCollection } from "astro:content";
+import Section from "../layouts/Section.astro";
 
 export async function getStaticPaths() {
-    const docs = await getCollection('docs');
+  const docs = await getCollection("docs");
 
-
-    return docs?.map((doc) => ({
-        params: { slug: doc.slug },
-        props: { doc },
-    }));
+  return docs?.map((doc) => ({
+    params: { slug: doc.slug },
+    props: { doc },
+  }));
 }
-
 
 const { doc } = Astro.props;
 
-
-
-const {Content}  = await  doc.render()
-
+const { Content } = await doc.render();
 ---
 
- <Content />
-
+<Content />

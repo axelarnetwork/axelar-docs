@@ -51,7 +51,7 @@ enum GMPStatus {
   DEST_EXECUTE_ERROR = "destination_execute_error",
   DEST_EXECUTING = "executing",
   UNKNOWN_ERROR = "unknown_error",
-  CANNOT_FETCH_STATUS = "cannot_fetch_status"
+  CANNOT_FETCH_STATUS = "cannot_fetch_status",
 }
 interface GasPaidInfo {
   status: GasPaidStatus;
@@ -75,7 +75,7 @@ The following method, once invoked, will:
 ```ts
 const sourceTxHash = "0x..";
 const provider = new ethers.providers.JsonRpcProvider(
-  "https://goerli.infura.io/v3/projectId"
+  "https://goerli.infura.io/v3/projectId",
 );
 
 // Optional
@@ -85,7 +85,7 @@ const senderOptions = { privateKey: "0x", provider };
 
 const response = await sdk.manualRelayToDestChain(
   sourceTxHash,
-  senderOptions /* can be skipped */
+  senderOptions /* can be skipped */,
 );
 ```
 
@@ -102,7 +102,7 @@ export interface ApproveGatewayResponse {
 }
 ```
 
-If `success == false` in the response above, there are two options to remediate (below). 
+If `success == false` in the response above, there are two options to remediate (below).
 
 ### Execute manually OR increase gas payment
 
@@ -113,7 +113,7 @@ When invoking this method, you will manually execute (and pay for) the executabl
 ```ts
 const sourceTxHash = "0x..";
 const provider = new ethers.providers.JsonRpcProvider(
-  "https://goerli.infura.io/v3/projectId"
+  "https://goerli.infura.io/v3/projectId",
 );
 
 // Optional
@@ -123,7 +123,7 @@ const senderOptions = { privateKey: "0x", provider };
 
 const response = await sdk.execute(
   sourceTxHash,
-  senderOptions /* can be skipped */
+  senderOptions /* can be skipped */,
 );
 ```
 
@@ -164,7 +164,7 @@ const txHash: string = "0x...";
 const { success, transaction, error } = await api.addNativeGas(
   EvmChain.AVALANCHE,
   txHash,
-  options
+  options,
 );
 
 if (success) {
@@ -221,7 +221,7 @@ const { success, transaction, error } = await api.addGas(
   EvmChain.AVALANCHE,
   "0xSourceTxHash",
   gasToken,
-  options
+  options,
 );
 
 if (success) {

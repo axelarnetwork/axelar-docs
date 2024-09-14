@@ -38,8 +38,8 @@ export default ({ environment = "mainnet" }) => {
                         ? j === 0
                           ? "rounded-bl-lg"
                           : j === COLUMNS.length - 1
-                          ? "rounded-br-lg"
-                          : ""
+                            ? "rounded-br-lg"
+                            : ""
                         : ""
                     } border-none whitespace-nowrap py-3 px-4 ${
                       className || ""

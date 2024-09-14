@@ -1,6 +1,6 @@
 # Flow Gateway Node setup
 
-import { Callout } from "/src/components/callout"
+import { Callout } from "/src/components/callout";
 
 ## Prerequisites
 
@@ -24,21 +24,26 @@ mkdir ./bootstrap
 # Use a fully qualified domain name for YOUR_NODE_ADDRESS_GOES_HERE. Please also include the port number in the network address e.g. flowaccess.mycompany.com:3569
 ./boot-tools/bootstrap key --address "<YOUR_NODE_ADDRESS_GOES_HERE>:3569" --role access -o ./bootstrap
 ```
+
 Get you node id
 
 ```bash
 cat ./bootstrap/public-root-information/node-id && echo ""
 ```
+
 All your private keys should be in the bootstrap folder created earlier. Please take a back up of the entire folder.
 
 ## Stake 100 FLOW
+
 The minimum 100 is required to prevent certain vulnerabilities in the smart contract that are a result of having a zero minimum stake requirement.
 Follow this [guide](https://developers.flow.com/networks/flow-port/staking-guide#stake-a-node) to stake using [Flow Port](https://port.flow.com)
 
 All fields required are generated here:
+
 ```bash
 cat ./bootstrap/public-root-information/node-info.pub.* | jq
 ```
+
 ```json
 {
   "Role": "access",
@@ -49,6 +54,7 @@ cat ./bootstrap/public-root-information/node-info.pub.* | jq
   "StakingPubKey": "ae8dcf81f3a70d72036b7ba2c586ed37ed0eb82b9c0a4aab998a8420f98894f94c14f84fa716e93654d3940fc0c8ff4d19b504c90a5b4918b28f421e9d3659dc2b7e246025ebeffea0d83cceefe315d7ed346dbe412fdac51b64997d97d29f7e"
 }
 ```
+
 Create an address to use with the faucet [here](https://testnet-faucet.onflow.org) on testnet
 
 ## Verify That Your Node ID Was Selected
@@ -69,23 +75,22 @@ source ~/.profile
 You can check via Flow Port or using flow accounts staking-info
 
 <tabs>
-    <tab-item title="Mainnet">
-        ```bash
-        # You can check the balance using Flow Cli. Once you have downloaded and installed Flow Cli, you can query the account balance using the command
-        flow accounts staking-info your_account_address -n mainnet
-        ```
-    </tab-item>
-    <tab-item title="Testnet">
-        ```bash
-        # You can check the balance using Flow Cli. Once you have downloaded and installed Flow Cli, you can query the account balance using the command
-        flow accounts staking-info your_account_address -n testnet
-        ```
-    </tab-item>
+  <tab-item title="Mainnet">
+    ```bash # You can check the balance using Flow Cli. Once you have downloaded
+    and installed Flow Cli, you can query the account balance using the command
+    flow accounts staking-info your_account_address -n mainnet ```
+  </tab-item>
+  <tab-item title="Testnet">
+    ```bash # You can check the balance using Flow Cli. Once you have downloaded
+    and installed Flow Cli, you can query the account balance using the command
+    flow accounts staking-info your_account_address -n testnet ```
+  </tab-item>
 </tabs>
 
 Look for the Tokens Staked field in the response of the above command to verify
 
 ## Get binaries
+
 ```bash
 curl -sL -O storage.googleapis.com/flow-genesis-bootstrap/binary/access/app
 chmod +x app
@@ -97,6 +102,7 @@ mv app /usr/bin/access-node
 Use `systemctl` to set up services for `Access Node`, `Gateway`
 
 ### Access Node
+
 <tabs>
     <tab-item title="Mainnet">
         ```bash
@@ -115,6 +121,7 @@ Use `systemctl` to set up services for `Access Node`, `Gateway`
 
         ```
     </tab-item>
+
 </tabs>
 
 ```bash
@@ -156,6 +163,7 @@ sudo systemctl enable access-node
 ```
 
 ## Build gateway
+
 ```bash
 git clone https://github.com/onflow/flow-evm-gateway.git
 cd flow-evm-gateway
@@ -166,10 +174,13 @@ mv evm-gateway /usr/bin/
 ### EVM Gateway
 
 Each EVM Gateway operator needs to create an account on Flow as well as an account on EVM. The first one will be used to pay for fees on Flow, which means it needs to be sufficiently funded and monitored for balance (it shouldn’t fall to 0 without refunding it, as of now the node doesn’t monitor these, but will be added in the future, however, the funding won’t so it should be done manually). The second EVM account will be used to get refunded fees on EVM. That account shouldn’t have to be monitored for balance as the balance will always grow.
+
 ```bash
 flow keys generate
 ```
+
 It will generate an output like this
+
 ```bash
 🔴️ Store private key safely and don't share with anyone!
 Private Key              5438b13e290b257f0c41e3b23fbf3b5f5f6d4e9b2d3797430d2d2d5484db9b37
@@ -182,28 +193,20 @@ Signature Algorithm      ECDSA_P256
 Visit https://faucet.flow.com, and use the generated Public Key, to create and fund your Flow account. Make sure to use the Flow address and the Private Key for the --coa-address & --coa-key flags.
 
 <tabs>
-    <tab-item title="Mainnet">
-        ```bash
-        ACCESS_NODE_GRPC_HOST="your_domian:9000"
-        FLOW_NETWORK_ID="flow-mainnet"
-        INIT_CADENCE_HEIGHT="211176670" # to be confirmed
-        COINBASE="your_evm_address_without_0x"
-        COA_ADDRESS="your_flow_address"
-        COA_KEY="your_private_key"
-        GAS_PRICE="100" # feel free to experiment with different values
-        ```
-    </tab-item>
-    <tab-item title="Testnet">
-        ```bash
-        ACCESS_NODE_GRPC_HOST="your_domian:9000"
-        FLOW_NETWORK_ID="flow-testnet"
-        INIT_CADENCE_HEIGHT="211176670"
-        COINBASE="your_evm_address_without_0x"
-        COA_ADDRESS="your_flow_address"
-        COA_KEY="your_private_key"
-        GAS_PRICE="100" # feel free to experiment with different values
-        ```
-    </tab-item>
+  <tab-item title="Mainnet">
+    ```bash ACCESS_NODE_GRPC_HOST="your_domian:9000"
+    FLOW_NETWORK_ID="flow-mainnet" INIT_CADENCE_HEIGHT="211176670" # to be
+    confirmed COINBASE="your_evm_address_without_0x"
+    COA_ADDRESS="your_flow_address" COA_KEY="your_private_key" GAS_PRICE="100" #
+    feel free to experiment with different values ```
+  </tab-item>
+  <tab-item title="Testnet">
+    ```bash ACCESS_NODE_GRPC_HOST="your_domian:9000"
+    FLOW_NETWORK_ID="flow-testnet" INIT_CADENCE_HEIGHT="211176670"
+    COINBASE="your_evm_address_without_0x" COA_ADDRESS="your_flow_address"
+    COA_KEY="your_private_key" GAS_PRICE="100" # feel free to experiment with
+    different values ```
+  </tab-item>
 </tabs>
 
 ```bash
@@ -241,7 +244,7 @@ sudo systemctl enable gateway
 Order of operations:
 
 1. `access-node`: ensure it's fully synced before proceeding
-3. `gateway`
+2. `gateway`
 
 ```bash
 sudo systemctl daemon-reload
@@ -250,11 +253,13 @@ sudo systemctl restart gateway
 ```
 
 For access node, Compare the flow height explorer [mainnet](https://flowdiver.io/) [testnet](https://testnet.flowdiver.io/)
+
 ```bash
 flow blocks get latest --host localhost:9000
 ```
 
 For gateway
+
 ```bash
 curl -s -XPOST 'localhost:8545' --header 'Content-Type: application/json' --data-raw '{"jsonrpc":"2.0","method":"eth_blockNumber","params":[],"id":1}' | jq
 ```
@@ -269,7 +274,9 @@ sudo systemctl restart systemd-journald
 journalctl -u access-node.service -f -n 100
 journalctl -u gateway.service -f -n 100
 ```
+
 Logs should look like
+
 ```bash
 {"level":"info","component":"ingestion","cadence-height":211179523,"cadence-event-length":1,"time":"2024-09-07T15:35:08Z","message":"received new cadence evm events"}
 {"level":"info","component":"ingestion","hash":"0xa3e86dbe8a454d7f84908fc3af5ea3e335f4ab33bce8127f43243eb987505020","evm-height":2853,"cadence-height":211179523,"cadence-id":"872cda9894505a8357daa493d45fa99d2632b8a36a556e013df01506c5f893da","parent-hash":"0xa9b37ac67550b5b96490270b49b78fca35ff701b92bf37a6b7f6193050681bf4","tx-hashes-root":"0x56e81f171bcc55a6ff8345e692c0f86e5b48e01b996cadc001622fb5e363b421","time":"2024-09-07T15:35:08Z","message":"new evm block executed event"}

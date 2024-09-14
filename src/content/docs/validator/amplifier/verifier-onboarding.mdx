@@ -98,8 +98,7 @@ Leave this process running in the background, and perform additional commands in
 <tab-item title="Binary">
   Download the [`ampd`
   binary](https://github.com/axelarnetwork/axelar-amplifier/releases/tag/ampd-v1.0.0)
-  depending on the type of machine you have:
-  - Linux:
+  depending on the type of machine you have: - Linux:
   [`ampd-linux-amd64-v1.0.0`](https://github.com/axelarnetwork/axelar-amplifier/releases/download/ampd-v1.0.0/ampd-linux-amd64-v1.0.0)
   - Apple Silicon Mac:
   [`ampd-darwin-arm64-v1.0.0`](https://github.com/axelarnetwork/axelar-amplifier/releases/download/ampd-v1.0.0/ampd-darwin-arm64-v1.0.0)
@@ -109,8 +108,6 @@ Leave this process running in the background, and perform additional commands in
 
 <tab-item title="Docker">
 From [Docker](https://hub.docker.com/r/axelarnet/axelar-ampd), pull and run the `1.0.0` version of `ampd`:
-
-
 
 ```bash
 docker pull axelarnet/axelar-ampd:v1.0.0
@@ -215,129 +212,131 @@ The following are an example `config.toml` files:
    tm_grpc="tcp://devnet-amplifier.axelar.dev:9090"
    event_buffer_cap=10000
 
-   [service_registry]
-   cosmwasm_contract="axelar1c9fkszt5lq34vvvlat3fxj6yv7ejtqapz04e97vtc9m5z9cwnamq8zjlhz"
+[service_registry]
+cosmwasm_contract="axelar1c9fkszt5lq34vvvlat3fxj6yv7ejtqapz04e97vtc9m5z9cwnamq8zjlhz"
 
-   [broadcast]
-   batch_gas_limit="20000000"
-   broadcast_interval="1s"
-   chain_id="devnet-amplifier"
-   gas_adjustment="2"
-   gas_price="0.00005uamplifier"
-   queue_cap="1000"
-   tx_fetch_interval="1000ms"
-   tx_fetch_max_retries="15"
+[broadcast]
+batch_gas_limit="20000000"
+broadcast_interval="1s"
+chain_id="devnet-amplifier"
+gas_adjustment="2"
+gas_price="0.00005uamplifier"
+queue_cap="1000"
+tx_fetch_interval="1000ms"
+tx_fetch_max_retries="15"
 
-   [tofnd_config]
-   batch_gas_limit="10000000"
-   key_uid="axelar"
-   party_uid="ampd"
-   url="http://127.0.0.1:50051"
+[tofnd_config]
+batch_gas_limit="10000000"
+key_uid="axelar"
+party_uid="ampd"
+url="http://127.0.0.1:50051"
 
-   [[handlers]]
-   cosmwasm_contract="axelar19jxy26z0qnnspa45y5nru0l5rmy9d637z5km2ndjxthfxf5qaswst9290r"
-   type="MultisigSigner"
+[[handlers]]
+cosmwasm_contract="axelar19jxy26z0qnnspa45y5nru0l5rmy9d637z5km2ndjxthfxf5qaswst9290r"
+type="MultisigSigner"
 
-   [[handlers]]
-   chain_name="ethereum-sepolia"
-   chain_rpc_url="https://rpc.ankr.com/eth_sepolia"
-   cosmwasm_contract="axelar1e6jnuljng6aljk0tjct6f0hl9tye6l0n9p067pwx2374h82dmr0s9qcqy9"
-   type="EvmMsgVerifier"
-   chain_finalization="RPCFinalizedBlock"
+[[handlers]]
+chain_name="ethereum-sepolia"
+chain_rpc_url="https://rpc.ankr.com/eth_sepolia"
+cosmwasm_contract="axelar1e6jnuljng6aljk0tjct6f0hl9tye6l0n9p067pwx2374h82dmr0s9qcqy9"
+type="EvmMsgVerifier"
+chain_finalization="RPCFinalizedBlock"
 
-   [[handlers]]
-   chain_name="ethereum-sepolia"
-   chain_rpc_url="https://rpc.ankr.com/eth_sepolia"
-   cosmwasm_contract="axelar1e6jnuljng6aljk0tjct6f0hl9tye6l0n9p067pwx2374h82dmr0s9qcqy9"
-   type="EvmVerifierSetVerifier"
+[[handlers]]
+chain_name="ethereum-sepolia"
+chain_rpc_url="https://rpc.ankr.com/eth_sepolia"
+cosmwasm_contract="axelar1e6jnuljng6aljk0tjct6f0hl9tye6l0n9p067pwx2374h82dmr0s9qcqy9"
+type="EvmVerifierSetVerifier"
 
-   [[handlers]]
-   chain_name="avalanche"
-   chain_rpc_url="https://avalanche-fuji-c-chain-rpc.publicnode.com"
-   cosmwasm_contract="axelar1ty7mx0cllgz8xuvhn2j7e3qy8999ssgmjtktyqetl335em0g88lq6rjhl2"
-   type="EvmMsgVerifier"
-   chain_finalization="RPCFinalizedBlock"
+[[handlers]]
+chain_name="avalanche"
+chain_rpc_url="https://avalanche-fuji-c-chain-rpc.publicnode.com"
+cosmwasm_contract="axelar1ty7mx0cllgz8xuvhn2j7e3qy8999ssgmjtktyqetl335em0g88lq6rjhl2"
+type="EvmMsgVerifier"
+chain_finalization="RPCFinalizedBlock"
 
-   [[handlers]]
-   chain_name="avalanche"
-   chain_rpc_url="https://avalanche-fuji-c-chain-rpc.publicnode.com"
-   cosmwasm_contract="axelar1ty7mx0cllgz8xuvhn2j7e3qy8999ssgmjtktyqetl335em0g88lq6rjhl2"
-   type="EvmVerifierSetVerifier"
-   ```
+[[handlers]]
+chain_name="avalanche"
+chain_rpc_url="https://avalanche-fuji-c-chain-rpc.publicnode.com"
+cosmwasm_contract="axelar1ty7mx0cllgz8xuvhn2j7e3qy8999ssgmjtktyqetl335em0g88lq6rjhl2"
+type="EvmVerifierSetVerifier"
+
+````
 </tab-item>
 <tab-item title="testnet">
-   ```toml
-   # replace with your Axelar testnet node
-   tm_jsonrpc="http://127.0.0.1:26657"
-   tm_grpc="tcp://127.0.0.1:9090"
-   event_buffer_cap=100000
+```toml
+# replace with your Axelar testnet node
+tm_jsonrpc="http://127.0.0.1:26657"
+tm_grpc="tcp://127.0.0.1:9090"
+event_buffer_cap=100000
 
-   [service_registry]
-   cosmwasm_contract="axelar1rpj2jjrv3vpugx9ake9kgk3s2kgwt0y60wtkmcgfml5m3et0mrls6nct9m"
+[service_registry]
+cosmwasm_contract="axelar1rpj2jjrv3vpugx9ake9kgk3s2kgwt0y60wtkmcgfml5m3et0mrls6nct9m"
 
-   [broadcast]
-   batch_gas_limit="20000000"
-   broadcast_interval="1s"
-   chain_id="axelar-testnet-lisbon-3"
-   gas_adjustment="2"
-   gas_price="0.007uaxl"
-   queue_cap="1000"
-   tx_fetch_interval="1000ms"
-   tx_fetch_max_retries="15"
+[broadcast]
+batch_gas_limit="20000000"
+broadcast_interval="1s"
+chain_id="axelar-testnet-lisbon-3"
+gas_adjustment="2"
+gas_price="0.007uaxl"
+queue_cap="1000"
+tx_fetch_interval="1000ms"
+tx_fetch_max_retries="15"
 
-   [tofnd_config]
-   batch_gas_limit="10000000"
-   key_uid="axelar"
-   party_uid="ampd"
-   url="http://127.0.0.1:50051"
+[tofnd_config]
+batch_gas_limit="10000000"
+key_uid="axelar"
+party_uid="ampd"
+url="http://127.0.0.1:50051"
 
-   [[handlers]]
-   cosmwasm_contract="axelar14a4ar5jh7ue4wg28jwsspf23r8k68j7g5d6d3fsttrhp42ajn4xq6zayy5"
-   type="MultisigSigner"
+[[handlers]]
+cosmwasm_contract="axelar14a4ar5jh7ue4wg28jwsspf23r8k68j7g5d6d3fsttrhp42ajn4xq6zayy5"
+type="MultisigSigner"
 
-   [[handlers]]
-   chain_name="test-sepolia"
-   chain_rpc_url="https://rpc.ankr.com/eth_sepolia"
-   cosmwasm_contract="axelar1r4rmvn83vrfj4evy5l8cv2nat2v0whm36ds3crn2mhlq8ufmhvts9467zz"
-   chain_finalization="RPCFinalizedBlock"
-   type="EvmMsgVerifier"
+[[handlers]]
+chain_name="test-sepolia"
+chain_rpc_url="https://rpc.ankr.com/eth_sepolia"
+cosmwasm_contract="axelar1r4rmvn83vrfj4evy5l8cv2nat2v0whm36ds3crn2mhlq8ufmhvts9467zz"
+chain_finalization="RPCFinalizedBlock"
+type="EvmMsgVerifier"
 
-   [[handlers]]
-   chain_name="test-sepolia"
-   chain_rpc_url="https://rpc.ankr.com/eth_sepolia"
-   cosmwasm_contract="axelar1r4rmvn83vrfj4evy5l8cv2nat2v0whm36ds3crn2mhlq8ufmhvts9467zz"
-   chain_finalization="RPCFinalizedBlock"
-   type="EvmVerifierSetVerifier"
+[[handlers]]
+chain_name="test-sepolia"
+chain_rpc_url="https://rpc.ankr.com/eth_sepolia"
+cosmwasm_contract="axelar1r4rmvn83vrfj4evy5l8cv2nat2v0whm36ds3crn2mhlq8ufmhvts9467zz"
+chain_finalization="RPCFinalizedBlock"
+type="EvmVerifierSetVerifier"
 
-   [[handlers]]
-   chain_name="test-avalanche"
-   chain_rpc_url="https://api.avax-test.network/ext/bc/C/rpc"
-   cosmwasm_contract="axelar1hupk5du59cgu4ps5s637rhakwsq0060ycdp57j2ccevna7wqqzrqnfrr0p"
-   chain_finalization="ConfirmationHeight"
-   type="EvmMsgVerifier"
+[[handlers]]
+chain_name="test-avalanche"
+chain_rpc_url="https://api.avax-test.network/ext/bc/C/rpc"
+cosmwasm_contract="axelar1hupk5du59cgu4ps5s637rhakwsq0060ycdp57j2ccevna7wqqzrqnfrr0p"
+chain_finalization="ConfirmationHeight"
+type="EvmMsgVerifier"
 
-   [[handlers]]
-   chain_name="test-avalanche"
-   chain_rpc_url="https://api.avax-test.network/ext/bc/C/rpc"
-   cosmwasm_contract="axelar1hupk5du59cgu4ps5s637rhakwsq0060ycdp57j2ccevna7wqqzrqnfrr0p"
-   chain_finalization="ConfirmationHeight"
-   type="EvmVerifierSetVerifier"
+[[handlers]]
+chain_name="test-avalanche"
+chain_rpc_url="https://api.avax-test.network/ext/bc/C/rpc"
+cosmwasm_contract="axelar1hupk5du59cgu4ps5s637rhakwsq0060ycdp57j2ccevna7wqqzrqnfrr0p"
+chain_finalization="ConfirmationHeight"
+type="EvmVerifierSetVerifier"
 
-   # For each supported chain
-   #[[handlers]]
-   #chain_name="[chain name]"
-   #chain_rpc_url="[node rpc url]"
-   #cosmwasm_contract="[voting verifier address]"
-   #chain_finalization="[RPCFinalizedBlock or ConfirmationHeight]"
-   #type="EvmMsgVerifier"
+# For each supported chain
+#[[handlers]]
+#chain_name="[chain name]"
+#chain_rpc_url="[node rpc url]"
+#cosmwasm_contract="[voting verifier address]"
+#chain_finalization="[RPCFinalizedBlock or ConfirmationHeight]"
+#type="EvmMsgVerifier"
 
-   #[[handlers]]
-   #chain_name="[chain name]"
-   #chain_rpc_url="[node rpc url]"
-   #cosmwasm_contract="[voting verifier address]"
-   #chain_finalization=["RPCFinalizedBlock" or "ConfirmationHeight"]
-   #type="EvmVerifierSetVerifier"
-   ```
+#[[handlers]]
+#chain_name="[chain name]"
+#chain_rpc_url="[node rpc url]"
+#cosmwasm_contract="[voting verifier address]"
+#chain_finalization=["RPCFinalizedBlock" or "ConfirmationHeight"]
+#type="EvmVerifierSetVerifier"
+````
+
 </tab-item>
 <tab-item title="mainnet">
    ```toml
@@ -346,52 +345,54 @@ The following are an example `config.toml` files:
    tm_grpc="tcp://127.0.0.1:9090"
    event_buffer_cap=100000
 
-   [service_registry]
-   cosmwasm_contract="axelar1rpj2jjrv3vpugx9ake9kgk3s2kgwt0y60wtkmcgfml5m3et0mrls6nct9m"
+[service_registry]
+cosmwasm_contract="axelar1rpj2jjrv3vpugx9ake9kgk3s2kgwt0y60wtkmcgfml5m3et0mrls6nct9m"
 
-   [broadcast]
-   batch_gas_limit="20000000"
-   broadcast_interval="1s"
-   chain_id="axelar-dojo-1"
-   gas_adjustment="2"
-   gas_price="0.007uaxl"
-   queue_cap="1000"
-   tx_fetch_interval="1000ms"
-   tx_fetch_max_retries="15"
+[broadcast]
+batch_gas_limit="20000000"
+broadcast_interval="1s"
+chain_id="axelar-dojo-1"
+gas_adjustment="2"
+gas_price="0.007uaxl"
+queue_cap="1000"
+tx_fetch_interval="1000ms"
+tx_fetch_max_retries="15"
 
-   [tofnd_config]
-   batch_gas_limit="10000000"
-   key_uid="axelar"
-   party_uid="ampd"
-   url="http://127.0.0.1:50051"
+[tofnd_config]
+batch_gas_limit="10000000"
+key_uid="axelar"
+party_uid="ampd"
+url="http://127.0.0.1:50051"
 
-   [[handlers]]
-   cosmwasm_contract="axelar14a4ar5jh7ue4wg28jwsspf23r8k68j7g5d6d3fsttrhp42ajn4xq6zayy5"
-   type="MultisigSigner"
+[[handlers]]
+cosmwasm_contract="axelar14a4ar5jh7ue4wg28jwsspf23r8k68j7g5d6d3fsttrhp42ajn4xq6zayy5"
+type="MultisigSigner"
 
-   # For each supported chain
-   #[[handlers]]
-   #chain_name="[chain name]"
-   #chain_rpc_url="[node rpc url]"
-   #cosmwasm_contract="[voting verifier address]"
-   #chain_finalization="[RPCFinalizedBlock or ConfirmationHeight]"
-   #type="EvmMsgVerifier"
+# For each supported chain
 
-   #[[handlers]]
-   #chain_name="[chain name]"
-   #chain_rpc_url="[node rpc url]"
-   #cosmwasm_contract="[voting verifier address]"
-   #chain_finalization=["RPCFinalizedBlock" or "ConfirmationHeight"]
-   #type="EvmVerifierSetVerifier"
-   ```
+#[[handlers]]
+#chain_name="[chain name]"
+#chain_rpc_url="[node rpc url]"
+#cosmwasm_contract="[voting verifier address]"
+#chain_finalization="[RPCFinalizedBlock or ConfirmationHeight]"
+#type="EvmMsgVerifier"
+
+#[[handlers]]
+#chain_name="[chain name]"
+#chain_rpc_url="[node rpc url]"
+#cosmwasm_contract="[voting verifier address]"
+#chain_finalization=["RPCFinalizedBlock" or "ConfirmationHeight"]
+#type="EvmVerifierSetVerifier"
+
+````
 </tab-item>
 </tabs>
 
 See the [`ampd` README](https://github.com/axelarnetwork/axelar-amplifier/blob/main/ampd/README.md) on GitHub for instructions on formatting a `config` file for your own projects. For `chain_finalization`, if the chain supports the `finalized` tag via the RPC API, choose `RPCFinalizedBlock`, otherwise choose `ConfirmationHeight`.
 
 <Callout>
-  If you get a transport error with an `ampd` command, make sure that you have
-  `tofnd` running in the background.
+If you get a transport error with an `ampd` command, make sure that you have
+`tofnd` running in the background.
 </Callout>
 
 ## Fund your wallet
@@ -400,18 +401,19 @@ Prior to running the `ampd` daemon, you will need to set up your wallet with dev
 
 1. Determine your verifier address:
 
-   ```bash
-   ampd verifier-address
-   ```
+```bash
+ampd verifier-address
+````
 
-   <Callout>
-     If you get a security warning while trying to run `ampd` on an Apple
-     Silicon Mac, you can disable the
-     [gatekeeper](https://support.apple.com/guide/security/gatekeeper-and-runtime-protection-sec5599b66df/web)
-     for a single binary with `sudo xattr -d com.apple.quarantine
-     ~/Downloads/ampd-darwin-arm64-v1.0.0` or disable gatekeeper globally with
-     `sudo spctl --master-disable`.
-   </Callout>
+{" "}
+<Callout>
+  If you get a security warning while trying to run `ampd` on an Apple Silicon
+  Mac, you can disable the
+  [gatekeeper](https://support.apple.com/guide/security/gatekeeper-and-runtime-protection-sec5599b66df/web)
+  for a single binary with `sudo xattr -d com.apple.quarantine
+  ~/Downloads/ampd-darwin-arm64-v1.0.0` or disable gatekeeper globally with
+  `sudo spctl --master-disable`.
+</Callout>
 
 1. Fund your verifier address.
 
@@ -464,4 +466,3 @@ ampd --help
 ## Feedback
 
 If you have any feedback or would like to report a bug, please file an issue in the [Axelar Developer Support repository](https://github.com/axelarnetwork/support/issues).
-
