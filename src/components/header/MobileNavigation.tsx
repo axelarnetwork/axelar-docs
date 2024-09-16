@@ -34,10 +34,10 @@ const MobileNavigation = ({
         className={clsx(
           "lg:hidden",
           open ? "translate-x-0" : "translate-x-full",
-          "fixed top-0 right-0 overflow-y-auto flex-col flex gap-8 bottom-0 left-0 bg-white z-10 transition-transform",
+          "fixed top-0 right-0 pb-12 overflow-y-auto flex-col flex gap-8 bottom-0 left-0 bg-white z-10 transition-transform",
         )}
       >
-        <div className="flex  justify-between py-4 px-4 border-b">
+        <div className="flex bg-background-neutral  justify-between py-4 px-4 border-b">
           <Logo className="w-28" />
           <button onClick={() => setOpen(!open)} className="text-primary">
             <X size={24} />

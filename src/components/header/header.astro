@@ -7,6 +7,7 @@ import {
   permanentNav,
   type Navigation,
 } from "../../utils/generateNavigation";
+import ThemeToggle from "../ui/theme-toggle";
 import Logo from "./header-logo.astro";
 import MobileNavigation from "./MobileNavigation";
 
@@ -22,14 +23,16 @@ const getUrl = (nav: Navigation) => {
 };
 ---
 
-<header class="border-b bg-background-neutral sticky top-0 z-[11]">
+<header
+  class="border-b text-foreground border-border bg-background-neutral sticky top-0 z-[11]"
+>
   <nav class="flex container items-center w-full justify-between py-4 md:py-5">
     <a href="/" class="flex items-center">
       <Logo />
     </a>
     <MobileNavigation client:load nav={nav} pathname={Astro.url.pathname} />
     <div
-      class="hidden lg:flex items-center tracking-wide gap-14 text-sm font-clash font-medium uppercase"
+      class="hidden lg:flex items-center tracking-wide gap-6 lg:gap-10 xl:gap-14 text-sm font-clash font-medium uppercase"
     >
       {
         nav
@@ -48,15 +51,15 @@ const getUrl = (nav: Navigation) => {
           })
       }
       <div id="search">
-        <div class="ais-SearchBox">
+        <div class="ais-SearchBox bg-background-neutral">
           <form
             action=""
             role="search"
-            class="ais-SearchBox-form"
+            class="ais-SearchBox-form bg-background-neutral"
             novalidate=""
           >
             <input
-              class="ais-SearchBox-input"
+              class="ais-SearchBox-input bg-background-neutral border border-border"
               type="search"
               placeholder=""
               autocomplete="off"
@@ -120,7 +123,7 @@ const getUrl = (nav: Navigation) => {
           </form>
         </div>
       </div>
-
+      <ThemeToggle client:load />
       <a
         href="https://github.com/axelarnetwork/axelar-docs"
         aria-label="Axelar on GitHub"

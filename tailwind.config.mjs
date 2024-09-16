@@ -3,6 +3,7 @@ import defaultTheme from "tailwindcss/defaultTheme";
 /** @type {import('tailwindcss').Config} */
 export default {
   content: ["./src/**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}"],
+  darkMode: "class",
   theme: {
     extend: {
       fontFamily: {
@@ -14,15 +15,21 @@ export default {
       },
       colors: {
         background: {
-          DEFAULT: "#FAFAFA",
-          neutral: "#F5F5F5",
+          DEFAULT: "var(--background)",
+          neutral: "var(--background-neutral)",
         },
         primary: {
           DEFAULT: "#EF5D13",
         },
         gray: {
-          DEFAULT: "#E1E1E1",
-          dark: "#868686",
+          DEFAULT: "var(--gray)",
+          dark: "var(--gray-dark)",
+        },
+        foreground: {
+          DEFAULT: "var(--foreground)",
+        },
+        border: {
+          DEFAULT: "var(--border)",
         },
       },
     },

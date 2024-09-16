@@ -1,7 +1,9 @@
+import clsx from "clsx";
+
 const Logo = ({ className }: { className?: string }) => {
   return (
     <svg
-      className={className}
+      className={clsx(className, "text-foreground")}
       fill="currentColor"
       stroke="currentColor"
       data-name="Layer 2"

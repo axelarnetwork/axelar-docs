@@ -33,17 +33,20 @@ export default RenderSidebar;
 const NavDropDown = ({ item, index }: { item: Navigation; index: number }) => {
   const [open, setOpen] = React.useState(false);
   return (
-    <div className="flex  flex-col ">
+    <div className="flex  flex-col  ">
       <button
         onClick={() => setOpen(!open)}
         className="flex justify-between gap-3 p-1.5 hover:bg-gray  rounded text-sm items-center "
-        style={{
-          color: index === 0 ? "blue" : "black",
-        }}
       >
         <p className="flex-1 text-left">{item.title}</p>
 
-        <ChevronDown size={16} />
+        <ChevronDown
+          size={16}
+          className={clsx(
+            open ? "rotate-180" : "",
+            "transition-all duration-300",
+          )}
+        />
       </button>
       {open && <Nav nav={item.children} index={index + 1} />}
     </div>
@@ -55,7 +58,7 @@ const Nav = ({ nav, index }: { nav?: Navigation[]; index: number }) => {
       style={{
         paddingLeft: `${index * 10}px`,
       }}
-      className="flex flex-col  "
+      className="flex flex-col  gap-1.5"
     >
       {nav?.map((item, i) => {
         return item.children ? (

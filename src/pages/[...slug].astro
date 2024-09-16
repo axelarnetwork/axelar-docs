@@ -17,7 +17,15 @@ const { Content } = await doc.render();
 ---
 
 <MainLayout>
-  <article class="sub-container prose py-10">
-    <Content />
-  </article>
+  <div class="bg-map-light sub-container bg-no-repeat bg-[length:100%_auto]">
+    <div
+      class="backdrop-blur-sm min-h-[90dvh] pb-20 py-20 flex flex-col gap-16"
+    >
+      <article
+        class="prose max-w-full dark:prose-h1:text-foreground text-foreground"
+      >
+        <Content />
+      </article>
+    </div>
+  </div>
 </MainLayout>
