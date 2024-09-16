@@ -3,6 +3,7 @@ import Sidebar from "@/components/sidebar/sidebar.astro";
 import Header from "@/components/header/header.astro";
 import "../styles/global.css";
 import Footer from "@/components/footer/footer.astro";
+import { ViewTransitions } from "astro:transitions";
 const { title, description, image, hidden } =
   Astro.props.frontmatter || Astro.props;
 
@@ -97,8 +98,9 @@ const canonicalURL = new URL(Astro.url.pathname, "https://docs.axelar.dev");
         root.classList.add("dark");
       }
     </script>
-  </head>
-  <script src="/src/scripts/index.ts"></script>
+    <ViewTransitions />
+    <script src="/src/scripts/index.ts"></script></head
+  >
 </html>
 <body class="bg-background text-foreground">
   <Header />
