@@ -1,3 +1,4 @@
+import clsx from "clsx";
 import { ChevronDown, LayoutGrid } from "lucide-react";
 import React from "react";
 import type { Navigation } from "../../utils/generateNavigation";
@@ -5,15 +6,22 @@ const mainNav = ["dev", "validator", "node"];
 const RenderSidebar = ({
   nav,
   pathname,
+  isMobile,
 }: {
   nav: Navigation[];
   pathname: string;
+  isMobile?: boolean;
 }) => {
   const current = pathname.split("/")[1];
   const currentNav = nav?.filter((item) => item.file === current);
   const otherNav = nav?.filter((item) => !mainNav?.includes(item?.file ?? ""));
   return (
-    <aside className="hidden md:flex flex-col bg-background-neutral px-8 pb-9 pt-4 sidebar-scroll  overflow-y-auto w-[19.5rem] h-[calc(100dvh-80px)] top-[80px] sticky">
+    <aside
+      className={clsx(
+        isMobile ? "flex lg:hidden" : "hidden lg:flex",
+        " flex-col lg:bg-background-neutral px-4 md:px-8 lg:pb-9 lg:pt-4 sidebar-scroll  lg:overflow-y-auto lg:w-[19.5rem] lg:h-[calc(100dvh-80px)] top-[80px] sticky",
+      )}
+    >
       {currentNav?.length > 0 && <Nav nav={currentNav} index={0} />}
       {otherNav?.length > 0 && <Nav nav={otherNav} index={0} />}
     </aside>

@@ -27,6 +27,8 @@
     "@types/react-dom": "^18.2.6",
     "algoliasearch": "^4.20.0",
     "astro": "^4.13.3",
+    "class-variance-authority": "^0.7.0",
+    "clsx": "^2.1.1",
     "crypto": "^1.0.1",
     "gray-matter": "^4.0.3",
     "instantsearch.js": "^4.56.9",

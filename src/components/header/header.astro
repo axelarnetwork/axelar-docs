@@ -27,9 +27,9 @@ const getUrl = (nav: Navigation) => {
     <a href="/" class="flex items-center">
       <Logo />
     </a>
-    <MobileNavigation />
+    <MobileNavigation client:load nav={nav} pathname={Astro.url.pathname} />
     <div
-      class="hidden md:flex items-center tracking-wide gap-14 text-sm font-clash font-medium uppercase"
+      class="hidden lg:flex items-center tracking-wide gap-14 text-sm font-clash font-medium uppercase"
     >
       {
         nav

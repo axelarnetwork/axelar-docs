@@ -1,0 +1,21 @@
+---
+import { buttonCva } from "@/lib/cva/button";
+import clsx from "clsx";
+type Props = {
+  className?: string;
+};
+
+const { className } = Astro.props;
+---
+
+<button
+  class={buttonCva({
+    class: clsx(" relative font-medium tracking-wide ", className),
+  })}
+>
+  <div class="absolute left-0 top-0 size-[3px] rounded-full bg-black"></div>
+  <div class="absolute left-0 bottom-0 size-[3px] rounded-full bg-black"></div>
+  <div class="absolute right-0 top-0 size-[3px] rounded-full bg-black"></div>
+  <div class="absolute right-0 bottom-0 size-[3px] rounded-full bg-black"></div>
+  <slot />
+</button>
