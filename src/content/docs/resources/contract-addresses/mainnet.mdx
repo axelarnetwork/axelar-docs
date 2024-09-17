@@ -2,10 +2,10 @@
 
 import { Callout } from "/src/components/callout";
 
+import EVMAssets from "/src/components/evm/assets";
+import EVMChains from "/src/components/evm/chains";
 import IBCChannels from "/src/components/ibc/channels";
 import TransferFeeCalculator from "/src/components/transfer-fee/calculator";
-import EVMChains from "/src/components/evm/chains";
-import EVMAssets from "/src/components/evm/assets";
 import UpgradePath from "/src/upgrade-path.md";
 
 | Variable              | Value           |
@@ -17,9 +17,10 @@ import UpgradePath from "/src/upgrade-path.md";
 
 ## EVM contract addresses
 
-<div className="space-y-1 mt-4">
+<div className="flex flex-col gap-10 mt-4">
   
 <EVMChains client:only/>
+<div>
  
 `Create3 Address Deployer`: `0x6513Aedb4D1593BA12e50644401D976aebDc90d8`
 
@@ -28,11 +29,14 @@ import UpgradePath from "/src/upgrade-path.md";
 `Interchain Token Service`: [`0xB5FB4BE02232B1bBA4dC8f81dc24C26980dE9e3C`](https://etherscan.io/address/0xB5FB4BE02232B1bBA4dC8f81dc24C26980dE9e3C)
 
 `Interchain Token Factory`: [`0x83a93500d23Fbc3e82B410aD07A6a9F7A0670D66`](https://etherscan.io/address/0x83a93500d23Fbc3e82B410aD07A6a9F7A0670D66)
-
+</div>
 </div>
 
 <div className="space-y-1 mt-4">
-  ### Assets Learn more about [wrapped assets like axlUSDC](/learn/axlusdc).
+  ### Assets 
+  
+  Learn more about [wrapped assets like axlUSDC](/learn/axlusdc).
+
   <EVMAssets client:only environment="mainnet" />
 </div>
 
@@ -86,4 +90,13 @@ The gas relayer fee does not include any transaction fee assessed by the source 
 
 ## Upgrade Path
 
+
+
+
+
 <UpgradePath />
+
+
+
+
+

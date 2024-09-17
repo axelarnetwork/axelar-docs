@@ -1,5 +1,3 @@
-import React from "react";
-
 interface CalloutProps {
   children: any;
   type: "" | "warning" | "error";
@@ -12,7 +10,7 @@ export const Callout = ({
   emoji = "💡",
 }: CalloutProps) => {
   return (
-    <div className={`callout ${type}`}>
+    <div className={`bg-yellow-100/50 border border-yellow-400 ${type}`}>
       <div style={{ padding: "32px" }}>{emoji}</div>
       <div>{children}</div>
     </div>

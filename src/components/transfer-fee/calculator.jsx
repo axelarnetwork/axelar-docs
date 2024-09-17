@@ -1,11 +1,10 @@
 import { useState } from "react";
 
-import Dropdown from "../dropdown";
-import Copy from "../copy";
-import evm_chains from "../../data/evm_chains.json";
 import cosmos_chains from "../../data/cosmos_chains.json";
 import evm_assets from "../../data/evm_assets.json";
+import evm_chains from "../../data/evm_chains.json";
 import ibc_assets from "../../data/ibc_assets.json";
+import Dropdown from "../dropdown";
 
 export default ({ environment = "mainnet" }) => {
   const _evm_chains = evm_chains?.[environment] || [];
@@ -56,51 +55,52 @@ export default ({ environment = "mainnet" }) => {
   );
 
   return (
-    <div className="max-w-lg border dark:border-gray-500 rounded-2xl shadow dark:shadow-gray-500 flex flex-col p-6">
-      <div className="grid grid-cols-3 items-center gap-6">
-        <span className="text-base font-bold">Asset</span>
-        <Dropdown
-          environment={environment}
-          dataName="assets"
-          placeholder="Select Asset"
-          defaultSelectedKey={assetData?.id || ""}
-          onSelect={(a) => setAssetData(a)}
-          className="min-w-max"
-        />
-        <span className="whitespace-nowrap text-base font-semibold text-right">
-          Fee
-        </span>
-      </div>
-      <div className="grid grid-cols-3 items-center gap-6 mt-4">
-        <span className="text-base font-bold">Source chain</span>
-        <Dropdown
-          environment={environment}
-          dataName="chains"
-          placeholder="Select Chain"
-          defaultSelectedKey={sourceChainData?.id || ""}
-          onSelect={(c) => setSourceChainData(c)}
-          className="min-w-max"
-        />
-        <span className="whitespace-nowrap text-base font-semibold text-right">
-          {sourceTransferFee || "N/A"} {assetData?.symbol}
-        </span>
-      </div>
-      <div className="flex items-center justify-end">
-        <span className="text-xl font-bold">+</span>
-      </div>
-      <div className="grid grid-cols-3 items-center gap-6 mt-1">
-        <span className="text-base font-bold">Destination chain</span>
-        <Dropdown
-          environment={environment}
-          dataName="chains"
-          placeholder="Select Chain"
-          defaultSelectedKey={destinationChainData?.id || ""}
-          onSelect={(c) => setDestinationChainData(c)}
-          className="min-w-max"
-        />
-        <span className="whitespace-nowrap text-base font-semibold text-right">
-          {destinationTransferFee || "N/A"} {assetData?.symbol}
-        </span>
+    <div className=" border border-border bg-background-neutral-dark not-prose rounded-xl flex flex-col p-6">
+      <div className="grid grid-cols-7">
+        <div className="flex flex-col col-span-2  gap-6">
+          <span className="text-base font-bold">Asset</span>
+          <Dropdown
+            environment={environment}
+            dataName="assets"
+            placeholder="Select Asset"
+            defaultSelectedKey={assetData?.id || ""}
+            onSelect={(a) => setAssetData(a)}
+          />
+          <span className="whitespace-nowrap text-base font-semibold text-right">
+            Fee
+          </span>
+        </div>
+        <div className="flex flex-col col-span-2  gap-6">
+          <span className="text-base font-bold">Source chain</span>
+          <Dropdown
+            environment={environment}
+            dataName="chains"
+            placeholder="Select Chain"
+            defaultSelectedKey={sourceChainData?.id || ""}
+            onSelect={(c) => setSourceChainData(c)}
+          />
+          <span className="whitespace-nowrap text-base font-semibold text-right">
+            {sourceTransferFee || "N/A"} {assetData?.symbol}
+          </span>
+        </div>
+        <div className="flex gap-4 col-span-3">
+          <div className="flex items-center justify-end">
+            <span className="text-xl font-bold">+</span>
+          </div>
+          <div className="flex flex-col   gap-6">
+            <span className="text-base font-bold">Destination chain</span>
+            <Dropdown
+              environment={environment}
+              dataName="chains"
+              placeholder="Select Chain"
+              defaultSelectedKey={destinationChainData?.id || ""}
+              onSelect={(c) => setDestinationChainData(c)}
+            />
+            <span className="whitespace-nowrap text-base font-semibold text-right">
+              {destinationTransferFee || "N/A"} {assetData?.symbol}
+            </span>
+          </div>
+        </div>
       </div>
       <div className="border-t-2 dark:border-gray-500 mt-4" />
       <div className="flex items-center justify-between mt-3">

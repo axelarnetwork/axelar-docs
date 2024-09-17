@@ -1,13 +1,14 @@
-import { Fragment, useState, useEffect } from "react";
-import _ from "lodash";
 import { Menu, Transition } from "@headlessui/react";
+import _ from "lodash";
+import { Fragment, useEffect, useState } from "react";
 
-import { equals_ignore_case } from "../utils";
-import evm_chains from "../data/evm_chains.json";
+import { ChevronDown } from "lucide-react";
 import cosmos_chains from "../data/cosmos_chains.json";
 import evm_assets from "../data/evm_assets.json";
-import ibc_assets from "../data/ibc_assets.json";
+import evm_chains from "../data/evm_chains.json";
 import gateways from "../data/gateways.json";
+import ibc_assets from "../data/ibc_assets.json";
+import { equals_ignore_case } from "../utils";
 
 const data = {
   evm_chains,
@@ -89,57 +90,32 @@ export default ({
     options?.find((o) => o?.id === selectedKey) || selectedKey;
 
   return (
-    <Menu
-      as="div"
-      className={`dropdown relative inline-block text-left ${className}`}
-    >
+    <Menu as="div" className={`dropdown   relative  text-left ${className}`}>
       {({ open }) => (
         <>
-          <div>
-            <Menu.Button className="inline-flex justify-center w-full px-4 py-2 text-sm font-medium text-gray-900 bg-white dark:bg-black border border-gray-300  rounded-md shadow-sm hover:bg-gray-50 dark:hover:bg-gray-900 dark:border-gray-700 focus:outline-none dark:text-gray-100">
-              {selectedData ? (
-                <div className="flex items-center space-x-2">
-                  {selectedData.image && (
-                    <img
-                      src={selectedData.image}
-                      alt=""
-                      width={24}
-                      height={24}
-                      className="rounded-full"
-                    />
-                  )}
-                  <span className="font-bold">{selectedData.name}</span>
-                </div>
-              ) : selectedData === "" ? (
-                <span className="font-bold">{allOptionsName}</span>
-              ) : (
-                placeholder || "Select Options"
-              )}
-              {open ? (
-                <svg
-                  className="toggle"
-                  stroke="currentColor"
-                  fill="currentColor"
-                  strokeWidth="0"
-                  viewBox="0 0 24 24"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path d="m6.293 13.293 1.414 1.414L12 10.414l4.293 4.293 1.414-1.414L12 7.586z"></path>
-                </svg>
-              ) : (
-                <svg
-                  className="toggle"
-                  stroke="currentColor"
-                  fill="currentColor"
-                  strokeWidth="0"
-                  viewBox="0 0 24 24"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path d="M16.293 9.293 12 13.586 7.707 9.293l-1.414 1.414L12 16.414l5.707-5.707z"></path>
-                </svg>
-              )}
-            </Menu.Button>
-          </div>
+          <Menu.Button className="flex justify-center gap-2 w-full px-4 py-2 text-sm font-medium text-gray-900 bg-white dark:bg-black border border-gray-300  rounded-md shadow-sm hover:bg-gray-50 items-center dark:hover:bg-gray-900 dark:border-gray-700 focus:outline-none dark:text-gray-100">
+            {selectedData ? (
+              <div className="flex items-center space-x-2">
+                {selectedData.image && (
+                  <img
+                    src={selectedData.image}
+                    alt=""
+                    width={24}
+                    height={24}
+                    className="rounded-full"
+                  />
+                )}
+                <span className="font-bold">{selectedData.name}</span>
+              </div>
+            ) : selectedData === "" ? (
+              <span className="font-bold">{allOptionsName}</span>
+            ) : (
+              placeholder || "Select Options"
+            )}
+
+            <ChevronDown />
+          </Menu.Button>
+
           <Transition
             as={Fragment}
             enter="transition ease-out duration-100"
@@ -151,7 +127,7 @@ export default ({
           >
             <Menu.Items
               style={{ maxHeight: "50vh" }}
-              className={`dropdown-menu bg-white dark:bg-black dark:border dark:border-grey-300 w-48 overflow-y-auto min-w-max dark:bg-dark absolute z-10 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none origin-top-${align} ${align}-0 mt-2`}
+              className={`dropdown-menu bg-background-neutral-dark sidebar-scroll border-border w-48 overflow-y-auto min-w-max dark:bg-dark absolute z-10 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none origin-top-${align} ${align}-0 mt-2`}
             >
               {hasAllOptions && (
                 <Menu.Item key={-1}>

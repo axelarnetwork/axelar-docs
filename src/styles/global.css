@@ -6,6 +6,7 @@
 :root{
     --background: #FAFAFA;
     --background-neutral:#F5F5F5;
+    --background-neutral-dark:#F5F5F5;
     --foreground:black;
     --border: #E1E1E1;
     --gray: #E1E1E1;
@@ -14,6 +15,7 @@
   .dark{
     --background: #000000;
     --background-neutral:#070707;
+    --background-neutral-dark:#0E0E0E;
     --foreground:white;
     --border: #1F1F1F;
     --gray: #161616;

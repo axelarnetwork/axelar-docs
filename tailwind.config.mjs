@@ -17,6 +17,7 @@ export default {
         background: {
           DEFAULT: "var(--background)",
           neutral: "var(--background-neutral)",
+          "neutral-dark": "var(--background-neutral-dark)",
         },
         primary: {
           DEFAULT: "#EF5D13",

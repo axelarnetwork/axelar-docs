@@ -1,7 +1,7 @@
 import clsx from "clsx";
 import { ChevronDown, LayoutGrid } from "lucide-react";
-import React from "react";
-import type { Navigation } from "../../utils/generateNavigation";
+import React, { useEffect } from "react";
+import { permanentNav, type Navigation } from "../../utils/generateNavigation";
 const mainNav = ["dev", "validator", "node"];
 const RenderSidebar = ({
   nav,
@@ -13,7 +13,9 @@ const RenderSidebar = ({
   isMobile?: boolean;
 }) => {
   const current = pathname.split("/")[1];
-  const currentNav = nav?.filter((item) => item.file === current);
+  const currentNav = nav?.filter(
+    (item) => item.file === current && !permanentNav.includes(current),
+  );
   const otherNav = nav?.filter((item) => !mainNav?.includes(item?.file ?? ""));
   return (
     <aside
@@ -22,16 +24,34 @@ const RenderSidebar = ({
         " flex-col lg:bg-background-neutral px-4 md:px-8 lg:pb-9 lg:pt-4 sidebar-scroll  lg:overflow-y-auto lg:w-[19.5rem] lg:h-[calc(100dvh-80px)] top-[80px] sticky",
       )}
     >
-      {currentNav?.length > 0 && <Nav nav={currentNav} index={0} />}
-      {otherNav?.length > 0 && <Nav nav={otherNav} index={0} />}
+      {currentNav?.length > 0 && (
+        <Nav nav={currentNav} index={0} pathname={pathname} />
+      )}
+      {otherNav?.length > 0 && (
+        <Nav nav={otherNav} index={0} pathname={pathname} />
+      )}
     </aside>
   );
 };
 
 export default RenderSidebar;
 
-const NavDropDown = ({ item, index }: { item: Navigation; index: number }) => {
+const NavDropDown = ({
+  item,
+  index,
+  pathname,
+}: {
+  item: Navigation;
+  index: number;
+  pathname: string;
+}) => {
   const [open, setOpen] = React.useState(false);
+
+  useEffect(() => {
+    if (pathname?.split("/")[index + 1] === item?.file) {
+      setOpen(true);
+    }
+  }, [pathname]);
   return (
     <div className="flex  flex-col  ">
       <button
@@ -48,11 +68,21 @@ const NavDropDown = ({ item, index }: { item: Navigation; index: number }) => {
           )}
         />
       </button>
-      {open && <Nav nav={item.children} index={index + 1} />}
+      {open && (
+        <Nav nav={item.children} index={index + 1} pathname={pathname} />
+      )}
     </div>
   );
 };
-const Nav = ({ nav, index }: { nav?: Navigation[]; index: number }) => {
+const Nav = ({
+  nav,
+  index,
+  pathname,
+}: {
+  nav?: Navigation[];
+  index: number;
+  pathname: string;
+}) => {
   return (
     <div
       style={{
@@ -68,10 +98,15 @@ const Nav = ({ nav, index }: { nav?: Navigation[]; index: number }) => {
                 <LayoutGrid size={16} className="text-primary" />
                 <p>{item.title}</p>
               </div>
-              <Nav nav={item.children} index={index + 1} />
+              <Nav nav={item.children} index={index + 1} pathname={pathname} />
             </div>
           ) : (
-            <NavDropDown item={item} index={index} key={i} />
+            <NavDropDown
+              item={item}
+              index={index}
+              key={i}
+              pathname={pathname}
+            />
           )
         ) : (
           <a
