@@ -93,7 +93,7 @@ export default ({
     <Menu as="div" className={`dropdown   relative  text-left ${className}`}>
       {({ open }) => (
         <>
-          <Menu.Button className="flex justify-center gap-2 w-full px-4 py-2 text-sm font-medium text-gray-900 bg-white dark:bg-black border border-gray-300  rounded-md shadow-sm hover:bg-gray-50 items-center dark:hover:bg-gray-900 dark:border-gray-700 focus:outline-none dark:text-gray-100">
+          <Menu.Button className="flex justify-between gap-2 w-full px-4 py-2 text-sm font-medium text-gray-900 bg-white dark:bg-black border border-gray-300  rounded-md shadow-sm hover:bg-gray-50 items-center dark:hover:bg-gray-900 dark:border-gray-700 focus:outline-none dark:text-gray-100">
             {selectedData ? (
               <div className="flex items-center space-x-2">
                 {selectedData.image && (
@@ -105,7 +105,9 @@ export default ({
                     className="rounded-full"
                   />
                 )}
-                <span className="font-bold">{selectedData.name}</span>
+                <span className="font-bold line-clamp-1">
+                  {selectedData.name}
+                </span>
               </div>
             ) : selectedData === "" ? (
               <span className="font-bold">{allOptionsName}</span>

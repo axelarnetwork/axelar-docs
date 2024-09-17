@@ -11,6 +11,7 @@
     --border: #E1E1E1;
     --gray: #E1E1E1;
     --gray-dark:#868686;
+    --text-dark-gray:#5D5D5D;
   }
   .dark{
     --background: #000000;
@@ -19,7 +20,8 @@
     --foreground:white;
     --border: #1F1F1F;
     --gray: #161616;
-    --gray-dark:#2E2E2E
+    --gray-dark:#2E2E2E;
+    --text-dark-gray:#b3b3b3;
   }
 }
 
@@ -31,7 +33,7 @@
     }
     
     .sub-container {
-      @apply mx-auto max-w-[1200px] self-center px-4 md:px-20;
+      @apply mx-auto max-w-[1200px] self-center px-4 md:px-10 lg:px-10 xl:px-14 2xl:px-20;
     }
     
     

@@ -11,7 +11,7 @@ export default ({ environment = "mainnet" }) => {
   const _gas_services = gas_services?.[environment] || [];
 
   return (
-    <div className="grid grid-cols-2 gap-5 not-prose">
+    <div className="grid lg:grid-cols-2 gap-5 not-prose">
       {_evm_chains
         .filter((c) => !c?.is_staging)
         .map((c, i) => {

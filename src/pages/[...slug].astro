@@ -1,7 +1,10 @@
 ---
+import TableOfContents from "@/components/docs/table-of-contents";
 import MainLayout from "@/layouts/MainLayout.astro";
+import generateToc from "@/lib/generateToc";
 import { getCollection } from "astro:content";
 import clsx from "clsx";
+import { LayoutGrid } from "lucide-react";
 export async function getStaticPaths() {
   const docs = await getCollection("docs");
 
@@ -13,25 +16,44 @@ export async function getStaticPaths() {
 
 const { doc } = Astro.props;
 
-const { Content } = await doc.render();
+const { Content, headings } = await doc.render();
 ---
 
 <MainLayout>
-  <div class="bg-map-light sub-container bg-no-repeat bg-[length:100%_auto]">
+  <div class="grid grid-cols-1 md:grid-cols-12">
     <div
-      class="backdrop-blur-sm min-h-[90dvh] pb-20 py-20 flex flex-col gap-16"
+      class="bg-map-light lg:col-span-9 2xl:col-span-10 w-full flex-1 sub-container bg-no-repeat bg-[length:100%_auto]"
     >
-      <article
-        class={clsx([
-          "prose max-w-full dark:prose-headings:text-foreground prose-a:text-primary  text-foreground",
-          "prose-th:py-3  prose-th:bg-background-neutral-dark prose-table:rounded-xl prose-table:overflow-hidden ",
-          "prose-th:px-4 prose-th:text-primary dark:prose-th:text-primary dark:prose-tr:border-t-border  prose-th:font-medium",
-          "prose-td:bg-background-neutral prose-td:px-3 prose-td:py-3 prose-td:border-t prose-td:border-border",
-          "dark:prose-code:text-white",
-        ])}
+      <div
+        class="backdrop-blur-sm min-h-[90dvh] pb-20 py-20 flex flex-col gap-16"
       >
-        <Content />
-      </article>
+        <article
+          class={clsx([
+            "prose max-w-full dark:prose-headings:text-foreground prose-a:text-primary  text-foreground",
+            "prose-th:py-3  prose-th:bg-background-neutral-dark prose-table:rounded-xl prose-table:overflow-hidden ",
+            "prose-th:px-4 prose-th:text-primary dark:prose-th:text-primary dark:prose-tr:border-t-border  prose-th:font-medium",
+            "prose-td:bg-background-neutral prose-td:px-3 prose-td:py-3 prose-td:border-t prose-td:border-border",
+            "dark:prose-code:text-white",
+          ])}
+        >
+          <Content />
+        </article>
+      </div>
+    </div>
+    <div
+      class="bg-background-neutral border-l border-border lg:col-span-3 2xl:col-span-2 p-5 h-[calc(100dvh-80px)] hidden lg:block sticky top-[80px]"
+    >
+      <div
+        class="bg-gray mb-3 text-sm font-bold flex gap-2 items-center px-2 py-1.5 rounded"
+      >
+        <LayoutGrid size={16} className="text-primary" />
+        <p>On this page</p>
+      </div>
+      <TableOfContents
+        labels={{ onThisPage: "On this page" }}
+        client:load
+        toc={generateToc(headings, "Overview")}
+      />
     </div>
   </div>
 </MainLayout>

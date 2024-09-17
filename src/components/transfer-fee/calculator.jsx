@@ -56,8 +56,8 @@ export default ({ environment = "mainnet" }) => {
 
   return (
     <div className=" border border-border bg-background-neutral-dark not-prose rounded-xl flex flex-col p-6">
-      <div className="grid grid-cols-7">
-        <div className="flex flex-col col-span-2  gap-6">
+      <div className="flex flex-col md:flex-row gap-6 ">
+        <div className="flex flex-col md:w-[30%]  gap-2">
           <span className="text-base font-bold">Asset</span>
           <Dropdown
             environment={environment}
@@ -66,11 +66,11 @@ export default ({ environment = "mainnet" }) => {
             defaultSelectedKey={assetData?.id || ""}
             onSelect={(a) => setAssetData(a)}
           />
-          <span className="whitespace-nowrap text-base font-semibold text-right">
+          <span className="whitespace-nowrap text-sm font-semibold text-text-dark-gray ">
             Fee
           </span>
         </div>
-        <div className="flex flex-col col-span-2  gap-6">
+        <div className="flex flex-col md:w-[30%]  gap-2">
           <span className="text-base font-bold">Source chain</span>
           <Dropdown
             environment={environment}
@@ -79,37 +79,35 @@ export default ({ environment = "mainnet" }) => {
             defaultSelectedKey={sourceChainData?.id || ""}
             onSelect={(c) => setSourceChainData(c)}
           />
-          <span className="whitespace-nowrap text-base font-semibold text-right">
+          <span className="whitespace-nowrap text-sm font-semibold text-text-dark-gray ">
             {sourceTransferFee || "N/A"} {assetData?.symbol}
           </span>
         </div>
-        <div className="flex gap-4 col-span-3">
-          <div className="flex items-center justify-end">
-            <span className="text-xl font-bold">+</span>
-          </div>
-          <div className="flex flex-col   gap-6">
-            <span className="text-base font-bold">Destination chain</span>
-            <Dropdown
-              environment={environment}
-              dataName="chains"
-              placeholder="Select Chain"
-              defaultSelectedKey={destinationChainData?.id || ""}
-              onSelect={(c) => setDestinationChainData(c)}
-            />
-            <span className="whitespace-nowrap text-base font-semibold text-right">
-              {destinationTransferFee || "N/A"} {assetData?.symbol}
-            </span>
-          </div>
+
+        <div className="flex items-center justify-center">
+          <span className="text-xl font-bold">+</span>
+        </div>
+        <div className="flex flex-col md:w-[30%]  gap-2">
+          <span className="text-base font-bold">Destination chain</span>
+          <Dropdown
+            environment={environment}
+            dataName="chains"
+            placeholder="Select Chain"
+            defaultSelectedKey={destinationChainData?.id || ""}
+            onSelect={(c) => setDestinationChainData(c)}
+          />
+          <span className="whitespace-nowrap text-sm font-semibold text-text-dark-gray ">
+            {destinationTransferFee || "N/A"} {assetData?.symbol}
+          </span>
         </div>
       </div>
-      <div className="border-t-2 dark:border-gray-500 mt-4" />
-      <div className="flex items-center justify-between mt-3">
-        <span className="text-lg font-bold">Total</span>
-        <span className="text-xl font-bold">
+
+      <div className="flex items-center justify-between bg-primary rounded-full py-2 mt-10 px-4">
+        <span className=" font-bold">Total</span>
+        <span className="text-lg font-bold">
           {totalFee} {assetData?.symbol}
         </span>
       </div>
-      <div className="h-3 border-y-2 dark:border-gray-500 mt-1" />
     </div>
   );
 };

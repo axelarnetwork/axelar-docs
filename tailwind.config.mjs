@@ -32,6 +32,10 @@ export default {
         border: {
           DEFAULT: "var(--border)",
         },
+        text: {
+          "dark-gray": "var(--text-dark-gray)",
+          gray: "var(--gray)",
+        },
       },
     },
   },

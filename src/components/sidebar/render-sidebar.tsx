@@ -21,7 +21,7 @@ const RenderSidebar = ({
     <aside
       className={clsx(
         isMobile ? "flex lg:hidden" : "hidden lg:flex",
-        " flex-col lg:bg-background-neutral px-4 md:px-8 lg:pb-9 lg:pt-4 sidebar-scroll  lg:overflow-y-auto lg:w-[19.5rem] lg:h-[calc(100dvh-80px)] top-[80px] sticky",
+        " flex-col lg:bg-background-neutral px-4 md:px-8 lg:pb-9 lg:pt-4 sidebar-scroll  lg:overflow-y-auto  lg:w-[19.5rem] lg:h-[calc(100dvh-80px)] top-[80px] sticky",
       )}
     >
       {currentNav?.length > 0 && (
