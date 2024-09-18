@@ -19,7 +19,7 @@ import expressiveCode from "astro-expressive-code";
 export default defineConfig({
   integrations: [
     expressiveCode({
-      themes: ["houston", "solarized-light"],
+      themes: ["vitesse-dark", "vitesse-light"],
       useDarkModeMediaQuery: true,
       themeCssSelector: (theme) => `[data-theme='${theme.name}']`,
     }),

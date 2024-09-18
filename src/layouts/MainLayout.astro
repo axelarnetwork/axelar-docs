@@ -17,7 +17,7 @@ const canonicalURL = new URL(Astro.url.pathname, "https://docs.axelar.dev");
 ---
 
 <!doctype html>
-<html lang="en" data-theme="solarized-light">
+<html lang="en">
   <head>
     <script
       is:inline
@@ -215,7 +215,7 @@ const canonicalURL = new URL(Astro.url.pathname, "https://docs.axelar.dev");
       localStorage.setItem("theme", isDark ? "dark" : "light");
       document.documentElement.setAttribute(
         "data-theme",
-        isDark ? "dark-plus" : "light-plus",
+        isDark ? "vitesse-dark" : "vitesse-light",
       );
     };
 
