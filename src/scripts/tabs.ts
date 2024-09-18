@@ -2,14 +2,30 @@
 Client-side tabs. Written to replace the JSX / MDX tabs that don't load well
 */
 
+declare global {
+  interface Window {
+    savedTabRenderers: any[];
+  }
+}
+
+const tabActiveClass = [
+  "border-primary",
+  "bg-primary",
+  "text-white",
+  "aria-selected",
+];
+
 export const addTabs = () => {
-  // Create window level registry to trigger re-renders
   window.savedTabRenderers = [];
 
   const tabElements = document.getElementsByTagName("tabs");
-  // Bootstrap every tab element
+
   for (let tab of tabElements) {
-    let tabs = tab.children;
+    tab.classList.add("not-prose");
+  }
+
+  for (let tab of tabElements) {
+    let tabs: any = tab.children;
     let convertedTabs = [...tabs].map((tabItem) => ({
       title: tabItem["title"],
       content: tabItem.innerHTML,
@@ -19,16 +35,18 @@ export const addTabs = () => {
     let titleBar = document.createElement("div");
     titleBar.classList.add("tab-bar");
     titleBar.innerHTML = `
-        <ul role="tablist">
+        <ul role="tablist" class="flex   list-none   ">
           ${convertedTabs
             .map(
               (tab, i) => `
-            <li class="nav-item" role="presentation">
-              <button class="nav-link ${
-                i === 0 ? "active" : ""
-              }" data-bs-toggle="tab" type="button" role="tab" aria-controls="tab-${i}" aria-selected="true">${
-                tab.title
-              }</button>
+            <li role="presentation">
+              <button class=" ${
+                i === 0
+                  ? "rounded-tl-md"
+                  : i === convertedTabs.length - 1
+                    ? "rounded-tr-md"
+                    : ""
+              } px-4 py-1  font-medium border-t border-x  border-border text-foreground " type="button" role="tab" aria-controls="tab-${i}" aria-selected="${i === 0}">${tab.title}</button>
             </li>
           `,
             )
@@ -40,6 +58,12 @@ export const addTabs = () => {
      */
     const applySavedChoice = () => {
       tabs = [...titleBar.querySelectorAll("button")];
+      console.log(
+        tabs.forEach((button) =>
+          console.log(button.innerText, localStorage["savedTabChoice"]),
+        ),
+      );
+
       currentIndex = tabs.indexOf(
         tabs.find(
           (button) => button.innerText === localStorage["savedTabChoice"],
@@ -51,16 +75,23 @@ export const addTabs = () => {
       }
     };
 
-    // render
     const render = () => {
       applySavedChoice();
-      [...titleBar.children[0].children].map((button) =>
-        button.classList.remove("active"),
+
+      // Remove the active classes from all tabs
+      [...titleBar.children[0].children].map((li) =>
+        li.querySelector("button")?.classList.remove(...tabActiveClass),
       );
-      titleBar.children[0].children[currentIndex].classList.add("active");
+
+      // Add active classes to the currently selected tab
+      titleBar.children[0].children[currentIndex]
+        .querySelector("button")
+        ?.classList.add(...tabActiveClass);
+
+      // Hide all tab sections and show the currently selected one
       const sections = tab.getElementsByTagName("tab-item");
-      [...sections].map((section) => section.classList.remove("active"));
-      sections[currentIndex].classList.add("active");
+      [...sections].map((section) => section.classList.add("hidden"));
+      sections[currentIndex].classList.remove("hidden");
     };
 
     applySavedChoice();

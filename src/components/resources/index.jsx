@@ -1,5 +1,5 @@
-import Copy from "../copy";
 import resources from "../../data/resources.json";
+import Copy from "../copy";
 
 const COLUMNS = [
   {
@@ -15,7 +15,7 @@ export default ({ environment = "mainnet" }) => {
   const _resources = resources?.[environment] || [];
 
   return (
-    <table className="resources bleed">
+    <table className="border border-border">
       <tbody>
         {_resources.map((r, i) => {
           return (
@@ -31,8 +31,8 @@ export default ({ environment = "mainnet" }) => {
                     scope="col"
                     className={`${
                       i % 2 === 0
-                        ? "bg-transparent"
-                        : "bg-gray-50 dark:bg-black"
+                        ? "bg-background-neutral"
+                        : "bg-background-neutral-dark"
                     } ${
                       i === _resources.length - 1
                         ? j === 0
@@ -46,15 +46,17 @@ export default ({ environment = "mainnet" }) => {
                     }`}
                   >
                     {id === "value" ? (
-                      <div className="flex flex-wrap">
+                      <div className="flex flex-wrap gap-3">
                         {(data || []).map((v, k) => {
                           const { title, value } = { ...v };
 
                           const is_external = !value?.startsWith("/");
 
                           return (
-                            <div key={k} className="flex">
-                              <a href={value}>{title || value}</a>
+                            <div key={k} className="flex gap-2">
+                              <a href={value} className="text-primary">
+                                {title || value}
+                              </a>
                               {
                                 <Copy
                                   size={20}
