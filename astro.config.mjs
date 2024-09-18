@@ -13,9 +13,21 @@ import { tip } from "./src/utils/rehype/tip.mjs";
 //   };
 // }
 
+import expressiveCode from "astro-expressive-code";
+
 // https://astro.build/config
 export default defineConfig({
-  integrations: [react(), mdx(), sitemap(), tailwind()],
+  integrations: [
+    expressiveCode({
+      themes: ["houston", "solarized-light"],
+      useDarkModeMediaQuery: true,
+      themeCssSelector: (theme) => `[data-theme='${theme.name}']`,
+    }),
+    react(),
+    mdx(),
+    sitemap(),
+    tailwind(),
+  ],
   site: "https://docs.axelar.dev",
   trailingSlash: "always",
   markdown: {
