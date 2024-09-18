@@ -1,12 +1,25 @@
 # Introduction to Chain Integration
 
 import { Callout } from "/src/components/callout"
+import Table from "/src/components/table"
 
 <Callout>
 The Axelar Virtual Machine (AVM) and Amplifier are currently under active development, so these instructions are likely to change. Please check back frequently for updates.
 </Callout>
 
-## Integration Architecture
+There are several components to build to integrate a chain into Amplifier. The main components to make the chain operational include:
+1. building Amplifier contracts 
+2. building gateway contracts on the connected chain
+3. building a relayer to send messages to/from the connected chain 
+4. establishing a verifier set
+5. Additionally, Interop Labs exposes a set of API/SDK services that, with some configuration, will support your chain as well
+
+A table of the major components are as follows:
+
+<Table />
+
+
+## [TBD - consider moving to component-specific repos] Integration Architecture
 To connect your chain to the Axelar network via the Interchain Amplifier, you'll need to build or instantiate 4 smart contracts and 1 relayer service. 
 
 - **Source Chain Gateway Contract**
@@ -36,7 +49,7 @@ To connect your chain to the Axelar network via the Interchain Amplifier, you'll
 
 The [chain integration tutorial](/dev/amplifier/chain-integration/integrate-a-chain) will guide you through this process within the current Amplifier DevNet. Contract deployment on Testnet or Mainnet will require governance proposal.
 
-## Integration Process
+## [TBD - consider moving to component-specific repos] Integration Process
 Most integrators will follow the following process:
 
 1. Learn & Understand Amplifier
