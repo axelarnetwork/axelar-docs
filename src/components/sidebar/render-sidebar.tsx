@@ -53,7 +53,7 @@ const NavDropDown = ({
     }
   }, [pathname]);
   return (
-    <div className="flex  flex-col  ">
+    <div className="flex  flex-col gap-1.5 ">
       <button
         onClick={() => setOpen(!open)}
         className="flex justify-between gap-3 p-1.5 hover:bg-gray  rounded text-sm items-center "
@@ -86,7 +86,7 @@ const Nav = ({
   return (
     <div
       style={{
-        paddingLeft: `${index * 10}px`,
+        paddingLeft: `${index * 10 * 0.6}px`,
       }}
       className="flex flex-col  gap-1.5"
     >
@@ -112,7 +112,10 @@ const Nav = ({
           <a
             key={i}
             href={`/${item.href}/`}
-            className="text-sm p-1.5 hover:bg-gray rounded"
+            className={clsx(
+              "text-sm p-1.5 hover:bg-gray rounded",
+              pathname === `/${item.href}/` ? "bg-gray" : "",
+            )}
           >
             {item.title}
           </a>

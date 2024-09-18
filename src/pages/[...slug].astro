@@ -20,7 +20,7 @@ const { Content, headings } = await doc.render();
 ---
 
 <MainLayout>
-  <div class="grid grid-cols-1 md:grid-cols-12">
+  <div class="grid grid-cols-1 lg:grid-cols-12">
     <div
       class="bg-map-light lg:col-span-9 2xl:col-span-10 w-full flex-1 sub-container bg-no-repeat bg-[length:100%_auto]"
     >
@@ -34,6 +34,7 @@ const { Content, headings } = await doc.render();
             "prose-th:px-4 prose-th:text-primary dark:prose-th:text-primary dark:prose-tr:border-t-border  prose-th:font-medium",
             "prose-td:bg-background-neutral prose-td:px-3 prose-td:py-3 prose-td:border-t prose-td:border-border",
             "dark:prose-code:text-white",
+            "prose-strong:text-foreground",
           ])}
         >
           <Content />
@@ -41,7 +42,7 @@ const { Content, headings } = await doc.render();
       </div>
     </div>
     <div
-      class="bg-background-neutral border-l border-border lg:col-span-3 2xl:col-span-2 p-5 h-[calc(100dvh-80px)] hidden lg:block sticky top-[80px]"
+      class="bg-background-neutral overflow-y-auto sidebar-scroll border-l border-border lg:col-span-3 2xl:col-span-2 p-5 h-[calc(100dvh-80px)] hidden lg:block sticky top-[80px]"
     >
       <div
         class="bg-gray mb-3 text-sm font-bold flex gap-2 items-center px-2 py-1.5 rounded"

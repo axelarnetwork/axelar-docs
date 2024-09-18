@@ -1,18 +1,28 @@
+import clsx from "clsx";
+
 interface CalloutProps {
   children: any;
   type: "" | "warning" | "error";
   emoji?: string;
+  render?: "md" | "html";
 }
 // https://www.notion.so/Callout-blocks-5b2638247b54447eb2e21145f97194b0
 export const Callout = ({
   children,
   type = "warning",
   emoji = "💡",
+  render = "html",
 }: CalloutProps) => {
   return (
-    <div className={`bg-yellow-100/50 border border-yellow-400 ${type}`}>
-      <div style={{ padding: "32px" }}>{emoji}</div>
-      <div>{children}</div>
+    <div
+      className={clsx(
+        ` my-4 bg-background-neutral-dark  flex items-center gap-4 p-5 rounded-md border border-border `,
+        type,
+        render === "md" ? "" : "not-prose",
+      )}
+    >
+      <div>{emoji}</div>
+      <div className="[&>p]:my-0">{children}</div>
     </div>
   );
 };
