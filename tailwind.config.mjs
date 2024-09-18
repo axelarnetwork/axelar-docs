@@ -13,6 +13,31 @@ export default {
       backgroundImage: {
         "map-light": "url('/images/map.png')",
       },
+      typography(theme) {
+        return {
+          DEFAULT: {
+            css: {
+              "code::before": {
+                content: "none",
+              },
+              "code::after": {
+                content: "none",
+              },
+              code: {
+                backgroundColor: "var(--background-neutral-dark)",
+                border: "1px solid var(--border)",
+                fontWeight: "400",
+                borderRadius: "8px",
+                paddingLeft: theme("spacing[1.5]"),
+                paddingRight: theme("spacing[1.5]"),
+                paddingTop: theme("spacing.1"),
+                paddingBottom: theme("spacing.1"),
+                wordBreak: "break-word",
+              },
+            },
+          },
+        };
+      },
       colors: {
         background: {
           DEFAULT: "var(--background)",
