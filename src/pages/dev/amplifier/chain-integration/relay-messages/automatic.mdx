@@ -8,8 +8,8 @@ If you wish to relay messages manually, check out [Manually relay messages throu
 
 Chains connected through the Amplifier must be able to send and receive GMP data with the Axelar Virtual Machine (AVM). The Amplifier API relayer is the component responsible for delivering this data. It does this through two distinct workflows:
 
-- Subscription (outgoing messages) — The relayer detects outgoing GMP messages from the chain to the AVM and publishes them to the GMP API so that they can be verified, routed, signed, and delivered to the destination chain.
-- Inclusion (incoming messages) — The relayer receives incoming GMP messages from the AVM to the chain and executes them by writing the transaction payloads to a block on the Amplifier chain.
+- Subscription (chain -> GMP API) — The relayer detects GMP messages from the chain to the AVM and publishes them to the GMP API so that they can be verified, routed, signed, and delivered to the destination chain.
+- Inclusion (GMP API -> chain) — The relayer receives GMP messages from the AVM to the chain and executes them by writing the transaction payloads to a block on the Amplifier chain.
 
 The integrated chain will have to provide a Subscriber and Includer to interact with the Amplifier API.
 
