@@ -5,6 +5,7 @@ interface CalloutProps {
   type: "" | "warning" | "error";
   emoji?: string;
   render?: "md" | "html";
+  longConent?: boolean;
 }
 // https://www.notion.so/Callout-blocks-5b2638247b54447eb2e21145f97194b0
 export const Callout = ({
@@ -12,6 +13,7 @@ export const Callout = ({
   type = "warning",
   emoji = "💡",
   render = "html",
+  longConent = false,
 }: CalloutProps) => {
   return (
     <div
@@ -21,7 +23,7 @@ export const Callout = ({
         render === "md" ? "" : "not-prose",
       )}
     >
-      <div>{emoji}</div>
+      <div className={clsx(longConent ? "hidden md:block" : "")}>{emoji}</div>
       <div className="[&>p]:my-0">{children}</div>
     </div>
   );

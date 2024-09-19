@@ -1,11 +1,11 @@
 ---
 import "@/styles/global.css";
+import { getUrl } from "@/utils/utils";
 import { getCollection } from "astro:content";
 import {
   generateNavigation,
   hiddenNav,
   permanentNav,
-  type Navigation,
 } from "../../utils/generateNavigation";
 import ThemeToggle from "../ui/theme-toggle";
 import Logo from "./header-logo.astro";
@@ -13,14 +13,6 @@ import MobileNavigation from "./MobileNavigation";
 
 const docs = await getCollection("docs");
 const nav = generateNavigation(docs);
-
-const getUrl = (nav: Navigation) => {
-  if (nav?.href) {
-    return nav.href;
-  }
-
-  if (nav?.children?.[0]) return getUrl(nav?.children?.[0]);
-};
 ---
 
 <header
