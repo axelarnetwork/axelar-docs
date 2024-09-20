@@ -1,6 +1,6 @@
 ---
-import Section from "../../../../layouts/Section.astro";
-import { Callout } from "../../../../../src/components/callout";
+import Section from "../layouts/Section.astro";
+import { Callout } from "./callout";
 
 const title = "Interchain Tokens and the Interchain Token Service";
 
@@ -31,7 +31,7 @@ const cards = [
 ];
 ---
 
-<Section title={title}>
+
   <Callout type="warning" emoji="⭐">
     The <a href="https://github.com/axelarnetwork/axelar-configs/blob/main/cli/wizard/commands/list-squid-token/README.md">Token Whitelisting for Squid Router form</a> is now live! Download
     the  <a href="https://github.com/axelarnetwork/axelar-configs">axelar-configs</a> repo, install dependencies, and `npm run wizard` on the command line to
@@ -167,5 +167,5 @@ const cards = [
     it integrates with. Since blockchains can have different security practices,
     we recommend doing due diligence on all chains your token will be deployed to.
   </Callout>
-</Section>
+
 
