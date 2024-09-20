@@ -1,8 +1,23 @@
-# Flow Gateway Node setup
+# EVM on Flow
 
 import { Callout } from "/src/components/callout"
 
-## Context and what may differ
+Node setup guide for Flow Testnet/Mainnet Axelar validator
+
+## EVM on Flow equivalence
+
+EVM on Flow integrates Ethereum's transaction execution core into Cadence's native transaction runtime and thus Flow's multi
+node consensus. Access Nodes serve the Access API, the native entry point to Flow, accepting Cadence scripts or
+transactions, into which signed transactions from the EVM Gateway are included. The EVM Gateway implements the Ethereum
+JSON-RPC specification for web3.js clients. In the Flow context these two services together represent an Axelar validator.
+Access Nodes, and by extension EVM Gateways, do not vote on the network they are rpc-only node types.
+
+Operators can choose to run the Access Node and EVM Gateway separately or on the same node instance/VM. Consider that
+Access Nodes are optimized for high throughput script/transaction ingress for Flow clients. Node operators which choose
+to make AN Access APIs public earn increased Flow fees where recommended system requirements apply. If the validator's
+sole purpose is to participate in the Axelar network, recommended system requirements may be excess to operational needs.
+Operators may opt to run only EVM Gateway if using [public](https://www.flowdiver.io/node?sortField=node.organization)
+Access Nodes.
 
 ## Prerequisites
 
@@ -11,6 +26,13 @@ import { Callout } from "/src/components/callout"
 - [Official Documentation](https://developers.flow.com/networks/node-ops/access-onchain-data/access-nodes/access-node-setup)
 - [Official Documentation](https://github.com/onflow/flow-evm-gateway/blob/main/README.md)
 - Go
+
+## Steps
+
+1. Generate Node Information
+3. Account creation
+4. Node startup
+5. Sync check
 
 ## Generate Node Information
 
@@ -26,14 +48,48 @@ mkdir ./bootstrap
 # Use a fully qualified domain name for YOUR_NODE_ADDRESS_GOES_HERE. Please also include the port number in the network address e.g. flowaccess.mycompany.com:3569
 ./boot-tools/bootstrap key --address "<YOUR_NODE_ADDRESS_GOES_HERE>:3569" --role access -o ./bootstrap
 ```
-Get you node id
+Node Id, Public and Private keys
+
+The generated keys enable account creation on Flow
 
 ```bash
-cat ./bootstrap/public-root-information/node-id && echo ""
+cat ./bootstrap/public-root-information/node-info.pub.c2b79d2d4384b30ac6db6ee284d0549bf3a19f6885232e4a20af438c49e15948.json
+{
+"Role": "access",
+"Address": "\u003c127.0.0.1\u003e:3569",
+"NodeID": "c2b79d2d4384b30ac6db6ee284d0549bf3a19f6885232e4a20af438c49e15948",
+"Weight": 0,
+"NetworkPubKey": "f99ba93360c6daa3b044c5a474d915f9306d450ed3a996440c378cd9e37e37cd6d57c13f9417087af148f25a216ea7b239bcadb7ce4dd72f90ad26c9ea1db03a",
+"StakingPubKey": "8b027c8afbb01d63e93ee40242ab2aad03f25800e3a3c01c3615520505ab23626c016d4e7525f3bebdfe301188275ec401b403f4825a1511d22b7bcdaa8b07936933c5cae3c9880a1bf218fa3a8c21b10023b667ac9d23809b7eaa152b059dfe"
+}
 ```
-All your private keys should be in the bootstrap folder created earlier. Please take a back up of the entire folder.
 
-## Walk through account creation
+```bash
+cat ./bootstrap/private-root-information/private-node-info_[HASH]/node-info.priv.json
+
+{
+  "Role": "access",
+  "Address": "\u003cYOUR_NODE_ADDRESS\u003e:3569",
+  "NodeID": "c2b79d2d4384b30ac6db6ee284d0549bf3a19f6885232e4a20af438c49e15948",
+  "NetworkPrivKey": "aba48858482ead4a1bdeee198b8948061fa80c9720b0107024ef7d5793dbc930",
+  "StakingPrivKey": "061d9bef99db63629ed28bb64ad0cc6b93418accc1a6c5e461dfcbdf087c2862"
+}
+```
+Please secure/take a backup of the entire folder.
+
+## Account Creation
+1. Download Flow CLI
+
+
+
+<Callout type="info">
+    The CLI options in this doc are a reference that works for the Centrifuge team, but feel free to play with the settings for your own setup using the official docs:
+    https://docs.substrate.io/reference/command-line-tools/node-template/
+    The info here has been derived from the official documentation, where you can find more info and also all the options for logging and debugging:
+    https://docs.substrate.io/deploy/deployment-options/
+</Callout>
+
+
 
 ## Stake 100 FLOW
 The minimum 100 is required to prevent certain vulnerabilities in the smart contract that are a result of having a zero minimum stake requirement.
@@ -88,6 +144,8 @@ You can check via Flow Port or using flow accounts staking-info
 </tabs>
 
 Look for the Tokens Staked field in the response of the above command to verify
+
+## Restaking
 
 ## Get binaries
 ```bash
