@@ -12,6 +12,8 @@ export default {
       },
       backgroundImage: {
         "map-light": "url('/images/map.png')",
+        "404-grid-1": "url('/backgrounds/404/grid-1.svg')",
+        "404-grid-2": "url('/backgrounds/404/grid-2.svg')",
       },
       typography(theme) {
         return {

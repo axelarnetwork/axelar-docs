@@ -4,8 +4,18 @@ import Header from "@/components/header/header.astro";
 import "../styles/global.css";
 import Footer from "@/components/footer/footer.astro";
 import { ViewTransitions } from "astro:transitions";
-const { title, description, image, hidden } =
-  Astro.props.frontmatter || Astro.props;
+import { clsx } from "clsx";
+type Props = {
+  title?: string;
+  description?: string;
+  image?: string;
+  hidden?: boolean;
+  notSidebar?: boolean;
+  className?: string;
+};
+
+const { title, description, image, hidden, notSidebar, className } =
+  Astro.props;
 
 const shownTitle = title
   ? title + ` | Axelar Documentation`
@@ -105,9 +115,9 @@ const canonicalURL = new URL(Astro.url.pathname, "https://docs.axelar.dev");
 <body class="bg-background text-foreground">
   <Header />
   <!-- <div id="search-results"></div> -->
-  <main class="flex items-start">
-    <Sidebar />
-    <div class="flex-1">
+  <main class={clsx("flex items-start")}>
+    {!notSidebar && <Sidebar />}
+    <div class={clsx("flex-1", className)}>
       <slot />
       <Footer />
     </div>
