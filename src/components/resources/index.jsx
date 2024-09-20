@@ -46,7 +46,7 @@ export default ({ environment = "mainnet" }) => {
                     }`}
                   >
                     {id === "value" ? (
-                      <div className="flex flex-wrap gap-3">
+                      <div className="flex flex-wrap gap-y-1 gap-x-3">
                         {(data || []).map((v, k) => {
                           const { title, value } = { ...v };
 

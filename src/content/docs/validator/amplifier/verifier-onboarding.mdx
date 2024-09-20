@@ -260,8 +260,7 @@ chain_name="avalanche"
 chain_rpc_url="https://avalanche-fuji-c-chain-rpc.publicnode.com"
 cosmwasm_contract="axelar1ty7mx0cllgz8xuvhn2j7e3qy8999ssgmjtktyqetl335em0g88lq6rjhl2"
 type="EvmVerifierSetVerifier"
-
-````
+```
 </tab-item>
 <tab-item title="testnet">
 ```toml
@@ -321,22 +320,28 @@ cosmwasm_contract="axelar1hupk5du59cgu4ps5s637rhakwsq0060ycdp57j2ccevna7wqqzrqnf
 chain_finalization="ConfirmationHeight"
 type="EvmVerifierSetVerifier"
 
-# For each supported chain
-#[[handlers]]
-#chain_name="[chain name]"
-#chain_rpc_url="[node rpc url]"
-#cosmwasm_contract="[voting verifier address]"
-#chain_finalization="[RPCFinalizedBlock or ConfirmationHeight]"
-#type="EvmMsgVerifier"
+   [[handlers]]
+   chain_name="flow"
+   chain_rpc_url="[flow gateway rpc url]"
+   cosmwasm_contract="axelar1kkqdsqvwq9a7p9fj0w89wpx2m2t0vrxl782aslhq0kdw2xxd2aesv3un04"
+   chain_finalization="RPCFinalizedBlock"
+   type="EvmMsgVerifier"
+   
+   [[handlers]]
+   chain_name="flow"
+   chain_rpc_url="[flow gateway rpc url]"
+   cosmwasm_contract="axelar1kkqdsqvwq9a7p9fj0w89wpx2m2t0vrxl782aslhq0kdw2xxd2aesv3un04"
+   chain_finalization="RPCFinalizedBlock"
+   type="EvmVerifierSetVerifier"
 
-#[[handlers]]
-#chain_name="[chain name]"
-#chain_rpc_url="[node rpc url]"
-#cosmwasm_contract="[voting verifier address]"
-#chain_finalization=["RPCFinalizedBlock" or "ConfirmationHeight"]
-#type="EvmVerifierSetVerifier"
-````
-
+   # For each supported chain
+   #[[handlers]]
+   #chain_name="[chain name]"
+   #chain_rpc_url="[node rpc url]"
+   #cosmwasm_contract="[voting verifier address]"
+   #chain_finalization="[RPCFinalizedBlock or ConfirmationHeight]"
+   #type="EvmMsgVerifier"
+```
 </tab-item>
 <tab-item title="mainnet">
    ```toml
@@ -384,7 +389,7 @@ type="MultisigSigner"
 #chain_finalization=["RPCFinalizedBlock" or "ConfirmationHeight"]
 #type="EvmVerifierSetVerifier"
 
-````
+```
 </tab-item>
 </tabs>
 
@@ -427,7 +432,7 @@ ampd verifier-address
    ampd bond-verifier validators 100000000000 uaxl
    ```
 
-   Bonded verifiers will stay bonded until they unbond or are removed by governance. The bond for testnet is 100000000000uaxl (100k AXL).
+   Bonded verifiers will stay bonded until they unbond or are removed by governance. The bond for testnet is 100000000000uaxl (100k AXL). The bond for mainnet is 50000000000uaxl (50k AXL).
 
 1. Register your public key with `ecdsa` or `ed25519`:
 
@@ -438,7 +443,7 @@ ampd verifier-address
 1. Register support for desired chains, enabling `ampd` to participate in voting and signing for your supported chains.
 
    ```bash
-   ampd register-chain-support validators avalanche ethereum-sepolia
+   ampd register-chain-support amplifier flow
    ```
 
    Multiple chain names can be passed, separated by a space (`ampd register-chain-support [service name] [chains]...`). Note that any chain you want to support here must be configured in your ampd `config.toml` file.

@@ -265,8 +265,8 @@ export const sortedNavigation = [
         title: "RPCs",
         file: "rpc",
         children: [
-          { title: "RPC Endpoints", file: "endpoints" },
-          { title: "Free Public RPC", file: "free-public-rpc" },
+          { title: "RPC Endpoints", file: "resources" },
+          { title: "Free Public RPC", file: "lava-iprpc" },
         ],
       },
       {
