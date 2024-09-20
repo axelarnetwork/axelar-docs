@@ -282,7 +282,16 @@ export const getNavigation = (section) => {
             },
             {
               title: "Relay Messages",
-              href: "/dev/amplifier/chain-integration/relay-messages/",
+              children: [
+                {
+                  title: "Automatic Relaying",
+                  href: "/dev/amplifier/chain-integration/relay-messages/automatic/",
+                },
+                {
+                  title: "Manual Relaying",
+                  href: "/dev/amplifier/chain-integration/relay-messages/manual/",
+                },
+              ]
             },
             {
               title: "Add Rewards",

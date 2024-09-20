@@ -1,0 +1,37 @@
+# Automated relaying with the Amplifier API
+
+Connecting your chain to Axelar Amplifier requires being able to send transactions from your chain to the Axelar VM and react to events from the Axelar VM to be dispatched back to your chain. To assist your relayer to interact seamlessly with the Axelar VM, Interop Labs has exposed the **Amplifier API**, which is a fault-tolerant REST service that enables your Relayer to do both robustly. 
+
+## Relay Architecture
+
+The architecture we recommend for a robust amplifier relayer has three core components: 
+- The **Subscriber**: the Subscriber’s job is to guarantee that every protocol event on the Amplifier chain is detected and successfully published to the Amplifier API. The relayer detects outgoing GMP messages from the chain to the AVM and publishes them to the GMP API so that they can be verified, routed, signed, and delivered to the destination chain.
+- The **Includer**: the Includer’s job is to guarantee that some payload (task) gets included in a transaction in a block on the Amplifier chain. The relayer receives incoming GMP messages from the AVM to the chain and executes them by writing the transaction payloads to a block on the Amplifier chain.
+- The **Listener**: the Listener is a built-in part of the Amplifier API and requires the Relayer to poll its endpoints for new events to be processed by the **Includer**.
+
+The primary components then for integrators to build is the Subscriber and Includer that interacts with the Amplifier API.
+
+## Workflows 
+
+An Amplifier Relayer operates by performing two distinct workflows
+
+### Subscription
+
+The Subscriber makes sure that every message on the chain is detected and successfully published to the GMP API, thus allowing the GMP API to track a message’s lifecycle and ensure that all messages are delivered through the following steps:
+
+1. A transaction is made on the Amplifier source chain gatewy contract, producing a GMP call event.
+1. The subscriber detects the event and publishes it to the GMP API.
+1. The GMP API confirms that it has received the event.
+1. If the event becomes part of a chain re-org, the Subscriber re-submits it to the API.
+
+### Inclusion
+
+The Includer guarantees that messages (in the form of "tasks") are delivered by making sure that their payloads are included in a transaction in a block on the connected chain through the following steps:
+
+1. The relayer polls the Task API for new tasks and checks to see whether the tasks were already executed.
+1. The relayer translates the task payload into a transaction for the destination chain.
+1. The transaction is signed and sent to the RPC or node.
+1. The Includer monitors the transaction and reprices it if necessary.
+1. The relayer persists the task ID to recover from potential crashes.
+
+Relay tasks contain transaction payloads that perform either Approval, Execution, or Refunds for incoming messages on the destination Amplifier chain.
