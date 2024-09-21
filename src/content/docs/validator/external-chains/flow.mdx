@@ -10,12 +10,12 @@ EVM on Flow integrates Ethereum's transaction execution core into Cadence's nati
 node consensus. Access Nodes serve the Access API, the native entry point to Flow, accepting Cadence scripts or
 transactions, into which signed transactions from the EVM Gateway are included. The EVM Gateway implements the Ethereum
 JSON-RPC specification for web3.js clients. In the Flow context these two services together represent an Axelar validator.
-Access Nodes, and by extension EVM Gateways, do not vote on the network they are rpc-only node types.
+Access Nodes, and by extension EVM Gateways, do not vote on the network - they are rpc-only node types.
 
 Operators can choose to run the Access Node and EVM Gateway separately or on the same node instance/VM. Consider that
 Access Nodes are optimized for high throughput script/transaction ingress for Flow clients. Node operators which choose
-to make AN Access APIs public earn increased Flow fees where recommended system requirements apply. If the validator's
-sole purpose is to participate in the Axelar network, recommended system requirements may be excess to operational needs.
+to make AN Access APIs public earn increased Flow fees, for which recommended hardware requirements apply. If the validator's
+sole purpose is to participate in the Axelar network, recommended hardware requirements may be excess to operational needs.
 Operators may opt to run only EVM Gateway if using [public](https://www.flowdiver.io/node?sortField=node.organization)
 Access Nodes.
 
@@ -26,13 +26,18 @@ Access Nodes.
 - [Official Documentation](https://developers.flow.com/networks/node-ops/access-onchain-data/access-nodes/access-node-setup)
 - [Official Documentation](https://github.com/onflow/flow-evm-gateway/blob/main/README.md)
 - Go
+- Flow CLI (see below)
 
 ## Steps
 
-1. Generate Node Information
-3. Account creation
-4. Node startup
-5. Sync check
+1. Generate node information
+2. Account creation
+3. Stake your node
+4. Get binaries
+5. Create services
+6. Build EVM Gateway
+
+We recommend first time operators to complete the guidance for node setup below in full using testnet.
 
 ## Generate Node Information
 
@@ -48,15 +53,14 @@ mkdir ./bootstrap
 # Use a fully qualified domain name for YOUR_NODE_ADDRESS_GOES_HERE. Please also include the port number in the network address e.g. flowaccess.mycompany.com:3569
 ./boot-tools/bootstrap key --address "<YOUR_NODE_ADDRESS_GOES_HERE>:3569" --role access -o ./bootstrap
 ```
-Node Id, Public and Private keys
 
-The generated keys enable account creation on Flow
+The generated machine account bootstrap files include public and private machine account keys, staking key and the node id associated with your node address.
 
 ```bash
-cat ./bootstrap/public-root-information/node-info.pub.c2b79d2d4384b30ac6db6ee284d0549bf3a19f6885232e4a20af438c49e15948.json
+cat ./bootstrap/public-root-information/node-info.pub.[HASH].json
 {
 "Role": "access",
-"Address": "\u003c127.0.0.1\u003e:3569",
+"Address": "\u003cYOUR_NODE_ADDRESS\u003e:3569",
 "NodeID": "c2b79d2d4384b30ac6db6ee284d0549bf3a19f6885232e4a20af438c49e15948",
 "Weight": 0,
 "NetworkPubKey": "f99ba93360c6daa3b044c5a474d915f9306d450ed3a996440c378cd9e37e37cd6d57c13f9417087af148f25a216ea7b239bcadb7ce4dd72f90ad26c9ea1db03a",
@@ -75,104 +79,173 @@ cat ./bootstrap/private-root-information/private-node-info_[HASH]/node-info.priv
   "StakingPrivKey": "061d9bef99db63629ed28bb64ad0cc6b93418accc1a6c5e461dfcbdf087c2862"
 }
 ```
-Please secure/take a backup of the entire folder.
+Please secure/take a backup of the entire machine account bootstrap folder.
+
+For further information on this step see [official documentation](https://developers.flow.com/networks/node-ops/access-onchain-data/access-nodes/access-node-setup#step--1---generate-node-information).
 
 ## Account Creation
 
-1. Create your account
+Many operators will only require the first two steps below if aggregating operational costs across Flow into a single account is acceptable, or where only a
+single instance/VM is being run for all services. Organizations who must separate operating costs between node types must include step (3) to create a
+distinct account for the EVM Gateway.
 
-Accounts need to be created on Flow before they can be funded and used, which itself requires an account. The process for
-testnet is self-service and fully online. Since there is no mainnet faucet the process requires some additional steps.
+If you are only running the EVM Gateway and using public Access Nodes the first two account creation steps below are still required. In this case the account
+will only be used for the EVM Gateway.
+
+1. Create Access Node operator account
+
+Accounts need to be created on Flow before they can be funded and used. Visit [Flow Port](https://port.flow.com) and
+select `mainnet` or `testnet` in the dropdown and click 'Sign Up'. Flow Port will guide you through Flow Wallet download,
+which once initialized will have created an account for you on the selected network. You should now be able to 'Sign in'
+to Flow Port and can copy your account address from the wallet or Flow Port dashboard.
+
+2. Fund Access Node operator account
 
 <tabs>
-<tab-item title="EVM on Flow Testnet">
-  <pre>
-  [Create the account](https://faucet.flow.com/) using the `NetworkPubKey` key generated above. This will also fund 1000 FLOW to the newly created account
-  </pre>
-</tab-item>
-<tab-item title="EVM on Flow">
-  <pre>
-  1. Install Flow Wallet ([iOS](https://apps.apple.com/ca/app/flow-wallet-nfts-and-crypto/id6478996750), [Android](https://play.google.com/store/apps/details?id=com.flowfoundation.wallet),
-  [Chrome Extension](https://chromewebstore.google.com/detail/flow-wallet/hpclkefagolihohboafpheddmmgdffjm?hl=en-US&utm_source=ext_sidebar))
-  any of which will initialize a new account, not one using the keys generated above. Consider it a setup account.
-
-  2. Next you will need to fund the setup account which can be done in a few different ways.
-  </pre>
-</tab-item>
+    <tab-item title="Mainnet">
+        Use a supported [centralized exchange](https://flow.com/use-flow/flow-token#cex) to send FLOW to the account address you copied
+    </tab-item>
+    <tab-item title="Testnet">
+        Visit [Flow Faucet](https://faucet.flow.com/fund-account), enter the account address you copied then click 'Fund your Account'
+    </tab-item>
 </tabs>
 
-
-
-
-
-
-
-<Callout type="info">
-    The CLI options in this doc are a reference that works for the Centrifuge team, but feel free to play with the settings for your own setup using the official docs:
-    https://docs.substrate.io/reference/command-line-tools/node-template/
-    The info here has been derived from the official documentation, where you can find more info and also all the options for logging and debugging:
-    https://docs.substrate.io/deploy/deployment-options/
-</Callout>
-
-
-
-## Stake 100 FLOW
-The minimum 100 is required to prevent certain vulnerabilities in the smart contract that are a result of having a zero minimum stake requirement.
-Follow this [guide](https://developers.flow.com/networks/flow-port/staking-guide#stake-a-node) to stake using [Flow Port](https://port.flow.com)
-
-All fields required are generated here:
+Check your account with the network directly using Flow CLI
 ```bash
-cat ./bootstrap/public-root-information/node-info.pub.* | jq
-```
-```json
-{
-  "Role": "access",
-  "Address": "flowaccess.mycompany.com:3569",
-  "NodeID": "e737ec6efbd26ef43bf676911cdc5a11ba15fc6562d05413e6589fccdd6c06d5",
-  "Weight": 0,
-  "NetworkPubKey": "f493a74704f6961ae7903e062ecd58d990672858eff99aece7bfbccf3aa02de8f1a624ecbf21a01e8b2f4a5854c231fbe218edd7762a34fea881f3958a215305",
-  "StakingPubKey": "ae8dcf81f3a70d72036b7ba2c586ed37ed0eb82b9c0a4aab998a8420f98894f94c14f84fa716e93654d3940fc0c8ff4d19b504c90a5b4918b28f421e9d3659dc2b7e246025ebeffea0d83cceefe315d7ed346dbe412fdac51b64997d97d29f7e"
-}
-```
-Create an address to use with the faucet [here](https://testnet-faucet.onflow.org) on testnet
-
-## Verify That Your Node ID Was Selected
-
-On Wednesday at around 12:00 UTC, the staking auction for the current epoch will end and five nodes from candidate list of nodes will be chosen at random by the staking contract to be part of the next epoch.
-If all 5 slots have been taken from the previous epoch, then no new access nodes will be chosen
-
-There are several ways to verify whether your node was chosen as explained below
-When you stake the node, the tokens will show up under the tokensCommitted bucket. After the staking auction ends, if the node is selected, the tokens remain in the tokensCommitted bucket and are moved to the tokensStaked bucket at the end of the epoch. If the node is not selected, the tokens are moved to the tokensUnstaked bucket.
-
-```bash
-# install flow cli
+# install Flow CLI
 sh -ci "$(curl -fsSL https://raw.githubusercontent.com/onflow/flow-cli/master/install.sh)"
 echo 'export PATH="$PATH:/root/.local/bin"' >> ~/.profile
 source ~/.profile
 ```
 
-You can check via Flow Port or using flow accounts staking-info
+Paste your account address and specify network
+```bash
+% flow accounts get 0x1844efeb3fef2542  -n testnet
+
+If you would like to fund the account with 1000 FLOW tokens for testing, visit https://testnet-faucet.onflow.org/fund-account?address=1844efeb3fef2542
+
+Address	 0x1844efeb3fef2542
+Balance	 744.00060373
+Keys	 2
+
+Key 0	Public Key		 3569d7acbc44cd61ffcca019820d4975e7c32bc0d0da38d3920e5ae7fac172bedc5905ddcf349e9ea6968bd7b1da33178c03dc45a73117d6b59c1fef79651cbe
+Weight			 1000
+Signature Algorithm	 ECDSA_secp256k1
+Hash Algorithm		 SHA2_256
+Revoked 		 false
+Sequence Number 	 7
+Index 			 0
+Contracts Deployed: 0
+```
+
+3. Create EVM Gateway operator account \[Optional\]
+
+Use the existing account to create new accounts.
+
+```bash
+flow keys generate
+```
+It will generate an output like this
+```bash
+🔴️ Store private key safely and don't share with anyone!
+Private Key              5438b13e290b257f0c41e3b23fbf3b5f5f6d4e9b2d3797430d2d2d5484db9b37
+Public Key               9b85626369efe380ebd701f7189f2746fda26d09e1b63cb003bd84a5d33b662685c56427a0526a670efa88b0cb8da371cf9dc1de5ac6bbffb56e327a5c16e708
+Mnemonic                 sustain limb elbow awkward onion crouch truth trial until poverty famous feel
+Derivation Path          m/44'/539'/0'/0/0
+Signature Algorithm      ECDSA_P256
+```
+
+<tabs>
+    <tab-item title="Mainnet">
+        1. Obtain wallet account private key from
+        <pre>Settings -> Account List -> Choose Main account -> Private Key -> [Password prompt]</pre>
+
+        2. Create flow.json, replacing `address` and `privateKey` values with those of your wallet account. Note `address` has no leading `0x`
+
+        ```bash
+        flow init --config-only
+        cat flow.json | jq '.accounts += {"my-account-alias": {"address": "$YOUR_ADDRESS", "key": {"type": "hex", "index": 1, "signatureAlgorithm": "ECDSA_P256", "hashAlgorithm": "SHA2_256", "privateKey": "$YOUR_PK"}}}' > updated_flow.json ; mv updated_flow.json flow.json
+        ```
+        3. Create a new account using public key generated above
+
+        ```bash
+        flow accounts create --key 9b85626369efe380ebd701f7189f2746fda26d09e1b63cb003bd84a5d33b662685c56427a0526a670efa88b0cb8da371cf9dc1de5ac6bbffb56e327a5c16e708 --signer my-account-alias -n testnet
+
+        Transaction ID: efcacf408285100971f93053e28cf0d2fe0809213eb35c85d779c2fc2bca89c7
+
+        If you would like to fund the account with 1000 FLOW tokens for testing, visit https://testnet-faucet.onflow.org/fund-account?address=f3445838372e4e92
+
+        Address	 0xf3445838372e4e92
+        Balance	 0.00100000
+        Keys	 1
+
+        Key 0	Public Key		 9b85626369efe380ebd701f7189f2746fda26d09e1b63cb003bd84a5d33b662685c56427a0526a670efa88b0cb8da371cf9dc1de5ac6bbffb56e327a5c16e708
+        Weight			 1000
+        Signature Algorithm	 ECDSA_P256
+        Hash Algorithm		 SHA3_256
+        Revoked 		 false
+        Sequence Number 	 0
+        Index 			 0
+
+        Contracts Deployed: 0
+        ```
+        3. Send funds to this account from your wallet account
+    </tab-item>
+    <tab-item title="Testnet">
+        Visit https://faucet.flow.com, and use the generated Public Key, to create and fund your Flow account. Make sure to use the Flow address and the Private Key for the --coa-address & --coa-key flags.
+    </tab-item>
+</tabs>
+
+## Stake your node
+
+Access Nodes require a minimum 100 FLOW stake for each participating node to secure a slot on the network. Follow this
+[guide](https://developers.flow.com/networks/node-ops/access-onchain-data/access-nodes/access-node-setup#step--2---stake-the-node)
+to stake using [Flow Port](https://port.flow.com).
+
+<Callout type="info">
+    Use the previously generated public key values generated by the bootstrap when staking your node
+
+    When staking for the first time please select 'Upgrade Account' in Flow Port when requested
+</Callout>
+
+Once completed, your Flow Port 'Stake and Delegate' dashboard will display the new node registration stake in a pending
+status. Note the banner which outlines when your staking action will be included in the next epoch.
+
+![flow-port-stake-pending.png](/images/ext-flow-port-stake-pending.png)
+
+Further information about staking on Flow can be found in the [Staking and Epochs](https://developers.flow.com/networks/staking#how-does-staking-work-on-flow) documentation.
+
+## Verify That Your Node ID Was Selected
+
+On Wednesday at around 12:00 UTC, the staking auction for the current epoch will end and five nodes from candidate list of nodes will be chosen at random by the staking contract for participation in the next epoch.
+If all 5 slots have been taken from the previous epoch no new Access Nodes will be chosen
+
+You can verify whether your node was chosen in the Flow Port Staking Dashboard. The 'Staked Amount' for your node will equal the amount staked for that node ID once it has been selected.
+
+Using Flow CLI you can query the staking info for your node:
 
 <tabs>
     <tab-item title="Mainnet">
         ```bash
-        # You can check the balance using Flow Cli. Once you have downloaded and installed Flow Cli, you can query the account balance using the command
         flow accounts staking-info your_account_address -n mainnet
         ```
     </tab-item>
     <tab-item title="Testnet">
         ```bash
-        # You can check the balance using Flow Cli. Once you have downloaded and installed Flow Cli, you can query the account balance using the command
         flow accounts staking-info your_account_address -n testnet
         ```
     </tab-item>
 </tabs>
 
-Look for the Tokens Staked field in the response of the above command to verify
+Look for the 'Tokens Staked' field in the response of the above command to verify.
 
-## Restaking
+### Restaking
+
+In the event that the epoch passes and the node you registered did not get picked your stake will be returned. You can re-stake the
+node using the same staking procedure as above.
 
 ## Get binaries
+
 ```bash
 curl -sL -O storage.googleapis.com/flow-genesis-bootstrap/binary/access/app
 chmod +x app
@@ -181,7 +254,7 @@ mv app /usr/bin/access-node
 
 ## Create services
 
-Use `systemctl` to set up services for `Access Node`, `Gateway`
+Use `systemctl` to set up services for `Access Node`, `EVM Gateway`
 
 ### Access Node
 <tabs>
@@ -243,7 +316,7 @@ cat /etc/systemd/system/access-node.service
 sudo systemctl enable access-node
 ```
 
-## Build gateway
+## Build EVM Gateway
 ```bash
 git clone https://github.com/onflow/flow-evm-gateway.git
 cd flow-evm-gateway
@@ -251,23 +324,10 @@ go build -o evm-gateway cmd/main/main.go
 mv evm-gateway /usr/bin/
 ```
 
-### EVM Gateway
+### Create EVM account for wallet account
 
-Each EVM Gateway operator needs to create an account on Flow as well as an account on EVM. The first one will be used to pay for fees on Flow, which means it needs to be sufficiently funded and monitored for balance (it shouldn’t fall to 0 without refunding it, as of now the node doesn’t monitor these, but will be added in the future, however, the funding won’t so it should be done manually). The second EVM account will be used to get refunded fees on EVM. That account shouldn’t have to be monitored for balance as the balance will always grow.
 ```bash
-flow keys generate
 ```
-It will generate an output like this
-```bash
-🔴️ Store private key safely and don't share with anyone!
-Private Key              5438b13e290b257f0c41e3b23fbf3b5f5f6d4e9b2d3797430d2d2d5484db9b37
-Public Key               9b85626369efe380ebd701f7189f2746fda26d09e1b63cb003bd84a5d33b662685c56427a0526a670efa88b0cb8da371cf9dc1de5ac6bbffb56e327a5c16e708
-Mnemonic                 sustain limb elbow awkward onion crouch truth trial until poverty famous feel
-Derivation Path          m/44'/539'/0'/0/0
-Signature Algorithm      ECDSA_P256
-```
-
-Visit https://faucet.flow.com, and use the generated Public Key, to create and fund your Flow account. Make sure to use the Flow address and the Private Key for the --coa-address & --coa-key flags.
 
 <tabs>
     <tab-item title="Mainnet">
