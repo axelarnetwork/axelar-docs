@@ -8,9 +8,9 @@ Rewards are calculated based on counted contributions. A contribution is counted
 
 Contributions are assessed per epoch (a length of time configured by governance). At the conclusion of an epoch, a message can be sent to the rewards contract to process rewards for the most recent window. Rewards are calculated based on a percentage of all traffic for a given chain and paid in AXL.
 
-<p align="center">
-  <img src="/images/verifier-rewards-contract-architecture.png" width="650" />
-</p>
+import VerifierFlow from './assets/verifier-rewards-contract-architecture.astro'
+
+<VerifierFlow/>
 
 <Callout>
   The `EndBlocker` is code that executes at the end of each block so that
@@ -20,9 +20,9 @@ Contributions are assessed per epoch (a length of time configured by governance)
 
 ## Voting flow
 
-<p align="center">
-  <img src="/images/verifier-rewards-voting-flow.png" width="750" />
-</p>
+import VotingFlow from './assets/voting-flow.astro'
+
+<VotingFlow/>
 
 1. The relayer picks up a `callContract()` event and calls `verify_messages()` on the Axelar gateway.
 1. The Axelar gateway calls `verify_messages()` on the voting verifier, which begins the voting process with the verifier set.
