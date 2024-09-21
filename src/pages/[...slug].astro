@@ -1,5 +1,6 @@
 ---
 import TableOfContents from "@/components/docs/table-of-contents";
+import WorldMap from "@/components/ui/world-map.astro";
 import MainLayout from "@/layouts/MainLayout.astro";
 import generateToc from "@/lib/generateToc";
 import { getCollection } from "astro:content";
@@ -21,12 +22,8 @@ const { Content, headings } = await doc.render();
 
 <MainLayout>
   <div class="grid grid-cols-1 lg:grid-cols-12">
-    <div
-      class="bg-map-light dark:bg-map-dark lg:col-span-9 2xl:col-span-10 w-full flex-1 sub-container bg-no-repeat bg-[length:100%_auto] 2xl:bg-[length:95%_auto] bg-top"
-    >
-      <div
-        class="min-h-[90dvh] bg-[#FaFaFa]/50 dark:bg-black/50 pb-20 py-20 flex flex-col gap-16"
-      >
+    <WorldMap className="lg:col-span-9 2xl:col-span-10 w-full flex-1 ">
+      <div class="min-h-[90dvh] sub-container pb-20 py-20 flex flex-col gap-16">
         <article
           class={clsx([
             "prose max-w-full dark:prose-headings:text-foreground prose-a:text-primary  text-foreground",
@@ -41,7 +38,7 @@ const { Content, headings } = await doc.render();
           <Content />
         </article>
       </div>
-    </div>
+    </WorldMap>
     <div
       class="bg-background-neutral overflow-y-auto sidebar-scroll border-l border-border lg:col-span-3 2xl:col-span-2 p-5 h-[calc(100dvh-80px)] hidden lg:block sticky top-[80px]"
     >
