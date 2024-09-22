@@ -282,7 +282,16 @@ export const getNavigation = (section) => {
             },
             {
               title: "Relay Messages",
-              href: "/dev/amplifier/chain-integration/relay-messages/",
+              children: [
+                {
+                  title: "Automatic Relaying",
+                  href: "/dev/amplifier/chain-integration/relay-messages/automatic/",
+                },
+                {
+                  title: "Manual Relaying",
+                  href: "/dev/amplifier/chain-integration/relay-messages/manual/",
+                },
+              ]
             },
             {
               title: "Add Rewards",
@@ -567,7 +576,7 @@ export const getNavigation = (section) => {
             children: [
               {
                 title: "v1.0",
-                href: "/resources/mainnet/upgrades/v10/",
+                href: "/resources/mainnet/upgrades/v1/",
               },
               {
                 title: "v0.35",
@@ -632,7 +641,7 @@ export const getNavigation = (section) => {
             children: [
               {
                 title: "v1.0",
-                href: "/resources/testnet/upgrades/v10/",
+                href: "/resources/testnet/upgrades/v1/",
               },
               {
                 title: "v0.35",

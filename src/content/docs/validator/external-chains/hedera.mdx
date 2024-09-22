@@ -2,21 +2,20 @@
 
 import { Callout } from "/src/components/callout";
 
-Instructions to set up your Hedera mirror node.
+Instructions to set up your Hedera mirror node and RPC-relay.
 
 ### Requirements
 
-- [Setup your Axelar validator](/validator/setup/overview/)
+- [Setup your Axelar verifier](/validator/amplifier/verifier-onboarding/)
 - Minimum hardware requirements: CPUs: 4 cores RAM: 16 GB Storage (SSD): 500 GB
 - Ubuntu 20.04 LTS or later
-- [Official Documentation](https://docs.hedera.com/hedera/core-concepts/mirror-nodes/run-your-own-beta-mirror-node)
-
-### Prerequisites
-
-- An Amazon Web Services account/Google Cloud Platform account.
+- NPM (installing via [`nvm`](https://github.com/nvm-sh/nvm) is recommended)
 - [Docker](https://docs.docker.com/engine/install/) (>= v20.10.x) installed on your machine. 
+- An Amazon Web Services account/Google Cloud Platform account.
 
 ### Clone Hedera Mirror Node Repository
+
+- [Official Documentation](https://docs.hedera.com/hedera/core-concepts/mirror-nodes/run-your-own-beta-mirror-node)
 
 Open your terminal and run the following commands
 
@@ -70,3 +69,10 @@ importer-1  | 2024-09-05T14:10:44.539Z  INFO scheduling-4 c.h.m.i.d.r.RecordFile
 ```bash
  curl http://localhost:5551/api/v1/transactions?limit=1
 ```
+
+## Setup a Hedera JSON-RPC Relayer
+You'll need to setup a JSON-RPC relay to let `ampd` intract with your Hedera node. Follow the official setup instructions:
+
+
+* [Official Docs](https://docs.hedera.com/hedera/tutorials/more-tutorials/json-rpc-connections/hedera-json-rpc-relay)
+
