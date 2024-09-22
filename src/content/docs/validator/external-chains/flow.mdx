@@ -12,7 +12,7 @@ transactions, into which signed transactions from the EVM Gateway are included. 
 JSON-RPC specification for web3.js clients. In the Flow context these two services together represent an Axelar validator.
 Access Nodes, and by extension EVM Gateways, do not vote on the network - they are rpc-only node types.
 
-Operators can choose to run the Access Node and EVM Gateway separately or on the same node instance/VM. Consider that
+Operators can choose to run the Access Node and EVM Gateway separately or on the same logical host. Consider that
 Access Nodes are optimized for high throughput script/transaction ingress for Flow clients. Node operators which choose
 to make AN Access APIs public earn increased Flow fees, for which recommended hardware requirements apply. If the validator's
 sole purpose is to participate in the Axelar network, recommended hardware requirements may be excess to operational needs.
@@ -99,18 +99,24 @@ select `mainnet` or `testnet` in the dropdown and click 'Sign Up'. Flow Port wil
 which once initialized will have created an account for you on the selected network. You should now be able to 'Sign in'
 to Flow Port and can copy your account address from the wallet or Flow Port dashboard.
 
+Note: you will need to change <pre>Settings -> Developer Mode -> Enabled</pre> to make testnet network available in wallet account view in left nav.
+
 2. Fund Access Node operator account
 
 <tabs>
+
     <tab-item title="Mainnet">
+
         Use a supported [centralized exchange](https://flow.com/use-flow/flow-token#cex) to send FLOW to the account address you copied
 
     </tab-item>
 
     <tab-item title="Testnet">
+
         Visit [Flow Faucet](https://faucet.flow.com/fund-account), enter the account address you copied then click 'Fund your Account'
 
     </tab-item>
+
 </tabs>
 
 Check your account with the network directly using Flow CLI
@@ -199,6 +205,7 @@ Create EVM Gateway operator account
     </tab-item>
 
     <tab-item title="Testnet">
+
         Visit https://faucet.flow.com and use the generated public key to create and fund your Flow account
 
     </tab-item>
@@ -270,8 +277,11 @@ mv app /usr/bin/access-node
 Use `systemctl` to set up services for `access-node`, `gateway`
 
 ### Access Node
+
 <tabs>
+
     <tab-item title="Mainnet">
+
         ```bash
         # Define the variables
         NODE_ID=$(cat ./bootstrap/public-root-information/node-info.pub.* | jq -r .NodeID)
@@ -280,7 +290,9 @@ Use `systemctl` to set up services for `access-node`, `gateway`
         ```
 
     </tab-item>
+
     <tab-item title="Testnet">
+
         ```bash
         # Define the variables
         NODE_ID=$(cat ./bootstrap/public-root-information/node-info.pub.* | jq -r .NodeID)
@@ -289,6 +301,7 @@ Use `systemctl` to set up services for `access-node`, `gateway`
         ```
 
     </tab-item>
+
 </tabs>
 
 ```bash
@@ -306,7 +319,6 @@ ExecStart=/usr/bin/access-node \
 --secretsdir=$PWD/data/secrets \
 --execution-data-dir=$PWD/data/execution_data \
 --rpc-addr=0.0.0.0:9000 \
---state-stream-addr=0.0.0.0:9000 \
 --secure-rpc-addr=0.0.0.0:9001 \
 --http-addr=0.0.0.0:8000 \
 --rest-addr=0.0.0.0:8070 \
@@ -317,12 +329,12 @@ ExecStart=/usr/bin/access-node \
 --dynamic-startup-access-address=$DYNAMIC_ACCESS_ADDRESS \
 --dynamic-startup-access-publickey=$DYNAMIC_ACCESS_PUBLICKEY \
 --dynamic-startup-epoch-phase=EpochPhaseStaking \
---execution-data-indexing-enabled=true \
 --execution-state-dir=<path-to-execution-state-dir> \
 --script-execution-mode=failover \
 --event-query-mode=failover \
 --tx-result-query-mode=failover \
 --register-cache-size=10000 \
+--state-stream-addr=0.0.0.0:9000 \
 --state-stream-response-limit=500.0 \
 --state-stream-heartbeat-interval=50 \
 --loglevel=error
@@ -338,6 +350,38 @@ cat /etc/systemd/system/access-node.service
 sudo systemctl enable access-node
 ```
 
+### Syncing full or partial spork history
+
+Depending on the operator use case Access Node can sync the full history of the current spork or they can simply start indexing from any other arbitrary block you configure. For Axelar validators
+it is not anticipated that full historu indexing is required. In this case it can use the [dynamic bootstrap](https://developers.flow.com/networks/node-ops/node-operation/protocol-state-bootstrap#using-dynamic-startup)
+method to start serving data from the current block. Instructions on dynamic bootstrap can be found [here](https://developers.flow.com/networks/node-ops/node-operation/protocol-state-bootstrap).
+
+[TODO] Root Checkpoint guidance
+
+If block history from the beginning of the spork is required you will need to configure above
+
+```bash
+  --execution-data-indexing-enabled=true \
+```
+
+### Other configuration flags
+
+### Troubleshooting
+
+The following Access Node log message indicates that the node has not yet been selected for participation in the network. If your node is staked it will hopefully be selected at the next epoch.
+[Check the staking status](./flow#verify-that-your-node-id-was-selected) of your node.
+
+```bash
+  node identity not found in the identity list of the finalized state
+```
+
+Checking the sync status of your Access node
+```bash
+curl localhost:8080/metrics | grep consensus_compliance_sealed_height
+```
+
+Further details on Access Node setup can be found in the [Access Node setup](https://developers.flow.com/networks/node-ops/access-onchain-data/access-nodes/access-node-setup#how-to-run-a-permissionless-access-node)) documentation.
+
 ## Build EVM Gateway
 ```bash
 git clone https://github.com/onflow/flow-evm-gateway.git
@@ -346,28 +390,32 @@ go build -o evm-gateway cmd/main/main.go
 mv evm-gateway /usr/bin/
 ```
 
-### Enable EVM address for Flow operator account
+Further details on EVM Gateway building and configuration can be found in the EVM Gateway [repo](https://github.com/onflow/flow-evm-gateway/blob/main/README.md#building).
 
-Flow Port
+### Enable EVM address for Flow operator account
 
 The Flow operator account must initialize its COA address in EVM which is then configured as the EVM Gateway $COINBASE address.
 
 <tabs>
 
     <tab-item title="Wallet created account">
+
         * Click top left burger icon to show current profile
         * Click 'Enable the path to EVM on Flow' button
         * Your EVM account will now be available to use in the left nav account view
+
     </tab-item>
 
     <tab-item title="Flow CLI created account">
+
         ```bash
             curl -sL https://raw.githubusercontent.com/onflow/flow-evm-bridge/refs/heads/main/cadence/transactions/evm/create_account.cdc > create_evm_account.cdc
 
             flow transactions send ./create_evm_account.cdc --args-json '[{"type": "UFix64", "value": "${AMOUNT}"}]' -n testnet
         ```
 
-        Update the amount of FLOW in the above JSON to specify how much gas to send to the COA EVM account. This step requires a configured `flow.json` to be created to run successfully, see [account creation step 3](./account-creation)
+        Update the amount of FLOW in the JSON arguments to specify how much gas to send to the COA EVM account. This step requires a configured `flow.json` to be created to run successfully, see [account creation step 3](./flow#account-creation)
+
     </tab-item>
 
 </tabs>
@@ -375,7 +423,9 @@ The Flow operator account must initialize its COA address in EVM which is then c
 Flow operator address and private key is configured for `--coa-address` & `--coa-key` EVM Gateway flags below. If running multiple EVM Gateway hosts it is standard to share the same COA address and key for all.
 
 <tabs>
+
     <tab-item title="Mainnet">
+
         ```bash
         ACCESS_NODE_GRPC_HOST="${YOUR_NODE_ADDRESS}:9000"
         FLOW_NETWORK_ID="flow-mainnet"
@@ -386,7 +436,9 @@ Flow operator address and private key is configured for `--coa-address` & `--coa
         GAS_PRICE="100"
         ```
     </tab-item>
+
     <tab-item title="Testnet">
+
         ```bash
         ACCESS_NODE_GRPC_HOST="${YOUR_NODE_ADDRESS}:9000"
         FLOW_NETWORK_ID="flow-testnet"
@@ -397,6 +449,7 @@ Flow operator address and private key is configured for `--coa-address` & `--coa
         GAS_PRICE="100"
         ```
     </tab-item>
+
 </tabs>
 
 
@@ -430,6 +483,32 @@ EOF
 
 cat /etc/systemd/system/gateway.service
 sudo systemctl enable gateway
+```
+
+### Other configuration flags
+
+When running Access Node and EVM Gateway on the same logical host you must configure `--state-stream-addr` to use the same address/port combination which is
+set for Access Node `--rpc-addr`. This is required by the GW to allow querying both the streaming and non-streaming APIs using the same connection.
+
+To determine the appropriate block height to set for `—init-cadence-height` we recommend .... [TODO].
+
+### Troubleshooting
+
+State stream configuration
+
+The following log entries all occur when `state-stream-addr` and `--rpc-port` are not set to the same values when running services locally
+```bash
+  failure in event subscription at height ${INIT-CADENCE-HEIGHT}, with: recoverable: disconnected: error receiving event: rpc error: code = Unimplemented desc = unknown service flow.executiondata.ExecutionDataAPI”
+```
+```bash
+  component execution data indexer initialization failed: could not verify checkpoint file: could not find expected root hash e6d4f4c755666c21d7456441b4d33d3521e5e030b3eae391295577e9130fd715 in checkpoint file which contains: [e10d3c53608a1f195b7969fbc06763285281f64595be491630a1e1bdfbe69161]
+```
+
+Access Node not fully synced
+
+The following log entry will occur when the EVM Gateway attempts to sync with the Access Node but the access not has not yet caught up to latest block
+```bash
+    failure in event subscription at height ${INIT-CADENCE-HEIGHT}, with: recoverable: disconnected: error receiving event: rpc error: code = FailedPrecondition desc = could not get start height: failed to get lowest indexed height: index not initialized
 ```
 
 ## Start all services
