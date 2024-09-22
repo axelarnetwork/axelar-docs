@@ -16,8 +16,7 @@ Operators can choose to run the Access Node and EVM Gateway separately or on the
 Access Nodes are optimized for high throughput script/transaction ingress for Flow clients. Node operators which choose
 to make AN Access APIs public earn increased Flow fees, for which recommended hardware requirements apply. If the validator's
 sole purpose is to participate in the Axelar network, recommended hardware requirements may be excess to operational needs.
-Operators may opt to run only EVM Gateway if using [public](https://www.flowdiver.io/node?sortField=node.organization)
-Access Nodes.
+Operators may opt to run only EVM Gateway if using [public](https://www.flowdiver.io/node?sortField=node.organization) Access Nodes.
 
 ## Prerequisites
 
@@ -36,6 +35,7 @@ Access Nodes.
 4. Get binaries
 5. Create services
 6. Build EVM Gateway
+7. Start all services
 
 We recommend first time operators to complete the guidance for node setup below in full using testnet.
 
@@ -143,12 +143,12 @@ Contracts Deployed: 0
 
 3. Create EVM Gateway operator account \[Optional\]
 
-Use the existing account to create new accounts.
+Use the existing operator account to create new accounts.
 
 ```bash
 flow keys generate
 ```
-It will generate an output like this
+It will generate an output like this. These keys are only output locally to the CLI and are used in the following step
 ```bash
 🔴️ Store private key safely and don't share with anyone!
 Private Key              5438b13e290b257f0c41e3b23fbf3b5f5f6d4e9b2d3797430d2d2d5484db9b37
@@ -157,7 +157,7 @@ Mnemonic                 sustain limb elbow awkward onion crouch truth trial unt
 Derivation Path          m/44'/539'/0'/0/0
 Signature Algorithm      ECDSA_P256
 ```
-
+Create EVM Gateway operator account
 <tabs>
 
     <tab-item title="Mainnet">
@@ -169,7 +169,7 @@ Signature Algorithm      ECDSA_P256
 
         ```bash
         flow init --config-only
-        cat flow.json | jq '.accounts += {"my-account-alias": {"address": "$YOUR_ADDRESS", "key": {"type": "hex", "index": 1, "signatureAlgorithm": "ECDSA_P256", "hashAlgorithm": "SHA2_256", "privateKey": "$YOUR_PK"}}}' > updated_flow.json ; mv updated_flow.json flow.json
+        cat flow.json | jq '.accounts += {"my-account-alias": {"address": "$YOUR_ADDRESS", "key": {"type": "hex", "index": 0, "signatureAlgorithm": "ECDSA_P256", "hashAlgorithm": "SHA2_256", "privateKey": "$YOUR_PK"}}}' > updated_flow.json ; mv updated_flow.json flow.json
         ```
         3. Create a new account using public key generated above
 
@@ -199,7 +199,7 @@ Signature Algorithm      ECDSA_P256
     </tab-item>
 
     <tab-item title="Testnet">
-        Visit https://faucet.flow.com and use the generated public pey to create and fund your Flow account
+        Visit https://faucet.flow.com and use the generated public key to create and fund your Flow account
 
     </tab-item>
 
@@ -348,27 +348,31 @@ mv evm-gateway /usr/bin/
 
 ### Enable EVM address for Flow operator account
 
-The EVM gateway operator account must initialize its COA address in EVM. The EVM address created is configured as the EVM Gateway $COINBASE address.
+Flow Port
+
+The Flow operator account must initialize its COA address in EVM which is then configured as the EVM Gateway $COINBASE address.
 
 <tabs>
 
-    <tab-item title="Wallet">
-        Wallet: enable EVM address
-         * In-app: Press Enable ...
-         * Flow Port
-
+    <tab-item title="Wallet created account">
+        * Click top left burger icon to show current profile
+        * Click 'Enable the path to EVM on Flow' button
+        * Your EVM account will now be available to use in the left nav account view
     </tab-item>
 
-    <tab-item title="Flow CLI">
+    <tab-item title="Flow CLI created account">
         ```bash
-            Yada yada todo
+            curl -sL https://raw.githubusercontent.com/onflow/flow-evm-bridge/refs/heads/main/cadence/transactions/evm/create_account.cdc > create_evm_account.cdc
+
+            flow transactions send ./create_evm_account.cdc --args-json '[{"type": "UFix64", "value": "${AMOUNT}"}]' -n testnet
         ```
 
+        Update the amount of FLOW in the above JSON to specify how much gas to send to the COA EVM account. This step requires a configured `flow.json` to be created to run successfully, see [account creation step 3](./account-creation)
     </tab-item>
 
 </tabs>
 
-Flow operator address and private key can be used for `--coa-address` & `--coa-key` EVM Gateway flags below. When running multiple EVM Gateway instances it's standard to use the same address and key for all.
+Flow operator address and private key is configured for `--coa-address` & `--coa-key` EVM Gateway flags below. If running multiple EVM Gateway hosts it is standard to share the same COA address and key for all.
 
 <tabs>
     <tab-item title="Mainnet">
@@ -409,10 +413,12 @@ ExecStart=/usr/bin/evm-gateway \
 --flow-network-id=$FLOW_NETWORK_ID \
 --init-cadence-height=$INIT_CADENCE_HEIGHT \
 --ws-enabled=true \
---coa-resource-create=true \
 --coinbase=$COINBASE \
 --coa-address=$COA_ADDRESS \
 --coa-key=$COA_KEY \
+--rate-limit=9999999 \
+--rpc-host=0.0.0.0 \
+--traces-gcp-bucket=devnet51-evm-execution-traces1 \
 --gas-price=$GAS_PRICE
 Restart=always
 RestartSec=3
@@ -438,8 +444,7 @@ sudo systemctl daemon-reload
 sudo systemctl restart access-node
 sudo systemctl restart gateway
 ```
-
-For access node, Compare the flow height explorer [mainnet](https://flowdiver.io/) [testnet](https://testnet.flowdiver.io/)
+Check Access Node sync status compared to Flow block explorer [mainnet](https://flowdiver.io/) [testnet](https://testnet.flowdiver.io/)
 ```bash
 flow blocks get latest --host localhost:9000
 ```
@@ -459,7 +464,7 @@ sudo systemctl restart systemd-journald
 journalctl -u access-node.service -f -n 100
 journalctl -u gateway.service -f -n 100
 ```
-Logs should look like
+Logs should look like this which means EVM Gateway is indexing the Access Node data
 ```bash
 {"level":"info","component":"ingestion","cadence-height":211179523,"cadence-event-length":1,"time":"2024-09-07T15:35:08Z","message":"received new cadence evm events"}
 {"level":"info","component":"ingestion","hash":"0xa3e86dbe8a454d7f84908fc3af5ea3e335f4ab33bce8127f43243eb987505020","evm-height":2853,"cadence-height":211179523,"cadence-id":"872cda9894505a8357daa493d45fa99d2632b8a36a556e013df01506c5f893da","parent-hash":"0xa9b37ac67550b5b96490270b49b78fca35ff701b92bf37a6b7f6193050681bf4","tx-hashes-root":"0x56e81f171bcc55a6ff8345e692c0f86e5b48e01b996cadc001622fb5e363b421","time":"2024-09-07T15:35:08Z","message":"new evm block executed event"}
