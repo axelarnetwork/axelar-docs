@@ -522,6 +522,18 @@
       "source": "/dev/cosmos-gmp",
       "destination": "/dev/cosmos-gmp/overview/",
       "permanent": true
+    },
+    {
+      "source": "/:path*(?!\\.[^/]+\\/?$)",
+      "has": [
+        {
+          "type": "header",
+          "key": "accept",
+          "value": "text/html"
+        }
+      ],
+      "destination": "/:path/",
+      "statusCode": 301
     }
   ]
 }
