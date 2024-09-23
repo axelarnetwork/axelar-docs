@@ -524,7 +524,7 @@
       "permanent": true
     },
     {
-      "source": "/:path+(?!\\.[^/]+$)",
+      "source": "/:path+(?!\\.[^/]+)",
       "has": [
         {
           "type": "header",
