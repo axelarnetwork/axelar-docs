@@ -23,11 +23,9 @@ export const Callout = ({
         render === "md" ? "" : "not-prose",
       )}
     >
-      <div className={clsx(longConent ? "hidden md:block" : "")}>{emoji}</div>
+      <div className={clsx("hidden md:block")}>{emoji}</div>
       <div className="w-full">
-        <p className={clsx(longConent ? "block md:hidden pb-4 " : "hidden")}>
-          {emoji}
-        </p>
+        <p className={"block md:hidden pb-3 "}>{emoji}</p>
         <div className={clsx(render === "md" ? "" : "[&>p]:my-0 ")}>
           {children}
         </div>
