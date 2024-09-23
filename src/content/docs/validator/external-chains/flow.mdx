@@ -36,7 +36,7 @@ The steps first walk through the process of setting up an access node and then s
 2. Account creation
 3. Stake the access node
 4. Build access node binary
-5. Download checkpoint files
+5. Download access node bootstrap files
 6. Create access node service
 
 ### EVM Gateway setup
@@ -49,6 +49,7 @@ We recommend first time operators to complete the guidance for node setup below 
 
 ## 1. Generate Node Information
 
+### Download the boot-tools utility
 ```bash
 # get the boot-tools utility to generate node information
 curl -sL -O storage.googleapis.com/flow-genesis-bootstrap/boot-tools.tar
@@ -288,37 +289,38 @@ Build the access node binary from the latest release tag. The access node source
 
 Alternatively, you can also run the access node and the EVM gateway as a docker container. See [here](https://developers.flow.com/networks/node-ops/access-onchain-data/access-nodes/access-node-setup#step-4---start-your-node) for more details.
 
-## 5. Download checkpoint files
+## 5. Download access node bootstrap files
 
-During startup the access node requires a checkpoint of the execution state which contains the chain state (account balances, contracts etc.).
-The checkpoint which consists of 18 files named as `root.checkpoint`, `root.checkpoint.000`, `root.checkpoint.001`...`root.checkpoint.016` is published by the Foundation on a google bucket.
-Location of the bucket is available [here](https://github.com/onflow/flow/blob/master/sporks.json) under `rootCheckpointFile`.
-For e.g. the root checkpoint file for mainnet25 is mentioned [here](https://github.com/onflow/flow/blob/0771b85fe0a480c0ce00bde68dda0323e3a3d529/sporks.json#L15).
+After the access node has been successfully staked, it requires two pieces of information to startup.
+1. An initialization file called the `root-protocol-state-snapshot.json` to initialize its local database.
+2. A checkpoint of the execution state which contains the chain state (account balances, contracts etc.). The checkpoint consists of 18 files named as `root.checkpoint`, `root.checkpoint.000`, `root.checkpoint.001`...`root.checkpoint.016`.
 
-1. Create a directory called `execution-state` under the `bootstrap` directory.
+The `root-protocol-state-snapshot.json` and the checkpoint files are published by the Foundation to a google bucket.
+Location of the bucket is available [here](https://github.com/onflow/flow/blob/master/sporks.json) under `rootProtocolStateSnapshot` and `rootCheckpointFile` for each of the past network upgrades.
+For e.g. For mainnet25 the files are [here](https://github.com/onflow/flow/blob/master/sporks.json#L15-L16).
 
-2. Download the checkpoint files for the latest upgrade. These files can be downloaded by using `curl` or `wget` or using `gsutil`.
+The `transit` script which is part of the `boot-tools` utility downloaded earlier during [first step](#download_the_boot_tools_utility) can be used to download these files and place them in the right location.
 
-Download using wget,
+To download the files run when testnet/mainnet-x should be set to the latest version of testnet or mainnet, e.g. testnet-52, mainnet-26 etc.
 ```
- wget https://storage.googleapis.com/flow-genesis-bootstrap/[network]-execution/public-root-information/root.checkpoint
- wget https://storage.googleapis.com/flow-genesis-bootstrap/[network]-execution/public-root-information/root.checkpoint.000
- wget https://storage.googleapis.com/flow-genesis-bootstrap/[network]-execution/public-root-information/root.checkpoint.016
-```
-
-Download using gsutil,
-```
- gsutil -m cp "gs://flow-genesis-bootstrap/[network]-execution/public-root-information/root.checkpoint*" .
+./boot-tools/transit pull -b ./bootstrap -t [testnet/mainnett-x] -r access --concurrency 10 --timeout 30m
 ```
 
-For example, to download the mainnet-25 checkpoint files using gsutil,
+Example,
+
+For testnet-52,
 ```
-gsutil -m cp "gs://flow-genesis-bootstrap/mainnet-25-execution/public-root-information/root.checkpoint*" .
+./boot-tools/transit pull -b ./bootstrap -t testnet-52-execution -r access --concurrency 10 --timeout 30m
 ```
 
-3. Move the files to the `/bootstrap/execution-state` directory.
+For mainnet-26,
+```
+./boot-tools/transit pull -b ./bootstrap -t mainnet-26-execution -r access --concurrency 10 --timeout 30m
+```
 
-> The checkpoint files are currently only published during a network upgrade. Eventually, checkpoint files will be published for every epoch.
+For more information on the steps to carry out after a network upgrade, please see [here](https://developers.flow.com/networks/node-ops/node-operation/spork).
+
+> If you are not joining the network during the network upgrade, then please reach out to the Flow Foundation on [Discord](www.discord.gg/Flow) for instructions on how to retrieve the bootstrap files.
 
 ## 6. Create access node service
 
@@ -375,9 +377,6 @@ ExecStart=/usr/bin/access-node \
 --bind=0.0.0.0:3569 \
 --dht-enabled=false \
 --grpc-compressor=gzip \
---dynamic-startup-access-address=$DYNAMIC_ACCESS_ADDRESS \
---dynamic-startup-access-publickey=$DYNAMIC_ACCESS_PUBLICKEY \
---dynamic-startup-epoch-phase=EpochPhaseStaking \
 --execution-state-dir=<path-to-execution-state-dir> \
 --script-execution-mode=failover \
 --event-query-mode=failover \
