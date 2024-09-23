@@ -62,6 +62,12 @@ mkdir ./bootstrap
 ./boot-tools/bootstrap key --address "<YOUR_NODE_ADDRESS_GOES_HERE>:3569" --role access -o ./bootstrap
 ```
 
+<Callout type="info">
+    The network address is the address that will be used by the other nodes in the network to talk to your node.
+
+    Please ensure that the address (hostname:port) that you use is accessible from outside and there is no firewall rule blocking egress and **ingress** traffic for that address.
+</Callout>
+
 This will generate the node information which includes public and private staking keys, public and private networking key and the node ID.
 
 ```bash
