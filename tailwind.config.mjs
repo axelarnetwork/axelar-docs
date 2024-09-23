@@ -29,6 +29,7 @@ export default {
               code: {
                 backgroundColor: "var(--background-neutral-dark)",
                 border: "1px solid var(--border)",
+
                 fontWeight: "400",
                 borderRadius: "8px",
                 paddingLeft: theme("spacing[1.5]"),

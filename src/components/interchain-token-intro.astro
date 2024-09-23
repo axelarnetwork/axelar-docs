@@ -28,7 +28,7 @@ const cards = [
 ];
 ---
 
-<div class="grid grid-cols-2 not-prose gap-6">
+<div class="grid md:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2 not-prose gap-6">
   {
     cards.map((card) => (
       <a
@@ -37,7 +37,7 @@ const cards = [
       >
         <div class="font-semibold text-lg">{card.title}</div>
         <div>{card.description}</div>
-        <span class="flex items-center gap-2 hover:underline text-primary mt-auto">
+        <span class="flex items-center gap-2  bg-primary px-6 py-1.5 rounded-full text-white font-medium mr-auto mt-auto">
           Get Started{" "}
           <svg
             stroke="currentColor"
