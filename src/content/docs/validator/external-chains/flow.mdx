@@ -306,21 +306,43 @@ To download the files run when testnet/mainnet-x should be set to the latest ver
 ./boot-tools/transit pull -b ./bootstrap -t [testnet/mainnett-x] -r access --concurrency 10 --timeout 30m
 ```
 
-Example,
+<tabs>
 
-For testnet-52,
-```
-./boot-tools/transit pull -b ./bootstrap -t testnet-52-execution -r access --concurrency 10 --timeout 30m
-```
+    <tab-item title="Mainnet">
 
-For mainnet-26,
-```
-./boot-tools/transit pull -b ./bootstrap -t mainnet-26-execution -r access --concurrency 10 --timeout 30m
-```
+        ```bash
+        ./boot-tools/transit pull -b ./bootstrap -t mainnet-x -r access --concurrency 10 --timeout 30m
+        ```
+
+        Example for mainnet-26,
+
+        ```
+        ./boot-tools/transit pull -b ./bootstrap -t mainnet-526-execution -r access --concurrency 10 --timeout 30m
+        ```
+
+    </tab-item>
+
+    <tab-item title="Testnet">
+
+        ```bash
+        ./boot-tools/transit pull -b ./bootstrap -t testnet-x -r access --concurrency 10 --timeout 30m
+        ```
+
+        Example for testnet-52,
+
+        ```
+        ./boot-tools/transit pull -b ./bootstrap -t testnet-52-execution -r access --concurrency 10 --timeout 30m
+        ```
+
+    </tab-item>
+
+</tabs>
 
 For more information on the steps to carry out after a network upgrade, please see [here](https://developers.flow.com/networks/node-ops/node-operation/spork).
 
-> If you are not joining the network during the network upgrade, then please reach out to the Flow Foundation on [Discord](www.discord.gg/Flow) for instructions on how to retrieve the bootstrap files.
+<Callout type="info">
+    If you are not joining the network during after a network upgrade, then please reach out to the Flow Foundation on [Discord](www.discord.gg/Flow) for instructions on how to retrieve the bootstrap files.
+</Callout>
 
 ## 6. Create access node service
 
