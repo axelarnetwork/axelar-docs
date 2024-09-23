@@ -36,13 +36,14 @@ The steps first walk through the process of setting up an access node and then s
 2. Account creation
 3. Stake the access node
 4. Build access node binary
+5. Download checkpoint files
+6. Create access node service
 
 ### EVM Gateway setup
-5. Create access node service
-6. Build EVM Gateway binary
-7. Create EVM Gateway service
+7. Build EVM Gateway binary
+8. Create EVM Gateway service
 
-8. Start all services
+9. Start all services
 
 We recommend first time operators to complete the guidance for node setup below in full using testnet.
 
@@ -281,7 +282,39 @@ Build the access node binary from the latest release tag. The access node source
 
 Alternatively, you can also run the access node and the EVM gateway as a docker container. See [here](https://developers.flow.com/networks/node-ops/access-onchain-data/access-nodes/access-node-setup#step-4---start-your-node) for more details.
 
-## 5. Create access node service
+## 5. Download checkpoint files
+
+During startup the access node requires a checkpoint of the execution state which contains the chain state (account balances, contracts etc.).
+The checkpoint which consists of 18 files named as `root.checkpoint`, `root.checkpoint.000`, `root.checkpoint.001`...`root.checkpoint.016` is published by the Foundation on a google bucket.
+Location of the bucket is available [here](https://github.com/onflow/flow/blob/master/sporks.json) under `rootCheckpointFile`.
+For e.g. the root checkpoint file for mainnet25 is mentioned [here](https://github.com/onflow/flow/blob/0771b85fe0a480c0ce00bde68dda0323e3a3d529/sporks.json#L15).
+
+1. Create a directory called `execution-state` under the `bootstrap` directory.
+
+2. Download the checkpoint files for the latest upgrade. These files can be downloaded by using `curl` or `wget` or using `gsutil`.
+
+Download using wget,
+```
+ wget https://storage.googleapis.com/flow-genesis-bootstrap/[network]-execution/public-root-information/root.checkpoint
+ wget https://storage.googleapis.com/flow-genesis-bootstrap/[network]-execution/public-root-information/root.checkpoint.000
+ wget https://storage.googleapis.com/flow-genesis-bootstrap/[network]-execution/public-root-information/root.checkpoint.016
+```
+
+Download using gsutil,
+```
+ gsutil -m cp "gs://flow-genesis-bootstrap/[network]-execution/public-root-information/root.checkpoint*" .
+```
+
+For example, to download the mainnet-25 checkpoint files using gsutil,
+```
+gsutil -m cp "gs://flow-genesis-bootstrap/mainnet-25-execution/public-root-information/root.checkpoint*" .
+```
+
+3. Move the files to the `/bootstrap/execution-state` directory.
+
+> The checkpoint files are currently only published during a network upgrade. Eventually, checkpoint files will be published for every epoch.
+
+## 6. Create access node service
 
 Use `systemctl` to set up services for `access-node`.
 
@@ -327,6 +360,7 @@ ExecStart=/usr/bin/access-node \
 --datadir=$PWD/data/protocol \
 --secretsdir=$PWD/data/secrets \
 --execution-data-dir=$PWD/data/execution_data \
+--execution-state-checkpoint=$PWD/bootstrap/execution-state \
 --rpc-addr=0.0.0.0:9000 \
 --secure-rpc-addr=0.0.0.0:9001 \
 --http-addr=0.0.0.0:8000 \
@@ -359,22 +393,6 @@ cat /etc/systemd/system/access-node.service
 sudo systemctl enable access-node
 ```
 
-### Syncing full or partial spork history
-
-Depending on the operator use case Access Node can sync the full history of the current spork or they can simply start indexing from any other arbitrary block you configure. For Axelar validators
-it is not anticipated that full historu indexing is required. In this case it can use the [dynamic bootstrap](https://developers.flow.com/networks/node-ops/node-operation/protocol-state-bootstrap#using-dynamic-startup)
-method to start serving data from the current block. Instructions on dynamic bootstrap can be found [here](https://developers.flow.com/networks/node-ops/node-operation/protocol-state-bootstrap).
-
-[TODO] Root Checkpoint guidance
-
-If block history from the beginning of the spork is required you will need to configure above
-
-```bash
---execution-data-indexing-enabled=true \
-```
-
-### Other configuration flags
-
 ### Troubleshooting
 
 The following Access Node log message indicates that the node has not yet been selected for participation in the network. If your node is staked it will hopefully be selected at the next epoch.
@@ -391,7 +409,7 @@ curl localhost:8080/metrics | grep consensus_compliance_sealed_height
 
 Further details on Access Node setup can be found in the [Access Node setup](https://developers.flow.com/networks/node-ops/access-onchain-data/access-nodes/access-node-setup#how-to-run-a-permissionless-access-node)) documentation.
 
-## 6. Build EVM Gateway binary
+## 7. Build EVM Gateway binary
 
 Similar to the access node, build the EVM gateway binary from the latest release tag. The EVM gateway source is available in the [onflow/flow-go](https://github.com/onflow/flow-evm-gateway) repo.
 ```bash
@@ -464,7 +482,7 @@ Flow operator address and private key is configured for `--coa-address` & `--coa
 
 </tabs>
 
-## 7. Create EVM Gateway service
+## 8. Create EVM Gateway service
 
 ```bash
 sudo tee <<EOF >/dev/null /etc/systemd/system/gateway.service
@@ -524,7 +542,7 @@ The following log entry will occur when the EVM Gateway attempts to sync with th
     failure in event subscription at height ${INIT-CADENCE-HEIGHT}, with: recoverable: disconnected: error receiving event: rpc error: code = FailedPrecondition desc = could not get start height: failed to get lowest indexed height: index not initialized
 ```
 
-## 8. Start all services
+## 9. Start all services
 
 Order of operations:
 
