@@ -119,19 +119,16 @@ Note: to enable Flow testnet network in Flow Wallet you will need to toggle <pre
 ### 2. Fund Access Node operator account
 
 <tabs>
-
     <tab-item title="Mainnet">
 -
         Use a supported [centralized exchange](https://flow.com/use-flow/flow-token#cex) to send FLOW to the account address you copied
 
     </tab-item>
-
     <tab-item title="Testnet">
 
         Visit [Flow Faucet](https://faucet.flow.com/fund-account), enter the account address you copied then click 'Fund your Account'
 
     </tab-item>
-
 </tabs>
 
 Check your account with the network directly using Flow CLI
@@ -180,7 +177,6 @@ Signature Algorithm      ECDSA_P256
 ```
 Create EVM Gateway operator account
 <tabs>
-
     <tab-item title="Mainnet">
 
         1. Obtain wallet account private key from
@@ -218,13 +214,11 @@ Create EVM Gateway operator account
         3. Send funds to this account from your wallet account
 
     </tab-item>
-
     <tab-item title="Testnet">
 
         Visit https://faucet.flow.com and use the generated public key to create and fund your Flow account
 
     </tab-item>
-
 </tabs>
 
 ## 3. Stake the access node
@@ -255,21 +249,18 @@ You can verify whether your node was chosen in the Flow Port Staking Dashboard. 
 Using Flow CLI you can query the staking info for your node:
 
 <tabs>
-
     <tab-item title="Mainnet">
         ```bash
         flow accounts staking-info your_account_address -n mainnet
         ```
 
     </tab-item>
-
     <tab-item title="Testnet">
         ```bash
         flow accounts staking-info your_account_address -n testnet
         ```
 
     </tab-item>
-
 </tabs>
 
 Look for the 'Tokens Staked' field in the response of the above command to verify.
@@ -307,7 +298,6 @@ To download the files run when testnet/mainnet-x should be set to the latest ver
 ```
 
 <tabs>
-
     <tab-item title="Mainnet">
 
         ```bash
@@ -321,7 +311,6 @@ To download the files run when testnet/mainnet-x should be set to the latest ver
         ```
 
     </tab-item>
-
     <tab-item title="Testnet">
 
         ```bash
@@ -335,7 +324,6 @@ To download the files run when testnet/mainnet-x should be set to the latest ver
         ```
 
     </tab-item>
-
 </tabs>
 
 For more information on the steps to carry out after a network upgrade, please see [here](https://developers.flow.com/networks/node-ops/node-operation/spork).
@@ -355,7 +343,6 @@ Use `systemctl` to set up services for `access-node`.
 ### Access Node
 
 <tabs>
-
     <tab-item title="Mainnet">
 
         ```bash
@@ -366,7 +353,6 @@ Use `systemctl` to set up services for `access-node`.
         ```
 
     </tab-item>
-
     <tab-item title="Testnet">
 
         ```bash
@@ -377,7 +363,6 @@ Use `systemctl` to set up services for `access-node`.
         ```
 
     </tab-item>
-
 </tabs>
 
 ```bash
@@ -458,7 +443,6 @@ Further details on EVM Gateway building and configuration can be found in the EV
 The Flow operator account must initialize its COA address in EVM which is then configured as the EVM Gateway $COINBASE address.
 
 <tabs>
-
     <tab-item title="Wallet created account">
 
         * Click top left burger icon to show current profile
@@ -466,7 +450,6 @@ The Flow operator account must initialize its COA address in EVM which is then c
         * Your EVM account will now be available to use in the left nav account view
 
     </tab-item>
-
     <tab-item title="Flow CLI created account">
 
         ```bash
@@ -478,13 +461,11 @@ The Flow operator account must initialize its COA address in EVM which is then c
         Select the network and update the amount of FLOW in the JSON arguments to send to the COA EVM account. This step requires a configured `flow.json` to run successfully, see [account creation step 3](./flow#account-creation)
 
     </tab-item>
-
 </tabs>
 
 Flow operator address and private key is configured for `--coa-address` & `--coa-key` EVM Gateway flags below. If running multiple EVM Gateway hosts it is standard to share the same COA address and key for all.
 
 <tabs>
-
     <tab-item title="Mainnet">
 
         ```bash
@@ -497,7 +478,6 @@ Flow operator address and private key is configured for `--coa-address` & `--coa
         GAS_PRICE="100"
         ```
     </tab-item>
-
     <tab-item title="Testnet">
 
         ```bash
@@ -510,7 +490,6 @@ Flow operator address and private key is configured for `--coa-address` & `--coa
         GAS_PRICE="100"
         ```
     </tab-item>
-
 </tabs>
 
 ## 8. Create EVM Gateway service
