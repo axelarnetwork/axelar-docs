@@ -8,9 +8,22 @@ Rewards are calculated based on counted contributions. A contribution is counted
 
 Contributions are assessed per epoch (a length of time configured by governance). At the conclusion of an epoch, a message can be sent to the rewards contract to process rewards for the most recent window. Rewards are calculated based on a percentage of all traffic for a given chain and paid in AXL.
 
-import VerifierFlow from './assets/verifier-rewards-contract-architecture.astro'
-
-<VerifierFlow/>
+<object
+  type="image/svg+xml"
+  data="/images/assets/verifier.svg"
+ 
+  class="hidden dark:block w-full max-w-[40rem] mx-auto py-6"
+>
+  Your browser does not support SVG
+</object>
+<object
+  type="image/svg+xml"
+  data="/images/assets/verifier-dark.svg"
+ 
+  class=" dark:hidden w-full max-w-[40rem] mx-auto py-6"
+>
+  Your browser does not support SVG
+</object>
 
 <Callout>
   The `EndBlocker` is code that executes at the end of each block so that
@@ -20,9 +33,23 @@ import VerifierFlow from './assets/verifier-rewards-contract-architecture.astro'
 
 ## Voting flow
 
-import VotingFlow from './assets/voting-flow.astro'
 
-<VotingFlow/>
+<object
+  type="image/svg+xml"
+  data="/images/assets/voting-flow.svg"
+ 
+  class="hidden dark:block w-full max-w-[40rem] mx-auto py-6"
+>
+  Your browser does not support SVG
+</object>
+<object
+  type="image/svg+xml"
+  data="/images/assets/voting-flow-light.svg"
+ 
+  class=" dark:hidden w-full max-w-[40rem] mx-auto py-6"
+>
+  Your browser does not support SVG
+</object>
 
 1. The relayer picks up a `callContract()` event and calls `verify_messages()` on the Axelar gateway.
 1. The Axelar gateway calls `verify_messages()` on the voting verifier, which begins the voting process with the verifier set.
