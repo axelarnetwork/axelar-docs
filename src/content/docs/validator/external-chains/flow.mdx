@@ -418,7 +418,8 @@ Further details on EVM Gateway building and configuration can be found in the EV
 
 ### Enable EVM address for Flow operator account
 
-The Flow operator account must initialize its COA address in EVM which is then configured as the EVM Gateway $COINBASE address.
+The Flow operator account must initialize its COA address in EVM which is then configured as the EVM Gateway $COINBASE address. The guidance provided for wallet account below
+is a GUI driven version of the CLI transaction. CLI guidance can be used on any account and network.
 
 <tabs>
 <tab-item title="Wallet created account">
@@ -433,7 +434,7 @@ curl -sL https://raw.githubusercontent.com/onflow/flow-evm-bridge/refs/heads/mai
 flow transactions send ./create_evm_account.cdc --args-json '[{"type": "UFix64", "value": "${AMOUNT}"}]' -n testnet
 ```
 
-Select the network and update the amount of FLOW in the JSON arguments to send to the COA EVM account. This step requires a configured `flow.json` to run successfully, see [account creation step 3](./flow#account-creation)
+Select the network and update the amount of FLOW in the JSON arguments to send to the COA EVM account. This step requires a configured `flow.json` to run successfully, see [account creation step 3](#account-creation)
 </tab-item>
 </tabs>
 
