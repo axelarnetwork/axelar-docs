@@ -10,7 +10,8 @@ Transactions can occasionally get stuck in the pipeline from a source to destina
 The [`AxelarGMPRecoveryAPI`](https://github.com/axelarnetwork/axelarjs-sdk/blob/main/src/libs/TransactionRecoveryApi/AxelarGMPRecoveryAPI.ts) module in the AxelarJS SDK can be used to troubleshoot:
 
 - Query the status of any General Message Passing (GMP) transaction for either `callContract()` or `callContractWithToken()` on the gateway contract of a source chain.
-- Trigger a manual relay from the source chain to the destination chain.
+- Retry a stuck transaction at any step including the gas payment step, relaying, execution step. 
+- Add gas to an underfunded transaction.
 
 <Callout>
 Transaction recovery can also be invoked through the [Axelarscan UI](/dev/general-message-passing/debug/transaction-recovery/).
@@ -39,9 +40,11 @@ const sdk = new AxelarGMPRecoveryAPI({
 
 ## Query transaction status by `txHash`
 
-See the status of a transaction by passing its `txHash` into [`queryTransactionStatus()`](https://github.com/axelarnetwork/axelarjs-sdk/blob/86bc55224f84f9539dd109e5dfd6b443a116eebe/src/libs/TransactionRecoveryApi/AxelarRecoveryApi.ts#L226).
+See the status of a transaction by passing its `txHash` into [`queryTransactionStatus()`](https://github.com/axelarnetwork/axelarjs-sdk/blob/main/src/libs/TransactionRecoveryApi/AxelarRecoveryApi.ts#L226):
 
-The `eventIndex` is an optional parameter that can be passed in to query a specific internal transaction if several transactions have the same `txHash`.
+It takes two parameters
+1. `txHash`: The transaction hash you are querying
+2. `eventIndex`: This is an optional paramter, useful for separating multiple [internal transactions](https://docs.alchemy.com/docs/what-are-internal-transactions) from one another that may have the same transaction hash.
 
 ```ts
 const txHash: string =
@@ -98,12 +101,20 @@ enum GasPaidStatus {
 
 ## Manually relay the transaction through the Axelar network
 
-Use [`manualRelayToDestChain()`](https://github.com/axelarnetwork/axelarjs-sdk/blob/86bc55224f84f9539dd109e5dfd6b443a116eebe/src/libs/TransactionRecoveryApi/AxelarGMPRecoveryAPI.ts#L453) to dislodge a transaction [stuck at the **Confirm** step](https://testnet.axelarscan.io/gmp/0x111ff754b85538afcfea5aa59d01f976eb9a7b7b45b483c3fb2c48833bf0780d-4). This function will manually relay a transaction to the destination chain through the Axelar network, query the current transaction status, and recover from source to destination if needed.
+Use [`manualRelayToDestChain()`](https://github.com/axelarnetwork/axelarjs-sdk/blob/main/src/libs/TransactionRecoveryApi/AxelarGMPRecoveryAPI.ts#L453) to dislodge a transaction [stuck at the **Confirm** step](https://testnet.axelarscan.io/gmp/0x111ff754b85538afcfea5aa59d01f976eb9a7b7b45b483c3fb2c48833bf0780d-4). This function will manually relay a transaction to the destination chain through the Axelar network, query the current transaction status, and recover from source to destination if needed.
 
+  The only required parameter is:
+  1. `sourceTxHash`: The hash of the transaction that needs to be unblocked
+
+  Additional optional parameters are:
+  1. `txLogIndex`: Unique identifier for internal transactions.
+  1. `txEventIndex`: Used to confirm events on the network.
+  1. `evmWalletDetails`: Wallet that will sign the transaction.
+  1. `messageId`: Id used to recover transactions for GMP transactions from Cosmos source chains
 ```ts
 const sourceTxHash = "0x..";
 const provider = new ethers.providers.JsonRpcProvider(
-  "https://goerli.infura.io/v3/projectId"
+  "https://sepolia.infura.io/v3/projectId"
 );
 
 // Optional
@@ -111,9 +122,10 @@ const provider = new ethers.providers.JsonRpcProvider(
 // This option allows caller to pass `privateKey` or `provider` to the sdk directly
 const senderOptions = { privateKey: "0x", provider };
 
+
 const response = await sdk.manualRelayToDestChain(
   sourceTxHash,
-  senderOptions /* can be skipped */
+  senderOptions, /* can be skipped */
 );
 ```
 
@@ -137,10 +149,18 @@ If `success == false`, you can either execute the transaction manually or increa
 
 When invoking this method, you will manually execute and pay for the executable method on your specified contract on the destination chain of your cross-chain transaction.
 
+The only required parameter is
+  1. `sourceTxHash`: The hash of the transaction that needs to be unblocked
+
+Additional optional parameters are:
+  1. `srcTxLogIndex`: The log index of the transaction on the source chain.
+  1. `evmWalletDetails`: The wallet details to use for executing the transaction.
+
+
 ```ts
 const sourceTxHash = "0x..";
 const provider = new ethers.providers.JsonRpcProvider(
-  "https://goerli.infura.io/v3/projectId"
+  "https://sepolia.infura.io/v3/projectId"
 );
 
 // Optional
@@ -167,6 +187,16 @@ Possible response values are:
 ## Increase gas payment
 
 Call `addNativeGas()` to increase the gas payment using the source chain's native token. The amount to be added will be automatically calculated based on factors such as the token price of the source and destination chains and the current gas price at the destination chain. This can be overridden by specifying the amount in the `options`.
+
+The only required parameter is
+  1. `chain`: Source chain needing extra gas
+  1. `sourceTxHash`: The hash of the transaction that needs to be unblocked
+  1. `estimatedGasUsed`: Estimated gas used
+
+An additional optional parameter is:
+  1. `options`: Consists of [AddGasOptions](https://github.com/axelarnetwork/axelarjs-sdk/blob/main/src/libs/types/index.ts#L133) to specify additional options
+
+
 
 ```ts
 import {
