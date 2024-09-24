@@ -71,8 +71,9 @@ importer-1  | 2024-09-05T14:10:44.539Z  INFO scheduling-4 c.h.m.i.d.r.RecordFile
 ```
 
 ## Setup a Hedera JSON-RPC Relayer
-You'll need to setup a JSON-RPC relay to let `ampd` intract with your Hedera node. Follow the official setup instructions:
+You'll need to setup a JSON-RPC relay to let `ampd` intract with your Hedera node. Follow the official setup instructions.
 
+Please note, you do not need to add `OPERATOR_ID_MAIN=0.0.12345` or `OPERATOR_KEY_MAIN=302e0201...` to your `.env` file unless you plan to use this node to put transactions on-chain, which is not required for Amplifier message verification.
 
 * [Official Docs](https://docs.hedera.com/hedera/tutorials/more-tutorials/json-rpc-connections/hedera-json-rpc-relay)
 
