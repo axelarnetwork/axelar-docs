@@ -119,16 +119,16 @@ Note: to enable Flow testnet network in Flow Wallet you will need to toggle <pre
 ### 2. Fund Access Node operator account
 
 <tabs>
-    <tab-item title="Mainnet">
+<tab-item title="Mainnet">
 -
         Use a supported [centralized exchange](https://flow.com/use-flow/flow-token#cex) to send FLOW to the account address you copied
 
-    </tab-item>
-    <tab-item title="Testnet">
+</tab-item>
+<tab-item title="Testnet">
 
         Visit [Flow Faucet](https://faucet.flow.com/fund-account), enter the account address you copied then click 'Fund your Account'
 
-    </tab-item>
+</tab-item>
 </tabs>
 
 Check your account with the network directly using Flow CLI
@@ -177,7 +177,7 @@ Signature Algorithm      ECDSA_P256
 ```
 Create EVM Gateway operator account
 <tabs>
-    <tab-item title="Mainnet">
+<tab-item title="Mainnet">
 
         1. Obtain wallet account private key from
         <pre>Settings -> Account List -> Choose Main account -> Private Key -> [Password prompt]</pre>
@@ -213,12 +213,12 @@ Create EVM Gateway operator account
         ```
         3. Send funds to this account from your wallet account
 
-    </tab-item>
-    <tab-item title="Testnet">
+</tab-item>
+<tab-item title="Testnet">
 
         Visit https://faucet.flow.com and use the generated public key to create and fund your Flow account
 
-    </tab-item>
+</tab-item>
 </tabs>
 
 ## 3. Stake the access node
@@ -249,18 +249,18 @@ You can verify whether your node was chosen in the Flow Port Staking Dashboard. 
 Using Flow CLI you can query the staking info for your node:
 
 <tabs>
-    <tab-item title="Mainnet">
+<tab-item title="Mainnet">
         ```bash
         flow accounts staking-info your_account_address -n mainnet
         ```
 
-    </tab-item>
-    <tab-item title="Testnet">
+</tab-item>
+<tab-item title="Testnet">
         ```bash
         flow accounts staking-info your_account_address -n testnet
         ```
 
-    </tab-item>
+</tab-item>
 </tabs>
 
 Look for the 'Tokens Staked' field in the response of the above command to verify.
@@ -298,7 +298,7 @@ To download the files run when testnet/mainnet-x should be set to the latest ver
 ```
 
 <tabs>
-    <tab-item title="Mainnet">
+<tab-item title="Mainnet">
 
         ```bash
         ./boot-tools/transit pull -b ./bootstrap -t mainnet-x -r access --concurrency 10 --timeout 30m
@@ -310,8 +310,8 @@ To download the files run when testnet/mainnet-x should be set to the latest ver
         ./boot-tools/transit pull -b ./bootstrap -t mainnet-26-execution -r access --concurrency 10 --timeout 30m
         ```
 
-    </tab-item>
-    <tab-item title="Testnet">
+</tab-item>
+<tab-item title="Testnet">
 
         ```bash
         ./boot-tools/transit pull -b ./bootstrap -t testnet-x -r access --concurrency 10 --timeout 30m
@@ -323,7 +323,7 @@ To download the files run when testnet/mainnet-x should be set to the latest ver
         ./boot-tools/transit pull -b ./bootstrap -t testnet-52-execution -r access --concurrency 10 --timeout 30m
         ```
 
-    </tab-item>
+</tab-item>
 </tabs>
 
 For more information on the steps to carry out after a network upgrade, please see [here](https://developers.flow.com/networks/node-ops/node-operation/spork).
@@ -343,7 +343,7 @@ Use `systemctl` to set up services for `access-node`.
 ### Access Node
 
 <tabs>
-    <tab-item title="Mainnet">
+<tab-item title="Mainnet">
 
         ```bash
         # Define the variables
@@ -352,8 +352,8 @@ Use `systemctl` to set up services for `access-node`.
         DYNAMIC_ACCESS_PUBLICKEY="28a0d9edd0de3f15866dfe4aea1560c4504fe313fc6ca3f63a63e4f98d0e295144692a58ebe7f7894349198613f65b2d960abf99ec2625e247b1c78ba5bf2eae"
         ```
 
-    </tab-item>
-    <tab-item title="Testnet">
+</tab-item>
+<tab-item title="Testnet">
 
         ```bash
         # Define the variables
@@ -362,7 +362,7 @@ Use `systemctl` to set up services for `access-node`.
         DYNAMIC_ACCESS_PUBLICKEY="ba69f7d2e82b9edf25b103c195cd371cf0cc047ef8884a9bbe331e62982d46daeebf836f7445a2ac16741013b192959d8ad26998aff12f2adc67a99e1eb2988d"
         ```
 
-    </tab-item>
+</tab-item>
 </tabs>
 
 ```bash
@@ -443,14 +443,14 @@ Further details on EVM Gateway building and configuration can be found in the EV
 The Flow operator account must initialize its COA address in EVM which is then configured as the EVM Gateway $COINBASE address.
 
 <tabs>
-    <tab-item title="Wallet created account">
+<tab-item title="Wallet created account">
 
         * Click top left burger icon to show current profile
         * Click 'Enable the path to EVM on Flow' button
         * Your EVM account will now be available to use in the left nav account view
 
-    </tab-item>
-    <tab-item title="Flow CLI created account">
+</tab-item>
+<tab-item title="Flow CLI created account">
 
         ```bash
             curl -sL https://raw.githubusercontent.com/onflow/flow-evm-bridge/refs/heads/main/cadence/transactions/evm/create_account.cdc > create_evm_account.cdc
@@ -460,13 +460,13 @@ The Flow operator account must initialize its COA address in EVM which is then c
 
         Select the network and update the amount of FLOW in the JSON arguments to send to the COA EVM account. This step requires a configured `flow.json` to run successfully, see [account creation step 3](./flow#account-creation)
 
-    </tab-item>
+</tab-item>
 </tabs>
 
 Flow operator address and private key is configured for `--coa-address` & `--coa-key` EVM Gateway flags below. If running multiple EVM Gateway hosts it is standard to share the same COA address and key for all.
 
 <tabs>
-    <tab-item title="Mainnet">
+<tab-item title="Mainnet">
 
         ```bash
         ACCESS_NODE_GRPC_HOST="${YOUR_NODE_ADDRESS}:9000"
@@ -477,8 +477,8 @@ Flow operator address and private key is configured for `--coa-address` & `--coa
         COA_KEY="${FLOW_OPERATOR_ACCOUNT_PRIVATE_KEY}"
         GAS_PRICE="100"
         ```
-    </tab-item>
-    <tab-item title="Testnet">
+</tab-item>
+<tab-item title="Testnet">
 
         ```bash
         ACCESS_NODE_GRPC_HOST="${YOUR_NODE_ADDRESS}:9000"
@@ -489,7 +489,7 @@ Flow operator address and private key is configured for `--coa-address` & `--coa
         COA_KEY="${FLOW_OPERATOR_ACCOUNT_PRIVATE_KEY}"
         GAS_PRICE="100"
         ```
-    </tab-item>
+</tab-item>
 </tabs>
 
 ## 8. Create EVM Gateway service
