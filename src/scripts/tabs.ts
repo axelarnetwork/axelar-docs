@@ -21,7 +21,7 @@ export const addTabs = () => {
   const tabElements = document.getElementsByTagName("tabs");
 
   for (let tab of tabElements) {
-    tab.classList.add("not-prose");
+    tab.classList.add("prose-table:my-0");
   }
 
   for (let tab of tabElements) {
@@ -35,7 +35,7 @@ export const addTabs = () => {
     let titleBar = document.createElement("div");
     titleBar.classList.add("tab-bar");
     titleBar.innerHTML = `
-        <ul role="tablist" class="flex   list-none   ">
+        <ul role="tablist" class="flex my-0  list-none p-0  not-prose  ">
           ${convertedTabs
             .map(
               (tab, i) => `
