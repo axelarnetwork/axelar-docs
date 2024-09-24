@@ -58,11 +58,6 @@ export const addTabs = () => {
      */
     const applySavedChoice = () => {
       tabs = [...titleBar.querySelectorAll("button")];
-      console.log(
-        tabs.forEach((button) =>
-          console.log(button.innerText, localStorage["savedTabChoice"]),
-        ),
-      );
 
       currentIndex = tabs.indexOf(
         tabs.find(
@@ -77,20 +72,47 @@ export const addTabs = () => {
 
     const render = () => {
       applySavedChoice();
+      const wrapperClass = [
+        "border",
+        "p-5",
+        "bg-background-neutral-dark",
+        "rounded-b-xl",
+        "border-border",
+      ];
 
-      // Remove the active classes from all tabs
       [...titleBar.children[0].children].map((li) =>
         li.querySelector("button")?.classList.remove(...tabActiveClass),
       );
 
-      // Add active classes to the currently selected tab
       titleBar.children[0].children[currentIndex]
         .querySelector("button")
         ?.classList.add(...tabActiveClass);
 
-      // Hide all tab sections and show the currently selected one
       const sections = tab.getElementsByTagName("tab-item");
-      [...sections].map((section) => section.classList.add("hidden"));
+
+      [...sections].map((section) => {
+        const firstChild = section.firstElementChild;
+
+        if (firstChild?.tagName.toLowerCase() === "table") {
+          return;
+        }
+
+        let wrapperDiv = section.querySelector(".tab-item-content");
+
+        if (!wrapperDiv) {
+          wrapperDiv = document.createElement("div");
+          wrapperDiv.classList.add(...wrapperClass, "tab-item-content");
+
+          while (section.firstChild) {
+            wrapperDiv.appendChild(section.firstChild);
+          }
+
+          section.appendChild(wrapperDiv);
+        }
+
+        section.classList.add("hidden");
+      });
+
       sections[currentIndex].classList.remove("hidden");
     };
 
