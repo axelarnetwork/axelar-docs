@@ -283,27 +283,29 @@ The `transit` script which is part of the `boot-tools` utility downloaded earlie
 
 To download the files run when `testnet/mainnet-${version-label}` should be set to the latest version of testnet or mainnet, e.g. testnet-52, mainnet-26 etc.
 
+The role flag (`-r`) has to be `execution` to ensure the checkpoint files are placed in the correct location.
+
 <tabs>
 <tab-item title="Mainnet">
         ```bash
-        ./boot-tools/transit pull -b ./bootstrap -t mainnet-${version-label} -r access --concurrency 10 --timeout 30m
+        ./boot-tools/transit pull -b ./bootstrap -t mainnet-${version-label} -r execution --concurrency 10 --timeout 30m
         ```
 
         Example for network the upgrade mainnet-26 the command will be as follows,
 
         ```bash
-        ./boot-tools/transit pull -b ./bootstrap -t mainnet-26-execution -r access --concurrency 10 --timeout 30m
+        ./boot-tools/transit pull -b ./bootstrap -t mainnet-26-execution -r execution --concurrency 10 --timeout 30m
         ```
 </tab-item>
 <tab-item title="Testnet">
         ```bash
-        ./boot-tools/transit pull -b ./bootstrap -t testnet-${version-label} -r access --concurrency 10 --timeout 30m
+        ./boot-tools/transit pull -b ./bootstrap -t testnet-${version-label} -r execution --concurrency 10 --timeout 30m
         ```
 
         Example for network upgrade testnet-52 the command will be as follows,
 
         ```bash
-        ./boot-tools/transit pull -b ./bootstrap -t testnet-52-execution -r access --concurrency 10 --timeout 30m
+        ./boot-tools/transit pull -b ./bootstrap -t testnet-52-execution -r execution --concurrency 10 --timeout 30m
         ```
 </tab-item>
 </tabs>
