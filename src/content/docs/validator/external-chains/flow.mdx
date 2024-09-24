@@ -401,7 +401,7 @@ Checking the sync status of your Access node
 curl localhost:8080/metrics | grep consensus_compliance_sealed_height
 ```
 
-Further details on Access Node setup can be found in the [Access Node setup](https://developers.flow.com/networks/node-ops/access-onchain-data/access-nodes/access-node-setup#how-to-run-a-permissionless-access-node)) documentation.
+Further details on Access Node setup can be found in the [Access Node setup](https://developers.flow.com/networks/node-ops/access-onchain-data/access-nodes/access-node-setup#how-to-run-a-permissionless-access-node) documentation.
 
 ## 7. Build EVM Gateway binary
 
@@ -509,7 +509,7 @@ The appropriate block height to set for `—init-cadence-height` is the starting
 
 State stream configuration
 
-The following log entries all occur when `state-stream-addr` and `--rpc-port` are not set to the same values when running services locally
+The following log entries all occur when `--state-stream-addr` and `--rpc-port` are not set to the same values when running services locally
 ```bash
 failure in event subscription at height ${INIT-CADENCE-HEIGHT}, with: recoverable: disconnected: error receiving event: rpc error: code = Unimplemented desc = unknown service flow.executiondata.ExecutionDataAPI”
 ```
@@ -519,7 +519,7 @@ component execution data indexer initialization failed: could not verify checkpo
 
 Access Node not fully synced
 
-The following log entry will occur when the EVM Gateway attempts to sync with the Access Node but the access not has not yet caught up to latest block
+The following log entry will occur when the EVM Gateway attempts to sync with the Access Node but it has not yet synced up to latest block
 ```bash
 failure in event subscription at height ${INIT-CADENCE-HEIGHT}, with: recoverable: disconnected: error receiving event: rpc error: code = FailedPrecondition desc = could not get start height: failed to get lowest indexed height: index not initialized
 ```
@@ -529,7 +529,11 @@ failure in event subscription at height ${INIT-CADENCE-HEIGHT}, with: recoverabl
 Order of operations:
 
 1. `access-node`: ensure it's fully synced in terms of block height before proceeding.
-    - The latest chain height can be queried through Flow CLI (`flow blocks get latest - mainnet`) and also available on the Flow [block explorer](https://www.flowscan.io/) or [testnet](https://testnet.flowscan.io/)
+    - Query to Flow block height through Flow CLI
+       ```bash
+       flow blocks get latest -n mainnet
+       ```
+    - Check block height on Flow [block explorer](https://www.flowscan.io/) or [testnet](https://testnet.flowscan.io/)
 2. `gateway`
 
 ```bash
@@ -538,7 +542,7 @@ sudo systemctl restart access-node
 sudo systemctl restart gateway
 ```
 
-Check Access Node sync status compared to Flow block explorer
+Verify local Access Node has synced to latest block
 ```bash
 flow blocks get latest --host localhost:9000
 ```
