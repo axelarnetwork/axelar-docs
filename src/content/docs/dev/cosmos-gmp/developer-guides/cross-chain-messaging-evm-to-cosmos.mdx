@@ -478,7 +478,7 @@ Now, decode your private key and create a wallet:
     // Create a wallet from the private key
     const wallet = await DirectSecp256k1Wallet.fromKey(
       decodedPrivateKey,
-      "osmo"
+      "osmo",
     );
     const [{ address }] = await wallet.getAccounts();
   } catch (error) {
@@ -499,7 +499,7 @@ const gasPrice = GasPrice.fromString(gasPriceString);
 const client = await SigningCosmWasmClient.connectWithSigner(
   rpcEndpoint,
   wallet,
-  { gasPrice }
+  { gasPrice },
 );
 ```
 
@@ -535,7 +535,7 @@ const gasAmount = await api.estimateGasFee(
   destinationChain,
   100000,
   "auto",
-  "aUSDC"
+  "aUSDC",
 );
 console.log(`Estimated gas fee: ${parseInt(gasAmount) / 1e6} aUSDC`);
 ```
@@ -603,7 +603,7 @@ const result = await client.execute(
   payload,
   "auto",
   undefined,
-  [fee]
+  [fee],
 );
 
 console.log("Sent:", result.transactionHash);
@@ -698,7 +698,6 @@ Next, pass a gas value in Gwei, in this example we passed 10000000 Gwei.
   <img src="/images/cosmos/click-transact.png" height="500" />
 </p>
 
-
 After confirming the transaction on the MetaMask popup, you can proceed to verify the transaction onchain on the Axelarscan testnet by copying the transaction hash and pasting it. Here is an [example](https://testnet.axelarscan.io/gmp/0x181b558f4ae74812b8ab0cacbf5b2cf4abe51dee713e15fcf1038fe441f722c0).
 
 ## Read a message from a CosmWasm contract on Osmosis
@@ -732,7 +731,7 @@ const wasmContractAddress =
     // Create a wallet from the private key
     const wallet = await DirectSecp256k1Wallet.fromKey(
       decodedPrivateKey,
-      "osmo"
+      "osmo",
     );
     const [{ address }] = await wallet.getAccounts();
 
@@ -741,7 +740,7 @@ const wasmContractAddress =
     const client = await SigningCosmWasmClient.connectWithSigner(
       rpcEndpoint,
       wallet,
-      { gasPrice }
+      { gasPrice },
     );
 
     // Retrieve balances

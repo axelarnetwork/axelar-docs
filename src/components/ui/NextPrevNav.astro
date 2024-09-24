@@ -1,0 +1,35 @@
+---
+import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
+
+const { nav } = Astro.props;
+---
+
+<div class="flex justify-between gap-5 text-white items-center">
+  {
+    nav.prevPage?.href ? (
+      <a
+        class=" transition-all text-foreground  flex gap-1 hover:bg-primary hover:text-white hover:border-primary py-1.5 text-sm md:text-base  font-clash font-semibold px-4  justify-center  rounded-full border  items-center"
+        href={`/${nav.prevPage.href}/`}
+      >
+        <ChevronLeftIcon className="size-4" />
+        <p class="flex-1 line-clamp-1">{nav.prevPage.title}</p>
+      </a>
+    ) : (
+      ""
+    )
+  }
+
+  {
+    nav.nextPage?.href ? (
+      <a
+        class=" transition-all  text-foreground  flex gap-1 hover:bg-primary hover:text-white hover:border-primary py-1.5 text-sm md:text-base  font-clash font-semibold px-4  justify-center  rounded-full border  items-center"
+        href={`/${nav.nextPage.href}/`}
+      >
+        <p class="flex-1 line-clamp-1">{nav.nextPage.title}</p>
+        <ChevronRightIcon className="h-5 w-5  ml-1 mt-0.4 md:mt-0" />
+      </a>
+    ) : (
+      ""
+    )
+  }
+</div>

@@ -1,6 +1,6 @@
 # Celo
 
-import { Callout } from "/src/components/callout"
+import { Callout } from "/src/components/callout";
 
 Set up your CELO Mainnet or Alfajores Testnet RPC node
 
@@ -133,13 +133,13 @@ This command specifies the settings needed to run the node, and gets it started.
 </tab-item>
 </tabs>
 
-
 To see logs after starting the container, do the following.
+
 ```bash
 docker ps -a
 docker logs [container_id_from_first_step]  -f
- ```
- 
+```
+
 You'll start seeing some output. After a few minutes, you should see lines that look like this. This means your node has started syncing with the network and is receiving blocks.
 
 ```bash
@@ -154,7 +154,15 @@ INFO [11-03|07:10:24.684] Imported new chain segment               blocks=1  txs
 ```
 
 <Callout type="error" emoji="⚠️">
-Security: The command line above includes the parameter --http.addr 0.0.0.0 which makes the Celo Blockchain software listen for incoming RPC requests on all network adaptors. Exercise extreme caution in doing this when running outside Docker, as it means that any unlocked accounts and their funds may be accessed from other machines on the Internet. In the context of running a Docker container on your local machine, this together with the docker -p flags allows you to make RPC calls from outside the container, i.e from your local host, but not from outside your machine. Read more about Docker Networking here.
+  Security: The command line above includes the parameter --http.addr 0.0.0.0
+  which makes the Celo Blockchain software listen for incoming RPC requests on
+  all network adaptors. Exercise extreme caution in doing this when running
+  outside Docker, as it means that any unlocked accounts and their funds may be
+  accessed from other machines on the Internet. In the context of running a
+  Docker container on your local machine, this together with the docker -p flags
+  allows you to make RPC calls from outside the container, i.e from your local
+  host, but not from outside your machine. Read more about Docker Networking
+  here.
 </Callout>
 
 ### Check Synced

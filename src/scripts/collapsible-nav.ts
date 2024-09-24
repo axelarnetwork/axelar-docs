@@ -21,7 +21,7 @@ function initCollapsibleHeaders() {
       !group.parentElement ||
       group.parentElement.children[
         [...group.parentElement.children].indexOf(group) - 1
-      ]
+      ],
   );
 
   for (let i = 0; i < headerElements.length; i++) {

@@ -10,7 +10,7 @@ There are three ways you can use Axelar to transfer ERC-20 tokens across differe
 
 To send a token from an EVM source chain:
 
-### 1. Find the source chain’s Gateway contract address 
+### 1. Find the source chain’s Gateway contract address
 
 Locate the source chain’s Gateway contract address on either the [mainnet](/dev/reference/mainnet-contract-addresses) or the [testnet](/dev/reference/testnet-contract-addresses).
 
@@ -72,7 +72,12 @@ The AxelarJS SDK allows any frontend application to call `sendToken()` with one 
 ### EVM chain example
 
 ```typescript
-import { AxelarAssetTransfer, CHAINS, Environment, SendTokenParams } from "@axelar-network/axelarjs-sdk";
+import {
+  AxelarAssetTransfer,
+  CHAINS,
+  Environment,
+  SendTokenParams,
+} from "@axelar-network/axelarjs-sdk";
 import { ethers, Wallet } from "ethers";
 
 const api = new AxelarAssetTransfer({ environment: Environment.TESTNET });
@@ -84,7 +89,7 @@ const getSigner = () => {
 
 async function test() {
   const provider = new ethers.providers.JsonRpcProvider(
-    "https://api.avax-test.network/ext/bc/C/rpc"
+    "https://api.avax-test.network/ext/bc/C/rpc",
   );
   const signer = getSigner().connect(provider);
   const requestOptions: SendTokenParams = {
@@ -109,8 +114,12 @@ async function test() {
 ### Cosmos-based chain example
 
 ```typescript
-
-import { AxelarAssetTransfer, CHAINS, Environment, SendTokenParams } from "@axelar-network/axelarjs-sdk";
+import {
+  AxelarAssetTransfer,
+  CHAINS,
+  Environment,
+  SendTokenParams,
+} from "@axelar-network/axelarjs-sdk";
 import { DirectSecp256k1HdWallet } from "@cosmjs/proto-signing";
 
 const api = new AxelarAssetTransfer({ environment: Environment.TESTNET });
@@ -126,15 +135,18 @@ async function test() {
     fromChain: CHAINS.TESTNET.OSMOSIS,
     toChain: CHAINS.TESTNET.AVALANCHE,
     destinationAddress: "0xB8Cd93C83A974649D76B1c19f311f639e62272BC",
-    asset: { denom: "ibc/6F34E1BD664C36CE49ACC28E60D62559A5F96C4F9A6CCE4FC5A67B2852E24CFE" }, //aUSDC
+    asset: {
+      denom:
+        "ibc/6F34E1BD664C36CE49ACC28E60D62559A5F96C4F9A6CCE4FC5A67B2852E24CFE",
+    }, //aUSDC
     amountInAtomicUnits: "1000000",
     options: {
       cosmosOptions: {
         cosmosDirectSigner: offlineSigner,
         rpcUrl: "https://rpc.osmotest5.osmosis.zone",
         fee: {
-            gas: "250000",
-            amount: [{ denom: "uosmo", amount: "30000" }],
+          gas: "250000",
+          amount: [{ denom: "uosmo", amount: "30000" }],
         },
       },
     },

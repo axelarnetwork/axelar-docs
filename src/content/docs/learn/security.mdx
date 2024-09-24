@@ -17,7 +17,6 @@ This kind of decentralization is critical to satisfy strong safety and liveness 
 
 ![learn-security-decentralization.png](/images/learn-security-decentralization.jpg)
 
-
 ## Quadratic voting
 
 Concentration of power is a problem that many proof-of-stake networks today face. Validators that do a good job operating their nodes tend to receive more delegations from the community and have higher stake in the system. Standard proof-of-stake systems use delegated weight to count how many votes a validator should have in the system. The unfortunate side effect of this is concentration of voting power: if a single validator has a lot of stake, they have a lot of influence in the system.
@@ -29,7 +28,6 @@ Quadratic voting is a way to continue decentralizing the system while making it 
 Note that while quadratic voting is implemented for validation and processing of cross-chain transactions, the underlying consensus follows the standard PoS staking model (1 token, 1 vote) for block production and rewards.
 
 ![learn-security-quadratic-voting.png](/images/learn-security-quadratic-voting.jpg)
-
 
 ## Preemptive measures
 
@@ -45,7 +43,7 @@ Validators of the Axelar network maintain keys that allow them to coauthorize cr
 
 ### Audits
 
-The Axelar network code periodically goes through rigorous audits. Audits are published [here](https://github.com/axelarnetwork/audits).   
+The Axelar network code periodically goes through rigorous audits. Audits are published [here](https://github.com/axelarnetwork/audits).
 
 In addition, all Axelar network code and contracts are open-source, meaning anyone can review the code and look for vulnerabilities. Comments and revision from white-hat hackers are actively encouraged. There is also an active [bug-bounty program](https://immunefi.com/bounty/axelarnetwork/) set up, which incentivizes security submissions.
 
@@ -55,4 +53,4 @@ On top of the above security measures, Axelar supports Turing-complete [General 
 
 ## Summary conclusion
 
-In summary, Axelar tackles the complex issue of network security by having multiple layers of defenses in place. The security stack begins with decentralized, proof-of-stake consensus and diverse node tech stacks. Quadratic voting supports continued, scalable decentralization over time by preventing power consolidation among the top validators. To contain any potential errors and other failures that may occur, preventative measures are put in place, like frequent key rotations and transaction rate limits. The codebase has been thoroughly audited and is open source, with a bug bounty program to encourage whitehat submissions from the community. General Message Passing provides the ability for application-layer projects to add security features as needed for their use case, atop the Axelar security stack described here. 
+In summary, Axelar tackles the complex issue of network security by having multiple layers of defenses in place. The security stack begins with decentralized, proof-of-stake consensus and diverse node tech stacks. Quadratic voting supports continued, scalable decentralization over time by preventing power consolidation among the top validators. To contain any potential errors and other failures that may occur, preventative measures are put in place, like frequent key rotations and transaction rate limits. The codebase has been thoroughly audited and is open source, with a bug bounty program to encourage whitehat submissions from the community. General Message Passing provides the ability for application-layer projects to add security features as needed for their use case, atop the Axelar security stack described here.
