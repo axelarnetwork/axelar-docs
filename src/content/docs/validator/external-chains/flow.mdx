@@ -42,7 +42,6 @@ The steps first walk through the process of setting up an access node and then s
 ### EVM Gateway setup
 7. Build EVM Gateway binary
 8. Create EVM Gateway service
-
 9. Start all services
 
 We recommend first time operators to complete the guidance for node setup below in full using testnet.
@@ -276,21 +275,18 @@ After the access node has been successfully staked, it requires two pieces of in
 1. An initialization file called the `root-protocol-state-snapshot.json` to initialize its local database.
 2. A checkpoint of the execution state which contains the chain state (account balances, contracts etc.). The checkpoint consists of 18 files named as `root.checkpoint`, `root.checkpoint.000`, `root.checkpoint.001`...`root.checkpoint.016`.
 
-The `root-protocol-state-snapshot.json` and the checkpoint files are published by the Foundation to a google bucket.
+The `root-protocol-state-snapshot.json` and the checkpoint files are published by the Foundation to a GCP bucket.
 Location of the bucket is available [here](https://github.com/onflow/flow/blob/master/sporks.json) under `rootProtocolStateSnapshot` and `rootCheckpointFile` for each of the past network upgrades.
 For e.g. For mainnet25 the files are [here](https://github.com/onflow/flow/blob/master/sporks.json#L15-L16).
 
 The `transit` script which is part of the `boot-tools` utility downloaded earlier during [first step](#download_the_boot_tools_utility) can be used to download these files and place them in the right location.
 
-To download the files run when testnet/mainnet-x should be set to the latest version of testnet or mainnet, e.g. testnet-52, mainnet-26 etc.
-```
-./boot-tools/transit pull -b ./bootstrap -t [testnet/mainnett-x] -r access --concurrency 10 --timeout 30m
-```
+To download the files run when `testnet/mainnet-${version-label}` should be set to the latest version of testnet or mainnet, e.g. testnet-52, mainnet-26 etc.
 
 <tabs>
 <tab-item title="Mainnet">
         ```bash
-        ./boot-tools/transit pull -b ./bootstrap -t mainnet-x -r access --concurrency 10 --timeout 30m
+        ./boot-tools/transit pull -b ./bootstrap -t mainnet-${version-label} -r access --concurrency 10 --timeout 30m
         ```
 
         Example for network the upgrade mainnet-26 the command will be as follows,
@@ -301,7 +297,7 @@ To download the files run when testnet/mainnet-x should be set to the latest ver
 </tab-item>
 <tab-item title="Testnet">
         ```bash
-        ./boot-tools/transit pull -b ./bootstrap -t testnet-x -r access --concurrency 10 --timeout 30m
+        ./boot-tools/transit pull -b ./bootstrap -t testnet-${version-label} -r access --concurrency 10 --timeout 30m
         ```
 
         Example for network upgrade testnet-52 the command will be as follows,
@@ -394,7 +390,7 @@ sudo systemctl enable access-node
 ### Troubleshooting
 
 The following Access Node log message indicates that the node has not yet been selected for participation in the network. If your node is staked it will hopefully be selected at the next epoch.
-[Check the staking status](./flow#verify-that-your-node-id-was-selected) of your node.
+[Check the staking status](#verify-that-your-node-id-was-selected) of your node.
 
 ```bash
 node identity not found in the identity list of the finalized state
@@ -426,19 +422,18 @@ The Flow operator account must initialize its COA address in EVM which is then c
 
 <tabs>
 <tab-item title="Wallet created account">
-        * Click top left burger icon to show current profile
-        * Click 'Enable the path to EVM on Flow' button
-        * Your EVM account will now be available to use in the left nav account view
+* Click top left burger icon to show current profile
+* Click 'Enable the path to EVM on Flow' button
+* Your EVM account will now be available to use in the left nav account view
 </tab-item>
 <tab-item title="Flow CLI created account">
+```bash
+curl -sL https://raw.githubusercontent.com/onflow/flow-evm-bridge/refs/heads/main/cadence/transactions/evm/create_account.cdc > create_evm_account.cdc
 
-        ```bash
-            curl -sL https://raw.githubusercontent.com/onflow/flow-evm-bridge/refs/heads/main/cadence/transactions/evm/create_account.cdc > create_evm_account.cdc
+flow transactions send ./create_evm_account.cdc --args-json '[{"type": "UFix64", "value": "${AMOUNT}"}]' -n testnet
+```
 
-            flow transactions send ./create_evm_account.cdc --args-json '[{"type": "UFix64", "value": "${AMOUNT}"}]' -n testnet
-        ```
-
-        Select the network and update the amount of FLOW in the JSON arguments to send to the COA EVM account. This step requires a configured `flow.json` to run successfully, see [account creation step 3](./flow#account-creation)
+Select the network and update the amount of FLOW in the JSON arguments to send to the COA EVM account. This step requires a configured `flow.json` to run successfully, see [account creation step 3](./flow#account-creation)
 </tab-item>
 </tabs>
 
@@ -508,7 +503,7 @@ sudo systemctl enable gateway
 When running Access Node and EVM Gateway on the same logical host you must configure `--state-stream-addr` to use the same address/port combination which is
 set for Access Node `--rpc-addr`. This is required by the GW to allow querying both the streaming and non-streaming APIs using the same connection.
 
-To determine the appropriate block height to set for `—init-cadence-height` we recommend .... [TODO].
+The appropriate block height to set for `—init-cadence-height` is the starting block of the current [spork version](https://github.com/onflow/flow/blob/master/sporks.json) being run for that network.
 
 ### Troubleshooting
 
@@ -516,17 +511,17 @@ State stream configuration
 
 The following log entries all occur when `state-stream-addr` and `--rpc-port` are not set to the same values when running services locally
 ```bash
-  failure in event subscription at height ${INIT-CADENCE-HEIGHT}, with: recoverable: disconnected: error receiving event: rpc error: code = Unimplemented desc = unknown service flow.executiondata.ExecutionDataAPI”
+failure in event subscription at height ${INIT-CADENCE-HEIGHT}, with: recoverable: disconnected: error receiving event: rpc error: code = Unimplemented desc = unknown service flow.executiondata.ExecutionDataAPI”
 ```
 ```bash
-  component execution data indexer initialization failed: could not verify checkpoint file: could not find expected root hash e6d4f4c755666c21d7456441b4d33d3521e5e030b3eae391295577e9130fd715 in checkpoint file which contains: [e10d3c53608a1f195b7969fbc06763285281f64595be491630a1e1bdfbe69161]
+component execution data indexer initialization failed: could not verify checkpoint file: could not find expected root hash e6d4f4c755666c21d7456441b4d33d3521e5e030b3eae391295577e9130fd715 in checkpoint file which contains: [e10d3c53608a1f195b7969fbc06763285281f64595be491630a1e1bdfbe69161]
 ```
 
 Access Node not fully synced
 
 The following log entry will occur when the EVM Gateway attempts to sync with the Access Node but the access not has not yet caught up to latest block
 ```bash
-    failure in event subscription at height ${INIT-CADENCE-HEIGHT}, with: recoverable: disconnected: error receiving event: rpc error: code = FailedPrecondition desc = could not get start height: failed to get lowest indexed height: index not initialized
+failure in event subscription at height ${INIT-CADENCE-HEIGHT}, with: recoverable: disconnected: error receiving event: rpc error: code = FailedPrecondition desc = could not get start height: failed to get lowest indexed height: index not initialized
 ```
 
 ## 9. Start all services
@@ -534,7 +529,7 @@ The following log entry will occur when the EVM Gateway attempts to sync with th
 Order of operations:
 
 1. `access-node`: ensure it's fully synced in terms of block height before proceeding.
-    - The latest chain height can be queried through flow cli (`flow blocks get latest - mainnet`) and also available on the [explorer](https://www.flowscan.io/).
+    - The latest chain height can be queried through Flow CLI (`flow blocks get latest - mainnet`) and also available on the Flow [block explorer](https://www.flowscan.io/) or [testnet](https://testnet.flowscan.io/)
 2. `gateway`
 
 ```bash
@@ -542,7 +537,8 @@ sudo systemctl daemon-reload
 sudo systemctl restart access-node
 sudo systemctl restart gateway
 ```
-Check Access Node sync status compared to Flow block explorer [mainnet](https://flowdiver.io/) [testnet](https://testnet.flowdiver.io/)
+
+Check Access Node sync status compared to Flow block explorer
 ```bash
 flow blocks get latest --host localhost:9000
 ```
