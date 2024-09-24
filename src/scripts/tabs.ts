@@ -76,7 +76,8 @@ export const addTabs = () => {
         "border",
         "p-5",
         "bg-background-neutral-dark",
-        "rounded-b-xl",
+        "rounded-b-lg",
+        "rounded-tr-lg",
         "border-border",
       ];
 
