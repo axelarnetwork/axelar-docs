@@ -65,7 +65,6 @@ export const addTabs = () => {
         ),
       );
       if (currentIndex === -1) {
-        console.error("tab not found");
         currentIndex = 0;
       }
     };
@@ -92,11 +91,11 @@ export const addTabs = () => {
       const sections = tab.getElementsByTagName("tab-item");
 
       [...sections].map((section) => {
+        section.classList.add("hidden");
         const firstChild = section.firstElementChild;
-
-        if (firstChild?.tagName.toLowerCase() === "table") {
-          return;
-        }
+        // if (firstChild?.tagName.toLowerCase() === "table") {
+        //   return;
+        // }
 
         let wrapperDiv = section.querySelector(".tab-item-content");
 
