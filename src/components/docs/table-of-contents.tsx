@@ -1,4 +1,5 @@
 import type { TocItem } from "@/lib/generateToc";
+import clsx from "clsx";
 import { useEffect, useState } from "react";
 
 interface Props {
@@ -64,12 +65,18 @@ const TableOfContents = ({ toc = [], labels }: Props) => {
     return (
       <li>
         <a
-          className={` flex  items-center text-sm ${
-            depth === 2 ? "font-medium" : "font-normal"
-          } leading-[24px]  text-[#808080] dark:text-gray-400 dark:hover:text-primary hover:text-primary  depth-${depth} ${
-            currentHeading.slug === slug &&
-            "text-primary dark:hover:text-primary"
-          }`.trim()}
+          className={clsx(
+            "flex items-center text-sm leading-[24px]   ",
+            `depth-${depth}`,
+            {
+              "font-medium": depth === 2,
+              "font-normal": depth !== 2,
+              "text-primary  hover:text-primary/50":
+                currentHeading.slug === slug,
+              "text-[#808080] dark:hover:text-primary dark:text-gray-400 hover:text-primary":
+                currentHeading.slug !== slug,
+            },
+          )}
           href={`#${slug}`}
           onClick={onLinkClick}
         >
