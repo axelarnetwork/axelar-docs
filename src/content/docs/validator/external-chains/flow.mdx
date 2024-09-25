@@ -1,6 +1,22 @@
-# Flow Gateway Node setup
+# EVM on Flow
 
 import { Callout } from "/src/components/callout"
+
+Node setup guide for Flow Testnet/Mainnet Axelar validator
+
+## EVM on Flow equivalence
+
+EVM on Flow integrates Ethereum's transaction execution core into Cadence's native transaction runtime and thus Flow's multi
+node consensus. Access Nodes (AN) serve the Access API, the native entry point to Flow, accepting Cadence scripts or
+transactions, into which signed transactions from the EVM Gateway are included. The EVM Gateway implements the Ethereum
+JSON-RPC specification for web3.js clients. In the Flow context these two services together represent an Axelar validator.
+Access Nodes, and by extension EVM Gateways, do not vote on the network - they are rpc-only node types.
+
+Operators can choose to run the Access Node and EVM Gateway separately or on the same logical host. Consider that
+Access Nodes are optimized for high throughput script/transaction ingress for Flow clients. Node operators which choose
+to make AN Access APIs public should use the recommended hardware requirements. If the validator's
+sole purpose is to participate in the Axelar network, recommended hardware requirements may be excess to operational needs.
+Operators may opt to run only EVM Gateway if using [public](https://www.flowdiver.io/node?sortField=node.organization) Access Nodes.
 
 ## Prerequisites
 
@@ -9,11 +25,32 @@ import { Callout } from "/src/components/callout"
 - [Official Documentation](https://developers.flow.com/networks/node-ops/access-onchain-data/access-nodes/access-node-setup)
 - [Official Documentation](https://github.com/onflow/flow-evm-gateway/blob/main/README.md)
 - Go
+- Flow CLI (see below)
 
-## Generate Node Information
+## Steps
 
+The steps first walk through the process of setting up an access node and then setting up the EVM gateway node.
+
+### Access node setup
+1. Generate access node information
+2. Account creation
+3. Stake the access node
+4. Build access node binary
+5. Download access node bootstrap files
+6. Create access node service
+
+### EVM Gateway setup
+7. Build EVM Gateway binary
+8. Create EVM Gateway service
+9. Start all services
+
+We recommend first time operators to complete the guidance for node setup below in full using testnet.
+
+## 1. Generate Node Information
+
+### Download the boot-tools utility
 ```bash
-# get the binary
+# get the boot-tools utility to generate node information
 curl -sL -O storage.googleapis.com/flow-genesis-bootstrap/boot-tools.tar
 # untar it
 tar -xvf boot-tools.tar
@@ -24,97 +61,288 @@ mkdir ./bootstrap
 # Use a fully qualified domain name for YOUR_NODE_ADDRESS_GOES_HERE. Please also include the port number in the network address e.g. flowaccess.mycompany.com:3569
 ./boot-tools/bootstrap key --address "<YOUR_NODE_ADDRESS_GOES_HERE>:3569" --role access -o ./bootstrap
 ```
-Get you node id
+
+<Callout type="info">
+    The network address is the address that will be used by the other nodes in the network to talk to your node.
+
+    Please ensure that the address (hostname:port) that you use is accessible from outside and there is no firewall rule blocking egress and **ingress** traffic for that address.
+</Callout>
+
+This will generate the node information which includes public and private staking keys, public and private networking key and the node ID.
 
 ```bash
-cat ./bootstrap/public-root-information/node-id && echo ""
-```
-All your private keys should be in the bootstrap folder created earlier. Please take a back up of the entire folder.
-
-## Stake 100 FLOW
-The minimum 100 is required to prevent certain vulnerabilities in the smart contract that are a result of having a zero minimum stake requirement.
-Follow this [guide](https://developers.flow.com/networks/flow-port/staking-guide#stake-a-node) to stake using [Flow Port](https://port.flow.com)
-
-All fields required are generated here:
-```bash
-cat ./bootstrap/public-root-information/node-info.pub.* | jq
-```
-```json
+cat ./bootstrap/public-root-information/node-info.pub.[HASH].json
 {
-  "Role": "access",
-  "Address": "flowaccess.mycompany.com:3569",
-  "NodeID": "e737ec6efbd26ef43bf676911cdc5a11ba15fc6562d05413e6589fccdd6c06d5",
-  "Weight": 0,
-  "NetworkPubKey": "f493a74704f6961ae7903e062ecd58d990672858eff99aece7bfbccf3aa02de8f1a624ecbf21a01e8b2f4a5854c231fbe218edd7762a34fea881f3958a215305",
-  "StakingPubKey": "ae8dcf81f3a70d72036b7ba2c586ed37ed0eb82b9c0a4aab998a8420f98894f94c14f84fa716e93654d3940fc0c8ff4d19b504c90a5b4918b28f421e9d3659dc2b7e246025ebeffea0d83cceefe315d7ed346dbe412fdac51b64997d97d29f7e"
+"Role": "access",
+"Address": "\u003cYOUR_NODE_ADDRESS\u003e:3569",
+"NodeID": "c2b79d2d4384b30ac6db6ee284d0549bf3a19f6885232e4a20af438c49e15948",
+"Weight": 0,
+"NetworkPubKey": "f99ba93360c6daa3b044c5a474d915f9306d450ed3a996440c378cd9e37e37cd6d57c13f9417087af148f25a216ea7b239bcadb7ce4dd72f90ad26c9ea1db03a",
+"StakingPubKey": "8b027c8afbb01d63e93ee40242ab2aad03f25800e3a3c01c3615520505ab23626c016d4e7525f3bebdfe301188275ec401b403f4825a1511d22b7bcdaa8b07936933c5cae3c9880a1bf218fa3a8c21b10023b667ac9d23809b7eaa152b059dfe"
 }
 ```
-Create an address to use with the faucet [here](https://testnet-faucet.onflow.org) on testnet
-
-## Verify That Your Node ID Was Selected
-
-On Wednesday at around 12:00 UTC, the staking auction for the current epoch will end and five nodes from candidate list of nodes will be chosen at random by the staking contract to be part of the next epoch.
-If all 5 slots have been taken from the previous epoch, then no new access nodes will be chosen
-
-There are several ways to verify whether your node was chosen as explained below
-When you stake the node, the tokens will show up under the tokensCommitted bucket. After the staking auction ends, if the node is selected, the tokens remain in the tokensCommitted bucket and are moved to the tokensStaked bucket at the end of the epoch. If the node is not selected, the tokens are moved to the tokensUnstaked bucket.
 
 ```bash
-# install flow cli
+cat ./bootstrap/private-root-information/private-node-info_[HASH]/node-info.priv.json
+
+{
+  "Role": "access",
+  "Address": "\u003cYOUR_NODE_ADDRESS\u003e:3569",
+  "NodeID": "c2b79d2d4384b30ac6db6ee284d0549bf3a19f6885232e4a20af438c49e15948",
+  "NetworkPrivKey": "aba48858482ead4a1bdeee198b8948061fa80c9720b0107024ef7d5793dbc930",
+  "StakingPrivKey": "061d9bef99db63629ed28bb64ad0cc6b93418accc1a6c5e461dfcbdf087c2862"
+}
+```
+Please ensure you backup the bootstrap folder as it contains the node private keys. If they keys are lost, the node will not be able to run.
+
+For further information on this step see [official documentation](https://developers.flow.com/networks/node-ops/access-onchain-data/access-nodes/access-node-setup#step--1---generate-node-information).
+
+## 2. Account Creation
+
+Many operators will only require the first two steps below if aggregating operational costs across Flow into a single account is acceptable, or where only a
+single logical host is being run for all services. Organizations who must separate operating costs between node types must include step (3) to create a
+distinct account for the EVM Gateway.
+
+If you are only running the EVM Gateway and using public Access Nodes the first two account creation steps below are still required. In this case the account
+will only be used for the EVM Gateway.
+
+### 1. Create Access Node operator account
+
+Accounts need to be created on Flow before they can be funded and used. Visit [Flow Port](https://port.flow.com) and
+select `mainnet` or `testnet` in the dropdown and click 'Sign Up'. Flow Port will guide you through Flow Wallet download,
+which once initialized will have created an account for you on the selected network. You should now be able to 'Sign in'
+to Flow Port and can copy your account address from the wallet or Flow Port dashboard.
+
+Note: to enable Flow testnet network in Flow Wallet you will need to toggle <pre>Settings -> Developer Mode -> Enabled</pre>
+
+### 2. Fund Access Node operator account
+
+<tabs>
+<tab-item title="Mainnet">
+        Use a supported [centralized exchange](https://flow.com/use-flow/flow-token#cex) to send FLOW to the account address you copied
+</tab-item>
+<tab-item title="Testnet">
+        Visit [Flow Faucet](https://faucet.flow.com/fund-account), enter the account address you copied then click 'Fund your Account'
+</tab-item>
+</tabs>
+
+Check your account with the network directly using Flow CLI
+```bash
+# install Flow CLI
 sh -ci "$(curl -fsSL https://raw.githubusercontent.com/onflow/flow-cli/master/install.sh)"
 echo 'export PATH="$PATH:/root/.local/bin"' >> ~/.profile
 source ~/.profile
 ```
 
-You can check via Flow Port or using flow accounts staking-info
-
-<tabs>
-    <tab-item title="Mainnet">
-        ```bash
-        # You can check the balance using Flow Cli. Once you have downloaded and installed Flow Cli, you can query the account balance using the command
-        flow accounts staking-info your_account_address -n mainnet
-        ```
-    </tab-item>
-    <tab-item title="Testnet">
-        ```bash
-        # You can check the balance using Flow Cli. Once you have downloaded and installed Flow Cli, you can query the account balance using the command
-        flow accounts staking-info your_account_address -n testnet
-        ```
-    </tab-item>
-</tabs>
-
-Look for the Tokens Staked field in the response of the above command to verify
-
-## Get binaries
+Paste your account address and specify network
 ```bash
-curl -sL -O storage.googleapis.com/flow-genesis-bootstrap/binary/access/app
-chmod +x app
-mv app /usr/bin/access-node
+% flow accounts get 0x1844efeb3fef2542  -n testnet
+
+If you would like to fund the account with 1000 FLOW tokens for testing, visit https://testnet-faucet.onflow.org/fund-account?address=1844efeb3fef2542
+
+Address	 0x1844efeb3fef2542
+Balance	 744.00060373
+Keys	 2
+
+Key 0	Public Key		 3569d7acbc44cd61ffcca019820d4975e7c32bc0d0da38d3920e5ae7fac172bedc5905ddcf349e9ea6968bd7b1da33178c03dc45a73117d6b59c1fef79651cbe
+Weight			 1000
+Signature Algorithm	 ECDSA_secp256k1
+Hash Algorithm		 SHA2_256
+Revoked 		 false
+Sequence Number 	 7
+Index 			 0
+Contracts Deployed: 0
 ```
 
-## Create services
+### 3. Create EVM Gateway operator account \[Optional\]
 
-Use `systemctl` to set up services for `Access Node`, `Gateway`
+Use the existing operator account to create new accounts.
+
+```bash
+flow keys generate
+```
+It will generate an output like this. These keys are only output locally to the CLI and are used in the following step
+```bash
+🔴️ Store private key safely and don't share with anyone!
+Private Key              5438b13e290b257f0c41e3b23fbf3b5f5f6d4e9b2d3797430d2d2d5484db9b37
+Public Key               9b85626369efe380ebd701f7189f2746fda26d09e1b63cb003bd84a5d33b662685c56427a0526a670efa88b0cb8da371cf9dc1de5ac6bbffb56e327a5c16e708
+Mnemonic                 sustain limb elbow awkward onion crouch truth trial until poverty famous feel
+Derivation Path          m/44'/539'/0'/0/0
+Signature Algorithm      ECDSA_P256
+```
+Create EVM Gateway operator account
+<tabs>
+<tab-item title="Mainnet">
+        1. Obtain wallet account private key from
+        <pre>Settings -> Account List -> Choose Main account -> Private Key -> [Password prompt]</pre>
+
+        2. Create flow.json, replacing `address` and `privateKey` values with those of your wallet account. Note `address` has no leading `0x`
+
+        ```bash
+        flow init --config-only
+        cat flow.json | jq '.accounts += {"my-account-alias": {"address": "$YOUR_ADDRESS", "key": {"type": "hex", "index": 0, "signatureAlgorithm": "ECDSA_P256", "hashAlgorithm": "SHA2_256", "privateKey": "$YOUR_PK"}}}' > updated_flow.json ; mv updated_flow.json flow.json
+        ```
+        3. Create a new account using public key generated above
+
+        ```bash
+        flow accounts create --key 9b85626369efe380ebd701f7189f2746fda26d09e1b63cb003bd84a5d33b662685c56427a0526a670efa88b0cb8da371cf9dc1de5ac6bbffb56e327a5c16e708 --signer my-account-alias -n testnet
+
+        Transaction ID: efcacf408285100971f93053e28cf0d2fe0809213eb35c85d779c2fc2bca89c7
+
+        If you would like to fund the account with 1000 FLOW tokens for testing, visit https://testnet-faucet.onflow.org/fund-account?address=f3445838372e4e92
+
+        Address	 0xf3445838372e4e92
+        Balance	 0.00100000
+        Keys	 1
+
+        Key 0	Public Key		 9b85626369efe380ebd701f7189f2746fda26d09e1b63cb003bd84a5d33b662685c56427a0526a670efa88b0cb8da371cf9dc1de5ac6bbffb56e327a5c16e708
+        Weight			 1000
+        Signature Algorithm	 ECDSA_P256
+        Hash Algorithm		 SHA3_256
+        Revoked 		 false
+        Sequence Number 	 0
+        Index 			 0
+
+        Contracts Deployed: 0
+        ```
+        3. Send funds to this account from your wallet account
+</tab-item>
+<tab-item title="Testnet">
+        Visit https://faucet.flow.com and use the generated public key to create and fund your Flow account
+</tab-item>
+</tabs>
+
+## 3. Stake the access node
+
+Access Nodes require a minimum 100 FLOW stake for each participating node to secure a slot on the network. Follow this
+[guide](https://developers.flow.com/networks/node-ops/access-onchain-data/access-nodes/access-node-setup#step--2---stake-the-node) to stake using [Flow Port](https://port.flow.com).
+
+<Callout type="info">
+    Use the public key values previously generated by the bootstrap utility when staking your node
+
+    When staking for the first time please select 'Upgrade Account' in Flow Port when requested
+</Callout>
+
+Once completed, your Flow Port 'Stake and Delegate' dashboard will display the new node registration stake in a pending
+status. Note the banner which outlines when your staking action will be included in the next epoch.
+
+![flow-port-stake-pending.png](/images/ext-flow-port-stake-pending.png)
+
+Further information about staking on Flow can be found in the [Staking and Epochs](https://developers.flow.com/networks/staking#how-does-staking-work-on-flow) documentation.
+
+### Verify That Your Node ID Was Selected
+
+On Wednesday at around 12:00 UTC, the staking auction for the current epoch will end and five nodes from candidate list of nodes will be chosen at random by the staking contract for participation in the next epoch.
+If all 5 slots have been taken from the previous epoch no new Access Nodes will be chosen
+
+You can verify whether your node was chosen in the Flow Port Staking Dashboard. The 'Staked Amount' for your node will equal the amount staked for that node ID once it has been selected.
+
+Using Flow CLI you can query the staking info for your node:
+
+<tabs>
+<tab-item title="Mainnet">
+        ```bash
+        flow accounts staking-info your_account_address -n mainnet
+        ```
+</tab-item>
+<tab-item title="Testnet">
+        ```bash
+        flow accounts staking-info your_account_address -n testnet
+        ```
+</tab-item>
+</tabs>
+
+Look for the 'Tokens Staked' field in the response of the above command to verify.
+
+### Restaking
+
+In the event that the epoch passes and the node you registered did not get picked your stake will be returned. You can re-stake the
+node using the same staking procedure as above.
+
+## 4. Build access node binary
+
+Build the access node binary from the latest release tag. The access node source is available in the [onflow/flow-go](https://github.com/onflow/flow-go) repo.
+
+1. Install the prerequisites mentioned [here](https://github.com/onflow/flow-go?tab=readme-ov-file#installation)
+2. Checkout the latest release tag mentioned [here](https://github.com/onflow/flow-go/releases).
+3. Build the access node binary by following this [step](https://github.com/onflow/flow-go?tab=readme-ov-file#building-a-binary-for-the-access-node) in the flow-go repo.
+
+Alternatively, you can also run the access node and the EVM gateway as a docker container. See [here](https://developers.flow.com/networks/node-ops/access-onchain-data/access-nodes/access-node-setup#step-4---start-your-node) for more details.
+
+## 5. Download access node bootstrap files
+
+After the access node has been successfully staked, it requires two pieces of information to startup.
+1. An initialization file called the `root-protocol-state-snapshot.json` to initialize its local database.
+2. A checkpoint of the execution state which contains the chain state (account balances, contracts etc.). The checkpoint consists of 18 files named as `root.checkpoint`, `root.checkpoint.000`, `root.checkpoint.001`...`root.checkpoint.016`.
+
+The `root-protocol-state-snapshot.json` and the checkpoint files are published by the Foundation to a GCP bucket.
+Location of the bucket is available [here](https://github.com/onflow/flow/blob/master/sporks.json) under `rootProtocolStateSnapshot` and `rootCheckpointFile` for each of the past network upgrades.
+For e.g. For mainnet25 the files are [here](https://github.com/onflow/flow/blob/master/sporks.json#L15-L16).
+
+The `transit` script which is part of the `boot-tools` utility downloaded earlier during [first step](#download_the_boot_tools_utility) can be used to download these files and place them in the right location.
+
+To download the files run when `testnet/mainnet-${version-label}` should be set to the latest version of testnet or mainnet, e.g. testnet-52, mainnet-26 etc.
+
+The role flag (`-r`) has to be `execution` to ensure the checkpoint files are placed in the correct location.
+
+<tabs>
+<tab-item title="Mainnet">
+        ```bash
+        ./boot-tools/transit pull -b ./bootstrap -t mainnet-${version-label} -r execution --concurrency 10 --timeout 30m
+        ```
+
+        Example for network the upgrade mainnet-26 the command will be as follows,
+
+        ```bash
+        ./boot-tools/transit pull -b ./bootstrap -t mainnet-26-execution -r execution --concurrency 10 --timeout 30m
+        ```
+</tab-item>
+<tab-item title="Testnet">
+        ```bash
+        ./boot-tools/transit pull -b ./bootstrap -t testnet-${version-label} -r execution --concurrency 10 --timeout 30m
+        ```
+
+        Example for network upgrade testnet-52 the command will be as follows,
+
+        ```bash
+        ./boot-tools/transit pull -b ./bootstrap -t testnet-52-execution -r execution --concurrency 10 --timeout 30m
+        ```
+</tab-item>
+</tabs>
+
+For more information on the steps to carry out after a network upgrade, please see [here](https://developers.flow.com/networks/node-ops/node-operation/spork).
+
+<Callout type="info">
+    If the node was already running on the previous network before the upgrade then please follow [these](https://developers.flow.com/networks/node-ops/node-operation/spork) steps to sync the node on the upgraded network.
+</Callout>
+
+<Callout type="info">
+    If you are joining the network on any epoch after the last network upgrade, then please see [here](https://developers.flow.com/networks/node-ops/access-onchain-data/access-nodes/access-node-configuration-options#option-2-enabling-indexing-mid-spork) for instructions on downloading the bootstrap files.
+</Callout>
+
+## 6. Create access node service
+
+Use `systemctl` to set up services for `access-node`.
 
 ### Access Node
+
 <tabs>
-    <tab-item title="Mainnet">
+<tab-item title="Mainnet">
         ```bash
         # Define the variables
         NODE_ID=$(cat ./bootstrap/public-root-information/node-info.pub.* | jq -r .NodeID)
         DYNAMIC_ACCESS_ADDRESS="secure.mainnet.nodes.onflow.org:9001"
         DYNAMIC_ACCESS_PUBLICKEY="28a0d9edd0de3f15866dfe4aea1560c4504fe313fc6ca3f63a63e4f98d0e295144692a58ebe7f7894349198613f65b2d960abf99ec2625e247b1c78ba5bf2eae"
         ```
-    </tab-item>
-    <tab-item title="Testnet">
+</tab-item>
+<tab-item title="Testnet">
         ```bash
         # Define the variables
         NODE_ID=$(cat ./bootstrap/public-root-information/node-info.pub.* | jq -r .NodeID)
         DYNAMIC_ACCESS_ADDRESS="secure.testnet.nodes.onflow.org:9001"
         DYNAMIC_ACCESS_PUBLICKEY="ba69f7d2e82b9edf25b103c195cd371cf0cc047ef8884a9bbe331e62982d46daeebf836f7445a2ac16741013b192959d8ad26998aff12f2adc67a99e1eb2988d"
-
         ```
-    </tab-item>
+</tab-item>
 </tabs>
 
 ```bash
@@ -131,8 +359,8 @@ ExecStart=/usr/bin/access-node \
 --datadir=$PWD/data/protocol \
 --secretsdir=$PWD/data/secrets \
 --execution-data-dir=$PWD/data/execution_data \
+--execution-state-checkpoint=$PWD/bootstrap/execution-state \
 --rpc-addr=0.0.0.0:9000 \
---state-stream-addr=0.0.0.0:9000 \
 --secure-rpc-addr=0.0.0.0:9001 \
 --http-addr=0.0.0.0:8000 \
 --rest-addr=0.0.0.0:8070 \
@@ -140,10 +368,15 @@ ExecStart=/usr/bin/access-node \
 --bind=0.0.0.0:3569 \
 --dht-enabled=false \
 --grpc-compressor=gzip \
---profiler-dir=$PWD/data/profiler \
---dynamic-startup-access-address=$DYNAMIC_ACCESS_ADDRESS \
---dynamic-startup-access-publickey=$DYNAMIC_ACCESS_PUBLICKEY \
---dynamic-startup-epoch-phase=EpochPhaseStaking
+--execution-state-dir=<path-to-execution-state-dir> \
+--script-execution-mode=failover \
+--event-query-mode=failover \
+--tx-result-query-mode=failover \
+--register-cache-size=10000 \
+--state-stream-addr=0.0.0.0:9000 \
+--state-stream-response-limit=500.0 \
+--state-stream-heartbeat-interval=50 \
+--loglevel=error
 Restart=always
 RestartSec=3
 LimitNOFILE=4096
@@ -156,56 +389,85 @@ cat /etc/systemd/system/access-node.service
 sudo systemctl enable access-node
 ```
 
-## Build gateway
+### Troubleshooting
+
+The following Access Node log message indicates that the node has not yet been selected for participation in the network. If your node is staked it will hopefully be selected at the next epoch.
+[Check the staking status](#verify-that-your-node-id-was-selected) of your node.
+
+```bash
+node identity not found in the identity list of the finalized state
+```
+
+Checking the sync status of your Access node
+```bash
+curl localhost:8080/metrics | grep consensus_compliance_sealed_height
+```
+
+Further details on Access Node setup can be found in the [Access Node setup](https://developers.flow.com/networks/node-ops/access-onchain-data/access-nodes/access-node-setup#how-to-run-a-permissionless-access-node) documentation.
+
+## 7. Build EVM Gateway binary
+
+Similar to the access node, build the EVM gateway binary from the latest release tag. The EVM gateway source is available in the [onflow/flow-go](https://github.com/onflow/flow-evm-gateway) repo.
 ```bash
 git clone https://github.com/onflow/flow-evm-gateway.git
+git checkout <latest release tag mentioned here https://github.com/onflow/flow-evm-gateway/releases>
 cd flow-evm-gateway
 go build -o evm-gateway cmd/main/main.go
 mv evm-gateway /usr/bin/
 ```
 
-### EVM Gateway
+Further details on EVM Gateway building and configuration can be found in the EVM Gateway [repo](https://github.com/onflow/flow-evm-gateway/blob/main/README.md#building).
 
-Each EVM Gateway operator needs to create an account on Flow as well as an account on EVM. The first one will be used to pay for fees on Flow, which means it needs to be sufficiently funded and monitored for balance (it shouldn’t fall to 0 without refunding it, as of now the node doesn’t monitor these, but will be added in the future, however, the funding won’t so it should be done manually). The second EVM account will be used to get refunded fees on EVM. That account shouldn’t have to be monitored for balance as the balance will always grow.
-```bash
-flow keys generate
-```
-It will generate an output like this
-```bash
-🔴️ Store private key safely and don't share with anyone!
-Private Key              5438b13e290b257f0c41e3b23fbf3b5f5f6d4e9b2d3797430d2d2d5484db9b37
-Public Key               9b85626369efe380ebd701f7189f2746fda26d09e1b63cb003bd84a5d33b662685c56427a0526a670efa88b0cb8da371cf9dc1de5ac6bbffb56e327a5c16e708
-Mnemonic                 sustain limb elbow awkward onion crouch truth trial until poverty famous feel
-Derivation Path          m/44'/539'/0'/0/0
-Signature Algorithm      ECDSA_P256
-```
+### Enable EVM address for Flow operator account
 
-Visit https://faucet.flow.com, and use the generated Public Key, to create and fund your Flow account. Make sure to use the Flow address and the Private Key for the --coa-address & --coa-key flags.
+The Flow operator account must initialize its COA address in EVM which is then configured as the EVM Gateway $COINBASE address. The guidance provided for wallet account below
+is a GUI driven version of the CLI transaction. CLI guidance can be used on any account and network.
 
 <tabs>
-    <tab-item title="Mainnet">
-        ```bash
-        ACCESS_NODE_GRPC_HOST="your_domain:9000"
-        FLOW_NETWORK_ID="flow-mainnet"
-        INIT_CADENCE_HEIGHT="85981135"
-        COINBASE="your_evm_address_without_0x"
-        COA_ADDRESS="your_flow_address"
-        COA_KEY="your_private_key"
-        GAS_PRICE="100" # feel free to experiment with different values
-        ```
-    </tab-item>
-    <tab-item title="Testnet">
-        ```bash
-        ACCESS_NODE_GRPC_HOST="your_domain:9000"
-        FLOW_NETWORK_ID="flow-testnet"
-        INIT_CADENCE_HEIGHT="211176670"
-        COINBASE="your_evm_address_without_0x"
-        COA_ADDRESS="your_flow_address"
-        COA_KEY="your_private_key"
-        GAS_PRICE="100" # feel free to experiment with different values
-        ```
-    </tab-item>
+<tab-item title="Wallet created account">
+* Click top left burger icon to show current profile
+* Click 'Enable the path to EVM on Flow' button
+* Your EVM account will now be available to use in the left nav account view
+</tab-item>
+<tab-item title="Flow CLI created account">
+```bash
+curl -sL https://raw.githubusercontent.com/onflow/flow-evm-bridge/refs/heads/main/cadence/transactions/evm/create_account.cdc > create_evm_account.cdc
+
+flow transactions send ./create_evm_account.cdc --args-json '[{"type": "UFix64", "value": "${AMOUNT}"}]' -n testnet
+```
+
+Select the network and update the amount of FLOW in the JSON arguments to send to the COA EVM account. This step requires a configured `flow.json` to run successfully, see [account creation step 3](#account-creation)
+</tab-item>
 </tabs>
+
+EVM operator address and private key is configured for `--coa-address` & `--coa-key` EVM Gateway flags below. If running multiple EVM Gateway hosts it is standard to share the same COA address and key for all.
+
+<tabs>
+<tab-item title="Mainnet">
+        ```bash
+        ACCESS_NODE_GRPC_HOST="${YOUR_NODE_ADDRESS}:9000"
+        FLOW_NETWORK_ID="flow-mainnet"
+        INIT_CADENCE_HEIGHT="211176670" # see below
+        COINBASE="${LINKED_EVM_ADDRESS_WITHOUT_0x}"
+        COA_ADDRESS="${FLOW_OPERATOR_ACCOUNT_ADDRESS}"
+        COA_KEY="${FLOW_OPERATOR_ACCOUNT_PRIVATE_KEY}"
+        GAS_PRICE="100"
+        ```
+</tab-item>
+<tab-item title="Testnet">
+        ```bash
+        ACCESS_NODE_GRPC_HOST="${YOUR_NODE_ADDRESS}:9000"
+        FLOW_NETWORK_ID="flow-testnet"
+        INIT_CADENCE_HEIGHT="211176670" # see below
+        COINBASE="${LINKED_EVM_ADDRESS_WITHOUT_0x}"
+        COA_ADDRESS="${FLOW_OPERATOR_ACCOUNT_ADDRESS}"
+        COA_KEY="${FLOW_OPERATOR_ACCOUNT_PRIVATE_KEY}"
+        GAS_PRICE="100"
+        ```
+</tab-item>
+</tabs>
+
+## 8. Create EVM Gateway service
 
 ```bash
 sudo tee <<EOF >/dev/null /etc/systemd/system/gateway.service
@@ -220,10 +482,12 @@ ExecStart=/usr/bin/evm-gateway \
 --flow-network-id=$FLOW_NETWORK_ID \
 --init-cadence-height=$INIT_CADENCE_HEIGHT \
 --ws-enabled=true \
---coa-resource-create=true \
 --coinbase=$COINBASE \
 --coa-address=$COA_ADDRESS \
 --coa-key=$COA_KEY \
+--rate-limit=9999999 \
+--rpc-host=0.0.0.0 \
+--traces-gcp-bucket=devnet51-evm-execution-traces1 \
 --gas-price=$GAS_PRICE
 Restart=always
 RestartSec=3
@@ -237,12 +501,43 @@ cat /etc/systemd/system/gateway.service
 sudo systemctl enable gateway
 ```
 
-## Start all services
+### Other configuration flags
+
+When running Access Node and EVM Gateway on the same logical host you must configure `--state-stream-addr` to use the same address/port combination which is
+set for Access Node `--rpc-addr`. This is required by the GW to allow querying both the streaming and non-streaming APIs using the same connection.
+
+The appropriate block height to set for `—init-cadence-height` is the starting block of the current [spork version](https://github.com/onflow/flow/blob/master/sporks.json) being run for that network.
+
+### Troubleshooting
+
+State stream configuration
+
+The following log entries may occur when `--state-stream-addr` and `--rpc-port` are not set to the same values when running services locally
+```bash
+failure in event subscription at height ${INIT-CADENCE-HEIGHT}, with: recoverable: disconnected: error receiving event: rpc error: code = Unimplemented desc = unknown service flow.executiondata.ExecutionDataAPI”
+```
+```bash
+component execution data indexer initialization failed: could not verify checkpoint file: could not find expected root hash e6d4f4c755666c21d7456441b4d33d3521e5e030b3eae391295577e9130fd715 in checkpoint file which contains: [e10d3c53608a1f195b7969fbc06763285281f64595be491630a1e1bdfbe69161]
+```
+
+Access Node not fully synced
+
+The following log entry will occur when the EVM Gateway attempts to sync with the Access Node but it has not yet synced up to latest block
+```bash
+failure in event subscription at height ${INIT-CADENCE-HEIGHT}, with: recoverable: disconnected: error receiving event: rpc error: code = FailedPrecondition desc = could not get start height: failed to get lowest indexed height: index not initialized
+```
+
+## 9. Start all services
 
 Order of operations:
 
-1. `access-node`: ensure it's fully synced before proceeding
-3. `gateway`
+1. `access-node`: ensure it's fully synced in terms of block height before proceeding.
+    - Query to Flow block height through Flow CLI
+       ```bash
+       flow blocks get latest -n mainnet
+       ```
+    - Check block height on Flow [block explorer](https://www.flowscan.io/) or [testnet](https://testnet.flowscan.io/)
+2. `gateway`
 
 ```bash
 sudo systemctl daemon-reload
@@ -250,7 +545,7 @@ sudo systemctl restart access-node
 sudo systemctl restart gateway
 ```
 
-For access node, Compare the flow height explorer [mainnet](https://flowdiver.io/) [testnet](https://testnet.flowdiver.io/)
+Verify local Access Node has synced to latest block
 ```bash
 flow blocks get latest --host localhost:9000
 ```
@@ -259,8 +554,9 @@ For gateway
 ```bash
 curl -s -XPOST 'localhost:8545' --header 'Content-Type: application/json' --data-raw '{"jsonrpc":"2.0","method":"eth_blockNumber","params":[],"id":1}' | jq
 ```
+Verify block height compared to EVM [block explorer](https://evm.flowscan.io/) or [testnet](https://evm-testnet.flowscan.io/)
 
-## Check logs
+### Check logs
 
 ```bash
 # change log settings to persistent if not already
@@ -270,7 +566,7 @@ sudo systemctl restart systemd-journald
 journalctl -u access-node.service -f -n 100
 journalctl -u gateway.service -f -n 100
 ```
-Logs should look like
+Logs should look like this which means EVM Gateway is indexing the Access Node data
 ```bash
 {"level":"info","component":"ingestion","cadence-height":211179523,"cadence-event-length":1,"time":"2024-09-07T15:35:08Z","message":"received new cadence evm events"}
 {"level":"info","component":"ingestion","hash":"0xa3e86dbe8a454d7f84908fc3af5ea3e335f4ab33bce8127f43243eb987505020","evm-height":2853,"cadence-height":211179523,"cadence-id":"872cda9894505a8357daa493d45fa99d2632b8a36a556e013df01506c5f893da","parent-hash":"0xa9b37ac67550b5b96490270b49b78fca35ff701b92bf37a6b7f6193050681bf4","tx-hashes-root":"0x56e81f171bcc55a6ff8345e692c0f86e5b48e01b996cadc001622fb5e363b421","time":"2024-09-07T15:35:08Z","message":"new evm block executed event"}
