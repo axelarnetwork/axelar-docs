@@ -678,7 +678,7 @@
       "symbol": "YUM",
       "image": "/images/assets/yum.svg",
       "decimals": 18,
-      "transfer_fee": 5.0
+      "transfer_fee": 2.5
     },
     {
       "id": "unls",
@@ -889,6 +889,14 @@
       "image": "/images/assets/nftl.svg",
       "decimals": 18,
       "transfer_fee": 20.0
+    },
+    {
+      "id": "sepolia-weth-wei",
+      "name": "WETH - Wrapped Ether",
+      "symbol": "WETH",
+      "image": "/images/assets/weth.svg",
+      "decimals": 18,
+      "transfer_fee": 3e-05
     }
   ]
 }
