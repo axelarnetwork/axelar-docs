@@ -22,18 +22,22 @@ This guide presents you the Kava Node setup for both testnet and mainnet, as wel
 git clone https://github.com/Kava-Labs/kava
 cd kava
 ```
-
+<br/>
 <tabs>
 <tab-item title="Mainnet">
- <pre><code>git checkout [release tag]</code></pre>
+ ```bash
+ git checkout [release tag] 
+ ```
 
 </tab-item>
 <tab-item title="Testnet">
- <pre><code>git checkout [release tag]</code></pre>
+ ```bash
+ git checkout [release tag] 
+ ```
 
 </tab-item>
 </tabs>
-
+<br/>
 ```bash
 make install
 
@@ -47,15 +51,19 @@ kava version --long
 
 <tabs>
 <tab-item title="Mainnet">
- <pre><code>kava init [your_moniker_name] --chain-id kava_2222-10</code></pre>
+ ```bash
+ kava init [your_moniker_name] --chain-id kava_2222-10 
+ ```
 
 </tab-item>
 <tab-item title="Testnet">
- <pre><code>kava init [your_moniker_name] --chain-id kava_2221-16000</code></pre>
+ ```bash
+ kava init [your_moniker_name] --chain-id kava_2221-16000 
+ ```
 
 </tab-item>
 </tabs>
-
+<br/>
 ```bash
 kava tendermint unsafe-reset-all --home $HOME/.kava
 cd $HOME/.kava/config
@@ -66,11 +74,15 @@ rm genesis.json
 
 <tabs>
 <tab-item title="Mainnet">
- <pre><code>wget https://kava-genesis-files.s3.us-east-1.amazonaws.com/kava_2222-10/genesis.json</code></pre>
+ ```bash
+ wget https://kava-genesis-files.s3.us-east-1.amazonaws.com/kava_2222-10/genesis.json 
+ ```
 
 </tab-item>
 <tab-item title="Testnet">
- <pre><code>wget https://raw.githubusercontent.com/Kava-Labs/kava-testnets/master/16000/genesis.json</code></pre>
+ ```bash
+ wget https://raw.githubusercontent.com/Kava-Labs/kava-testnets/master/16000/genesis.json 
+ ```
 
 </tab-item>
 </tabs>
@@ -113,15 +125,19 @@ Create a state sync script `statesync.sh` with the following code and replace th
 
 <tabs>
 <tab-item title="Mainnet RPC">
- <pre><code>https://kava-mainnet.chainode.tech:443</code></pre>
+ ```bash
+ https://kava-mainnet.chainode.tech:443 
+ ```
 
 </tab-item>
 <tab-item title="Testnet RPC">
- <pre><code>https://kava-testnet.chainode.tech:443</code></pre>
+ ```bash
+ https://kava-testnet.chainode.tech:443 
+ ```
 
 </tab-item>
 </tabs>
-
+<br/>
 ```bash
 #!/bin/bash
 
