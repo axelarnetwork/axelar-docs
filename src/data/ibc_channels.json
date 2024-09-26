@@ -361,16 +361,6 @@
       "channel_id": "channel-122"
     },
     {
-      "from": "terra",
-      "to": "axelarnet",
-      "channel_id": "channel-6"
-    },
-    {
-      "from": "axelarnet",
-      "to": "terra",
-      "channel_id": "channel-11"
-    },
-    {
       "from": "terraclassic",
       "to": "axelarnet",
       "channel_id": "channel-19"

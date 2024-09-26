@@ -223,12 +223,6 @@
       "image": "/images/chains/teritori.svg"
     },
     {
-      "id": "terra",
-      "name": "Terra",
-      "network_id": "terra-2",
-      "image": "/images/chains/terra.svg"
-    },
-    {
       "id": "terraclassic",
       "name": "Terra Classic",
       "network_id": "terra",
