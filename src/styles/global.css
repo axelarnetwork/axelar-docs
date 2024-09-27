@@ -120,3 +120,18 @@
 .DocSearch-Button-Container span {
   display: none;
 }
+
+
+@media screen and (max-width: 1024px) {
+  .DocSearch-Button-Container:after {
+    display: none !important;
+  }
+  .DocSearch-Button-Keys{
+    display: none !important;
+  }
+  .DocSearch-Button{
+    background-color: transparent !important;
+    border: none !important;
+    padding: 0 !important;
+  }
+}

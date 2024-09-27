@@ -3,7 +3,7 @@ import { DocSearch } from "@docsearch/react";
 import "../../styles/global.css";
 const Search = () => {
   return (
-    <div className=" w-[15rem] xl:w-[18rem]">
+    <div className=" lg:w-[15rem] xl:w-[18rem]">
       <DocSearch
         appId="U6H58F6C6B"
         indexName="docs-axelar"
