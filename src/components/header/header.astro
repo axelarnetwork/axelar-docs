@@ -19,13 +19,15 @@ const nav = generateNavigation(docs);
 <header
   class="border-b text-foreground border-border bg-background-neutral sticky top-0 z-[11]"
 >
-  <nav class="flex container items-center w-full justify-between py-4 md:py-5">
+  <nav
+    class="flex container items-center w-full justify-between py-4 gap-6 md:py-5"
+  >
     <a href="/" class="flex items-center">
       <Logo />
     </a>
     <MobileNavigation client:load nav={nav} pathname={Astro.url.pathname} />
     <div
-      class="hidden lg:flex items-center tracking-wide gap-6 lg:gap-10 xl:gap-14 text-sm font-clash font-medium uppercase"
+      class="hidden lg:flex items-center tracking-wide gap-6 lg:gap-10 2xl:gap-14 text-sm font-clash font-medium uppercase"
     >
       {
         nav
