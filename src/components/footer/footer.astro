@@ -5,7 +5,7 @@ const socials = {
   twitter: "https://twitter.com/axelar_network",
   instagram: "https://t.me/axelarcommunity",
   discord: "https://discord.com/invite/axelar-network",
-  facebook: "https://github.com/axelarnetwork",
+  facebook: "https://twitter.com/axelar",
 };
 
 const links = [
@@ -86,6 +86,7 @@ const links = [
     <div class="flex flex-col gap-6">
       <div class="flex flex-col gap-3">
         <Logo
+          client:load
           className=" w-[140px] md:w-[170px] h-[30px] md:h-[40px] md:mt-[-5px]"
         />
         <p class="text-sm font-medium">
@@ -154,7 +155,7 @@ const links = [
         </a>
       </div>
     </div>
-    <div class="flex gap-6 md:gap-14">
+    <div class="grid grid-cols-2 md:flex gap-x-6 gap-y-10 md:gap-14">
       {
         links.map((link) => (
           <div class="flex flex-col gap-4">

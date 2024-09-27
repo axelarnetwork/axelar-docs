@@ -20,12 +20,12 @@ export const Callout = ({
       className={clsx(
         ` my-4 bg-background-neutral-dark  flex items-center gap-4 p-5 rounded-md border border-border `,
         type,
-        render === "md" ? "" : "not-prose",
+        // render === "md" ? "" : "not-prose",
       )}
     >
       <div className={clsx("hidden md:block")}>{emoji}</div>
       <div className="w-full">
-        <p className={"block md:hidden pb-3 "}>{emoji}</p>
+        <p className={"block md:hidden pb-3 my-0 "}>{emoji}</p>
         <div className={clsx(render === "md" ? "" : "[&>p]:my-0 ")}>
           {children}
         </div>

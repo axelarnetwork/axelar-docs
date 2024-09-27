@@ -45,11 +45,15 @@ sudo apt-get install docker.io
 
 <tabs>
 <tab-item title="Mainnet">
- <pre><code>export CELO_IMAGE=us.gcr.io/celo-org/geth:mainnet</code></pre>
+ ```bash
+ export CELO_IMAGE=us.gcr.io/celo-org/geth:mainnet 
+ ```
 
 </tab-item>
 <tab-item title="Alfajores Testnet">
- <pre><code>export CELO_IMAGE=us.gcr.io/celo-org/geth:alfajores</code></pre>
+ ```bash
+ export CELO_IMAGE=us.gcr.io/celo-org/geth:alfajores 
+ ```
 
 </tab-item>
 </tabs>
@@ -124,11 +128,15 @@ This command specifies the settings needed to run the node, and gets it started.
 
 <tabs>
 <tab-item title="Mainnet">
- <pre><code>docker run --name celo-fullnode -d --restart unless-stopped --stop-timeout 300 -p 8545:8545 -p 8546:8546 -p 30303:30303 -p 30303:30303/udp -v $CELO_DIR:/root/.celo $CELO_IMAGE --verbosity 3 --syncmode full --http --http.addr 0.0.0.0 --http.api eth,net,web3,debug,admin,personal --light.serve 90 --light.maxpeers 1000 --maxpeers 1100 --etherbase $CELO_ACCOUNT_ADDRESS --datadir /root/.celo</code></pre>
+ ```bash
+ docker run --name celo-fullnode -d --restart unless-stopped --stop-timeout 300 -p 8545:8545 -p 8546:8546 -p 30303:30303 -p 30303:30303/udp -v $CELO_DIR:/root/.celo $CELO_IMAGE --verbosity 3 --syncmode full --http --http.addr 0.0.0.0 --http.api eth,net,web3,debug,admin,personal --light.serve 90 --light.maxpeers 1000 --maxpeers 1100 --etherbase $CELO_ACCOUNT_ADDRESS --datadir /root/.celo 
+ ```
 
 </tab-item>
 <tab-item title="Alfajores Testnet">
- <pre><code>docker run --name celo-fullnode -d --restart unless-stopped --stop-timeout 300 -p 8545:8545 -p 8546:8546 -p 30303:30303 -p 30303:30303/udp -v $CELO_DIR:/root/.celo $CELO_IMAGE --verbosity 3 --syncmode full --http --http.addr 0.0.0.0 --http.api eth,net,web3,debug,admin,personal --light.serve 90 --light.maxpeers 1000 --maxpeers 1100 --etherbase $CELO_ACCOUNT_ADDRESS --alfajores --datadir /root/.celo</code></pre>
+ ```bash
+ docker run --name celo-fullnode -d --restart unless-stopped --stop-timeout 300 -p 8545:8545 -p 8546:8546 -p 30303:30303 -p 30303:30303/udp -v $CELO_DIR:/root/.celo $CELO_IMAGE --verbosity 3 --syncmode full --http --http.addr 0.0.0.0 --http.api eth,net,web3,debug,admin,personal --light.serve 90 --light.maxpeers 1000 --maxpeers 1100 --etherbase $CELO_ACCOUNT_ADDRESS --alfajores --datadir /root/.celo 
+ ```
 
 </tab-item>
 </tabs>
@@ -211,11 +219,15 @@ docker rm celo-fullnode
 
 <tabs>
 <tab-item title="Mainnet">
- <pre><code>docker run --name celo-fullnode -d --restart unless-stopped --stop-timeout 300 -p 8545:8545 -p 8546:8546 -p 30303:30303 -p 30303:30303/udp -v $CELO_DIR:/root/.celo $CELO_IMAGE --verbosity 3 --syncmode full --http --http.addr 0.0.0.0 --http.api eth,net,web3,debug,admin,personal --light.serve 90 --light.maxpeers 1000 --maxpeers 1100 --etherbase $CELO_ACCOUNT_ADDRESS --datadir /root/.celo</code></pre>
+ ```bash
+ docker run --name celo-fullnode -d --restart unless-stopped --stop-timeout 300 -p 8545:8545 -p 8546:8546 -p 30303:30303 -p 30303:30303/udp -v $CELO_DIR:/root/.celo $CELO_IMAGE --verbosity 3 --syncmode full --http --http.addr 0.0.0.0 --http.api eth,net,web3,debug,admin,personal --light.serve 90 --light.maxpeers 1000 --maxpeers 1100 --etherbase $CELO_ACCOUNT_ADDRESS --datadir /root/.celo 
+ ```
 
 </tab-item>
 <tab-item title="Alfajores Testnet">
- <pre><code>docker run --name celo-fullnode -d --restart unless-stopped --stop-timeout 300 -p 8545:8545 -p 8546:8546 -p 30303:30303 -p 30303:30303/udp -v $CELO_DIR:/root/.celo $CELO_IMAGE --verbosity 3 --syncmode full --http --http.addr 0.0.0.0 --http.api eth,net,web3,debug,admin,personal --light.serve 90 --light.maxpeers 1000 --maxpeers 1100 --etherbase $CELO_ACCOUNT_ADDRESS --alfajores --datadir /root/.celo</code></pre>
+ ```bash
+ docker run --name celo-fullnode -d --restart unless-stopped --stop-timeout 300 -p 8545:8545 -p 8546:8546 -p 30303:30303 -p 30303:30303/udp -v $CELO_DIR:/root/.celo $CELO_IMAGE --verbosity 3 --syncmode full --http --http.addr 0.0.0.0 --http.api eth,net,web3,debug,admin,personal --light.serve 90 --light.maxpeers 1000 --maxpeers 1100 --etherbase $CELO_ACCOUNT_ADDRESS --alfajores --datadir /root/.celo 
+ ```
 
 </tab-item>
 </tabs>

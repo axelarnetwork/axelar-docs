@@ -1,3 +1,4 @@
+import { externalLinks } from "@/layouts/navigation/external-links";
 import clsx from "clsx";
 import { ChevronDown, LayoutGrid } from "lucide-react";
 import React, { useEffect } from "react";
@@ -26,6 +27,9 @@ const RenderSidebar = ({
     >
       {currentNav?.length > 0 && (
         <Nav nav={currentNav} index={0} pathname={pathname} />
+      )}
+      {externalLinks?.[current] && (
+        <Nav nav={[externalLinks[current]]} index={0} pathname={pathname} />
       )}
       {otherNav?.length > 0 && (
         <Nav nav={otherNav} index={0} pathname={pathname} />
@@ -96,7 +100,7 @@ const Nav = ({
             <div key={index} className="mt-5">
               <div className="bg-gray mb-3 text-sm flex gap-2 items-center  px-2 py-1.5  rounded">
                 <LayoutGrid size={16} className="text-primary" />
-                <p>{item.title}</p>
+                <p>{item.title ?? item?.header}</p>
               </div>
               <Nav nav={item.children} index={index + 1} pathname={pathname} />
             </div>
@@ -111,7 +115,10 @@ const Nav = ({
         ) : (
           <a
             key={i}
-            href={`/${item.href}/`}
+            href={
+              item?.href?.startsWith("https://") ? item.href : `/${item.href}/`
+            }
+            target={item?.href?.startsWith("https://") ? "_blank" : "_self"}
             className={clsx(
               "text-sm p-1.5 hover:bg-gray rounded",
               pathname === `/${item.href}/` ? "bg-gray" : "",

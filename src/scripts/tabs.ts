@@ -21,7 +21,7 @@ export const addTabs = () => {
   const tabElements = document.getElementsByTagName("tabs");
 
   for (let tab of tabElements) {
-    tab.classList.add("not-prose");
+    tab.classList.add("prose-table:my-0");
   }
 
   for (let tab of tabElements) {
@@ -35,7 +35,7 @@ export const addTabs = () => {
     let titleBar = document.createElement("div");
     titleBar.classList.add("tab-bar");
     titleBar.innerHTML = `
-        <ul role="tablist" class="flex   list-none   ">
+        <ul role="tablist" class="flex my-0  list-none p-0  not-prose  ">
           ${convertedTabs
             .map(
               (tab, i) => `
@@ -58,11 +58,6 @@ export const addTabs = () => {
      */
     const applySavedChoice = () => {
       tabs = [...titleBar.querySelectorAll("button")];
-      console.log(
-        tabs.forEach((button) =>
-          console.log(button.innerText, localStorage["savedTabChoice"]),
-        ),
-      );
 
       currentIndex = tabs.indexOf(
         tabs.find(
@@ -70,27 +65,54 @@ export const addTabs = () => {
         ),
       );
       if (currentIndex === -1) {
-        console.error("tab not found");
         currentIndex = 0;
       }
     };
 
     const render = () => {
       applySavedChoice();
+      const wrapperClass = [
+        "border",
+        "p-5",
+        "bg-background-neutral-dark",
+        "rounded-b-lg",
+        "rounded-tr-lg",
+        "border-border",
+      ];
 
-      // Remove the active classes from all tabs
       [...titleBar.children[0].children].map((li) =>
         li.querySelector("button")?.classList.remove(...tabActiveClass),
       );
 
-      // Add active classes to the currently selected tab
       titleBar.children[0].children[currentIndex]
         .querySelector("button")
         ?.classList.add(...tabActiveClass);
 
-      // Hide all tab sections and show the currently selected one
       const sections = tab.getElementsByTagName("tab-item");
-      [...sections].map((section) => section.classList.add("hidden"));
+
+      [...sections].map((section) => {
+        section.classList.add("hidden");
+        const firstChild = section.firstElementChild;
+        // if (firstChild?.tagName.toLowerCase() === "table") {
+        //   return;
+        // }
+
+        let wrapperDiv = section.querySelector(".tab-item-content");
+
+        if (!wrapperDiv) {
+          wrapperDiv = document.createElement("div");
+          wrapperDiv.classList.add(...wrapperClass, "tab-item-content");
+
+          while (section.firstChild) {
+            wrapperDiv.appendChild(section.firstChild);
+          }
+
+          section.appendChild(wrapperDiv);
+        }
+
+        section.classList.add("hidden");
+      });
+
       sections[currentIndex].classList.remove("hidden");
     };
 

@@ -71,7 +71,7 @@ Replace `/mnt/my_volume/data` with the volume and/or data folder you want to use
 
 <tabs>
 <tab-item title="Mainnet">
-  <pre><code>
+
   ```Dockerfile
   version: '3'
   services:
@@ -109,11 +109,11 @@ Replace `/mnt/my_volume/data` with the volume and/or data folder you want to use
       - "--chain=polkadot"
       - "--sync=fast"
   ```
-  </code></pre>
+
 </tab-item>
 
 <tab-item title="Testnet">
-  <pre><code>
+
   ```Dockerfile
   version: '3'
   services:
@@ -151,7 +151,7 @@ Replace `/mnt/my_volume/data` with the volume and/or data folder you want to use
         - "--chain=/resources/westend-alphanet-raw-specs.json"
         - "--sync=fast"
   ```
-  </code></pre>
+
 </tab-item>
 </tabs>
 
@@ -175,7 +175,7 @@ chown -R centrifuge_service /var/lib/centrifuge-data
 
 <tabs>
 <tab-item title="Build your own (recommended)">
-     <pre><code>
+   
          ```bash
          # This dependencies install is only for Debian Distros:
          sudo apt-get install cmake pkg-config libssl-dev git clang libclang-dev protobuf-compiler
@@ -187,17 +187,17 @@ chown -R centrifuge_service /var/lib/centrifuge-data
          cargo build --release
          cp ./target/release/centrifuge-chain /var/lib/centrifuge-data
          ```
-    </code></pre>
+   
 </tab-item>
 
 <tab-item title="Extract from a docker image">
 Use `latest` for testent, or a specific release tag for mainbet binaries. Keep in mind that the retrieved binary is build for Linux.
-    <pre><code>
+  
         ```bash
         docker run --rm --name centrifuge-cp -d centrifugeio/centrifuge-chain:[INSERT_LATEST_RELEASE_HERE] --chain centrifuge
         docker cp centrifuge-cp:/usr/local/bin/centrifuge-chain /var/lib/centrifuge-data
         ```
-    </code></pre>
+   
 </tab-item>
 </tabs>
 
@@ -216,7 +216,7 @@ Change the `ports` based on your network setup.
 
 <tabs>
 <tab-item title="Mainnet">
-    <pre><code>
+  
     ```bash
     sudo tee <<EOF >/dev/null /etc/systemd/system/centrifuge.service
     [Unit]
@@ -256,7 +256,7 @@ Change the `ports` based on your network setup.
     WantedBy=multi-user.target
     EOF
     ```
-    </code></pre>
+   
 
 </tab-item>
 
@@ -264,18 +264,18 @@ Change the `ports` based on your network setup.
 
     You'll have to download the chain specs first:
 
-    <pre><code>
+  
     ```bash
     curl -O https://github.com/centrifuge/centrifuge-chain/blob/main/res/westend-alphanet-raw-specs.json
     mv westend-alphanet-raw-specs.json /var/lib/centrifuge-data/moonbean-dev-relay.json
     curl -O https://github.com/centrifuge/centrifuge-chain/blob/main/res/demo-spec-raw.json
     mv demo-spec-raw.json /var/lib/centrifuge-data/centrifuge-demo-raw.json
     ```
-    </code></pre>
+   
 
     Create systemd file now:
 
-    <pre><code>
+  
     ```bash
     sudo tee <<EOF >/dev/null /etc/systemd/system/centrifuge.service
     [Unit]
@@ -315,7 +315,7 @@ Change the `ports` based on your network setup.
     WantedBy=multi-user.target
     EOF
     ```
-    </code></pre>
+   
 
 </tab-item>
 </tabs>

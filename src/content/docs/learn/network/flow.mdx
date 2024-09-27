@@ -57,9 +57,22 @@ Once the cross-chain payload is marked as approved by the Axelar Gateway contrac
 
 Axelar creates and deploys a smart contract called the Gas Receiver to all connected EVM chains. (General Message Passing for Cosmos chains is currently under development and this may enable Gas-Receiver-like services to be deployed there, as well.) This Gas Receiver allows the user to pay for all transaction fees required throughout the entire journey of their cross-chain message in a one-time payment on the source chain, in the source chain's native token. The Gas Receiver estimates the total gas cost required across source chain, Axelar network and destination chain, and converts source-chain tokens (or any token Axelar supports) into AXL, destination-chain tokens and any other required currencies. For more details on this process, see the diagram below and read this [blog post](https://medium.com/@axelar-foundation/the-axl-token-the-cross-chain-future-3dee3dc45e95) providing a high-level description of the AXL token's uses and benefits.
 
-import FlowIllustration from './assets/flow-illustration.astro'
-
-<FlowIllustration />
+<object
+  type="image/svg+xml"
+  data="/images/assets/network-flow.svg"
+ 
+  class="hidden dark:block w-full max-w-[50rem] mx-auto py-6"
+>
+  Your browser does not support SVG
+</object>
+<object
+  type="image/svg+xml"
+  data="/images/assets/network-flow-light.svg"
+ 
+  class=" dark:hidden w-full max-w-[50rem] mx-auto py-6"
+>
+  Your browser does not support SVG
+</object>
 
 ## Monitoring and recovery
 

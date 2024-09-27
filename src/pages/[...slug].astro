@@ -5,11 +5,12 @@ import WorldMap from "@/components/ui/world-map.astro";
 import MainLayout from "@/layouts/MainLayout.astro";
 import generateToc from "@/lib/generateToc";
 import { findPrevAndNextPages } from "@/lib/nextPrevPages";
-import { generateNavigation } from "@/utils/generateNavigation";
+import { proseClasses } from "@/lib/prose-classes";
 import { getGithubEditUrl } from "@/scripts/github-edit";
+import { generateNavigation } from "@/utils/generateNavigation";
 import { getCollection } from "astro:content";
 import clsx from "clsx";
-import { LayoutGrid, Pen, PenLine } from "lucide-react";
+import { LayoutGrid, PenLine } from "lucide-react";
 export async function getStaticPaths() {
   const docs = await getCollection("docs");
 
@@ -31,17 +32,7 @@ const { Content, headings } = await doc.render();
   <div class="grid grid-cols-1 lg:grid-cols-12 bg-[#FFFFFF] dark:bg-background">
     <WorldMap className="lg:col-span-9 2xl:col-span-10 w-full flex-1 ">
       <div class="min-h-[90dvh] sub-container pb-20 py-20 flex flex-col gap-10">
-        <article
-          class={clsx([
-            "prose max-w-full dark:prose-headings:text-foreground prose-a:text-primary  text-foreground",
-            "prose-th:py-3 prose-table:table-auto prose-table:overflow-x-auto  prose-th:bg-background-neutral-dark prose-table:rounded-xl prose-table:overflow-hidden ",
-            "prose-th:px-4 prose-th:text-primary dark:prose-th:text-primary dark:prose-tr:border-t-border  prose-th:font-medium",
-            "prose-td:bg-background-neutral prose-td:px-3 prose-td:py-3 prose-td:border-t prose-td:border-border",
-            "dark:prose-code:text-white",
-            "prose-strong:text-foreground",
-            "prose-a:break-words",
-          ])}
-        >
+        <article class={clsx(proseClasses)}>
           <Content />
         </article>
         <a

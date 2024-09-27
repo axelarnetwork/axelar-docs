@@ -63,15 +63,19 @@ Checkout the correct release and build the daemon.
 
 <tabs>
 <tab-item title="Mainnet">
- <pre><code>git checkout releases;
+```bash
+git checkout releases;
 make clean all;
-sudo make install</code></pre>
+sudo make install
+```
 
 </tab-item>
 <tab-item title="Testnet">
- <pre><code>git checkout v1.20.3-hyperspace-nv21-rpc-p01;
+```bash
+git checkout v1.20.3-hyperspace-nv21-rpc-p01;
 make clean hyperspacenet;
-sudo make install</code></pre>
+sudo make install
+```
 
 </tab-item>
 </tabs>
@@ -84,11 +88,15 @@ Download the latest pruned snapshot.
 
 <tabs>
 <tab-item title="Mainnet">
- <pre><code>aria2c -x5 https://forest-archive.chainsafe.dev/latest/mainnet/</code></pre>
+```bash
+aria2c -x5 https://forest-archive.chainsafe.dev/latest/mainnet/
+```
 
 </tab-item>
 <tab-item title="Testnet">
- <pre><code>aria2c -x5 https://forest-archive.chainsafe.dev/latest/calibnet/</code></pre>
+```bash
+aria2c -x5 https://forest-archive.chainsafe.dev/latest/calibnet/
+```
 
 </tab-item>
 </tabs>

@@ -16,25 +16,37 @@ export interface Navigation {
 function slugToTitle(slug: string): string {
   return slug
 
-    .replace(/[-_]/g, " ")
+    ?.replace(/[-_]/g, " ")
 
-    .replace(/\b\w/g, (char) => char.toUpperCase());
+    ?.replace(/\b\w/g, (char) => char.toUpperCase());
 }
 const generateNav = (docs: CollectionEntry<"docs">[], level: number) => {
   const topLevel = new Set();
 
   docs.forEach((doc) => {
-    topLevel.add(doc.slug.split("/")[level]);
+    topLevel.add(
+      doc?.id?.includes("index.")
+        ? doc.id.split("/")[level]
+        : doc.slug.split("/")[level],
+    );
   });
 
   return [...topLevel].map((slug) => {
-    const doc = docs?.find((doc) => doc.slug.split("/")[level] === slug);
-    const isLastLevel = doc?.slug.split("/").length === level + 1;
+    const doc = docs?.find(
+      (doc) =>
+        doc.slug.split("/")[level] === slug ||
+        doc.id.split("/")[level] === slug,
+    );
+
+    const isLastLevel =
+      doc?.slug.split("/").length === level + 1 ||
+      doc?.id.split("/").length === level + 1;
     const currentSlug = doc?.slug
       ?.split("/")
       ?.slice(0, level + 1)
       ?.join("/");
     const slugStr = slug as string;
+
     if (!isLastLevel) {
       return {
         title: slugToTitle(slugStr),
@@ -49,7 +61,11 @@ const generateNav = (docs: CollectionEntry<"docs">[], level: number) => {
       };
     } else {
       return {
-        title: slugToTitle(doc?.data?.title || doc?.slug?.split("/")[level]),
+        title: slugToTitle(
+          doc?.data?.title ||
+            doc?.slug?.split("/")[level] ||
+            doc?.id?.split("/")[level - 1],
+        ),
         href: doc?.slug,
         doc: doc,
         file: doc?.slug?.split("/")[level],
@@ -105,5 +121,10 @@ const generateSortedNav = (
 export const generateNavigation: {
   (docs: CollectionEntry<"docs">[]): Navigation[];
 } = (docs: CollectionEntry<"docs">[]) => {
+  console.log(
+    "docs",
+    generateSortedNav(generateNav(docs, 0), sortedNavigation as any)[4],
+  );
+
   return generateSortedNav(generateNav(docs, 0), sortedNavigation as any);
 };
