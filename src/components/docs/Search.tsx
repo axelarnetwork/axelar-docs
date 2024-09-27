@@ -10,7 +10,7 @@ const Search = () => {
         apiKey="3f14cd2d84865f2f3cc66911d3dba8ed"
         hitComponent={({ hit, children }) => (
           <a
-            href={hit.url.replace("https://akash.network", "")}
+            href={hit.url.replace("https://docs.axelar.dev", "")}
             className="block"
           >
             {children}
