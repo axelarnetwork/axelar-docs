@@ -1,0 +1,94 @@
+# Friction Log Overhaul
+
+## Intro Page
+
+1. AxelarGMPRecoveryAPI should be Transaction Recovery API
+2. Missing Axelar Gateway
+
+## Navbar
+
+1. The items in the navbar do not match the items in the intro page by name. They clearly overlap but should match in name
+2. Missing Axelar Gateway
+
+## Deposit Addr
+
+1. Title should match name Token Transfer via Deposit Address
+2. Warning (important note) is right in the middle of a list breaks up the flow of reader
+3. Prereqs that first prereq is a recco not actually a requirement
+4. IMO everything up till "3. Import & instantiate the AxelarAssetTransfer" can be extrapolated into a different page.
+5. `getTransferFee()` vs. `estimateGasFee()`?
+6. transferFee vs gasFee?
+7. "greater than the cross-chain relayer gas fee." -> Link the `cross-chain` relayer fee
+8. GetDepositAddressParams -> the `options` param is missing some options
+9. `fromChain` should be `requestParamsOrFromChain`
+10. This code is missing the `const` keyword. It's also inconsistently commented. Also unclear where `CHAINS` comes from.
+    ```
+    const fromChain = CHAINS.TESTNET.OSMOSIS,
+    toChain = CHAINS.TESTNET.AVALANCHE,
+    destinationAddress = "0xF16DfB26e1FEc993E085092563ECFAEaDa7eD7fD",
+    asset = "uausdc";  // denom of asset. See note (2) below
+    ```
+11. "on blockchain" should be on a blockchain
+12. Notes section is a bit of a block of text can be good to break it up. Ideally no notes section we should just embed those points in relevant spots.
+
+### Missing functionality for Deposit Addr
+
+1. `getOfflineDepositAddressForERC20Transfer()` -> TODO figure out what this does
+2. `sendToken()` -> TODO confirm what's unique about this send token compared to other functionalities that seem to have similar functionality
+3. `sendTokenFromEvmChain()` -> TODO confirm whats unique compared to `sendToken()`^
+4. `sendTokenFromCosmosChain()` -> TODO confirm whats unique compared to `sendToken()`^
+5. `populateUnsignedTx()` -> TODO figure out what this does
+
+## Query and recover GMP transactions
+
+1. The "AxelarGMPRecoveryAPI" should be called "TransactionRecoveryAPI" (as is defined in the code)
+2. General Message Passing (GMP) should link to GMP blog
+3. `queryTransactionStatus()` passing in one param when it accepts to (at least address the optional param in the explanation)
+4. `GMPStatusResponse` object is missing a bunch of params in the docs.
+5. `GMPStatus` enum is missing a bunch of params in the docs
+6. Provider in the code example is using goerli
+7. `manualRelayToDestChain()` has no explanation and is missing a bunch of params in the code sample where it's referenced.
+8. `ApproveGatewayResponse` should be `GMPRecoveryResponse`. It also missing some params in th eobject
+9. `execute()` missing 3rd param
+10. `AddGasOptions` is missing params
+    - I like how it does have explanation for each param though which the other objects we reference does not have.
+11. `addNativeGas()` missing a param
+12. ERC20 Gas payment. This is out of date we do not accept this anymore.(at least not on evm chains)
+
+### Missing functionality for GMPRecoveryAPI
+
+1. `getCidFromSrcTxHash`()
+2. `doesTxMeetConfirmHt()`
+3. `isEVMEventFailed()` -> TODO confirm what this does
+4. `isEVMEventConfirmed()`
+5. `isEVMEventCompleted()`
+6. `getEvmEvent()` -> Which event?
+7. `findEventAndConfirmIfNeeded()`-> Which event? confirm what? finality?
+8. `findBatchAndSignIfNeeded()` -> Which batch?
+9. `findBatchAndApproveGateway()` -> Which batch?
+10. `isExecuted()`
+11. `isConfirmed()`
+12. `calculateNativeGasFee()`
+13. `getEventIndex()`
+
+## Axelar Gateway
+- This page is completely undocumented
+- None of the functionality is public will need to test if it is callable.
+
+## Axelar Query
+
+1. `estimateGasFee()` explanation is a bit wordy. Also function sig can be in a much better spot (before explanation of return interface)
+2. No explanation for `TransferFeeResponse`
+3. No explanation for `FeeInfoResponse`
+
+### Missing functionality
+1. `getEVMEvent()`
+2. `getConfirmationHeight()`
+3. `getGasInfo()`
+4. `getNativeGasBaseFee()`
+5. `calculateL1FeeForDestL2()`
+6. `getAssetConfigFromDenom()`
+7. `getContractAddressFromConfig()`
+8. `getActiveChains()`
+9. `isChainActive()`
+10. `getTransferLimit()`
