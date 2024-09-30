@@ -66,7 +66,7 @@ const TableOfContents = ({ toc = [], labels }: Props) => {
       <li>
         <a
           className={clsx(
-            "flex items-center text-sm leading-[24px]   ",
+            "flex items-center text-sm leading-[24px]  relative  ",
             `depth-${depth}`,
             {
               "font-medium": depth === 2,

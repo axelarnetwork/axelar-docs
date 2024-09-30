@@ -121,7 +121,7 @@ const Nav = ({
             target={item?.href?.startsWith("https://") ? "_blank" : "_self"}
             className={clsx(
               "text-sm p-1.5 hover:bg-gray rounded",
-              pathname === `/${item.href}/` ? "bg-gray" : "",
+              pathname === `/${item.href}/` ? "text-primary" : "",
             )}
           >
             {item.title}

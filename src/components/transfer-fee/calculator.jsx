@@ -102,7 +102,11 @@ export default ({ environment = "mainnet" }) => {
         </div>
       </div>
 
-      <div className="flex items-center text-white justify-between bg-primary rounded-full py-2 mt-10 px-4">
+      <div className="flex items-center text-white relative justify-between bg-primary hover:rounded-xl transition-all rounded-[60px] py-2 mt-10 px-4">
+        <div class="absolute left-0 top-0 size-[3px] rounded-full bg-black dark:bg-white"></div>
+        <div class="absolute left-0 bottom-0 size-[3px] rounded-full bg-black dark:bg-white"></div>
+        <div class="absolute right-0 top-0 size-[3px] rounded-full bg-black dark:bg-white"></div>
+        <div class="absolute right-0 bottom-0 size-[3px] rounded-full bg-black dark:bg-white" />
         <span className=" font-bold">Total</span>
         <span className="text-lg font-bold">
           {totalFee} {assetData?.symbol}

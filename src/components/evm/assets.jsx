@@ -83,7 +83,7 @@ export default ({ environment = "mainnet" }) => {
         />
       </div>
       <div className="asset-table">
-        <table className="max-w-fit  block shadow rounded-lg overflow-x-auto">
+        <table className="max-w-fit  block shadow rounded-lg overflow-x-auto sidebar-scroll">
           <thead className="bg-background-neutral-dark uppercase text-xs">
             <tr className="border-none">
               {COLUMNS.map((c, i) => (

@@ -73,7 +73,7 @@ const MobileNavigation = ({
           </div>
         </div>
         <div>
-          <div className="px-4 md:px-8 flex flex-col gap-4 border-b border-border mb-3 pb-8">
+          <div className="px-4 md:px-8 flex flex-col gap-1 border-b border-border mb-3 pb-8">
             {nav
               ?.filter(
                 (item) =>
