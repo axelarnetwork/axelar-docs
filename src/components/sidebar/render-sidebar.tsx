@@ -1,4 +1,4 @@
-import { externalLinks } from "@/layouts/navigation/external-links";
+import { externalLinks } from "@/content/_navigation/external-links";
 import clsx from "clsx";
 import { ChevronDown, LayoutGrid } from "lucide-react";
 import React, { useEffect } from "react";

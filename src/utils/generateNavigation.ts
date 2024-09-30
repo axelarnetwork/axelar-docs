@@ -1,4 +1,4 @@
-import { sortedNavigation } from "@/layouts/navigation/navigation";
+import { sortedNavigation } from "@/content/_navigation/navigation";
 import type { CollectionEntry } from "astro:content";
 
 export const permanentNav = ["learn", "resources"];
