@@ -14,4 +14,10 @@ export const sortedNavigation = [
 
 export const mainNav = ["dev", "validator", "node"];
 export const hideNav = ["controller"];
-export const hideLinksFromSidebar = ["/learn/intro/"];
+export const hideLinksFromSidebar = [
+  "/learn/intro/",
+  "/node/join-old/",
+  "/validator/external-chains/aurora/",
+  "/validator/external-chains/hero/",
+  "/validator/external-chains/polygon-zkevm/",
+];
