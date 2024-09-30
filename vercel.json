@@ -6,6 +6,10 @@
       "source": "/dev/amplifier/chain-integration/relay-messages/",
       "destination": "/dev/amplifier/chain-integration/relay-messages/manual/",
       "permanent": true
+    },{
+      "source": "/learn/network/flow/",
+      "destination": "/learn/flow/",
+      "permanent": true
     },
     {
       "source": "/dev/send-tokens/interchain-tokens/rate-limit/",

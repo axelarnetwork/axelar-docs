@@ -11,3 +11,7 @@ export const sortedNavigation = [
   resources,
   learnmore,
 ];
+
+export const mainNav = ["dev", "validator", "node"];
+export const hideNav = ["controller"];
+export const hideLinksFromSidebar = ["/learn/intro/"];
