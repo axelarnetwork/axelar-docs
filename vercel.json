@@ -548,6 +548,21 @@
       "source": "/dev/cosmos-gmp",
       "destination": "/dev/cosmos-gmp/overview/",
       "permanent": true
+    },
+    {
+      "source": "/resources/mainnet/upgrades/:slug/",
+      "destination": "/resources/upgrades/mainnet/:slug/",
+      "permanent": true
+    },
+    {
+      "source": "/resources/testnet/upgrades/:slug/",
+      "destination": "/resources/upgrades/testnet/:slug/",
+      "permanent": true
+    },
+    {
+      "source": "/dev/amplifier/chain-integration/introduction/",
+      "destination": "/dev/amplifier/intergration-overview/",
+      "permanent": true
     }
   ]
 }
