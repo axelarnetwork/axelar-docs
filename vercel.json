@@ -563,6 +563,42 @@
       "source": "/dev/amplifier/chain-integration/introduction/",
       "destination": "/dev/amplifier/intergration-overview/",
       "permanent": true
+    },
+    {
+      "source": "/dev/amplifier/chain-integration/integrate-a-chain/",
+      "destination": "/dev/amplifier/integrate-a-chain/",
+      "permanent": true
+    },
+    {
+      "source": "/dev/amplifier/chain-integration/governance-proposals/",
+      "destination": "/dev/amplifier/integrate-a-chain/",
+      "permanent": true
+    },
+    
+    {
+      "source": "/dev/amplifier/chain-integration/integrate-a-chain/",
+      "destination": "/dev/amplifier/integrate-a-chain/",
+      "permanent": true
+    },
+    {
+      "source": "/dev/amplifier/chain-integration/governance-proposals/",
+      "destination": "/dev/amplifier/governance-proposals/",
+      "permanent": true
+    },
+    {
+      "source": "/dev/amplifier/chain-integration/relay-messages/automatic/",
+      "destination": "/dev/amplifier/relay-messages/automatic/",
+      "permanent": true
+    },
+    {
+      "source": "/dev/amplifier/chain-integration/relay-messages/manual/",
+      "destination": "/dev/amplifier/relay-messages/manual/",
+      "permanent": true
+    },
+    {
+      "source": "/dev/amplifier/error-messages/",
+      "destination": "/dev/amplifier/chain-integration/error-messages/",
+      "permanent": true
     }
   ]
 }

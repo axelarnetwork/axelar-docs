@@ -297,24 +297,31 @@ export const developer = {
           file: "introduction",
         },
         {
-          title: "Roadmap",
-          file: "roadmap",
-        },
-        {
           title: "Integration Overview",
-          file: "chain-integration/introduction",
+          file: "intergration-overview",
         },
         {
           title: "Integrate a Chain",
-          file: "chain-integration/integrate-a-chain",
+          file: "integrate-a-chain",
         },
         {
           title: "Governance Proposals",
-          file: "chain-integration/governance-proposals",
+          file: "governance-proposals",
         },
+
         {
           title: "Relay Messages",
-          file: "chain-integration/relay-messages",
+          file: "relay-messages",
+          children: [
+            {
+              title: "Automatic Relaying",
+              file: "automatic",
+            },
+            {
+              title: "Manual Relaying",
+              file: "manual",
+            },
+          ],
         },
         {
           title: "Add Rewards",
@@ -326,11 +333,15 @@ export const developer = {
         },
         {
           title: "Common Error Messages",
-          file: "chain-integration/error-messages",
+          file: "error-messages",
         },
         {
           title: "Chain RPC Setup",
           file: "chains/soroban",
+        },
+        {
+          title: "Roadmap",
+          file: "roadmap",
         },
       ],
     },

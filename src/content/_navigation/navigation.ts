@@ -20,4 +20,5 @@ export const hideLinksFromSidebar = [
   "/validator/external-chains/aurora/",
   "/validator/external-chains/hero/",
   "/validator/external-chains/polygon-zkevm/",
+  "/dev/amplifier/relay-messages/",
 ];

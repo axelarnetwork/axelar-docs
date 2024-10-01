@@ -2,6 +2,9 @@
 
 - [Axelar Docs](#axelar-docs)
   - [Updating Navigation](#updating-navigation)
+    - [How to Update Each Top-Level Navigation Item (e.g., "Developers")](#how-to-update-each-top-level-navigation-item-eg-developers)
+    - [How to hide a navigation link from the docs](#how-to-hide-a-navigation-link-from-the-docs)
+    - [How to hide top level navigation items](#how-to-hide-top-level-navigation-items)
   - [How to Contribute to the Docs](#how-to-contribute-to-the-docs)
     - [Here's what you need to know to contribute to the Axelar documentation:](#heres-what-you-need-to-know-to-contribute-to-the-axelar-documentation)
   - [Short links](#short-links)
@@ -20,7 +23,48 @@ And visit `localhost:3000` to preview your changes.
 
 ## Updating Navigation
 
-Site navigation is generated in TypeScript based on the section the user is currently browsing in. The navigation layout is managed in [`src/layouts/navigation.ts`](https://github.com/axelarnetwork/axelar-docs/blob/main/src/layouts/navigation.ts), with pages represented as a `title` and `href` in one of the `children` arrays. The site supports up to 3 levels of nested navigation, with the top level acting as navigation header. Each subsequent level is visually tabbed beneath its parent.
+Site navigation is generated in TypeScript based on the section the user is currently browsing in. The navigation layout is managed in [`src/content/_navigation/navigation.ts`](https://github.com/axelarnetwork/axelar-docs/blob/main/src/content/_navigation/navigation.ts), with pages represented as a `title` and `href` in one of the `children` arrays.
+
+### How to Update Each Top-Level Navigation Item (e.g., "Developers")
+
+1. Locate the Navigation Configuration File:
+
+   - `src/content/_navigation/developers.ts`
+   - `src/content/_navigation/learnmore.ts`
+   - `src/content/_navigation/node-operators.ts`
+   - `src/content/_navigation/resources.ts`
+   - `src/content/_navigation/validators.ts`
+
+2. Update the Navigation Configuration File.
+
+   eg:
+
+   ```typescript
+    {
+          title: "Relay Messages",
+          file: "relay-messages",
+          children: [
+            {
+              title: "Automatic Relaying",
+              file: "automatic",
+            },
+            {
+              title: "Manual Relaying",
+              file: "manual",
+            },
+          ],
+        },
+   ```
+
+3. Ensure that the file attribute points to either the file or folder that corresponds to the navigation item.
+
+### How to hide a navigation link from the docs
+
+To hide a link from the docs, add it to the `hideLinksFromSidebar` array in `src/content/_navigation/navigation.ts`.
+
+### How to hide top level navigation items
+
+To hide a top level navigation item, add it to the `hideNav` array in `src/content/_navigation/navigation.ts`.
 
 ## How to Contribute to the Docs
 
