@@ -525,6 +525,7 @@ export const getNavigation = (section) => {
         children: [
           { title: "RPC Endpoints", href: "/resources/rpc/resources/" },
           { title: "Free Public RPC", href: "/resources/rpc/lava-iprpc/" },
+          { title: "REST Interface", href: "https://axelar.lava.build/" },
         ],
       },
       {

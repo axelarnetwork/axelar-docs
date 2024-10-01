@@ -47,6 +47,13 @@ export const resources = {
         { title: "Add Network to Keplr Wallet", file: "keplr" },
       ],
     },
+    {
+      file: "upgrades",
+      children: [
+        { title: "Mainnet axelard", file: "mainnet" },
+        { title: "Testnet axelard", file: "testnet" },
+      ],
+    },
 
     {
       title: "Community Pool Proposals",
