@@ -5,7 +5,7 @@ export const getNavigation = (section) => {
       header: "Developers",
       children: [
         {
-          title: "Introduction",
+          title: "Product Overview",
           href: "/dev/intro/",
         },
         {
@@ -93,6 +93,44 @@ export const getNavigation = (section) => {
               title: "Send Messages with Tokens",
               href: "/dev/general-message-passing/gmp-tokens-with-messages/",
             },
+
+            {
+              title: "Gas Service",
+              children: [
+                {
+                  title: "Introduction",
+                  href: "/dev/gas-service/intro/",
+                },
+                {
+                  title: "Estimate and Pay Gas",
+                  href: "/dev/gas-service/pay-gas/",
+                },
+                {
+                  title: "Increase Gas",
+                  href: "/dev/gas-service/increase-gas/",
+                },
+                {
+                  title: "Refund Gas",
+                  href: "/dev/gas-service/refund/",
+                },
+                {
+                  title: "Specify Gas Refund Address",
+                  href: "/dev/gas-service/specify-gas-refund-address/",
+                },
+                {
+                  title: "Transaction States",
+                  href: "/dev/gas-service/transaction-state",
+                },
+                {
+                  title: "Transaction Pricing",
+                  href: "/dev/gas-service/pricing/",
+                },
+                {
+                  title: "On-Chain Estimation",
+                  href: "/dev/gas-service/on-chain-estimation/",
+                },
+              ],
+            },
             {
               title: "Monitor Transaction State",
               href: "/dev/general-message-passing/monitoring/",
@@ -147,46 +185,25 @@ export const getNavigation = (section) => {
               title: "Express Service",
               href: "/dev/general-message-passing/express/",
             },
-          ],
-        },
-        {
-          title: "EVM Relayer",
-          href: "/dev/evm-relayer/",
-        },
-        {
-          title: "Gas Service",
-          children: [
             {
-              title: "Introduction",
-              href: "/dev/gas-service/intro/",
+              title: "EVM Relayer",
+              href: "/dev/evm-relayer/",
             },
+
             {
-              title: "Estimate and Pay Gas",
-              href: "/dev/gas-service/pay-gas/",
-            },
-            {
-              title: "Increase Gas",
-              href: "/dev/gas-service/increase-gas/",
-            },
-            {
-              title: "Refund Gas",
-              href: "/dev/gas-service/refund/",
-            },
-            {
-              title: "Specify Gas Refund Address",
-              href: "/dev/gas-service/specify-gas-refund-address/",
-            },
-            {
-              title: "Transaction States",
-              href: "/dev/gas-service/transaction-state",
-            },
-            {
-              title: "Transaction Pricing",
-              href: "/dev/gas-service/pricing/",
-            },
-            {
-              title: "On-Chain Estimation",
-              href: "/dev/gas-service/on-chain-estimation/",
+              title: "Cosmos GMP",
+              children: [
+                { title: "Introduction", href: "/dev/cosmos-gmp/overview/" },
+                {
+                  title: "Developer Guides",
+                  children: [
+                    {
+                      title: "Cross-Chain Messaging: EVM to Cosmos",
+                      href: "/dev/cosmos-gmp/developer-guides/cross-chain-messaging-evm-to-cosmos/",
+                    },
+                  ],
+                },
+              ],
             },
           ],
         },
@@ -205,21 +222,6 @@ export const getNavigation = (section) => {
             {
               title: "Axelar Query API",
               href: "/dev/axelarjs-sdk/axelar-query-api/",
-            },
-          ],
-        },
-        {
-          title: "Cosmos GMP",
-          children: [
-            { title: "Introduction", href: "/dev/cosmos-gmp/overview/" },
-            {
-              title: "Developer Guides",
-              children: [
-                {
-                  title: "Cross-Chain Messaging: EVM to Cosmos",
-                  href: "/dev/cosmos-gmp/developer-guides/cross-chain-messaging-evm-to-cosmos/",
-                },
-              ],
             },
           ],
         },
