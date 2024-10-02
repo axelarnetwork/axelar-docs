@@ -18,9 +18,8 @@ export const Callout = ({
   return (
     <div
       className={clsx(
-        ` my-4 bg-background-neutral-dark  flex items-center gap-4 p-5 rounded-md border border-border `,
+        `overflow-hidden  my-4 bg-background-neutral-dark  flex items-center gap-4 p-5 rounded-md border border-border `,
         type,
-        // render === "md" ? "" : "not-prose",
       )}
     >
       <div className={clsx("hidden md:block")}>{emoji}</div>

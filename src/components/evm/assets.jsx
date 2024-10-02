@@ -177,7 +177,7 @@ export default ({ environment = "mainnet" }) => {
                               href={`${explorer_url}/address/${address}`}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="no-underline text-blue-500 dark:text-white font-medium"
+                              className="no-underline text-primary hover:underline font-medium"
                             >
                               {ellipse(address, 16)}
                             </a>
