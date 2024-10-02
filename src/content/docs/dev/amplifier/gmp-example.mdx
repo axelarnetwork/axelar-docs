@@ -8,7 +8,7 @@ You will need:
 
 - A [funded wallet](https://docs.axelar.dev/dev/amplifier/chain-integration/integrate-a-chain/#make-sure-you-have-a-funded-wallet) on `devnet-amplifier`
 - A [Solidity contract](https://github.com/cjcobb23/axelar-examples/blob/main/examples/evm/call-contract/CallContract.sol) deployed to the Ethereum Sepolia and Avalanche Fuji testnets
-  - We use a [sample contract](https://gist.github.com/StephenFluin/9379a9fc202d54854fd74f42bcac3178) throughout this demo
+  - We use a [sample contract](https://github.com/axelarnetwork/axelar-examples/blob/main/examples/evm/call-contract/CallContract.sol) throughout this demo
 
 ## Helpful references
 
@@ -19,7 +19,7 @@ You will need:
 
 ### Execute the contract call on the source chain
 
-Use `callContract()` to execute the contract call on Ethereum Sepolia, then locate the `ContractCall` event in the transaction details on [Axelarscan](https://testnet.axelarscan.io/), which should look something like [this](https://sepolia.etherscan.io/tx/0xe279af3b1faa222d274c3f6c30bee5f86c5faf0199d277a3aa8c36071219af4c). Note the transaction hash and log index.
+Use `callContract()` to execute the contract call on Ethereum Sepolia, then locate the `ContractCall` event in the transaction details on [Axelarscan](https://devnet-amplifier.axelarscan.io/), which should look something like [this](https://devnet-amplifier.axelarscan.io/gmp/0x7bf03d8fc010f28de8689a24f12a515b7968ea1dc139ed4e7520acfc22f4a0e4-1). Note the transaction hash and log index.
 
 ### Verify messages at the source chain gateway
 
