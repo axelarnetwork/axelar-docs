@@ -83,7 +83,7 @@ export default ({ environment = "mainnet" }) => {
         />
       </div>
       <div className="asset-table">
-        <table className="max-w-fit  block shadow rounded-lg overflow-x-auto">
+        <table className="max-w-fit  block shadow rounded-lg overflow-x-auto sidebar-scroll">
           <thead className="bg-background-neutral-dark uppercase text-xs">
             <tr className="border-none">
               {COLUMNS.map((c, i) => (
@@ -177,7 +177,7 @@ export default ({ environment = "mainnet" }) => {
                               href={`${explorer_url}/address/${address}`}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="no-underline text-blue-500 dark:text-white font-medium"
+                              className="no-underline text-primary hover:underline font-medium"
                             >
                               {ellipse(address, 16)}
                             </a>

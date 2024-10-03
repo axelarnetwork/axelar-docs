@@ -1,6 +1,6 @@
 export const validators = {
   header: "Validators",
-  file: "validators",
+  file: "validator",
   children: [
     {
       title: "Setup",
@@ -124,6 +124,10 @@ export const validators = {
         {
           title: "Scroll",
           file: "scroll",
+        },
+        {
+          title: "Soroban",
+          file: "soroban",
         },
         {
           title: "Sui",

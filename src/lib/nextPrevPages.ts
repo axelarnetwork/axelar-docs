@@ -1,3 +1,7 @@
+import {
+  hideLinksFromSidebar,
+  hideNav,
+} from "@/content/_navigation/navigation";
 import type { Navigation } from "@/utils/generateNavigation";
 
 export function findPrevAndNextPages(nav: Navigation[], pathname: string) {
@@ -5,9 +9,14 @@ export function findPrevAndNextPages(nav: Navigation[], pathname: string) {
 
   function flattenNav(nav: Navigation[]) {
     nav.forEach((item) => {
-      allItems.push(item);
-      if (item.children && item.children.length > 0) {
-        flattenNav(item.children);
+      if (
+        !hideLinksFromSidebar.includes(`/${item.href}/`) &&
+        !hideNav.includes(item?.href?.split("/")[0] ?? "")
+      ) {
+        allItems.push(item);
+        if (item.children && item.children.length > 0) {
+          flattenNav(item.children);
+        }
       }
     });
   }
@@ -16,11 +25,6 @@ export function findPrevAndNextPages(nav: Navigation[], pathname: string) {
 
   const currentIndex = allItems.findIndex(
     (item) => `/${item.href}/` === `${pathname}`,
-  );
-  console.log(
-    currentIndex,
-    pathname,
-    allItems?.filter((item) => item.href),
   );
 
   const prevIndex = currentIndex - 1;

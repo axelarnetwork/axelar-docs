@@ -42,22 +42,24 @@ export const resources = {
       title: "Misc",
       file: "misc",
       children: [
-        { title: "Satellite", href: "/resources/satellite/" },
-        { title: "MetaMask", href: "/resources/metamask/" },
-        { title: "Add Network to Keplr Wallet", href: "/resources/keplr/" },
+        { title: "Satellite", file: "satellite" },
+        { title: "MetaMask", file: "metamask" },
+        { title: "Add Network to Keplr Wallet", file: "keplr" },
+      ],
+    },
+    {
+      file: "upgrades",
+      children: [
+        { title: "Mainnet axelard", file: "mainnet" },
+        { title: "Testnet axelard", file: "testnet" },
       ],
     },
 
     {
-      title: "Community",
-      file: "community",
-      children: [
-        {
-          title: "Community Pool Proposals",
-          file: "community-pool-proposals",
-        },
-      ],
+      title: "Community Pool Proposals",
+      file: "community-pool-proposals",
     },
+
     {
       title: "Onboard Your IBC chain",
       file: "ibc-chain-onboarding",

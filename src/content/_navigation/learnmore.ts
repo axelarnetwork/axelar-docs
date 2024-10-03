@@ -4,7 +4,7 @@ export const learnmore = {
   children: [
     {
       title: "Crosschain Message Flow",
-      file: "network-flow",
+      file: "flow",
     },
     {
       title: "axlUSDC",
@@ -28,11 +28,11 @@ export const learnmore = {
       children: [
         {
           title: "Introduction",
-          file: "cli-introduction",
+          file: "cli",
         },
         {
           title: "Reference",
-          file: "cli-reference",
+          file: "reference",
         },
         {
           title: "Send UST to an EVM chain",

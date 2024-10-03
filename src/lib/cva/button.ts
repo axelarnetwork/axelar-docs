@@ -1,12 +1,21 @@
 import { cva } from "class-variance-authority";
 
+export type variants = "primary" | "outline" | "secondary";
+
 export const buttonCva = cva(
   " relative rounded-[60px] hover:rounded-xl    transition-all   duration-500 ease-in-out font-clash",
   {
     variants: {
       intent: {
         primary: ["bg-primary", "text-white", "border-transparent", ""],
-
+        outline: [
+          "border",
+          "text-foreground",
+          "border-foreground",
+          "hover:bg-primary",
+          "hover:text-white",
+          "hover:border-primary",
+        ],
         secondary: [
           "bg-white",
           "text-gray-800",
@@ -15,7 +24,7 @@ export const buttonCva = cva(
         ],
       },
       size: {
-        small: ["text-sm", "py-1", "px-2"],
+        small: ["text-sm", "py-1.5", "px-4"],
         medium: "px-16 py-2.5 text-sm ",
       },
     },

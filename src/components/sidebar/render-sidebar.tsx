@@ -1,9 +1,14 @@
-import { externalLinks } from "@/layouts/navigation/external-links";
+import { externalLinks } from "@/content/_navigation/external-links";
+import {
+  hideLinksFromSidebar,
+  hideNav,
+  mainNav,
+} from "@/content/_navigation/navigation";
 import clsx from "clsx";
 import { ChevronDown, LayoutGrid } from "lucide-react";
 import React, { useEffect } from "react";
 import { permanentNav, type Navigation } from "../../utils/generateNavigation";
-const mainNav = ["dev", "validator", "node"];
+
 const RenderSidebar = ({
   nav,
   pathname,
@@ -26,13 +31,25 @@ const RenderSidebar = ({
       )}
     >
       {currentNav?.length > 0 && (
-        <Nav nav={currentNav} index={0} pathname={pathname} />
+        <Nav
+          nav={currentNav?.filter(
+            (item) => item.file && !hideNav.includes(item?.file),
+          )}
+          index={0}
+          pathname={pathname}
+        />
       )}
       {externalLinks?.[current] && (
         <Nav nav={[externalLinks[current]]} index={0} pathname={pathname} />
       )}
       {otherNav?.length > 0 && (
-        <Nav nav={otherNav} index={0} pathname={pathname} />
+        <Nav
+          nav={otherNav?.filter(
+            (item) => item.file && !hideNav.includes(item?.file),
+          )}
+          index={0}
+          pathname={pathname}
+        />
       )}
     </aside>
   );
@@ -120,8 +137,11 @@ const Nav = ({
             }
             target={item?.href?.startsWith("https://") ? "_blank" : "_self"}
             className={clsx(
+              item.href && hideLinksFromSidebar.includes(`/${item.href}/`)
+                ? "hidden"
+                : "",
               "text-sm p-1.5 hover:bg-gray rounded",
-              pathname === `/${item.href}/` ? "bg-gray" : "",
+              pathname === `/${item.href}/` ? "text-primary" : "",
             )}
           >
             {item.title}

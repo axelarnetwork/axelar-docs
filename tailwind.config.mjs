@@ -54,6 +54,7 @@ export default {
         gray: {
           DEFAULT: "var(--gray)",
           dark: "var(--gray-dark)",
+          para: "var(--para)",
         },
         foreground: {
           DEFAULT: "var(--foreground)",

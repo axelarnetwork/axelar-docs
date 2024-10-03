@@ -1,4 +1,4 @@
-import { sortedNavigation } from "@/layouts/navigation/navigation";
+import { sortedNavigation } from "@/content/_navigation/navigation";
 import type { CollectionEntry } from "astro:content";
 
 export const permanentNav = ["learn", "resources"];
@@ -68,7 +68,7 @@ const generateNav = (docs: CollectionEntry<"docs">[], level: number) => {
         ),
         href: doc?.slug,
         doc: doc,
-        file: doc?.slug?.split("/")[level],
+        file: doc?.slug?.split("/")[level] || doc?.id?.split("/")[level - 1],
       };
     }
   });
@@ -123,7 +123,7 @@ export const generateNavigation: {
 } = (docs: CollectionEntry<"docs">[]) => {
   console.log(
     "docs",
-    generateSortedNav(generateNav(docs, 0), sortedNavigation as any)[4],
+    generateSortedNav(generateNav(docs, 0), sortedNavigation as any)[3],
   );
 
   return generateSortedNav(generateNav(docs, 0), sortedNavigation as any);

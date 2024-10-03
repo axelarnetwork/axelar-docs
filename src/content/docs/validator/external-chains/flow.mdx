@@ -264,8 +264,8 @@ node using the same staking procedure as above.
 Build the access node binary from the latest release tag. The access node source is available in the [onflow/flow-go](https://github.com/onflow/flow-go) repo.
 
 1. Install the prerequisites mentioned [here](https://github.com/onflow/flow-go?tab=readme-ov-file#installation)
-2. Checkout the latest release tag mentioned [here](https://github.com/onflow/flow-go/releases).
-3. Build the access node binary by following this [step](https://github.com/onflow/flow-go?tab=readme-ov-file#building-a-binary-for-the-access-node) in the flow-go repo.
+2. Checkout the latest release tag mentioned [here](https://github.com/onflow/flow-go/releases/latest). (eg `git fetch; git checkout v0.37.10`)
+3. Build the access node binary by following this [step](https://github.com/onflow/flow-go?tab=readme-ov-file#building-a-binary-for-the-access-node) in the flow-go repo. (eg `make docker-native-build-access-binary`)
 
 Alternatively, you can also run the access node and the EVM gateway as a docker container. See [here](https://developers.flow.com/networks/node-ops/access-onchain-data/access-nodes/access-node-setup#step-4---start-your-node) for more details.
 
@@ -410,8 +410,8 @@ Further details on Access Node setup can be found in the [Access Node setup](htt
 Similar to the access node, build the EVM gateway binary from the latest release tag. The EVM gateway source is available in the [onflow/flow-go](https://github.com/onflow/flow-evm-gateway) repo.
 ```bash
 git clone https://github.com/onflow/flow-evm-gateway.git
-git checkout <latest release tag mentioned here https://github.com/onflow/flow-evm-gateway/releases>
 cd flow-evm-gateway
+git checkout <latest release tag mentioned here https://github.com/onflow/flow-evm-gateway/releases/latest>
 go build -o evm-gateway cmd/main/main.go
 mv evm-gateway /usr/bin/
 ```

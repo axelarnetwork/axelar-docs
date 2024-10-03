@@ -1,16 +1,20 @@
 ---
-import { buttonCva } from "@/lib/cva/button";
+import { buttonCva, type variants } from "@/lib/cva/button";
 import clsx from "clsx";
 type Props = {
   className?: string;
+  varient?: variants;
+  size?: "small" | "medium";
 };
 
-const { className } = Astro.props;
+const { className, varient = "primary", size = "medium" } = Astro.props;
 ---
 
 <button
   class={buttonCva({
     class: clsx(" relative font-medium tracking-wide ", className),
+    intent: varient,
+    size,
   })}
 >
   <div
