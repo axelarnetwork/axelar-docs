@@ -2,8 +2,12 @@ export const getNavigation = (section) => {
   const nav: any[] = [];
   if (section === "dev") {
     nav.push({
-      header: "Developers",
+      header: "Mobius Development Stack (MDS)",
       children: [
+        {
+          title: "What is MDS?",
+          href: "/dev/what-is-mobius-development-stack/",
+        },
         {
           title: "Product Overview",
           href: "/dev/intro/",
@@ -205,60 +209,17 @@ export const getNavigation = (section) => {
                 },
               ],
             },
-          ],
-        },
-        {
-          title: "AxelarJS SDK",
-          children: [
-            { title: "Introduction", href: "/dev/axelarjs-sdk/intro/" },
             {
-              title: "Token Transfer via Deposit Address",
-              href: "/dev/axelarjs-sdk/token-transfer-dep-addr/",
+              title: "Solidity Utilities",
+              href: "/dev/solidity-utilities/",
             },
             {
-              title: "GMP Transaction Status and Recovery",
-              href: "/dev/axelarjs-sdk/tx-status-query-recovery/",
-            },
-            {
-              title: "Axelar Query API",
-              href: "/dev/axelarjs-sdk/axelar-query-api/",
+              title: "Sandbox",
+              href: "/dev/axelar-sandbox/intro/",
             },
           ],
         },
-        {
-          title: "Indexers",
-          children: [
-            {
-              title: "Introduction",
-              href: "/dev/indexers/overview/",
-            },
-            {
-              title: "SubQuery",
-              href: "/dev/indexers/subquery/",
-            },
-          ],
-        },
-        {
-          title: "Chain and Contract Reference",
-          children: [
-            {
-              title: "Mainnet Chain Names",
-              href: "/dev/reference/mainnet-chain-names/",
-            },
-            {
-              title: "Mainnet Contract Addresses",
-              href: "/dev/reference/mainnet-contract-addresses/",
-            },
-            {
-              title: "Testnet Chain Names",
-              href: "/dev/reference/testnet-chain-names/",
-            },
-            {
-              title: "Testnet Contract Addresses",
-              href: "/dev/reference/testnet-contract-addresses/",
-            },
-          ],
-        },
+
         {
           title: "Amplifier",
           children: [
@@ -310,12 +271,56 @@ export const getNavigation = (section) => {
           ],
         },
         {
-          title: "Solidity Utilities",
-          href: "/dev/solidity-utilities/",
+          title: "AxelarJS SDK",
+          children: [
+            { title: "Introduction", href: "/dev/axelarjs-sdk/intro/" },
+            {
+              title: "Token Transfer via Deposit Address",
+              href: "/dev/axelarjs-sdk/token-transfer-dep-addr/",
+            },
+            {
+              title: "GMP Transaction Status and Recovery",
+              href: "/dev/axelarjs-sdk/tx-status-query-recovery/",
+            },
+            {
+              title: "Axelar Query API",
+              href: "/dev/axelarjs-sdk/axelar-query-api/",
+            },
+          ],
         },
         {
-          title: "Sandbox",
-          href: "/dev/axelar-sandbox/intro/",
+          title: "Chain and Contract Reference",
+          children: [
+            {
+              title: "Mainnet Chain Names",
+              href: "/dev/reference/mainnet-chain-names/",
+            },
+            {
+              title: "Mainnet Contract Addresses",
+              href: "/dev/reference/mainnet-contract-addresses/",
+            },
+            {
+              title: "Testnet Chain Names",
+              href: "/dev/reference/testnet-chain-names/",
+            },
+            {
+              title: "Testnet Contract Addresses",
+              href: "/dev/reference/testnet-contract-addresses/",
+            },
+          ],
+        },
+        {
+          title: "Indexers",
+          children: [
+            {
+              title: "Introduction",
+              href: "/dev/indexers/overview/",
+            },
+            {
+              title: "SubQuery",
+              href: "/dev/indexers/subquery/",
+            },
+          ],
         },
       ],
     });
@@ -346,10 +351,6 @@ export const getNavigation = (section) => {
         {
           title: "AxelarExecutable",
           href: "https://github.com/axelarnetwork/axelar-gmp-sdk-solidity/blob/main/contracts/executable/AxelarExecutable.sol/",
-        },
-        {
-          title: "AxelarJS SDK",
-          href: "https://github.com/axelarnetwork/axelarjs-sdk/",
         },
       ],
     });
