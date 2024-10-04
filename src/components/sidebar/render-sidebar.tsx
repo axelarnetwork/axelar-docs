@@ -133,9 +133,18 @@ const Nav = ({
           <a
             key={i}
             href={
-              item?.href?.startsWith("https://") ? item.href : `/${item.href}/`
+              item?.externalLink ??
+              (item?.href?.startsWith("https://")
+                ? item.href
+                : `/${item.href}/`)
             }
-            target={item?.href?.startsWith("https://") ? "_blank" : "_self"}
+            target={
+              item?.externalLink
+                ? "_blank"
+                : item?.href?.startsWith("https://")
+                  ? "_blank"
+                  : "_self"
+            }
             className={clsx(
               item.href && hideLinksFromSidebar.includes(`/${item.href}/`)
                 ? "hidden"

@@ -6,6 +6,7 @@ export const hiddenNav = ["controller"];
 export interface Navigation {
   title: string;
   href?: string;
+  externalLink?: string;
   currentSlug?: string;
   file?: string;
   doc?: CollectionEntry<"docs">;
@@ -82,7 +83,7 @@ const generateSortedNav = (
     preSorted.map((item, index) => [item.file, index]),
   );
 
-  return nav
+  const sortedNav = nav
     .map((item) => {
       const currentPreSorted = preSortedMap.has(item.file)
         ? preSorted[preSortedMap.get(item.file)!]
@@ -92,20 +93,17 @@ const generateSortedNav = (
         ? generateSortedNav(item.children, currentPreSorted?.children || [])
         : null;
 
-      if (sortedChildren) {
-        return {
-          ...item,
-          title:
-            currentPreSorted?.header || currentPreSorted?.title || item.title,
-          children: sortedChildren,
-        };
-      } else {
-        return {
-          ...item,
-          title:
-            currentPreSorted?.header || currentPreSorted?.title || item.title,
-        };
-      }
+      const baseItem = {
+        ...item,
+        title:
+          currentPreSorted?.header || currentPreSorted?.title || item.title,
+      };
+
+      return {
+        ...baseItem,
+        children: sortedChildren,
+        externalLink: currentPreSorted?.externalLink || baseItem.externalLink,
+      };
     })
     .sort((a, b) => {
       const aIndex = preSortedMap.has(a.file)
@@ -116,15 +114,35 @@ const generateSortedNav = (
         : Infinity;
       return aIndex - bIndex;
     });
+
+  const finalResult: (Navigation | null)[] = new Array(preSorted.length).fill(
+    null,
+  );
+
+  sortedNav.forEach((item) => {
+    const index = preSortedMap.get(item.file);
+    if (index !== undefined) {
+      finalResult[index] = item as Navigation;
+    }
+  });
+
+  preSorted.forEach((item) => {
+    if (item.externalLink) {
+      const index = preSortedMap.get(item.file);
+      if (index !== undefined) {
+        finalResult[index] = {
+          title: item.title,
+          externalLink: item.externalLink,
+        };
+      }
+    }
+  });
+
+  return finalResult.filter((item) => item !== null) as Navigation[];
 };
 
 export const generateNavigation: {
   (docs: CollectionEntry<"docs">[]): Navigation[];
 } = (docs: CollectionEntry<"docs">[]) => {
-  console.log(
-    "docs",
-    generateSortedNav(generateNav(docs, 0), sortedNavigation as any)[3],
-  );
-
   return generateSortedNav(generateNav(docs, 0), sortedNavigation as any);
 };
