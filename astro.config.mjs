@@ -28,7 +28,7 @@ export default defineConfig({
     sitemap(),
     tailwind(),
   ],
-  site: "https://axelardocs.vercel.app",
+  site: "https://docs.axelar.dev",
   trailingSlash: "always",
   markdown: {
     remarkPlugins: [remarkDirective],
