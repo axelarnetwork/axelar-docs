@@ -599,6 +599,31 @@
       "source": "/dev/amplifier/error-messages/",
       "destination": "/dev/amplifier/chain-integration/error-messages/",
       "permanent": true
+    },
+    {
+      "source": "/dev/gas-service/:slug/",
+      "destination": "/dev/general-message-passing/gas-service/:slug/",
+      "permanent": true
+    },
+    {
+      "source": "/dev/evm-relayer/",
+      "destination": "/dev/general-message-passing/evm-relayer/",
+      "permanent": true
+    },
+    {
+      "source": "/dev/general-message-passing/cosmos-gmp/:slug/",
+      "destination": "/dev/cosmos-gmp/:slug/",
+      "permanent": true
+    },
+    {
+      "source": "/dev/solidity-utilities/",
+      "destination": "/dev/general-message-passing/solidity-utilities/",
+      "permanent": true
+    },
+    {
+      "source": "/dev/axelar-sandbox/:slug/",
+      "destination": "/dev/general-message-passing/axelar-sandbox/:slug/",
+      "permanent": true
     }
   ]
 }

@@ -1,16 +1,25 @@
 export const developer = {
   header: "Developers",
+  subHeader: "Mobius Development Stack (MDS)",
   file: "dev",
   children: [
     {
-      title: "Introduction",
+      title: "What is MDS?",
+      file: "what-is-mobius-development-stack",
+    },
+    {
+      title: "Product Overview",
       file: "intro",
     },
     {
       title: "Cross-Chain Token Transfer",
       file: "send-tokens",
       children: [
-        { title: "Introduction", file: "introduction" },
+        {
+          title: "Introduction",
+
+          file: "introduction",
+        },
         {
           title: "Interchain Tokens",
           file: "interchain-tokens",
@@ -109,6 +118,44 @@ export const developer = {
           file: "gmp-tokens-with-messages",
         },
         {
+          title: "Gas Service",
+          file: "gas-service",
+          children: [
+            {
+              title: "Introduction",
+              file: "intro",
+            },
+            {
+              title: "Estimate and Pay Gas",
+              file: "pay-gas",
+            },
+            {
+              title: "Increase Gas",
+              file: "increase-gas",
+            },
+            {
+              title: "Refund Gas",
+              file: "refund",
+            },
+            {
+              title: "Specify Gas Refund Address",
+              file: "specify-gas-refund-address",
+            },
+            {
+              title: "Transaction States",
+              file: "transaction-state",
+            },
+            {
+              title: "Transaction Pricing",
+              file: "pricing",
+            },
+            {
+              title: "On-Chain Estimation",
+              file: "on-chain-estimation",
+            },
+          ],
+        },
+        {
           title: "Monitor Transaction State",
 
           file: "monitoring",
@@ -168,123 +215,44 @@ export const developer = {
           title: "Express Service",
           file: "express",
         },
-      ],
-    },
-    {
-      title: "EVM Relayer",
+        {
+          title: "EVM Relayer",
+          file: "evm-relayer",
+        },
 
-      file: "evm-relayer",
-    },
-    {
-      title: "Gas Service",
-      file: "gas-service",
-      children: [
         {
-          title: "Introduction",
-          file: "intro",
-        },
-        {
-          title: "Estimate and Pay Gas",
-          file: "pay-gas",
-        },
-        {
-          title: "Increase Gas",
-          file: "increase-gas",
-        },
-        {
-          title: "Refund Gas",
-          file: "refund",
-        },
-        {
-          title: "Specify Gas Refund Address",
-          file: "specify-gas-refund-address",
-        },
-        {
-          title: "Transaction States",
-          file: "transaction-state",
-        },
-        {
-          title: "Transaction Pricing",
-          file: "pricing",
-        },
-        {
-          title: "On-Chain Estimation",
-          file: "on-chain-estimation",
-        },
-      ],
-    },
-    {
-      title: "AxelarJS SDK",
-      file: "axelarjs-sdk",
-      children: [
-        {
-          title: "Introduction",
-          file: "intro",
-        },
-        {
-          title: "Token Transfer via Deposit Address",
-          file: "token-transfer-dep-addr",
-        },
-        {
-          title: "GMP Transaction Status and Recovery",
-          file: "tx-status-query-recovery",
-        },
-        {
-          title: "Axelar Query API",
-          file: "axelar-query-api",
-        },
-      ],
-    },
-    {
-      title: "Cosmos GMP",
-      file: "cosmos-gmp",
-      children: [
-        { title: "Introduction", file: "overview" },
-        {
-          title: "Developer Guides",
-          file: "developer-guides",
+          title: "Cosmos GMP",
+          file: "cosmos-gmp",
           children: [
+            { title: "Introduction", file: "overview" },
             {
-              title: "Cross-Chain Messaging: EVM to Cosmos",
-              file: "cross-chain-messaging-evm-to-cosmos",
+              title: "Developer Guides",
+              file: "developer-guides",
+              children: [
+                {
+                  title: "Cross-Chain Messaging: EVM to Cosmos",
+                  file: "cross-chain-messaging-evm-to-cosmos",
+                },
+              ],
             },
           ],
         },
-      ],
-    },
-    {
-      title: "Indexers",
-      file: "indexers",
-      children: [
         {
-          title: "Introduction",
-          file: "overview",
+          file: "solidity-utilities",
         },
         {
-          title: "SubQuery",
-          file: "subquery",
-        },
-      ],
-    },
-    {
-      title: "Chain and Contract Reference",
-      file: "reference",
-      children: [
-        {
-          title: "Mainnet Chain Names",
-          file: "mainnet-chain-names",
-        },
-        {
-          title: "Mainnet Contract Addresses",
-          file: "mainnet-contract-addresses",
-        },
-        {
-          title: "Testnet Chain Names",
-          file: "testnet-chain-names",
-        },
-        {
-          title: "Testnet Contract Addresses",
-          file: "testnet-contract-addresses",
+          title: "Sandbox",
+
+          file: "axelar-sandbox",
+          children: [
+            {
+              title: "Introduction",
+              file: "intro",
+            },
+            {
+              file: "how-to-use",
+            },
+          ],
         },
       ],
     },
@@ -346,14 +314,80 @@ export const developer = {
       ],
     },
     {
-      title: "Solidity Utilities",
-
-      file: "solidity-utilities",
+      title: "AxelarJS SDK",
+      file: "axelarjs-sdk",
+      children: [
+        {
+          title: "Introduction",
+          file: "intro",
+        },
+        {
+          title: "Token Transfer via Deposit Address",
+          file: "token-transfer-dep-addr",
+        },
+        {
+          title: "GMP Transaction Status and Recovery",
+          file: "tx-status-query-recovery",
+        },
+        {
+          title: "Axelar Query API",
+          file: "axelar-query-api",
+        },
+      ],
     },
     {
-      title: "Sandbox",
+      title: "Cosmos GMP",
+      file: "cosmos-gmp",
+      children: [
+        { title: "Introduction", file: "overview" },
+        {
+          title: "Developer Guides",
+          file: "developer-guides",
+          children: [
+            {
+              title: "Cross-Chain Messaging: EVM to Cosmos",
+              file: "cross-chain-messaging-evm-to-cosmos",
+            },
+          ],
+        },
+      ],
+    },
 
-      file: "axelar-sandbox",
+    {
+      title: "Chain and Contract Reference",
+      file: "reference",
+      children: [
+        {
+          title: "Mainnet Chain Names",
+          file: "mainnet-chain-names",
+        },
+        {
+          title: "Mainnet Contract Addresses",
+          file: "mainnet-contract-addresses",
+        },
+        {
+          title: "Testnet Chain Names",
+          file: "testnet-chain-names",
+        },
+        {
+          title: "Testnet Contract Addresses",
+          file: "testnet-contract-addresses",
+        },
+      ],
+    },
+    {
+      title: "Indexers",
+      file: "indexers",
+      children: [
+        {
+          title: "Introduction",
+          file: "overview",
+        },
+        {
+          title: "SubQuery",
+          file: "subquery",
+        },
+      ],
     },
   ],
 };

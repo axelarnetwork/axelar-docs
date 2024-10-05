@@ -5,6 +5,7 @@ export const permanentNav = ["learn", "resources"];
 export const hiddenNav = ["controller"];
 export interface Navigation {
   title: string;
+  subHeader?: string;
   href?: string;
   externalLink?: string;
   currentSlug?: string;
@@ -91,7 +92,7 @@ const generateSortedNav = (
 
       const sortedChildren = item.children
         ? generateSortedNav(item.children, currentPreSorted?.children || [])
-        : null;
+        : item.children;
 
       const baseItem = {
         ...item,
@@ -123,13 +124,15 @@ const generateSortedNav = (
     const index = preSortedMap.get(item.file);
     if (index !== undefined) {
       finalResult[index] = item as Navigation;
+    } else {
+      finalResult.push(item as Navigation);
     }
   });
 
   preSorted.forEach((item) => {
     if (item.externalLink) {
       const index = preSortedMap.get(item.file);
-      if (index !== undefined) {
+      if (index !== undefined && !finalResult[index]) {
         finalResult[index] = {
           title: item.title,
           externalLink: item.externalLink,
