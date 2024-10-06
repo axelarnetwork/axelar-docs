@@ -12,7 +12,8 @@ export function findPrevAndNextPages(nav: Navigation[], pathname: string) {
       if (
         !hideLinksFromSidebar.includes(`/${item.href}/`) &&
         !hideNav.includes(item?.href?.split("/")[0] ?? "") &&
-        !item.externalLink
+        !item.externalLink &&
+        !hideNav.includes(item.file as string)
       ) {
         allItems.push(item);
         if (item.children && item.children.length > 0) {
