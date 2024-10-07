@@ -111,10 +111,27 @@ OPERATOR_ID_MAIN=<AccountID e.g. 0.1.2, can be obtained from portal.hedera.com, 
 OPERATOR_KEY_MAIN=<DER Encoded Private Key, can be obtained from portal.hedera.com, wallet or exchange of choice>
 ```
 
-### Start the RPC relay server
+### Start the RPC relay server as systemd service
 
 ```bash
-npm run start
+nano /etc/systemd/system/hedera-json-rpc.service
+```
+
+```bash 
+[Unit]
+Description=Hedera JSON-RPC Relayer
+After=network.target
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/path/to/hedera-json-rpc-relayer
+ExecStart=/bin/bash -c 'export NVM_DIR="/root/.nvm" && [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" && npm run start'
+Restart=on-failure
+Environment=NODE_ENV=production
+
+[Install]
+WantedBy=multi-user.target
 ```
 
 ### Check Logs
