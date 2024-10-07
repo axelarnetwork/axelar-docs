@@ -124,11 +124,11 @@ After=network.target
 
 [Service]
 Type=simple
-User=root
+User=$USER
 WorkingDirectory=/path/to/hedera-json-rpc-relayer
-ExecStart=/bin/bash -c 'export NVM_DIR="/root/.nvm" && [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" && npm run start'
+Environment=NODE_ENV=production NVM_DIR=/root/.nvm
+ExecStart=/bin/bash -c 'source $NVM_DIR/nvm.sh && npm run start'
 Restart=on-failure
-Environment=NODE_ENV=production
 
 [Install]
 WantedBy=multi-user.target
