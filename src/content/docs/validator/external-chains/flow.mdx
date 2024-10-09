@@ -48,6 +48,8 @@ We recommend first time operators to complete the guidance for node setup below 
 
 ## 1. Generate Node Information
 
+This is a one time operation that is required for each node.
+
 ### Download the boot-tools utility
 ```bash
 # get the boot-tools utility to generate node information
@@ -264,7 +266,7 @@ node using the same staking procedure as above.
 Build the access node binary from the latest release tag. The access node source is available in the [onflow/flow-go](https://github.com/onflow/flow-go) repo.
 
 1. Install the prerequisites mentioned [here](https://github.com/onflow/flow-go?tab=readme-ov-file#installation)
-2. Checkout the latest release tag mentioned [here](https://github.com/onflow/flow-go/releases).
+2. Checkout the latest release tag mentioned [here](https://github.com/onflow/flow-go/releases/latest).
 3. Build the access node binary by following this [step](https://github.com/onflow/flow-go?tab=readme-ov-file#building-a-binary-for-the-access-node) in the flow-go repo. (eg `make docker-native-build-access-binary`)
 
 Alternatively, you can also run the access node and the EVM gateway as a docker container. See [here](https://developers.flow.com/networks/node-ops/access-onchain-data/access-nodes/access-node-setup#step-4---start-your-node) for more details.
@@ -279,7 +281,7 @@ The `root-protocol-state-snapshot.json` and the checkpoint files are published b
 Location of the bucket is available [here](https://github.com/onflow/flow/blob/master/sporks.json) under `rootProtocolStateSnapshot` and `rootCheckpointFile` for each of the past network upgrades.
 For e.g. For mainnet25 the files are [here](https://github.com/onflow/flow/blob/master/sporks.json#L15-L16).
 
-The `transit` script which is part of the `boot-tools` utility downloaded earlier during [first step](#download_the_boot_tools_utility) can be used to download these files and place them in the right location.
+The `transit` script which is part of the `boot-tools` utility downloaded earlier during [first step](#download-the-boot-tools-utility) can be used to download these files and place them in the right location.
 
 To download the files run when `testnet/mainnet-${version-label}` should be set to the latest version of testnet or mainnet, e.g. testnet-52, mainnet-26 etc.
 
@@ -437,7 +439,7 @@ curl -sL https://raw.githubusercontent.com/onflow/flow-evm-bridge/refs/heads/mai
 flow transactions send ./create_evm_account.cdc --args-json '[{"type": "UFix64", "value": "${AMOUNT}"}]' -n testnet
 ```
 
-Select the network and update the amount of FLOW in the JSON arguments to send to the COA EVM account. This step requires a configured `flow.json` to run successfully, see [account creation step 3](#account-creation)
+Select the network and update the amount of FLOW in the JSON arguments to send to the COA EVM account. This step requires a configured `flow.json` to run successfully, see [account creation step 3](#2-account-creation)
 </tab-item>
 </tabs>
 
