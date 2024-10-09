@@ -5359,28 +5359,28 @@
           "address": "0x9F41b34f42058a7b74672055a5fae22c4b113Fd1",
           "symbol": "YUM",
           "decimals": 18,
-          "transfer_fee": 500.0
+          "transfer_fee": 250.0
         },
         {
           "chain": "base",
           "address": "0x9F41b34f42058a7b74672055a5fae22c4b113Fd1",
           "symbol": "YUM",
           "decimals": 18,
-          "transfer_fee": 500.0
+          "transfer_fee": 250.0
         },
         {
           "chain": "ethereum",
           "address": "0xcE682c89C63d2850Cb2ca898E44D6c7c30d897a6",
           "symbol": "YUM",
           "decimals": 18,
-          "transfer_fee": 3000.0
+          "transfer_fee": 1500.0
         },
         {
           "chain": "optimism",
           "address": "0x9F41b34f42058a7b74672055a5fae22c4b113Fd1",
           "symbol": "YUM",
           "decimals": 18,
-          "transfer_fee": 500.0
+          "transfer_fee": 250.0
         }
       ]
     },
@@ -7206,6 +7206,42 @@
           "symbol": "NFTL",
           "decimals": 18,
           "transfer_fee": 50.0
+        }
+      ]
+    },
+    {
+      "id": "sepolia-weth-wei",
+      "name": "WETH - Wrapped Ether",
+      "symbol": "WETH",
+      "image": "/images/assets/weth.svg",
+      "contracts": [
+        {
+          "chain": "arbitrum-sepolia",
+          "address": "0x49E4D97AF0e05E5d1d6cB821918e5a00D69E91Af",
+          "symbol": "Sepolia axlETH",
+          "decimals": 18,
+          "transfer_fee": 7e-05
+        },
+        {
+          "chain": "ethereum-sepolia",
+          "address": "0xfFf9976782d46CC05630D1f6eBAb18b2324d6B14",
+          "symbol": "WETH",
+          "decimals": 18,
+          "transfer_fee": 7e-05
+        },
+        {
+          "chain": "optimism-sepolia",
+          "address": "0x520863FA61Fe346687231477fe74867667F1423B",
+          "symbol": "Sepolia axlETH",
+          "decimals": 18,
+          "transfer_fee": 7e-05
+        },
+        {
+          "chain": "polygon-sepolia",
+          "address": "0x520863FA61Fe346687231477fe74867667F1423B",
+          "symbol": "Sepolia axlETH",
+          "decimals": 18,
+          "transfer_fee": 7e-05
         }
       ]
     }

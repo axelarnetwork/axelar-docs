@@ -29,13 +29,13 @@ In order to build the `Soroban` node, you first need to install all the required
 
 ```bash
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
-sudo apt-get install -y make git-core libssl-dev pkg-config libclang-12-dev build-essential protobuf-compiler
 sudo apt-get update
+sudo apt-get install -y make git-core libssl-dev pkg-config libclang-12-dev build-essential protobuf-compiler
 sudo apt-get install libudev-dev
 source "$HOME/.cargo/env"
 
 # common packages
-sudo apt-get install git build-essential pkg-config autoconf automake libtool bison flex libpq-dev libunwind-dev parallel sed perl
+sudo apt-get install git build-essential pkg-config autoconf automake libtool bison flex libpq-dev libunwind-dev parallel sed perl postgresql-common postgresql postgresql-contrib
 # if using clang
 sudo apt-get install clang-12
 # clang with libstdc++
@@ -96,8 +96,8 @@ SOROBAN_RELEASE=v21.4.1
 <tabs>
     <tab-item title="Mainnet" class="bleed">
         ```bash
-        git clone https://github.com/stellar/stellar-core.git
-        cd stellar-core
+        git clone https://github.com/stellar/soroban-rpc.git
+        cd soroban-rpc
         git checkout $SOROBAN_RELEASE
         make build-soroban-rpc
         mv soroban-rpc /usr/bin/
@@ -105,8 +105,8 @@ SOROBAN_RELEASE=v21.4.1
     </tab-item>
     <tab-item title="Testnet" class="bleed">
         ```bash
-        git clone https://github.com/stellar/stellar-core.git
-        cd stellar-core
+        git clone https://github.com/stellar/soroban-rpc.git
+        cd soroban-rpc
         git checkout $SOROBAN_RELEASE
         make build-soroban-rpc
         mv soroban-rpc /usr/bin/
