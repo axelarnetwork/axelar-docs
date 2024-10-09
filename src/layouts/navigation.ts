@@ -309,19 +309,6 @@ export const getNavigation = (section) => {
             },
           ],
         },
-        {
-          title: "Indexers",
-          children: [
-            {
-              title: "Introduction",
-              href: "/dev/indexers/overview/",
-            },
-            {
-              title: "SubQuery",
-              href: "/dev/indexers/subquery/",
-            },
-          ],
-        },
       ],
     });
 
