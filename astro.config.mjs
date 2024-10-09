@@ -19,6 +19,9 @@ export default defineConfig({
   integrations: [react(), mdx(), sitemap()],
   site: "https://docs.axelar.dev",
   trailingSlash: "always",
+  devToolbar: {
+    enabled: false,
+  },
   markdown: {
     remarkPlugins: [
       setDefaultLayout,
