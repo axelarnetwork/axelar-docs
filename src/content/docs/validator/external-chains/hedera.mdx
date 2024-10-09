@@ -13,6 +13,12 @@ Instructions to set up your Hedera mirror node and RPC-relay.
 - [Docker](https://docs.docker.com/engine/install/) (>= v20.10.x) installed on your machine. 
 - An Amazon Web Services account/Google Cloud Platform account.
 
+### Prerequisites
+
+```bash
+sudo apt install build-essential gcc g++
+```
+
 ### Clone Hedera Mirror Node Repository
 
 - [Official Documentation](https://docs.hedera.com/hedera/core-concepts/mirror-nodes/run-your-own-beta-mirror-node)
@@ -71,8 +77,71 @@ importer-1  | 2024-09-05T14:10:44.539Z  INFO scheduling-4 c.h.m.i.d.r.RecordFile
 ```
 
 ## Setup a Hedera JSON-RPC Relayer
-You'll need to setup a JSON-RPC relay to let `ampd` intract with your Hedera node. Follow the official setup instructions:
+You'll need to setup a JSON-RPC relay to let `ampd` intract with your Hedera node. Follow the setup instructions:
 
+### Clone Hedera JSON-RPC Relayer Repository
 
 * [Official Docs](https://docs.hedera.com/hedera/tutorials/more-tutorials/json-rpc-connections/hedera-json-rpc-relay)
 
+Open your terminal and run the following commands
+
+```bash
+git clone https://github.com/hashgraph/hedera-json-rpc-relay.git
+cd hedera-json-rpc-relay
+```
+
+### Install dependencies and Build the project
+
+```bash
+npm install
+npm run build
+```
+
+### Create a file named .env in the root directory of the project.
+
+```bash
+CHAIN_ID= The network chain id. Local and previewnet envs should use 0x12a (298). Previewnet, Testnet and Mainnet should use 0x129 (297), 0x128 (296) and 0x127 (295) respectively
+
+MIRROR_NODE_URL= The Mirror Node API endpoint. Official endpoints are Previewnet (https://previewnet.mirrornode.hedera.com), Testnet (https://testnet.mirrornode.hedera.com), Mainnet (https://mainnet-public.mirrornode.hedera.com).
+
+HEDERA_NETWORK= Which network to connect to. Can be MAINNET, PREVIEWNET, TESTNET or OTHER
+
+OPERATOR_ID_MAIN=<AccountID e.g. 0.1.2, can be obtained from portal.hedera.com, wallet or exchange of choice>
+
+OPERATOR_KEY_MAIN=<DER Encoded Private Key, can be obtained from portal.hedera.com, wallet or exchange of choice>
+```
+
+### Start the RPC relay server as systemd service
+
+```bash
+nano /etc/systemd/system/hedera-json-rpc.service
+```
+
+```bash 
+[Unit]
+Description=Hedera JSON-RPC Relayer
+After=network.target
+
+[Service]
+Type=simple
+User=$USER
+WorkingDirectory=/path/to/hedera-json-rpc-relayer
+Environment=NODE_ENV=production NVM_DIR=/root/.nvm
+ExecStart=/bin/bash -c 'source $NVM_DIR/nvm.sh && npm run start'
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
+```
+
+### Check Logs
+
+Logs should appear like this
+
+```bash
+[2024-10-03 16:49:33.460 +0000] INFO (relay/145017 on xxxxx): Configurations successfully loaded
+[2024-10-03 16:49:33.461 +0000] TRACE (hbar-rate-limit/145017 on xxxxx): remainingBudget=11000000000 tℏ, resetTimestamp=1727974253461
+[2024-10-03 16:49:33.508 +0000] INFO (relay/145017 on xxxxx): SDK client successfully configured to "testnet" for account 0.0.12345 with request timeout value: 10000
+[2024-10-03 16:49:33.511 +0000] INFO (mirror-node/145017 on xxxxx): Mirror Node client successfully configured to REST url: https://testnet.mirrornode.hedera.com/api/v1/ and Web3 url: https://testnet.mirrornode.hedera.com/api/v1/ 
+[2024-10-03 16:49:33.512 +0000] INFO (relay/145017 on xxxxx): Relay running with chainId=0x128
+```
