@@ -1,6 +1,6 @@
 # Verifier Rewards
 
-import { Callout } from "/src/components/callout"
+import { Callout } from "/src/components/callout";
 
 Verifiers are responsible for securing transactions with chains connected to the Axelar Network via the [Axelar Amplifier](/dev/amplifier/introduction). Verifiers vote on the truthfulness of transactions posted to the network and create signatures for outgoing messages. In compensation for these activities and the associated decentralized node running costs, verifiers earn rewards provided by each chain integrator.
 
@@ -8,15 +8,48 @@ Rewards are calculated based on counted contributions. A contribution is counted
 
 Contributions are assessed per epoch (a length of time configured by governance). At the conclusion of an epoch, a message can be sent to the rewards contract to process rewards for the most recent window. Rewards are calculated based on a percentage of all traffic for a given chain and paid in AXL.
 
-<p align="center"><img src="/images/verifier-rewards-contract-architecture.png" width="650"/></p>
+<object
+  type="image/svg+xml"
+  data="/images/assets/verifier.svg"
+ 
+  class="hidden dark:block w-full max-w-[50rem] mx-auto py-6"
+>
+  Your browser does not support SVG
+</object>
+<object
+  type="image/svg+xml"
+  data="/images/assets/verifier-light.svg"
+ 
+  class=" dark:hidden w-full max-w-[50rem] mx-auto py-6"
+>
+  Your browser does not support SVG
+</object>
 
 <Callout>
-The `EndBlocker` is code that executes at the end of each block so that rewards are distributed automatically. It has not yet been implemented in the Axelar Amplifier.
+  The `EndBlocker` is code that executes at the end of each block so that
+  rewards are distributed automatically. It has not yet been implemented in the
+  Axelar Amplifier.
 </Callout>
 
 ## Voting flow
 
-<p align="center"><img src="/images/verifier-rewards-voting-flow.png" width="750"/></p>
+
+<object
+  type="image/svg+xml"
+  data="/images/assets/voting-flow.svg"
+ 
+  class="hidden dark:block w-full max-w-[40rem] mx-auto py-6"
+>
+  Your browser does not support SVG
+</object>
+<object
+  type="image/svg+xml"
+  data="/images/assets/voting-flow-light.svg"
+ 
+  class=" dark:hidden w-full max-w-[40rem] mx-auto py-6"
+>
+  Your browser does not support SVG
+</object>
 
 1. The relayer picks up a `callContract()` event and calls `verify_messages()` on the Axelar gateway.
 1. The Axelar gateway calls `verify_messages()` on the voting verifier, which begins the voting process with the verifier set.
@@ -25,7 +58,9 @@ The `EndBlocker` is code that executes at the end of each block so that rewards 
 
 ## Signing flow
 
-<p align="center"><img src="/images/verifier-rewards-signing-flow.png" width="750"/></p>
+<p align="center">
+  <img src="/images/verifier-rewards-signing-flow.png" width="750" />
+</p>
 
 The destination chain uses the prover rather than the voting verifier to pass the message.
 
@@ -54,26 +89,30 @@ Rewards are calculated through the following parameters, which are first configu
 Use `rewards_pool()` to check the funds in a pool:
 
 <tabs>
-<tab-item title="devnet-amplifier">
-    ```bash
-    export REWARDS_CONTRACT_ADDRESS="axelar1vaj9sfzc3z0gpel90wu4ljutncutv0wuhvvwfsh30rqxq422z89qnd989l"
-    export CHAIN_NAME="fantom"
-    export VOTING_VERIFIER_OR_MULTISIG_CONTRACT_ADDRESS="axelar1ty7mx0cllgz8xuvhn2j7e3qy8999ssgmjtktyqetl335em0g88lq6rjhl2" # or "axelar1g6520uhs8u37el40wqngf60z06mjgk6z7nezytd2mxrmh7yesnmsyc0zjw"
-    export RPC="http://devnet-amplifier.axelar.dev:26657"
-    ```
-</tab-item>
-<tab-item title="testnet">
-    ```bash
-    export REWARDS_CONTRACT_ADDRESS="axelar1harq5xe68lzl2kx4e5ch4k8840cgqnry567g0fgw7vt2atcuugrqfa7j5z"
-    export CHAIN_NAME="test-avalanche"
-    export VOTING_VERIFIER_OR_MULTISIG_CONTRACT_ADDRESS="axelar1hupk5du59cgu4ps5s637rhakwsq0060ycdp57j2ccevna7wqqzrqnfrr0p"# or  "axelar1l5k8wlzmkmtnvjvs9x77wdcfweucwgums9e8fh0d8cy76ymqc5aqzguqnn"
-    export RPC="https://tm.axelar-testnet.lava.build:443"
-    ```
-</tab-item>
+  <tab-item title="devnet-amplifier">
+    ```bash export
+    REWARDS_CONTRACT_ADDRESS="axelar1vaj9sfzc3z0gpel90wu4ljutncutv0wuhvvwfsh30rqxq422z89qnd989l"
+    export CHAIN_NAME="fantom" export
+    VOTING_VERIFIER_OR_MULTISIG_CONTRACT_ADDRESS="axelar1ty7mx0cllgz8xuvhn2j7e3qy8999ssgmjtktyqetl335em0g88lq6rjhl2"
+    # or "axelar1g6520uhs8u37el40wqngf60z06mjgk6z7nezytd2mxrmh7yesnmsyc0zjw"
+    export RPC="http://devnet-amplifier.axelar.dev:26657" 
+```
+  </tab-item>
+  <tab-item title="testnet">
+    ```bash export
+    REWARDS_CONTRACT_ADDRESS="axelar1harq5xe68lzl2kx4e5ch4k8840cgqnry567g0fgw7vt2atcuugrqfa7j5z"
+    export CHAIN_NAME="test-avalanche" export
+    VOTING_VERIFIER_OR_MULTISIG_CONTRACT_ADDRESS="axelar1hupk5du59cgu4ps5s637rhakwsq0060ycdp57j2ccevna7wqqzrqnfrr0p"#
+    or "axelar1l5k8wlzmkmtnvjvs9x77wdcfweucwgums9e8fh0d8cy76ymqc5aqzguqnn"
+    export RPC="https://tm.axelar-testnet.lava.build:443" 
+```
+  </tab-item>
 </tabs>
 
 <Callout>
-You can get the addresses of the rewards, voting verifier, and multisig contracts through [`devnet-amplifier.json`](https://github.com/axelarnetwork/axelar-contract-deployments/blob/019d41f81b506d35fa89ffd9ebb3a02719563e09/axelar-chains-config/info/devnet-amplifier.json).
+  You can get the addresses of the rewards, voting verifier, and multisig
+  contracts through
+  [`devnet-amplifier.json`](https://github.com/axelarnetwork/axelar-contract-deployments/blob/019d41f81b506d35fa89ffd9ebb3a02719563e09/axelar-chains-config/info/devnet-amplifier.json).
 </Callout>
 
 ```bash
@@ -116,7 +155,9 @@ Use `distribute_rewards()` to distribute rewards from a pool:
 </tabs>
 
 <Callout>
-You can get the addresses of the rewards, voting verifier, and multisig contracts through [`devnet-amplifier.json`](https://github.com/axelarnetwork/axelar-contract-deployments/blob/019d41f81b506d35fa89ffd9ebb3a02719563e09/axelar-chains-config/info/devnet-amplifier.json).
+  You can get the addresses of the rewards, voting verifier, and multisig
+  contracts through
+  [`devnet-amplifier.json`](https://github.com/axelarnetwork/axelar-contract-deployments/blob/019d41f81b506d35fa89ffd9ebb3a02719563e09/axelar-chains-config/info/devnet-amplifier.json).
 </Callout>
 
 ```bash

@@ -1,15 +1,17 @@
 # Monitoring state of GMP transactions
 
-Axelar provides two options to check each GMP transaction status: 
-1. The Axelarscan UI. 
+Axelar provides two options to check each GMP transaction status:
+
+1. The Axelarscan UI.
 2. The [AxelarJS SDK](/dev/axelarjs-sdk/tx-status-query-recovery).
 
 ## 1. Axelarscan UI
+
 Anyone can view General Message Passing calls in realtime on Axelarscan: [Mainnet](https://axelarscan.io/gmp) | [Testnet](https://testnet.axelarscan.io/gmp).
 
 ![gmp-tracker.png](/images/gmp-tracker.png)
 
-You can also search for a particular transfer by a transaction hash or a sender address via the search bar. 
+You can also search for a particular transfer by a transaction hash or a sender address via the search bar.
 ![gmp-searchbar.png](/images/gmp-searchbar.png)
 
 Each GMP call comprises five statuses, as described below.
@@ -21,11 +23,15 @@ Each GMP call comprises five statuses, as described below.
 - **EXECUTED** informs the executed result whether it is successful or not. If you see an error message in this section, we suggest following this [guide](/dev/general-message-passing/debug/error-debugging) to find the root cause and recover the transfer.
 - **GAS REFUNDED** provides the refund information (if any), including the amount of gas paid, the amount of gas used, the refund amount, etc.
 
-import { Callout } from "/src/components/callout"
+import { Callout } from "/src/components/callout";
 
 <Callout emoji="ℹ️">
-	If the `Insufficient Fee` tag appears, it means that the prepaid gas is not enough to relay the transaction. Please follow the [Increase gas payment to the gas receiver on the source chain](/dev/general-message-passing/debug/transaction-recovery/#increase-gas-payment-to-the-gas-receiver-on-the-source-chain) section to recover the transfer.
-	![error-msg-insufficient-fee.png](/images/error-msg-insufficient-fee.png)
+  If the `Insufficient Fee` tag appears, it means that the prepaid gas is not
+  enough to relay the transaction. Please follow the [Increase gas payment to
+  the gas receiver on the source
+  chain](/dev/general-message-passing/debug/transaction-recovery/#increase-gas-payment-to-the-gas-receiver-on-the-source-chain)
+  section to recover the transfer.
+  ![error-msg-insufficient-fee.png](/images/error-msg-insufficient-fee.png)
 </Callout>
 
 ## 2. AxelarJS SDK

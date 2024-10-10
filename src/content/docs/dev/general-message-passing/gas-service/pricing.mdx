@@ -1,0 +1,90 @@
+# Gas Service and Transaction Pricing
+
+Transactions using Axelar often have costs associated on their source chain, the Axelar network, and their destination chain. Whether for token transfers or General Message Passing, every cross-chain transaction is made up of 4 types of costs:
+
+1. Initiating the transaction on the source chain,
+2. Processing the transaction through the Axelar blockchain
+3. Relaying to the gateway contract on the destination chain
+4. Executing the destination smart contract with the payload
+
+To simplify paying for transaction pricing through the pipeline, Axelar has two general solutions to this problem.
+
+- For token transfers, a fixed "relayer fee" is deducted from the amount of assets being transferred cross-chain.
+- For General Message Passing (`callContract` and `callContractWithToken`), a chain-agnostic gas relaying service is implemented to accept gas payments from users on the source chain in its native currency.
+
+All costs can be seen on [Axelarscan](https://axelarscan.io) by looking at a specific transaction, [from Moonbeam to BNB Chain for example](https://axelarscan.io/gmp/0x598d35609919bc6c0737ae229af56b2135ccf5c1b031e1bd8d45f4ec4190e5a4:65).
+
+## Token transfers via `sendToken` or `getDepositAddress`
+
+Prices are fixed based on the source chain, destination chain, and asset. You can query these directly on the Axelar network or refer to the `Resources` tab under the `Cross-chain relayer gas fee` section.
+
+Whether you are transferring 10 axlUSDC or 10,000,000 axlUSDC, the cost is the same. The amount sent in a transaction must exceed the cost of the fee; it otherwise remains in the queue until the aggregate amount exceeds the fee.
+
+Asset transfers were designed this way to give users a `one click` experience. This simplified UX makes it so that users are not required to submit multiple blockchain transactions approving payments in addition to the transactions for sending the tokens.
+
+## callContract (General Message Passing)
+
+For general message passing, Axelar's gas service allows the user/dApp to pay all of the gas costs in a single transaction on the source chain in its native currency. To pay for each blockchain transaction, the gas service uses current conversion rates to translate the gas paid on the source chain for the gas cost used by Axelar and the destination chains.
+
+1. **Network Base Fee** - The base fee for any transaction is fixed based on the chains involved, but covers three components of the transaction
+   - Validator confirmation voting on the Axelar Network
+   - Relaying of approval on the destination chain
+   - Costs related to delivering any possible refund on the destination chain
+2. **Execution Fee (i.e. the gas to execute the `_execute` method on the destination chain)** - The execution fee is variable depending on the chains involved, and the complexity of your `_execute` method.
+
+The `estimateGasFee` method in the [AxelarJS SDK](/dev/axelarjs-sdk/axelar-query-api/#estimategasfee) calculates this total cost for you.
+
+### Notable Considerations
+
+#### EXECUTION FEE
+
+While the `estimateGasFee` method builds the components of the gas costs for you, you are still responsible to tell it the amount of gas you believe will be required to execute the `_execute` method on your destination smart contract. The `gasLimit` parameter in the `estimateGasFee()` method can be used to specify the estimated gas limit. Otherwise, the gas limit will be equivalent to the execution gas cost on the destination chain.
+
+#### GAS PRICE VOLATILITY
+
+Certain EVM chains have really volatile gas prices. To account for this, it is recommended to include certain buffers (i.e. pay additional gas upfront) to avoid situations of transactions getting "stuck" in the pipeline because of out-of-gas issues.
+
+The `estimateGasFee` method exposes two additional optional parameters to enhance execution certainty:
+
+1. a `minGasPrice` to be used on the destination chain, and
+2. a `gasMultipler` to be used to multiply the calculated figure by a specified buffer for execution certainty.
+
+#### REFUNDS
+
+The remainder of any gas paid upfront for a transaction that is not used by our gas service is refunded to the specified refund address.
+
+`Refund = Gas deposit - Network Base Fee - Execution Fee - approximate gas to process the refund**.`
+\*\*Gas estimated to transfer the refund is usually a bit higher than the actual gas used.
+
+#### ROUND TRIP TRANSACTIONS (TWO-WAY CALLS)
+
+The gas service will automate any "two-way calls" (i.e. sending GMP transactions from Chain A to Chain B with a return trip back to Chain A), assuming the entire cost of the round-trip transaction is paid on the source chain. The clearest example of this implementation can be found in our [Examples Repo](https://github.com/axelarnetwork/axelar-examples/blob/main/examples/evm/send-ack/SendAckSender.sol#L47).
+
+The `estimateGasFee` method can be used (yet again) to determine the amount of gas required for the round trip. The method needs to be called twice, once for the gas cost for Chain A >> B, then again for the gas cost for Chain B >> A, and the total cost would be the sum of the two estimations. Note: the gas cost estimation is direction-dependent and can be very different for the outbound and return trip directions.
+
+#### HANDLING ERRORS
+
+Transactions may intermittently stall on their way from a source chain to a destination chain. Common root causes for stalled transactions included: 1 - failure to send a valid transaction from the source chain into the Axelar network for processing; 2 - insufficient gas payments paid by the user; 3 - transaction revert on the destination chain.
+
+Every transaction can be seen on Axelarscan with a detailed view of where transactions get "stuck", so one can start there to debug such circumstances. Axelarscan and the AxelarJS SDK expose two approaches to recover stalled transactions: 1. manual execution of the transaction on the destination chain, or 2. add gas for transactions. More details can be found [here](/dev/general-message-passing/debug/error-debugging/) for debugging and [here](/dev/general-message-passing/debug/transaction-recovery/) and recovery.
+
+## callContractWithToken (General Message Passing)
+
+Fees for `callContractWithToken` are almost identical to those of `callContract`, but have an increased execution cost due to the additional gas cost of minting/releasing tokens.
+
+## callContractWithTokenExpress ("GMP Express")
+
+Fees for GMP express include all of the same fees as `callContractWithToken`, plus:
+
+- an `Express Fee` that covers relayer/reorg risk
+- gas used to execute the express method
+
+For GMP Express transactions, the total refund will then be:
+
+`Refund = Gas deposit - Express fee - Gas used to execute express method - Network Base Fee - Execution Fee - approximate gas to process the refund**.`
+
+\*\*Gas estimated to transfer the refund is usually a bit higher than the actual gas used.
+
+## Interchain Tokens
+
+Under the hood, creating an [Interchain Token](/dev/send-tokens/interchain-tokens/intro) uses `callContract`, so users are responsible for the gas on the source chain to register the token, plus the addition of a `callContract` to each destination chain where the token is being registered.

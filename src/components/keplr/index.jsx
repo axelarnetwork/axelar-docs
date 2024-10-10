@@ -7,7 +7,7 @@ export default ({ environment = "mainnet", chain }) => {
         alert(settings.chainId + " already added");
       } catch (e) {
         console.log(
-          "Unable to connect to wallet natively, so trying experimental chain"
+          "Unable to connect to wallet natively, so trying experimental chain",
         );
         try {
           await window.keplr.experimentalSuggestChain(settings);
@@ -15,7 +15,7 @@ export default ({ environment = "mainnet", chain }) => {
         } catch (e2) {
           console.log(
             "and yet there is a problem in trying to do that too",
-            e2
+            e2,
           );
         }
       }
@@ -23,7 +23,7 @@ export default ({ environment = "mainnet", chain }) => {
       if (error instanceof SyntaxError) {
         alert(
           "There was a syntax error. Please correct it and try again: " +
-            error.message
+            error.message,
         );
       } else {
         throw error;

@@ -38,7 +38,7 @@
       "symbol": "WBTC",
       "image": "/images/assets/wbtc.svg",
       "decimals": 8,
-      "transfer_fee": 1.7e-06
+      "transfer_fee": 1.7e-6
     },
     {
       "id": "weth-wei",
@@ -46,7 +46,7 @@
       "symbol": "WETH",
       "image": "/images/assets/weth.svg",
       "decimals": 18,
-      "transfer_fee": 3.2e-05
+      "transfer_fee": 3.2e-5
     },
     {
       "id": "wmai-wei",
@@ -78,7 +78,7 @@
       "symbol": "wstETH",
       "image": "/images/assets/wsteth.svg",
       "decimals": 18,
-      "transfer_fee": 2.9e-05
+      "transfer_fee": 2.9e-5
     },
     {
       "id": "wusdm-wei",
@@ -166,7 +166,7 @@
       "symbol": "cbETH",
       "image": "/images/assets/cbeth.svg",
       "decimals": 18,
-      "transfer_fee": 3.2e-05
+      "transfer_fee": 3.2e-5
     },
     {
       "id": "sfrxeth-wei",
@@ -174,7 +174,7 @@
       "symbol": "sfrxETH",
       "image": "/images/assets/sfrxeth.svg",
       "decimals": 18,
-      "transfer_fee": 2.9e-05
+      "transfer_fee": 2.9e-5
     },
     {
       "id": "frxeth-wei",
@@ -182,7 +182,7 @@
       "symbol": "frxETH",
       "image": "/images/assets/frxeth.svg",
       "decimals": 18,
-      "transfer_fee": 3.2e-05
+      "transfer_fee": 3.2e-5
     },
     {
       "id": "sfrax-wei",
@@ -206,7 +206,7 @@
       "symbol": "rETH",
       "image": "/images/assets/reth.svg",
       "decimals": 18,
-      "transfer_fee": 2.9e-05
+      "transfer_fee": 2.9e-5
     },
     {
       "id": "arb-wei",
@@ -582,7 +582,7 @@
       "symbol": "YieldETH",
       "image": "/images/assets/yieldeth.svg",
       "decimals": 18,
-      "transfer_fee": 6.2e-05
+      "transfer_fee": 6.2e-5
     },
     {
       "id": "utori",
@@ -726,7 +726,7 @@
       "symbol": "WETH",
       "image": "/images/assets/weth.svg",
       "decimals": 18,
-      "transfer_fee": 3.2e-05
+      "transfer_fee": 3.2e-5
     },
     {
       "id": "base-weth-wei",
@@ -734,7 +734,7 @@
       "symbol": "WETH",
       "image": "/images/assets/weth.svg",
       "decimals": 18,
-      "transfer_fee": 3.2e-05
+      "transfer_fee": 3.2e-5
     },
     {
       "id": "polygon-weth-wei",
@@ -742,7 +742,7 @@
       "symbol": "WETH",
       "image": "/images/assets/weth.svg",
       "decimals": 18,
-      "transfer_fee": 3.2e-05
+      "transfer_fee": 3.2e-5
     },
     {
       "id": "ubtsg",
@@ -840,7 +840,7 @@
       "symbol": "wstETH",
       "image": "/images/assets/wsteth.svg",
       "decimals": 18,
-      "transfer_fee": 3e-05
+      "transfer_fee": 3e-5
     },
     {
       "id": "sepolia-wsteth-wei",
@@ -848,7 +848,7 @@
       "symbol": "wstETH",
       "image": "/images/assets/wsteth.svg",
       "decimals": 18,
-      "transfer_fee": 3e-05
+      "transfer_fee": 3e-5
     },
     {
       "id": "celo-wei",

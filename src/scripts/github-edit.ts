@@ -10,6 +10,6 @@ export function getGithubEditUrl(Astro: Readonly<AstroGlobal>) {
   }
   return `https://github.com/axelarnetwork/axelar-docs/edit/main/src/content/docs/${currentPage.replace(
     /\/$/,
-    ""
+    "",
   )}.mdx`;
 }

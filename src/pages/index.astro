@@ -1,5 +1,7 @@
 ---
-import Section from "../layouts/Section.astro";
+import Button from "@/components/ui/button.astro";
+import WorldMap from "@/components/ui/world-map.astro";
+import MainLayout from "@/layouts/MainLayout.astro";
 const title = "What is Axelar?";
 
 const cards = [
@@ -8,14 +10,22 @@ const cards = [
     description:
       "Use Solidity or JavaScript to send tokens and interact with smart contracts across chains.",
     url: "/dev/intro/",
-    icon: `<svg style="margin-right:8px;" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="24" width="24" xmlns="http://www.w3.org/2000/svg"><g><path fill="none" d="M0 0h24v24H0z"></path><path d="M23 12l-7.071 7.071-1.414-1.414L20.172 12l-5.657-5.657 1.414-1.414L23 12zM3.828 12l5.657 5.657-1.414 1.414L1 12l7.071-7.071 1.414 1.414L3.828 12z"></path></g></svg>`,
+    icon: `<svg width="25" height="26" viewBox="0 0 25 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+<mask id="mask0_1119_8289" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="25" height="26">
+<rect x="0.495117" y="0.838135" width="24.4448" height="24.4448" fill="#D9D9D9"/>
+</mask>
+<g mask="url(#mask0_1119_8289)">
+<path d="M8.64343 19.1719L2.53223 13.0607L8.64343 6.94946L10.0948 8.40087L5.40959 13.0861L10.0694 17.7459L8.64343 19.1719ZM16.7917 19.1719L15.3403 17.7205L20.0256 13.0352L15.3658 8.37541L16.7917 6.94946L22.9029 13.0607L16.7917 19.1719Z" fill="#EF5D13"/>
+</g>
+</svg>
+`,
   },
   {
     title: "Mobius Development Stack (MDS)",
     description:
       "Axelar MDS is a suite of open tools and protocols that unlock an entirely new omnichain design space.",
     url: "/dev/what-is-mobius-development-stack/",
-    icon: `<svg style="margin-right:8px;height:24px;" stroke="currentColor" fill="currentColor"  viewBox="0 0 1200 1200" xmlns="http://www.w3.org/2000/svg">
+    icon: `<svg width="25" height="26" class="fill-primary stroke-primary" stroke="currentColor" fill="currentColor"  viewBox="0 0 1200 1200" xmlns="http://www.w3.org/2000/svg">
  <path d="m911.72 726.56c0.046875-37.488-6.918-74.652-20.535-109.58-37.754 73.262-101.74 129.61-179.19 157.79-77.453 28.188-162.68 26.145-238.7-5.7148-76.016-31.863-137.23-91.203-171.43-166.19-18.281-40.699-27.699-84.82-27.641-129.43 0.078125-53.762 13.707-106.64 39.629-153.73 25.926-47.098 63.305-86.898 108.69-115.72-89.273 40.074-162.38 109.16-207.43 196.03-45.051 86.871-59.406 186.42-40.73 282.48 18.672 96.059 69.277 182.98 143.59 246.64 74.312 63.664 167.97 100.33 265.76 104.05l1.0078 0.035156c10.145 0.375 20.379 0.375 30.523 0l0.92969-0.035156c79.199-3.4102 154.06-37.145 209.07-94.223 55.012-57.078 85.969-133.12 86.457-212.4z"/>
  <path d="m616.27 166.82-1.0078-0.035156c-10.145-0.375-20.379-0.375-30.523 0l-0.92969 0.035156c-79.199 3.4062-154.06 37.145-209.07 94.223-55.012 57.078-85.969 133.12-86.457 212.4-0.046875 37.488 6.918 74.652 20.535 109.58 37.754-73.262 101.74-129.61 179.19-157.79 77.453-28.188 162.68-26.145 238.7 5.7148 76.016 31.863 137.23 91.203 171.43 166.19 18.281 40.699 27.699 84.82 27.641 129.43-0.078125 53.762-13.707 106.64-39.629 153.73-25.926 47.098-63.305 86.898-108.69 115.72 89.273-40.074 162.38-109.16 207.43-196.03 45.051-86.871 59.406-186.42 40.73-282.48-18.672-96.059-69.277-182.98-143.59-246.64-74.312-63.664-167.97-100.33-265.76-104.05z"/>
 </svg>`,
@@ -24,13 +34,29 @@ const cards = [
     title: "Node operator",
     description: "Learn how to run a node on the Axelar network",
     url: "/node/join/",
-    icon: `<svg style="margin-right:8px;"  stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="24" width="24" xmlns="http://www.w3.org/2000/svg"><g><path fill="none" d="M0 0h24v24H0z"></path><path d="M5.334 4.545a9.99 9.99 0 0 1 3.542-2.048A3.993 3.993 0 0 0 12 3.999a3.993 3.993 0 0 0 3.124-1.502 9.99 9.99 0 0 1 3.542 2.048 3.993 3.993 0 0 0 .262 3.454 3.993 3.993 0 0 0 2.863 1.955 10.043 10.043 0 0 1 0 4.09c-1.16.178-2.23.86-2.863 1.955a3.993 3.993 0 0 0-.262 3.455 9.99 9.99 0 0 1-3.542 2.047A3.993 3.993 0 0 0 12 20a3.993 3.993 0 0 0-3.124 1.502 9.99 9.99 0 0 1-3.542-2.047 3.993 3.993 0 0 0-.262-3.455 3.993 3.993 0 0 0-2.863-1.954 10.043 10.043 0 0 1 0-4.091 3.993 3.993 0 0 0 2.863-1.955 3.993 3.993 0 0 0 .262-3.454zM13.5 14.597a3 3 0 1 0-3-5.196 3 3 0 0 0 3 5.196z"></path></g></svg>`,
+    icon: `<svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+<mask id="mask0_1119_8328" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="25" height="25">
+<rect x="0.495117" y="0.469482" width="24.4448" height="24.4448" fill="#D9D9D9"/>
+</mask>
+<g mask="url(#mask0_1119_8328)">
+<path d="M6.45358 12.6922L6.14802 11.1644C5.94432 11.0795 5.75334 10.9904 5.5751 10.897C5.39685 10.8036 5.21437 10.6891 5.02764 10.5533L3.55076 11.0116L2.53223 9.28009L3.70354 8.26155C3.66959 8.04087 3.65261 7.82019 3.65261 7.59951C3.65261 7.37882 3.66959 7.15814 3.70354 6.93746L2.53223 5.91893L3.55076 4.18742L5.02764 4.64576C5.21437 4.50995 5.39685 4.39537 5.5751 4.302C5.75334 4.20864 5.94432 4.11952 6.14802 4.03464L6.45358 2.50684H8.49065L8.79621 4.03464C8.99992 4.11952 9.19089 4.20864 9.36914 4.302C9.54738 4.39537 9.72987 4.50995 9.9166 4.64576L11.3935 4.18742L12.412 5.91893L11.2407 6.93746C11.2746 7.15814 11.2916 7.37882 11.2916 7.59951C11.2916 7.82019 11.2746 8.04087 11.2407 8.26155L12.412 9.28009L11.3935 11.0116L9.9166 10.5533C9.72987 10.6891 9.54738 10.8036 9.36914 10.897C9.19089 10.9904 8.99992 11.0795 8.79621 11.1644L8.49065 12.6922H6.45358ZM7.47212 9.63658C8.03231 9.63658 8.51187 9.43711 8.9108 9.03819C9.30972 8.63926 9.50919 8.1597 9.50919 7.59951C9.50919 7.03931 9.30972 6.55975 8.9108 6.16083C8.51187 5.7619 8.03231 5.56244 7.47212 5.56244C6.91192 5.56244 6.43236 5.7619 6.03344 6.16083C5.63451 6.55975 5.43505 7.03931 5.43505 7.59951C5.43505 8.1597 5.63451 8.63926 6.03344 9.03819C6.43236 9.43711 6.91192 9.63658 7.47212 9.63658ZM15.5695 23.8961L15.1111 21.7571C14.8225 21.6553 14.5552 21.5322 14.309 21.3879C14.0629 21.2436 13.821 21.0781 13.5833 20.8914L11.5463 21.5534L10.1203 19.1089L11.75 17.683C11.716 17.3774 11.699 17.0719 11.699 16.7663C11.699 16.4608 11.716 16.1552 11.75 15.8496L10.1203 14.4237L11.5463 11.9792L13.5833 12.6413C13.821 12.4545 14.0629 12.289 14.309 12.1447C14.5552 12.0004 14.8225 11.8774 15.1111 11.7755L15.5695 9.63658H18.4214L18.8797 11.7755C19.1683 11.8774 19.4356 12.0004 19.6818 12.1447C19.9279 12.289 20.1698 12.4545 20.4075 12.6413L22.4446 11.9792L23.8705 14.4237L22.2409 15.8496C22.2748 16.1552 22.2918 16.4608 22.2918 16.7663C22.2918 17.0719 22.2748 17.3774 22.2409 17.683L23.8705 19.1089L22.4446 21.5534L20.4075 20.8914C20.1698 21.0781 19.9279 21.2436 19.6818 21.3879C19.4356 21.5322 19.1683 21.6553 18.8797 21.7571L18.4214 23.8961H15.5695ZM16.9954 19.8219C17.8442 19.8219 18.5657 19.5248 19.1598 18.9307C19.7539 18.3366 20.051 17.6151 20.051 16.7663C20.051 15.9175 19.7539 15.1961 19.1598 14.6019C18.5657 14.0078 17.8442 13.7107 16.9954 13.7107C16.1466 13.7107 15.4252 14.0078 14.831 14.6019C14.2369 15.1961 13.9398 15.9175 13.9398 16.7663C13.9398 17.6151 14.2369 18.3366 14.831 18.9307C15.4252 19.5248 16.1466 19.8219 16.9954 19.8219Z" fill="#EF5D13"/>
+</g>
+</svg>
+`,
   },
   {
     title: "Validator",
     description: "Axelar validators facilitate cross-chain connections",
     url: "/validator/setup/overview/",
-    icon: `<svg style="margin-right:8px;"  stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="24" width="24" xmlns="http://www.w3.org/2000/svg"><g><path fill="none" d="M0 0h24v24H0z"></path><path d="M4 3h16a1 1 0 0 1 1 1v7H3V4a1 1 0 0 1 1-1zM3 13h18v7a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1v-7zm4 3v2h3v-2H7zM7 6v2h3V6H7z"></path></g></svg>`,
+    icon: `<svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+<mask id="mask0_1119_8315" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="25" height="25">
+<rect x="0.238281" y="0.469482" width="24.4448" height="24.4448" fill="#D9D9D9"/>
+</mask>
+<g mask="url(#mask0_1119_8315)">
+<path d="M12.4608 23.8961L5.12733 18.396C4.87269 18.2092 4.67323 17.9716 4.52894 17.683C4.38465 17.3944 4.3125 17.0889 4.3125 16.7663V4.5439C4.3125 3.98371 4.51196 3.50415 4.91089 3.10522C5.30981 2.7063 5.78937 2.50684 6.34957 2.50684H18.572C19.1322 2.50684 19.6117 2.7063 20.0107 3.10522C20.4096 3.50415 20.609 3.98371 20.609 4.5439V16.7663C20.609 17.0889 20.5369 17.3944 20.3926 17.683C20.2483 17.9716 20.0489 18.2092 19.7942 18.396L12.4608 23.8961ZM12.4608 21.3497L18.572 16.7663V4.5439H6.34957V16.7663L12.4608 21.3497ZM11.3913 15.7478L17.146 9.99306L15.7201 8.51619L11.3913 12.845L9.25239 10.706L7.77552 12.132L11.3913 15.7478Z" fill="#EF5D13"/>
+</g>
+</svg>
+`,
   },
 ];
 
@@ -38,88 +64,102 @@ const learnMoreCards = [
   {
     title: "About Axelar",
     url: "/learn/",
-    icon: `<svg style="margin-right:8px;" id="b" data-name="Layer 2" xmlns="http://www.w3.org/2000/svg" stroke="currentColor" fill="currentColor" width="24" height="24" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 141.596 140.816">  <defs>    <filter id="d" data-name="drop-shadow-1" filterUnits="userSpaceOnUse">      <feOffset dx="0" dy="0"/>      <feGaussianBlur result="e" stdDeviation="1.491"/>      <feFlood flood-color="#000" flood-opacity=".13"/>      <feComposite in2="e" operator="in"/>      <feComposite in="SourceGraphic"/>    </filter>  </defs>  <g id="c" data-name="Layer 1">    <path d="M79.026,59.29L122.249,16.306,105.851,0l-35.023,34.83L35.805,0,19.408,16.306,62.63,59.29c2.264,2.251,5.231,3.377,8.198,3.377s5.934-1.125,8.198-3.377Zm62.57,45.919l-35.023-34.83,35.023-34.831-16.397-16.306-43.221,42.984c-4.527,4.503-4.527,11.803,0,16.306l43.221,42.984,16.397-16.306h0Zm-70.828,.777l35.023,34.83,16.396-16.306-43.221-42.984c-4.529-4.503-11.868-4.503-16.397,0L19.348,124.51l16.397,16.306,35.023-34.83h0Zm-11.15-27.395c2.175-2.163,3.396-5.095,3.396-8.153s-1.221-5.991-3.396-8.153L16.397,19.301,0,35.608l35.023,34.83L0,105.269l16.397,16.306,43.222-42.984h0Z" filter="url(#d)"/>  </g></svg>`,
+    icon: `<svg  id="b" data-name="Layer 2" xmlns="http://www.w3.org/2000/svg" stroke="currentColor" fill="currentColor" class="size-5" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 141.596 140.816">  <defs>    <filter id="d" data-name="drop-shadow-1" filterUnits="userSpaceOnUse">      <feOffset dx="0" dy="0"/>      <feGaussianBlur result="e" stdDeviation="1.491"/>      <feFlood flood-color="#000" flood-opacity=".13"/>      <feComposite in2="e" operator="in"/>      <feComposite in="SourceGraphic"/>    </filter>  </defs>  <g id="c" data-name="Layer 1">    <path d="M79.026,59.29L122.249,16.306,105.851,0l-35.023,34.83L35.805,0,19.408,16.306,62.63,59.29c2.264,2.251,5.231,3.377,8.198,3.377s5.934-1.125,8.198-3.377Zm62.57,45.919l-35.023-34.83,35.023-34.831-16.397-16.306-43.221,42.984c-4.527,4.503-4.527,11.803,0,16.306l43.221,42.984,16.397-16.306h0Zm-70.828,.777l35.023,34.83,16.396-16.306-43.221-42.984c-4.529-4.503-11.868-4.503-16.397,0L19.348,124.51l16.397,16.306,35.023-34.83h0Zm-11.15-27.395c2.175-2.163,3.396-5.095,3.396-8.153s-1.221-5.991-3.396-8.153L16.397,19.301,0,35.608l35.023,34.83L0,105.269l16.397,16.306,43.222-42.984h0Z" filter="url(#d)"/>  </g></svg>`,
   },
   {
     title: "Whitepaper",
     url: "/axelar_whitepaper.pdf",
-    icon: `<svg style="margin-right:8px;" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 16 16" height="24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M9.293 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.707A1 1 0 0 0 13.707 4L10 .293A1 1 0 0 0 9.293 0zM9.5 3.5v-2l3 3h-2a1 1 0 0 1-1-1zM4.5 9a.5.5 0 0 1 0-1h7a.5.5 0 0 1 0 1h-7zM4 10.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zm.5 2.5a.5.5 0 0 1 0-1h4a.5.5 0 0 1 0 1h-4z"></path></svg>`,
+    icon: `<svg  stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 16 16" class="size-5" xmlns="http://www.w3.org/2000/svg"><path d="M9.293 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.707A1 1 0 0 0 13.707 4L10 .293A1 1 0 0 0 9.293 0zM9.5 3.5v-2l3 3h-2a1 1 0 0 1-1-1zM4.5 9a.5.5 0 0 1 0-1h7a.5.5 0 0 1 0 1h-7zM4 10.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zm.5 2.5a.5.5 0 0 1 0-1h4a.5.5 0 0 1 0 1h-4z"></path></svg>`,
   },
   {
     title: "Support",
     url: "https://github.com/axelarnetwork/support",
-    icon: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>help-circle</title><path d="M15.07,11.25L14.17,12.17C13.45,12.89 13,13.5 13,15H11V14.5C11,13.39 11.45,12.39 12.17,11.67L13.41,10.41C13.78,10.05 14,9.55 14,9C14,7.89 13.1,7 12,7A2,2 0 0,0 10,9H8A4,4 0 0,1 12,5A4,4 0 0,1 16,9C16,9.88 15.64,10.67 15.07,11.25M13,19H11V17H13M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12C22,6.47 17.5,2 12,2Z" /></svg>`,
+    icon: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="size-5"><title>help-circle</title><path d="M15.07,11.25L14.17,12.17C13.45,12.89 13,13.5 13,15H11V14.5C11,13.39 11.45,12.39 12.17,11.67L13.41,10.41C13.78,10.05 14,9.55 14,9C14,7.89 13.1,7 12,7A2,2 0 0,0 10,9H8A4,4 0 0,1 12,5A4,4 0 0,1 16,9C16,9.88 15.64,10.67 15.07,11.25M13,19H11V17H13M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12C22,6.47 17.5,2 12,2Z"  fill="currentColor" ></svg>`,
   },
   {
     title: "Resources",
     url: "/resources/rpc/resources/",
-    icon: `<svg style="margin-right:8px;" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 16 16" height="24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="m14.12 10.163 1.715.858c.22.11.22.424 0 .534L8.267 15.34a.598.598 0 0 1-.534 0L.165 11.555a.299.299 0 0 1 0-.534l1.716-.858 5.317 2.659c.505.252 1.1.252 1.604 0l5.317-2.66zM7.733.063a.598.598 0 0 1 .534 0l7.568 3.784a.3.3 0 0 1 0 .535L8.267 8.165a.598.598 0 0 1-.534 0L.165 4.382a.299.299 0 0 1 0-.535L7.733.063z"></path><path d="m14.12 6.576 1.715.858c.22.11.22.424 0 .534l-7.568 3.784a.598.598 0 0 1-.534 0L.165 7.968a.299.299 0 0 1 0-.534l1.716-.858 5.317 2.659c.505.252 1.1.252 1.604 0l5.317-2.659z"></path></svg>`,
+    icon: `<svg  stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 16 16" class="size-5" xmlns="http://www.w3.org/2000/svg"><path d="m14.12 10.163 1.715.858c.22.11.22.424 0 .534L8.267 15.34a.598.598 0 0 1-.534 0L.165 11.555a.299.299 0 0 1 0-.534l1.716-.858 5.317 2.659c.505.252 1.1.252 1.604 0l5.317-2.66zM7.733.063a.598.598 0 0 1 .534 0l7.568 3.784a.3.3 0 0 1 0 .535L8.267 8.165a.598.598 0 0 1-.534 0L.165 4.382a.299.299 0 0 1 0-.535L7.733.063z"></path><path d="m14.12 6.576 1.715.858c.22.11.22.424 0 .534l-7.568 3.784a.598.598 0 0 1-.534 0L.165 7.968a.299.299 0 0 1 0-.534l1.716-.858 5.317 2.659c.505.252 1.1.252 1.604 0l5.317-2.659z"></path></svg>`,
   },
   {
     title: "Developer Newsletter",
     url: "https://dashboard.mailerlite.com/forms/215012/95435869033334492/share",
-    icon: `<svg style="margin-right:8px;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke="currentColor" fill="currentColor"  height="24" width="24"><title>email-open</title><path d="M4,8L12,13L20,8V8L12,3L4,8V8M22,8V18A2,2 0 0,1 20,20H4A2,2 0 0,1 2,18V8C2,7.27 2.39,6.64 2.97,6.29L12,0.64L21.03,6.29C21.61,6.64 22,7.27 22,8Z" /></svg>`,
+    icon: `<svg  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke="currentColor" fill="currentColor"  class="size-5"><title>email-open</title><path d="M4,8L12,13L20,8V8L12,3L4,8V8M22,8V18A2,2 0 0,1 20,20H4A2,2 0 0,1 2,18V8C2,7.27 2.39,6.64 2.97,6.29L12,0.64L21.03,6.29C21.61,6.64 22,7.27 22,8Z" /></svg>`,
   },
 ];
 ---
 
-<Section>
-  <h1>What is Axelar?</h1>
-  Axelar delivers secure cross-chain communication for Web3, enabling you to build
-  Interchain dApps that grow beyond a single chain. <em>Secure</em> means Axelar
-  is built on proof-of-stake, the battle-tested approach used by Ethereum, Polygon,
-  Cosmos, and more. <em>Cross-chain communication</em> means you can build a complete
-  experience for your users that lets them interact with any asset, any application,
-  on any chain with one click.
-
-  <div class="card-grid">
-    {
-      cards.map((card) => (
-        <a class="card" href={card.url}>
-          <div>
-            <Fragment set:html={card.icon} /> {card.title}
-          </div>
-          <div>{card.description}</div>
-          <span>
-            Get Started{" "}
-            <svg
-              stroke="currentColor"
-              fill="currentColor"
-              stroke-width="0"
-              viewBox="0 0 20 20"
-              class="mt-0.5"
-              height="16"
-              width="16"
-              xmlns="http://www.w3.org/2000/svg"
-              style="vertical-align:middle;"
+<MainLayout>
+  <WorldMap>
+    <div
+      class="min-h-[90dvh] pb-20 pt-24 sub-container md:pt-40 flex flex-col gap-16"
+    >
+      <div class="flex flex-col gap-5 items-start">
+        <div class="flex justify-between items-center w-full">
+          <h1 class="text-5xl md:text-6xl font-medium font-clash">
+            Axelar Documentation
+          </h1>
+          <!-- <Button className="uppercase hidden xl:block"> get started </Button> -->
+        </div>
+        <p class="text-base font-clash font-medium">
+          Axelar delivers secure cross-chain communication for Web3, enabling
+          you to build Interchain dApps that grow beyond a single chain. <em
+            >Secure</em
+          > means Axelar is built on proof-of-stake, the battle-tested approach used
+          by Ethereum, Polygon, Cosmos, and more. <em
+            >Cross-chain communication</em
+          > means you can build a complete experience for your users that lets them
+          interact with any asset, any application, on any chain with one click.
+        </p>
+      </div>
+      <div class="grid md:grid-cols-2 md:grid-rows-2 gap-4">
+        {
+          cards.map((card) => (
+            <a
+              class="border-[0.3px] font-clash px-6 flex flex-col gap-6 bg-white dark:bg-background-neutral py-5 rounded-[28px] border-border"
+              href={card.url}
             >
-              <path
-                fill-rule="evenodd"
-                d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z"
-                clip-rule="evenodd"
-              />
-            </svg>
-          </span>
-        </a>
-      ))
-    }
-  </div>
-  <div>
-    <h2>Learn more about Axelar</h2>
-    <div style="display:flex; ;">
-      {
-        learnMoreCards.map((card) => (
-          <a
-            href={card.url}
-            class="card"
-            style="width:auto;padding:16px 32px 16px 16px;"
-          >
-            <div>
-              <Fragment set:html={card.icon} /> {card.title}
-            </div>
-          </a>
-        ))
-      }
+              <div class="flex justify-between items-center">
+                <div class="flex items-center gap-2">
+                  <Fragment set:html={card.icon} />{" "}
+                  <h2 class="text-2xl font-medium">{card.title}</h2>
+                </div>
+                <svg
+                  width="28"
+                  height="28"
+                  viewBox="0 0 28 28"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M16.0971 14.8244L13.4002 17.5217C13.2571 17.6646 13.1905 17.8349 13.2004 18.0328C13.2101 18.2306 13.2865 18.401 13.4296 18.5438C13.5724 18.687 13.7493 18.7585 13.9601 18.7585C14.171 18.7585 14.3446 18.687 14.4811 18.5438L18.1008 14.9245C18.3478 14.6775 18.4713 14.3895 18.4713 14.0605C18.4713 13.7315 18.3478 13.4435 18.1008 13.1965L14.4517 9.54777C14.3088 9.40467 14.1385 9.33311 13.9406 9.33311C13.7428 9.33311 13.5724 9.40467 13.4296 9.54777C13.2865 9.69062 13.2149 9.86746 13.2149 10.0783C13.2149 10.2894 13.2865 10.4631 13.4296 10.5993L16.0971 13.2966H9.35724C9.1408 13.2966 8.95937 13.3699 8.81296 13.5166C8.66654 13.6633 8.59334 13.845 8.59334 14.0617C8.59334 14.2784 8.66654 14.4597 8.81296 14.6056C8.95937 14.7515 9.1408 14.8244 9.35724 14.8244H16.0971ZM13.9456 27.8107C12.0443 27.8107 10.2566 27.4499 8.58264 26.7283C6.90894 26.0067 5.45294 25.0273 4.21466 23.7903C2.97638 22.5533 1.99616 21.0986 1.27402 19.4262C0.551627 17.754 0.19043 15.9671 0.19043 14.0655C0.19043 12.1641 0.551245 10.3765 1.27288 8.70251C1.99451 7.02881 2.97383 5.57281 4.21084 4.33453C5.44785 3.09625 6.90257 2.11604 8.575 1.3939C10.2472 0.6715 12.0341 0.310303 13.9357 0.310303C15.837 0.310303 17.6247 0.67112 19.2986 1.39275C20.9723 2.11438 22.4283 3.0937 23.6666 4.33071C24.9049 5.56772 25.8851 7.02244 26.6073 8.69488C27.3297 10.3671 27.6909 12.1539 27.6909 14.0555C27.6909 15.9569 27.33 17.7446 26.6084 19.4185C25.8868 21.0922 24.9075 22.5482 23.6704 23.7865C22.4334 25.0248 20.9787 26.005 19.3063 26.7271C17.6341 27.4495 15.8472 27.8107 13.9456 27.8107ZM13.9406 26.2829C17.3527 26.2829 20.2428 25.0989 22.6109 22.7308C24.979 20.3627 26.1631 17.4726 26.1631 14.0605C26.1631 10.6484 24.979 7.75833 22.6109 5.39024C20.2428 3.02215 17.3527 1.8381 13.9406 1.8381C10.5286 1.8381 7.63846 3.02215 5.27037 5.39024C2.90228 7.75833 1.71823 10.6484 1.71823 14.0605C1.71823 17.4726 2.90228 20.3627 5.27037 22.7308C7.63846 25.0989 10.5286 26.2829 13.9406 26.2829Z"
+                    fill="currentColor"
+                  />
+                </svg>
+              </div>
+              <p class="text-sm font-medium">{card.description}</p>
+            </a>
+          ))
+        }
+      </div>
+      <div class="flex flex-col gap-4">
+        <h2 class="font-clash uppercase text-2xl tracking-wide font-light">
+          Learn more about Axelar
+        </h2>
+        <div class="grid md:grid-cols-3 gap-x-6 gap-y-3">
+          {
+            learnMoreCards.map((card) => (
+              <a
+                href={card.url}
+                class="bg-white dark:bg-background-neutral w-full px-2.5 py-2 gap-3 border border-border rounded-full flex items-center "
+              >
+                <Fragment set:html={card.icon} />
+                <p class="flex-1 text-sm"> {card.title}</p>
+              </a>
+            ))
+          }
+        </div>
+      </div>
     </div>
-  </div>
-</Section>
+  </WorldMap>
+</MainLayout>

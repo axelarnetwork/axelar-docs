@@ -1,6 +1,6 @@
 # Mantle
 
-import { Callout } from "/src/components/callout"
+import { Callout } from "/src/components/callout";
 
 Set up your Mantle RPC node
 
@@ -14,6 +14,7 @@ Set up your Mantle RPC node
 ## Prerequisites
 
 Install docker
+
 ```bash
 sudo apt update
 sudo apt install snapd
@@ -21,6 +22,7 @@ sudo apt-get install jq -y
 snap install docker
 curl -L https://foundry.paradigm.xyz | bash && source /root/.bashrc && foundryup
 ```
+
 - [Common Docker Compose Commands](/validator/external-chains/optimism/#common-node-operations)
 
 ### Download configs
@@ -38,14 +40,14 @@ cd mantlenetworks
         mkdir -p mainnet/secret
         node -e "console.log(require('crypto').randomBytes(32).toString('hex'))" > mainnet/secret/jwt_secret_txt
         cast w n |grep -i "Private Key" |awk -F ": " '{print $2}' |sed 's/0x//' > mainnet/secret/p2p_node_key_txt
-        ```
+```
     </tab-item>
     <tab-item title="Testnet">
         ```bash
         mkdir sepolia/secret
         node -e "console.log(require('crypto').randomBytes(32).toString('hex'))" > sepolia/secret/jwt_secret_txt
         cast w n |grep -i "Private Key" |awk -F ": " '{print $2}' |sed 's/0x//' > sepolia/secret/p2p_node_key_txt
-        ```
+```
     </tab-item>
 </tabs>
 
@@ -56,19 +58,15 @@ cd mantlenetworks
 </Callout>
 
 <tabs>
-    <tab-item title="Mainnet">
-        Set the following config option in [mainnet/envs/geth.env](https://github.com/mantlenetworkio/networks/blob/99344b50e3b792d91a83ba89304ef6f479585ae7/mainnet/envs/geth.env#L31):
-        ```bash
-        ETH1_HTTP=your_ethereum_mainnet_l1_node
-        GCMODE=full # or archive
-        ```
-    </tab-item>
-    <tab-item title="Testnet">
-        Set the following config option in `docker-compose-sepolia.yml`
-        ```bash
-        OP_NODE_L1_ETH_RPC=your_ethereum_sepolia_l1_node
-        ```
-    </tab-item>
+  <tab-item title="Mainnet">
+    Set the following config option in
+    [mainnet/envs/geth.env](https://github.com/mantlenetworkio/networks/blob/99344b50e3b792d91a83ba89304ef6f479585ae7/mainnet/envs/geth.env#L31):
+    ```bash ETH1_HTTP=your_ethereum_mainnet_l1_node GCMODE=full # or archive ```
+  </tab-item>
+  <tab-item title="Testnet">
+    Set the following config option in `docker-compose-sepolia.yml` ```bash
+    OP_NODE_L1_ETH_RPC=your_ethereum_sepolia_l1_node ```
+  </tab-item>
 </tabs>
 
 ### Download latest snapshot
@@ -76,40 +74,33 @@ cd mantlenetworks
 Download the latest snapshot for a quicker sync: [Mainnet](https://github.com/mantlenetworkio/networks/blob/main/run-node-mainnetv2.md) | [Testnet](https://github.com/mantlenetworkio/networks/blob/main/run-node-sepolia.md)
 
 <tabs>
-    <tab-item title="Mainnet">
-        ```bash
-        mkdir -p ./data/mainnet-geth
-        tarball="[latest snapshot].tar"
-        wget https://s3.ap-southeast-1.amazonaws.com/snapshot.mantle.xyz/${tarball}
-        tar vxf ${tarball} -C ./data/mainnet-geth
-        ```
-        </tab-item>
-        <tab-item title="Testnet">
-        ```bash
-        mkdir -p ./data/geth
-        tarball="[latest snapshot].tar"
-        wget https://s3.ap-southeast-1.amazonaws.com/static.testnet.mantle.xyz/${tarball}
-        tar vxf ${tarball} -C ./data/geth
-        ```
-    </tab-item>
+  <tab-item title="Mainnet">
+    ```bash mkdir -p ./data/mainnet-geth tarball="[latest snapshot].tar" wget
+    https://s3.ap-southeast-1.amazonaws.com/snapshot.mantle.xyz/${tarball}
+    tar vxf ${tarball} -C ./data/mainnet-geth 
+```
+  </tab-item>
+  <tab-item title="Testnet">
+    ```bash mkdir -p ./data/geth tarball="[latest snapshot].tar" wget
+    https://s3.ap-southeast-1.amazonaws.com/static.testnet.mantle.xyz/${tarball}
+    tar vxf ${tarball} -C ./data/geth 
+```
+  </tab-item>
 </tabs>
 
 ### Start the node
 
 <tabs>
-    <tab-item title="Mainnet">
-        ```bash
-        docker compose -f docker-compose-mainnetv2.yml up -d
-        ```
-    </tab-item>
-    <tab-item title="Testnet">
-        ```bash
-        docker compose -f docker-compose-sepolia.yml up -d
-        ```
-    </tab-item>
+  <tab-item title="Mainnet">
+    ```bash docker compose -f docker-compose-mainnetv2.yml up -d ```
+  </tab-item>
+  <tab-item title="Testnet">
+    ```bash docker compose -f docker-compose-sepolia.yml up -d ```
+  </tab-item>
 </tabs>
 
 An output similar to the following will be shown:
+
 ```bash
 [+] Running 6/6
  ✔ replica 5 layers [⣿⣿⣿⣿⣿]      0B/0B      Pulled
@@ -120,20 +111,18 @@ An output similar to the following will be shown:
 ```
 
 After it is done, verify by listing the services and their status
+
 <tabs>
-    <tab-item title="Mainnet">
-        ```bash
-        docker compose -f docker-compose-mainnetv2.yml ps
-        ```
-    </tab-item>
-    <tab-item title="Testnet">
-        ```bash
-        docker compose -f docker-compose-sepolia.yml ps
-        ```
-    </tab-item>
+  <tab-item title="Mainnet">
+    ```bash docker compose -f docker-compose-mainnetv2.yml ps ```
+  </tab-item>
+  <tab-item title="Testnet">
+    ```bash docker compose -f docker-compose-sepolia.yml ps ```
+  </tab-item>
 </tabs>
 
 You should see these 2 services running
+
 ```bash
 NAME                       IMAGE                                  COMMAND             SERVICE             CREATED             STATUS              PORTS
 NAME                       IMAGE                                    COMMAND                  SERVICE             CREATED             STATUS                          PORTS
@@ -161,6 +150,7 @@ mantlenetworks-op-geth-1  | INFO [04-01|11:02:21.503] WebSocket enabled         
 mantlenetworks-op-geth-1  | INFO [04-01|11:02:21.503] HTTP server started                      endpoint=[::]:8551 auth=true  prefix= cors=localhost vhosts=*
 mantlenetworks-op-geth-1  | INFO [04-01|11:02:23.907] New local node record                    seq=1,711,969,341,502 id=d90665a63ea4440a ip=65.108.239.113 udp=30300 tcp=30300
 ```
+
 It will not import new headers until your op-node is synced, once your op-node is synced, your blast-geth logs should look like this
 
 ```bash
@@ -173,12 +163,12 @@ mantlenetworks-op-geth-1  | INFO [02-29|08:08:15.285] Chain head was updated    
 mantlenetworks-op-geth-1  | INFO [02-29|08:08:15.307] Starting work on payload                 id=0x44c95802c3652dbd
 ```
 
-
 #### Verify OP node logs
 
 ```bash
 docker compose logs op-node --since 2m -f
 ```
+
 You should see logs like
 
 ```bash
@@ -197,16 +187,19 @@ mantlenetworks-op-node-1  | t=2024-02-27T07:43:47+0000 lvl=info msg="Sync progre
 ### Verify node sync status
 
 RPC Endpoint
+
 ```bash
 echo "$(curl -4 ifconfig.co):8545"
 ```
 
 #### Method 1:
+
 ```bash
 curl -X POST [rpc] -H "Content-Type: application/json" --data '{"jsonrpc":"2.0","method":"eth_blockNumber","params":[],"id":1}' | jq
 ```
 
 If you get something like this in response to the above rpc call, your node is setup correctly
+
 ```json
 {
   "jsonrpc": "2.0",
@@ -214,9 +207,11 @@ If you get something like this in response to the above rpc call, your node is s
   "result": "0x4e4c"
 }
 ```
+
 You can use a [hex to number convertor](https://www.binaryhexconverter.com/hex-to-decimal-converter) to get the block height
 
 #### Method 2:
+
 You can also check your status by connecting to geth console
 
 ```bash
@@ -234,20 +229,15 @@ In order for `vald` to connect to your mantle node, your `rpc_addr` should be ex
 vald's `config.toml`
 
 <tabs>
-    <tab-item title="Mainnet">
-        ```bash
-        [[axelar_bridge_evm]]
-        name = "mantle"
-        rpc_addr = "http://IP:PORT"
-        start-with-bridge = true
-        ```
-    </tab-item>
-    <tab-item title="Testnet">
-        ```bash
-        [[axelar_bridge_evm]]
-        name = "mantle"
-        rpc_addr = "http://IP:PORT"
-        start-with-bridge = true
-        ```
-    </tab-item>
+  <tab-item title="Mainnet">
+    ```bash [[axelar_bridge_evm]] name = "mantle" rpc_addr = "http://IP:PORT"
+    start-with-bridge = true 
+```
+  </tab-item>
+  <tab-item title="Testnet">
+    ```bash [[axelar_bridge_evm]] name = "mantle" rpc_addr = "http://IP:PORT"
+    start-with-bridge = true 
+    
+```
+  </tab-item>
 </tabs>

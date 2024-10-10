@@ -1,6 +1,6 @@
 # Fantom
 
-import { Callout } from "/src/components/callout"
+import { Callout } from "/src/components/callout";
 
 Set up your Fantom Mainnet or Testnet Opera node.
 
@@ -57,7 +57,8 @@ wget https://download.fantom.network/mainnet-109331-pruned-mpt.g
 After installation of `go-opera`, we are now ready to start the process but in order to ensure it is running in the background and auto-restarts in case of a server failure, we will setup a service file with systemd.
 
 <Callout emoji="📝">
-  Note: In the service file below you need to replace `$USER` and path to `opera`, depending on your system configuration.
+  Note: In the service file below you need to replace `$USER` and path to
+  `opera`, depending on your system configuration.
 </Callout>
 
 ```bash
@@ -69,7 +70,7 @@ After=network.target
 [Service]
 User=$USER
 Type=simple
-ExecStart=/root/go-opera/build/opera --genesis /root/go-opera/build/mainnet-109331-pruned-mpt.g --identity <your_name> --cache 8096 --http --http.addr 0.0.0.0 --http.corsdomain '*' --http.vhosts "*" --http.api "eth,net,web3" 
+ExecStart=/root/go-opera/build/opera --genesis /root/go-opera/build/mainnet-109331-pruned-mpt.g --identity <your_name> --cache 8096 --http --http.addr 0.0.0.0 --http.corsdomain '*' --http.vhosts "*" --http.api "eth,net,web3"
 Restart=on-failure
 LimitNOFILE=65535
 
@@ -77,8 +78,11 @@ LimitNOFILE=65535
 WantedBy=multi-user.target
 EOF
 ```
+
 <Callout type="error" emoji="⚠️">
- If you would like to run a node on the Testnet instead, you need to replace `--genesis /root/go-opera/build/testnet-6226-pruned-mpt.g` in the configuration above.
+  If you would like to run a node on the Testnet instead, you need to replace
+  `--genesis /root/go-opera/build/testnet-6226-pruned-mpt.g` in the
+  configuration above.
 </Callout>
 
 ### 4. Enable and start the `fantom` service
@@ -95,6 +99,7 @@ If everything was set-up correctly, your Fantom node should now be starting the 
 sudo systemctl status fantom
 sudo journalctl -u fantom -f
 ```
+
 Your node will now start to synchronize with the network. It will take several hours before the node is fully synced.
 
 ## Test your Fantom RPC connection

@@ -1,6 +1,6 @@
 # Send AXL to an EVM chain
 
-import { Callout } from "/src/components/callout"
+import { Callout } from "/src/components/callout";
 
 Transfer AXL tokens from Axelar to an EVM chain using the terminal.
 
@@ -51,12 +51,14 @@ axelard tx bank send my_account {AXELAR_TEMP_ADDR} {AMOUNT}uaxl --from my_accoun
   Note: Third-party monitoring tools will automatically complete the remaining steps of this process.
 
 Wait a few minutes then check your MetaMask for the AXL tokens. Don't forget to import the AXL token into MetaMask so you can see your balance as described in [MetaMask for EVM chains](/resources/metamask/).
+
 </Callout>
 
 <Callout type="warning" emoji="⚠️">
   Caution: If you attempt the remaining steps while third-party monitoring tools are active then your commands are likely to conflict with third-party commands. In this case you are likely to observe errors. Deeper investigation might be needed to resolve conflicts and complete the transfer.
 
 The remaining steps are needed only if there are no active third-party monitoring tools and you wish to complete the process manually.
+
 </Callout>
 
 Confirm the deposit transaction. Look for `{TX_HASH}` in the output of the previous command.
@@ -89,13 +91,15 @@ Wait for `status: BATCHED_COMMANDS_STATUS_SIGNED` and copy the `execute_data`.
 Use MetaMask to send a transaction on `{EVM_CHAIN}` with the `execute_data` to the Axelar gateway contract address `{GATEWAY_ADDR}`.
 
 <Callout type="error" emoji="🔥">
-  Danger: Post your transaction to the correct chain! Set your MetaMask network to `{EVM_CHAIN}`.
+  Danger: Post your transaction to the correct chain! Set your MetaMask network
+  to `{EVM_CHAIN}`.
 </Callout>
 
 <Callout type="warning" emoji="⚠️">
   Caution: Manually increase the gas limit to 5 million gas (5000000). If you don't do this then the transaction will fail due to insufficient gas and you will not receive your tokens.
 
 Before you click "confirm": select "EDIT", change "Gas Limit" to 5000000, and "Save"
+
 </Callout>
 
 <Callout emoji="💡">

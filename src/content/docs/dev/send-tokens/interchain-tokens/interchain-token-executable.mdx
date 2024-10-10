@@ -2,7 +2,7 @@
 
 import { Callout } from "/src/components/callout";
 
-You can use the [Axelar Interchain Token Service (ITS)](https://github.com/axelarnetwork/interchain-token-service/tree/main) to create a new Interchain Token or integrate an existing ERC-20 token to ITS to give your token bridging functionality. 
+You can use the [Axelar Interchain Token Service (ITS)](https://github.com/axelarnetwork/interchain-token-service/tree/main) to create a new Interchain Token or integrate an existing ERC-20 token to ITS to give your token bridging functionality.
 
 ITS also allows you to send [GMP messages](https://docs.axelar.dev/dev/general-message-passing/overview) when making a cross-chain transfer for an ITS token.
 
@@ -34,7 +34,9 @@ function callContractWithInterchainToken(
 ```
 
 <Callout emoji="🚨">
- The `destinationAddress` should be an address encoded as bytes. Use the [`toBytes()`](https://github.com/axelarnetwork/axelar-gmp-sdk-solidity/blob/main/contracts/libs/AddressBytes.sol#L30) method to quickly accomplish this on-chain.
+  The `destinationAddress` should be an address encoded as bytes. Use the
+  [`toBytes()`](https://github.com/axelarnetwork/axelar-gmp-sdk-solidity/blob/main/contracts/libs/AddressBytes.sol#L30)
+  method to quickly accomplish this on-chain.
 </Callout>
 
 ## Execute on Destination Chain

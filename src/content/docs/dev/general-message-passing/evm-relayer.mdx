@@ -1,0 +1,136 @@
+# EVM Relayer
+
+The Axelar EVM relayer facilitates communication between different EVM-compatible chains on the Axelar network. Both [legacy and EIP-1559 transaction types](https://www.youtube.com/watch?v=MGemhK9t44Q) are supported.
+
+Each chain has a relayer queue that receives transaction data. These queues serve as the relayer’s entry point. The Axelar network has multiple instances of the EVM relayer service running in parallel, waiting to pick up and process messages. This way, multiple transactions can be executed simultaneously. The relayer will try to broadcast the payload until it is either included in a block or has hit the maximum number of attempts. If a process unexpectedly stops or gets killed in the middle of a relay, an internal database will recover the payload and the transaction will be re-tried when the process is back up.
+
+The relayer has to go through three basic steps:
+
+1. Receive payloads, which must contain the destination address (`to`), payload value (`value`), and transaction data (`data`)
+1. Query the appropriate gas fee and price for the payload and create a transaction with those values
+1. Broadcast the transaction
+
+The following diagram illustrates a typical relayer flow. Note that the queries for gas fee and gas price have been split into two separate steps:
+
+
+
+<object
+  type="image/svg+xml"
+  data="/images/assets/evm-relayer-flow.svg"
+ 
+  class="hidden dark:block w-full max-w-[30rem] mx-auto py-6"
+>
+  Your browser does not support SVG
+</object>
+<object
+  type="image/svg+xml"
+  data="/images/assets/evm-relayer-flow-light.svg"
+ 
+  class=" dark:hidden w-full max-w-[30rem] mx-auto py-6"
+>
+  Your browser does not support SVG
+</object>
+
+## Build and run your own EVM relayer
+
+The following sections cover how to build and run your own EVM relayer on the Axelar network. It is important to realize that Axelar’s relayers are capable of handling all multichain transactions on the Axelar network, and any relayers running in parallel on the network will be put in a race condition. When a relayer loses the race, the transaction will fail and fees will be wasted. **We highly encourage you to use the existing Axelar relayers unless you need custom functionality.**
+
+### Receive payloads via event listener
+
+A relayer needs to be able to receive payloads. Although payloads can be passed manually, in a multichain transaction a relayer usually reacts to events on a blockchain. For example, during a [GMP call](/dev/general-message-passing/overview), messages are passed to the relayer via a listener that is responsible for gathering events that indicate when the Axelar validator set confirmed a contract call. Similarly, to facilitate other flows, there are going to be listeners gathering events of other types.
+
+The following code sets up an event listener and passes the payload to a chain’s relayer queue:
+
+```python
+# set up connection to a chain
+# load contract ABI
+# ...
+
+# set up the event filter (example: Filter by 'ContractCalled' event)
+event_filter = contract.events.ContractCalled.createFilter(fromBlock='latest')
+
+def handle_event(event):
+    # Process the event and prepare the payload
+    payload = {
+        'to': event.args.to,
+        'value': event.args.value
+        'data': event.args.data
+    }
+
+		# publish to relayer, e.g. via a RMQ queue
+    publish(payload)
+
+# Poll the filter for new entries
+def poll_events():
+    while True:
+        for event in event_filter.get_new_entries():
+            handle_event(event)
+
+poll_events()
+```
+
+### Prepare the transaction
+
+Once a payload is received, the relayer can begin crafting the transaction. In order to do so, it needs to determine the following:
+
+- The transaction nonce
+- The gas fee
+- The gas price
+
+The value of each is determined through a query.
+
+### Query the transaction nonce
+
+The transaction nonce is a value that represents the number of transactions sent from a sender's address. It ensures that transactions are processed in the correct order to prevent replay attacks.
+
+The following code queries the pending nonce of a relayer address from the Axelar network:
+
+```python
+web3 = Web3(Web3.HTTPProvider('...'))
+
+relayer_address = "..."
+
+nonce = web3.eth.getTransactionCount(relayer_address, 'pending')
+```
+
+### Estimate the gas fee
+
+All transactions must pay gas in order to execute. The gas fee can be set either statically or based on payload size:
+
+- **Static gas fee** — This is easier to implement, but can cause drawbacks come transaction time. If the received payload is too large, the gas fee might not be sufficient, causing the transaction to fail. If the gas fee is more than what a payload will need, each relay attempt will use more funds than necessary.
+- **Dynamic gas fee** — This will set gas fees based on payload size, which can be challenging to estimate. Gas estimations can be imprecise, and transactions will still fail if the estimate is not accurate. To mitigate this, you can set a multiplier that overestimates a little, such as 20% higher than absolutely necessary.
+
+The following example estimates the gas fee:
+
+```python
+web3 = Web3(Web3.HTTPProvider('...'))
+
+relayer_address = "..."
+gas_fee_multiplier = 1.2
+
+estimated_gas = web3.eth.estimate_gas({
+     'from': relayer_address,
+     'to': payload.To,
+     'data': payload.Data
+     }) * gas_fee_multiplier
+```
+
+See [Estimate and Pay Gas](/dev/gas-service/pay-gas) for more details.
+
+### Set the gas price
+
+The gas price set will determine how quickly the transaction will be included in the next block. A higher gas price will lead to faster inclusion, while a lower gas price might cause slow or even failed transactions if the network is busy.
+
+### Broadcast transaction
+
+After crafting a transaction with the appropriate gas fee and price, the relayer needs to broadcast it to the network. This process involves signing the transaction with the relayer's account private key and sending it to the network. The network nodes then validate and include it in the upcoming blocks.
+
+### React to transaction failures (optional)
+
+The relayer can optionally react to transaction failures. Some failures types include the following:
+
+- Transient errors (such as connection problems)
+- Underpriced transactions
+- Low gas fees
+
+See [Execution Error Messages](/dev/general-message-passing/debug/error-debugging) for more details.

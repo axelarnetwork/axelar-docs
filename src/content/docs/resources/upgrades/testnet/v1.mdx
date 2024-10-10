@@ -1,0 +1,81 @@
+# Testnet upgrade: v1.0
+
+import { Callout } from '/src/components/callout';
+import { AXELARD_TESTNET } from '/src/config/variables';
+
+## About the v1.0 upgrade
+
+This release finalizes initial support for [Amplifier](/dev/amplifier/introduction).
+
+Changes since 0.35.x:
+
+- Various fixes that improve stability
+- New queries in the axelarnet module to query the IBC path for a chain and the chain by IBC path
+- Added a new message type “BatchRequest”. In contrast to cosmos default behaviour, where the entire tx gets rolled back if there is an error in any of the contained message executions, this batch only rolls back the state for the specific messages that fail and keeps the rest
+- Allow refundable messages to be batched
+- Correctly pass message IDs between core and the new amplifier
+- Add functionality to quickly (de)activate the connection between core and amplifier in case of emergencies
+
+See all the changes in the [`axelar-core` release notes](https://github.com/axelarnetwork/axelar-core/releases).
+
+Upgrade height `14625900` at approximately **11AM Eastern Time (15:00 UTC) on August 1st, 2024** ([countdown](https://www.mintscan.io/axelar-testnet/block/14625900))
+
+<Callout type="warning" emoji="⚠️">
+As of v1.0.0, the `axelard` [binary releases](https://github.com/axelarnetwork/axelar-core/releases) require `GLIBC_2.34`, which is not present on Ubuntu 20.04.
+
+You will need to compile `axelard` from source, or upgrade to Ubuntu 22.04.
+
+</Callout>
+
+<Callout type="warning" emoji="⚠️">
+  If using the community node setup scripts, please update to the latest commit
+  on `main` first. `wasmvm` lib will be auto-downloaded to `$AXELARD_HOME/lib`
+  but you'll need to add it to `LD_LIBRARY_PATH` before running the script.
+</Callout>
+
+1. If you're a validator or have delegated to one, you can vote for the upgrade proposal, while it's active, via
+
+```bash
+axelard tx gov vote 99 yes --from validator
+```
+
+2. Wait for the proposed upgrade block, `14625900`. Your node will panic at that block height with a log: `{"level":"error","module":"consensus","err":"UPGRADE \"v1.0\" NEEDED at height: 14625900", ...}`. Stop your node after chain halt.
+
+```bash
+pkill -f 'axelard start'
+# Validators need to also stop vald/tofnd
+pkill -f 'vald-start'
+pkill -f tofnd
+```
+
+3. Backup the state:
+
+```bash
+cp -r ~/.axelar_testnet/.core/data ~/.axelar-lisbon-3-upgrade-0.35/.core/data
+```
+
+<Callout type="warning" emoji="⚠️">
+  Caution: If you backup the entire folder, `~/.axelar_testnet/.core`, that'll
+  also include your private keys (inside `config` and `keyring-file`
+  subfolders). That can be dangerous if anyone gets access to your backups. We
+  recommend backing up keys separately when you first create your node, and then
+  excluding them from any data backups.
+</Callout>
+
+4. Restart your `axelard` node with the new v{AXELARD_TESTNET} build.
+5. If you're a validator also restart `vald` with v{AXELARD_TESTNET} and `tofnd` with `v1.0.1`.
+
+<Callout type="warning" emoji="⚠️">
+  [`tofnd` 1.0.1 has been released](https://github.com/axelarnetwork/tofnd/releases), and we recommend adopting `v1.0.1` of `tofnd` independently from the upgrade.
+</Callout>
+
+Example using join scripts in [axelarate-community git repo](https://github.com/axelarnetwork/axelarate-community):
+
+```bash
+# in axelarate-community repo (https://github.com/axelarnetwork/axelarate-community)
+git checkout main
+git pull
+KEYRING_PASSWORD="pw-1" ./scripts/node.sh -n testnet -a v1.0.4
+# For validators, restart vald/tofnd
+KEYRING_PASSWORD="pw-1" TOFND_PASSWORD="pw-2" ./scripts/validator-tools-host.sh -n testnet -a v1.0.4 -q v0.10.1
+```

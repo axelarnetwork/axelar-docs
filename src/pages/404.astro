@@ -1,0 +1,42 @@
+---
+import MainLayout from "@/layouts/MainLayout.astro";
+---
+
+<MainLayout title="Page Not Found" description="Page Not Found" notSidebar>
+  <div
+    class="bg-404-grid-2 bg-no-repeat container bg-left-top md:bg-[90%_110%]"
+  >
+    <div
+      class="min-h-[90dvh] bg-right-bottom md:bg-[5%_80%] flex items-center justify-center flex-col gap-6 md:gap-10 bg-404-grid-1 bg-no-repeat"
+    >
+      <h1
+        class="text-9xl md:text-[180px] md:leading-[140px] font-clash font-semibold"
+      >
+        404
+      </h1>
+      <h2 class="text-3xl md:text-5xl font-semibold">Page Not Found</h2>
+      <p class="text-lg max-w-xl text-text-dark-gray text-center">
+        If you followed an incoming link or think this is a mistake, <a
+          href="https://github.com/axelarnetwork/axelar-docs/issues/new/choose"
+          class="text-primary hover:underline"
+          target="_blank">let us know</a
+        >
+        so we can fix it!
+      </p>
+      <div class="flex gap-6">
+        <a
+          href="https://github.com/axelarnetwork/support"
+          class="bg-primary tracking-wide text-center w-[10rem] font-bold text-white py-2.5 rounded-full"
+        >
+          Support
+        </a>
+        <a
+          href="/"
+          class="bg-black dark:bg-white tracking-wide text-center w-[10rem] font-bold text-white dark:text-black py-2.5 rounded-full"
+        >
+          Go Home
+        </a>
+      </div>
+    </div>
+  </div></MainLayout
+>

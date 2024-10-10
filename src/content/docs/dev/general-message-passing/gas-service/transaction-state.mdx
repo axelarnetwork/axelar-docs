@@ -1,0 +1,215 @@
+# Transactions: Tracking and Retrying Failed States
+
+Transactions in blockchain networks can occasionally encounter issues that prevent them from completing successfully. These failures can occur at different stages of the transaction process, such as during relaying from the source chain to the destination chain or during the execution phase on the destination chain.
+
+This guide explains how to track the status of your transactions, identify different failure states, and recover failed transactions using the [Axelarscan UI](https://axelarscan.io/) and the [AxelarJS SDK.](https://docs.axelar.dev/dev/axelarjs-sdk/intro)
+
+## Tracking transaction status
+
+When you initiate a transaction across chains, monitoring its progress is important to ensure successful completion. A typical transaction will pass through several stages:
+
+1. **Sent** — The transaction has been initiated and relayed to the Axelar network.
+2. **Gas Paid** — Gas fees have been paid on the source chain for the transaction to proceed.
+3. **Confirmed** — The transaction has been confirmed on the source chain and awaits approval in the Axelar network.
+4. **Approved** — The transaction has been approved by the Axelar network and is ready to be executed on the destination chain.
+5. **Executed** — The transaction has been successfully executed on the destination chain.
+6. **Excess Gas Refunded** — Any excess gas not used during the transaction is refunded to the sender.
+
+## Common failure states
+
+Despite following the standard flow, transactions can fail at various points due to network issues or insufficient gas fees. Here are common failure states and how to handle them:
+
+1. **Failure to relay from source chain (unapproved status)**
+   - **Issue**: The transaction fails to relay from the source chain into the Axelar network, remaining unapproved.
+   - **Solution**:
+     - **Axelarscan UI**: If the transaction is unapproved, Axelarscan will show an option to "APPROVE.” Click this to resubmit the request to the network manually. Once approved, the transaction can proceed.
+     - **AxelarJS SDK**: Use the SDK's `manualRelayToDestChain` method to programmatically resubmit and approve the transaction.
+2. **Failure to execute on destination chain**
+   - **Issue**: The transaction fails during execution on the destination chain, which may be due to network congestion, insufficient gas, or other issues.
+   - **Solutions**:
+     - **Manually execute transfer**
+       - **Axelarscan UI**: Click the ‘Connect’ button under the ‘Execute at destination chain’ label and then the ‘Execute’ button to trigger the execution using newly paid gas. If the manual execution fails, debug the contract and retry.
+       - **AxelarJS SDK**: Use the SDK's `execute` method to manually execute the transaction programmatically on the destination chain.
+     - **Increase gas payment**
+       - **Axelarscan UI**: Connect your MetaMask wallet, switch to the source chain, and add more gas by clicking the ‘Add gas at source chain’ button. This will relay the transaction with increased gas.
+       - **AxelarJS SDK**: Depending on whether native tokens or ERC-20 tokens are used, use the `addNativeGas` or `addGas` method to increase gas payment.
+3. **Insufficient fee or not enough gas**
+   - **Issue**: The transaction fails due to an insufficient fee or not enough gas paid to cover the execution on the destination chain.
+   - **Solution**: Increase the gas payment as described above and resubmit the transaction.
+4. **Error execution**
+   - **Issue**: An error occurs during execution, potentially due to issues with the smart contract or external factors like network congestion.
+   - **Solution**: Debug the contract according to the error message and retry the transaction using either the Axelarscan UI or the SDK.
+
+## Using AxelarJS SDK for transaction recovery
+
+The AxelarJS SDK provides powerful tools for programmatically managing and recovering transactions. The `AxelarGMPRecoveryAPI` module allows you to query the status of any General Message Passing (GMP) transaction and manually relay it if necessary.
+
+### Install the AxelarJS SDK
+
+```bash
+npm i @axelar-network/axelarjs-sdk
+```
+
+### **Instantiate the AxelarGMPRecoveryAPI module**
+
+```tsx
+import {
+  AxelarGMPRecoveryAPI,
+  Environment,
+} from "@axelar-network/axelarjs-sdk";
+
+const sdk = new AxelarGMPRecoveryAPI({
+  environment: Environment.TESTNET,
+});
+```
+
+### Query transaction status with `txHash`
+
+You can query the status of a transaction using its hash:
+
+```tsx
+const txHash: string =
+  "0xfb6fb85f11496ef58b088116cb611497e87e9c72ff0c9333aa21491e4cdd397a";
+const txStatus: GMPStatusResponse = await sdk.queryTransactionStatus(txHash);
+```
+
+Possible status responses for `txStatus` include:
+
+- **`SRC_GATEWAY_CALLED`** — The source gateway has been called.
+- **`DEST_GATEWAY_APPROVED`** — The destination gateway has approved the transaction.
+- **`DEST_EXECUTED`** — The transaction has been executed on the destination chain.
+- **`DEST_EXECUTE_ERROR`** — An error occurred during execution on the destination chain.
+- **`UNKNOWN_ERROR`** — An unknown error occurred.
+- **`CANNOT_FETCH_STATUS`** — The status cannot be fetched.
+
+### Trigger manual relay of transaction
+
+If the transaction is stuck, you can trigger a manual relay:
+
+```tsx
+const sourceTxHash = "0x..";
+const provider = new ethers.providers.JsonRpcProvider(
+  "<https://goerli.infura.io/v3/projectId>",
+);
+
+const response = await sdk.manualRelayToDestChain(sourceTxHash, { provider });
+```
+
+### Execute manually
+
+To manually execute a transaction on the destination chain:
+
+```tsx
+const response = await sdk.execute(sourceTxHash, { provider });
+```
+
+### Increase gas payment:
+
+You can increase the gas payment using native tokens:
+
+```tsx
+const txHash: string = "0x...";
+const { success, transaction, error } = await sdk.addNativeGas(
+  EvmChain.AVALANCHE,
+  txHash,
+);
+```
+
+Or using ERC-20 tokens:
+
+```tsx
+const gasToken = "0xGasTokenAddress";
+await erc20.approve(
+  GAS_RECEIVER[Environment.TESTNET][EvmChain.AVALANCHE],
+  amount,
+);
+const { success, transaction, error } = await sdk.addGas(
+  EvmChain.AVALANCHE,
+  txHash,
+  gasToken,
+);
+```
+
+## Axelar Query API
+
+The Axelar Query API is a complementary tool that allows for easy querying of the Axelar network, including estimating gas fees and checking transfer fees.
+
+### **Estimate gas fee**
+
+Estimate the gas fee for a GMP transaction:
+
+```tsx
+const gasFee = await sdk.estimateGasFee(
+  EvmChain.ETHEREUM,
+  EvmChain.MOONBEAM,
+  gasLimit,
+  "auto",
+);
+```
+
+### Get transfer fee
+
+Retrieve the transfer fee for a given transaction:
+
+```tsx
+const fee = await sdk.getTransferFee(
+  "Ethereum",
+  "Avalanche",
+  "uausdc",
+  1000000,
+);
+```
+
+### Get denom from symbol
+
+Translate a token symbol to its corresponding denom:
+
+```tsx
+const denom = await sdk.getDenomFromSymbol("aUSDC", "moonbeam");
+```
+
+### Get symbol from denom
+
+Translate a denom to its corresponding symbol:
+
+```tsx
+const symbol = await sdk.getSymbolFromDenom("uausdc", "moonbeam");
+```
+
+## Example transaction states
+
+The following is an example of a successful transaction and two different failed states to illustrate how to handle each situation.
+
+### Successful transaction
+
+```
+- Method: InterchainTransfer
+- Status: Executed
+- Source Chain: Polygon
+- Destination Chain: Base
+- Gas Paid: Confirmed
+- Approved: Yes
+- Executed: Yes
+- Excess Gas Refunded: Yes
+
+```
+
+### Failed state 1
+
+```
+- Method: callContract
+- Status: Error
+- Issue: Failed to execute on the destination chain.
+- Recovery Options: Execute manually or increase gas.
+```
+
+### Failed state 2
+
+```
+- Method: InterchainTransfer
+- Status: Not Approved
+- Issue: Failed to relay from the source chain.
+- Recovery Options: Manually approve the transaction.
+```
+
+Understanding these transaction states and the recovery tools available can help you effectively manage and troubleshoot cross-chain transactions.

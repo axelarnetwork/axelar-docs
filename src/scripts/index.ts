@@ -1,5 +1,6 @@
 import { safeLinks } from "./safelinks";
 import { addTabs } from "./tabs";
+import "./wrapTables";
 import "./copy";
 import "./search";
 import "./prism.js";

@@ -1,6 +1,6 @@
 # Start-up issues
 
-import { Callout } from "/src/components/callout"
+import { Callout } from "/src/components/callout";
 
 {/* [TODO revise] */}
 
@@ -50,14 +50,15 @@ Now, start `vald`, providing the IP address and validator address:
 ```bash
 docker exec axelar-core axelard vald-start --tofnd-host {your tofnd IP Address} --validator-addr {your validator address} --node {your axelar-core IP address}
 ```
+
 eg:
+
 ```bash
 docker exec axelar-core axelard vald-start --tofnd-host 172.17.0.2 --validator-addr axelarvaloper1y4vplrpdaqplje8q4p4j32t3cqqmea9830umwl
 ```
 
-
-
 Your vald should be connected properly. Confirm this by running the following and looking for an `vald-start` entry.
+
 ```bash
 docker exec axelar-core ps
 ```

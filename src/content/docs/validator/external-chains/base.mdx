@@ -12,6 +12,7 @@ Instructions to set up your base node.
 ## Prerequisites
 
 - [Common Docker Compose Commands](/validator/external-chains/optimism/#common-node-operations/)
+
 ```bash
 sudo apt-get install jq -y
 snap install docker
@@ -23,9 +24,11 @@ snap install docker
 git clone https://github.com/base-org/node base-node
 cd base-node
 ```
+
 ## Set node config
 
 In docker-compose.yml, uncomment the right .env file according to the network you want to run it on
+
 <tabs>
     <tab-item title="Mainnet">
         ```bash
@@ -44,9 +47,11 @@ In docker-compose.yml, uncomment the right .env file according to the network yo
         #      - .env.mainnet
         ```
     </tab-item>
+
 </tabs>
 
 Set the following config options in `base-node/.env.sepolia` or `base-node/.env`:
+
 ```bash
 # [recommended] replace with your preferred L1 (Ethereum, not Base) node RPC URL:
 OP_NODE_L1_ETH_RPC=https://rpc.sepolia.org
@@ -54,15 +59,18 @@ OP_NODE_L1_ETH_RPC=https://rpc.sepolia.org
 # [required] replace with your preferred L1 CL beacon endpoint:
 OP_NODE_L1_BEACON=https://your.sepolia.beacon.node/endpoint-here
 ```
+
 You can setup a beacon endpoint using the instructions [here](/validator/external-chains/ethereum/#install-a-consensus-layer-client/), make sure to expose the endpoint to public
 In lighthouse this needs passing of `--http-address 0.0.0.0` while starting the service
 
 ## Start the node
+
 ```bash
 docker compose up -d
 ```
 
 This should show an output like this:
+
 ```bash
 [+] Running 3/3
  ✔ Network base-node_default   Created                                                                                                                       0.1s
@@ -71,11 +79,13 @@ This should show an output like this:
 ```
 
 After it is done, verify by listing the services and their status
- ```bash
+
+```bash
 docker compose ps
 ```
 
 You should see these 2 services running
+
 ```bash
 NAME                          IMAGE                                                                                                 COMMAND             SERVICE             CREATED             STATUS                    PORTS
 NAME                IMAGE               COMMAND                  SERVICE             CREATED             STATUS              PORTS
@@ -109,6 +119,7 @@ base-node-geth-1  | INFO [03-18|11:32:51.280] Forkchoice requested sync to new h
 ```bash
 docker compose  logs node --since 20m -f
 ```
+
 You should see logs like
 
 ```bash
@@ -132,6 +143,7 @@ echo "$(curl -4 ifconfig.co):8545"
 ```
 
 #### Method:
+
 Check your op node status at port 7545 by
 
 ```bash
@@ -190,20 +202,14 @@ In order for `vald` to connect to your Base node, your `rpc_addr` should be expo
 vald's `config.toml`
 
 <tabs>
-    <tab-item title="Mainnet">
-        ```bash
-        [[axelar_bridge_evm]]
-        name = "base"
-        rpc_addr = "http://IP:PORT"
-        start-with-bridge = true
-        ```
-    </tab-item>
-    <tab-item title="Testnet">
-        ```bash
-        [[axelar_bridge_evm]]
-        name = "base"
-        rpc_addr = "http://IP:PORT"
-        start-with-bridge = true
-        ```
-    </tab-item>
+  <tab-item title="Mainnet">
+    ```bash [[axelar_bridge_evm]] name = "base" rpc_addr = "http://IP:PORT"
+    start-with-bridge = true 
+```
+  </tab-item>
+  <tab-item title="Testnet">
+    ```bash [[axelar_bridge_evm]] name = "base" rpc_addr = "http://IP:PORT"
+    start-with-bridge = true 
+```
+  </tab-item>
 </tabs>

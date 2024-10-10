@@ -1,4 +1,4 @@
-import { Callout } from "/src/components/callout"
+import { Callout } from "/src/components/callout";
 
 # Rotation of mnemonics in tofnd
 
@@ -7,8 +7,9 @@ to slowly rotate out their old `tofnd` mnemonics for improved security.
 New Axelar key rotations will automatically use the most recent mnemonic generated.
 
 <Callout type="warning" emoji="⚠️">
-  Caution: A validator needs to make sure their old `tofnd` mnemonics are still backed up.
-  These mnemonics are still in use until the keys generated from them are considered "old" by the Axelar network.
+  Caution: A validator needs to make sure their old `tofnd` mnemonics are still
+  backed up. These mnemonics are still in use until the keys generated from them
+  are considered "old" by the Axelar network.
 </Callout>
 
 A key becomes _old_ after `x` subsequent key rotations for that EVM chain. (Currently `x=7`.)
@@ -41,7 +42,7 @@ Validators are recommended to have processes in place to rotate their `tofnd` mn
 ## Recovery of mnemonics
 
 As before, you can import a `tofnd` mnemonic with `tofnd -m import -d $TOFND_HOME`.
-If there are no other mnemonics yet in `tofnd` storage then the imported mnemonic will be treated as the *latest mnemonic*, 
+If there are no other mnemonics yet in `tofnd` storage then the imported mnemonic will be treated as the _latest mnemonic_,
 and automatically used for future key ids that are rotated to and any previous key ids it was already a part of.
 Each subsequent imported mnemonic is considered as "old" and so only used for any past key ids that corresponded to it.
 
