@@ -1,6 +1,8 @@
 # Integrate a Chain
 
-import { Callout } from "/src/components/callout"
+import { Callout } from "/src/components/callout";
+import { AXELARD, AMPD } from '/src/config/variables';
+
 
 <Callout>
 The Axelar Virtual Machine (AVM) and Amplifier are currently under active development, so these instructions are likely to change. Please check back frequently for updates.
@@ -19,28 +21,24 @@ The Axelar Virtual Machine (AVM) and Amplifier are currently under active develo
 - Connected chains and contracts: [`devnet-amplifier.json`](https://github.com/axelarnetwork/axelar-contract-deployments/blob/main/axelar-chains-config/info/devnet-amplifier.json)
 
 ## Get the `axelard` binary
-
-Install the `v1.0.2 axelard` binary. You can either download the pre-built version or build it yourself from `axelar-core`.
+Install the v{AXELARD} `axelard` binary. You can either download the pre-built version or build it yourself from `axelar-core`.
 
 <tabs>
 
 <tab-item title="Download">
 To use the pre-built `axelard` binary:
 
-1. Download the pre-built [`axelard` binary](https://github.com/axelarnetwork/axelar-core/releases/tag/v1.0.2) along with the latest version of the [`WasmVM`](https://github.com/CosmWasm/wasmvm/releases/tag/v1.3.1).
-    - Intel Macs: [`axelard-darwin-amd64-v1.0.2`](https://github.com/axelarnetwork/axelar-core/releases/download/v1.0.2/axelard-darwin-amd64-v1.0.2) and [`libwasmvm.dylib`](https://github.com/CosmWasm/wasmvm/releases/download/v1.3.1/libwasmvm.dylib)
-    - [Macs with Apple silicon](https://support.apple.com/en-us/116943): [`axelard-darwin-arm64-v1.0.2`](https://github.com/axelarnetwork/axelar-core/releases/download/v1.0.2/axelard-darwin-arm64-v1.0.2) and [`libwasmvm.dylib`](https://github.com/CosmWasm/wasmvm/releases/download/v1.3.1/libwasmvm.dylib)
-    - Linux: [`axelard-linux-amd64-v1.0.2`](https://github.com/axelarnetwork/axelar-core/releases/download/v1.0.2/axelard-linux-amd64-v1.0.2) and [`libwasmvm.x86_64.so`](https://github.com/CosmWasm/wasmvm/releases/download/v1.3.1/libwasmvm.x86_64.so)
+1. Download the pre-built [`axelard` binary](https://github.com/axelarnetwork/axelar-core/releases/tag/latest) along with the latest version of the [`WasmVM`](https://github.com/CosmWasm/wasmvm/releases/tag/v1.3.1).
 
 1. Add the folder containing the library to `LD_LIBRARY_PATH`:
 
     ```bash
     export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:~/[your-path]
-    ln -s axelard-darwin-arm64-v1.0.2 axelard
-    chmod a+x axelard-darwin-arm64-v1.0.2 
+    ln -s axelard-darwin-arm64-v* axelard
+    chmod a+x axelard-darwin-arm64-v*
     ```
 
-    If you run into a Mac warning telling you that either the `axelard` binary or the `WasmVM` cannot be verified, you can disable it by running:
+    If you run into a Mac warning telling you that either the `axelard` binary or the `WasmVM` cannot be verified, you can disable the warning by running:
 
 
     ```bash
@@ -52,7 +50,7 @@ To use the pre-built `axelard` binary:
 To build the `axelard` binary from source:
 
 1. Clone the [`axelar-core` repo](https://github.com/axelarnetwork/axelar-core).
-1. Checkout the `v1.0.2` release tag.
+1. Checkout the v{AXELARD} release tag.
 1. Run `make build`.
 </tab-item>
 
@@ -101,7 +99,7 @@ Use the existing deployments for all three contracts, making note of the existin
     ```bash
     git clone https://github.com/axelarnetwork/axelar-amplifier
     cd axelar-amplifier
-    git checkout ampd-v1.0.0
+    git checkout ampd-v1.2.0
     ```
 
 1. Build the `gateway`, `voting verifier`, and `multisig prover` contracts from using the [CosmWasm `rust-optimizer`](https://github.com/CosmWasm/optimizer). From the root of the repo, run:
