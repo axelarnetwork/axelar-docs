@@ -1,18 +1,19 @@
 # Testnet
 
-import { Callout } from "/src/components/callout";
-import EVMAssets from "/src/components/evm/assets";
-import EVMChains from "/src/components/evm/chains";
-import IBCChannels from "/src/components/ibc/channels";
-import TransferFeeCalculator from "/src/components/transfer-fee/calculator";
-import UpgradePathTestnet from "/src/upgrade-path-testnet.md";
+import { Callout } from '/src/components/callout';
+import IBCChannels from '/src/components/ibc/channels';
+import TransferFeeCalculator from '/src/components/transfer-fee/calculator';
+import EVMChains from '/src/components/evm/chains';
+import EVMAssets from '/src/components/evm/assets';
+import UpgradePathTestnet from '/src/upgrade-path-testnet.md';
+import { AXELARD_TESTNET, TOFND_TESTNET } from '/src/config/variables';
 
-| Variable              | Value                                                                                                                             |
-| --------------------- | --------------------------------------------------------------------------------------------------------------------------------- |
-| `chain-id`            | `axelar-testnet-lisbon-3`                                                                                                         |
-| `axelar-core` version | `v1.0.2`                                                                                                                          |
-| `vald` version        | `v1.0.2`                                                                                                                          |
-| `tofnd` version       | `v1.0.1`                                                                                                                          |
+| Variable              | Value     |
+| --------------------- | --------- |
+| `chain-id`            | `axelar-testnet-lisbon-3` |
+| `axelar-core` version | v{AXELARD_TESTNET} |
+| `vald` version        | v{AXELARD_TESTNET} |
+| `tofnd` version       | v{TOFND_TESTNET} |
 | amplifier contracts   | see [testnet.json](https://github.com/axelarnetwork/axelar-contract-deployments/blob/main/axelar-chains-config/info/testnet.json) |
 
 ## EVM contract addresses
