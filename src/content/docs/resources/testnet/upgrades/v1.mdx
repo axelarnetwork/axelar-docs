@@ -1,6 +1,7 @@
 # Testnet upgrade: v1.0
 
-import { Callout } from '/src/components/callout'
+import { Callout } from '/src/components/callout';
+import { AXELARD_TESTNET } from '/src/config/variables';
 
 ## About the v1.0 upgrade
 
@@ -60,11 +61,11 @@ cp -r ~/.axelar_testnet/.core/data ~/.axelar-lisbon-3-upgrade-0.35/.core/data
   excluding them from any data backups.
 </Callout>
 
-4. Restart your `axelard` node with the new `v1.0.0` build.
-5. If you're a validator also restart `vald` with `v1.0.0` and `tofnd` with `v0.10.1`.
+4. Restart your `axelard` node with the new v{AXELARD_TESTNET} build.
+5. If you're a validator also restart `vald` with v{AXELARD_TESTNET} and `tofnd` with `v1.0.1`.
 
 <Callout type="warning" emoji="⚠️">
-  [`tofnd` 1.0.1 has been released](https://github.com/axelarnetwork/tofnd/releases), but we recommend adopting `v1.0.1` of `tofnd` over the coming days, independently from the upgrade.
+  [`tofnd` 1.0.1 has been released](https://github.com/axelarnetwork/tofnd/releases), and we recommend adopting `v1.0.1` of `tofnd` independently from the upgrade.
 </Callout>
 
 Example using join scripts in [axelarate-community git repo](https://github.com/axelarnetwork/axelarate-community):
@@ -73,7 +74,7 @@ Example using join scripts in [axelarate-community git repo](https://github.com/
 # in axelarate-community repo (https://github.com/axelarnetwork/axelarate-community)
 git checkout main
 git pull
-KEYRING_PASSWORD="pw-1" ./scripts/node.sh -n testnet -a v1.0.2
+KEYRING_PASSWORD="pw-1" ./scripts/node.sh -n testnet -a v1.0.4
 # For validators, restart vald/tofnd
-KEYRING_PASSWORD="pw-1" TOFND_PASSWORD="pw-2" ./scripts/validator-tools-host.sh -n testnet -a v1.0.2 -q v0.10.1
+KEYRING_PASSWORD="pw-1" TOFND_PASSWORD="pw-2" ./scripts/validator-tools-host.sh -n testnet -a v1.0.4 -q v0.10.1
 ```
