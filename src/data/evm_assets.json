@@ -6038,6 +6038,96 @@
           "transfer_fee": 10.0
         }
       ]
+    },
+    {
+      "id": "cbbtc-satoshi",
+      "name": "cbBTC - Coinbase Wrapped BTC",
+      "symbol": "cbBTC",
+      "image": "/images/assets/cbbtc.svg",
+      "contracts": [
+        {
+          "chain": "base",
+          "address": "0xcbB7C0000aB88B473b1f5aFd9ef808440eed33Bf",
+          "symbol": "cbBTC",
+          "decimals": 8,
+          "transfer_fee": 0.00017
+        }
+      ]
+    },
+    {
+      "id": "fbtc-satoshi",
+      "name": "FBTC - Fire Bitcoin",
+      "symbol": "FBTC",
+      "image": "/images/assets/fbtc.svg",
+      "contracts": [
+        {
+          "chain": "mantle",
+          "address": "0xC96dE26018A54D51c097160568752c4E3BD6C364",
+          "symbol": "FBTC",
+          "decimals": 8,
+          "transfer_fee": 0.00017
+        }
+      ]
+    },
+    {
+      "id": "lbtc-satoshi",
+      "name": "LBTC - Lombard Staked Bitcoin",
+      "symbol": "LBTC",
+      "image": "/images/assets/lbtc.svg",
+      "contracts": [
+        {
+          "chain": "ethereum",
+          "address": "0x8236a87084f8B84306f72007F36F2618A5634494",
+          "symbol": "LBTC",
+          "decimals": 8,
+          "transfer_fee": 0.001
+        }
+      ]
+    },
+    {
+      "id": "arbitrum-uusdt",
+      "name": "USDT - Tether USD",
+      "symbol": "USDT",
+      "image": "/images/assets/usdt.svg",
+      "contracts": [
+        {
+          "chain": "arbitrum",
+          "address": "0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9",
+          "symbol": "USDT",
+          "decimals": 6,
+          "transfer_fee": 10.0
+        }
+      ]
+    },
+    {
+      "id": "polygon-uusdt",
+      "name": "USDT - (PoS) Tether USD",
+      "symbol": "USDT",
+      "image": "/images/assets/usdt.svg",
+      "contracts": [
+        {
+          "chain": "polygon",
+          "address": "0xc2132D05D31c914a87C6611C10748AEb04B58e8F",
+          "symbol": "USDT",
+          "decimals": 6,
+          "transfer_fee": 1.5
+        }
+      ]
+    },
+    {
+      "id": "optimism-uusdt",
+      "name": "USDT - Tether USD",
+      "symbol": "USDT",
+      "image": "/images/assets/usdt.svg",
+      "contracts": [
+        {
+          "chain": "optimism",
+          "address": "0x94b008aA00579c1307B0EF2c499aD98a8ce58e58",
+          "symbol": "USDT",
+          "decimals": 6,
+          "transfer_fee": 10.0
+        }
+      ]
     }
   ],
   "testnet": [

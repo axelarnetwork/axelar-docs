@@ -767,6 +767,54 @@
       "image": "/images/assets/lava.svg",
       "decimals": 6,
       "transfer_fee": 0.1
+    },
+    {
+      "id": "cbbtc-satoshi",
+      "name": "cbBTC - Coinbase Wrapped BTC",
+      "symbol": "cbBTC",
+      "image": "/images/assets/cbbtc.svg",
+      "decimals": 8,
+      "transfer_fee": 1.7e-06
+    },
+    {
+      "id": "fbtc-satoshi",
+      "name": "FBTC - Fire Bitcoin",
+      "symbol": "FBTC",
+      "image": "/images/assets/fbtc.svg",
+      "decimals": 8,
+      "transfer_fee": 1.7e-06
+    },
+    {
+      "id": "lbtc-satoshi",
+      "name": "LBTC - Lombard Staked Bitcoin",
+      "symbol": "LBTC",
+      "image": "/images/assets/lbtc.svg",
+      "decimals": 8,
+      "transfer_fee": 1.7e-06
+    },
+    {
+      "id": "arbitrum-uusdt",
+      "name": "USDT - Tether USD",
+      "symbol": "USDT",
+      "image": "/images/assets/usdt.svg",
+      "decimals": 6,
+      "transfer_fee": 0.1
+    },
+    {
+      "id": "polygon-uusdt",
+      "name": "USDT - (PoS) Tether USD",
+      "symbol": "USDT",
+      "image": "/images/assets/usdt.svg",
+      "decimals": 6,
+      "transfer_fee": 0.1
+    },
+    {
+      "id": "optimism-uusdt",
+      "name": "USDT - Tether USD",
+      "symbol": "USDT",
+      "image": "/images/assets/usdt.svg",
+      "decimals": 6,
+      "transfer_fee": 0.1
     }
   ],
   "testnet": [
