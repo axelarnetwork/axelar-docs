@@ -1,14 +1,14 @@
-# Mainnet upgrade: v1.0.2
+# Mainnet upgrade: v{AXELARD}
 
-import { Callout } from "/src/components/callout";
+import { Callout } from '/src/components/callout';
+import { AXELARD, TOFND } from '/src/config/variables';
 
 ## About the mainnet v1.0 upgrade
 
 This release enables mainnet deployment for [Amplifier](/dev/amplifier/introduction).
 
 This release includes the following version updates:
-
-- `axelard` and `vald` to [1.0.2](https://github.com/axelarnetwork/axelar-core/releases/tag/v1.0.2)
+- `axelard` and `vald` to [1.0.4](https://github.com/axelarnetwork/axelar-core/releases/tag/v1.0.4)
 - `tofnd` to [1.0.1](https://github.com/axelarnetwork/tofnd/releases/tag/v1.0.1)
 
 ## Changelog
@@ -27,7 +27,7 @@ See all the changes in the [`axelar-core` release notes](https://github.com/axel
 Upgrade height `14231100` at approximately **2:30PM UTC on August 28th, 2024** ([countdown](https://www.mintscan.io/axelar/block/14231100))
 
 <Callout type="warning" emoji="⚠️">
-As of v1.0.2, the `axelard` [binary releases](https://github.com/axelarnetwork/axelar-core/releases) require `GLIBC_2.34`, which is not present on Ubuntu 20.04.
+As of v{AXELARD}, the `axelard` [binary releases](https://github.com/axelarnetwork/axelar-core/releases) require `GLIBC_2.34`, which is not present on Ubuntu 20.04.
 
 You will need to compile `axelard` from source, or upgrade to Ubuntu 22.04.
 
@@ -68,8 +68,8 @@ cp -r ~/.axelar/.core/data ~/.axelar-lisbon-3-upgrade-0.35/.core/data
   excluding them from any data backups.
 </Callout>
 
-4. Restart your `axelard` node with the new `v1.0.2` build.
-5. If you're a validator also restart `vald` with `v1.0.2` and `tofnd` with `v1.0.1`.
+4. Restart your `axelard` node with the new v{AXELARD} build.
+5. If you're a validator also restart `vald` with v{AXELARD} and `tofnd` with v{TOFND}.
 
 Example using join scripts in [axelarate-community git repo](https://github.com/axelarnetwork/axelarate-community):
 
@@ -77,7 +77,7 @@ Example using join scripts in [axelarate-community git repo](https://github.com/
 # in axelarate-community repo (https://github.com/axelarnetwork/axelarate-community)
 git checkout main
 git pull
-KEYRING_PASSWORD="pw-1" ./scripts/node.sh -n testnet -a v1.0.2
+KEYRING_PASSWORD="pw-1" ./scripts/node.sh -n testnet -a v1.0.4
 # For validators, restart vald/tofnd
-KEYRING_PASSWORD="pw-1" TOFND_PASSWORD="pw-2" ./scripts/validator-tools-host.sh -n testnet -a v1.0.2 -q v1.0.1
+KEYRING_PASSWORD="pw-1" TOFND_PASSWORD="pw-2" ./scripts/validator-tools-host.sh -n testnet -a v1.0.4 -q v1.0.1
 ```
