@@ -375,7 +375,27 @@ url="http://127.0.0.1:50051"
 cosmwasm_contract="axelar14a4ar5jh7ue4wg28jwsspf23r8k68j7g5d6d3fsttrhp42ajn4xq6zayy5"
 type="MultisigSigner"
 
-# For each supported chain
+  [[handlers]]
+   chain_name="flow"
+   chain_rpc_url="[flow gateway rpc url]"
+   cosmwasm_contract="axelar1kkqdsqvwq9a7p9fj0w89wpx2m2t0vrxl782aslhq0kdw2xxd2aesv3un04"
+   chain_finalization="RPCFinalizedBlock"
+   type="EvmMsgVerifier"
+   
+   [[handlers]]
+   chain_name="flow"
+   chain_rpc_url="[flow gateway rpc url]"
+   cosmwasm_contract="axelar1kkqdsqvwq9a7p9fj0w89wpx2m2t0vrxl782aslhq0kdw2xxd2aesv3un04"
+   chain_finalization="RPCFinalizedBlock"
+   type="EvmVerifierSetVerifier"
+
+   # For each supported chain
+   #[[handlers]]
+   #chain_name="[chain name]"
+   #chain_rpc_url="[node rpc url]"
+   #cosmwasm_contract="[voting verifier address]"
+   #chain_finalization="[RPCFinalizedBlock or ConfirmationHeight]"
+   #type="EvmMsgVerifier"
 
 #[[handlers]]
 #chain_name="[chain name]"
