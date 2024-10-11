@@ -6,11 +6,15 @@ import { Callout } from "/src/components/callout"
 To understand the contribution tracking and distribution process for verifiers, see [Verifier Rewards](/validator/amplifier/verifier-rewards).
 </Callout>
 
-Each integrated chain has two pools that must be funded independently. There is one rewards pool for signing and one pool for voting.
+Each chain has two [reward pools](https://github.com/axelarnetwork/axelar-amplifier/tree/main/contracts/rewards) that must be funded independently before it can be fully integrated. There is one rewards pool to compensate verifiers for signing and another pool to compensate them for voting.
 
 Reward pools are not tied to an epoch. If earned rewards are not claimed, they will continue to grow. If rewards are being earned but the pool has not been sufficiently funded, these rewards can be funded and claimed at a later date. Integrators should ensure that pools always have enough funds so that verifiers can get their rewards quickly.
 
-## Check the funds in a pool
+## Create reward pool
+The creation of a new reward pool is done via a chain integration [governance proposal](/dev/amplifier/chain-integration/governance-proposals/). 
+
+
+## Check the funds in a reward pool
 
 Use `rewards_pool()` to check the funds in a pool:
 
@@ -45,7 +49,7 @@ axelard q wasm contract-state smart $REWARDS_CONTRACT_ADDRESS \
     --node $RPC
 ```
 
-## Add funds to a pool
+## Add funds to a reward pool
 
 Use `add_rewards()` add funds to a pool:
 
@@ -81,9 +85,9 @@ axelard tx wasm execute $REWARDS_CONTRACT_ADDRESS \
                     }
             }
     }' \
-    --amount '"$AMOUNT"'
+    --amount '"$AMOUNT"' \
     --keyring-backend test \
-    --chain-id "'"$CHAIN_ID"'"
+    --chain-id "'"$CHAIN_ID"'" \
     --from wallet \
     --gas auto --gas-adjustment 1.5 --gas-prices 0.007uamplifier \
     --node $RPC
