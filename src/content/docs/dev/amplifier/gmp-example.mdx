@@ -51,7 +51,9 @@ axelard tx wasm execute axelar18zrymnzgdmutdjhqlfsslzy4yvzw8uylysjwqlq4uk4muq3qx
   --gas auto --gas-adjustment 1.5
 ```
 
-Wait for verification, which usually takes 1-3 blocks. Then call `route_messages`:
+Note: `message_id` corresponds to the transaction hash of the transaction on the source chain.
+
+Once this has been sent, you can wait for the transaction to be verified, this will usually takes 1-3 blocks. Then call `route_messages`:
 
 ```bash
 axelard tx wasm execute axelar18zrymnzgdmutdjhqlfsslzy4yvzw8uylysjwqlq4uk4muq3qx30qde39qz \
@@ -148,7 +150,7 @@ data:
 The execute data can be relayed to the destination chain’s `AxelarGateway` in a number of ways. Here’s how to do it with `node.js` using `ethers`:
 
 ```js
-> await wallet.sendTransaction({to: gatewayAddress, data: "0x"+executeData, gasLimit:ethers.BigNumber.from(5e+06)}).then((tx) => tx.wait())
+await wallet.sendTransaction({to: gatewayAddress, data: "0x"+executeData, gasLimit:ethers.BigNumber.from(5e+06)}).then((tx) => tx.wait())
 ```
 
 ### Execute the contract
@@ -156,5 +158,5 @@ The execute data can be relayed to the destination chain’s `AxelarGateway` in 
 Fill in the appropriate values and execute the contract. The `command_id` can be found in the response to the `get_proof` query:
 
 ```js
-> await contract.execute(ethers.utils.arrayify(command_id),source_chain, source_address, ethers.utils.arrayify(payload)).then((tx) => tx.wait())
+await contract.execute(ethers.utils.arrayify(command_id),source_chain, source_address, ethers.utils.arrayify(payload)).then((tx) => tx.wait())
 ```
