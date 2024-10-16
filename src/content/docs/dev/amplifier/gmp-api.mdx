@@ -1,0 +1,190 @@
+# GMP API
+
+The Axelar Amplifier [GMP (General Message Passing)](/dev/general-message-passing/overview/) API equips developers with comprehensive tools and documentation to interact with Axelar's Amplifier protocol. 
+
+Each event type includes a detailed schema specifying required properties and their types. We also provide cURL examples to illustrate how to interact with the API endpoints, making it straightforward to test and implement in your projects.
+
+The API provides a much easier way of interacting with Amplifier in comparison to running indivudual `axelard` commands for each interaction with an [Amplifier Contract](https://github.com/axelarnetwork/axelar-amplifier/tree/main/doc/src/contracts).
+
+# Tasks
+
+A [task](/dev/amplifier/gmp-api/#task) is a pending step or action in the process of completing a GMP call between chains. These tasks could include operations such as executing a transaction or handling a refund in case of an issue. You can use this endpoint to monitor and react to various tasks (e.g., trigger an execution, or a refund).
+
+## Tasks endpoint
+
+The GMP API has several available endpoints to interact with pending tasks.
+
+### Get Tasks
+
+The `GET /chains/{chain}/tasks` endpoint returns the available tasks for a chain. Here is the structure of each task in the endpoint’s response, referred to as `TaskItems`:
+
+| **Task Item Params** | **Type** | **Description** |
+| --- | --- | --- |
+| `id` | string | UUID of the current task |
+| `timestamp` | string | Timestamp of task creation |
+| `type` | [TaskType](/dev/amplifier/gmp-api/#tasktype) | The type of the underlying task |
+| `task` | [Task](/dev/amplifier/gmp-api/#task) | The content of the underlying task pointed to by `type` |
+
+It is important for client code to persist the state of the latest task `id`. By storing this value, clients can resume task consumption from the last received task. To continue retrieving tasks after the last one, use the `id` of the last task to continue receiving tasks as follows:
+
+```bash
+curl -X GET $GMP_API_URL/chains/<chain>/tasks?after=<last-taskId>
+```
+
+#### Example Request 
+```bash
+# get all pending tasks for ethereum after the task with UUID 550e8400-e29b-41d4-a716-446655440000, and limit to 20 new tasks in the response
+$ curl -X GET $GMP_API_URL/ethereum/tasks?after=550e8400-e29b-41d4-a716-446655440000&limit=20
+```
+
+#### Example Response
+```json
+{
+  "tasks": [
+    {
+      "id": "550e8400-e29b-41d4-a716-446655440000",
+      "timestamp": "2023-04-01T12:00:00Z",
+      "type": "...",
+      "task": { ... }
+    }, // TaskItem 1
+    {
+      ...
+    }, // TaskItem 2
+  ]
+}
+```
+
+### Gateway Transaction Task
+Represents an inbound message from an external blockhain that needs to be routed via Axelar Amplifier to a destination chain.
+
+#### Example Request
+```bash
+curl -X GET $GMP_API_URL/avalanche/tasks \
+-H "Accept: application/json"
+```
+
+
+#### Example Response
+Note: `executeData` represents a the `bytes` of an approval. 
+```json
+{
+  "tasks": [{
+    "id": "550e8400-e29b-41d4-a716-446655440000",
+    "timestamp": "2023-04-01T12:00:00Z",
+    "type": "GATEWAY_TX",
+    "task": {
+      "executeData": "0x000000000000000000000000000000000000000000000000000000000000008000000000000000000000000000000000000000000000000000000000000000c0230a35037ce4bf659ff4d04d62583eda7b358aeec413b05a00339db283d8084000000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000010657468657265756d2d7365706f6c696100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000002a30783137393663653033304333393643373534396138633762313439314537643835653339343645413300000000000000000000000000000000000000000000"
+    }
+  }]
+}
+```
+
+### Execute Task
+Represents a `task` to be executed on the destination chain once it has gone through the Amplifier flow and been marked as `approved`.
+
+#### Example Request
+```bash
+curl -X GET $GMP_API_URL \
+     -H "Accept: application/json"
+```
+
+#### Example Response
+
+In this response 
+1. The `message` is corresponding to the [GatewayV2Message](/dev/amplifier/gmp-api/#GatewayV2Message). The 
+1. The `payload` is what will be executed on the destination chain
+1. The `availableGasBalance` is the available gas balance of GMP sender
+
+```json
+{
+  "tasks": [{
+    "id": "550e8400-e29b-41d4-a716-446655440001",
+    "timestamp": "2023-04-01T13:00:00Z",
+    "type": "EXECUTE",
+    "task": {
+      "message": {
+        "messageID": "0x230a35037ce4bf659ff4d04d62583eda7b358aeec413b05a00339db283d80840-2",
+        "sourceChain": "ethereum-sepolia",
+        "sourceAddress": "0x1796ce030C396C7549a8c7b1491E7d85e3946EA3",
+        "destinationAddress": "0xdddddddddddddddddddddddddddddddddddddddd",
+        "payloadHash": "0x4137d9b49c86318059afc76a9261fe76cef342687119f823b56b8bcb6ea20370"
+      },
+      "payload": ...,
+      "availableGasBalance": {
+        "amount": "300000000000000000"
+      }
+    }
+  }]
+}
+```
+
+### Refund Task
+
+
+
+## Internal Objects and types
+
+### Metadata
+
+| **Parameter** | **Type** | **Description** |
+| --- | --- | --- |
+| `txID` | string | tx id of the underlying event |
+| `fromAddress` | string | address of sender |
+| `finalized` | boolean (default `true`) | `true` if transaction is finalized; `false` otherwise |
+
+### EventType
+
+| **Type** | **Description** |
+| --- | --- |
+| enum | Legal string values:
+”GAS_CREDIT”, “GAS_REFUNDED”, “CALL”, “MESSAGE_APPROVED”, “MESSAGE_EXECUTED”, “CANNOT_EXECUTE_MESSAGE” |
+
+### TaskType
+
+| **Type** | **Description** |
+| --- | --- |
+| enum | legal string values:
+”GATEWAY_TX”, “EXECUTE”, “REFUND” |
+
+### Task
+
+| **Type** | **Description** |
+| --- | --- |
+| one of | legal values:
+[GatewayTransactionTask](https://www.notion.so/Amplifier-GMP-API-EXTERNAL-911e740b570b4017826c854338b906c8?pvs=21), [ExecuteTask](https://www.notion.so/Amplifier-GMP-API-EXTERNAL-911e740b570b4017826c854338b906c8?pvs=21), [RefundTask](https://www.notion.so/Amplifier-GMP-API-EXTERNAL-911e740b570b4017826c854338b906c8?pvs=21) |
+
+### GatewayV2Message
+
+| **Parameter** | **Type** | **Description** |
+| --- | --- | --- |
+| `messageID` | string | the message id of a GMP call |
+| `sourceChain` | string | source chain |
+| `sourceAddress` | [Address](https://www.notion.so/Amplifier-GMP-API-EXTERNAL-911e740b570b4017826c854338b906c8?pvs=21) | source address |
+| `destinationAddress` | [Address](https://www.notion.so/Amplifier-GMP-API-EXTERNAL-911e740b570b4017826c854338b906c8?pvs=21) | destination address |
+| `payloadHash` | string | string representation of payload hash |
+
+### Token
+
+| **Parameter** | **Type** | **Description** |
+| --- | --- | --- |
+| `tokenID` (optional) | string | indicates that `amount` is in native token if left blank |
+| `amount` | [BigInt](https://www.notion.so/Amplifier-GMP-API-EXTERNAL-911e740b570b4017826c854338b906c8?pvs=21) | the amount in token’s denominator |
+
+### Address
+
+| **Type** | **Description** |
+| --- | --- |
+| string | minLength must be 1 |
+
+### BigInt
+
+| **Type** | **Description** |
+| --- | --- |
+| string | Adheres to pattern `^(0|[1-9]\d*)$` |
+
+### **CannotExecuteMessageReason**
+
+| **Type** | **Description** |
+| --- | --- |
+| enum | legal string values:
+”INSUFFICIENT_GAS”, “ERROR” |

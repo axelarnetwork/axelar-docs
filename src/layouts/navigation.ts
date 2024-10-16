@@ -263,6 +263,10 @@ export const getNavigation = (section) => {
               href: "/dev/amplifier/chain-integration/governance-proposals/",
             },
             {
+              title: "GMP API",
+              href: "/dev/amplifier/gmp-api/",
+            },
+            {
               title: "Relay Messages",
               children: [
                 {
