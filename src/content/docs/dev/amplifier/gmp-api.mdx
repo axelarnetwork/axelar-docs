@@ -18,13 +18,6 @@ The GMP API has several available endpoints to interact with pending tasks.
 
 The `GET /chains/{chain}/tasks` endpoint returns the available tasks for a chain. Here is the structure of each task in the endpoint’s response, referred to as `TaskItems`:
 
-| **Task Item Params** | **Type** | **Description** |
-| --- | --- | --- |
-| `id` | string | UUID of the current task |
-| `timestamp` | string | Timestamp of task creation |
-| `type` | [TaskType](/dev/amplifier/gmp-api/#tasktype) | The type of the underlying task |
-| `task` | [Task](/dev/amplifier/gmp-api/#task) | The content of the underlying task pointed to by `type` |
-
 It is important for client code to persist the state of the latest task `id`. By storing this value, clients can resume task consumption from the last received task. To continue retrieving tasks after the last one, use the `id` of the last task to continue receiving tasks as follows:
 
 ```bash
@@ -119,6 +112,37 @@ In this response
 ```
 
 ### Refund Task
+Represents a `task` to refund any unused gas sent in a cross-chain transfer.
+
+#### Example Request
+```bash
+curl -X GET $GMP_API_URL \
+     -H "Accept: application/json"
+```
+
+#### Example Response
+```json
+{
+  "tasks": [{
+    "id": "550e8400-e29b-41d4-a716-446655440002",
+    "timestamp": "2023-04-01T14:00:00Z",
+    "type": "REFUND",
+    "task": {
+      "message": {
+        "messageID": "0x230a35037ce4bf659ff4d04d62583eda7b358aeec413b05a00339db283d80840-2",
+        "sourceChain": "ethereum-sepolia",
+        "sourceAddress": "0x1796ce030C396C7549a8c7b1491E7d85e3946EA3",
+        "destinationAddress": "0xdddddddddddddddddddddddddddddddddddddddd",
+        "payloadHash": "0x4137d9b49c86318059afc76a9261fe76cef342687119f823b56b8bcb6ea20370"
+      },
+      "refundRecipientAddress": "0x4444444444444444444444444444444444444444",
+      "remainingGasBalance": {
+        "amount": "50000000000000000"
+      }
+    }
+  }]
+}
+```
 
 
 
