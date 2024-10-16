@@ -8,15 +8,17 @@ import clsx from "clsx";
 import { LayoutGrid, Menu, X } from "lucide-react";
 import React, { useEffect } from "react";
 import Logo from "../logo";
-import RenderSidebar from "../sidebar/render-sidebar";
+
 import ThemeToggle from "../ui/theme-toggle";
 
 const MobileNavigation = ({
   nav,
   pathname,
+  children,
 }: {
   nav: Navigation[];
   pathname: string;
+  children?: React.ReactNode;
 }) => {
   const [open, setOpen] = React.useState(false);
 
@@ -94,7 +96,7 @@ const MobileNavigation = ({
                 );
               })}
           </div>
-          <RenderSidebar nav={nav} pathname={pathname} isMobile />
+          {children}
         </div>
       </div>
     </div>

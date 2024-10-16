@@ -83,7 +83,7 @@ const canonicalURL = new URL(Astro.url.pathname, "https://docs.axelar.dev");
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/instantsearch.css@7.4.3/themes/satellite-min.css"
     />
-
+    <script src="/src/scripts/index.ts"></script>
     <script is:inline>
       const root = document.documentElement;
       const theme = (() => {
@@ -108,15 +108,13 @@ const canonicalURL = new URL(Astro.url.pathname, "https://docs.axelar.dev");
         root.classList.add("dark");
       }
     </script>
-    <!-- <ViewTransitions /> -->
-    <script src="/src/scripts/index.ts"></script></head
-  >
+  </head>
 </html>
 <body class="bg-background text-foreground">
   <Header />
   <!-- <div id="search-results"></div> -->
   <main class={clsx("flex items-start")}>
-    <!-- {!notSidebar && <Sidebar />} -->
+    {!notSidebar && <Sidebar />}
     <div class={clsx("flex-1", className)}>
       <slot />
       <Footer />

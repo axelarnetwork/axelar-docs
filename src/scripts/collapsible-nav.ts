@@ -6,15 +6,18 @@ interface CollapsibleHeader {
 
 function toggleHeader(header: CollapsibleHeader) {
   header.isExpanded = !header.isExpanded;
-  header.header.classList.toggle("expanded");
-  header.group.classList.toggle("expanded");
+  header.header.classList.toggle("!flex");
+  header.group.classList.toggle("!flex");
 }
 
 // Function to initialize collapsible headers
 function initCollapsibleHeaders() {
   const headers: CollapsibleHeader[] = [];
+  console.log("initCollapsibleHeaders");
 
-  const groupElements = document.querySelectorAll(".group");
+  const groupElements = document.querySelectorAll(".nav-group");
+  console.log(groupElements);
+
   // Calculate the header elements as previous sibling to group elements
   const headerElements = [...groupElements].map(
     (group) =>

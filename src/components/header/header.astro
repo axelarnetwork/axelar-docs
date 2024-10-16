@@ -8,6 +8,7 @@ import {
   permanentNav,
 } from "../../utils/generateNavigation";
 import Search from "../docs/Search";
+import RenderSidebar from "../sidebar/render-sidebar.astro";
 import ThemeToggle from "../ui/theme-toggle";
 import Logo from "./header-logo.astro";
 import MobileNavigation from "./MobileNavigation";
@@ -49,7 +50,9 @@ const nav = generateNavigation(docs);
       </div>
       <div class="flex items-center gap-6 lg:gap-10 2xl:gap-14">
         <Search client:only />
-        <MobileNavigation client:load nav={nav} pathname={Astro.url.pathname} />
+        <MobileNavigation client:load nav={nav} pathname={Astro.url.pathname}>
+          <RenderSidebar isMobile />
+        </MobileNavigation>
       </div>
       <div class="hidden lg:flex items-center gap-6 lg:gap-10 2xl:gap-14">
         <ThemeToggle client:load />
