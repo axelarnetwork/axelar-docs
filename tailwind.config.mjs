@@ -11,8 +11,8 @@ export default {
         clash: ["Clash Grotesk", ...defaultTheme.fontFamily.sans],
       },
       backgroundImage: {
-        "map-light": "url('/backgrounds/worldmaplight.svg')",
-        "map-dark": "url('/backgrounds/worldmapdark.svg')",
+        "map-light": "url('/backgrounds/worldmaplight.webp')",
+        "map-dark": "url('/backgrounds/worldmapdark.webp')",
         "404-grid-1": "url('/backgrounds/404/grid-1.svg')",
         "404-grid-2": "url('/backgrounds/404/grid-2.svg')",
       },
