@@ -1,3 +1,18 @@
+export const topLevelNav = [
+  {
+    title: "Developers",
+    href: "/dev/intro/",
+  },
+  {
+    title: "Node Operators",
+    href: "/node/config-node/",
+  },
+  {
+    title: "Validators",
+    href: "/validator/setup/overview/",
+  },
+];
+
 export const getNavigation = (section) => {
   const nav: any[] = [];
   if (section === "dev") {
