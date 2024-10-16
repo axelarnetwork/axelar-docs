@@ -28,7 +28,7 @@ const pathname = Astro.url.pathname;
 const { Content, headings } = await doc.render();
 ---
 
-<MainLayout>
+<MainLayout title={headings.find((h) => h.depth === 1)?.text}>
   <div class="grid grid-cols-1 lg:grid-cols-12 bg-[#FFFFFF] dark:bg-background">
     <WorldMap className="lg:col-span-9 2xl:col-span-10 w-full flex-1 ">
       <div class="min-h-[90dvh] sub-container pb-20 py-20 flex flex-col gap-10">
