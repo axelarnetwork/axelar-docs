@@ -450,9 +450,18 @@ Prior to running the `ampd` daemon, you will need to set up your wallet with dev
 
 1. Bond your verifier:
 
-   ```bash
-   ampd bond-verifier validators 100000000000 uamplifier
-   ```
+   <tabs>
+   <tab-item title="devnet-amplifier">
+      ```bash
+      ampd bond-verifier validators 100000000000 uamplifier
+      ```
+   </tab-item>
+   <tab-item title="test-net">
+      ```bash
+      ampd bond-verifier amplifier 100000000000 uaxl
+      ```
+   </tab-item>
+   </tabs>
 
    Bonded verifiers will stay bonded until they unbond or are removed by governance. The bond for testnet is 100000000000uamplifier (100k AXL). The bond for mainnet is 50000000000uamplifier (50k AXL).
 
@@ -461,6 +470,7 @@ Prior to running the `ampd` daemon, you will need to set up your wallet with dev
    ```bash
    ampd register-public-key ecdsa
    ```
+   
 
 1. Register support for desired chains, enabling `ampd` to participate in voting and signing for your supported chains.
 
