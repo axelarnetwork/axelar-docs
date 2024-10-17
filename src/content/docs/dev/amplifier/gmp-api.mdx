@@ -12,7 +12,7 @@ A [task](/dev/amplifier/gmp-api/#task) is a pending step or action in the proces
 
 ## Tasks endpoint
 
-The GMP API has several available endpoints to interact with pending tasks.
+The GMP API has several available endpoints to interact with pending tasks. The full schema can be found [here](https://github.com/axelarnetwork/axelar-eds-mirror/blob/main/oapi/gmp/schema.yaml#L51)
 
 ### Get Tasks
 
@@ -144,6 +144,58 @@ curl -X GET $GMP_API_URL \
 }
 ```
 
+## Events endpoint
+An `event` indicates the completion of an action in the cross-chain messaging flow. You can use this to submit the completion of an action (ex. a new contract call was made or a message was approved). The full schema can be found [here](https://github.com/axelarnetwork/axelar-eds-mirror/blob/main/oapi/gmp/schema.yaml#L14)
+
+When using the Events API each event takes an event type. Each event type corresponds to an an schema
+
+| **Event Type** | **Event Schema** |
+| --- | --- |
+| `GAS_CREDIT` | `GasCreditEvent` |
+| `GAS_REFUNDED` | `GasRefundedEvent` |
+| `CALL` | `CallEvent` |
+| `MESSAGE_APPROVED` | `MessageApprovedEvent` |
+| `MESSAGE_EXECUTED` | `MessageExecutedEvent` |
+| `CANNOT_EXECUTE_MESSAGE` | `CannotExecuteMessageEvent`  |
+
+### Gas Credit Event
+Represents a gas credit being applied to an underfunded message. It can be populated from a `NativeGasPaidForContractCall` or a `NativeGasAdded` chain event.
+
+
+#### Example Request
+The following parameters are needed for a request:
+- `type`: The [event type](/dev/amplifier/gmp-api/#eventtype) corresponds to the name of the event which must be `GAS_CREDIT`.
+- `eventId`: This the id of the chain `NativeGasPaidForContractCall`/ `NativeGasAdded` event in format `TxHash-LogIndex`.
+- `messageId`: This is the the ContractCall event that corresponds to the payment, and has the format `TxHash-LogIndex`.
+- `refundAddress`: This address of the refunder in the `NativeGasPaidForContractCall`/ `NativeGasAdded` eventthat will receive any excess funds sent in a gas payment.
+- `payment`: The `payment` of type [token](/dev/amplifier/gmp-api/#token) is the actual payment amount for the Contract Call.
+- `metadata` (optional): The `metadata` of type [metadata](/dev/amplifier/gmp-api/#metadata) is the event metadata.
+
+As an example, see [this](https://testnet.axelarscan.io/gmp/0x1fbe533b3bed6e6be3a74734042b3ae0836cabfdc2b646358080db75e9fe9ba8-2) this GMP call:
+`messageID` is `0x1fbe533b3bed6e6be3a74734042b3ae0836cabfdc2b646358080db75e9fe9ba8-2`, as the `ContractCall` event is in the 3rd position of emitted events in the underlying transaction.
+
+The request for [this event](https://testnet.axelarscan.io/gmp/0x1fbe533b3bed6e6be3a74734042b3ae0836cabfdc2b646358080db75e9fe9ba8-2) can be sent as follows
+
+```bash
+curl -X POST $GMP_API_URL/ethereum/events \
+     -H "Content-Type: application/json" \
+     -d '{
+  "events": [{
+    "type": "GAS_CREDIT",
+    "eventID": "0x1fbe533b3bed6e6be3a74734042b3ae0836cabfdc2b646358080db75e9fe9ba8-1",
+    "messageID": "0x1fbe533b3bed6e6be3a74734042b3ae0836cabfdc2b646358080db75e9fe9ba8-2",
+    "refundAddress": "0xEA12282BaC49497793622d67e2CD43bf1065a819",
+    "payment": {
+      "amount": "410727029715539"
+    },
+    "meta": {
+	    "txID": "0x1fbe533b3bed6e6be3a74734042b3ae0836cabfdc2b646358080db75e9fe9ba8",
+	    "fromAddress": "0xEA12282BaC49497793622d67e2CD43bf1065a819",
+	    "finalized": true
+    }
+  }]
+}'
+```
 
 
 ## Internal Objects and types
