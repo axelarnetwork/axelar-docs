@@ -48,7 +48,7 @@ $ curl -X GET $GMP_API_URL/ethereum/tasks?after=550e8400-e29b-41d4-a716-44665544
 }
 ```
 
-### Gateway Transaction Task
+### GatewayTransactionTask
 Represents an inbound message from an external blockhain that needs to be routed via Axelar Amplifier to a destination chain.
 
 #### Example Request
@@ -76,7 +76,7 @@ Note: `executeData` represents a the `bytes` of an approval.
 }
 ```
 
-### Execute Task
+### ExecuteTask
 Represents a `task` to be executed on the destination chain once it has gone through the Amplifier flow and been marked as `approved`.
 
 #### Example Request
@@ -118,7 +118,7 @@ In this response
 }
 ```
 
-### Refund Task
+### RefundTask
 Represents a `task` to refund any unused gas sent in a cross-chain transfer.
 
 #### Example Request
@@ -402,7 +402,7 @@ curl -X POST $GMP_API_URL/ethereum/events \
 
 | **Type** | **Description** |
 | --- | --- |
-| one of | [GatewayTransactionTask](https://www.notion.so/Amplifier-GMP-API-EXTERNAL-911e740b570b4017826c854338b906c8?pvs=21), [ExecuteTask](https://www.notion.so/Amplifier-GMP-API-EXTERNAL-911e740b570b4017826c854338b906c8?pvs=21), [RefundTask](https://www.notion.so/Amplifier-GMP-API-EXTERNAL-911e740b570b4017826c854338b906c8?pvs=21) |
+| one of | [GatewayTransactionTask](/dev/amplifier/gmp-api/#gatewaytransactiontask), [ExecuteTask](/dev/amplifier/gmp-api/#executetask), [RefundTask](/dev/amplifier/gmp-api/#refundtask) |
 
 
 ### GatewayV2Message
