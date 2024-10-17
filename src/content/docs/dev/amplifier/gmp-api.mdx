@@ -2,7 +2,7 @@
 
 The Axelar Amplifier [GMP (General Message Passing)](/dev/general-message-passing/overview/) API equips developers with comprehensive tools and documentation to interact with Axelar's Amplifier protocol. 
 
-Each event type includes a detailed schema specifying required properties and their types. We also provide cURL examples to illustrate how to interact with the API endpoints, making it straightforward to test and implement in your projects.
+Each event type includes a detailed schema specifying required properties and their types. We also provide `cURL` examples to illustrate how to interact with the API endpoints, making it straightforward to test and implement in your projects.
 
 The API provides a much easier way of interacting with Amplifier in comparison to running indivudual `axelard` commands for each interaction with an [Amplifier Contract](https://github.com/axelarnetwork/axelar-amplifier/tree/main/doc/src/contracts).
 
@@ -161,17 +161,16 @@ When using the Events API each event takes an event type. Each event type corres
 ### Gas Credit Event
 Represents a gas credit being applied to an underfunded message. It can be populated from a `NativeGasPaidForContractCall` or a `NativeGasAdded` chain event.
 
-
-#### Example Request
-The following parameters are needed for a request:
+The following parameters are used for this request:
 - `type`: The [event type](/dev/amplifier/gmp-api/#eventtype) corresponds to the name of the event which must be `GAS_CREDIT`.
-- `eventId`: This the id of the chain `NativeGasPaidForContractCall`/ `NativeGasAdded` event in format `TxHash-LogIndex`.
+- `eventId`: This the id of the `NativeGasPaidForContractCall`/ `NativeGasAdded` event in format `TxHash-LogIndex`.
 - `messageId`: This is the the ContractCall event that corresponds to the payment, and has the format `TxHash-LogIndex`.
 - `refundAddress`: This address of the refunder in the `NativeGasPaidForContractCall`/ `NativeGasAdded` eventthat will receive any excess funds sent in a gas payment.
 - `payment`: The `payment` of type [token](/dev/amplifier/gmp-api/#token) is the actual payment amount for the Contract Call.
-- `metadata` (optional): The `metadata` of type [metadata](/dev/amplifier/gmp-api/#metadata) is the event metadata.
+- `meta` (optional): The `meta` of type [metadata](/dev/amplifier/gmp-api/#metadata) is the event metadata.
 
-As an example, see [this](https://testnet.axelarscan.io/gmp/0x1fbe533b3bed6e6be3a74734042b3ae0836cabfdc2b646358080db75e9fe9ba8-2) this GMP call:
+#### Example Request
+As an example, see [this](https://testnet.axelarscan.io/gmp/0x1fbe533b3bed6e6be3a74734042b3ae0836cabfdc2b646358080db75e9fe9ba8-2) GMP call:
 `messageID` is `0x1fbe533b3bed6e6be3a74734042b3ae0836cabfdc2b646358080db75e9fe9ba8-2`, as the `ContractCall` event is in the 3rd position of emitted events in the underlying transaction.
 
 The request for [this event](https://testnet.axelarscan.io/gmp/0x1fbe533b3bed6e6be3a74734042b3ae0836cabfdc2b646358080db75e9fe9ba8-2) can be sent as follows
@@ -193,6 +192,175 @@ curl -X POST $GMP_API_URL/ethereum/events \
 	    "fromAddress": "0xEA12282BaC49497793622d67e2CD43bf1065a819",
 	    "finalized": true
     }
+  }]
+}'
+```
+
+### Call Event
+
+This event corresponds to a [contract call](/dev/general-message-passing/overview/#gateway-interface) being made on the source chain.
+
+The following parameters are used for this request:
+- `type`: The [event type](/dev/amplifier/gmp-api/#eventtype) corresponds to the name of the event which must be `CALL`.
+- `eventId`: This the id of the `ContractCall` event in format `TxHash-LogIndex`.
+- `message`: The `message` of type [GatewayV2Message](/dev/amplifier/gmp-api/#GatewayV2Message) that corresponds to the cross-chain message that was sent.
+- `destinationChain`: The name of the destination chain the message was sent to.
+- `payload`: The string representation of the payload bytes.
+- `meta` (optional): The `meta` of type [metadata](/dev/amplifier/gmp-api/#metadata) is the event metadata.
+
+
+#### Example Request
+The request for [this event](https://sepolia.etherscan.io/tx/0x1fbe533b3bed6e6be3a74734042b3ae0836cabfdc2b646358080db75e9fe9ba8#eventlog) can be sent as follows
+
+```bash
+curl -X POST $GMP_API_URL/ethereum/events \
+     -H "Content-Type: application/json" \
+     -d '{
+  "events": [{
+    "type": "CALL",
+    "eventID": "0xe432150cce91c13a887f7D836923d5597adD8E31-2",
+    "message": {
+      "messageID": "0xe432150cce91c13a887f7D836923d5597adD8E31-2",
+      "sourceChain": "ethereum",
+      "sourceAddress": "0xEA12282BaC49497793622d67e2CD43bf1065a819",
+      "destinationAddress": "0xf4ff91f79E35E7dF460A6B259fD971Ec85E933CF",
+      "payloadHash": "3597DAB2D3C91DCB3A45B540C28025B283BD640FF4D72E4BBFCED504FA0DFB53"
+    },
+    "destinationChain": "Avalanche",
+    "payload": "00000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000000001200000000000000000000000000000000000000000000000000000000000001400000000000000000000000000000000000000000000000000000000000000180000000000000000000000000000000000000000000000000021FEBA38B1CC00000000000000000000000000000000000000000000000000000000000000001C0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000147A3332424E5BF68C2A870B1674477EF9D368AD36000000000000000000000000000000000000000000000000000000000000000000000000000000000000001400000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000010455448455245554D5F5345504F4C4941000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000014EA12282BAC49497793622D67E2CD43BF1065A8190000000000000000000000000000000000000000000000000000000000000000000000000000000000000014EA12282BAC49497793622D67E2CD43BF1065A819000000000000000000000000"
+  }]
+}'
+```
+
+### MessageApprovedEvent
+
+This event represents the approval of a GMP message for execution on the destination chain.  
+
+The following parameters are used for this request:
+- `type`: The [event type](/dev/amplifier/gmp-api/#eventtype) corresponds to the name of the event which must be `MESSAGE_APPROVED`.
+- `eventId`: This the id of the `ContractCallApproved` event in format `TxHash-LogIndex`.
+- `message`: The `message` of type [GatewayV2Message](/dev/amplifier/gmp-api/#GatewayV2Message) that corresponds to the cross-chain message that was sent.
+- `cost`: The `cost` of type [token](/dev/amplifier/gmp-api/#token) that corresponds to the cost of the `approval` (number of approvals in transaction/ transaction cost).
+- `meta` (optional): The `meta` of type [metadata](/dev/amplifier/gmp-api/#metadata) is the event metadata.
+
+#### Example Request
+The request for [this event](https://testnet.snowtrace.io/tx/0xae2d4cb6765c026dbd116535b124aba21bcaed8c7bd18eff8c1f276fd416efbb/eventlog?chainid=43113) can be sent as follows:
+
+```bash
+curl -X POST $GMP_API_URL/ethereum/events \
+     -H "Content-Type: application/json" \
+     -d '{
+  "events": [{
+    "type": "MESSAGE_APPROVED",
+    "eventID": "0x127a427c7184b7765281cfa3dffb6d26954314f7fdccc4506777363c3603c647-0",
+    "message": {
+      "messageID": "0x1fbe533b3bed6e6be3a74734042b3ae0836cabfdc2b646358080db75e9fe9ba8-2",
+      "sourceChain": "ethereum-sepolia",
+      "sourceAddress": "0x1796ce030C396C7549a8c7b1491E7d85e3946EA3",
+      "destinationAddress": "0xf4ff91f79E35E7dF460A6B259fD971Ec85E933CF",
+      "payloadHash": "0x3597dab2d3c91dcb3a45b540c28025b283bd640ff4d72e4bbfced504fa0dfb53"
+    },
+    "cost": {
+      "amount": "329075662500000000000"
+    }
+  }]
+}'
+```
+
+### MessageExecutedEvent
+
+This event represents the execution of a message on the destination chain.
+
+The following parameters are used for this request:
+- `type`: The [event type](/dev/amplifier/gmp-api/#eventtype) corresponds to the name of the event which must be `MESSAGE_EXECUTED`.
+- `eventId`: This the id of the `ContractCallExecuted` event in format `TxHash-LogIndex`.
+- `messageId`: The message id of a GMP call.
+- `sourceChain`: The source of the GMP message.
+- `cost`: The `cost` of type [token](/dev/amplifier/gmp-api/#token) that corresponds to the cost of the `execute` transaction on the destination chain.
+- `meta` (optional): The `meta` of type [metadata](/dev/amplifier/gmp-api/#metadata) is the event metadata.
+
+#### Example Request
+The request for [this event](https://testnet.snowtrace.io/tx/0x4d84c8525829e5e940ccd5b6a0f6821e4dd10fac4c62bc706a4ab5425d21b830) can be sent as follows:
+
+```bash
+curl -X POST $GMP_API_URL/ethereum/events \
+     -H "Content-Type: application/json" \
+     -d '{
+  "events": [{
+    "type": "MESSAGE_EXECUTED",
+    "eventID": "0x4d84c8525829e5e940ccd5b6a0f6821e4dd10fac4c62bc706a4ab5425d21b830-0",
+    "message": {
+      "messageID": "0x1fbe533b3bed6e6be3a74734042b3ae0836cabfdc2b646358080db75e9fe9ba8-2",
+      "sourceChain": "ethereum-sepolia",
+      "sourceAddress": "0x1796ce030C396C7549a8c7b1491E7d85e3946EA3",
+      "destinationAddress": "0xf4ff91f79E35E7dF460A6B259fD971Ec85E933CF",
+      "payloadHash": "0x3597dab2d3c91dcb3a45b540c28025b283bd640ff4d72e4bbfced504fa0dfb53"
+    },
+    "status": "SUCCESSFUL",
+    "cost": {
+      "amount": "3638445532000000"
+    }
+  }]
+}'`
+```
+
+### GasRefundedEvent
+
+This event indicates when gas has been refunded for a message.
+
+The following parameters are used for this request: 
+- `type`: The [event type](/dev/amplifier/gmp-api/#eventtype) corresponds to the name of the event which must be `GAS_REFUNDED`.
+- `eventId`: This the id of the `Refunded` event in format `TxHash-LogIndex`.
+- `recipientAddress`: The `recipientAddress` of type [Address](/dev/amplifier/gmp-api/#address) is the recipient of the refund.
+- `refundAmount`: The `refundAmount` of type [Token](/dev/amplifier/gmp-api/#token) is the amount of funds to be refunded.
+- `cost`: The `cost` of type [token](/dev/amplifier/gmp-api/#token) that corresponds to the cost of the `refund` transaction.
+
+#### Example Request
+The request for [this event](https://polygonscan.com/tx/0x3f781fbed74cc232ac2f9a0997250574b9958303584576d3cdd1ea2d8731359d#eventlog) can be sent as follows:
+
+```bash
+curl -X POST $GMP_API_URL/ethereum/events \
+     -H "Content-Type: application/json" \
+     -d '{
+  "events": [{
+    "type": "GAS_REFUNDED",
+    "eventID": "0x3f781fbed74cc232ac2f9a0997250574b9958303584576d3cdd1ea2d8731359d-0",
+    "messageID": "0x0e948e82649f8825aedeedf07538a3a86308ae03d90082975062815d7e8f7d2c",
+    "recipientAddress": "0x53c163255f3e2cA72C606c4A4a5e78F486C26477",
+    "refundedAmount": {
+      "amount": "221185349384638921"
+    },
+    "cost": {
+      "amount": "4587129823193400"
+    }
+  }]
+}'
+```
+
+### CannotExecuteMessageEvent
+
+This event occurs when a message cannot be executed. 
+
+The following parameters are used for this request:
+- `type`: The [event type](/dev/amplifier/gmp-api/#eventtype) corresponds to the name of the event which must be `CANNOT_EXECUTE_MESSAGE`.
+- `eventID`: This the id of the `CannotExecuteMessage` event in format `TxHash-LogIndex`.
+- `taskItemID`: This is the id for a given [task](/dev/amplifier/gmp-api/#task)
+- `reason`: The `reason` of type [CannotExecuteMessageReason](/dev/amplifier/gmp-api/#cannotexecutemessagereason) is the reason why the execution failed.
+- `details`: The `details` of type [token](/dev/amplifier/gmp-api/#token) corresponds to the refund  transaction.
+
+#### Example Request
+The quest can be sent as follows:
+
+```bash
+curl -X POST $GMP_API_URL/ethereum/events \
+     -H "Content-Type: application/json" \
+     -d '{
+  "events": [{
+    "type": "CANNOT_EXECUTE_MESSAGE",
+    "eventID": "event123",
+    "taskItemID": "550e8400-e29b-41d4-a716-446655440000",
+    "reason": "INSUFFICIENT_GAS",
+    "details": "Not enough gas to execute the message"
   }]
 }'
 ```
