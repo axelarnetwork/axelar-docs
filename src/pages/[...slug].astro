@@ -7,7 +7,7 @@ import generateToc from "@/lib/generateToc";
 import { findPrevAndNextPages } from "@/lib/nextPrevPages";
 import { proseClasses } from "@/lib/prose-classes";
 import { getGithubEditUrl } from "@/scripts/github-edit";
-import { generateNavigation } from "@/utils/generateNavigation";
+
 import { getCollection } from "astro:content";
 import clsx from "clsx";
 import { LayoutGrid, PenLine } from "lucide-react";
@@ -21,8 +21,6 @@ export async function getStaticPaths() {
 }
 
 const { doc } = Astro.props;
-const docs = await getCollection("docs");
-const nav = generateNavigation(docs);
 
 const pathname = Astro.url.pathname;
 const { Content, headings } = await doc.render();
