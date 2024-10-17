@@ -148,24 +148,5 @@ const cards = [
       ))
     }
   </div>
-  <h1>ITS Overview</h1>
-  <p>The main functionalities of ITS can be broken down in the diagrams below. These are the ability to connect tokens across multiple blockchains and transfer connected tokens between multiple blockchains. Note: ITS is designed to be a flexible permisionless process, meaning that the way tokens are connected between the chains can vary for different usecases (see <a href="/dev/send-tokens/interchain-tokens/token-manager/">token managers</a> for more info).</p>
-  <h2>Deploy Interchain Token</h2>
-  <p>ITS allows you to deploy <a href="https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/interchain-token/InterchainToken.sol">Interchain Tokens</a>. An Interchain Token is an ERC20 that is connected to <a href="https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/InterchainTokenService.sol">ITS</a> upon deployment. It comes built in with the <code>interchainTransfer()</code> function, which allows users to bridge their token between any blockchain which it is deployed to. To deploy this token you can go through the <a href="https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/InterchainTokenFactory.sol">Interchain Token Factory</a> contract. When you trigger the <code>registerCanonicalInterchainToken()</code> function that will trigger the flow of registering your custom token with a <code>Lock/Unlock</code> <a href="https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/token-manager/TokenManager.sol"> token manager</a> type to your token's <i>home chain</i>. Now that you have registered your token on the home chain you can call the <code>deployRemoteCanonicalInterchainToken()</code>. This will deploy an Interchain Token on a different blockchain that will be connected to your canonical token on the home chain you registered when you called the previous function. Note: This is just one of many different flows you can choose to follow when interacting with ITS.</p>
-  <Callout type="warning">This diagram is interactive click on the function names!</Callout>
-  <object type="image/svg+xml" data="/images/its-deployment-diagram.svg" style="width: 100%; height: 1200px;">
-    Your browser does not support SVG
-  </object>
-  <h2>Interchain Transfer</h2>
-  <p>Once your token is connected to ITS you can call the <code>interchaintTransfer()</code> function to send a cross chain transaction for your token. If your token inherits the <a href="https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/interchain-token/InterchainTokenStandard.sol">Interchain Token Standard</a> then you will have this function built into the token. The <code>interchainTransfer()</code> will trigger a flow that will interact with <code>ITS</code> to either lock or burn your token on the source chain (depending on the Token Manager type) and then mint your token on the destination chain.</p>
-  <Callout type="warning">This diagram is interactive click on the function names!</Callout>
-  <object type="image/svg+xml" data="/images/its-transfer.svg"  style="width: 100%; height: 1200px;">
-    Your browser does not support SVG
-  </object>
-  <Callout type="warning" emoji="🚨">
-    **NOTE:** The security of your token is limited to the security of the chains
-    it integrates with. Since blockchains can have different security practices,
-    we recommend doing due diligence on all chains your token will be deployed to.
-  </Callout>
-</Section>
+
 
