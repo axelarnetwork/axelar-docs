@@ -31,6 +31,7 @@ $ curl -X GET $GMP_API_URL/ethereum/tasks?after=550e8400-e29b-41d4-a716-44665544
 ```
 
 #### Example Response
+
 ```json
 {
   "tasks": [
@@ -51,6 +52,9 @@ $ curl -X GET $GMP_API_URL/ethereum/tasks?after=550e8400-e29b-41d4-a716-44665544
 Represents an inbound message from an external blockhain that needs to be routed via Axelar Amplifier to a destination chain.
 
 #### Example Request
+
+For the [transaction](https://testnet.snowtrace.io/tx/0xae2d4cb6765c026dbd116535b124aba21bcaed8c7bd18eff8c1f276fd416efbb/eventlog?chainid=43113)
+
 ```bash
 curl -X GET $GMP_API_URL/avalanche/tasks \
 -H "Accept: application/json"
@@ -76,6 +80,9 @@ Note: `executeData` represents a the `bytes` of an approval.
 Represents a `task` to be executed on the destination chain once it has gone through the Amplifier flow and been marked as `approved`.
 
 #### Example Request
+
+For the [transaction](https://testnet.snowtrace.io/tx/0xae2d4cb6765c026dbd116535b124aba21bcaed8c7bd18eff8c1f276fd416efbb/eventlog?chainid=43113)
+
 ```bash
 curl -X GET $GMP_API_URL \
      -H "Accept: application/json"
@@ -115,6 +122,9 @@ In this response
 Represents a `task` to refund any unused gas sent in a cross-chain transfer.
 
 #### Example Request
+
+For the [transaction](https://testnet.snowtrace.io/tx/0xae2d4cb6765c026dbd116535b124aba21bcaed8c7bd18eff8c1f276fd416efbb/eventlog?chainid=43113)
+
 ```bash
 curl -X GET $GMP_API_URL \
      -H "Accept: application/json"
@@ -147,7 +157,7 @@ curl -X GET $GMP_API_URL \
 ## Events endpoint
 An `event` indicates the completion of an action in the cross-chain messaging flow. You can use this to submit the completion of an action (ex. a new contract call was made or a message was approved). The full schema can be found [here](https://github.com/axelarnetwork/axelar-eds-mirror/blob/main/oapi/gmp/schema.yaml#L14)
 
-When using the Events API each event takes an event type. Each event type corresponds to an an schema
+When using the Events API each event takes an event type. Each event type corresponds to a schema
 
 | **Event Type** | **Event Schema** |
 | --- | --- |
@@ -372,63 +382,60 @@ curl -X POST $GMP_API_URL/ethereum/events \
 
 | **Parameter** | **Type** | **Description** |
 | --- | --- | --- |
-| `txID` | string | tx id of the underlying event |
-| `fromAddress` | string | address of sender |
-| `finalized` | boolean (default `true`) | `true` if transaction is finalized; `false` otherwise |
+| `txID` | `string` | tx id of the underlying event |
+| `fromAddress` | `string` | address of sender |
+| `finalized` | `boolean` (default `true`) | `true` if transaction is finalized; `false` otherwise |
 
 ### EventType
 
 | **Type** | **Description** |
 | --- | --- |
-| enum | Legal string values:
-”GAS_CREDIT”, “GAS_REFUNDED”, “CALL”, “MESSAGE_APPROVED”, “MESSAGE_EXECUTED”, “CANNOT_EXECUTE_MESSAGE” |
+| enum | `”GAS_CREDIT”`, `“GAS_REFUNDED”`, `“CALL”`, `“MESSAGE_APPROVED”`, `“MESSAGE_EXECUTED”`, `“CANNOT_EXECUTE_MESSAGE”` |
 
 ### TaskType
 
 | **Type** | **Description** |
 | --- | --- |
-| enum | legal string values:
-”GATEWAY_TX”, “EXECUTE”, “REFUND” |
+| enum | `"GATEWAY_TX"`, `"EXECUTE"`, `"REFUND"` |
 
 ### Task
 
 | **Type** | **Description** |
 | --- | --- |
-| one of | legal values:
-[GatewayTransactionTask](https://www.notion.so/Amplifier-GMP-API-EXTERNAL-911e740b570b4017826c854338b906c8?pvs=21), [ExecuteTask](https://www.notion.so/Amplifier-GMP-API-EXTERNAL-911e740b570b4017826c854338b906c8?pvs=21), [RefundTask](https://www.notion.so/Amplifier-GMP-API-EXTERNAL-911e740b570b4017826c854338b906c8?pvs=21) |
+| one of | [GatewayTransactionTask](https://www.notion.so/Amplifier-GMP-API-EXTERNAL-911e740b570b4017826c854338b906c8?pvs=21), [ExecuteTask](https://www.notion.so/Amplifier-GMP-API-EXTERNAL-911e740b570b4017826c854338b906c8?pvs=21), [RefundTask](https://www.notion.so/Amplifier-GMP-API-EXTERNAL-911e740b570b4017826c854338b906c8?pvs=21) |
+
 
 ### GatewayV2Message
 
 | **Parameter** | **Type** | **Description** |
 | --- | --- | --- |
-| `messageID` | string | the message id of a GMP call |
-| `sourceChain` | string | source chain |
-| `sourceAddress` | [Address](https://www.notion.so/Amplifier-GMP-API-EXTERNAL-911e740b570b4017826c854338b906c8?pvs=21) | source address |
-| `destinationAddress` | [Address](https://www.notion.so/Amplifier-GMP-API-EXTERNAL-911e740b570b4017826c854338b906c8?pvs=21) | destination address |
-| `payloadHash` | string | string representation of payload hash |
+| `messageID` | `string` | the message id of a GMP call |
+| `sourceChain` | `string` | source chain |
+| `sourceAddress` | [Address](/dev/amplifier/gmp-api/#address) | source address |
+| `destinationAddress` | [Address](/dev/amplifier/gmp-api/#address) | destination address |
+| `payloadHash` | `string` | `string` representation of payload hash |
 
 ### Token
 
 | **Parameter** | **Type** | **Description** |
 | --- | --- | --- |
-| `tokenID` (optional) | string | indicates that `amount` is in native token if left blank |
-| `amount` | [BigInt](https://www.notion.so/Amplifier-GMP-API-EXTERNAL-911e740b570b4017826c854338b906c8?pvs=21) | the amount in token’s denominator |
+| `tokenID` (optional) | `string` | indicates that `amount` is in native token if left blank |
+| `amount` | [BigInt](/dev/amplifier/gmp-api/#bigint) | the amount in token’s denominator |
 
 ### Address
 
 | **Type** | **Description** |
 | --- | --- |
-| string | minLength must be 1 |
+| `string` | minLength must be 1 |
 
 ### BigInt
 
 | **Type** | **Description** |
 | --- | --- |
-| string | Adheres to pattern `^(0|[1-9]\d*)$` |
+| `string` | Adheres to pattern ^(0\|[1-9]\d*)$ |
 
 ### **CannotExecuteMessageReason**
 
-| **Type** | **Description** |
+| **Type | **Description** |
 | --- | --- |
-| enum | legal string values:
-”INSUFFICIENT_GAS”, “ERROR” |
+| `enum`| legal string values: `INSUFFICIENT_GAS`, `ERROR` |
