@@ -1,11 +1,10 @@
-
 # Call a contract on chain B from chain A and attach some tokens
 
-import { Callout } from "/src/components/callout"
+import { Callout } from "/src/components/callout";
 
 <iframe
-  width="560"
-  height="315"
+ width="100%"
+  class="aspect-video"
   src="https://www.youtube.com/embed/VkdRSrf4cmY"
   title="YouTube video player"
   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -21,7 +20,10 @@ To call chain B from chain A and send some tokens along the way, the user needs 
 - The amount of the token to transfer.
 
 <Callout emoji="🚨">
-  **NOTE:** The security of your contracts, and the tokens passed between them, is limited to the security of the chains they integrate with. Since blockchains can have different security practices, we recommend doing due diligence on all chains your contract will be deployed to.
+  **NOTE:** The security of your contracts, and the tokens passed between them,
+  is limited to the security of the chains they integrate with. Since
+  blockchains can have different security practices, we recommend doing due
+  diligence on all chains your contract will be deployed to.
 </Callout>
 
 As per the snippet below:
@@ -36,7 +38,7 @@ function callContractWithToken(
 ) external;
 ```
 
-`AxelarExecutable` has an `executeWithToken` function that will be triggered by the Axelar network on the destination chain after the `callContractWithToken` function has been executed on the source chain. This will validate the contract call and then invoke *your* `_executeWithToken` method, where you should write any custom logic.
+`AxelarExecutable` has an `executeWithToken` function that will be triggered by the Axelar network on the destination chain after the `callContractWithToken` function has been executed on the source chain. This will validate the contract call and then invoke _your_ `_executeWithToken` method, where you should write any custom logic.
 
 The destination contract will be authorized to transfer the ERC-20 identified by the `tokenSymbol`.
 
@@ -72,9 +74,7 @@ function _executeWithToken(
 }
 ```
 
-<Callout emoji="ℹ️">
-  Ensure the payload is encoded `bytes`!
-</Callout>
+<Callout emoji="ℹ️">Ensure the payload is encoded `bytes`!</Callout>
 
 The `payload` passed to `callContract` (and ultimately to the `_execute` and `_executeWithToken`) has type `bytes`. Use the ABI encoder/decoder convert your data to `bytes`.
 
@@ -86,7 +86,7 @@ const { ethers } = require("ethers");
 // encoding a string
 const payload = ethers.utils.defaultAbiCoder.encode(
   ["string"],
-  ["Hello from contract A"]
+  ["Hello from contract A"],
 );
 ```
 
@@ -102,6 +102,5 @@ function _execute(
     string memory _message = abi.decode(payload, (string));
 }
 ```
-
 
 **Learn More:** Explore our tutorial on building a decentralized application (dApp) for cross-chain airdrops using Solidity, Next.js, and Axelar's General Message Passing with `callContractWithToken`. This tutorial will guide you through the process of distributing tokens across multiple chains: [How to Build a Cross-Chain Airdrop DApp With Solidity, Next.js, and Axelar](https://axelar.network/blog/cross-chain-airdrop-dapp-tutorial).

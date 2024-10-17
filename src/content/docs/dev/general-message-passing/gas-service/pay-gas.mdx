@@ -1,0 +1,167 @@
+# Estimate and pay gas
+
+import { Callout } from "/src/components/callout";
+
+Gas estimation is the process of estimating the gas required to execute a transaction — specifically, a multichain transaction with Axelar. An application that wants Axelar to automatically execute contract calls on the destination chain must do the following:
+
+1. Set up the [`AxelarQueryAPI`](/dev/axelarjs-sdk/axelar-query-api) with environment-specific configurations, ensuring accurate communication with Axelar's network services. This API dynamically computes the necessary fees for a multichain transaction on the Axelar network.
+1. Estimate the `gasLimit` that the contract call will require in the executable contract on the destination chain.
+1. Fetch the gas fees for a transaction:
+   - **Chain- and asset-specific fees:** The API retrieves fee information for particular chains and assets, enabling precise fee estimations necessary for transaction executions.
+   - **Transfer fees:** For transactions involving asset transfers, the API calculates fees based on source and destination chain details, the assets involved, and the transfer amount.
+   - If the destination chain is an EVM L2 chain, it will incur an extra cost for posting the executed transaction back to the L1 chain. The API estimates these extra fees with methods such as `calculateL1FeeForDestL2()`.
+   - `estimateGasFee()` will estimate the fee (including any additional fees for L2 chains) in the destination token, convert it to the same price in the source token, and return the converted amount.
+1. Pay the [`AxelarGasService`](https://github.com/axelarnetwork/axelar-gmp-sdk-solidity/blob/ad37802dc6d62fff3ab589f2605f7a3e566977dd/contracts/interfaces/IAxelarGasService.sol) smart contract on the source chain with [`payNativeGasForContractCall()`](https://github.com/axelarnetwork/axelar-examples/blob/f122a6635a0dbd70791a0a0ecff2674a81a1dd36/examples/evm/call-contract/CallContract.sol#L45) or [`payNativeGasForContractCallWithToken()`](https://github.com/axelarnetwork/axelar-examples/blob/f122a6635a0dbd70791a0a0ecff2674a81a1dd36/examples/evm/call-contract-with-token/CallContractWithToken.sol#L50C20-L50C56). Gas fees are paid in the native token of the source chain.
+
+## Types of gas estimation with Axelar
+
+### Off-chain gas estimation (recommended)
+
+The standard way of using the Axelar Gas Service is to create a new endpoint that queries for a gas estimate based on the transaction a user is attempting to make, and then using that gas
+estimate to actually create the on-chain transaction with the correct amount of native gas.
+
+<iframe
+  width="100%"
+  class="aspect-video"
+  src="https://www.youtube.com/embed/5tMbSTrrMgY"
+  title="Introduction to Gas Estimation for Cross-Chain Transactions"
+  frameBorder="0"
+  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+  allowFullScreen
+></iframe>
+
+### On-chain gas estimation (alpha)
+
+The [`IInterchainGasEstimation`](https://github.com/axelarnetwork/axelar-gmp-sdk-solidity/blob/main/contracts/interfaces/IInterchainGasEstimation.sol) interface offers [on-chain gas estimation](/dev/gas-service/on-chain-estimation/), allowing you to estimate interchain transaction gas fees directly from a Solidity contract. This method involves overpaying for a transaction and getting a refund, and is available only on testnet. Use it only if you are not able to estimate gas off-chain.
+
+## Gas pricing
+
+Transactions using Axelar often have costs associated with their source chain, the Axelar network, and their destination chain. Whether for token transfers or for General Message Passing, every cross-chain transaction is made up of four types of costs:
+
+### EVM → EVM
+
+1. Initiating the transaction on the source chain
+1. Processing the transaction through the Axelar blockchain
+1. Relaying to the gateway contract on the destination chain
+1. Executing the destination smart contract with the payload
+
+### EVM → Cosmos, Cosmos → EVM, or Cosmos → Cosmos
+
+1. Initiating the transaction on the source chain
+1. Processing the transaction through the Axelar blockchain
+1. Relaying to an IBC- or Cosmos-compatible chain, which incurs extra fees. These are embedded into processing fees.
+
+### Transaction fees
+
+To simplify paying for transaction pricing through the pipeline, Axelar has two general solutions:
+
+- For General Message Passing (function calls to `callContract()` or `callContractWithToken()`), a chain-agnostic relaying service is implemented to accept gas payments from users on the source chain in its native currency.
+- For token transfers, a fixed “relayer fee” is deducted from the amount of assets being transferred cross-chain.
+
+All costs can be seen on [Axelarscan](https://axelarscan.io/) by looking at a specific transaction — for example, [from Moonbeam to BNB Chain](https://axelarscan.io/gmp/0x598d35609919bc6c0737ae229af56b2135ccf5c1b031e1bd8d45f4ec4190e5a4:65).
+
+## Gas pricing considerations
+
+### Execution fee
+
+While `estimateGasFee()` builds the components of a transaction’s gas costs for you, it's your responsibility to specify the estimated gas required to `_execute()` on the destination smart contract. We recommend you use the gasLimit parameter in `estimateGasFee()` to avoid underestimation and surprise fees.
+
+### Gas price volatility
+
+Certain EVM chains have highly volatile gas prices. To address this, it's advisable to pay extra gas upfront to prevent transactions from getting "stuck" in the pipeline due to out-of-gas issues. `estimateGasFee()` offers two optional parameters to improve execution certainty:
+
+1. A `minGasPrice` for use on the destination chain
+1. A `gasMultiplier` to multiply the calculated value by a specified buffer for execution certainty
+
+### Refunds
+
+Any unused gas paid upfront for a transaction is refunded to the designated refund address by the Gas Service.
+
+`Refund` = `Gas deposit` - `Network Base Fee` - `Execution Fee` - `Approximate gas to process the refund`
+
+The estimated gas for transferring the refund is typically slightly higher than the actual gas used.
+
+### Round trip transaction (two-way calls)
+
+A relayer built off-chain will automate any "two-way calls" (GMP transactions from Chain A to Chain B and then back to Chain A) under the assumption that the total cost of the round-trip transaction will be covered on the source chain. A clear example of this implementation is provided in the [`axelar-examples`](https://github.com/axelarnetwork/axelar-examples/blob/main/examples/evm/send-ack/SendAckSender.sol#L47) repo.
+
+`estimateGasFee()` can be used to calculate the amount of gas required for a round trip. This method should be called twice:
+
+1. First to estimate the gas cost for the trip from Chain A to Chain B
+1. Again to estimate the return trip from Chain B to Chain A
+
+The total cost is the sum of these two estimates.
+
+<Callout>
+  Gas cost estimation is direction-dependent. The costs for the outbound and
+  return trips can significantly vary.
+</Callout>
+
+### Handling a failed or stuck transaction
+
+Transactions may occasionally stall while transitioning from a source chain to a destination chain. The most common reasons for these stalled transactions are:
+
+1. Failure to send a valid transaction from the source chain to the Axelar network for processing
+1. [Insufficient gas payments made by the user](/dev/general-message-passing/debug/error-debugging#1-insufficient-gas-to-execute-the-transaction)
+1. [Transaction reverting on the destination chain](/dev/general-message-passing/debug/error-debugging#2-error-in-the-destination-contract-logic)
+
+Every transaction is visible on [Axelarscan](https://axelarscan.io/), which provides a detailed view of where something might get "stuck." Axelarscan and the AxelarJS SDK offer two methods to [recover stalled transactions](/dev/general-message-passing/debug/transaction-recovery/):
+
+1. Manually executing the transaction on the destination chain
+1. Adding gas to the transaction
+
+## GMP Express costs
+
+[Express transactions](/dev/general-message-passing/express) incur an additional **insurance fee** alongside existing GMP overhead fees. This extra fee acts as insurance for the Express relayer for assuming the risk of an Express transaction. If the fee is not paid, the transaction will revert to a regular non-Express GMP transaction.
+
+## Sample gas-estimation contract
+
+The following is an example of how gas fees can be paid to an `AxelarGasService` contract. Assume that `SimpleTransferContract` is a smart contract deployed on a source chain:
+
+```solidity
+contract SimpleTransferContract {
+  ...
+  function sendToMany(
+      string memory destinationChain,
+      string memory destinationContractAddress,
+      address[] calldata destinationAddresses,
+      string memory symbol,
+      uint256 amount
+  ) external payable {
+      address tokenAddress = gateway.tokenAddresses(symbol);
+      IERC20(tokenAddress).transferFrom(msg.sender, address(this), amount);
+      IERC20(tokenAddress).approve(address(gateway), amount);
+      bytes memory payload = abi.encode(destinationAddresses);
+
+      // msg.value is the gas amount paid to the contract.
+      if(msg.value > 0) {
+          // Pay the gas fee.
+          gasReceiver.payNativeGasForContractCallWithToken{value: msg.value}(
+              address(this),
+              destinationChain,
+              destinationContractAddress,
+              payload,
+              symbol,
+              amount,
+              msg.sender
+          );
+      }
+      gateway.callContractWithToken(destinationChain, destinationContractAddress, payload, symbol, amount);
+  }
+}
+```
+
+`msg.value` is the gas amount paid to the `AxelarGasService` contract. Thus, the value returned from a call to `estimateGasFee()` must be passed to `msg.value` on the front end:
+
+```solidity
+await contract.sendToMany("moonbeam", "0x...", ["0x.."], "USDC", 1, {
+  value: sourceGasFee, // Value returned from calling estimateGasFee()
+});
+```
+
+After sending a transaction out, Axelar’s Gas Service will do the following:
+
+- Monitor `AxelarGasReceiver` for receipt of payment and get the amount paid as `amountPaid`.
+- Match the gas paid to the correct contract calls.
+- Submit the transaction to the Axelar network for confirmation.
+- Execute the contract call with the `gasLimit` specified by the application.

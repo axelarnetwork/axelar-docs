@@ -9,13 +9,11 @@ Instructions to set up your Avalanche node.
 - MacOS or Ubuntu 20.04 (tested on 20.04)
 - [Official Documentation](https://docs.avax.network/build/tutorials/nodes-and-staking/run-avalanche-node)
 
-
 ## Prerequisites
+
 ```bash
 sudo apt-get install wget jq -y
 ```
-
-
 
 ## Get Binaries
 
@@ -36,7 +34,6 @@ AVALANCHEGO=v1.9.3
 
 </tab-item>
 </tabs>
-
 
 ```bash
 # verify correct versions
@@ -136,7 +133,9 @@ sudo systemctl restart systemd-journald
 
 journalctl -u avalanchego.service -f -n 100 -o cat
 ```
+
 Logs should appear like this
+
 ```bash
 [11-28|07:50:59.280] INFO <P Chain> bootstrap/bootstrapper.go:481 fetching blocks {"numFetchedBlocks": 85000, "numTotalBlocks": 3241631, "eta": "1h52m8s"}
 [11-28|07:51:13.370] INFO <P Chain> bootstrap/bootstrapper.go:481 fetching blocks {"numFetchedBlocks": 90000, "numTotalBlocks": 3241631, "eta": "1h53m58s"}
@@ -168,6 +167,7 @@ curl -X POST --data '{
 If you get something like this in response of the above rpc call, your node is setup correctly
 
 Wait for `isBootstrapped` to become true before using it in vald config
+
 ```bash
 {
   "jsonrpc": "2.0",
@@ -189,22 +189,15 @@ echo "${YOUR_IP}:9650/ext/bc/C/rpc"
 In order for `vald` to connect to your Avalanche node, your `rpc_addr` should be exposed in
 vald's `config.toml`
 
-
 <tabs>
-<tab-item title="Mainnet">
-  ```bash
-  [[axelar_bridge_evm]]
-  name = "Avalanche"
-  rpc_addr = "http://IP:PORT"
-  start-with-bridge = true
-  ```
-</tab-item>
-<tab-item title="Testnet">
-  ```bash
-  [[axelar_bridge_evm]]
-  name = "Avalanche"
-  rpc_addr = "http://IP:PORT"
-  start-with-bridge = true
-  ```
-</tab-item>
+  <tab-item title="Mainnet">
+    ```bash [[axelar_bridge_evm]] name = "Avalanche" rpc_addr = "http://IP:PORT"
+    start-with-bridge = true 
+```
+  </tab-item>
+  <tab-item title="Testnet">
+    ```bash [[axelar_bridge_evm]] name = "Avalanche" rpc_addr = "http://IP:PORT"
+    start-with-bridge = true 
+```
+  </tab-item>
 </tabs>

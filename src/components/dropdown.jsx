@@ -1,13 +1,14 @@
-import { Fragment, useState, useEffect } from "react";
-import _ from "lodash";
 import { Menu, Transition } from "@headlessui/react";
+import _ from "lodash";
+import { Fragment, useEffect, useState } from "react";
 
-import { equals_ignore_case } from "../utils";
-import evm_chains from "../data/evm_chains.json";
+import { ChevronDown } from "lucide-react";
 import cosmos_chains from "../data/cosmos_chains.json";
 import evm_assets from "../data/evm_assets.json";
-import ibc_assets from "../data/ibc_assets.json";
+import evm_chains from "../data/evm_chains.json";
 import gateways from "../data/gateways.json";
+import ibc_assets from "../data/ibc_assets.json";
+import { equals_ignore_case } from "../utils";
 
 const data = {
   evm_chains,
@@ -62,16 +63,16 @@ export default ({
       case "chains":
         _options = _.concat(
           data.evm_chains?.[environment].filter((c) => !c?.is_staging) || [],
-          data.cosmos_chains?.[environment] || []
+          data.cosmos_chains?.[environment] || [],
         );
         break;
       case "assets":
         _options = _.uniqBy(
           _.concat(
             data.evm_assets?.[environment] || [],
-            data.ibc_assets?.[environment] || []
+            data.ibc_assets?.[environment] || [],
           ),
-          "id"
+          "id",
         );
         break;
       default:
@@ -89,36 +90,38 @@ export default ({
     options?.find((o) => o?.id === selectedKey) || selectedKey;
 
   return (
-    <Menu as="div" className={`dropdown relative inline-block text-left ${className}`}>
+    <Menu as="div" className={`dropdown   relative  text-left ${className}`}>
       {({ open }) => (
         <>
-          <div>
-            <Menu.Button className="inline-flex justify-center w-full px-4 py-2 text-sm font-medium text-gray-900 bg-white dark:bg-black border border-gray-300  rounded-md shadow-sm hover:bg-gray-50 dark:hover:bg-gray-900 dark:border-gray-700 focus:outline-none dark:text-gray-100">
-              {selectedData ? (
-                <div className="flex items-center space-x-2">
-                  {selectedData.image && (
-                    <img
-                      src={selectedData.image}
-                      alt=""
-                      width={24}
-                      height={24}
-                      className="rounded-full"
-                    />
-                  )}
-                  <span className="font-bold">{selectedData.name}</span>
-                </div>
-              ) : selectedData === "" ? (
-                <span className="font-bold">{allOptionsName}</span>
-              ) : (
-                placeholder || "Select Options"
-              )}
-              {open ? (
-                <svg className="toggle"  stroke="currentColor" fill="currentColor" strokeWidth="0" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="m6.293 13.293 1.414 1.414L12 10.414l4.293 4.293 1.414-1.414L12 7.586z"></path></svg>
-                ) : (
-                <svg className="toggle" stroke="currentColor" fill="currentColor" strokeWidth="0" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M16.293 9.293 12 13.586 7.707 9.293l-1.414 1.414L12 16.414l5.707-5.707z"></path></svg>
-              )}
-            </Menu.Button>
-          </div>
+          <Menu.Button className="flex justify-between gap-2 w-full px-4 py-2 text-sm font-medium text-gray-900 bg-white dark:bg-black border border-gray-300  rounded-full relative shadow-sm hover:bg-gray-50 items-center dark:hover:bg-gray-900 dark:border-gray-700 focus:outline-none dark:text-gray-100">
+            <div class="absolute left-0 top-0 size-[3px] rounded-full bg-black dark:bg-white"></div>
+            <div class="absolute left-0 bottom-0 size-[3px] rounded-full bg-black dark:bg-white"></div>
+            <div class="absolute right-0 top-0 size-[3px] rounded-full bg-black dark:bg-white"></div>
+            <div class="absolute right-0 bottom-0 size-[3px] rounded-full bg-black dark:bg-white" />
+            {selectedData ? (
+              <div className="flex items-center space-x-2">
+                {selectedData.image && (
+                  <img
+                    src={selectedData.image}
+                    alt=""
+                    width={24}
+                    height={24}
+                    className="rounded-full"
+                  />
+                )}
+                <span className="font-bold line-clamp-1">
+                  {selectedData.name}
+                </span>
+              </div>
+            ) : selectedData === "" ? (
+              <span className="font-bold">{allOptionsName}</span>
+            ) : (
+              placeholder || "Select Options"
+            )}
+
+            <ChevronDown />
+          </Menu.Button>
+
           <Transition
             as={Fragment}
             enter="transition ease-out duration-100"
@@ -130,71 +133,71 @@ export default ({
           >
             <Menu.Items
               style={{ maxHeight: "50vh" }}
-              className={`dropdown-menu bg-white dark:bg-black dark:border dark:border-grey-300 w-48 overflow-y-auto min-w-max dark:bg-dark absolute z-10 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none origin-top-${align} ${align}-0 mt-2`}
+              className={`dropdown-menu bg-background-neutral-dark sidebar-scroll border-border w-48 overflow-y-auto min-w-max dark:bg-dark absolute z-10 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none origin-top-${align} ${align}-0 mt-2`}
             >
-                {hasAllOptions && (
-                  <Menu.Item key={-1}>
-                    {({ active }) => (
-                      <div
-                        onClick={() => {
-                          setSelectedKey("");
-                          if (onSelect) {
-                            onSelect("");
-                          }
-                        }}
-                        className={`${
-                          active
-                            ? "bg-gray-100 dark:bg-gray-900 text-dark dark:text-white"
-                            : "text-gray-800 dark:text-gray-200"
-                        } ${
-                          selectedKey === ""
-                            ? "font-bold"
-                            : active
+              {hasAllOptions && (
+                <Menu.Item key={-1}>
+                  {({ active }) => (
+                    <div
+                      onClick={() => {
+                        setSelectedKey("");
+                        if (onSelect) {
+                          onSelect("");
+                        }
+                      }}
+                      className={`${
+                        active
+                          ? "bg-gray-100 dark:bg-gray-900 text-dark dark:text-white"
+                          : "text-gray-800 dark:text-gray-200"
+                      } ${
+                        selectedKey === ""
+                          ? "font-bold"
+                          : active
                             ? "font-semibold"
                             : "font-medium"
-                        } cursor-pointer flex items-center text-sm space-x-2 py-2 px-4`}
-                      >
-                        <span>{allOptionsName}</span>
-                      </div>
-                    )}
-                  </Menu.Item>
-                )}
-                {options?.map((o, i) => (
-                  <Menu.Item key={i}>
-                    {({ active }) => (
-                      <div
-                        onClick={() => {
-                          setSelectedKey(o.id);
-                          if (onSelect) {
-                            onSelect(options?.find((_o) => _o?.id === o.id));
-                          }
-                        }}
-                        className={`dropdown-menu-item ${
-                          active
-                            ? "bg-gray-100 dark:bg-gray-900 text-dark dark:text-white"
-                            : "text-gray-800 dark:text-gray-200"
-                        } ${
-                          selectedKey === o.id
-                            ? "font-bold"
-                            : active
+                      } cursor-pointer flex items-center text-sm space-x-2 py-2 px-4`}
+                    >
+                      <span>{allOptionsName}</span>
+                    </div>
+                  )}
+                </Menu.Item>
+              )}
+              {options?.map((o, i) => (
+                <Menu.Item key={i}>
+                  {({ active }) => (
+                    <div
+                      onClick={() => {
+                        setSelectedKey(o.id);
+                        if (onSelect) {
+                          onSelect(options?.find((_o) => _o?.id === o.id));
+                        }
+                      }}
+                      className={`dropdown-menu-item ${
+                        active
+                          ? "bg-gray-100 dark:bg-gray-900 text-dark dark:text-white"
+                          : "text-gray-800 dark:text-gray-200"
+                      } ${
+                        selectedKey === o.id
+                          ? "font-bold"
+                          : active
                             ? "font-semibold"
                             : "font-medium"
-                        } cursor-pointer flex items-center text-sm space-x-2 py-2 px-4`}
-                      >
-                        {o.image && (
-                          <img
-                            src={o.image}
-                            alt=""
-                            width={24}
-                            height={24}
-                            className="rounded-full"
-                          />
-                        )}
-                        <span>{o.name}</span>
-                      </div>
-                    )}
-                  </Menu.Item>
-                ))}
+                      } cursor-pointer flex items-center text-sm space-x-2 py-2 px-4`}
+                    >
+                      {o.image && (
+                        <img
+                          src={o.image}
+                          alt=""
+                          width={24}
+                          height={24}
+                          className="rounded-full"
+                        />
+                      )}
+                      <span>{o.name}</span>
+                    </div>
+                  )}
+                </Menu.Item>
+              ))}
             </Menu.Items>
           </Transition>
         </>

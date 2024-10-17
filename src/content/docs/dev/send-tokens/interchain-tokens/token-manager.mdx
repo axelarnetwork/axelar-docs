@@ -3,53 +3,57 @@
 [Token Managers](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/token-manager/TokenManager.sol#L22) are contracts that facilitate the connection between your interchain token to the Interchain Token Service (ITS). For certain manager types, such as `mint/burn` Token Manager, the manager is the `msg.sender` of the transaction being executed on the destination chain for the token when it is bridged in.
 
 ## Token Manager Types
+
 There are different [types](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/interfaces/ITokenManagerType.sol#L10) of token managers available for developers to offer different types of integrations to ITS. These are; `nativeInterchain`, `mintBurnFrom`, `lockUnlock`, `lockUnlockFee`, `mintBurn`, and `gateway`.
 
-Each of these types correspond to an `enum` value. When [deploying a token manager](https://github.com/axelarnetwork/interchain-token-service/blob/7df851d8a4ec4df819961d704bf3067ee8d37521/contracts/InterchainTokenService.sol#L286) developers must pass in the [corresponding value](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/InterchainTokenService.sol#L289) for their desired token manager type. 
+Each of these types correspond to an `enum` value. When [deploying a token manager](https://github.com/axelarnetwork/interchain-token-service/blob/7df851d8a4ec4df819961d704bf3067ee8d37521/contracts/InterchainTokenService.sol#L286) developers must pass in the [corresponding value](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/InterchainTokenService.sol#L289) for their desired token manager type.
 
 `NativeInterchainToken`: `0`  
 `Mint/BurnFrom`: `1`  
 `Lock/Unlock`: `2`  
 `Lock/UnlockFee`: `3`  
 `Mint/Burn`: `4`  
-`Gateway`: `5`  
-
-
+`Gateway`: `5`
 
 ### Native Interchain Token
-For tokens that are deployed [directly from ITS itself](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/InterchainTokenFactory.sol#L127) they use a native interchain token manager. Tokens that are deployed via the frontend portal also use this type of manager. 
+
+For tokens that are deployed [directly from ITS itself](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/InterchainTokenFactory.sol#L127) they use a native interchain token manager. Tokens that are deployed via the frontend portal also use this type of manager.
 
 For more details checkout this [native interchain token example](https://github.com/axelarnetwork/axelar-examples/tree/main/examples/evm/its-interchain-token)
 
 ### Mint/Burn From
-The `mint/burnFrom` token manager type, allows tokens to be burnt on the source chain when they are transferred out of that chain and minted they are transferred back into the source chain. As the name suggests when the token is burnt on the source chain the manager is looking to trigger the `burnFrom()` function on the token rather than the `burn()` function. The main implication is that ITS must be approved to call `burnFrom()` by the token. The manager must be granted the role to be able to `mint()` the token on the destination chain. 
+
+The `mint/burnFrom` token manager type, allows tokens to be burnt on the source chain when they are transferred out of that chain and minted they are transferred back into the source chain. As the name suggests when the token is burnt on the source chain the manager is looking to trigger the `burnFrom()` function on the token rather than the `burn()` function. The main implication is that ITS must be approved to call `burnFrom()` by the token. The manager must be granted the role to be able to `mint()` the token on the destination chain.
 
 For more details checkout this [Mint/BurnFrom example](https://github.com/axelarnetwork/axelar-examples/tree/main/examples/evm/its-mint-burn-from)
 
-### Lock/Unlock 
-Token integrations using the `lock/unlock` token manager will have their token locked with their token's manager. Only a single `lock/unlock` manager can exist for a token as having multiple `lock/unlock` managers would make it substantially more difficult to manage liquidity across many different blockchains.  These token managers are best used in the case where a token has a "home chain" where a token can be locked. On the remote chains users can then use a wrapped version of that token which derives it's value from a locked token back on the home chain. Canonical tokens for example [deployed via ITS](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/InterchainTokenFactory.sol#L255) are examples where a `lock/unlock` token manager type is useful. When bridging tokens out of the destination chain (locking them at the manager) ITS [will call](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/TokenHandler.sol#L109) the `transferTokenFrom()` function, which in turn will call the `safeTranferFrom()` function. For this transaction to be successful, ITS must be `approved()` to call the `safeTransferFrom()` function, otherwise the call will revert.
+### Lock/Unlock
+
+Token integrations using the `lock/unlock` token manager will have their token locked with their token's manager. Only a single `lock/unlock` manager can exist for a token as having multiple `lock/unlock` managers would make it substantially more difficult to manage liquidity across many different blockchains. These token managers are best used in the case where a token has a "home chain" where a token can be locked. On the remote chains users can then use a wrapped version of that token which derives it's value from a locked token back on the home chain. Canonical tokens for example [deployed via ITS](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/InterchainTokenFactory.sol#L255) are examples where a `lock/unlock` token manager type is useful. When bridging tokens out of the destination chain (locking them at the manager) ITS [will call](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/TokenHandler.sol#L109) the `transferTokenFrom()` function, which in turn will call the `safeTranferFrom()` function. For this transaction to be successful, ITS must be `approved()` to call the `safeTransferFrom()` function, otherwise the call will revert.
 
 For more details checkout this [Canonical token example](https://github.com/axelarnetwork/axelar-examples/tree/main/examples/evm/its-canonical-token). Canonical tokens [use](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/InterchainTokenFactory.sol#L255) `lock/unlock` token managers on their home chain.
 
 ### Lock/Unlock Fee
-This manager type is similar to the `lock/unlock` token manager, where the manager locks the token on it's "home chain" when it is bridged out and unlocks it when it is bridged back. The key feature with this token manager is that you have the option to set a fee that will be [deducted](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/TokenHandler.sol#L197) when executing an `interchainTransfer()`. 
+
+This manager type is similar to the `lock/unlock` token manager, where the manager locks the token on it's "home chain" when it is bridged out and unlocks it when it is bridged back. The key feature with this token manager is that you have the option to set a fee that will be [deducted](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/TokenHandler.sol#L197) when executing an `interchainTransfer()`.
 
 For more details checkout this [Lock/UnlockFee example](https://github.com/axelarnetwork/axelar-examples/tree/main/examples/evm/its-lock-unlock-fee)
 
 ### Mint/Burn
+
 The `mint/burn` token manager type is the most common token manager type used for integrating tokens to ITS. This token manager type is used when there is no home chain for your token and allows you to `burn()` tokens from the source chain and `mint()` tokens on the destination chain. The manager will need to be granted the role to be able to execute the `mint()` and `burn()` function on the token.
 
 For more details checkout this [Mint/Burn example](https://github.com/axelarnetwork/axelar-examples/tree/main/examples/evm/its-custom-token)
 
 ### Gateway
-For tokens that will be connected with the AxelarGateway this Gateway manager type is also available. It will allow tokens to be sent cross-chain via the `callContractWithToken()` function 
 
+For tokens that will be connected with the AxelarGateway this Gateway manager type is also available. It will allow tokens to be sent cross-chain via the `callContractWithToken()` function
 
 ## Flow Limits
 
-Token Managers handle the flow limits for a token's ITS integration. A `flowLimit` is a set amount that controls the amount in which a token can be sent in/out of a given blockchain. This can have a variety of different usecases including for security emergencies on a given chain where you want to restrict the flow of your token for that particular blockchain. 
+Token Managers handle the flow limits for a token's ITS integration. A `flowLimit` is a set amount that controls the amount in which a token can be sent in/out of a given blockchain. This can have a variety of different usecases including for security emergencies on a given chain where you want to restrict the flow of your token for that particular blockchain.
 
-For each cross-chain transaction that goes through ITS the `flowIn` & `flowAmount` amount are increased to track the [inflow](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/TokenHandler.sol#L51) and [outflow](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/TokenHandler.sol#L120) of tokens. To [set](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/token-manager/TokenManager.sol#L167) the `flowLimit` of a given token the caller must be a registered [flowLimiter](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/utils/RolesConstants.sol#L13). 
+For each cross-chain transaction that goes through ITS the `flowIn` & `flowAmount` amount are increased to track the [inflow](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/TokenHandler.sol#L51) and [outflow](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/TokenHandler.sol#L120) of tokens. To [set](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/token-manager/TokenManager.sol#L167) the `flowLimit` of a given token the caller must be a registered [flowLimiter](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/utils/RolesConstants.sol#L13).
 
 For more information on `flowLimit`s, see [Flow Limit in Interchain Token Service
 ](/dev/send-tokens/interchain-tokens/flow-limit/)

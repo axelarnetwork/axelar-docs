@@ -1,0 +1,73 @@
+# Testnet upgrade: v0.35
+
+import { Callout } from "/src/components/callout";
+
+## About the v0.35 upgrade
+
+This release adds the Axelar Virtual Machine to the network and adds support for CosmWasm contract creation.
+
+<Callout type="warning" emoji="⚠️">
+  This release enables CosmWasm. Contracts created with CosmWasm will require
+  [governance proposals](/dev/amplifier/chain-integration/governance-proposals/)
+  to be deployed for the indefinite future.
+</Callout>
+
+Instructions for `2024-February-13` testnet upgrade to axelar-core `v0.35.3`, vald `v0.35.3`, and tofnd `v0.10.1`.
+Release can be found [here](https://github.com/axelarnetwork/axelar-core/releases/tag/v0.35.3).
+
+Upgrade height `12017025` [countdown](https://testnet.mintscan.io/axelar-testnet/blocks/12017025)
+
+<Callout type="warning" emoji="⚠️">
+  [Go v1.21](https://tip.golang.org/doc/go1.21) will be needed to build `axelard`.
+
+Node operators using binaries need to download `wasmvm v1.3.1` [libwasmvm.x86_64.so](https://github.com/CosmWasm/wasmvm/releases/tag/v1.3.1) and add the parent folder to `LD_LIBRARY_PATH`.
+
+Node operators will need to use the updated [`cosmsprund`](https://github.com/binaryholdings/cosmprund/pull/26) to prune their nodes.
+
+If using the community node setup scripts, please update to the latest commit on `main` first.
+`wasmvm` lib will be auto-downloaded to `$AXELARD_HOME/lib` but you'll need to add it to `LD_LIBRARY_PATH` before running the script.
+
+</Callout>
+
+1. If you're a validator or have delegated to one, please vote for the upgrade proposal via
+
+```bash
+axelard tx gov vote 70 yes --from validator
+```
+
+2. Wait for the proposed upgrade block, `12017025`. Your node will panic at that block height with a log: `{"level":"error","module":"consensus","err":"UPGRADE \"v0.35\" NEEDED at height: 12017025", ...}`. Stop your node after chain halt.
+
+```bash
+pkill -f 'axelard start'
+# Validators need to also stop vald/tofnd
+pkill -f 'vald-start'
+pkill -f tofnd
+```
+
+3. Backup the state:
+
+```bash
+cp -r ~/.axelar_testnet/.core/data ~/.axelar-lisbon-3-upgrade-0.34/.core/data
+```
+
+<Callout type="warning" emoji="⚠️">
+  Caution: If you backup the entire folder, `~/.axelar_testnet/.core`, that'll
+  also include your private keys (inside `config` and `keyring-file`
+  subfolders). That can be dangerous if anyone gets access to your backups. We
+  recommend backing up keys separately when you first create your node, and then
+  excluding them from any data backups.
+</Callout>
+
+4. Restart your `axelard` node with the new `v0.35.3` build.
+5. If you're a validator also restart `vald` with `v0.35.3` and `tofnd` with `v0.10.1`.
+
+Example using join scripts in [axelarate-community git repo](https://github.com/axelarnetwork/axelarate-community):
+
+```bash
+# in axelarate-community repo
+git checkout main
+git pull
+KEYRING_PASSWORD="pw-1" ./scripts/node.sh -n testnet -a v0.35.3
+# For validators, restart vald/tofnd
+KEYRING_PASSWORD="pw-1" TOFND_PASSWORD="pw-2" ./scripts/validator-tools-host.sh -n testnet -a v0.35.3 -q v0.10.1
+```

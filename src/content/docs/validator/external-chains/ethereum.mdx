@@ -1,6 +1,6 @@
 # Ethereum
 
-import { Callout } from "/src/components/callout"
+import { Callout } from "/src/components/callout";
 
 Set up your Ethereum Mainnet or Goerli Testnet RPC node
 
@@ -11,13 +11,12 @@ Set up your Ethereum Mainnet or Goerli Testnet RPC node
 - MacOS or Ubuntu 18.04+
 - [Official Documentation](https://ethereum.org/en/developers/docs/nodes-and-clients)
 
-
 ## Steps
+
 1. Install execution client
 2. Install consensus layer client
 3. Configure systemd
 4. Configure vald
-
 
 ### Install Execution client
 
@@ -64,11 +63,12 @@ wget https://github.com/eth-clients/eth2-networks/raw/master/shared/prater/genes
 After installation of `go-ethereum`, we are now ready to start the `geth` process but in order to ensure it is running in the background and auto-restarts in case of a server failure, we will setup a service file with systemd.
 
 <Callout type="error" emoji="⚠️">
-  Replace `$USER` and path to `geth` in the config below.
-  For Goerli Testnet, add the `--goerli` flag to the `geth` command.
+  Replace `$USER` and path to `geth` in the config below. For Goerli Testnet,
+  add the `--goerli` flag to the `geth` command.
 </Callout>
 
 Add the following to `/etc/systemd/system/geth.service`
+
 ```yaml
 [Unit]
 Description=Ethereum Node
@@ -105,20 +105,23 @@ sudo journalctl -u geth -f
 To verify if your node is in sync you can check the latest block from the [explorer](https://goerli.etherscan.io/).
 Compare it with what you have in `sudo journalctl -u geth -f`
 
-
 ##### 4. Test RPC connection
 
 Alternatively, you can now also use the Geth JavaScript console and check status of your node by attaching to your newly created `geth.ipc`. Don't forget to replace `$USER` and `path`, depending on your server configuration.
 
 <tabs>
 <tab-item title="Mainnet">
- <pre><code>geth attach ipc:/root/.ethereum/geth.ipc
-eth.syncing</code></pre>
+ ```bash
+ geth attach ipc:/root/.ethereum/geth.ipc
+eth.syncing
+```
 
 </tab-item>
 <tab-item title="Goerli Testnet">
- <pre><code>geth attach ipc:/root/.ethereum/goerli/geth.ipc
-eth.syncing</code></pre>
+ ```bash
+ geth attach ipc:/root/.ethereum/goerli/geth.ipc
+eth.syncing
+```
 
 </tab-item>
 </tabs>
@@ -138,30 +141,20 @@ If you are testing it remotely, please replace `localhost` with the IP or URL of
 In order for `vald` to connect to your Ethereum node, your `rpc_addr` should be exposed in
 vald's `config.toml`
 
-<Callout emoji="📝">
-  Goerli testnet chain name is `ethereum-2`
-</Callout>
-
+<Callout emoji="📝">Goerli testnet chain name is `ethereum-2`</Callout>
 
 <tabs>
   <tab-item title="Mainnet">
-  ```bash
-  [[axelar_bridge_evm]]
-  name = "Ethereum"
-  rpc_addr = "http://IP:PORT"
-  start-with-bridge = true
-  ```
+    ```bash [[axelar_bridge_evm]] name = "Ethereum" rpc_addr = "http://IP:PORT"
+    start-with-bridge = true 
+```
   </tab-item>
   <tab-item title="Goerli Testnet">
-  ```bash
-  [[axelar_bridge_evm]]
-  name = "ethereum-2"
-  rpc_addr = "http://IP:PORT"
-  start-with-bridge = true
-  ```
+    ```bash [[axelar_bridge_evm]] name = "ethereum-2" rpc_addr =
+    "http://IP:PORT" start-with-bridge = true 
+```
   </tab-item>
 </tabs>
-
 
 ### Upgrade geth
 

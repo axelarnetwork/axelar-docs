@@ -76,7 +76,7 @@ function walk(dir) {
       // Remove callout
       content = content.replace(
         /import\s*{\s*Callout\s*}\s*from\s*['"][^"']*['"]\s*;?/g,
-        ""
+        "",
       );
 
       // Fix newlines

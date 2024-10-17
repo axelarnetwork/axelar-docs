@@ -4,7 +4,7 @@ export default ({
   url,
   className,
   parentClassName,
-  onClick
+  onClick,
 }) => {
   buttonTitle = buttonTitle || title || "View";
   className = `bg-blue-500 hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-500 rounded-lg no-underline text-white font-semibold py-2 px-2 ${className || ""}`;
@@ -12,7 +12,7 @@ export default ({
 
   return (
     <div className={parentClassName}>
-      {url ?
+      {url ? (
         <a
           href={url}
           target="_blank"
@@ -22,15 +22,11 @@ export default ({
         >
           {buttonTitle}
         </a>
-        :
-        <button
-          title={title}
-          className={className}
-          onClick={onClick}
-        >
+      ) : (
+        <button title={title} className={className} onClick={onClick}>
           {buttonTitle}
         </button>
-      }
+      )}
     </div>
   );
 };

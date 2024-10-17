@@ -1,0 +1,411 @@
+# Chain Integration Governance Proposals
+
+import { Callout } from "/src/components/callout";
+
+New chains are onboarded to the Axelar Amplifier through [community governance](/resources/community/community-pool-proposals). In general, you will need to submit five governance proposals to integrate your chain:
+
+- Proposal to instantiate the voting verifier contract
+- Proposal to instantiate the gateway contract
+- Proposal to instantiate the prover contract
+- Proposal to register your chain with the router
+- Proposal to authorize your prover with the [Amplifier multisig contract](https://github.com/axelarnetwork/axelar-amplifier/blob/main/contracts/multisig/src/msg.rs)
+
+For example, EVM chain integrators should be using an `instantiate-contract` proposal to use existing `code_id`s, but teams with customized contract needs should use a `store-instantiate` proposal to both store and instantiate their custom code.
+
+## Prerequisites
+
+- Access to the [Axelar command-line interface](/learn/cli)
+- 2,000 AXL for each proposal, either from your [own wallet](/resources/community/community-pool-proposals#create-a-local-wallet) or through a community member who can fund the proposal within one hour of posting
+- A running [RPC endpoint](/resources/rpc/resources) or [Axelar node](/node/config-node)
+- Experience with the appropriate Amplifier CosmWasm contracts and interfaces for integrating a chain (i.e. completed the [Integrate a Chain](/dev/amplifier/chain-integration/integrate-a-chain) tutorial)
+
+## Community Forum introduction
+
+You will need to introduce your chain to the community in order for Axelar token holders to vote for your proposals. This should be done on the governance section of the [Axelar Community Forum](https://community.axelar.network/c/governance2/33). Make a community introduction post that precedes and can be referenced by any on-chain proposals. It should include the following information:
+
+- Background
+- Governance details
+- Pre-deployed source chain gateway address
+- Plan for funding rewards pools
+
+All of your on-chain proposals will refer back to this introduction, so make sure to be thorough. You should stay present and engage with any questions or comments during the seven-day feedback period, which can include public comments as well as review by a designated advisory committee. When the feedback period is over, submit your on-chain governance proposals to finish the integration of your chain.
+
+<Callout>
+  Examples were created with contracts on the `ethereum-sepolia` chain. Please
+  refer to
+  [`devnet-amplifier.json`](https://github.com/axelarnetwork/axelar-contract-deployments/blob/main/axelar-chains-config/info/devnet-amplifier.json)
+  for contracts associated with other chains.
+</Callout>
+
+## Proposal to instantiate the voting verifier contract
+
+<tabs>
+
+<tab-item title="EVM integrators">
+If you are integrating an EVM chain, you can submit a proposal to instantiate the pre-deployed voting verifier contract with the [proper instantiation parameters](https://github.com/axelarnetwork/axelar-amplifier/blob/deab56a75209a158c082cbf9b77caf500eb4ec7c/contracts/voting-verifier/src/msg.rs#L9) using its existing `code_id` (`626`):
+
+```bash
+export CODE_ID=626
+export INTERCHAIN_GOV_ADDRESS="axelar1zlr7e5qf3sz7yf890rkh9tcnu87234k6k7ytd9"
+export AXELAR_SERVICE_REGISTRY_ADDRESS="axelar1c9fkszt5lq34vvvlat3fxj6yv7ejtqapz04e97vtc9m5z9cwnamq8zjlhz"
+export SOURCE_GATEWAY_ADDRESS="0xeE9E463Fd8bE9AF266e1B143C27F7D42648f4006"
+export SOURCE_CHAIN_NAME="ethereum-sepolia"
+export REWARDS_ADDRESS="axelar1vaj9sfzc3z0gpel90wu4ljutncutv0wuhvvwfsh30rqxq422z89qnd989l"
+export MSG_ID_FORMAT="hex_tx_hash_and_event_index"
+export ADDRESS_FORMAT="eip55"
+export CHAIN_NAME="AmplifiedChain"
+export NETWORK_GOV_ADDRESS="axelar10d07y265gmmuvt4z0w9aw880jnsr700j7v9daj"
+export RPC="http://devnet-amplifier.axelar.dev:26657"
+```
+
+```bash
+axelard tx gov submit-proposal instantiate-contract $CODE_ID \
+'{
+    "governance_address": "'"$INTERCHAIN_GOV_ADDRESS"'",
+    "service_registry_address": "'"$AXELAR_SERVICE_REGISTRY_ADDRESS"'",
+    "service_name":"validators",
+    "source_gateway_address":"'"$SOURCE_GATEWAY_ADDRESS"'",
+    "voting_threshold":["1","1"],
+    "block_expiry":"10",
+    "confirmation_height":1,
+    "source_chain":"'"$SOURCE_CHAIN_NAME"'",
+    "rewards_address":"'"$REWARDS_ADDRESS"'",
+    "msg_id_format":"'"$MSG_ID_FORMAT"'",
+    "address_format": "'"$ADDRESS_FORMAT"'"
+}' \
+--title="Instantiate verifier contract for $CHAIN_NAME" \
+--description="Instantiate verifier contract for $CHAIN_NAME" \
+--run-as $NETWORK_GOV_ADDRESS \
+--label "$CHAIN_NAME" \
+--deposit=100000000uamplifier \
+--keyring-backend test \
+--from wallet \
+--gas auto --gas-adjustment 1.5 --gas-prices 0.00005uamplifier \
+--chain-id=devnet-amplifier \
+--no-admin \
+--node $RPC
+```
+
+</tab-item>
+<tab-item title="Non-EVM integrators">
+Once the feedback period has passed, submit the proposal with the [proper instantiation parameters](https://github.com/axelarnetwork/axelar-amplifier/blob/deab56a75209a158c082cbf9b77caf500eb4ec7c/contracts/voting-verifier/src/msg.rs#L9):
+
+```bash
+export INTERCHAIN_GOV_ADDRESS="axelar1zlr7e5qf3sz7yf890rkh9tcnu87234k6k7ytd9"
+export AXELAR_SERVICE_REGISTRY_ADDRESS="axelar1c9fkszt5lq34vvvlat3fxj6yv7ejtqapz04e97vtc9m5z9cwnamq8zjlhz"
+export SOURCE_GATEWAY_ADDRESS="0xeE9E463Fd8bE9AF266e1B143C27F7D42648f4006"
+export SOURCE_CHAIN_NAME="ethereum-sepolia"
+export REWARDS_ADDRESS="axelar1vaj9sfzc3z0gpel90wu4ljutncutv0wuhvvwfsh30rqxq422z89qnd989l"
+export MSG_ID_FORMAT="hex_tx_hash_and_event_index"
+export ADDRESS_FORMAT="eip55"
+export CHAIN_NAME="AmplifiedChain"
+export NETWORK_GOV_ADDRESS="axelar10d07y265gmmuvt4z0w9aw880jnsr700j7v9daj"
+export RPC="http://devnet-amplifier.axelar.dev:26657"
+export CODE_SOURCE_URL="https://github.com/axelarnetwork/axelar-amplifier/tree/service-registry-v0.4.1/contracts/voting-verifier"
+export BUILDER="cosmwasm/optimizer:0.16.0"
+export CODE_HASH="4e6a37e923a48d97fa85d03911728ceee81490f4c869e64eb2bd68152bfc6448" # shasum -a 256 [path to verifier contract as wasm binary or gzip]
+```
+
+```bash
+axelard tx gov submit-proposal store-instantiate [path to verifier contract as wasm binary or gzip] \
+    '{
+        "governance_address": "'"$INTERCHAIN_GOV_ADDRESS"'",
+        "service_registry_address": "'"$AXELAR_SERVICE_REGISTRY_ADDRESS"'",
+        "service_name":"validators",
+        "source_gateway_address":"'"$SOURCE_GATEWAY_ADDRESS"'",
+        "voting_threshold":["1","1"],
+        "block_expiry":"10",
+        "confirmation_height":1,
+        "source_chain":"'"$SOURCE_CHAIN_NAME"'",
+        "rewards_address":"'"$REWARDS_ADDRESS"'",
+        "msg_id_format":"'"$MSG_ID_FORMAT"'",
+        "address_format": "'"$ADDRESS_FORMAT"'"
+    }' \
+    --title="Store and instantiate verifier contract for $CHAIN_NAME" \
+    --description="Store and instantiate verifier contract for $CHAIN_NAME" \
+    --run-as $NETWORK_GOV_ADDRESS \
+    --label "$CHAIN_NAME" \
+    --deposit=100000000uamplifier \
+    --keyring-backend test \
+    --from wallet \
+    --gas auto --gas-adjustment 1.5 --gas-prices 0.007uamplifier \
+    --chain-id=devnet-amplifier \
+    --no-admin \
+    --node $RPC \
+    --code-source-url $CODE_SOURCE_URL \
+    --builder $BUILDER \
+    --code-hash $CODE_HASH
+```
+
+</tab-item>
+</tabs>
+
+## Proposal to instantiate the gateway contract
+
+<tabs>
+<tab-item title="EVM integrators">
+If you are integrating an EVM chain, you can submit a proposal to instantiate the pre-deployed gateway contract with the [proper instantiation parameters](https://github.com/axelarnetwork/axelar-amplifier/blob/deab56a75209a158c082cbf9b77caf500eb4ec7c/contracts/gateway/src/msg.rs#L4) using its existing `code_id` (`616`):
+
+```bash
+export CODE_ID=616
+export VOTING_VERIFIER_ADDRESS="axelar1x3960tw9cml6xsqtvzt4gmw3scauaxdd83rhs9dmlpjfjf9z9s7qjx8g0j"
+export AXELAR_ROUTER_ADDRESS="axelar14jjdxqhuxk803e9pq64w4fgf385y86xxhkpzswe9crmu6vxycezst0zq8y"
+export CHAIN_NAME="AmplifiedChain"
+export RPC="http://devnet-amplifier.axelar.dev:26657"
+```
+
+```bash
+axelard tx gov submit-proposal instantiate-contract $CODE_ID \
+    '{
+        "verifier_address": "'"$VOTING_VERIFIER_ADDRESS"'",
+        "router_address": "'"$AXELAR_ROUTER_ADDRESS"'"
+    }' \
+    --title="Instantiate gateway contract for $CHAIN_NAME" \
+    --description="Instantiate gateway contract for $CHAIN_NAME" \
+    --run-as $NETWORK_GOV_ADDRESS \
+    --label "$CHAIN_NAME" \
+    --deposit=100000000uamplifier \
+    --keyring-backend test \
+    --from wallet \
+    --gas auto --gas-adjustment 1.5 --gas-prices 0.00005uamplifier \
+    --chain-id=devnet-amplifier \
+    --no-admin \
+    --node $RPC
+```
+
+</tab-item>
+
+<tab-item title="Non-EVM integrators">
+Once the feedback period has passed, submit the proposal with the [proper instantiation parameters](https://github.com/axelarnetwork/axelar-amplifier/blob/deab56a75209a158c082cbf9b77caf500eb4ec7c/contracts/gateway/src/msg.rs#L4):
+
+```bash
+export VOTING_VERIFIER_ADDRESS="axelar1x3960tw9cml6xsqtvzt4gmw3scauaxdd83rhs9dmlpjfjf9z9s7qjx8g0j"
+export AXELAR_ROUTER_ADDRESS="axelar14jjdxqhuxk803e9pq64w4fgf385y86xxhkpzswe9crmu6vxycezst0zq8y"
+export CHAIN_NAME="AmplifiedChain"
+export RPC="http://devnet-amplifier.axelar.dev:26657"
+export CODE_SOURCE_URL="https://github.com/axelarnetwork/axelar-amplifier/tree/service-registry-v0.4.1/contracts/gateway"
+export BUILDER="cosmwasm/optimizer:0.16.0"
+export CODE_HASH="c2c627899e00ac9ee2631b22c13866078e200774e15931d565c7b9c40cab9d53" # shasum -a 256 [path to gateway contract as wasm binary or gzip]
+```
+
+```bash
+axelard tx gov submit-proposal store-instantiate [path to gateway contract as wasm binary or gzip] \
+    '{
+        "verifier_address": "'"$VOTING_VERIFIER_ADDRESS"'",
+        "router_address": "'"$AXELAR_ROUTER_ADDRESS"'"
+    }' \
+    --title="Store and instantiate gateway contract for $CHAIN_NAME" \
+    --description="Store and instantiate gateway contract for $CHAIN_NAME" \
+    --run-as $NETWORK_GOV_ADDRESS \
+    --label "$CHAIN_NAME" \
+    --deposit=100000000uamplifier \
+    --keyring-backend test \
+    --from wallet \
+    --gas auto --gas-adjustment 1.5 --gas-prices 0.007uamplifier \
+    --chain-id=devnet-amplifier \
+    --no-admin \
+    --node $RPC \
+    --code-source-url $CODE_SOURCE_URL \
+    --builder $BUILDER \
+    --code-hash $CODE_HASH
+```
+
+</tab-item>
+</tabs>
+
+## Proposal to instantiate the prover contract
+
+<tabs>
+<tab-item title="EVM integrators">
+If you are integrating an EVM chain, you can submit a proposal to instantiate the pre-deployed prover contract with the [proper instantiation parameters](https://github.com/axelarnetwork/axelar-amplifier/blob/deab56a75209a158c082cbf9b77caf500eb4ec7c/contracts/multisig-prover/src/msg.rs#L12) using its existing `code_id` (`618`):
+
+```bash
+export CODE_ID=618
+export MULTISIG_PROVER_ADMIN_ADDRESS="axelar1zlr7e5qf3sz7yf890rkh9tcnu87234k6k7ytd9"
+export SOURCE_GATEWAY_ADDRESS="axelar1hdx49xndyxzrs3t5jkzart00taqysu6kmaf77waxv8regwxxpp4qcsea2w"
+export MULTISIG_PROVER_ADDRESS="axelar19jxy26z0qnnspa45y5nru0l5rmy9d637z5km2ndjxthfxf5qaswst9290r"
+export AXELAR_COORDINATOR_ADDRESS="axelar1m2498n4h2tskcsmssjnzswl5e6eflmqnh487ds47yxyu6y5h4zuqr9zk4g"
+export SOURCE_VERIFIER_GOV_ADDRESS="axelar1zlr7e5qf3sz7yf890rkh9tcnu87234k6k7ytd9"
+export DOMAIN_SEPARATOR="6973c72935604464b28827141b0a463af8e3487616de69c5aa0c785392c9fb9f" # Hash of chain name, admin address, and code ID. Value must be a String in hex format without `0x`.
+```
+
+```bash
+axelard tx gov submit-proposal instantiate-contract $CODE_ID \
+    '{
+        "admin_address": "'"$MULTISIG_PROVER_ADMIN_ADDRESS"'",
+        "governance_address": "'"$MULTISIG_PROVER_GOV_ADDRESS"'",
+        "gateway_address": "'"$SOURCE_GATEWAY_ADDRESS"'",
+        "multisig_address": "'"$MULTISIG_PROVER_ADDRESS"'",
+        "coordinator_address":"'"$AXELAR_COORDINATOR_ADDRESS"'",
+        "service_registry_address":"'"$AXELAR_SERVICE_REGISTRY_ADDRESS"'",
+        "voting_verifier_address": "'"$SOURCE_VERIFIER_GOV_ADDRESS"'",
+        "signing_threshold": ["1","1"],
+        "service_name": "validators",
+        "chain_name": "'"$CHAIN_NAME"'",
+        "verifier_set_diff_threshold": 1,
+        "encoder": "abi",
+        "key_type": "ecdsa",
+        "domain_separator": "'"$DOMAIN_SEPARATOR"'"
+    }' \
+    --title="Instantiate prover contract for $CHAIN_NAME" \
+    --description="Instantiate prover contract for $CHAIN_NAME" \
+    --run-as $NETWORK_GOV_ADDRESS \
+    --label "$CHAIN_NAME" \
+    --deposit=100000000uamplifier \
+    --keyring-backend test \
+    --from wallet \
+    --gas auto --gas-adjustment 1.5 --gas-prices 0.00005uamplifier \
+    --chain-id=devnet-amplifier \
+    --admin="axelar1zlr7e5qf3sz7yf890rkh9tcnu87234k6k7ytd9" \
+    --node $RPC
+```
+
+</tab-item>
+
+<tab-item title="Non-EVM integrators">
+Once the feedback period has passed, submit the proposal with the [proper instantiation parameters](https://github.com/axelarnetwork/axelar-amplifier/blob/deab56a75209a158c082cbf9b77caf500eb4ec7c/contracts/multisig-prover/src/msg.rs#L12).
+
+<Callout>
+  You will need to wait until the proposal to instantiate your gateway contract
+  passes to get the proper `gateway_address`.
+</Callout>
+
+```bash
+export MULTISIG_PROVER_ADMIN_ADDRESS="axelar1zlr7e5qf3sz7yf890rkh9tcnu87234k6k7ytd9"
+export MULTISIG_PROVER_GOV_ADDRESS="axelar1zlr7e5qf3sz7yf890rkh9tcnu87234k6k7ytd9"
+export SOURCE_GATEWAY_ADDRESS="axelar1hdx49xndyxzrs3t5jkzart00taqysu6kmaf77waxv8regwxxpp4qcsea2w" # Get after proposal to instantiate gateway contract passes
+export MULTISIG_PROVER_ADDRESS="axelar19jxy26z0qnnspa45y5nru0l5rmy9d637z5km2ndjxthfxf5qaswst9290r"
+export AXELAR_COORDINATOR_ADDRESS="axelar1m2498n4h2tskcsmssjnzswl5e6eflmqnh487ds47yxyu6y5h4zuqr9zk4g"
+export SOURCE_VERIFIER_GOV_ADDRESS="axelar1zlr7e5qf3sz7yf890rkh9tcnu87234k6k7ytd9"
+export DOMAIN_SEPARATOR="6973c72935604464b28827141b0a463af8e3487616de69c5aa0c785392c9fb9f" # Hash of chain name, admin address, and code ID. Value must be a String in hex format without `0x`.
+export CODE_SOURCE_URL="https://github.com/axelarnetwork/axelar-amplifier/tree/service-registry-v0.4.1/contracts/multisig-prover"
+export BUILDER="cosmwasm/optimizer:0.16.0"
+export CODE_HASH="bb1b731be9d900c6a8535d3c6007e15b606ea302d361007a5c50021d0adcd07f" # shasum -a 256 [path to prover contract as wasm binary or gzip]
+```
+
+```bash
+axelard tx gov submit-proposal store-instantiate [path to prover contract as wasm binary or gzip] \
+    '{
+        "admin_address": "'"$MULTISIG_PROVER_ADMIN_ADDRESS"'",
+        "governance_address": "'"$MULTISIG_PROVER_GOV_ADDRESS"'",
+        "gateway_address": "'"$SOURCE_GATEWAY_ADDRESS"'",
+        "multisig_address": "'"$MULTISIG_PROVER_ADDRESS"'",
+        "coordinator_address":"'"$AXELAR_COORDINATOR_ADDRESS"'",
+        "service_registry_address":"'"$AXELAR_SERVICE_REGISTRY_ADDRESS"'",
+        "voting_verifier_address": "'"$SOURCE_VERIFIER_GOV_ADDRESS"'",
+        "signing_threshold": ["1","1"],
+        "service_name": "validators",
+        "chain_name": "'"$CHAIN_NAME"'",
+        "verifier_set_diff_threshold": 1,
+        "encoder": "abi",
+        "key_type": "ecdsa",
+        "domain_separator": "'"$DOMAIN_SEPARATOR"'"
+    }' \
+    --title="Store and instantiate prover contract for $CHAIN_NAME" \
+    --description="Store and instantiate prover contract for $CHAIN_NAME" \
+    --run-as $NETWORK_GOV_ADDRESS \
+    --label $CHAIN_NAME \
+    --deposit=100000000uamplifier \
+    --keyring-backend test \
+    --from wallet \
+    --gas auto --gas-adjustment 1.5 --gas-prices 0.007uamplifier \
+    --chain-id=devnet-amplifier \
+    --admin="axelar1zlr7e5qf3sz7yf890rkh9tcnu87234k6k7ytd9" \
+    --node $RPC \
+    --code-source-url $CODE_SOURCE_URL \
+    --builder $BUILDER \
+    --code-hash $CODE_HASH
+```
+
+</tab-item>
+</tabs>
+
+## Register your chain with the router
+
+```bash
+export ROUTER_CONTRACT_ADDRESS="axelar14jjdxqhuxk803e9pq64w4fgf385y86xxhkpzswe9crmu6vxycezst0zq8y"
+export ROUTER_GOV_ADDRESS="axelar1zlr7e5qf3sz7yf890rkh9tcnu87234k6k7ytd9"
+```
+
+```bash
+axelard tx gov submit-proposal execute-contract $ROUTER_CONTRACT_ADDRESS \
+    '{
+        "register_chain": {
+            "chain":"'"$CHAIN_NAME"'",
+            "gateway_address": "'"$SOURCE_GATEWAY_ADDRESS"'",
+            "msg_id_format": "'"$MSG_ID_FORMAT"'"
+        }
+    }' \
+    --title="Register $CHAIN_NAME chain with the Amplifier router" \
+    --description="Register $CHAIN_NAME chain with the Amplifier router" \
+    --run-as $ROUTER_GOV_ADDRESS \
+    --deposit=100000000uamplifier \
+    --keyring-backend test \
+    --from wallet \
+    --gas auto --gas-adjustment 1.5 --gas-prices 0.00005uamplifier \
+    --chain-id=devnet-amplifier \
+    --node $RPC
+```
+
+## Authorize your prover with the Amplifier multisig contract
+
+Once the feedback period has passed, submit the proposal on the command line:
+
+```bash
+export MULTISIG_CONTRACT_ADDRESS="axelar1ufs3tlq4umljk0qfe8k5ya0x6hpavn897u2cnf9k0en9jr7qarqqa9263g"
+export CHAIN_PROVER_ADDRESS="axelar1274ntw3prlrzzys4m0mc5xxhzu09x0r3d37886xdz65w59ey7mgs6v0j5z"
+export MULTISIG_GOV_ADDRESS="axelar1zlr7e5qf3sz7yf890rkh9tcnu87234k6k7ytd9"
+```
+
+```bash
+axelard tx gov submit-proposal execute-contract $MULTISIG_CONTRACT_ADDRESS \
+    '{
+        "authorize_caller":
+            {
+            "contract_address":"'"$CHAIN_PROVER_ADDRESS"'"
+            }
+    }' \
+    --title="Authorize $CHAIN_NAME prover with the Amplifier multisig contract" \
+    --description="Authorize $CHAIN_NAME prover with the Amplifier multisig contract" \
+    --run-as $MULTISIG_GOV_ADDRESS \
+    --deposit=100000000uamplifier \
+    --keyring-backend test \
+    --from wallet \
+    --gas auto --gas-adjustment 1.5 --gas-prices 0.00005uamplifier \
+    --chain-id=devnet-amplifier \
+    --node $RPC
+```
+
+## Create a reward pool
+
+For your blockchain to be integrated with the Amplifier service you must have a [reward pool](/dev/amplifier/add-rewards/) setup for your chain's verifiers to be compensated. The reward pool is setup by creating a governance proposal. 
+
+```bash
+export REWARDS_CONTRACT="axelar1vaj9sfzc3z0gpel90wu4ljutncutv0wuhvvwfsh30rqxq422z89qnd989l"
+export CHAIN_NAME="AmplifiedChain"
+```
+
+```bash
+axelard tx gov submit-proposal execute-contract $REWARDS_CONTRACT \
+    --title="Create reward pool for $CHAIN_NAME" \
+    --description="Create a new reward pool to compensate verifiers for $CHAIN_NAME" \
+    --run-as $NETWORK_GOV_ADDRESS \
+    --deposit=100000uamplifier \
+    --keyring-backend test \
+    --from wallet \
+    --gas auto --gas-adjustment 1.5 --gas-prices 0.00005uamplifier \
+    --chain-id=devnet-amplifier \
+    --node $RPC
+```
+
+## Track your proposal
+
+You can track the status of your proposal with the `proposal_id` given in the output after a successful submission.
+
+## Costs
+
+Each proposal requires a 2,000 AXL deposit to submit. These funds will be refunded if votes reach quorum. The Axelar Network currently requires a 33.4% quorum of staked tokens.
+
+## Voting period
+
+There is a three-day (72-hour) voting period for all mainnet proposals.

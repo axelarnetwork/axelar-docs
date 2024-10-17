@@ -1,0 +1,375 @@
+# Integrate a Chain
+
+import { Callout } from "/src/components/callout";
+import { AXELARD, AMPD } from '/src/config/variables';
+
+
+<Callout>
+  The Axelar Virtual Machine (AVM) and Amplifier are currently under active
+  development, so these instructions are likely to change. Please check back
+  frequently for updates.
+</Callout>
+
+## Prerequisites
+
+- You should know how to deploy and interact with a CosmWasm contract. Refer to the [Osmosis CosmWasm testnet deployment tutorial](https://docs.osmosis.zone/cosmwasm/testnet/cosmwasm-deployment/) if you’d like a refresher — just replace `osmosisid` with `axelard` and use the `amd64` version if building on Linux and `arm64` version of the [contract optimizer](https://github.com/CosmWasm/optimizer) if you are working on a [Mac with Apple silicon](https://support.apple.com/en-us/116943).
+
+## Devnet information
+
+- Devnet RPC: `http://devnet-amplifier.axelar.dev:26657`
+- Devnet LCD (REST API/JSON RPC): `http://devnet-amplifier.axelar.dev:1317`
+- Devnet gRPC: `devnet-amplifier.axelar.dev:9090`
+- Chain ID: `devnet-amplifier`
+- Connected chains and contracts: [`devnet-amplifier.json`](https://github.com/axelarnetwork/axelar-contract-deployments/blob/main/axelar-chains-config/info/devnet-amplifier.json)
+
+## Get the `axelard` binary
+Install the v{AXELARD} `axelard` binary. You can either download the pre-built version or build it yourself from `axelar-core`.
+
+<tabs>
+
+<tab-item title="Download">
+To use the pre-built `axelard` binary:
+
+1. Download the pre-built [`axelard` binary](https://github.com/axelarnetwork/axelar-core/releases/tag/latest) along with the latest version of the [`WasmVM`](https://github.com/CosmWasm/wasmvm/releases/tag/v1.3.1).
+
+1.  Add the folder containing the library to `LD_LIBRARY_PATH`:
+
+    ```bash
+    export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:~/[your-path]
+    ln -s axelard-darwin-arm64-v* axelard
+    chmod a+x axelard-darwin-arm64-v*
+    ```
+
+    If you run into a Mac warning telling you that either the `axelard` binary or the `WasmVM` cannot be verified, you can disable the warning by running:
+
+
+```bash
+        xattr -d com.apple.quarantine [filename]
+```
+     
+
+</tab-item>
+
+<tab-item title="Build from source">
+To build the `axelard` binary from source:
+
+1. Clone the [`axelar-core` repo](https://github.com/axelarnetwork/axelar-core).
+1. Checkout the v{AXELARD} release tag.
+1. Run `make build`.
+</tab-item>
+
+</tabs>
+
+## Make sure you have a funded wallet
+
+1. Generate an account by running:
+
+   ```bash
+   axelard keys add wallet --keyring-backend test
+   ```
+
+1. Fund your devnet account with `uamplifier` tokens:
+
+   - Join the [Axelar Discord](https://discord.com/invite/axelar).
+   - Get the Developer Role.
+   - Go to the [**#faucet**](https://discord.com/channels/770814806105128977/1002423218772136056/1217885883152334918) channel and submit a request with your account to get 100 test tokens:
+
+   ```bash
+   !faucet devnet-amplifier [your axelar wallet address]
+   ```
+
+1. Query your account balance by running:
+
+   ```bash
+   axelard q bank balances [your axelar wallet address] --node http://devnet-amplifier.axelar.dev:26657
+   ```
+
+## Onboard a chain with Amplifier
+
+You can onboard a chain with the Amplifier by instantiating the `gateway`, `voting verifier`, and `multisig prover` contracts.
+
+You can either use the existing deployed contracts and on the devnet via their `code_id`s (CosmWasm identifiers for stored contracts that can be instantiated), or build and store these contracts from the `axelar-examples` repo. **You will need to instantiate the contracts no matter which option you choose.**
+
+<tabs>
+<tab-item title="Use pre-deployed contracts">
+Use the existing deployments for all three contracts, making note of the existing deployment's `code_id`:
+
+- Voting verifier (code_id: `626`)
+- Gateway (code_id: `616`)
+- Mutisig prover (code_id: `618`)
+</tab-item>
+
+<tab-item title="Build and deploy contracts">
+1. Clone the [`axelar-amplifier` repo](https://github.com/axelarnetwork/axelar-amplifier).
+
+    ```bash
+    git clone https://github.com/axelarnetwork/axelar-amplifier
+    cd axelar-amplifier
+    git checkout ampd-v1.2.0
+    ```
+
+1.  Build the `gateway`, `voting verifier`, and `multisig prover` contracts from using the [CosmWasm `rust-optimizer`](https://github.com/CosmWasm/optimizer). From the root of the repo, run:
+
+    ```bash
+    docker run --rm -v "$(pwd)":/code \
+    --mount type=volume,source="$(basename "$(pwd)")_cache",target=/target \
+    --mount type=volume,source=registry_cache,target=/usr/local/cargo/registry \
+    cosmwasm/optimizer:0.16.0
+    ```
+
+    This process can take many minutes as it will compile all of the contracts in the repository. Any `unused import` warnings during this process can be ignored.
+
+1.  Deploy the voting verifier:
+
+    ```bash
+    axelard tx wasm store artifacts/voting_verifier.wasm \
+        --keyring-backend test \
+        --from wallet \
+        --gas auto --gas-adjustment 1.5 --gas-prices 0.00005uamplifier \
+        --chain-id devnet-amplifier \
+        --node http://devnet-amplifier.axelar.dev:26657
+    ```
+
+    Each `wasm store` transaction will store your smart contract on the blockchain. You should look in the response to find the `code_id` in `logs.events`. This gives you a number representing where your smart contract is stored, which will be needed to instantiate it.
+
+    ```bash
+    {
+    "height": "128706",
+    "txhash": "6D9D90DC86A4FC7B1EAE23062997C50ACE988B0091C4BD2B0C785A9F8D133A68",
+    "codespace": "",
+    "code": 0,
+    "data": "0A460A1E2F636F736D7761736D2E7761736D2E76312E4D736753746F7265436F646512240809122073A8B7CF0BE0CAC97C87E2079CFBBD14F3B373ECFA981BF6322A349EEFBEA227",
+    "raw_log": "[{\"events\":[{\"type\":\"message\",\"attributes\":[{\"key\":\"action\",\"value\":\"/cosmwasm.wasm.v1.MsgStoreCode\"},{\"key\":\"module\",\"value\":\"wasm\"},{\"key\":\"sender\",\"value\":\"axelar1ypt7vtlj4c67ezex8nwc0vm0acf6d6evss2dau\"}]},{\"type\":\"store_code\",\"attributes\":[{\"key\":\"code_checksum\",\"value\":\"73a8b7cf0be0cac97c87e2079cfbbd14f3b373ecfa981bf6322a349eefbea227\"},{\"key\":\"code_id\",\"value\":\"9\"}]}]}]",
+    "logs": [
+        {
+        "msg_index": 0,
+        "log": "",
+        "events": [
+            {
+            "type": "message",
+            "attributes": [
+                { "key": "action", "value": "/cosmwasm.wasm.v1.MsgStoreCode" },
+                { "key": "module", "value": "wasm" },
+                {
+                "key": "sender",
+                "value": "axelar1ypt7vtlj4c67ezex8nwc0vm0acf6d6evss2dau"
+                }
+            ]
+            },
+            {
+            "type": "store_code",
+            "attributes": [
+                {
+                "key": "code_checksum",
+                "value": "73a8b7cf0be0cac97c87e2079cfbbd14f3b373ecfa981bf6322a349eefbea227"
+                },
+                { "key": "code_id", "value": "9" }
+            ]
+            }
+        ]
+        }
+    ],
+    "info": "",
+    "gas_wanted": "6153520",
+    "gas_used": "3091569",
+    "tx": null,
+    "timestamp": "",
+    "events": [...]
+    }
+    ```
+
+1.  Deploy the gateway:
+
+    ```bash
+    axelard tx wasm store artifacts/gateway.wasm \
+        --keyring-backend test \
+        --from wallet \
+        --gas auto --gas-adjustment 1.5 --gas-prices 0.00005uamplifier\
+        --chain-id devnet-amplifier \
+        --node http://devnet-amplifier.axelar.dev:26657
+    ```
+
+    Remember to save your contract's `code_id`.
+
+1.  Deploy the multisig prover:
+
+        ```bash
+        axelard tx wasm store artifacts/multisig_prover.wasm \
+            --keyring-backend test \
+            --from wallet \
+            --gas auto --gas-adjustment 1.5 --gas-prices 0.00005uamplifier\
+            --chain-id devnet-amplifier \
+            --node http://devnet-amplifier.axelar.dev:26657
+        ```
+
+        Remember to save your contract's `code_id`.
+
+</tab-item>
+
+<tab-item title="Use custom implementation">
+  You can also deploy a custom implementation of the gateway, verifier, and
+  prover contracts and optimize them with the [`Cosmwasm
+  rust-optimizer`](https://github.com/CosmWasm/optimizer). Follow the same steps
+  as you would with your own implementations of the Amplifier contracts.
+</tab-item>
+
+</tabs>
+
+## Instantiate the voting verifier
+
+1. Instantiate the voting verifier contract on the command line. See the [testnet](https://github.com/axelarnetwork/axelar-contract-deployments/blob/main/axelar-chains-config/info/testnet.json), [devnet-amplifier](https://github.com/axelarnetwork/axelar-contract-deployments/blob/main/axelar-chains-config/info/devnet-amplifier.json) configurations for the correct `code_id`.
+
+   ```bash
+   export VERIFIER_CODE_ID=626
+   export MY_WALLET_ADDRESS="axelar14r0xzwz8hmkshau39dyja5kx503dx6zu52623h"
+   export MY_SOURCE_CHAIN_GATEWAY_ADDRESS="0xCa85f85C72df5f8428a440887CA7c449D94e0D0c"
+   ```
+
+   ```bash
+   axelard tx wasm instantiate $VERIFIER_CODE_ID \
+       '{
+           "governance_address": "axelar1zlr7e5qf3sz7yf890rkh9tcnu87234k6k7ytd9",
+           "service_registry_address":"axelar1c9fkszt5lq34vvvlat3fxj6yv7ejtqapz04e97vtc9m5z9cwnamq8zjlhz",
+           "service_name":"validators",
+           "source_gateway_address":"'"$MY_SOURCE_CHAIN_GATEWAY_ADDRESS"'",
+           "voting_threshold":["1","1"],
+           "block_expiry":"10",
+           "confirmation_height":1,
+           "source_chain":"test",
+           "rewards_address":"axelar1vaj9sfzc3z0gpel90wu4ljutncutv0wuhvvwfsh30rqxq422z89qnd989l",
+           "msg_id_format":"hex_tx_hash_and_event_index",
+           "address_format": "eip55"
+       }' \
+       --keyring-backend test \
+       --from wallet \
+       --gas auto --gas-adjustment 1.5 --gas-prices 0.00005uamplifier\
+       --chain-id devnet-amplifier \
+       --node http://devnet-amplifier.axelar.dev:26657 \
+       --label test-voting-verifier \
+       --admin $MY_WALLET_ADDRESS
+   ```
+
+   Valid [`MessageID`s](https://github.com/axelarnetwork/axelar-amplifier/blob/main/packages/axelar-wasm-std/src/msg_id/mod.rs#L43) and [`AddressFormat`s](https://github.com/axelarnetwork/axelar-amplifier/blob/main/packages/axelar-wasm-std/src/address.rs#L17) can be found in the Amplifier source code.
+
+1. Search the output of this command and note the `_contract_address`. It will be in the in `logs.events` property. You'll need to do this for each instantiation to use in future steps.
+
+   ```bash
+   {
+   "height": "128761",
+   "txhash": "B122F59D82CC52C5E69DBEDAB4D4F41DFFC125312DBA4220EDD979A568637FD6",
+   "codespace": "",
+   "code": 0,
+   "data": "...",
+   "raw_log": "[{\"events\":[{\"type\":\"instantiate\",\"attributes\":[{\"key\":\"_contract_address\",\"value\":\"axelar1x3960tw9cml6xsqtvzt4gmw3scauaxdd83rhs9dmlpjfjf9z9s7qjx8g0j\"},{\"key\":\"code_id\",\"value\":\"9\"}]},{\"type\":\"message\",\"attributes\":[{\"key\":\"action\",\"value\":\"/cosmwasm.wasm.v1.MsgInstantiateContract\"},{\"key\":\"module\",\"value\":\"wasm\"},{\"key\":\"sender\",\"value\":\"axelar1ypt7vtlj4c67ezex8nwc0vm0acf6d6evss2dau\"}]},{\"type\":\"wasm-instantiated\",\"attributes\":[{\"key\":\"_contract_address\",\"value\":\"axelar1x3960tw9cml6xsqtvzt4gmw3scauaxdd83rhs9dmlpjfjf9z9s7qjx8g0j\"},{\"key\":\"service_name\",\"value\":\"validators\"},{\"key\":\"service_registry_contract\",\"value\":\"axelar1hrpna9v7vs3stzyd4z3xf00676kf78zpe2u5ksvljswn2vnjp3ystlgl4x\"},{\"key\":\"source_gateway_address\",\"value\":\"0xCa85f85C72df5f8428a440887CA7c449D94e0D0c\"},{\"key\":\"voting_threshold\",\"value\":\"[\\\"9\\\",\\\"10\\\"]\"},{\"key\":\"block_expiry\",\"value\":\"10\"},{\"key\":\"confirmation_height\",\"value\":\"1\"}]}]}]",
+   "logs": [
+       {
+       "msg_index": 0,
+       "log": "",
+       "events": [
+           ...,
+           {
+           "type": "wasm-instantiated",
+           "attributes": [
+               {
+               "key": "_contract_address",
+               "value": "axelar1x3960tw9cml6xsqtvzt4gmw3scauaxdd83rhs9dmlpjfjf9z9s7qjx8g0j"
+               },
+               ...
+           ]
+           }
+       ]
+       }
+   ],
+   "info": "",
+   "gas_wanted": "337608",
+   "gas_used": "183564",
+   "tx": null,
+   "timestamp": "",
+   "events": [...]
+   }
+   ```
+
+## Instantiate the gateway
+
+1. Instantiate the gateway contract on the command line with the verifier address from the previous step.
+
+   ```bash
+   export GATEWAY_CODE_ID=616
+   export MY_VERIFIER_ADDRESS="axelar1x3960tw9cml6xsqtvzt4gmw3scauaxdd83rhs9dmlpjfjf9z9s7qjx8g0j"
+   ```
+
+1. Instantiate the contract.
+
+   ```bash
+   axelard tx wasm instantiate $GATEWAY_CODE_ID \
+       '{
+           "verifier_address": "'"$MY_VERIFIER_ADDRESS"'",
+           "router_address": "axelar14jjdxqhuxk803e9pq64w4fgf385y86xxhkpzswe9crmu6vxycezst0zq8y"
+       }' \
+       --keyring-backend test \
+       --from wallet \
+       --gas auto --gas-adjustment 1.5 --gas-prices 0.00005uamplifier\
+       --chain-id devnet-amplifier \
+       --node http://devnet-amplifier.axelar.dev:26657 \
+       --label test-gateway \
+       --admin $MY_WALLET_ADDRESS
+   ```
+
+1. Search the output of this command and note the `_contract_address`.
+
+## Instantiate the multisig prover
+
+1. Instantiate the multisig prover contract on the command line with the gateway address from the previous step.
+
+   ```bash
+   export PROVER_CODE_ID=618
+   export MY_GATEWAY_ADDRESS="axelar1ufs3tlq4umljk0qfe8k5ya0x6hpavn897u2cnf9k0en9jr7qarqqa9263g"
+   export MY_CHAIN_ID=43113
+   ```
+
+1. Instantiate the contract.
+
+   ```bash
+   axelard tx wasm instantiate $PROVER_CODE_ID \
+       '{
+           "admin_address": "'"$MY_WALLET_ADDRESS"'",
+           "governance_address": "axelar1zlr7e5qf3sz7yf890rkh9tcnu87234k6k7ytd9",
+           "gateway_address": "'"$MY_GATEWAY_ADDRESS"'",
+           "multisig_address": "axelar19jxy26z0qnnspa45y5nru0l5rmy9d637z5km2ndjxthfxf5qaswst9290r",
+           "coordinator_address":"axelar1m2498n4h2tskcsmssjnzswl5e6eflmqnh487ds47yxyu6y5h4zuqr9zk4g",
+           "service_registry_address":"axelar1c9fkszt5lq34vvvlat3fxj6yv7ejtqapz04e97vtc9m5z9cwnamq8zjlhz",
+           "voting_verifier_address": "'"$MY_VERIFIER_ADDRESS"'",
+           "signing_threshold": ["1","1"],
+           "service_name": "validators",
+           "chain_name":"test",
+           "verifier_set_diff_threshold": 1,
+           "encoder": "abi",
+           "key_type": "ecdsa",
+           "domain_separator": "6973c72935604464b28827141b0a463af8e3487616de69c5aa0c785392c9fb9f"
+       }' \
+       --keyring-backend test \
+       --from wallet \
+       --gas auto --gas-adjustment 1.5 --gas-prices 0.00005uamplifier\
+       --chain-id devnet-amplifier \
+       --node http://devnet-amplifier.axelar.dev:26657 \
+       --label test-prover  \
+       --admin $MY_WALLET_ADDRESS
+   ```
+
+    The `domain_separator` is a hash of chain name, admin address, and code ID. Value must be a String in hex format without `0x`.
+
+1. Search the output of this command and note the `_contract_address`.
+
+## Whitelist your contract addresses
+
+Send the chain’s gateway and multisig prover contract addresses to the Interop Labs team by filling out the [Axelar Amplifier Integration Form](https://docs.google.com/forms/d/e/1FAIpQLSchD7P1WfdSCQfaZAoqX7DyqJOqYKxXle47yrueTbOgkKQDiQ/viewform). The team will register the chain and gateway with the router and authorize the prover.
+
+## Add verifiers to your chain
+
+Every new chain will need a verifier, which requires running `ampd` and `tofnd`. See [Become an Amplifier Verifier (Worker)](/validator/amplifier/verifier-onboarding) for detailed instructions on how to do this on your machine.
+
+You'll also need to incentivize verifiers by [providing rewards](/dev/amplifier/add-rewards/).
+
+## Begin routing messages
+
+Once your chain is registered with the protocol, it will need verifiers to begin routing messages. See [Become an Amplifier Verifier (Worker)](/validator/amplifier/verifier-onboarding) for instructions to onboard a verifier. Note that chain integrators will onboard on `devnet-amplifier` and not `devnet-verifier`.

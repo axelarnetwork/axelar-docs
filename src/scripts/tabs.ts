@@ -2,14 +2,30 @@
 Client-side tabs. Written to replace the JSX / MDX tabs that don't load well
 */
 
+declare global {
+  interface Window {
+    savedTabRenderers: any[];
+  }
+}
+
+const tabActiveClass = [
+  "border-primary",
+  "bg-primary",
+  "text-white",
+  "aria-selected",
+];
+
 export const addTabs = () => {
-  // Create window level registry to trigger re-renders
   window.savedTabRenderers = [];
 
   const tabElements = document.getElementsByTagName("tabs");
-  // Bootstrap every tab element
+
   for (let tab of tabElements) {
-    let tabs = tab.children;
+    tab.classList.add("prose-table:my-0");
+  }
+
+  for (let tab of tabElements) {
+    let tabs: any = tab.children;
     let convertedTabs = [...tabs].map((tabItem) => ({
       title: tabItem["title"],
       content: tabItem.innerHTML,
@@ -19,18 +35,22 @@ export const addTabs = () => {
     let titleBar = document.createElement("div");
     titleBar.classList.add("tab-bar");
     titleBar.innerHTML = `
-        <ul role="tablist">
+        <ul role="tablist" class="flex my-0  list-none p-0  not-prose  ">
           ${convertedTabs
-        .map(
-          (tab, i) => `
-            <li class="nav-item" role="presentation">
-              <button class="nav-link ${i === 0 ? "active" : ""
-            }" data-bs-toggle="tab" type="button" role="tab" aria-controls="tab-${i}" aria-selected="true">${tab.title
-            }</button>
+            .map(
+              (tab, i) => `
+            <li role="presentation">
+              <button class=" ${
+                i === 0
+                  ? "rounded-tl-md"
+                  : i === convertedTabs.length - 1
+                    ? "rounded-tr-md"
+                    : ""
+              } px-4 py-1  font-medium border-t border-x  border-border text-foreground " type="button" role="tab" aria-controls="tab-${i}" aria-selected="${i === 0}">${tab.title}</button>
             </li>
-          `
-        )
-        .join("")}
+          `,
+            )
+            .join("")}
         </ul>
       `;
 
@@ -38,27 +58,62 @@ export const addTabs = () => {
      */
     const applySavedChoice = () => {
       tabs = [...titleBar.querySelectorAll("button")];
+
       currentIndex = tabs.indexOf(
         tabs.find(
-          (button) => button.innerText === localStorage["savedTabChoice"]
-        )
+          (button) => button.innerText === localStorage["savedTabChoice"],
+        ),
       );
       if (currentIndex === -1) {
-        console.error("tab not found");
         currentIndex = 0;
       }
     };
 
-    // render
     const render = () => {
       applySavedChoice();
-      [...titleBar.children[0].children].map((button) =>
-        button.classList.remove("active")
+      const wrapperClass = [
+        "border",
+        "p-5",
+        "bg-background-neutral-dark",
+        "rounded-b-lg",
+        "rounded-tr-lg",
+        "border-border",
+      ];
+
+      [...titleBar.children[0].children].map((li) =>
+        li.querySelector("button")?.classList.remove(...tabActiveClass),
       );
-      titleBar.children[0].children[currentIndex].classList.add("active");
+
+      titleBar.children[0].children[currentIndex]
+        .querySelector("button")
+        ?.classList.add(...tabActiveClass);
+
       const sections = tab.getElementsByTagName("tab-item");
-      [...sections].map((section) => section.classList.remove("active"));
-      sections[currentIndex].classList.add("active");
+
+      [...sections].map((section) => {
+        section.classList.add("hidden");
+        const firstChild = section.firstElementChild;
+        // if (firstChild?.tagName.toLowerCase() === "table") {
+        //   return;
+        // }
+
+        let wrapperDiv = section.querySelector(".tab-item-content");
+
+        if (!wrapperDiv) {
+          wrapperDiv = document.createElement("div");
+          wrapperDiv.classList.add(...wrapperClass, "tab-item-content");
+
+          while (section.firstChild) {
+            wrapperDiv.appendChild(section.firstChild);
+          }
+
+          section.appendChild(wrapperDiv);
+        }
+
+        section.classList.add("hidden");
+      });
+
+      sections[currentIndex].classList.remove("hidden");
     };
 
     applySavedChoice();

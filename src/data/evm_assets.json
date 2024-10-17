@@ -533,7 +533,7 @@
           "address": "0xa6220B4209353dFeF03B6cE410c8F01105515f94",
           "symbol": "axlWBTC",
           "decimals": 8,
-          "transfer_fee": 2.5e-05
+          "transfer_fee": 2.5e-5
         },
         {
           "chain": "base",
@@ -547,7 +547,7 @@
           "address": "0x448d59B4302aB5d2dadf9611bED9457491926c8e",
           "symbol": "axlWBTC",
           "decimals": 8,
-          "transfer_fee": 2.5e-05
+          "transfer_fee": 2.5e-5
         },
         {
           "chain": "blast",
@@ -561,7 +561,7 @@
           "address": "0x1a35EE4640b0A3B87705B0A4B45D227Ba60Ca2ad",
           "symbol": "axlWBTC",
           "decimals": 8,
-          "transfer_fee": 2.5e-05
+          "transfer_fee": 2.5e-5
         },
         {
           "chain": "ethereum",
@@ -575,14 +575,14 @@
           "address": "0x448d59B4302aB5d2dadf9611bED9457491926c8e",
           "symbol": "axlWBTC",
           "decimals": 8,
-          "transfer_fee": 2.5e-05
+          "transfer_fee": 2.5e-5
         },
         {
           "chain": "filecoin",
           "address": "0x1a35EE4640b0A3B87705B0A4B45D227Ba60Ca2ad",
           "symbol": "axlWBTC",
           "decimals": 8,
-          "transfer_fee": 2.5e-05
+          "transfer_fee": 2.5e-5
         },
         {
           "chain": "fraxtal",
@@ -596,7 +596,7 @@
           "address": "0x1a35EE4640b0A3B87705B0A4B45D227Ba60Ca2ad",
           "symbol": "axlWBTC",
           "decimals": 8,
-          "transfer_fee": 2.5e-05
+          "transfer_fee": 2.5e-5
         },
         {
           "chain": "linea",
@@ -617,7 +617,7 @@
           "address": "0x8e9a09bc94689c157Cd7f6aB5d4577ED6f44Ba1E",
           "symbol": "axlWBTC",
           "decimals": 8,
-          "transfer_fee": 2.5e-05
+          "transfer_fee": 2.5e-5
         },
         {
           "chain": "optimism",
@@ -631,7 +631,7 @@
           "address": "0x779661872e9C891027099C9E3fd101DCc8B96433",
           "symbol": "axlWBTC",
           "decimals": 8,
-          "transfer_fee": 2.5e-05
+          "transfer_fee": 2.5e-5
         },
         {
           "chain": "scroll",
@@ -6431,7 +6431,7 @@
           "address": "0x9cfB13E6c11054ac9fcB92BA89644F30775436e4",
           "symbol": "axl-wstETH",
           "decimals": 18,
-          "transfer_fee": 6e-05
+          "transfer_fee": 6e-5
         }
       ]
     },
@@ -6446,28 +6446,28 @@
           "address": "0xa190ff582011eFEa55A87209F85D6f411D07d052",
           "symbol": "wstETH",
           "decimals": 18,
-          "transfer_fee": 6e-05
+          "transfer_fee": 6e-5
         },
         {
           "chain": "ethereum-sepolia",
           "address": "0xB82381A3fBD3FaFA77B3a7bE693342618240067b",
           "symbol": "wstETH",
           "decimals": 18,
-          "transfer_fee": 6e-05
+          "transfer_fee": 6e-5
         },
         {
           "chain": "optimism-sepolia",
           "address": "0x04f9c3c252B280C92530490c6E02a3DD06651C2F",
           "symbol": "wstETH",
           "decimals": 18,
-          "transfer_fee": 6e-05
+          "transfer_fee": 6e-5
         },
         {
           "chain": "polygon-sepolia",
           "address": "0x04f9c3c252B280C92530490c6E02a3DD06651C2F",
           "symbol": "wstETH",
           "decimals": 18,
-          "transfer_fee": 6e-05
+          "transfer_fee": 6e-5
         }
       ]
     },

@@ -1,9 +1,10 @@
 # Add rewards
 
-import { Callout } from "/src/components/callout"
+import { Callout } from "/src/components/callout";
 
 <Callout>
-To understand the contribution tracking and distribution process for verifiers, see [Verifier Rewards](/validator/amplifier/verifier-rewards).
+  To understand the contribution tracking and distribution process for
+  verifiers, see [Verifier Rewards](/validator/amplifier/verifier-rewards).
 </Callout>
 
 Each chain has two [reward pools](https://github.com/axelarnetwork/axelar-amplifier/tree/main/contracts/rewards) that must be funded independently before it can be fully integrated. There is one rewards pool to compensate verifiers for signing and another pool to compensate them for voting.
@@ -31,7 +32,11 @@ Use `rewards_pool()` to check the funds in a pool:
 </tabs>
 
 <Callout>
-You can get the addresses of the rewards, voting verifier, and multisig contracts through [`testnet.json`](https://github.com/axelarnetwork/axelar-contract-deployments/blob/main/axelar-chains-config/info/testnet.json) or [`devnet-amplifier.json`](https://github.com/axelarnetwork/axelar-contract-deployments/blob/019d41f81b506d35fa89ffd9ebb3a02719563e09/axelar-chains-config/info/devnet-amplifier.json).
+  You can get the addresses of the rewards, voting verifier, and multisig
+  contracts through
+  [`testnet.json`](https://github.com/axelarnetwork/axelar-contract-deployments/blob/main/axelar-chains-config/info/testnet.json)
+  or
+  [`devnet-amplifier.json`](https://github.com/axelarnetwork/axelar-contract-deployments/blob/019d41f81b506d35fa89ffd9ebb3a02719563e09/axelar-chains-config/info/devnet-amplifier.json).
 </Callout>
 
 ```bash
@@ -55,22 +60,26 @@ Use `add_rewards()` add funds to a pool:
 
 <tabs>
 
-
 <tab-item title="<code>devnet-amplifier</code>">
-    ```bash
-    export REWARDS_CONTRACT_ADDRESS="axelar1vaj9sfzc3z0gpel90wu4ljutncutv0wuhvvwfsh30rqxq422z89qnd989l"
-    export CHAIN_NAME="avalanche"
-    export VOTING_VERIFIER_OR_MULTISIG_CONTRACT_ADDRESS="axelar1elaymnd2epmfr498h2x9p2nezc4eklv95uv92u9csfs8wl75w7yqdc0h67" || "0x7eeE33A59Db27d762AA1Fa31b26efeE0dABa1132"
-    export RPC="http://devnet-amplifier.axelar.dev:26657"
-    export AMOUNT="1000uamplifier" # choose the amount to fund (1000000 = 1 AXL)
-    export CHAIN_ID="devnet-amplifier"
-    ```
+
+  ```bash export
+  REWARDS_CONTRACT_ADDRESS="axelar1vaj9sfzc3z0gpel90wu4ljutncutv0wuhvvwfsh30rqxq422z89qnd989l"
+    export CHAIN_NAME="avalanche" export
+  VOTING_VERIFIER_OR_MULTISIG_CONTRACT_ADDRESS="axelar1elaymnd2epmfr498h2x9p2nezc4eklv95uv92u9csfs8wl75w7yqdc0h67"
+  || "0x7eeE33A59Db27d762AA1Fa31b26efeE0dABa1132" export
+  RPC="http://devnet-amplifier.axelar.dev:26657" export AMOUNT="1000uamplifier"
+  # choose the amount to fund (1000000 = 1 AXL) export
+  CHAIN_ID="devnet-amplifier" 
+```
+   
 </tab-item>
 
 </tabs>
 
 <Callout>
-You can get the addresses of the rewards, voting verifier, and multisig contracts through [`devnet-amplifier.json`](https://github.com/axelarnetwork/axelar-contract-deployments/blob/019d41f81b506d35fa89ffd9ebb3a02719563e09/axelar-chains-config/info/devnet-amplifier.json).
+  You can get the addresses of the rewards, voting verifier, and multisig
+  contracts through
+  [`devnet-amplifier.json`](https://github.com/axelarnetwork/axelar-contract-deployments/blob/019d41f81b506d35fa89ffd9ebb3a02719563e09/axelar-chains-config/info/devnet-amplifier.json).
 </Callout>
 
 ```bash

@@ -1,20 +1,20 @@
-import { useMemo } from 'react'
-import { createStore, applyMiddleware } from 'redux'
-import { composeWithDevTools } from '@redux-devtools/extension'
-import reducers from '/src/reducers'
+import { useMemo } from "react";
+import { createStore, applyMiddleware } from "redux";
+import { composeWithDevTools } from "@redux-devtools/extension";
+import reducers from "/src/reducers";
 
-let store
+let store;
 
 function initStore(preloadedState) {
   return createStore(
     reducers,
     preloadedState,
-    composeWithDevTools(applyMiddleware())
-  )
+    composeWithDevTools(applyMiddleware()),
+  );
 }
 
 export const initializeStore = (preloadedState) => {
-  let _store = store ?? initStore(preloadedState)
+  let _store = store ?? initStore(preloadedState);
 
   // After navigating to a page with an initial Redux state, merge that state
   // with the current state in the store, and create a new store
@@ -22,21 +22,21 @@ export const initializeStore = (preloadedState) => {
     _store = initStore({
       ...store.getState(),
       ...preloadedState,
-    })
+    });
     // Reset the current store
-    store = undefined
+    store = undefined;
   }
 
   // For SSG and SSR always create a new store
-  if (typeof window === 'undefined') return _store
+  if (typeof window === "undefined") return _store;
   // Create the store once in the client
-  if (!store) store = _store
+  if (!store) store = _store;
 
-  return _store
-}
+  return _store;
+};
 
 export function useStore(initialState = {}) {
-  console.log('initialState', initialState);
-  const store = useMemo(() => initializeStore(initialState), [initialState])
-  return store
+  console.log("initialState", initialState);
+  const store = useMemo(() => initializeStore(initialState), [initialState]);
+  return store;
 }

@@ -1,27 +1,28 @@
 # Axelar Executable
 
 ## Overview
+
 The [Axelar Executable Contract](https://github.com/axelarnetwork/axelar-gmp-sdk-solidity/blob/main/contracts/executable/AxelarExecutable.sol) is a component of the Axelar General Message Passing (GMP) flow, allowing the execution of custom logic in response to messages from different blockchains. By simply inheriting from the Axelar Executable your contract can process and respond to incoming cross-chain GMP data.
 
 ## Integration
 
 1. Import **`AxelarExecutable`** from the Axelar GMP SDK to enable cross-chain capabilities.
-    
-    ```solidity
-    import "@axelar-network/axelar-gmp-sdk-solidity/contracts/executable/AxelarExecutable.sol";
-    ```
-    
-1. Inherit Axelar Executable Functions: 
 
-    ```solidity
-    contract MyContract is AxelarExecutable {}
-    ```
+   ```solidity
+   import "@axelar-network/axelar-gmp-sdk-solidity/contracts/executable/AxelarExecutable.sol";
+   ```
+
+1. Inherit Axelar Executable Functions:
+
+   ```solidity
+   contract MyContract is AxelarExecutable {}
+   ```
 
 1. Implement the `virtual` functions defined in Axelar Executable on your own contracts. The functions you implement on your own contract will be automatically triggered by an Axelar relayer on the destination chain once the multichain transaction arrives on the destination chain
 
 ## GMP Message vs. GMP Message With Token
 
-There are two relevant functions that can be overriden from AxelarExecutable. The function you want to override depends on whether your sending a GMP message or a GMP message WITH a [Gateway Token](/resources/contract-addresses/mainnet#assets). These two functions are [_execute()](https://github.com/axelarnetwork/axelar-gmp-sdk-solidity/blob/be86ab9a171f8e12d7695127cf1a6ca867fa1b09/contracts/executable/AxelarExecutable.sol#L55) and [_executeWithToken()](https://github.com/axelarnetwork/axelar-gmp-sdk-solidity/blob/be86ab9a171f8e12d7695127cf1a6ca867fa1b09/contracts/executable/AxelarExecutable.sol#L61)
+There are two relevant functions that can be overriden from AxelarExecutable. The function you want to override depends on whether your sending a GMP message or a GMP message WITH a [Gateway Token](/resources/contract-addresses/mainnet#assets). These two functions are [\_execute()](https://github.com/axelarnetwork/axelar-gmp-sdk-solidity/blob/be86ab9a171f8e12d7695127cf1a6ca867fa1b09/contracts/executable/AxelarExecutable.sol#L55) and [\_executeWithToken()](https://github.com/axelarnetwork/axelar-gmp-sdk-solidity/blob/be86ab9a171f8e12d7695127cf1a6ca867fa1b09/contracts/executable/AxelarExecutable.sol#L61)
 
 ```solidity
 /*** For GMP Message ***/
@@ -33,14 +34,14 @@ There are two relevant functions that can be overriden from AxelarExecutable. Th
 function _execute(string calldata sourceChain, string calldata sourceAddress, bytes calldata payload) internal override {
     // Implement your logic on the destination chain
     string memory myGmpMessage = abi.decode(payload, (string));
-    
+
 }
 
 /*** For GMP Message + Token ***/
 /**
 	@param sourceChain The chain where the GMP message is sent from
 	@param sourceAddress The address on where the GMP msg is sent from
-	@param payload The GMP message being sent 
+	@param payload The GMP message being sent
 	@param tokenSymbol The token being sent
 	@param amount The amount of the token being sent
 **/
@@ -54,9 +55,9 @@ function _executeWithToken(string calldata sourceChain, string calldata sourceAd
 
 ## Incoming Message Validation
 
-The AxelarExecutable contract allows developers to override the `_execute` and the `_executeWithToken()` function on your own contract. However, the function that is actually triggered by the Axelar relayers are external `execute()` and `executeWithToken()` functions. Since these contracts are external with no relevant modifiers they can in theory be triggered by anyone. This can be a security vulnerability as your own contract’s implementation is dependent on the data being passed into the `execute()` function (which triggers in the internal `_execute()` function you’re overriding). 
+The AxelarExecutable contract allows developers to override the `_execute` and the `_executeWithToken()` function on your own contract. However, the function that is actually triggered by the Axelar relayers are external `execute()` and `executeWithToken()` functions. Since these contracts are external with no relevant modifiers they can in theory be triggered by anyone. This can be a security vulnerability as your own contract’s implementation is dependent on the data being passed into the `execute()` function (which triggers in the internal `_execute()` function you’re overriding).
 
-To solve this problem, AxelarExecutable triggers the Axelar Gateway’s [validateContractCall()](https://github.com/axelarnetwork/axelar-cgp-solidity/blob/8b0ea6693178457b7c155b1efb3ecba6236857cc/contracts/AxelarGateway.sol#L233) function. This function will validate that the incoming message was approved by the Axelar validators  and return true if it was. It will then mark the message as a valid to ensure that it is not called more than once. Only once the message is marked as valid will your `_execute()` function be triggered. 
+To solve this problem, AxelarExecutable triggers the Axelar Gateway’s [validateContractCall()](https://github.com/axelarnetwork/axelar-cgp-solidity/blob/8b0ea6693178457b7c155b1efb3ecba6236857cc/contracts/AxelarGateway.sol#L233) function. This function will validate that the incoming message was approved by the Axelar validators and return true if it was. It will then mark the message as a valid to ensure that it is not called more than once. Only once the message is marked as valid will your `_execute()` function be triggered.
 
 By simply inheriting AxelarExecutable and overriding the `_execute()` function defined their you can be confident that the message you’re receiving is an authentic message from the Axelar network.
 
@@ -82,7 +83,7 @@ If your contract is upgradeable then you may be unable to inherit from AxelarExe
         payloadHash
       )
     ) revert NotApprovedByGateway();
-    
+
     //The rest of your implementation
  }
 ```

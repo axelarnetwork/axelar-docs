@@ -1,9 +1,35 @@
 {
   "framework": null,
+  "trailingSlash": true,
   "redirects": [
+   {
+      "source": "/resources/community/community-pool-proposals/",
+      "destination": "/resources/community-pool-proposals/",
+      "permanent": true
+    }, 
+   {
+      "source": "/resources/satellite/",
+      "destination": "/resources/misc/satellite/",
+      "permanent": true
+    }, 
+    {
+      "source": "/resources/metamask/",
+      "destination": "/resources/misc/metamask/",
+      "permanent": true
+    },
+    {
+      "source": "/resources/keplr/",
+      "destination": "/resources/misc/keplr/",
+      "permanent": true
+    },
     {
       "source": "/dev/amplifier/chain-integration/relay-messages/",
       "destination": "/dev/amplifier/chain-integration/relay-messages/manual/",
+      "permanent": true
+    },
+    {
+      "source": "/learn/network/flow/",
+      "destination": "/learn/flow/",
       "permanent": true
     },
     {
@@ -521,6 +547,82 @@
     {
       "source": "/dev/cosmos-gmp",
       "destination": "/dev/cosmos-gmp/overview/",
+      "permanent": true
+    },
+    {
+      "source": "/resources/mainnet/upgrades/:slug/",
+      "destination": "/resources/upgrades/mainnet/:slug/",
+      "permanent": true
+    },
+    {
+      "source": "/resources/testnet/upgrades/:slug/",
+      "destination": "/resources/upgrades/testnet/:slug/",
+      "permanent": true
+    },
+    {
+      "source": "/dev/amplifier/chain-integration/introduction/",
+      "destination": "/dev/amplifier/intergration-overview/",
+      "permanent": true
+    },
+    {
+      "source": "/dev/amplifier/chain-integration/integrate-a-chain/",
+      "destination": "/dev/amplifier/integrate-a-chain/",
+      "permanent": true
+    },
+    {
+      "source": "/dev/amplifier/chain-integration/governance-proposals/",
+      "destination": "/dev/amplifier/integrate-a-chain/",
+      "permanent": true
+    },
+    
+    {
+      "source": "/dev/amplifier/chain-integration/integrate-a-chain/",
+      "destination": "/dev/amplifier/integrate-a-chain/",
+      "permanent": true
+    },
+    {
+      "source": "/dev/amplifier/chain-integration/governance-proposals/",
+      "destination": "/dev/amplifier/governance-proposals/",
+      "permanent": true
+    },
+    {
+      "source": "/dev/amplifier/chain-integration/relay-messages/automatic/",
+      "destination": "/dev/amplifier/relay-messages/automatic/",
+      "permanent": true
+    },
+    {
+      "source": "/dev/amplifier/chain-integration/relay-messages/manual/",
+      "destination": "/dev/amplifier/relay-messages/manual/",
+      "permanent": true
+    },
+    {
+      "source": "/dev/amplifier/error-messages/",
+      "destination": "/dev/amplifier/chain-integration/error-messages/",
+      "permanent": true
+    },
+    {
+      "source": "/dev/gas-service/:slug/",
+      "destination": "/dev/general-message-passing/gas-service/:slug/",
+      "permanent": true
+    },
+    {
+      "source": "/dev/evm-relayer/",
+      "destination": "/dev/general-message-passing/evm-relayer/",
+      "permanent": true
+    },
+    {
+      "source": "/dev/general-message-passing/cosmos-gmp/:slug/",
+      "destination": "/dev/cosmos-gmp/:slug/",
+      "permanent": true
+    },
+    {
+      "source": "/dev/solidity-utilities/",
+      "destination": "/dev/general-message-passing/solidity-utilities/",
+      "permanent": true
+    },
+    {
+      "source": "/dev/axelar-sandbox/:slug/",
+      "destination": "/dev/general-message-passing/axelar-sandbox/:slug/",
       "permanent": true
     }
   ]

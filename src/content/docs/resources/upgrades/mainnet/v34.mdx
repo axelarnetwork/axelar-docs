@@ -1,0 +1,77 @@
+# Mainnet upgrade: v0.34
+
+import { Callout } from "/src/components/callout";
+
+## About the v0.34 upgrade
+
+We’re pleased to announce the v0.34 Axelar node upgrade. This upgrade focuses on smart contract governance, Cosmos GMP improvements, and contains many bug fixes.
+
+### Major Features
+
+- Axelar now supports voting on upgrades to the gateway smart contracts. With the new decentralized governance, any proposal submitted on chain can be voted on by token holders. This is achieved by the new [call-contracts](https://github.com/axelarnetwork/axelar-core/blob/main/docs/cli/axelard_tx_gov_submit-proposal_call-contracts.md) proposal type.
+
+[Read more about the RFC](https://community.axelar.network/t/rfc-decentralized-gateways-governance/2437)
+Read more about voting on-chain
+
+- When sending a GMP call `CallContract` or `FeePaid` events from Cosmos chains, a user or app can specify an optional refund address from the source chain.
+
+### Other Features
+
+- We now provide a global logger that all code can use to track context in the `context.Context` object.
+- We have added an RPC endpoint for Axelar's specific inflation rate parameters.
+- We added `executed` and `failed` status update events for the indexer, and include message names in poll events and other events.
+- The `finality_override` option in the vald configuration can now be set on a chain-by-chain basis to force it to query a transaction’s confirmation height instead of the `is_finalized` function through the EVM JSON-RPC. This is meant as a workaround for chains where `is_finalized` is available but buggy.
+
+### Bugfixes & Performance Improvements
+
+- We have improved the way Axelar fetches data from the EVM chain in batches and confirms multiple transactions simultaneously. We can now send, receive, and track transactions more cheaply while also reducing system load and speeding up transaction confirmation by reducing the overall queue.
+- Upgraded to [cosmos-sdk v0.45.15](https://github.com/cosmos/cosmos-sdk/releases/tag/v0.45.15) and switched Tendermint to [CometBFT v0.34.27](https://github.com/cometbft/cometbft/blob/v0.34.27/CHANGELOG.md#v03427) and upgraded IBC version to [v4.4.0](https://github.com/cosmos/ibc-go/releases/tag/v4.4.2)
+- We have improved the way we determine whether a transaction is finalized, we now keep the latest finalized block for each chain in memory. If the block height is lower than the cached finalized block, consider the transaction to be finalized. Otherwise, query for the latest finalized block and update the cache.
+
+Instructions for `2023-Sep-13` mainnet upgrade to axelar-core `v0.34.1`, vald `v0.34.1`, and tofnd `v0.10.1`.
+Release can be found [here](https://github.com/axelarnetwork/axelar-core/releases/tag/v0.34.1).
+
+Upgrade height `9151750` [countdown](https://www.mintscan.io/axelar/blocks/9151750)
+
+1. If you're a validator, please vote for the upgrade proposal via
+
+```bash
+axelard tx gov vote [tbd] yes --from validator
+```
+
+2. Wait for the proposed upgrade block, `9151750`. Your node will panic at that block height with a log: `{"level":"error","module":"consensus","err":"UPGRADE \"v0.34\" NEEDED at height: ",`. Stop your node after chain halt.
+
+```bash
+pkill -f 'axelard start'
+# Validators need to also stop vald/tofnd
+pkill -f vald-start
+pkill -f tofnd
+```
+
+3. Backup the state:
+
+```bash
+cp -r ~/.axelar/.core/data ~/.axelar-dojo-1-upgrade-0.34/.core/data
+```
+
+<Callout type="warning" emoji="⚠️">
+  Caution: If you backup the entire folder, `~/.axelar/.core`, that'll also
+  include your private keys (inside `config` and `keyring-file` subfolders).
+  That can be dangerous if anyone gets access to your backups. We recommend
+  backing up keys separately when you first create your node, and then excluding
+  them from any data backups.
+</Callout>
+
+4. Restart your node with the new `v0.34.1` build.
+5. If you're a validator also restart `vald` with `v0.34.1` and `tofnd` with `v0.10.1`.
+
+Example using join scripts in [axelarate-community git repo](https://github.com/axelarnetwork/axelarate-community):
+
+```bash
+# in axelarate-community repo
+git checkout main
+git pull
+KEYRING_PASSWORD="pw-1" ./scripts/node.sh -n mainnet -a v0.34.1
+# For validators, restart vald/tofnd
+KEYRING_PASSWORD="pw-1" TOFND_PASSWORD="pw-2" ./scripts/validator-tools-host.sh -a v0.34.1 -q v0.10.1 -n mainnet
+```
