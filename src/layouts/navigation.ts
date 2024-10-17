@@ -20,7 +20,7 @@ export const getNavigation = (section) => {
               title: "Interchain Tokens",
               children: [
                 {
-                  title: "Introduction",
+                  title: "Overview",
                   href: "/dev/send-tokens/interchain-tokens/intro/",
                 },
                 {
@@ -28,11 +28,11 @@ export const getNavigation = (section) => {
                   href: "/dev/send-tokens/interchain-tokens/quick-start/",
                   children: [
                     {
-                      title: "No Code",
+                      title: "No Code Setup",
                       href: "/dev/send-tokens/interchain-tokens/quick-start/no-code/",
                     },
                     {
-                      title: "Programmatic",
+                      title: "Programmatic Setup",
                       href: "/dev/send-tokens/interchain-tokens/quick-start/programmatic/",
                     },
                   ],
