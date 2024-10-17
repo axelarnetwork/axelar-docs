@@ -41,7 +41,7 @@ const navigation = getNavigation(section);
                       <div class="nav-group hidden flex-col gap-1.5 ml-4">
                         {child.children.map((grandchild) =>
                           grandchild.children ? (
-                            <div>
+                            <div class=" flex flex-col gap-1.5">
                               <button class="flex justify-between gap-3 p-1.5 hover:bg-gray  rounded text-sm items-center ">
                                 <p class="flex-1 text-left">
                                   {grandchild.title}
@@ -49,7 +49,7 @@ const navigation = getNavigation(section);
 
                                 <ChevronDown size={16} />
                               </button>
-                              <div class="nav-group hidden flex-col gap-1.5">
+                              <div class="nav-group hidden flex-col gap-1.5 ml-5">
                                 {grandchild.children.map((greatGrandchild) => (
                                   <a
                                     class="text-sm p-1.5 hover:bg-gray rounded"

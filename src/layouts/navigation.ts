@@ -138,7 +138,7 @@ export const getNavigation = (section) => {
                 },
                 {
                   title: "Transaction States",
-                  href: "/dev/gas-service/transaction-state",
+                  href: "/dev/gas-service/transaction-state/",
                 },
                 {
                   title: "Transaction Pricing",
