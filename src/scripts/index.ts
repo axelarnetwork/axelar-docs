@@ -8,5 +8,6 @@ import "./menu";
 import "./dark";
 import { showToast } from "./toast";
 import "./collapsible-nav";
+import "./intercom";
 
 window["showToast"] = showToast;

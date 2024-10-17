@@ -73,8 +73,15 @@ const canonicalURL = new URL(Astro.url.pathname, 'https://docs.axelar.dev');
         }
         </script>
       
-   </script>
-    <script src="/src/scripts/index.ts"></script>
+    </script>
+    <script>
+  window.intercomSettings = {
+    api_base: "https://api-iam.intercom.io",
+    app_id: "rxsoqwkv",
+  };
+  </script>
+      <script src="/src/scripts/index.ts"></script>
+
   </head>
   <body>
     <nav>
