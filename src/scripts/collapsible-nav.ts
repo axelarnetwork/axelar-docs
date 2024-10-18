@@ -10,15 +10,11 @@ function toggleHeader(header: CollapsibleHeader) {
   header.group.classList.toggle("!flex");
 }
 
-// Function to initialize collapsible headers
 function initCollapsibleHeaders() {
   const headers: CollapsibleHeader[] = [];
-  console.log("initCollapsibleHeaders");
 
   const groupElements = document.querySelectorAll(".nav-group");
-  console.log(groupElements);
 
-  // Calculate the header elements as previous sibling to group elements
   const headerElements = [...groupElements].map(
     (group) =>
       !group.parentElement ||

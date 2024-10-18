@@ -1,17 +1,11 @@
 import mdx from "@astrojs/mdx";
+import partytown from "@astrojs/partytown";
 import react from "@astrojs/react";
 import sitemap from "@astrojs/sitemap";
 import tailwind from "@astrojs/tailwind";
 import expressiveCode from "astro-expressive-code";
 import { defineConfig } from "astro/config";
 import remarkDirective from "remark-directive";
-// const DEFAULT_LAYOUT = "/src/layouts/Section.astro";
-// function setDefaultLayout() {
-//   return function (_, file) {
-//     const { frontmatter } = file.data.astro;
-//     if (!frontmatter.layout) frontmatter.layout = DEFAULT_LAYOUT;
-//   };
-// }
 
 // https://astro.build/config
 export default defineConfig({
@@ -25,6 +19,11 @@ export default defineConfig({
     mdx(),
     sitemap(),
     tailwind(),
+    partytown({
+      config: {
+        forward: ["dataLayer.push"],
+      },
+    }),
   ],
   site: "https://docs.axelar.dev",
   trailingSlash: "always",

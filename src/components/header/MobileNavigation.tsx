@@ -29,6 +29,7 @@ const MobileNavigation = ({
   return (
     <div className="lg:hidden">
       <button
+        aria-label="Toggle navigation"
         onClick={() => setOpen(!open)}
         className="flex items-center justify-center"
       >
@@ -62,9 +63,13 @@ const MobileNavigation = ({
               </a>
               <ThemeToggle />
             </div>
-            <button onClick={() => setOpen(!open)} className="text-primary">
+            <button
+              aria-label="Close navigation"
+              onClick={() => setOpen(!open)}
+              className="text-primary"
+            >
               <X size={24} />
-            </button>{" "}
+            </button>
           </div>
         </div>
         <div>
