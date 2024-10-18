@@ -63,9 +63,13 @@ const MobileNavigation = ({
               </a>
               <ThemeToggle />
             </div>
-            <button onClick={() => setOpen(!open)} className="text-primary">
+            <button
+              aria-label="Close navigation"
+              onClick={() => setOpen(!open)}
+              className="text-primary"
+            >
               <X size={24} />
-            </button>{" "}
+            </button>
           </div>
         </div>
         <div>
