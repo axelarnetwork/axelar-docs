@@ -1,0 +1,57 @@
+# Change Your Verifier Address
+
+If you ever need to change the address of your verifier, you'll have to unbond and unauthorize your current verifier, then claim and transfer the bond. Finally, bond and authorize your new verifier.
+
+## Moving bonded funds
+Move funds by starting with your current verifier and `ampd`/`tofnd`.
+
+1. `ampd unbond-verifier amplifier`
+1. Wait until unbonding completes after the unbonding period
+1. `ampd claim-stake amplifier`
+1. `ampd send-tokens <new address> <amount> uaxl`
+1. Then setup your new verifier (make sure you run these commands as the new ampd/tofnd)
+1. `ampd bond-verifier amplifier 50000000000 uaxl`
+1. `ampd register-public-key ecdsa`
+1. `ampd register-chain-support amplifier flow`
+
+## Unauthorize and authorize your verifiers
+Before making a governance proposal, You should [make a community forum post](https://community.axelar.network/) explaining what you are doing and link it in your governance proposals.  Then make an on-chain proposal for the removal of authorization of your old verifier. 
+
+```bash
+axelard tx gov submit-proposal execute-contract axelar1rpj2jjrv3vpugx9ake9kgk3s2kgwt0y60wtkmcgfml5m3et0mrls6nct9m \
+ '{
+"unauthorize_verifiers":{
+"verifiers":[
+"axelar1ejv5td70estc7ed4avnxnqqv4tpef2zafdkgms"
+],
+"service_name":"amplifier"
+}
+}' \
+ --title="Remove verifier addresses for <TEAM>" \
+ --description="Remove old address as part of verifier migrating to new address. See <community forum post>" \
+ --run-as axelar10d07y265gmmuvt4z0w9aw880jnsr700j7v9daj \
+ --deposit=10000000000uaxl \
+ --from wallet \
+ --gas auto --gas-adjustment 1.5 --gas-prices 0.007uaxl \
+ --chain-id axelar-dojo-1 --node https://tm.axelar.lava.build:443
+ ```
+
+ Then authorize your new verifier.
+
+ ```bash
+ axelard tx gov submit-proposal execute-contract axelar1rpj2jjrv3vpugx9ake9kgk3s2kgwt0y60wtkmcgfml5m3et0mrls6nct9m \
+ '{
+"authorize_verifiers":{
+"verifiers":[
+"axelar1g92hckcernmgm60tm527njl6j2cxysm7zg6ulk"
+],
+"service_name":"amplifier"
+}
+}' \
+ --title="Add replacement verifier addresses for <TEAM>" \
+ --description="Add new address as part of verifier migrating to new address. See <community forum post>" \
+ --run-as axelar10d07y265gmmuvt4z0w9aw880jnsr700j7v9daj \
+ --deposit=10000000000uaxl \
+ --from mainnet-interoplabs-hotwallet \
+ --gas auto --gas-adjustment 1.5 --gas-prices 0.007uaxl \
+ --chain-id axelar-dojo-1 --node https://tm.axelar.lava.build:443
