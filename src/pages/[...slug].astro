@@ -7,7 +7,7 @@ import generateToc from "@/lib/generateToc";
 import { findPrevAndNextPages } from "@/lib/nextPrevPages";
 import { proseClasses } from "@/lib/prose-classes";
 import { getGithubEditUrl } from "@/scripts/github-edit";
-import { generateNavigation } from "@/utils/generateNavigation";
+
 import { getCollection } from "astro:content";
 import clsx from "clsx";
 import { LayoutGrid, PenLine } from "lucide-react";
@@ -21,14 +21,12 @@ export async function getStaticPaths() {
 }
 
 const { doc } = Astro.props;
-const docs = await getCollection("docs");
-const nav = generateNavigation(docs);
 
 const pathname = Astro.url.pathname;
 const { Content, headings } = await doc.render();
 ---
 
-<MainLayout>
+<MainLayout title={headings.find((h) => h.depth === 1)?.text}>
   <div class="grid grid-cols-1 lg:grid-cols-12 bg-[#FFFFFF] dark:bg-background">
     <WorldMap className="lg:col-span-9 2xl:col-span-10 w-full flex-1 ">
       <div class="min-h-[90dvh] sub-container pb-20 py-20 flex flex-col gap-10">
@@ -42,7 +40,7 @@ const { Content, headings } = await doc.render();
           <PenLine size={16} />
           <p>Edit on GitHub</p>
         </a>
-        <NextPrevNav nav={findPrevAndNextPages(nav, pathname)} />
+        <NextPrevNav nav={findPrevAndNextPages(pathname)} />
       </div>
     </WorldMap>
     <div

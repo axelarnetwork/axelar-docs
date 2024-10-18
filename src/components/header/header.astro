@@ -1,19 +1,11 @@
 ---
+import { topLevelNav } from "@/layouts/navigation";
 import "@/styles/global.css";
-import { getUrl } from "@/utils/utils";
-import { getCollection } from "astro:content";
-import {
-  generateNavigation,
-  hiddenNav,
-  permanentNav,
-} from "../../utils/generateNavigation";
 import Search from "../docs/Search";
+import RenderSidebar from "../sidebar/render-sidebar.astro";
 import ThemeToggle from "../ui/theme-toggle";
 import Logo from "./header-logo.astro";
 import MobileNavigation from "./MobileNavigation";
-
-const docs = await getCollection("docs");
-const nav = generateNavigation(docs);
 ---
 
 <header
@@ -28,28 +20,23 @@ const nav = generateNavigation(docs);
 
     <div class="flex items-center gap-6 lg:gap-10 2xl:gap-14">
       <div
-        class="hidden lg:flex gap-6 tracking-wide lg:gap-10 2xl:gap-14 items-center text-sm font-clash font-medium uppercase"
+        class="hidden lg:flex gap-6 tracking-wide main-nav lg:gap-10 2xl:gap-14 items-center text-sm font-clash font-medium uppercase"
       >
         {
-          nav
-            ?.filter(
-              (item) =>
-                !permanentNav?.includes(item.currentSlug || item.title) &&
-                !hiddenNav?.includes(item.currentSlug || item.title),
-            )
-            .map((item) => {
-              const url = getUrl(item);
-              return (
-                <a href={`/${url}/`} class="hover:text-primary transition-all">
-                  {item.title}
-                </a>
-              );
-            })
+          topLevelNav.map((nav) => (
+            <a href={nav.href} class="hover:text-primary transition-all">
+              {nav.title}
+            </a>
+          ))
         }
       </div>
       <div class="flex items-center gap-6 lg:gap-10 2xl:gap-14">
-        <Search client:only />
-        <MobileNavigation client:load nav={nav} pathname={Astro.url.pathname} />
+        <div class="lg:w-[15rem] xl:w-[18rem]">
+          <Search client:only />
+        </div>
+        <MobileNavigation client:load pathname={Astro.url.pathname}>
+          <RenderSidebar isMobile />
+        </MobileNavigation>
       </div>
       <div class="hidden lg:flex items-center gap-6 lg:gap-10 2xl:gap-14">
         <ThemeToggle client:load />

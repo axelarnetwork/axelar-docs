@@ -1,22 +1,17 @@
-import {
-  hiddenNav,
-  permanentNav,
-  type Navigation,
-} from "@/utils/generateNavigation";
-import { getUrl } from "@/utils/utils";
 import clsx from "clsx";
 import { LayoutGrid, Menu, X } from "lucide-react";
 import React, { useEffect } from "react";
 import Logo from "../logo";
-import RenderSidebar from "../sidebar/render-sidebar";
+
+import { topLevelNav } from "@/layouts/navigation";
 import ThemeToggle from "../ui/theme-toggle";
 
 const MobileNavigation = ({
-  nav,
   pathname,
+  children,
 }: {
-  nav: Navigation[];
   pathname: string;
+  children?: React.ReactNode;
 }) => {
   const [open, setOpen] = React.useState(false);
 
@@ -74,27 +69,20 @@ const MobileNavigation = ({
         </div>
         <div>
           <div className="px-4 md:px-8 flex flex-col gap-1 border-b border-border mb-3 pb-8">
-            {nav
-              ?.filter(
-                (item) =>
-                  !permanentNav?.includes(item.currentSlug || item.title) &&
-                  !hiddenNav?.includes(item.currentSlug || item.title),
-              )
-              .map((item) => {
-                const url = getUrl(item);
-                return (
-                  <a
-                    key={item.title}
-                    href={`/${url}/`}
-                    className="bg-gray  text-sm flex gap-2 items-center  px-2 py-1.5  rounded"
-                  >
-                    <LayoutGrid size={16} className="text-primary" />
-                    <p>{item.title}</p>
-                  </a>
-                );
-              })}
+            {topLevelNav.map((item) => {
+              return (
+                <a
+                  key={item.title}
+                  href={item.href}
+                  className="bg-gray  text-sm flex gap-2 items-center  px-2 py-1.5  rounded"
+                >
+                  <LayoutGrid size={16} className="text-primary" />
+                  <p>{item.title}</p>
+                </a>
+              );
+            })}
           </div>
-          <RenderSidebar nav={nav} pathname={pathname} isMobile />
+          {children}
         </div>
       </div>
     </div>

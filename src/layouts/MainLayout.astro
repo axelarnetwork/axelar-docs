@@ -3,7 +3,7 @@ import Sidebar from "@/components/sidebar/sidebar.astro";
 import Header from "@/components/header/header.astro";
 import "../styles/global.css";
 import Footer from "@/components/footer/footer.astro";
-import { ViewTransitions } from "astro:transitions";
+
 import { clsx } from "clsx";
 type Props = {
   title?: string;
@@ -83,7 +83,7 @@ const canonicalURL = new URL(Astro.url.pathname, "https://docs.axelar.dev");
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/instantsearch.css@7.4.3/themes/satellite-min.css"
     />
-
+    <script src="/src/scripts/index.ts"></script>
     <script is:inline>
       const root = document.documentElement;
       const theme = (() => {
@@ -108,9 +108,7 @@ const canonicalURL = new URL(Astro.url.pathname, "https://docs.axelar.dev");
         root.classList.add("dark");
       }
     </script>
-    <!-- <ViewTransitions /> -->
-    <script src="/src/scripts/index.ts"></script></head
-  >
+  </head>
 </html>
 <body class="bg-background text-foreground">
   <Header />

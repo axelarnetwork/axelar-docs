@@ -1,12 +1,9 @@
 ---
 import "@/styles/global.css";
-import { getCollection } from "astro:content";
-import { generateNavigation } from "../../utils/generateNavigation";
-import RenderSidebar from "./render-sidebar";
 
-const docs = await getCollection("docs");
-const nav = generateNavigation(docs);
+import RenderSidebar from "./render-sidebar.astro";
+
 const pathname = Astro.url.pathname;
 ---
 
-<RenderSidebar client:load nav={nav} pathname={pathname} />
+<RenderSidebar pathname={pathname} />
