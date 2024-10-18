@@ -5,15 +5,9 @@ import tailwind from "@astrojs/tailwind";
 import expressiveCode from "astro-expressive-code";
 import { defineConfig } from "astro/config";
 import remarkDirective from "remark-directive";
-// const DEFAULT_LAYOUT = "/src/layouts/Section.astro";
-// function setDefaultLayout() {
-//   return function (_, file) {
-//     const { frontmatter } = file.data.astro;
-//     if (!frontmatter.layout) frontmatter.layout = DEFAULT_LAYOUT;
-//   };
-// }
 
-// https://astro.build/config
+import playformCompress from "@playform/compress";
+
 export default defineConfig({
   integrations: [
     expressiveCode({
@@ -25,6 +19,7 @@ export default defineConfig({
     mdx(),
     sitemap(),
     tailwind(),
+    playformCompress(),
   ],
   site: "https://axelardocs.vercel.app",
   trailingSlash: "always",
