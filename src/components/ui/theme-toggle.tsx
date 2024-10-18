@@ -9,8 +9,6 @@ const ThemeToggle = () => {
     localTheme && setTheme(localTheme);
   }, []);
 
-  console.log("theme", theme);
-
   const toggleTheme = () => {
     if (theme === "light") {
       window.localStorage.setItem("theme", "dark");
@@ -25,6 +23,7 @@ const ThemeToggle = () => {
 
   return (
     <button
+      aria-label="Toggle theme"
       onClick={toggleTheme}
       id="header-toggle"
       className="border overflow-hidden  border-border  rounded-full w-12 h-7"

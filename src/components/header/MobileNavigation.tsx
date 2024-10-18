@@ -29,6 +29,7 @@ const MobileNavigation = ({
   return (
     <div className="lg:hidden">
       <button
+        aria-label="Toggle navigation"
         onClick={() => setOpen(!open)}
         className="flex items-center justify-center"
       >
