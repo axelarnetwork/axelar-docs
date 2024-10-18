@@ -6,8 +6,6 @@ import expressiveCode from "astro-expressive-code";
 import { defineConfig } from "astro/config";
 import remarkDirective from "remark-directive";
 
-import playformCompress from "@playform/compress";
-
 export default defineConfig({
   integrations: [
     expressiveCode({
@@ -19,7 +17,6 @@ export default defineConfig({
     mdx(),
     sitemap(),
     tailwind(),
-    playformCompress(),
   ],
   site: "https://axelardocs.vercel.app",
   trailingSlash: "always",
