@@ -1,11 +1,12 @@
 # Optimism
 
-import { Callout } from "/src/components/callout"
+import { Callout } from "/src/components/callout";
 
 Instructions to set up your Optimism node.
 
 <Callout type="info" emoji="ℹ️">
-  Note: Mainnet instructions here will only work after the bedrock upgrade is live on mainnet
+  Note: Mainnet instructions here will only work after the bedrock upgrade is
+  live on mainnet
 </Callout>
 
 ## Requirements
@@ -13,7 +14,7 @@ Instructions to set up your Optimism node.
 - [Setup your Axelar validator](/validator/setup/overview/)
 - Minimum hardware requirements: 8 AWS vCPU+, 16GB RAM, 80GB+ free storage space.
 - MacOS or Ubuntu 20.04 (tested on 20.04)
-- [Official Documentation](https://community.optimism.io/docs/developers/bedrock/node-operator-guide/#)
+- [Official Documentation](https://docs.optimism.io/builders/node-operators/rollup-node/#)
 
 ## Prerequisites
 
@@ -33,6 +34,7 @@ cp .env.example .env
 ## Set node config
 
 Set the following config options in `simple-optimism-node/.env`:
+
 <tabs>
 <tab-item title="Mainnet">
  ```bash
@@ -49,7 +51,7 @@ Set the following config options in `simple-optimism-node/.env`:
     # Optimism Sepolia - https://sepolia.optimism.io
     HEALTHCHECK__REFERENCE_RPC_PROVIDER=
 
-```
+````
 
 </tab-item>
 <tab-item title="Testnet">
@@ -73,11 +75,13 @@ Set the following config options in `simple-optimism-node/.env`:
 </tabs>
 
 ## Start the node
+
 ```bash
 docker compose up -d --build
 ```
 
 This should show an output like this:
+
 ```bash
    ⠿ b08a0a826235 Pull complete                                                                                                                             90.5s
    ⠦ d71d159599c3 Downloading [>                                                  ]  6.232kB/487.2kB                                                        91.6s
@@ -89,11 +93,13 @@ This should show an output like this:
 ```
 
 After it is done, verify by listing the services and their status
+
 ```bash
 docker compose ps
 ```
 
 You should see these 4 services running
+
 ```bash
 NAME                              COMMAND                  SERVICE             STATUS              PORTS
 simple-optimism-node-influxdb-1   "/entrypoint.sh infl…"   influxdb            running             0.0.0.0:8086->8086/tcp, :::8086->8086/tcp
@@ -111,6 +117,7 @@ docker compose logs op-geth -f
 ```
 
 It will download the bedrock.tar
+
 ```bash
 simple-optimism-node-op-geth-1  | Still downloading bedrock.tar...
 simple-optimism-node-op-geth-1  | + CHECKSUM=df843fd53ea905808bc21d0e2dd4620a
@@ -120,6 +127,7 @@ simple-optimism-node-op-geth-1  | + return 1
 simple-optimism-node-op-geth-1  | + echo 'Still downloading bedrock.tar...'
 simple-optimism-node-op-geth-1  | + sleep 5s
 ```
+
 Once download the server will start, and you will see logs like
 
 ```bash
@@ -134,6 +142,7 @@ simple-optimism-node-op-geth-1  | INFO [01-22|07:28:21.095] Chain head was updat
 ```bash
 docker compose logs op-node -f
 ```
+
 You should see logs like
 
 ```bash
@@ -156,11 +165,13 @@ echo "$(curl -4 ifconfig.co):9991"
 ```
 
 #### Method 1:
+
 ```bash
 curl -X POST [rpc] -H "Content-Type: application/json" --data '{"jsonrpc":"2.0","method":"eth_blockNumber","params":[],"id":1}' | jq
 ```
 
 If you get something like this in response to the above rpc call, your node is setup correctly
+
 ```json
 {
   "jsonrpc": "2.0",
@@ -168,9 +179,11 @@ If you get something like this in response to the above rpc call, your node is s
   "result": "0x3df827"
 }
 ```
+
 You can use a [hex to number convertor](https://www.binaryhexconverter.com/hex-to-decimal-converter) to get the block height
 
 #### Method 2:
+
 You can also check your status by connecting to geth console
 
 ```bash
@@ -189,46 +202,45 @@ vald's `config.toml`
 
 <tabs>
   <tab-item title="Mainnet">
-  ```bash
-  [[axelar_bridge_evm]]
-  name = "optimism"
-  rpc_addr = "http://IP:PORT"
-  start-with-bridge = true
-  ```
+    ```bash [[axelar_bridge_evm]] name = "optimism" rpc_addr = "http://IP:PORT"
+    start-with-bridge = true 
+```
   </tab-item>
   <tab-item title="Testnet">
-  ```bash
-  [[axelar_bridge_evm]]
-  name = "optimism"
-  rpc_addr = "http://IP:PORT"
-  start-with-bridge = true
-  ```
+    ```bash [[axelar_bridge_evm]] name = "optimism" rpc_addr = "http://IP:PORT"
+    start-with-bridge = true 
+```
   </tab-item>
 </tabs>
 
 ### Common Node Operations
 
 First `cd` into the directory
+
 ```bash
 cd $HOME/simple-optimism-node/
 ```
 
 To start
+
 ```bash
 docker compose up -d
 ```
 
 To stop
+
 ```bash
 docker compose down
 ```
 
 To update
+
 ```bash
 docker compose pull
 ```
 
 To stop and wipe out everything
+
 ```bash
 docker compose down -v
 ```

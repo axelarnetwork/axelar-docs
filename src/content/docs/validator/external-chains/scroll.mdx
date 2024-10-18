@@ -1,7 +1,6 @@
 # Scroll
 
-
-import { Callout } from "/src/components/callout"
+import { Callout } from "/src/components/callout";
 
 Instructions to set up your [Scroll](https://scroll.io) node.
 
@@ -12,13 +11,13 @@ Instructions to set up your [Scroll](https://scroll.io) node.
 - MacOS or Ubuntu 22.04 (tested on 22.04)
 - You will need access to a fully-synced Ethereum Mainnet RPC endpoint
 
-
 ## Prerequisites
 
 ```bash
 sudo apt-get update
 sudo apt-get install build-essential -y && sudo apt-get install jq -y
 ```
+
 <br></br>
 #### [Install go](https://go.dev/doc/install)
 
@@ -36,11 +35,15 @@ git branch
 make nccc_geth
 mv build/bin/geth /usr/bin/
 ```
+
 <Callout type="info" emoji="ℹ️">
-    Note: nccc stands for “no circuit capacity checker”. This feature disables an expensive block validation rule that is not crucial on follower nodes. We recommend that you do not enable it.
+  Note: nccc stands for “no circuit capacity checker”. This feature disables an
+  expensive block validation rule that is not crucial on follower nodes. We
+  recommend that you do not enable it.
 </Callout>
 
 #### Check version
+
 ```bash
 geth version
 ```
@@ -50,16 +53,12 @@ geth version
 You will need access to a fully-synced Ethereum RPC endpoint before running scroll node.
 
 <tabs>
-    <tab-item title="Mainnet">
-        ```bash
-        L1_ENDPOINT="your synced Mainnet Ethereum Node"
-        ```
-    </tab-item>
-    <tab-item title="Testnet">
-        ```bash
-        L1_ENDPOINT="your synced Sepolia Ethereum Node"
-        ```
-    </tab-item>
+  <tab-item title="Mainnet">
+    ```bash L1_ENDPOINT="your synced Mainnet Ethereum Node" ```
+  </tab-item>
+  <tab-item title="Testnet">
+    ```bash L1_ENDPOINT="your synced Sepolia Ethereum Node" ```
+  </tab-item>
 </tabs>
 
 Please consider opening port `30303` (`UDP` & `TCP`) and enabling discovery so that other nodes can sync data from your node.
@@ -122,10 +121,11 @@ Note: The following settings will allow your node to be accessed publicly from a
         cat /etc/systemd/system/geth.service
         ```
     </tab-item>
+
 </tabs>
 
-
 ## Start the service
+
 ```bash
 sudo systemctl enable geth.service
 sudo systemctl daemon-reload
@@ -143,6 +143,7 @@ journalctl -u geth.service -f -n 100 -o cat
 ```
 
 Logs should appear like this
+
 ```bash
 INFO [09-08|09:19:52.594] Starting L1 message sync service         latestProcessedBlock=4,038,000
 WARN [09-08|09:19:52.726] Running initial sync of L1 messages before starting l2geth, this might take a while...
@@ -156,7 +157,9 @@ INFO [09-08|09:20:42.872] Syncing L1 messages                      processed=4,0
 INFO [09-08|09:20:52.929] Syncing L1 messages                      processed=4,091,900 confirmed=4,246,270 collected=115 progress(%)=96.365
 INFO [09-08|09:22:52.844] Syncing L1 messages                      processed=4,153,800 confirmed=4,246,270 collected=324,919 progress(%)=97.822
 ```
+
 Wait for to sync L1 messages, and then it should start syncing scroll blockchain
+
 ```bash
 INFO [09-08|09:25:25.840] L1 message initial sync completed        latestProcessedBlock=4,246,270
 INFO [09-08|09:25:25.841] created new worker                       CircuitCapacityChecker ID=4,589,695,372,138,917,397
@@ -182,10 +185,13 @@ INFO [09-08|09:25:41.823] Imported new chain segment               blocks=233 tx
 ## Verify
 
 #### Method 1:
+
 ```bash
 curl -X POST $YOUR_IP:8545 -H "Content-Type: application/json" --data '{"jsonrpc":"2.0","method":"eth_syncing","params":[],"id":1}' | jq
 ```
+
 If you get something like this in response of the above rpc call, your node is setup correctly
+
 ```json
 {
   "jsonrpc": "2.0",
@@ -199,27 +205,26 @@ If you get something like this in response of the above rpc call, your node is s
   }
 }
 ```
+
 Wait for `"result"` to become `false` before using it in vald config
 
 ```json
-{"jsonrpc":"2.0","id":1,"result":false}
-```
-<br></br>
-#### Method 2:
-You can also check your status by connect to geth console
-```bash
-geth attach http://localhost:8545
-eth.syncing
+{ "jsonrpc": "2.0", "id": 1, "result": false }
 ```
 
+<br></br>
+#### Method 2: You can also check your status by connect to geth console ```bash
+geth attach http://localhost:8545 eth.syncing ```
+
 If you get something like this in response, your node is setup correctly
+
 ```json
 {
-  currentBlock: 14555,
-  highestBlock: 577771,
-  knownStates: 0,
-  pulledStates: 0,
-  startingBlock: 0
+  "currentBlock": 14555,
+  "highestBlock": 577771,
+  "knownStates": 0,
+  "pulledStates": 0,
+  "startingBlock": 0
 }
 ```
 
@@ -242,22 +247,14 @@ In order for `vald` to connect to your Binance Smart Chain node, your `rpc_addr`
 vald's `config.toml`
 
 <tabs>
-    <tab-item title="Mainnet">
-        ```bash
-        [[axelar_bridge_evm]]
-        name = "scroll"
-        rpc_addr = "http://IP:PORT"
-        start-with-bridge = true
-        ```
-    </tab-item>
-    <tab-item title="Testnet">
-        ```bash
-        [[axelar_bridge_evm]]
-        name = "scroll"
-        rpc_addr = "http://IP:PORT"
-        start-with-bridge = true
-        ```
-    </tab-item>
+  <tab-item title="Mainnet">
+    ```bash [[axelar_bridge_evm]] name = "scroll" rpc_addr = "http://IP:PORT"
+    start-with-bridge = true 
+```
+  </tab-item>
+  <tab-item title="Testnet">
+    ```bash [[axelar_bridge_evm]] name = "scroll" rpc_addr = "http://IP:PORT"
+    start-with-bridge = true 
+```
+  </tab-item>
 </tabs>
-
-

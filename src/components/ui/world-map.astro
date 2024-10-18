@@ -1,0 +1,19 @@
+---
+import { clsx } from "clsx";
+type Props = {
+  className?: string;
+};
+
+const { className } = Astro.props;
+---
+
+<div
+  class={clsx(
+    "bg-map-light dark:bg-map-dark bg-no-repeat bg-[length:300%_auto] md:bg-[length:140%_auto] lg:bg-[length:100%_auto] bg-top",
+    className,
+  )}
+>
+  <div class="bg-[#FaFaFa]/70 md:bg-[#FaFaFa]/60 dark:bg-black/50">
+    <slot />
+  </div>
+</div>

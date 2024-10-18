@@ -1,8 +1,8 @@
 # The Axelar `CommandID`
 
-Ensuring the authenticity and integrity of messages is crucial in cross-chain communication. The `CommandID` in the [Axelar network](https://www.axelar.network/) plays a significant role in this process, acting as a unique identifier for interchain messages. 
+Ensuring the authenticity and integrity of messages is crucial in cross-chain communication. The `CommandID` in the [Axelar network](https://www.axelar.network/) plays a significant role in this process, acting as a unique identifier for interchain messages.
 
-This guide explains what an Axelar `CommandID` is, how it is generated, and its importance in the  [Solidity Axelar GMP SDK](https://github.com/axelarnetwork/axelar-gmp-sdk-solidity).
+This guide explains what an Axelar `CommandID` is, how it is generated, and its importance in the [Solidity Axelar GMP SDK](https://github.com/axelarnetwork/axelar-gmp-sdk-solidity).
 
 ## What is the Axelar `CommandID`?
 
@@ -14,7 +14,7 @@ Generating an Axelar `CommandID` involves combining specific attributes of the m
 
 ### Solidity Implementation
 
-In the provided Solidity contract, the `messageToCommandId()` function generates the `CommandID`. 
+In the provided Solidity contract, the `messageToCommandId()` function generates the `CommandID`.
 
 Here's how it works:
 
@@ -35,7 +35,7 @@ This function takes two parameters: `sourceChain` and `messageId`. It concatenat
 
 ### Go implementation
 
-The `CommandID` is generated similarly by hashing relevant data in the Go implementation. 
+The `CommandID` is generated similarly by hashing relevant data in the Go implementation.
 
 Here's an example function for generating a `CommandID`:
 
@@ -90,39 +90,36 @@ func NewDeployTokenCommand(chainID sdk.Int, keyID multisig.KeyID, asset string, 
 }
 ```
 
-## Importance of the  `CommandID` for message verification
+## Importance of the `CommandID` for message verification
 
 The `CommandID` is key for verifying the authenticity and integrity of interchain messages. When a message is received on the destination chain, the `CommandID` allows the system to:
 
-1. **Verify Message Approval:**
-The `isMessageApproved()` function checks if a message has been approved by comparing the stored message hash with the calculated hash using the `CommandID`.
-    
-    ```solidity
-    function isMessageApproved(
-        string calldata sourceChain,
-        string calldata messageId,
-        string calldata sourceAddress,
-        address contractAddress,
-        bytes32 payloadHash
-    ) external view override returns (bool) {
-        bytes32 commandId = messageToCommandId(sourceChain, messageId);
-        return _isMessageApproved(commandId, sourceChain, sourceAddress, contractAddress, payloadHash);
-    }
-    ```
-    
-2. **Prevent Replay Attacks:**
-The `validateMessage()` function ensures that a message can only be executed once by marking it as executed after validation.
-    
-    ```solidity
-    function validateMessage(
-        string calldata sourceChain,
-        string calldata messageId,
-        string calldata sourceAddress,
-        bytes32 payloadHash
-    ) external override returns (bool valid) {
-        bytes32 commandId = messageToCommandId(sourceChain, messageId);
-        valid = _validateMessage(commandId, sourceChain, sourceAddress, payloadHash);
-    }
-    ```
+1.  **Verify Message Approval:**
+    The `isMessageApproved()` function checks if a message has been approved by comparing the stored message hash with the calculated hash using the `CommandID`.
+        ```solidity
+        function isMessageApproved(
+            string calldata sourceChain,
+            string calldata messageId,
+            string calldata sourceAddress,
+            address contractAddress,
+            bytes32 payloadHash
+        ) external view override returns (bool) {
+            bytes32 commandId = messageToCommandId(sourceChain, messageId);
+            return _isMessageApproved(commandId, sourceChain, sourceAddress, contractAddress, payloadHash);
+        }
+        ```
+2.  **Prevent Replay Attacks:**
+    The `validateMessage()` function ensures that a message can only be executed once by marking it as executed after validation.
+        ```solidity
+        function validateMessage(
+            string calldata sourceChain,
+            string calldata messageId,
+            string calldata sourceAddress,
+            bytes32 payloadHash
+        ) external override returns (bool valid) {
+            bytes32 commandId = messageToCommandId(sourceChain, messageId);
+            valid = _validateMessage(commandId, sourceChain, sourceAddress, payloadHash);
+        }
+        ```
 
 Refer to more detailed information on how Axelar verifies GMP transactions [here](/dev/general-message-passing/verify-gmp-tx/).

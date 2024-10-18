@@ -1,13 +1,15 @@
 # Testnet upgrade: v0.35
 
-import { Callout } from '/src/components/callout'
+import { Callout } from "/src/components/callout";
 
 ## About the v0.35 upgrade
 
 This release adds the Axelar Virtual Machine to the network and adds support for CosmWasm contract creation.
 
 <Callout type="warning" emoji="⚠️">
-This release enables CosmWasm. Contracts created with CosmWasm will require [governance proposals](/dev/amplifier/chain-integration/governance-proposals/) to be deployed for the indefinite future.
+  This release enables CosmWasm. Contracts created with CosmWasm will require
+  [governance proposals](/dev/amplifier/chain-integration/governance-proposals/)
+  to be deployed for the indefinite future.
 </Callout>
 
 Instructions for `2024-February-13` testnet upgrade to axelar-core `v0.35.3`, vald `v0.35.3`, and tofnd `v0.10.1`.
@@ -18,12 +20,13 @@ Upgrade height `12017025` [countdown](https://testnet.mintscan.io/axelar-testnet
 <Callout type="warning" emoji="⚠️">
   [Go v1.21](https://tip.golang.org/doc/go1.21) will be needed to build `axelard`.
 
-  Node operators using binaries need to download `wasmvm v1.3.1` [libwasmvm.x86_64.so](https://github.com/CosmWasm/wasmvm/releases/tag/v1.3.1) and add the parent folder to `LD_LIBRARY_PATH`.
+Node operators using binaries need to download `wasmvm v1.3.1` [libwasmvm.x86_64.so](https://github.com/CosmWasm/wasmvm/releases/tag/v1.3.1) and add the parent folder to `LD_LIBRARY_PATH`.
 
-  Node operators will need to use the updated [`cosmsprund`](https://github.com/binaryholdings/cosmprund/pull/26) to prune their nodes.
+Node operators will need to use the updated [`cosmsprund`](https://github.com/binaryholdings/cosmprund/pull/26) to prune their nodes.
 
-  If using the community node setup scripts, please update to the latest commit on `main` first.
-  `wasmvm` lib will be auto-downloaded to `$AXELARD_HOME/lib` but you'll need to add it to `LD_LIBRARY_PATH` before running the script.
+If using the community node setup scripts, please update to the latest commit on `main` first.
+`wasmvm` lib will be auto-downloaded to `$AXELARD_HOME/lib` but you'll need to add it to `LD_LIBRARY_PATH` before running the script.
+
 </Callout>
 
 1. If you're a validator or have delegated to one, please vote for the upgrade proposal via

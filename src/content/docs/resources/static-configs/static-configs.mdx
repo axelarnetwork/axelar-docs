@@ -2,11 +2,12 @@
 
 ## Introduction
 
-All of the static constants that are relevant for the chain have been aggregated into a single file. 
+All of the static constants that are relevant for the chain have been aggregated into a single file.
 
 This includes, but is not limited to:
-* Chain info and its relevant configs
-* All supported assets on each chain
+
+- Chain info and its relevant configs
+- All supported assets on each chain
 
 The configuration documents are versioned so you will know if the object changes.
 
@@ -14,22 +15,22 @@ You can access the configs in one of two ways:
 
 ## Point the json files directly
 
-* Testnet: https://axelar-testnet.s3.us-east-2.amazonaws.com/configs/testnet-config-1.x.json
-* Mainnet: https://axelar-mainnet.s3.us-east-2.amazonaws.com/configs/mainnet-config-1.x.json
-
+- Testnet: https://axelar-testnet.s3.us-east-2.amazonaws.com/configs/testnet-config-1.x.json
+- Mainnet: https://axelar-mainnet.s3.us-east-2.amazonaws.com/configs/mainnet-config-1.x.json
 
 ## Typescript API
 
-Alternatively, you can use the hooks, i.e. 
+Alternatively, you can use the hooks, i.e.
 
 The package can be installed into your dApp as a project dependency with:
+
 ```bash
 npm i @axelarjs/api
 ```
 
-Then run 
-```typescript
+Then run
 
+```typescript
 import { createAxelarConfigClient } from "@axelarjs/api";
 import { ENVIRONMENTS } from "@axelarjs/core";
 
@@ -37,7 +38,7 @@ const test = async () => {
   const api = createAxelarConfigClient(ENVIRONMENTS.testnet);
   const configs = await api.getAxelarConfigs(ENVIRONMENTS.testnet);
   Object.entries(configs.chains).forEach((v) =>
-    console.log(`config for chain ${v[0]}: ${v[1]}`)
+    console.log(`config for chain ${v[0]}: ${v[1]}`),
   );
 };
 test();

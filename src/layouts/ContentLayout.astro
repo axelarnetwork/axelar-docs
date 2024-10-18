@@ -1,0 +1,23 @@
+---
+import WorldMap from "@/components/ui/world-map.astro";
+import MainLayout from "@/layouts/MainLayout.astro";
+import { proseClasses } from "@/lib/prose-classes";
+import clsx from "clsx";
+---
+
+<MainLayout notSidebar>
+  <div class="bg-[#FFFFFF] dark:bg-background">
+    <WorldMap className="lg:col-span-9 2xl:col-span-10 w-full flex-1 ">
+      <div class="min-h-[90dvh] sub-container pb-20 py-20 flex flex-col gap-10">
+        <article
+          class={clsx(
+            proseClasses,
+            "prose-h1:font-clash prose-h1:font-semibold prose-h1:tracking-wide",
+          )}
+        >
+          <slot />
+        </article>
+      </div>
+    </WorldMap>
+  </div>
+</MainLayout>

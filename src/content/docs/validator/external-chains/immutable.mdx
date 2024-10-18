@@ -9,10 +9,11 @@ Instructions to set up your Immutable zkEVM node.
 - Ubuntu 22.04.1 (tested on 22.04.1)
 - [Official Documentation](https://docs.immutable.com/)
 
-
 ## Prerequisites
+
 1. Install [Docker](https://docs.docker.com/engine/install/ubuntu/)
 2. **(Optional)** If you plan to use WireGuard (see [Get access to the Immutable zkEVM partner nodes](#get-access-to-the-immutable-zkevm-partner-nodes)), install it.
+
 ```bash
 sudo apt-get install wireguard
 ```
@@ -75,7 +76,7 @@ a link to your transaction in the Axelar explorer. For example:
 <div style={{color: 'gray', padding: '1rem'}}>
 > *Please add my public key to the Immutable WireGuard tunnel: `_WIREGUARD_PUBLIC_KEY_`*
 
-> *See my verfication transaction at: `_LINK_TO_EXPLORER_`*
+> _See my verfication transaction at: `_LINK_TO_EXPLORER_`_
 
 </div>
 
@@ -89,6 +90,7 @@ wg-quick up wg0
 ```
 
 The output should look something like this:
+
 ```bash
 [#] ip link add wg0 type wireguard
 [#] wg setconf wg0 /dev/fd/63
@@ -98,6 +100,7 @@ The output should look something like this:
 [#] ip -4 route add <GATEWAY_CIDR> dev wg0
 [#] ip -4 route add <GATEWAY_CIDR> dev wg0
 ```
+
 </tab-item>
 </tabs>
 
@@ -120,67 +123,35 @@ docker tag ghcr.io/immutable/go-ethereum/go-ethereum:latest geth
 3. Initialise the node.
 
 <tabs>
-<tab-item title="Testnet">
-```bash
-docker run \
-  --rm \
-  -v /opt/immutable-zkevm:/mnt/geth \
-  --name geth \
-  geth immutable bootstrap rpc \
-  --zkevm testnet \
-  --datadir /mnt/geth
+  <tab-item title="Testnet">
+    ```bash docker run \ --rm \ -v /opt/immutable-zkevm:/mnt/geth \ --name geth
+    \ geth immutable bootstrap rpc \ --zkevm testnet \ --datadir /mnt/geth 
 ```
-</tab-item>
-<tab-item title="Mainnet">
-```bash
-docker run \
-  --rm \
-  -v /opt/immutable-zkevm:/mnt/geth \
-  --name geth \
-  geth immutable bootstrap rpc \
-  --zkevm mainnet \
-  --datadir /mnt/geth
+  </tab-item>
+  <tab-item title="Mainnet">
+    ```bash docker run \ --rm \ -v /opt/immutable-zkevm:/mnt/geth \ --name geth
+    \ geth immutable bootstrap rpc \ --zkevm mainnet \ --datadir /mnt/geth 
 ```
-</tab-item>
+  </tab-item>
 </tabs>
 
 4. Start the Immutable zkEVM node as a service
 
 <tabs>
-<tab-item title="Testnet">
-```bash
-docker run \
-  -d \
-  --restart=always \
-  -v /opt/immutable-zkevm:/mnt/geth \
-  --name geth \
-  -p 8545:8545 \
-  geth \
-  --zkevm testnet \
-  --config /etc/geth/testnet.toml \
-  --datadir /mnt/geth \
-  --http \
-  --http.port "8545" \
-  --http.addr "0.0.0.0"
+  <tab-item title="Testnet">
+```bash docker run \ -d \ --restart=always \ -v
+    /opt/immutable-zkevm:/mnt/geth \ --name geth \ -p 8545:8545 \ geth \ --zkevm
+    testnet \ --config /etc/geth/testnet.toml \ --datadir /mnt/geth \ --http \
+    --http.port "8545" \ --http.addr "0.0.0.0" 
 ```
-</tab-item>
-<tab-item title="Mainnet">
-```bash
-docker run \
-  -d \
-  --restart=always \
-  -v /opt/immutable-zkevm:/mnt/geth \
-  --name geth \
-  -p 8545:8545 \
-  geth \
-  --zkevm mainnet \
-  --config /etc/geth/mainnet.toml \
-  --datadir /mnt/geth \
-  --http \
-  --http.port "8545" \
-  --http.addr "0.0.0.0"
+  </tab-item>
+  <tab-item title="Mainnet">
+    ```bash docker run \ -d \ --restart=always \ -v
+    /opt/immutable-zkevm:/mnt/geth \ --name geth \ -p 8545:8545 \ geth \ --zkevm
+    mainnet \ --config /etc/geth/mainnet.toml \ --datadir /mnt/geth \ --http \
+    --http.port "8545" \ --http.addr "0.0.0.0" 
 ```
-</tab-item>
+  </tab-item>
 </tabs>
 
 ### Verify your deployment
@@ -196,55 +167,55 @@ The following logs indicate you are synching from the genesis block.
 ```bash
 INFO [12-04|04:54:26.418] Maximum peer count                       ETH=100 LES=0 total=100
 INFO [12-04|04:54:26.421] Smartcard socket not found, disabling    err="stat /run/pcscd/pcscd.comm: no such file or directory"
-INFO [12-04|04:54:26.422] initialising New Relic agent... 
-ERROR[12-04|04:54:26.422] Failed to initialise New Relic agent: NEW_RELIC_APP_NAME missing 
-INFO [12-04|04:54:26.433] Enabling recording of key preimages since archive mode is used 
-INFO [12-04|04:54:26.446] Using pebble as the backing database 
+INFO [12-04|04:54:26.422] initialising New Relic agent...
+ERROR[12-04|04:54:26.422] Failed to initialise New Relic agent: NEW_RELIC_APP_NAME missing
+INFO [12-04|04:54:26.433] Enabling recording of key preimages since archive mode is used
+INFO [12-04|04:54:26.446] Using pebble as the backing database
 INFO [12-04|04:54:26.446] Allocated cache and file handles         database=/mnt/geth/geth/chaindata cache=512.00MiB handles=524,288
 INFO [12-04|04:54:26.504] Opened ancient database                  database=/mnt/geth/geth/chaindata/ancient/chain readonly=true
 INFO [12-04|04:54:26.505] State scheme set to already existing     scheme=hash
 INFO [12-04|04:54:26.508] Set global gas cap                       cap=50,000,000
 INFO [12-04|04:54:26.509] Initializing the KZG library             backend=gokzg
 INFO [12-04|04:54:26.650] Allocated trie memory caches             clean=512.00MiB dirty=0.00B
-INFO [12-04|04:54:26.650] Using pebble as the backing database 
+INFO [12-04|04:54:26.650] Using pebble as the backing database
 INFO [12-04|04:54:26.650] Allocated cache and file handles         database=/mnt/geth/geth/chaindata               cache=512.00MiB handles=524,288
 INFO [12-04|04:54:26.730] Opened ancient database                  database=/mnt/geth/geth/chaindata/ancient/chain readonly=false
 INFO [12-04|04:54:26.753] Initialising Ethereum protocol           network=13473 dbversion=8
-INFO [12-04|04:54:26.754]  
-INFO [12-04|04:54:26.754] --------------------------------------------------------------------------------------------------------------------------------------------------------- 
-INFO [12-04|04:54:26.754] Chain ID:  13473 (unknown) 
-INFO [12-04|04:54:26.754] Reorg Invariants Enabled: true 
-INFO [12-04|04:54:26.754] Consensus: Clique (proof-of-authority) 
-INFO [12-04|04:54:26.754]  
-INFO [12-04|04:54:26.754] Pre-Merge hard forks (block based): 
-INFO [12-04|04:54:26.754]  - Homestead:                   #0        (https://github.com/ethereum/execution-specs/blob/master/network-upgrades/mainnet-upgrades/homestead.md) 
-INFO [12-04|04:54:26.754]  - Tangerine Whistle (EIP 150): #0        (https://github.com/ethereum/execution-specs/blob/master/network-upgrades/mainnet-upgrades/tangerine-whistle.md) 
-INFO [12-04|04:54:26.754]  - Spurious Dragon/1 (EIP 155): #0        (https://github.com/ethereum/execution-specs/blob/master/network-upgrades/mainnet-upgrades/spurious-dragon.md) 
-INFO [12-04|04:54:26.754]  - Spurious Dragon/2 (EIP 158): #0        (https://github.com/ethereum/execution-specs/blob/master/network-upgrades/mainnet-upgrades/spurious-dragon.md) 
-INFO [12-04|04:54:26.754]  - Byzantium:                   #0        (https://github.com/ethereum/execution-specs/blob/master/network-upgrades/mainnet-upgrades/byzantium.md) 
-INFO [12-04|04:54:26.754]  - Constantinople:              #0        (https://github.com/ethereum/execution-specs/blob/master/network-upgrades/mainnet-upgrades/constantinople.md) 
-INFO [12-04|04:54:26.754]  - Petersburg:                  #0        (https://github.com/ethereum/execution-specs/blob/master/network-upgrades/mainnet-upgrades/petersburg.md) 
-INFO [12-04|04:54:26.754]  - Istanbul:                    #0        (https://github.com/ethereum/execution-specs/blob/master/network-upgrades/mainnet-upgrades/istanbul.md) 
-INFO [12-04|04:54:26.754]  - Muir Glacier:                #0        (https://github.com/ethereum/execution-specs/blob/master/network-upgrades/mainnet-upgrades/muir-glacier.md) 
-INFO [12-04|04:54:26.754]  - Berlin:                      #0        (https://github.com/ethereum/execution-specs/blob/master/network-upgrades/mainnet-upgrades/berlin.md) 
-INFO [12-04|04:54:26.754]  - London:                      #0        (https://github.com/ethereum/execution-specs/blob/master/network-upgrades/mainnet-upgrades/london.md) 
-INFO [12-04|04:54:26.754]  - Arrow Glacier:               #0        (https://github.com/ethereum/execution-specs/blob/master/network-upgrades/mainnet-upgrades/arrow-glacier.md) 
-INFO [12-04|04:54:26.754]  - Gray Glacier:                #0        (https://github.com/ethereum/execution-specs/blob/master/network-upgrades/mainnet-upgrades/gray-glacier.md) 
-INFO [12-04|04:54:26.754]  
-INFO [12-04|04:54:26.754] The Merge is not yet available for this network! 
-INFO [12-04|04:54:26.754]  - Hard-fork specification: https://github.com/ethereum/execution-specs/blob/master/network-upgrades/mainnet-upgrades/paris.md 
-INFO [12-04|04:54:26.754]  
-INFO [12-04|04:54:26.754] Post-Merge hard forks (timestamp based): 
-INFO [12-04|04:54:26.754]  
-INFO [12-04|04:54:26.754] --------------------------------------------------------------------------------------------------------------------------------------------------------- 
-INFO [12-04|04:54:26.754]  
+INFO [12-04|04:54:26.754]
+INFO [12-04|04:54:26.754] ---------------------------------------------------------------------------------------------------------------------------------------------------------
+INFO [12-04|04:54:26.754] Chain ID:  13473 (unknown)
+INFO [12-04|04:54:26.754] Reorg Invariants Enabled: true
+INFO [12-04|04:54:26.754] Consensus: Clique (proof-of-authority)
+INFO [12-04|04:54:26.754]
+INFO [12-04|04:54:26.754] Pre-Merge hard forks (block based):
+INFO [12-04|04:54:26.754]  - Homestead:                   #0        (https://github.com/ethereum/execution-specs/blob/master/network-upgrades/mainnet-upgrades/homestead.md)
+INFO [12-04|04:54:26.754]  - Tangerine Whistle (EIP 150): #0        (https://github.com/ethereum/execution-specs/blob/master/network-upgrades/mainnet-upgrades/tangerine-whistle.md)
+INFO [12-04|04:54:26.754]  - Spurious Dragon/1 (EIP 155): #0        (https://github.com/ethereum/execution-specs/blob/master/network-upgrades/mainnet-upgrades/spurious-dragon.md)
+INFO [12-04|04:54:26.754]  - Spurious Dragon/2 (EIP 158): #0        (https://github.com/ethereum/execution-specs/blob/master/network-upgrades/mainnet-upgrades/spurious-dragon.md)
+INFO [12-04|04:54:26.754]  - Byzantium:                   #0        (https://github.com/ethereum/execution-specs/blob/master/network-upgrades/mainnet-upgrades/byzantium.md)
+INFO [12-04|04:54:26.754]  - Constantinople:              #0        (https://github.com/ethereum/execution-specs/blob/master/network-upgrades/mainnet-upgrades/constantinople.md)
+INFO [12-04|04:54:26.754]  - Petersburg:                  #0        (https://github.com/ethereum/execution-specs/blob/master/network-upgrades/mainnet-upgrades/petersburg.md)
+INFO [12-04|04:54:26.754]  - Istanbul:                    #0        (https://github.com/ethereum/execution-specs/blob/master/network-upgrades/mainnet-upgrades/istanbul.md)
+INFO [12-04|04:54:26.754]  - Muir Glacier:                #0        (https://github.com/ethereum/execution-specs/blob/master/network-upgrades/mainnet-upgrades/muir-glacier.md)
+INFO [12-04|04:54:26.754]  - Berlin:                      #0        (https://github.com/ethereum/execution-specs/blob/master/network-upgrades/mainnet-upgrades/berlin.md)
+INFO [12-04|04:54:26.754]  - London:                      #0        (https://github.com/ethereum/execution-specs/blob/master/network-upgrades/mainnet-upgrades/london.md)
+INFO [12-04|04:54:26.754]  - Arrow Glacier:               #0        (https://github.com/ethereum/execution-specs/blob/master/network-upgrades/mainnet-upgrades/arrow-glacier.md)
+INFO [12-04|04:54:26.754]  - Gray Glacier:                #0        (https://github.com/ethereum/execution-specs/blob/master/network-upgrades/mainnet-upgrades/gray-glacier.md)
+INFO [12-04|04:54:26.754]
+INFO [12-04|04:54:26.754] The Merge is not yet available for this network!
+INFO [12-04|04:54:26.754]  - Hard-fork specification: https://github.com/ethereum/execution-specs/blob/master/network-upgrades/mainnet-upgrades/paris.md
+INFO [12-04|04:54:26.754]
+INFO [12-04|04:54:26.754] Post-Merge hard forks (timestamp based):
+INFO [12-04|04:54:26.754]
+INFO [12-04|04:54:26.754] ---------------------------------------------------------------------------------------------------------------------------------------------------------
+INFO [12-04|04:54:26.754]
 INFO [12-04|04:54:26.755] Loaded most recent local block           number=1,343,036 hash=b5bb3f..cbe4f1 td=2,686,073 age=1m17s
 WARN [12-04|04:54:26.893] Sanitizing invalid blobpool storage cap  provided=0 updated=10,737,418,240
 INFO [12-04|04:54:26.893] Initialized transaction indexer          limit=2,350,000
 INFO [12-04|04:54:26.929] Gasprice oracle is ignoring threshold set threshold=2
-INFO [12-04|04:54:26.935] Shutdown tracker started marker 
+INFO [12-04|04:54:26.935] Shutdown tracker started marker
 WARN [12-04|04:54:26.935] Engine API enabled                       protocol=eth
-WARN [12-04|04:54:26.935] Engine API started but chain not configured for merge yet 
+WARN [12-04|04:54:26.935] Engine API started but chain not configured for merge yet
 INFO [12-04|04:54:26.935] Starting peer-to-peer node               instance=Geth/v1.13.0-unstable-cb37d5a3-20231204/linux-amd64/go1.21.4
 INFO [12-04|04:54:26.975] IPC endpoint opened                      url=/mnt/geth/geth.ipc
 INFO [12-04|04:54:26.975] Loaded JWT secret file                   path=/mnt/geth/geth/jwtsecret crc32=0xaa03f756
@@ -254,7 +225,7 @@ INFO [12-04|04:54:26.976] WebSocket enabled                        url=ws://127.
 INFO [12-04|04:54:26.976] HTTP server started                      endpoint=127.0.0.1:8551 auth=true prefix= cors=localhost vhosts=localhost
 INFO [12-04|04:54:26.981] New local node record                    seq=1,701,654,445,241 id=660d517490a62260 ip=127.0.0.1 udp=0 tcp=0
 INFO [12-04|04:54:26.981] Started P2P networking                   self=enode://9040706fed7d4ac85ff44ac1ad54b28ec39b585ec23a5dacb920163d95dd576ca0ab8d2ba4b590a16a183bc14114ac299f2712ada37f8060be684983b1d5016f@127.0.0.1:0
-INFO [12-04|04:54:36.978] Block synchronisation started 
+INFO [12-04|04:54:36.978] Block synchronisation started
 INFO [12-04|04:54:37.205] Imported new chain segment               number=1,343,079 hash=560a17..971f02 blocks=43 txs=0 mgas=0.000 elapsed=205.607ms mgasps=0.000 triedirty=0.00B
 INFO [12-04|04:54:37.518] Imported new chain segment               number=1,343,080 hash=db30ec..114a94 blocks=1  txs=0 mgas=0.000 elapsed=4.535ms   mgasps=0.000 triedirty=0.00B
 INFO [12-04|04:54:39.517] Imported new chain segment               number=1,343,081 hash=b72134..f35f55 blocks=1  txs=0 mgas=0.000 elapsed=4.587ms   mgasps=0.000 triedirty=0.00B
@@ -292,9 +263,11 @@ curl https://rpc.testnet.immutable.com \
 ```
 
 The output should be:
+
 ```bash
 {"jsonrpc":"2.0","id":1,"result":"0x34a1"}
 ```
+
 </tab-item>
 <tab-item title="Mainnet">
 
@@ -306,9 +279,11 @@ curl https://rpc.immutable.com \
 ```
 
 The output should be:
+
 ```bash
 {"jsonrpc":"2.0","id":1,"result":"0x343b"}
 ```
+
 </tab-item>
 </tabs>
 
@@ -336,20 +311,19 @@ docker run \
   --http.addr "0.0.0.0"
 ```
 
-* `-d` Detach. This means the container will start without holding on to your terminal.
-* `--restart=always`: Always keep it running. This tells the Docker daemon, if the container stops running (e.g., if the host restarts), start it up again. 
-* `-v <LOCAL_DIR>:<CONTAINER_DIR>`: Mount host directory. This tells docker to map a directory from your host, to a directory inside the container.
-* `--name geth`: Name the container. This helps us reference the container later in the docker CLI. If you run `docker ps` you should see the container with an ID and this name.
-* `-p <HOST_PORT>:<CONTAINER_PORT>`. Map host port. This tells docker to forward any connections on the host's `<HOST_PORT>` to the container's `<CONTAINER_PORT>`.
-* `geth`: Command line. Here starts the command line inside the container. This is the binary for the `immutable-geth` instance running inside the container.
-* `--config /etc/geth/mainnet.toml`: Pre-baked mainnet configuration. This path **_MUST NOT BE MODIFIED_**.
-* `--datadir <CONTAINER_DIR>`: Directory path. This is the directory `geth` will use for storage. It **_MUST_** match `<CONTAINER_DIR>` in the `-v` flag. It **_MUST_** match the path used in the initialisation commands ran previously.
-* `--keystore <CONTAINER_DIR>/keystore`: Keystore path. This is relative to `<CONTAINER_DIR>` mentioned above. NOTE: we have a backlog task to potentially remove this.
-* `--networkid 13371`: ChainID. This ***MUST NOT*** be modified.
-* `--http`: Enable RPC interface.
-* `--http.port <CONTAINER_PORT>`: Expose RPC interface in container port `<CONTAINER_PORT>`. This ***MUST*** match `<CONTAINER_PORT>` in the `-p` flag above.
-* `--http.addr "0.0.0.0"`. Expose the RPC interface in all network addresses.
-
+- `-d` Detach. This means the container will start without holding on to your terminal.
+- `--restart=always`: Always keep it running. This tells the Docker daemon, if the container stops running (e.g., if the host restarts), start it up again.
+- `-v <LOCAL_DIR>:<CONTAINER_DIR>`: Mount host directory. This tells docker to map a directory from your host, to a directory inside the container.
+- `--name geth`: Name the container. This helps us reference the container later in the docker CLI. If you run `docker ps` you should see the container with an ID and this name.
+- `-p <HOST_PORT>:<CONTAINER_PORT>`. Map host port. This tells docker to forward any connections on the host's `<HOST_PORT>` to the container's `<CONTAINER_PORT>`.
+- `geth`: Command line. Here starts the command line inside the container. This is the binary for the `immutable-geth` instance running inside the container.
+- `--config /etc/geth/mainnet.toml`: Pre-baked mainnet configuration. This path **_MUST NOT BE MODIFIED_**.
+- `--datadir <CONTAINER_DIR>`: Directory path. This is the directory `geth` will use for storage. It **_MUST_** match `<CONTAINER_DIR>` in the `-v` flag. It **_MUST_** match the path used in the initialisation commands ran previously.
+- `--keystore <CONTAINER_DIR>/keystore`: Keystore path. This is relative to `<CONTAINER_DIR>` mentioned above. NOTE: we have a backlog task to potentially remove this.
+- `--networkid 13371`: ChainID. This **_MUST NOT_** be modified.
+- `--http`: Enable RPC interface.
+- `--http.port <CONTAINER_PORT>`: Expose RPC interface in container port `<CONTAINER_PORT>`. This **_MUST_** match `<CONTAINER_PORT>` in the `-p` flag above.
+- `--http.addr "0.0.0.0"`. Expose the RPC interface in all network addresses.
 
 ## Configure vald
 
@@ -358,19 +332,13 @@ vald's `config.toml`
 
 <tabs>
   <tab-item title="Mainnet">
-  ```bash
-  [[axelar_bridge_evm]]
-  name = "immutable"
-  rpc_addr = "http://IP:PORT"
-  start-with-bridge = true
-  ```
+    ```bash [[axelar_bridge_evm]] name = "immutable" rpc_addr = "http://IP:PORT"
+    start-with-bridge = true 
+```
   </tab-item>
   <tab-item title="Testnet">
-  ```bash
-  [[axelar_bridge_evm]]
-  name = "immutable"
-  rpc_addr = "http://IP:PORT"
-  start-with-bridge = true
-  ```
+    ```bash [[axelar_bridge_evm]] name = "immutable" rpc_addr = "http://IP:PORT"
+    start-with-bridge = true 
+```
   </tab-item>
 </tabs>

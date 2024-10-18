@@ -13,6 +13,7 @@ Instructions to set up your blast node.
 ## Prerequisites
 
 - [Common Docker Compose Commands](/validator/external-chains/optimism/#common-node-operations)
+
 ```bash
 sudo apt-get install jq -y
 snap install docker
@@ -26,6 +27,7 @@ cd blast-node
 ```
 
 ## Set Node Config Environment Variables
+
 ```bash
 cp .env.example .env
 ```
@@ -33,41 +35,34 @@ cp .env.example .env
 Set the following config options in `blast-node/.env`:
 
 <tabs>
-    <tab-item title="Mainnet">
-        ```bash
-        # NETWORK should be mainnet or sepolia
-        NETWORK=mainnet
-        # Relative path to the directory that will store chain data
-        GETH_DATA_DIR=blast-geth-data
-        # Your Ethereum L1 RPC endpoint
-        L1_RPC_URL="your_l1_rpc_url"
-        # The type of RPC provider, valid options are alchemy, quicknode, infura, parity, nethermind, debug_geth, erigon, basic, any
-        # Axelar Team recommends you to run your own
-        L1_RPC_KIND="any"
-        ```
-    </tab-item>
-    <tab-item title="Testnet">
-        ```bash
-        # NETWORK should be mainnet or sepolia
-        NETWORK=sepolia
-        # Relative path to the directory that will store chain data
-        GETH_DATA_DIR=blast-geth-data
-        # Your Sepolia L1 RPC endpoint
-        L1_RPC_URL="your_l1_rpc_url"
-        # The type of RPC provider, valid options are alchemy, quicknode, infura, parity, nethermind, debug_geth, erigon, basic, any
-        # Axelar Team recommends you to run your own
-        L1_RPC_KIND="any"
-        ```
-    </tab-item>
+  <tab-item title="Mainnet">
+    ```bash # NETWORK should be mainnet or sepolia NETWORK=mainnet # Relative
+    path to the directory that will store chain data
+    GETH_DATA_DIR=blast-geth-data # Your Ethereum L1 RPC endpoint
+    L1_RPC_URL="your_l1_rpc_url" # The type of RPC provider, valid options are
+    alchemy, quicknode, infura, parity, nethermind, debug_geth, erigon, basic,
+    any # Axelar Team recommends you to run your own L1_RPC_KIND="any" 
+```
+  </tab-item>
+  <tab-item title="Testnet">
+    ```bash # NETWORK should be mainnet or sepolia NETWORK=sepolia # Relative
+    path to the directory that will store chain data
+    GETH_DATA_DIR=blast-geth-data # Your Sepolia L1 RPC endpoint
+    L1_RPC_URL="your_l1_rpc_url" # The type of RPC provider, valid options are
+    alchemy, quicknode, infura, parity, nethermind, debug_geth, erigon, basic,
+    any # Axelar Team recommends you to run your own L1_RPC_KIND="any" 
+```
+  </tab-item>
 </tabs>
 
-
 ## Start the node
+
 ```bash
 docker compose up -d
 ```
 
 This should show an output like this:
+
 ```bash
 [+] Running 6/6
  ✔ Network blast-node_blast-net         Created                                                                                                              0.1s
@@ -79,11 +74,13 @@ This should show an output like this:
 ```
 
 After it is done, verify by listing the services and their status
- ```bash
+
+```bash
 docker compose ps
 ```
 
 You should see these 2 services running
+
 ```bash
 NAME                      IMAGE                            COMMAND                  SERVICE             CREATED             STATUS              PORTS
 blast-node-blast-geth-1   blastio/blast-geth:sepolia       "geth --datadir=/bla…"   blast-geth          4 hours ago         Up 4 hours          8545-8546/tcp, 30303/tcp, 0.0.0.0:9545-9546->9545-9546/tcp, :::9545-9546->9545-9546/tcp, 30303/udp
@@ -108,6 +105,7 @@ blast-node-blast-geth-1  | INFO [02-04|07:42:29.722] Chain head was updated     
 blast-node-blast-geth-1  | INFO [02-04|07:42:29.734] Starting work on payload                 id=0x95a98a726f1398ee
 blast-node-blast-geth-1  | INFO [02-04|07:42:29.751] Imported new potential chain segment     number=39538 hash=219454..97cd30 blocks=1 txs=1 mgas=0.051 elapsed=16.713ms    mgasps=3.022  age=2mo2w6d  triedirty=0.00B
 ```
+
 It will not import new headers until your op-node is synced, once your op-node is synced, your blast-geth logs should look like this
 
 ```bash
@@ -120,12 +118,12 @@ blast-node-blast-geth-1  | INFO [02-29|08:08:15.285] Chain head was updated     
 blast-node-blast-geth-1  | INFO [02-29|08:08:15.307] Starting work on payload                 id=0x44c95802c3652dbd
 ```
 
-
 #### Verify OP node logs
 
 ```bash
 docker compose logs op-node --since 2m -f
 ```
+
 You should see logs like
 
 ```bash
@@ -150,6 +148,7 @@ echo "$(curl -4 ifconfig.co):9545"
 ```
 
 #### Method:
+
 ```bash
 curl -X POST -H "Content-Type: application/json" --data     '{"jsonrpc":"2.0","method":"eth_blockNumber","params":[],"id":1}' [rpc] | jq
 ```
@@ -176,6 +175,7 @@ docker exec -it blast-node-blast-geth-1 geth attach http://localhost:9545
 > eth.syncing
 false
 ```
+
 You can compare the block height on your node with explorer ([mainnet](https://blastscan.io/) or [testnet](https://testnet.blastscan.io)),
 use your RPC node only when it has caught up with the latest block height.
 
@@ -185,20 +185,14 @@ In order for `vald` to connect to your Blast node, your `rpc_addr` should be exp
 vald's `config.toml`
 
 <tabs>
-    <tab-item title="Mainnet">
-        ```bash
-        [[axelar_bridge_evm]]
-        name = "blast"
-        rpc_addr = "http://IP:PORT"
-        start-with-bridge = true
-        ```
-    </tab-item>
-    <tab-item title="Testnet">
-        ```bash
-        [[axelar_bridge_evm]]
-        name = "blast"
-        rpc_addr = "http://IP:PORT"
-        start-with-bridge = true
-        ```
-    </tab-item>
+  <tab-item title="Mainnet">
+    ```bash [[axelar_bridge_evm]] name = "blast" rpc_addr = "http://IP:PORT"
+    start-with-bridge = true 
+```
+  </tab-item>
+  <tab-item title="Testnet">
+    ```bash [[axelar_bridge_evm]] name = "blast" rpc_addr = "http://IP:PORT"
+    start-with-bridge = true 
+```
+  </tab-item>
 </tabs>

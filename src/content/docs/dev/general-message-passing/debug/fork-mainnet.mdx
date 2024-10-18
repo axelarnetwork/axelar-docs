@@ -3,7 +3,7 @@
 For development and debugging purposes, it is often useful to be able to fork preexisting chains. This can easily be done using `ganache`. You can simply install [`axelar-local-dev`](https://github.com/axelarnetwork/axelar-local-dev) by typing `npm i @axelar-network/axelar-local-dev` and writing a simple script:
 
 ```js
-const { forkAndExport } = '@axelar-network/axelar-local-dev';
+const { forkAndExport } = "@axelar-network/axelar-local-dev";
 forkAndExport();
 ```
 
@@ -12,6 +12,7 @@ This will clone `mainnet` by default and export local RPC endpoints at `http:/lo
 ## Additional Options
 
 `forkAndExport` can take an object of type `CloneLocalOptions` that can specify:
+
 - `chainOutputPath`: a path to save a JSON file with all the information for the chains that are set up. Defaults to `./local.json`.
 - `accountsToFund`: a list of addresses to fund.
 - `fundAmount`: a string representing the amount of ether to fund accounts with. Defaults to `100 ETH`.

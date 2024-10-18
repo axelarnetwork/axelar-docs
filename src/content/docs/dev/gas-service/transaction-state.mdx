@@ -89,7 +89,7 @@ If the transaction is stuck, you can trigger a manual relay:
 ```tsx
 const sourceTxHash = "0x..";
 const provider = new ethers.providers.JsonRpcProvider(
-  "<https://goerli.infura.io/v3/projectId>"
+  "<https://goerli.infura.io/v3/projectId>",
 );
 
 const response = await sdk.manualRelayToDestChain(sourceTxHash, { provider });
@@ -111,7 +111,7 @@ You can increase the gas payment using native tokens:
 const txHash: string = "0x...";
 const { success, transaction, error } = await sdk.addNativeGas(
   EvmChain.AVALANCHE,
-  txHash
+  txHash,
 );
 ```
 
@@ -121,12 +121,12 @@ Or using ERC-20 tokens:
 const gasToken = "0xGasTokenAddress";
 await erc20.approve(
   GAS_RECEIVER[Environment.TESTNET][EvmChain.AVALANCHE],
-  amount
+  amount,
 );
 const { success, transaction, error } = await sdk.addGas(
   EvmChain.AVALANCHE,
   txHash,
-  gasToken
+  gasToken,
 );
 ```
 
@@ -143,7 +143,7 @@ const gasFee = await sdk.estimateGasFee(
   EvmChain.ETHEREUM,
   EvmChain.MOONBEAM,
   gasLimit,
-  "auto"
+  "auto",
 );
 ```
 
@@ -156,7 +156,7 @@ const fee = await sdk.getTransferFee(
   "Ethereum",
   "Avalanche",
   "uausdc",
-  1000000
+  1000000,
 );
 ```
 

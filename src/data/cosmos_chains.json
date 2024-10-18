@@ -10,7 +10,7 @@
       "id": "archway",
       "name": "Archway",
       "network_id": "archway",
-      "image": "/images/chains/archway.svg"
+      "image": "/images/assets/archway.svg"
     },
     {
       "id": "axelarnet",
@@ -28,7 +28,7 @@
       "id": "c4e",
       "name": "C4E",
       "network_id": "c4e",
-      "image": "/images/chains/c4e.svg"
+      "image": "/images/assets/c4e.svg"
     },
     {
       "id": "carbon",
@@ -100,7 +100,7 @@
       "id": "injective",
       "name": "Injective",
       "network_id": "injective",
-      "image": "/images/chains/injective.svg"
+      "image": "/images/assets/injective.svg"
     },
     {
       "id": "juno",
@@ -142,7 +142,7 @@
       "id": "nolus",
       "name": "Nolus",
       "network_id": "nolus",
-      "image": "/images/chains/nolus.svg"
+      "image": "/images/assets/nolus.svg"
     },
     {
       "id": "ojo",

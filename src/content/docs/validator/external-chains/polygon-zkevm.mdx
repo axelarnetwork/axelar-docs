@@ -1,23 +1,26 @@
 # Polygon zkEVM
 
-import { Callout } from "/src/components/callout"
+import { Callout } from "/src/components/callout";
 
 Instructions to set up your Polygon ZkEVM node.
 
 <Callout type="info" emoji="ℹ️">
-    Note: Currently ARM-based CPUs are not supported
+  Note: Currently ARM-based CPUs are not supported
 </Callout>
 
 ## Requirements
+
 - [Setup your Axelar validator](/validator/setup/overview/)
 - Minimum hardware requirements: 4 cores, 32G RAM, 128G Disk with high IOPS.
--  Ubuntu 22.04, Docker(tested on 22.04)
+- Ubuntu 22.04, Docker(tested on 22.04)
 - [Official Documentation](https://github.com/0xPolygonHermez/zkevm-node/blob/develop/docs/production-setup.md)
 - [Official Documentation](https://zkevm.polygon.technology/docs/setup-production-node)
 
 ## Prerequisites
+
 This is the most straightforward path to run a zkEVM node, and it's perfectly fine for most use cases, This is quite opinionated, feel free to run this software in a different way, for instance it's not needed to use Docker, you could use the Go and C++ binaries directly.
 Some instructions to install Prerequisites are give here however be sure to check the [official documentation](https://docs.docker.com/compose/install/) to install docker compose in case this doesn't work
+
 ```bash
 sudo apt-get install jq -y
 sudo curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
@@ -26,6 +29,7 @@ docker-compose --version
 ```
 
 ## Create necessary directories
+
 You can modify the paths as per your requirements
 
 ```bash
@@ -36,27 +40,27 @@ mkdir -p ~/.zkevm/data/statedb
 # ZKEVM NODE POOLDB DATA_ DIR
 mkdir -p ~/.zkevm/data/pooldb
 ```
+
 # Get network configurations
+
 Storing directory paths to variables to reuse
 
 <tabs>
-<tab-item title="Mainnet" class="bleed">
-```bash
-ZKEVM_NET=mainnet
-```
-</tab-item>
-<tab-item title="Testnet" class="bleed">
-```bash
-ZKEVM_NET=testnet
-```
-</tab-item>
+  <tab-item title="Mainnet" class="bleed">
+    ```bash ZKEVM_NET=mainnet ```
+  </tab-item>
+  <tab-item title="Testnet" class="bleed">
+    ```bash ZKEVM_NET=testnet ```
+  </tab-item>
 </tabs>
 
 ```bash
 ZKEVM_DIR=~/.zkevm
 ZKEVM_CONFIG_DIR=~/.zkevm/config
 ```
+
 Fetch network configuration files
+
 ```bash
 # get zip and unzip into $ZKEVM_DIR
 curl -L https://github.com/0xPolygonHermez/zkevm-node/releases/latest/download/$ZKEVM_NET.zip > $ZKEVM_NET.zip && unzip -o $ZKEVM_NET.zip -d $ZKEVM_DIR && rm $ZKEVM_NET.zip
@@ -65,7 +69,9 @@ cp $ZKEVM_DIR/$ZKEVM_NET/example.env $ZKEVM_CONFIG_DIR/.env
 ```
 
 ## Set node config
+
 Update the variables in `$ZKEVM_CONFIG_DIR/.env`
+
 ```bash
 # your network could be either mainnet or testnet, we defined this earlier
 ZKEVM_NETWORK=$ZKEVM_NET
@@ -76,13 +82,17 @@ ZKEVM_NODE_STATEDB_DATA_DIR="$HOME/.zkevm/data/statedb"
 # ZKEVM NODE POOLDB DATA_ DIR, we created this earlier
 ZKEVM_NODE_POOLDB_DATA_DIR="$HOME/.zkevm/data/pooldb"
 ```
+
 <Callout type="info" emoji="ℹ️">
-Note: ZKEVM_NODE_ETHERMAN_URL must point to the validator's ethereum rpc node for security
+  Note: ZKEVM_NODE_ETHERMAN_URL must point to the validator's ethereum rpc node
+  for security
 </Callout>
 
 ## Optional
+
 We will need to use directories defined earlier when we want to pass config and env file to docker-compose, it would be nice to persist them across sessions
 Add them to your shell file of your choice
+
 ```bash
 ZKEVM_NET=testnet
 ZKEVM_DIR=~/.zkevm
@@ -90,20 +100,27 @@ ZKEVM_CONFIG_DIR=~/.zkevm/config
 ```
 
 # Start the node
+
 ```bash
 sudo docker-compose --env-file $ZKEVM_CONFIG_DIR/.env -f $ZKEVM_DIR/$ZKEVM_NET/docker-compose.yml up -d
 ```
+
 This should show an output like this:
+
 ```bash
    ⠿ b08a0a826235 Pull complete                                                                                                                             90.5s
-   ⠦ d71d159599c3 Downloading [>                                                  ]  
+   ⠦ d71d159599c3 Downloading [>                                                  ]
    ...
 ```
+
 After it is done, verify by listing the services and their status
+
 ```bash
 docker-compose --env-file $ZKEVM_CONFIG_DIR/.env -f $ZKEVM_DIR/$ZKEVM_NET/docker-compose.yml ps
 ```
+
 You should see the following containers running
+
 ```bash
 docker-compose --env-file $ZKEVM_CONFIG_DIR/.env -f $ZKEVM_DIR/$ZKEVM_NET/docker-compose.yml ps
 
@@ -114,7 +131,6 @@ zkevm-rpc           hermeznetwork/zkevm-node:v0.1.2            "/bin/sh -c '/app
 zkevm-state-db      postgres                                   "docker-entrypoint.s…"   zkevm-state-db      12 minutes ago      Up 12 minutes (healthy)   0.0.0.0:5432->5432/tcp, :::5432->5432/tcp
 zkevm-sync          hermeznetwork/zkevm-node:v0.1.2            "/bin/sh -c '/app/zk…"   zkevm-sync          12 minutes ago      Up 12 minutes             8123/tcp
 ```
-
 
 ## Check logs
 
@@ -149,9 +165,6 @@ sudo docker-compose --env-file $ZKEVM_CONFIG_DIR/.env -f $ZKEVM_DIR/$ZKEVM_NET/d
 sudo docker-compose --env-file $ZKEVM_CONFIG_DIR/.env -f $ZKEVM_DIR/$ZKEVM_NET/docker-compose.yml logs zkevm-sync -f
 ```
 
-
-
-
 ```bash
 curl -H "Content-Type: application/json" -X POST --data '{"jsonrpc":"2.0","method":"eth_blockNumber","params":[],"id":83}' http://localhost:8545 | jq
 {
@@ -160,8 +173,6 @@ curl -H "Content-Type: application/json" -X POST --data '{"jsonrpc":"2.0","metho
   "result": "0x802"
 }
 ```
-
-
 
 ## Verify node sync status
 
@@ -172,11 +183,13 @@ echo "$(curl -4 ifconfig.co):8545"
 ```
 
 #### Method 1:
+
 ```bash
 curl -X POST [rpc] -H "Content-Type: application/json" --data '{"jsonrpc":"2.0","method":"eth_blockNumber","params":[],"id":1}' | jq
 ```
 
 If you get something like this in response to the above rpc call, your node is setup correctly
+
 ```json
 {
   "jsonrpc": "2.0",
@@ -184,6 +197,7 @@ If you get something like this in response to the above rpc call, your node is s
   "result": "0x3df827"
 }
 ```
+
 You can use a [hex to number convertor](https://www.binaryhexconverter.com/hex-to-decimal-converter) to get the block height
 
 You can compare the block height on your node with explorer ([mainnet](https://wallet.polygon.technology) or [testnet](https://wallet.polygon.technology)),
@@ -194,34 +208,30 @@ use your RPC node only when it has caught up with the latest block height.
 In order for `vald` to connect to your Zk EVM node, your `rpc_addr` should be exposed in
 vald's `config.toml`
 
-<tabs >
-<tab-item title="Mainnet" class="bleed">
-```bash
-[[axelar_bridge_evm]]
-name = "polygon-zkevm"
-rpc_addr = "http://IP:PORT"
-start-with-bridge = true
+<tabs>
+  <tab-item title="Mainnet" class="bleed">
+    ```bash [[axelar_bridge_evm]] name = "polygon-zkevm" rpc_addr =
+    "http://IP:PORT" start-with-bridge = true 
+    
 ```
-</tab-item>
-<tab-item title="Testnet" class="bleed">
-```bash
-[[axelar_bridge_evm]]
-name = "polygon-zkevm"
-rpc_addr = "http://IP:PORT"
-start-with-bridge = true
+  </tab-item>
+  <tab-item title="Testnet" class="bleed">
+    ```bash [[axelar_bridge_evm]] name = "polygon-zkevm" rpc_addr =
+    "http://IP:PORT" start-with-bridge = true 
 ```
-</tab-item>
+  </tab-item>
 </tabs>
 
 ### Common Node Operations
 
-
 To start
+
 ```bash
 sudo docker-compose --env-file $ZKEVM_CONFIG_DIR/.env -f $ZKEVM_DIR/$ZKEVM_NET/docker-compose.yml up -d
 ```
 
 To stop
+
 ```bash
 sudo docker-compose --env-file $ZKEVM_CONFIG_DIR/.env -f $ZKEVM_DIR/$ZKEVM_NET/docker-compose.yml down
 ```
@@ -231,6 +241,7 @@ To update
 To update the zkNode software, repeat the setup steps, being careful not to overwrite the configuration files that you have modified.
 
 To stop and wipe out everything
+
 ```bash
 sudo docker-compose --env-file $ZKEVM_CONFIG_DIR/.env -f $ZKEVM_DIR/$ZKEVM_NET/docker-compose.yml down -v
 ```

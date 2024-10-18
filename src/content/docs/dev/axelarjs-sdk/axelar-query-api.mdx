@@ -26,12 +26,12 @@ This is a useful query for GMP transactions, when invoking `callContract` or `ca
 
 IMPORTANT NOTES:
 
-* You must ensure the correct `gasLimit` is used for your gas estimation. The gas limit is equal to the execution gas cost on the destination chain. You can test out GMP calls to find the correct value.
-* The `minGasPrice` and `gasMultipler` parameters can be adjusted to enhance execution certainty of cross-chain transactions.
-* L2 chains. For execution of GMP calls where the destination chain is an EVM L2 chain, it is important to note that all L2 chains have an extra cost of posting the executed transaction back to the L1 chain. This `estimateGasFee` SDK method will aggregate that estimated cost for you. The parameters to call out specifically for L2s are:
+- You must ensure the correct `gasLimit` is used for your gas estimation. The gas limit is equal to the execution gas cost on the destination chain. You can test out GMP calls to find the correct value.
+- The `minGasPrice` and `gasMultipler` parameters can be adjusted to enhance execution certainty of cross-chain transactions.
+- L2 chains. For execution of GMP calls where the destination chain is an EVM L2 chain, it is important to note that all L2 chains have an extra cost of posting the executed transaction back to the L1 chain. This `estimateGasFee` SDK method will aggregate that estimated cost for you. The parameters to call out specifically for L2s are:
   - the `gasLimit` parameter, which are the actual gas units required to execute the tx on the L2 chain. You can check this empirically by looking at the gas used to execute the `AxelarExecutable` on the destination chain.
-  - the `executeData` parameter, which is the GMP data to be executed on the L2 destination chain. This is important for OP-stack chains, where the SDK queries a gas oracle contract with this executeData to retrieve the L1 fee, and if the parameter for `executeData` is not provided, a stub piece of `executeData` is used. 
-* The response to the method gives a single value (in `wei`) of the total estimated gas required for the cross-chain call. In the GMPParams parameter, there is an option to show a full breakdown of fees instead by specifying `true` for `showDetailedFees`. If you do this, you will have to add the individual components of the fees yourself, e.g. 
+  - the `executeData` parameter, which is the GMP data to be executed on the L2 destination chain. This is important for OP-stack chains, where the SDK queries a gas oracle contract with this executeData to retrieve the L1 fee, and if the parameter for `executeData` is not provided, a stub piece of `executeData` is used.
+- The response to the method gives a single value (in `wei`) of the total estimated gas required for the cross-chain call. In the GMPParams parameter, there is an option to show a full breakdown of fees instead by specifying `true` for `showDetailedFees`. If you do this, you will have to add the individual components of the fees yourself, e.g.
   - `(baseFee + executionFeeWithMultiplier)` for regular way GMP calls,
   - `(baseFee + executionFeeWithMultiplier + l1ExecutionFeeWithMultiplier)` for regular way GMP calls to any L2 chains,
   - `(baseFee + executionFeeWithMultiplier + expressFee)` for GMP Express calls
@@ -137,23 +137,23 @@ The method below allows you to translate the asset symbol (as identified on an E
  */
 public async getDenomFromSymbol(symbol: string, chainName: string)
 ```
+
 For example, let's say you have Axelar's canonical testnet `aUSDC`. The symbol for this asset on EVM chains is `aUSDC`, and the denom is `uausdc`. Sample usage to get denom from symbol:
 
 ```ts
-  const queryConfig: AxelarQueryAPIConfig = {
-    environment: Environment.TESTNET
-  }
-  const api = new AxelarQueryAPI(queryConfig);
+const queryConfig: AxelarQueryAPIConfig = {
+  environment: Environment.TESTNET,
+};
+const api = new AxelarQueryAPI(queryConfig);
 
-  async function main() {
-    const denom = await api.getDenomFromSymbol("aUSDC", "moonbeam");
-    console.log("denom: ",denom);
-    return denom;
-  }
+async function main() {
+  const denom = await api.getDenomFromSymbol("aUSDC", "moonbeam");
+  console.log("denom: ", denom);
+  return denom;
+}
 
-  //expected returned result: uausdc
+//expected returned result: uausdc
 ```
-
 
 #### getSymbolFromDenom
 
@@ -169,19 +169,20 @@ The method below allows you to translate the asset denom to the asset symbol (as
  */
 public async getSymbolFromDenom(denom: string, chainName: string)
 ```
+
 For example, let's say you have Axelar's canonical testnet `aUSDC`. The symbol for this asset on EVM chains is `aUSDC`, and the denom is `uausdc`. Sample usage to get symbol from denom:
 
 ```ts
-  const queryConfig: AxelarQueryAPIConfig = {
-    environment: Environment.TESTNET
-  }
-  const api = new AxelarQueryAPI(queryConfig);
+const queryConfig: AxelarQueryAPIConfig = {
+  environment: Environment.TESTNET,
+};
+const api = new AxelarQueryAPI(queryConfig);
 
-  async function main() {
-    const symbol = await api.getSymbolFromDenom("uausdc", "moonbeam");
-    console.log("symbol: ",symbol);
-    return symbol;
-  }
+async function main() {
+  const symbol = await api.getSymbolFromDenom("uausdc", "moonbeam");
+  console.log("symbol: ", symbol);
+  return symbol;
+}
 
-  //expected returned result: aUSDC
+//expected returned result: aUSDC
 ```

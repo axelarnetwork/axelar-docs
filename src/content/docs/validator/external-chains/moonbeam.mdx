@@ -1,6 +1,6 @@
 # Moonbeam
 
-import { Callout } from "/src/components/callout"
+import { Callout } from "/src/components/callout";
 
 Set up your Moonbeam Mainnet or Testnet (Moonbase-Alpha) node.
 
@@ -10,7 +10,6 @@ Set up your Moonbeam Mainnet or Testnet (Moonbase-Alpha) node.
 - Minimum hardware requirements: 8+ cores CPU , 16GB+ RAM, 500GB+ free storage space.
 - MacOS or Ubuntu 18.04+
 - [Official Documentation](https://docs.moonbeam.network/node-operators/networks/run-a-node/)
-
 
 ## Install Moonbeam / Moonbase Alpha
 
@@ -22,6 +21,7 @@ Download the [latest release binary](https://github.com/PureStake/moonbeam/tags)
 wget https://github.com/PureStake/moonbeam/releases/download/v0.23.0/moonbeam
 
 ```
+
 ### 2. Create a service account and copy the binary
 
 ```bash
@@ -43,9 +43,11 @@ sudo chown -R moonbeam_service /var/lib/alphanet-data
 After the installation of `moonbeam`, we are now ready to start the node, but to ensure it is running in the background and auto-restarts in case of a server failure, we will set up a service file using systemd.
 
 <Callout emoji="📝">
-  Note: In the service file below you need to replace `"YOUR-NODE-NAME"` and replace `50% RAM in MB` for 50% of the actual RAM your server has (Example: `--db-cache 16000` if your server has 32GB RAM).
-  
-  If you are connecting to Testnet instead (Moonbase Alpha), you will also need to change the path to `/var/lib/alphanet-data/` and add `--chain alphanet`.
+  Note: In the service file below you need to replace `"YOUR-NODE-NAME"` and
+  replace `50% RAM in MB` for 50% of the actual RAM your server has (Example:
+  `--db-cache 16000` if your server has 32GB RAM). If you are connecting to
+  Testnet instead (Moonbase Alpha), you will also need to change the path to
+  `/var/lib/alphanet-data/` and add `--chain alphanet`.
 </Callout>
 
 ```bash
