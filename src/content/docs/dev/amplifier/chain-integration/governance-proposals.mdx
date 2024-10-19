@@ -380,22 +380,36 @@ axelard tx gov submit-proposal execute-contract $MULTISIG_CONTRACT_ADDRESS \
 
 For your blockchain to be integrated with the Amplifier service you must have a [reward pool](/dev/amplifier/add-rewards/) setup for your chain's verifiers to be compensated. The reward pool is setup by creating a governance proposal. 
 
+
 ```bash
 export REWARDS_CONTRACT="axelar1vaj9sfzc3z0gpel90wu4ljutncutv0wuhvvwfsh30rqxq422z89qnd989l"
 export CHAIN_NAME="AmplifiedChain"
 ```
 
 ```bash
-axelard tx gov submit-proposal execute-contract $REWARDS_CONTRACT \
-    --title="Create reward pool for $CHAIN_NAME" \
-    --description="Create a new reward pool to compensate verifiers for $CHAIN_NAME" \
-    --run-as $NETWORK_GOV_ADDRESS \
-    --deposit=100000uamplifier \
-    --keyring-backend test \
-    --from wallet \
-    --gas auto --gas-adjustment 1.5 --gas-prices 0.00005uamplifier \
-    --chain-id=devnet-amplifier \
-    --node $RPC
+ axelard tx gov submit-proposal execute-contract $REWARDS_CONTRACT \ '{
+    "create_pool":{
+        "params": {
+            "epoch_duration": "'"$EPOCH_DURATION"'",
+            "rewards_per_epoch": "'"$REWARD_PER_EPOCH"'",
+            "participation_threshold": "'"$THRESHOLD"'"
+        }, 
+        "pool_id":{
+            "chain_name":"'"$CHAIN_NAME"'",
+            "contract":"'"$VOTING_VERIFIER_ADDRESS"'"
+        }
+    }
+}' \
+--title="Create reward pool for $CHAIN_NAME" \
+--description="Create a new reward pool to compensate verifiers for $CHAIN_NAME" \
+--run-as $NETWORK_GOV_ADDRESS \
+--keyring-backend test \
+--deposit=100000000uamplifier \
+--from wallet \ 
+--gas auto \
+--gas-adjustment 1.5  \
+--gas-prices 0.00005uamplifier \
+--node  $RPC 
 ```
 
 ## Track your proposal
