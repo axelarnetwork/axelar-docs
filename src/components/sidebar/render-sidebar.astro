@@ -1,0 +1,94 @@
+---
+import { getNavigation } from "@/layouts/navigation";
+import clsx from "clsx";
+import { ChevronDown, LayoutGrid } from "lucide-react";
+
+const { isMobile } = Astro.props;
+const section = Astro.url.pathname?.match(/\/([^\/]*)\//)?.[1];
+const navigation = getNavigation(section);
+---
+
+<aside
+  class={clsx(
+    isMobile ? "flex lg:hidden" : "hidden lg:flex",
+    " flex-col lg:bg-background-neutral sideNav gap-1.5 px-4 md:px-6 lg:pb-9 lg:pt-4 sidebar-scroll  lg:overflow-y-auto  lg:w-[20rem] lg:h-[calc(100dvh-80px)] top-[80px] sticky",
+  )}
+>
+  {
+    navigation.map((section) => (
+      <div class="flex flex-col mt-5 gap-1.5">
+        <div class="bg-gray mb-3 text-sm flex gap-2 items-center  px-2 py-1.5  rounded">
+          <LayoutGrid size={16} className="text-primary" />
+          <p>{section.header}</p>
+        </div>
+        {section.children.map((item) =>
+          item.children ? (
+            <div class="flex flex-col gap-1.5 ">
+              <button class="flex justify-between gap-3 p-1.5 hover:bg-gray  rounded text-sm items-center ">
+                <p class="flex-1 text-left">{item.title}</p>
+
+                <ChevronDown size={16} />
+              </button>
+              <div class="nav-group hidden  flex-col gap-1.5 ml-2">
+                {item.children.map((child) =>
+                  child.children ? (
+                    <div class="flex flex-col gap-1.5 ">
+                      <button class="flex justify-between gap-3 p-1.5 hover:bg-gray  rounded text-sm items-center ">
+                        <p class="flex-1 text-left">{child.title}</p>
+
+                        <ChevronDown size={16} />
+                      </button>
+                      <div class="nav-group hidden flex-col gap-1.5 ml-4">
+                        {child.children.map((grandchild) =>
+                          grandchild.children ? (
+                            <div class=" flex flex-col gap-1.5">
+                              <button class="flex justify-between gap-3 p-1.5 hover:bg-gray  rounded text-sm items-center ">
+                                <p class="flex-1 text-left">
+                                  {grandchild.title}
+                                </p>
+
+                                <ChevronDown size={16} />
+                              </button>
+                              <div class="nav-group hidden flex-col gap-1.5 ml-5">
+                                {grandchild.children.map((greatGrandchild) => (
+                                  <a
+                                    class="text-sm p-1.5 hover:bg-gray rounded"
+                                    href={greatGrandchild.href}
+                                  >
+                                    {greatGrandchild.title}
+                                  </a>
+                                ))}
+                              </div>
+                            </div>
+                          ) : (
+                            <a
+                              href={grandchild.href}
+                              class="text-sm p-1.5 hover:bg-gray rounded"
+                            >
+                              {grandchild.title}
+                            </a>
+                          ),
+                        )}
+                      </div>
+                    </div>
+                  ) : (
+                    <a
+                      href={child.href}
+                      class="text-sm p-1.5 hover:bg-gray rounded"
+                    >
+                      {child.title}
+                    </a>
+                  ),
+                )}
+              </div>
+            </div>
+          ) : (
+            <a href={item.href} class="text-sm p-1.5 hover:bg-gray rounded">
+              {item.title}
+            </a>
+          ),
+        )}
+      </div>
+    ))
+  }
+</aside>

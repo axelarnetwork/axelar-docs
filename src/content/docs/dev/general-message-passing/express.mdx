@@ -13,7 +13,22 @@ The Express Service bypasses this wait time by allowing for the execution of the
 
 Think of it as a loan: funds on the destination chain are "loaned out" to the app while the transaction is still being finalized on the source chain. Once the transaction is finalized on the source chain and goes through the Axelar network, the funds that are sent through the Axelar network are used to pay back the Express Relayer on the destination chain which loaned out the funds.
 
-<img src="/images/intent-diagram.png" height="350" />
+<object
+  type="image/svg+xml"
+  data="/images/assets/express.svg"
+ 
+  class="hidden dark:block w-full max-w-[40rem] mx-auto py-6"
+>
+  Your browser does not support SVG
+</object>
+<object
+  type="image/svg+xml"
+  data="/images/assets/express-light.svg"
+ 
+  class=" dark:hidden w-full max-w-[40rem] mx-auto py-6"
+>
+  Your browser does not support SVG
+</object>
 
 ## Integrate your app with the Express Service
 

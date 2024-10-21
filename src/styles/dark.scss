@@ -3,9 +3,11 @@ html.dark body {
   $dark-line: #1f2937;
   $dark-text: #dadada;
   $dark-background: #111111;
-  $gradient-subtle: linear-gradient(186deg,
-      rgba(84, 84, 84, 0.2) 9.05%,
-      rgba(85, 85, 85, 0) 144.24%);
+  $gradient-subtle: linear-gradient(
+    186deg,
+    rgba(84, 84, 84, 0.2) 9.05%,
+    rgba(85, 85, 85, 0) 144.24%
+  );
 
   color: $dark-text;
   background-color: $dark-background;
@@ -79,7 +81,6 @@ html.dark body {
   }
 
   .sideNav {
-
     .nav-group-header:hover,
     .nav-group-header:hover span {
       color: white;
@@ -179,9 +180,11 @@ html.dark body {
   .card {
     border-color: $dark-line;
     color: $dark-text;
-    background: radial-gradient(54.1% 100% at 49.37% 100%,
+    background: radial-gradient(
+        54.1% 100% at 49.37% 100%,
         rgba(79, 120, 101, 0.2) 0%,
-        rgba(53, 255, 243, 0) 100%),
+        rgba(53, 255, 243, 0) 100%
+      ),
       rgba(6, 37, 44, 0.1);
   }
 
@@ -190,7 +193,7 @@ html.dark body {
   }
 
   .ibc-channels {
-    >div {
+    > div {
       background: $gradient-subtle;
     }
 

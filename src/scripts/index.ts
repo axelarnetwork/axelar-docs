@@ -1,12 +1,12 @@
 import { safeLinks } from "./safelinks";
 import { addTabs } from "./tabs";
-import "./copy";
-import "./search";
-import "./prism.js";
 import "./active";
-import "./menu";
-import "./dark";
-import { showToast } from "./toast";
 import "./collapsible-nav";
-
+import "./copy";
+import "./dark";
+import "./menu";
+import "./prism.js";
+import "./safelinks";
+import { showToast } from "./toast";
+import "./wrapTables";
 window["showToast"] = showToast;

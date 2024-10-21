@@ -1,6 +1,6 @@
 # EVM on Flow
 
-import { Callout } from "/src/components/callout"
+import { Callout } from "/src/components/callout";
 
 Node setup guide for Flow Testnet/Mainnet Axelar validator
 
@@ -554,6 +554,7 @@ flow blocks get latest --host localhost:9000
 ```
 
 For gateway
+
 ```bash
 curl -s -XPOST 'localhost:8545' --header 'Content-Type: application/json' --data-raw '{"jsonrpc":"2.0","method":"eth_blockNumber","params":[],"id":1}' | jq
 ```

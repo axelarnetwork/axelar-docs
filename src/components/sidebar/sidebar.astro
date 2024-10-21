@@ -1,0 +1,9 @@
+---
+import "@/styles/global.css";
+
+import RenderSidebar from "./render-sidebar.astro";
+
+const pathname = Astro.url.pathname;
+---
+
+<RenderSidebar pathname={pathname} />

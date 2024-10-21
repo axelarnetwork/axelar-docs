@@ -19,7 +19,7 @@ const loadSearch = async () => {
         "hacking to make input value",
         inputBox.value,
         previousInput,
-        ev["data"]
+        ev["data"],
       );
       inputBox.value = previousInput + ev["data"];
     }
@@ -33,7 +33,7 @@ const loadSearch = async () => {
 
   const searchClient = algoliasearch(
     "ECUG3H1E0M",
-    "79f21d06bc68b25fa46dda5e23318a3f"
+    "79f21d06bc68b25fa46dda5e23318a3f",
   );
 
   /* Save search state so it's not lost with widget load */

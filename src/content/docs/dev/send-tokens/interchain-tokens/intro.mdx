@@ -1,5 +1,115 @@
 
+import { Callout } from "../../../../../components/callout";
+
 import InterchainTokenIntro from "../../../../../components/interchain-token-intro.astro";
 
+<Callout type="warning" emoji="⭐" render="md">
+
+  The [Token Whitelisting for Squid Router form](https://github.com/axelarnetwork/axelar-configs/blob/main/cli/wizard/commands/list-squid-token/README.md) is now live! Download the [axelar-configs](https://github.com/axelarnetwork/axelar-configs) repo, install dependencies, and `npm run wizard` on the command line to access
+  the interactive form through the wizard.
+
+</Callout>
+
+<br/>
+
+# Interchain Tokens and the Interchain Token Service
+
+Web3 has gone cross-chain, with assets bridging between blockchains and
+developers deploying applications on multiple chains. However, connecting tokens
+that are deployed on multiple chains has always been a cumbersome process.
+
+
+Interchain Tokens go beyond legacy bridges. The [Interchain Token Service (ITS)](https://axelar.network/interchaintokens) allows ERC-20 tokens to be available on multiple blockchains. It preserves native
+token qualities while allowing you to easily manage token features and token supply.
+Interchain Tokens run on [open-source code](https://github.com/axelarnetwork/interchain-token-service/tree/main) via smart contracts on a public blockchain secured by a dynamic validator set.
+With ITS, you can have multiple blockchains with canonical versions of your token
+that all share a single EVM address.
+
+
+You can either create new [Interchain Tokens](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/interchain-token/InterchainToken.sol#L19) from scratch or update tokens that already exist on a [supported blockchain](/resources/contract-addresses/mainnet/).
+
+### Key ITS Contract addresses
+
+**Interchain Token Service:** [0xB5FB4BE02232B1bBA4dC8f81dc24C26980dE9e3C](https://etherscan.io/address/0xB5FB4BE02232B1bBA4dC8f81dc24C26980dE9e3C)  
+**Interchain Token Factory:** [0x83a93500d23Fbc3e82B410aD07A6a9F7A0670D66](https://etherscan.io/address/0x83a93500d23Fbc3e82B410aD07A6a9F7A0670D66)
 
 <InterchainTokenIntro />
+
+
+<Callout type="warning"
+  >This diagram is interactive click on the function names!</Callout>
+
+## ITS Overview
+
+ The main functionalities of ITS can be broken down in the diagrams below.
+  These are the ability to connect tokens across multiple blockchains and
+  transfer connected tokens between multiple blockchains. Note: ITS is designed
+  to be a flexible permisionless process, meaning that the way tokens are
+  connected between the chains can vary for different usecases (see [token managers](/dev/send-tokens/interchain-tokens/token-manager/) for more info).
+
+
+
+## Deploy Interchain Token
+
+ITS allows you to deploy [Interchain Tokens](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/interchain-token/InterchainToken.sol). An Interchain Token is an ERC20 that is connected to [ITS](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/InterchainTokenService.sol) upon deployment. It comes built-in with the `interchainTransfer()` function, which allows users to bridge their token between any blockchain to which it is deployed. To deploy this token, you can go through the [Interchain Token Factory](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/InterchainTokenFactory.sol) contract. 
+
+When you trigger the `registerCanonicalInterchainToken()` function, that will initiate the process of registering your custom token with a `Lock/Unlock` [token manager](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/token-manager/TokenManager.sol) type to your token's *home chain*. Now that you have registered your token on the home chain, you can call the `deployRemoteCanonicalInterchainToken()`. This will deploy an Interchain Token on a different blockchain that will be connected to your canonical token on the home chain you registered when you called the previous function.
+
+Note: This is just one of many different flows you can choose to follow when interacting with ITS.
+
+<Callout type="warning"
+  >This diagram is interactive click on the function names!</Callout>
+
+<object
+  type="image/svg+xml"
+  data="/images/its-deployment-diagram.svg"
+ 
+  class="hidden dark:block w-full max-w-[60rem] mx-auto py-6"
+>
+  Your browser does not support SVG
+</object>
+<object
+  type="image/svg+xml"
+  data="/images/its-deployment-diagram-light.svg"
+ 
+  class=" dark:hidden w-full max-w-[60rem] mx-auto py-6"
+>
+  Your browser does not support SVG
+</object>
+
+## Interchain Transfer
+
+<p>
+  Once your token is connected to ITS you can call the <code>interchaintTransfer()</code> function to send a cross chain transaction for your token. If your token inherits
+  the [Interchain Token Standard](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/interchain-token/InterchainTokenStandard.sol) then you will have this function built into the token. The <code>interchainTransfer()</code> will trigger a flow that will interact with <code>ITS</code> to either lock or
+  burn your token on the source chain (depending on the Token Manager type) and then
+  mint your token on the destination chain.
+</p>
+
+
+
+
+
+<object
+  type="image/svg+xml"
+  data="/images/its-transfer.svg"
+ 
+  class="hidden dark:block w-full max-w-[50rem] mx-auto py-6"
+>
+  Your browser does not support SVG
+</object>
+<object
+  type="image/svg+xml"
+  data="/images/its-transfer-light.svg"
+ 
+  class=" dark:hidden w-full max-w-[50rem] mx-auto py-6"
+>
+  Your browser does not support SVG
+</object>
+
+
+<Callout type="warning" emoji="🚨">
+  **NOTE:** The security of your token is limited to the security of the chains
+  it integrates with. Since blockchains can have different security practices,
+  we recommend doing due diligence on all chains your token will be deployed to.
+</Callout>
