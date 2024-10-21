@@ -100,12 +100,12 @@
       "permanent": true
     },
     {
-      "source": "/resources/mainnet",
+      "source": "/resources/mainnet/",
       "destination": "/resources/contract-addresses/mainnet/",
       "permanent": true
     },
     {
-      "source": "/resources/testnet",
+      "source": "/resources/testnet/",
       "destination": "/resources/contract-addresses/testnet/",
       "permanent": true
     },
