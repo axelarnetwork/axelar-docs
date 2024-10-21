@@ -1,6 +1,6 @@
 # Keyring backend
 
-import { Callout } from "/src/components/callout"
+import { Callout } from "/src/components/callout";
 
 Many Axelar CLI commands require an Axelar account controlled by a secret key. Your secret key must be stored securely so as to minimize the risk of exposure to an attacker.
 
@@ -9,7 +9,10 @@ Like every Cosmos-based network, Axelar nodes store secret keys in a _keyring_. 
 Axelar nodes use the `file` keyring backend by default. This means that your secret keys are stored in a password-encrypted file on disk. Under the `file` backend, you must provide your keyring password each time you execute certain Axelar CLI commands.
 
 <Callout type="warning" emoji="⚠️">
-  Protect your keyring password: There are several methods to provide your password for Axelar CLI commands. Each method comes with its own security and convenience properties. Whichever method you choose, be sure to follow best practices to keep your keyring password safe.
+  Protect your keyring password: There are several methods to provide your
+  password for Axelar CLI commands. Each method comes with its own security and
+  convenience properties. Whichever method you choose, be sure to follow best
+  practices to keep your keyring password safe.
 </Callout>
 
 ## Prerequisites
@@ -37,7 +40,9 @@ echo $KEYRING_PASSWORD | $AXELARD_HOME/bin/axelard keys show my_account -a
 ```
 
 <Callout type="error" emoji="☠️">
-  Danger: If an attacker were to gain access to your system then the attacker could read your keyring password from your shell environment and then use it to expose your secret keys.
+  Danger: If an attacker were to gain access to your system then the attacker
+  could read your keyring password from your shell environment and then use it
+  to expose your secret keys.
 </Callout>
 
 ## Axelar documentation elides password entry

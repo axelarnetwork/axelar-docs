@@ -36,9 +36,11 @@ npm run setup
 ## Deploy and run "Hello World"
 
 In order to run the examples against the local emulator, use a separate terminal window.
+
 ```bash
 npm run start
 ```
+
 Leave this terminal open to keep your local server running for all of these examples.
 
 Run the "Call Contract" example. The application sends a message - "Hello World" - from a source to a destination chain using the `callContract` function.
@@ -51,8 +53,8 @@ To deploy the contract, use the following command:
 npm run deploy evm/call-contract local
 ```
 
-
 Output:
+
 ```
 Deploying ExecutableSample for Moonbeam.
 Deploying ExecutableSample for Avalanche.
@@ -75,6 +77,7 @@ npm run execute evm/call-contract [local|testnet] ${srcChain} ${destChain} ${mes
 ```
 
 For example:
+
 ```bash
 npm run execute evm/call-contract local "Moonbeam" "Avalanche" "Hello World"
 ```
@@ -99,10 +102,10 @@ That's it!
 In the above, we sent a message - "Hello World" - from a smart contract on Moonbeam to a smart contract on Avalanche, updating the latter's "value" property to our "Hello World" message.
 
 The full transaction flow was:
+
 1. Started the local developer environment to run local EVM blockchains.
 2. The first node script deployed [this](https://github.com/axelarnetwork/axelar-examples/blob/main/examples/evm/call-contract/ExecutableSample.sol) smart contract to all the EVM chains in our local developer environment.
 3. The second node script ran [this](https://github.com/axelarnetwork/axelar-examples/blob/main/examples/evm/call-contract/index.js#L22) test script on local Moonbeam, which:
-    - Calculated the estimated gas cost of executing the method on Avalanche.
-    - Invoked `setRemoteValue` on the deployed Moonbeam smart contract. This method first pays the gas receiver on Moonbeam the estimated gas cost, then calls `callContractWithToken` on the Moonbeam Gateway contract.
+   - Calculated the estimated gas cost of executing the method on Avalanche.
+   - Invoked `setRemoteValue` on the deployed Moonbeam smart contract. This method first pays the gas receiver on Moonbeam the estimated gas cost, then calls `callContractWithToken` on the Moonbeam Gateway contract.
 4. After some time, the relay services detect the gas paid on Moonbeam and executes the smart contract on Avalanche, invoking the `_execute` method that updated the value to the message parameter.
-

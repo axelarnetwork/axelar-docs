@@ -1,11 +1,11 @@
 import { useState } from "react";
 
+import evm_assets from "../../data/evm_assets.json";
+import evm_chains from "../../data/evm_chains.json";
+import { ellipse, equals_ignore_case } from "../../utils";
+import Copy from "../copy";
 import Dropdown from "../dropdown";
 import AddToken from "../web3";
-import Copy from "../copy";
-import { ellipse, equals_ignore_case } from "../../utils";
-import evm_chains from "../../data/evm_chains.json";
-import evm_assets from "../../data/evm_assets.json";
 
 const COLUMNS = [
   { id: "asset", title: "Symbol" },
@@ -27,8 +27,8 @@ export default ({ environment = "mainnet" }) => {
   const [chainData, setChainData] = useState(null);
   const [assetData, setAssetData] = useState(
     _evm_assets.find(
-      (a) => a?.id === (environment === "testnet" ? "uausdc" : "uusdc")
-    )
+      (a) => a?.id === (environment === "testnet" ? "uausdc" : "uusdc"),
+    ),
   );
 
   const assets = _evm_assets
@@ -43,13 +43,13 @@ export default ({ environment = "mainnet" }) => {
             };
           })
           .filter(
-            (a) => !chainData || equals_ignore_case(a.chain, chainData.id)
-          ) || []
+            (a) => !chainData || equals_ignore_case(a.chain, chainData.id),
+          ) || [],
     );
 
   return (
-    <div className="asset-list">
-      <div className="flex flex-wrap items-center justify-start space-x-3">
+    <div className="flex flex-col gap-10 mt-4 not-prose">
+      <div className="flex   items-center  gap-3">
         <Dropdown
           environment={environment}
           dataName="evm_chains"
@@ -64,7 +64,7 @@ export default ({ environment = "mainnet" }) => {
               _evm_assets.findIndex(
                 (a) =>
                   (!assetData || a?.id === assetData.id) &&
-                  a?.contracts?.findIndex((_c) => _c?.chain === c?.id) > -1
+                  a?.contracts?.findIndex((_c) => _c?.chain === c?.id) > -1,
               ) < 0
             ) {
               setAssetData("");
@@ -83,8 +83,8 @@ export default ({ environment = "mainnet" }) => {
         />
       </div>
       <div className="asset-table">
-        <table className="max-w-fit block shadow rounded-lg overflow-x-auto">
-          <thead className="bg-gray-100 dark:bg-black uppercase text-xs">
+        <table className="max-w-fit  block shadow rounded-lg overflow-x-auto sidebar-scroll">
+          <thead className="bg-background-neutral-dark uppercase text-xs">
             <tr className="border-none">
               {COLUMNS.map((c, i) => (
                 <th
@@ -92,7 +92,7 @@ export default ({ environment = "mainnet" }) => {
                   scope="col"
                   className={`${
                     c.id === "chain" ? "sticky-col" : ""
-                  } border-none whitespace-nowrap font-bold py-3 px-4 ${
+                  } border-none whitespace-nowrap font-medium py-4 text-primary px-4 ${
                     c.headerClassName || ""
                   }`}
                 >
@@ -108,7 +108,7 @@ export default ({ environment = "mainnet" }) => {
               const explorer_url =
                 chain_data?.provider_params?.[0]?.blockExplorerUrls?.[0];
               return (
-                <tr key={i} className="border-none border-b">
+                <tr key={i} className=" border-t border-t-border">
                   {COLUMNS.map((c, j) => (
                     <td
                       key={j}
@@ -118,10 +118,10 @@ export default ({ environment = "mainnet" }) => {
                           ? j === 0
                             ? "rounded-bl-lg"
                             : j === COLUMNS.length - 1
-                            ? "rounded-br-lg"
-                            : ""
+                              ? "rounded-br-lg"
+                              : ""
                           : ""
-                      } border-none whitespace-nowrap py-3 px-4 ${
+                      } border-none bg-background-neutral whitespace-nowrap py-3 px-4 ${
                         c.className || ""
                       }`}
                     >
@@ -177,7 +177,7 @@ export default ({ environment = "mainnet" }) => {
                               href={`${explorer_url}/address/${address}`}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="no-underline text-blue-500 dark:text-white font-medium"
+                              className="no-underline text-primary hover:underline font-medium"
                             >
                               {ellipse(address, 16)}
                             </a>

@@ -1,18 +1,22 @@
 # Genesis sync
 
-import { Callout } from "/src/components/callout"
+import { Callout } from "/src/components/callout";
 
-import UpgradePath from '/src/upgrade-path.md';
-import UpgradePathTestnet from '/src/upgrade-path-testnet.md';
+import UpgradePathTestnet from "/src/upgrade-path-testnet.md";
+import UpgradePath from "/src/upgrade-path.md";
 
 Start your Axelar node and download the blockchain from scratch.
 
 <Callout emoji="💡">
-  Tip: Looking for instructions using the old script `node.sh`?  See [here](/node/join-old/).
+  Tip: Looking for instructions using the old script `node.sh`? See
+  [here](/node/join-old/).
 </Callout>
 
 <Callout emoji="💡">
-  Tip: These instructions synchronize your Axelar node from scratch using the Axelar peer-to-peer network. You can synchronize your node more quickly by downloading a recent snapshot of the blockchain as per [Quick sync](/node/join/).
+  Tip: These instructions synchronize your Axelar node from scratch using the
+  Axelar peer-to-peer network. You can synchronize your node more quickly by
+  downloading a recent snapshot of the blockchain as per [Quick
+  sync](/node/join/).
 </Callout>
 
 ## Prerequisites
@@ -26,11 +30,14 @@ Configure your system as per [Node configuration](/node/config-node/) except spe
 
 <tabs>
 <tab-item title="Mainnet">
+
  <UpgradePath />
+
 </tab-item>
 <tab-item title="Testnet">
- <UpgradePathTestnet />
 
+ <UpgradePathTestnet />
+ 
 </tab-item>
 </tabs>
 
@@ -48,13 +55,17 @@ setup-node.sh will download axelard binary version you specified in "$AXELARD_HO
 -rwxr-xr-x  1 kalid  staff  70832530 Jul  6 11:04 axelard-v0.13.6
 lrwxr-xr-x  1 kalid  staff        48 Jul  6 11:04 axelard -> /Users/kalid/.axelar_testnet/bin/axelard-v0.13.6
 ```
-
+<br/>
 <tabs>
 <tab-item title="Mainnet">
- <pre><code language="bash">./scripts/setup-node.sh -n mainnet -a v0.10.7</code></pre>
+```bash
+./scripts/setup-node.sh -n mainnet -a v0.10.7
+```
 </tab-item>
 <tab-item title="Testnet">
- <pre><code language="bash">./scripts/setup-node.sh -n testnet -a v0.13.6</code></pre>
+```bash
+./scripts/setup-node.sh -n testnet -a v0.13.6
+```
 </tab-item>
 
 </tabs>

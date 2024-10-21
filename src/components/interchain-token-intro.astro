@@ -1,7 +1,4 @@
 ---
-import Section from "../layouts/Section.astro";
-import { Callout } from "./callout";
-
 const title = "Interchain Tokens and the Interchain Token Service";
 
 const cards = [
@@ -31,141 +28,31 @@ const cards = [
 ];
 ---
 
+<div class="grid md:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2 not-prose gap-6">
+  {
+    cards.map((card) => (
+      <a
+        class="border-[0.3px] font-clash px-6 flex flex-col gap-6 bg-white dark:bg-background-neutral py-5 rounded-[28px] border-border"
+        href={card.url}
+      >
+        <div class="flex justify-between items-center">
+          <h2 class="text-2xl font-medium flex-1 w-full">{card.title}</h2>
 
-  <Callout type="warning" emoji="⭐">
-    The <a href="https://github.com/axelarnetwork/axelar-configs/blob/main/cli/wizard/commands/list-squid-token/README.md">Token Whitelisting for Squid Router form</a> is now live! Download
-    the  <a href="https://github.com/axelarnetwork/axelar-configs">axelar-configs</a> repo, install dependencies, and `npm run wizard` on the command line to
-    access the interactive form through the wizard.
-  </Callout>
-
-  <h1>{title}</h1>
-
-  Web3 has gone cross-chain, with assets bridging between blockchains and
-  developers deploying applications on multiple chains. However, connecting tokens
-  that are deployed on multiple chains has always been a cumbersome process.
-
-  <br />
-  <br />
-
-  Interchain Tokens go beyond legacy bridges. The <a
-    href="https://axelar.network/interchaintokens"
-    >Interchain Token Service (ITS)</a
-  > allows ERC-20 tokens to be available on multiple blockchains. It preserves native
-  token qualities while allowing you to easily manage token features and token supply.
-  Interchain Tokens run on <a href="https://github.com/axelarnetwork/interchain-token-service/tree/main">open-source code</a> via smart contracts on a public blockchain
-  secured by a dynamic validator set. With ITS, you can have multiple blockchains
-  with canonical versions of your token that all share a single EVM address.
-
-  <br />
-  <br />
-
-  You can either create new <a href="https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/interchain-token/InterchainToken.sol#L19">Interchain Tokens</a> from scratch or update tokens that
-  already exist on a <a href="/resources/contract-addresses/mainnet/"
-    >supported blockchain</a
-  >.
-
-
-  
-<h3>Key ITS Contract addresses</h3> 
-  Interchain Token Service: <a href="https://etherscan.io/address/0xB5FB4BE02232B1bBA4dC8f81dc24C26980dE9e3C">0xB5FB4BE02232B1bBA4dC8f81dc24C26980dE9e3C</a>
-  <br/>
-  Interchain Token Factory: <a href="https://etherscan.io/address/0x83a93500d23Fbc3e82B410aD07A6a9F7A0670D66">0x83a93500d23Fbc3e82B410aD07A6a9F7A0670D66</a>
-
-
-
-  <style>
-    .card-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      grid-template-rows: repeat(2, 1fr);
-      grid-column-gap: 16px;
-      grid-row-gap: 16px;
-      grid-auto-flow: row;
-      margin-top: 32px;
-    }
-    .card {
-      padding: 16px;
-      border: 1px solid rgb(229, 231, 235);
-      border-radius: 4px;
-      margin-right: 16px;
-      display: flex;
-      flex-direction: column;
-      color: inherit;
-    }
-    .card:hover {
-      box-shadow: 0 0 10px #ddd;
-      color: inherit;
-    }
-    .card div:nth-child(1) {
-      font-weight: bold;
-      display: flex;
-      align-items: center;
-    }
-    .card div:nth-child(2) {
-      flex-grow: 1;
-    }
-    .card span {
-      color: #1b62d6;
-    }
-
-    @media (max-width: 768px) {
-      .card-grid {
-        display: flex;
-        flex-direction: column;
-      }
-    }
-  </style>
-
-  <div class="card-grid">
-    {
-      cards.map((card) => (
-        <a class="card" href={card.url}>
-          <div>
-            <Fragment set:html={card?.icon} /> {card.title}
-          </div>
-          <div>{card.description}</div>
-          <span>
-            Get Started{" "}
-            <svg
-              stroke="currentColor"
+          <svg
+            width="28"
+            height="28"
+            viewBox="0 0 28 28"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M16.0971 14.8244L13.4002 17.5217C13.2571 17.6646 13.1905 17.8349 13.2004 18.0328C13.2101 18.2306 13.2865 18.401 13.4296 18.5438C13.5724 18.687 13.7493 18.7585 13.9601 18.7585C14.171 18.7585 14.3446 18.687 14.4811 18.5438L18.1008 14.9245C18.3478 14.6775 18.4713 14.3895 18.4713 14.0605C18.4713 13.7315 18.3478 13.4435 18.1008 13.1965L14.4517 9.54777C14.3088 9.40467 14.1385 9.33311 13.9406 9.33311C13.7428 9.33311 13.5724 9.40467 13.4296 9.54777C13.2865 9.69062 13.2149 9.86746 13.2149 10.0783C13.2149 10.2894 13.2865 10.4631 13.4296 10.5993L16.0971 13.2966H9.35724C9.1408 13.2966 8.95937 13.3699 8.81296 13.5166C8.66654 13.6633 8.59334 13.845 8.59334 14.0617C8.59334 14.2784 8.66654 14.4597 8.81296 14.6056C8.95937 14.7515 9.1408 14.8244 9.35724 14.8244H16.0971ZM13.9456 27.8107C12.0443 27.8107 10.2566 27.4499 8.58264 26.7283C6.90894 26.0067 5.45294 25.0273 4.21466 23.7903C2.97638 22.5533 1.99616 21.0986 1.27402 19.4262C0.551627 17.754 0.19043 15.9671 0.19043 14.0655C0.19043 12.1641 0.551245 10.3765 1.27288 8.70251C1.99451 7.02881 2.97383 5.57281 4.21084 4.33453C5.44785 3.09625 6.90257 2.11604 8.575 1.3939C10.2472 0.6715 12.0341 0.310303 13.9357 0.310303C15.837 0.310303 17.6247 0.67112 19.2986 1.39275C20.9723 2.11438 22.4283 3.0937 23.6666 4.33071C24.9049 5.56772 25.8851 7.02244 26.6073 8.69488C27.3297 10.3671 27.6909 12.1539 27.6909 14.0555C27.6909 15.9569 27.33 17.7446 26.6084 19.4185C25.8868 21.0922 24.9075 22.5482 23.6704 23.7865C22.4334 25.0248 20.9787 26.005 19.3063 26.7271C17.6341 27.4495 15.8472 27.8107 13.9456 27.8107ZM13.9406 26.2829C17.3527 26.2829 20.2428 25.0989 22.6109 22.7308C24.979 20.3627 26.1631 17.4726 26.1631 14.0605C26.1631 10.6484 24.979 7.75833 22.6109 5.39024C20.2428 3.02215 17.3527 1.8381 13.9406 1.8381C10.5286 1.8381 7.63846 3.02215 5.27037 5.39024C2.90228 7.75833 1.71823 10.6484 1.71823 14.0605C1.71823 17.4726 2.90228 20.3627 5.27037 22.7308C7.63846 25.0989 10.5286 26.2829 13.9406 26.2829Z"
               fill="currentColor"
-              stroke-width="0"
-              viewBox="0 0 20 20"
-              class="mt-0.5"
-              height="16"
-              width="16"
-              xmlns="http://www.w3.org/2000/svg"
-              style="vertical-align:middle;"
-            >
-              <path
-                fill-rule="evenodd"
-                d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z"
-                clip-rule="evenodd"
-              />
-            </svg>
-          </span>
-        </a>
-      ))
-    }
-  </div>
-  <h1>ITS Overview</h1>
-  <p>The main functionalities of ITS can be broken down in the diagrams below. These are the ability to connect tokens across multiple blockchains and transfer connected tokens between multiple blockchains. Note: ITS is designed to be a flexible permisionless process, meaning that the way tokens are connected between the chains can vary for different usecases (see <a href="/dev/send-tokens/interchain-tokens/token-manager/">token managers</a> for more info).</p>
-  <h2>Deploy Interchain Token</h2>
-  <p>ITS allows you to deploy <a href="https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/interchain-token/InterchainToken.sol">Interchain Tokens</a>. An Interchain Token is an ERC20 that is connected to <a href="https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/InterchainTokenService.sol">ITS</a> upon deployment. It comes built in with the <code>interchainTransfer()</code> function, which allows users to bridge their token between any blockchain which it is deployed to. To deploy this token you can go through the <a href="https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/InterchainTokenFactory.sol">Interchain Token Factory</a> contract. When you trigger the <code>registerCanonicalInterchainToken()</code> function that will trigger the flow of registering your custom token with a <code>Lock/Unlock</code> <a href="https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/token-manager/TokenManager.sol"> token manager</a> type to your token's <i>home chain</i>. Now that you have registered your token on the home chain you can call the <code>deployRemoteCanonicalInterchainToken()</code>. This will deploy an Interchain Token on a different blockchain that will be connected to your canonical token on the home chain you registered when you called the previous function. Note: This is just one of many different flows you can choose to follow when interacting with ITS.</p>
-  <Callout type="warning">This diagram is interactive click on the function names!</Callout>
-  <object type="image/svg+xml" data="/images/its-deployment-diagram.svg" style="width: 100%; height: 1200px;">
-    Your browser does not support SVG
-  </object>
-  <h2>Interchain Transfer</h2>
-  <p>Once your token is connected to ITS you can call the <code>interchaintTransfer()</code> function to send a cross chain transaction for your token. If your token inherits the <a href="https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/interchain-token/InterchainTokenStandard.sol">Interchain Token Standard</a> then you will have this function built into the token. The <code>interchainTransfer()</code> will trigger a flow that will interact with <code>ITS</code> to either lock or burn your token on the source chain (depending on the Token Manager type) and then mint your token on the destination chain.</p>
-  <Callout type="warning">This diagram is interactive click on the function names!</Callout>
-  <object type="image/svg+xml" data="/images/its-transfer.svg"  style="width: 100%; height: 1200px;">
-    Your browser does not support SVG
-  </object>
-  <Callout type="warning" emoji="🚨">
-    **NOTE:** The security of your token is limited to the security of the chains
-    it integrates with. Since blockchains can have different security practices,
-    we recommend doing due diligence on all chains your token will be deployed to.
-  </Callout>
-
-
+            />
+          </svg>
+        </div>
+        <p class="text-sm font-medium">{card.description}</p>
+      </a>
+    ))
+  }
+</div>

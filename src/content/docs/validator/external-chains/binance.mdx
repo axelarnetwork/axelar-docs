@@ -9,8 +9,8 @@ Instructions to set up your Binance node.
 - MacOS or Ubuntu 20.04 (tested on 20.04)
 - [Official Documentation](https://docs.bnbchain.org/docs/validator/fullnode/)
 
-
 ## Prerequisites
+
 ```bash
 sudo apt-get install wget jq unzip aria2 lz4 -y
 ```
@@ -23,6 +23,7 @@ Check the appropriate version for the network accordingly [in their docs](https:
 # This is an example - check their docs and release page to opt for the right version
 BSC_GETH_RELEASE=vx.y.z
 ```
+
 ```bash
 # verify correct version
 echo $BSC_GETH_RELEASE
@@ -40,8 +41,6 @@ sudo mv * /usr/bin/
 geth version
 cd $HOME
 ```
-
-
 
 <tabs>
 <tab-item title="Mainnet">
@@ -63,27 +62,27 @@ unzip testnet.zip
 rm testnet.zip
 ```
 
-
 </tab-item>
 </tabs>
-
-
-
 
 ## Initialize the node or sync from snapshot
 
 #### 1. If you want to sync from genesis
+
 ```bash
 cd $HOME
 geth --datadir $HOME/.bsc init genesis.json
 ```
+
 #### 2. If you want to sync from snapshot - Mainnet Only
-You find the snapshot links  [here](https://github.com/bnb-chain/bsc-snapshots) or [here](https://github.com/48Club/bsc-snapshots#download) to sync from snapshot
+
+You find the snapshot links [here](https://github.com/bnb-chain/bsc-snapshots) or [here](https://github.com/48Club/bsc-snapshots#download) to sync from snapshot
 
 ```bash
 # change the url to latest snapshot available: you can find it in the links shared above
 GETH_SNAPSHOT_URL=https://snapshots.48.club/geth.24761776.tar.lz4
 ```
+
 ```bash
 cd $HOME/.bsc/
 aria2c -s14 -x14 -k100M $GETH_SNAPSHOT_URL -o geth.tar.lz4
@@ -118,6 +117,7 @@ EOF
 ```
 
 By default it will log the logs in `$HOME/.bsc/bsc.log` if you want to use journalctl to view logs, comment out the log setting in config
+
 ```bash
 sed -i '/Node.LogConfig/s/^/#/' $HOME/.bsc/config/config.toml
 sed -i '/FilePath/s/^/#/' $HOME/.bsc/config/config.toml
@@ -125,12 +125,15 @@ sed -i '/MaxBytesSize/s/^/#/' $HOME/.bsc/config/config.toml
 sed -i '/Level/s/^/#/' $HOME/.bsc/config/config.toml
 sed -i '/FileRoot/s/^/#/' $HOME/.bsc/config/config.toml
 ```
+
 # Start the service
+
 ```bash
 sudo systemctl daemon-reload
 sudo systemctl enable geth
 sudo systemctl restart geth
 ```
+
 ## Check logs
 
 ```bash
@@ -143,6 +146,7 @@ journalctl -u geth.service -f -n 100 -o cat
 Logs should appear like this
 
 #### If you are syncing from genesis
+
 ```bash
 INFO [01-12|07:22:26.423] Downloader queue stats                   receiptTasks=118 blockTasks=34418 itemSize=658.90B throttle=8192
 INFO [01-12|07:22:26.464] Imported new block receipts              count=91   elapsed=39.135ms  number=80616      hash=f2b5af..d57e5c age=2y4mo3w size=39.74KiB
@@ -155,6 +159,7 @@ INFO [01-12|07:23:04.983] State sync in progress                   synced=0.56% 
 ```
 
 #### If you are syncing from snapshot
+
 ```bash
 INFO [01-14|05:21:12.351] Initialising Ethereum protocol           network=56 dbversion=8
 INFO [01-14|05:21:12.353] Loaded most recent local header          number=24,761,776 hash=794f37..9792a8 td=49,216,905 age=7h20m3s
@@ -165,11 +170,14 @@ INFO [01-14|05:21:12.353] Loaded most recent local fast block      number=24,761
 ## Verify
 
 #### Method 1:
+
 ```bash
 YOUR_IP=$(curl -4 ifconfig.co)
 curl -X POST $YOUR_IP:8545 -H "Content-Type: application/json" --data '{"jsonrpc":"2.0","method":"eth_syncing","params":[],"id":1}' | jq
 ```
+
 If you get something like this in response of the above rpc call, your node is setup correctly
+
 ```json
 {
   "jsonrpc": "2.0",
@@ -193,37 +201,41 @@ If you get something like this in response of the above rpc call, your node is s
   }
 }
 ```
+
 Wait for `"result"` to become `false` before using it in vald config
 
 ```json
-{"jsonrpc":"2.0","id":1,"result":false}
+{ "jsonrpc": "2.0", "id": 1, "result": false }
 ```
 
 #### Method 2:
+
 You can also check your status by connect to geth console
+
 ```bash
 geth attach http://localhost:8545
 eth.syncing
 ```
 
 If you get something like this in response, your node is setup correctly
+
 ```json
 {
-  currentBlock: 24000,
-  healedBytecodeBytes: 0,
-  healedBytecodes: 0,
-  healedTrienodeBytes: 0,
-  healedTrienodes: 0,
-  healingBytecode: 0,
-  healingTrienodes: 0,
-  highestBlock: 23846000,
-  startingBlock: 0,
-  syncedAccountBytes: 0,
-  syncedAccounts: 0,
-  syncedBytecodeBytes: 0,
-  syncedBytecodes: 0,
-  syncedStorage: 0,
-  syncedStorageBytes: 0
+  "currentBlock": 24000,
+  "healedBytecodeBytes": 0,
+  "healedBytecodes": 0,
+  "healedTrienodeBytes": 0,
+  "healedTrienodes": 0,
+  "healingBytecode": 0,
+  "healingTrienodes": 0,
+  "highestBlock": 23846000,
+  "startingBlock": 0,
+  "syncedAccountBytes": 0,
+  "syncedAccounts": 0,
+  "syncedBytecodeBytes": 0,
+  "syncedBytecodes": 0,
+  "syncedStorage": 0,
+  "syncedStorageBytes": 0
 }
 ```
 
@@ -247,19 +259,13 @@ vald's `config.toml`
 
 <tabs>
   <tab-item title="Mainnet">
-  ```bash
-  [[axelar_bridge_evm]]
-  name = "binance"
-  rpc_addr = "http://IP:PORT"
-  start-with-bridge = true
-  ```
+    ```bash [[axelar_bridge_evm]] name = "binance" rpc_addr = "http://IP:PORT"
+    start-with-bridge = true 
+```
   </tab-item>
   <tab-item title="Testnet">
-  ```bash
-  [[axelar_bridge_evm]]
-  name = "binance"
-  rpc_addr = "http://IP:PORT"
-  start-with-bridge = true
-  ```
+    ```bash [[axelar_bridge_evm]] name = "binance" rpc_addr = "http://IP:PORT"
+    start-with-bridge = true 
+```
   </tab-item>
 </tabs>

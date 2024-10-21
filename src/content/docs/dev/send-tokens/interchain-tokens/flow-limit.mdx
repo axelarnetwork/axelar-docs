@@ -31,7 +31,7 @@ The `FlowLimit` contract contains the following public functions.
 ### `flowLimit()`
 
 Returns the current flow limit value.
-        
+
 ```solidity
 /**
  * @notice Returns the current flow limit.
@@ -43,11 +43,11 @@ function flowLimit() public view returns (uint256 flowLimit_) {
     }
 }
 ```
-        
+
 ### `flowOutAmount()`
 
 Returns the current total amount of tokens that have flowed out in the current epoch.
-    
+
 ```solidity
 /**
  * @notice Returns the current flow out amount.
@@ -62,11 +62,11 @@ function flowOutAmount() external view returns (uint256 flowOutAmount_) {
     }
 }
 ```
-    
+
 ### `flowInAmount()`
 
 Returns the current total amount of tokens that have flowed in the current epoch.
-    
+
 ```solidity
 /**
  * @notice Returns the current flow in amount.
@@ -81,7 +81,7 @@ function flowInAmount() external view returns (uint256 flowInAmount_) {
     }
 }
 ```
-    
+
 ## Internal Management Functions
 
 The `FlowLimit` contract contains the following internal functions.
@@ -89,7 +89,7 @@ The `FlowLimit` contract contains the following internal functions.
 ### `_setFlowLimit(uint256, bytes32)`
 
 Sets the flow limit for a specific token.
-    
+
 ```solidity
 /**
  * @notice Internal function to set the flow limit.
@@ -104,11 +104,11 @@ function _setFlowLimit(uint256 flowLimit_, bytes32 tokenId) internal {
     emit FlowLimitSet(tokenId, msg.sender, flowLimit_);
 }
 ```
-    
+
 ### `_addFlowOut(uint256)`
 
 Adds to the flow out amount, ensuring it does not exceed the flow limit.
-    
+
 ```solidity
 /**
  * @notice Adds a flow out amount.
@@ -125,11 +125,11 @@ function _addFlowOut(uint256 flowOutAmount_) internal {
     _addFlow(flowLimit_, slotToAdd, slotToCompare, flowOutAmount_);
 }
 ```
-    
+
 ### `_addFlowIn(uint256)`
 
 Adds to the flow in amount, also ensuring adherence to the flow limit.
-    
+
 ```solidity
 /**
  * @notice Adds a flow in amount.
@@ -154,25 +154,28 @@ There are several options for setting and overriding flow limits in the Intercha
 ### Fully managed flow limits
 
 If you want Axelar to manage the flow limits for the token and not deal with it yourself:
+
 - Deploy the token with the `minter` address set to `address(0)`
 
 ### Partially managed flow limits
 
 If you want to manage the flow limits together with Axelar:
+
 - Deploy the token with the `minter` address set to your Deployer account or a multi-sig wallet
-If you want to manage the flow limits alone:
+  If you want to manage the flow limits alone:
 - Deploy the token with the `minter` address set to your Deployer account
 - Call `tokenManager.removeFlowLimiter(itsAddress)` to remove flow limit management by Axelar
 
 ### Unmanaged flow limits
 
 If you don't want anyone to manage flow limits:
+
 - Deploy the token with the `minter` address set to your Deployer account
 - Call `tokenManager.removeFlowLimiter(itsAddress)` to remove flow limit management by Axelar
 - Call `tokenManager.removeFlowLimiter(minter)` to remove flow limit management by the minter
 - Call `tokenManager.transferOperatorship(address(0))` to remove operatorship
 
-The following is an example of how to set a flow limit using the `setFlowLimits` method. You might want to increase the limit to the max before removing access granted to yourself. 
+The following is an example of how to set a flow limit using the `setFlowLimits` method. You might want to increase the limit to the max before removing access granted to yourself.
 
 ```solidity
 /**

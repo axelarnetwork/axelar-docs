@@ -11,9 +11,10 @@ This release includes the following version updates:
 - `axelard` and `vald` to [1.0.4](https://github.com/axelarnetwork/axelar-core/releases/tag/v1.0.4)
 - `tofnd` to [1.0.1](https://github.com/axelarnetwork/tofnd/releases/tag/v1.0.1)
 
-
 ## Changelog
+
 Changes since 0.35.x:
+
 - Various fixes that improve stability
 - New queries in the axelarnet module to query the IBC path for a chain and the chain by IBC path
 - Added a new message type “BatchRequest”. In contrast to cosmos default behaviour, where the entire tx gets rolled back if there is an error in any of the contained message executions, this batch only rolls back the state for the specific messages that fail and keeps the rest
@@ -23,17 +24,19 @@ Changes since 0.35.x:
 
 See all the changes in the [`axelar-core` release notes](https://github.com/axelarnetwork/axelar-core/releases).
 
-Upgrade height `14231100` at approximately **2:30PM UTC on August 28th, 2024** ([countdown](https://www.mintscan.io/axelar/block/14231100)) 
+Upgrade height `14231100` at approximately **2:30PM UTC on August 28th, 2024** ([countdown](https://www.mintscan.io/axelar/block/14231100))
 
 <Callout type="warning" emoji="⚠️">
 As of v{AXELARD}, the `axelard` [binary releases](https://github.com/axelarnetwork/axelar-core/releases) require `GLIBC_2.34`, which is not present on Ubuntu 20.04.
 
 You will need to compile `axelard` from source, or upgrade to Ubuntu 22.04.
+
 </Callout>
 
 <Callout type="warning" emoji="⚠️">
-  If using the community node setup scripts, please update to the latest commit on `main` first.
-  `wasmvm` lib will be auto-downloaded to `$AXELARD_HOME/lib` but you'll need to add it to `LD_LIBRARY_PATH` before running the script.
+  If using the community node setup scripts, please update to the latest commit
+  on `main` first. `wasmvm` lib will be auto-downloaded to `$AXELARD_HOME/lib`
+  but you'll need to add it to `LD_LIBRARY_PATH` before running the script.
 </Callout>
 
 1. If you're a validator or have delegated to one, you can vote for the upgrade proposal, while it's active, via
@@ -67,7 +70,6 @@ cp -r ~/.axelar/.core/data ~/.axelar-lisbon-3-upgrade-0.35/.core/data
 
 4. Restart your `axelard` node with the new v{AXELARD} build.
 5. If you're a validator also restart `vald` with v{AXELARD} and `tofnd` with v{TOFND}.
-
 
 Example using join scripts in [axelarate-community git repo](https://github.com/axelarnetwork/axelarate-community):
 

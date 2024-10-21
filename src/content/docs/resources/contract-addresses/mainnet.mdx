@@ -9,8 +9,8 @@ import EVMAssets from '/src/components/evm/assets';
 import UpgradePath from '/src/upgrade-path.md';
 import { AXELARD, TOFND } from '/src/config/variables';
 
-| Variable              | Value     |
-| --------------------- | --------- |
+| Variable              | Value           |
+| --------------------- | --------------- |
 | `chain-id`            | `axelar-dojo-1` |
 | `axelar-core` version | {AXELARD} |
 | `vald` version        | {AXELARD} |
@@ -18,9 +18,10 @@ import { AXELARD, TOFND } from '/src/config/variables';
 
 ## EVM contract addresses
 
-<div className="space-y-1 mt-4">
+<div className="flex flex-col gap-10 mt-4">
   
 <EVMChains client:only/>
+<div>
  
 `Create3 Address Deployer`: `0x6513Aedb4D1593BA12e50644401D976aebDc90d8`
 
@@ -29,12 +30,14 @@ import { AXELARD, TOFND } from '/src/config/variables';
 `Interchain Token Service`: [`0xB5FB4BE02232B1bBA4dC8f81dc24C26980dE9e3C`](https://etherscan.io/address/0xB5FB4BE02232B1bBA4dC8f81dc24C26980dE9e3C)
 
 `Interchain Token Factory`: [`0x83a93500d23Fbc3e82B410aD07A6a9F7A0670D66`](https://etherscan.io/address/0x83a93500d23Fbc3e82B410aD07A6a9F7A0670D66)
-
+</div>
 </div>
 
 <div className="space-y-1 mt-4">
-  ### Assets
+  ### Assets 
+  
   Learn more about [wrapped assets like axlUSDC](/learn/axlusdc).
+
   <EVMAssets client:only environment="mainnet" />
 </div>
 
@@ -88,4 +91,13 @@ The gas relayer fee does not include any transaction fee assessed by the source 
 
 ## Upgrade Path
 
+
+
+
+
 <UpgradePath />
+
+
+
+
+

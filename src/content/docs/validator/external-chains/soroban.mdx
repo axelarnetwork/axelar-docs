@@ -13,19 +13,19 @@ Set up your Soroban node.
 ## Install required dependencies
 
 In order to build the `Soroban` node, you first need to install all the required dependencies.
-    c++ toolchain and headers that supports c++17
-    clang >= 12.0
-    g++ >= 10.0
-    pkg-config
-    bison and flex
-    libpq-dev unless you ./configure --disable-postgres in the build step below.
-    64-bit system
-    clang-format-12 (for make format to work)
-    sed and perl
-    libunwind-dev
-    Rust toolchain (see Installing Rust subsection)
-    cargo >= 1.74
-    rust >= 1.74
+c++ toolchain and headers that supports c++17
+clang >= 12.0
+g++ >= 10.0
+pkg-config
+bison and flex
+libpq-dev unless you ./configure --disable-postgres in the build step below.
+64-bit system
+clang-format-12 (for make format to work)
+sed and perl
+libunwind-dev
+Rust toolchain (see Installing Rust subsection)
+cargo >= 1.74
+rust >= 1.74
 
 ```bash
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
@@ -60,38 +60,24 @@ SOROBAN_RELEASE=v21.4.1
 ### 1. Install Stellar Core
 
 <tabs>
-    <tab-item title="Mainnet" class="bleed">
-        ```bash
-        git clone https://github.com/stellar/stellar-core.git
-        cd stellar-core
-        git checkout $STELLAR_RELEASE
-        git submodule init
-        git submodule update
-        ./autogen.sh
-        ./configure
-        make
-        make check
-        make install
-        ```
-    </tab-item>
-    <tab-item title="Testnet" class="bleed">
-        ```bash
-        git clone https://github.com/stellar/stellar-core.git
-        cd stellar-core
-        git checkout $STELLAR_RELEASE
-        git submodule init
-        git submodule update
-        ./autogen.sh
-        ./configure
-        make
-        make check
-        make install
-        ```
-    </tab-item>
-</tabs>
+<tab-item title="Mainnet" class="bleed">
+    ```bash git clone https://github.com/stellar/stellar-core.git cd
+    stellar-core git checkout $STELLAR_RELEASE git submodule init git submodule
+    update ./autogen.sh ./configure make make check make install 
+```
+</tab-item>
+<tab-item title="Testnet" class="bleed">
+    ```bash git clone https://github.com/stellar/stellar-core.git cd
+    stellar-core git checkout $STELLAR_RELEASE git submodule init git submodule
+    update ./autogen.sh ./configure make make check make install 
+```
+
+</tab-item>
+                        </tabs>
+
+
 
 ### 2. Install Soroban
-
 
 <tabs>
     <tab-item title="Mainnet" class="bleed">
@@ -114,9 +100,8 @@ SOROBAN_RELEASE=v21.4.1
     </tab-item>
 </tabs>
 
-
-
 ## Check Versions
+
 ```bash
 soroban-rpc version
 stellar-core version
@@ -125,15 +110,18 @@ stellar-core version
 ## Configure soroban node
 
 ### 1. Create a config directories
+
 ```bash
 mkdir -p ~/.stellar/config
 mkdir -p ~/.soroban/config
 ```
 
 ### 2. Create the config file for stellar
+
 Create ~/.stellar/config/core.toml and add
+
 <tabs>
-    <tab-item title="Mainnet" class="bleed">
+<tab-item title="Mainnet" class="bleed">
         ```bash
         HTTP_PORT=11626
         PUBLIC_HTTP_PORT=false
@@ -296,8 +284,8 @@ Create ~/.stellar/config/core.toml and add
         PUBLIC_KEY = "GA7DV63PBUUWNUFAF4GAZVXU2OZMYRATDLKTC7VTCG7AU4XUPN5VRX4A"
         ADDRESS = "stellar3.franklintempleton.com:11625"
         HISTORY = "curl -sf https://stellar-history-ins.franklintempleton.com/azinsshf401/{0} -o {1}"
-        ```
-    </tab-item>
+```
+</tab-item>
     <tab-item title="Testnet" class="bleed">
         ```bash
         HTTP_PORT=11626
@@ -332,43 +320,39 @@ Create ~/.stellar/config/core.toml and add
         PUBLIC_KEY="GC2V2EFSXN6SQTWVYA5EPJPBWWIMSD2XQNKUOHGEKB535AQE2I6IXV2Z"
         ADDRESS="core-testnet3.stellar.org"
         HISTORY="curl -sf http://history.stellar.org/prd/core-testnet/core_testnet_003/{0} -o {1}"
-        ```
-    </tab-item>
+```
+</tab-item>
+
 </tabs>
 
 ### 2. Create the config file for soroban
+
 ```bash
 cd ~/.soroban/config/
 soroban-rpc gen-config-file >> config.toml
 ```
+
 <tabs>
-    <tab-item title="Mainnet" class="bleed">
-        ```bash
-        # edit ~/.soroban/config.toml and uncomment and set to
-        NETWORK_PASSPHRASE="Public Global Stellar Network ; September 2015"
-        # update to ~/.stellar/config/core.toml
-        CAPTIVE_CORE_CONFIG_PATH=""
-        # update to ~/.stellar
-        CAPTIVE_CORE_STORAGE_PATH = ""
-        HISTORY_ARCHIVE_URLS = ["https://history.stellar.org/prd/core-live/core_live_001"]
-        STELLAR_CORE_BINARY_PATH = "/usr/local/bin/stellar-core"
-        ```
-    </tab-item>
-    <tab-item title="Testnet" class="bleed">
-        ```bash
-        # edit ~/.soroban/config.toml and uncomment and set to
-        NETWORK_PASSPHRASE="Test SDF Network ; September 2015"
-        # update to ~/.stellar/config/core.toml
-        CAPTIVE_CORE_CONFIG_PATH=""
-        # update to ~/.stellar
-        CAPTIVE_CORE_STORAGE_PATH = ""
-        HISTORY_ARCHIVE_URLS = ["http://history.stellar.org/prd/core-testnet/core_testnet_001"]
-        STELLAR_CORE_BINARY_PATH = "/usr/local/bin/stellar-core"
-        ```
-    </tab-item>
+<tab-item title="Mainnet" class="bleed">
+    ```bash # edit ~/.soroban/config.toml and uncomment and set to
+    NETWORK_PASSPHRASE="Public Global Stellar Network ; September 2015" # update
+    to ~/.stellar/config/core.toml CAPTIVE_CORE_CONFIG_PATH="" # update to
+    ~/.stellar CAPTIVE_CORE_STORAGE_PATH = "" HISTORY_ARCHIVE_URLS =
+    ["https://history.stellar.org/prd/core-live/core_live_001"]
+    STELLAR_CORE_BINARY_PATH = "/usr/local/bin/stellar-core" 
+```
+</tab-item>
+<tab-item title="Testnet" class="bleed">
+    ```bash # edit ~/.soroban/config.toml and uncomment and set to
+    NETWORK_PASSPHRASE="Test SDF Network ; September 2015" # update to
+    ~/.stellar/config/core.toml CAPTIVE_CORE_CONFIG_PATH="" # update to
+    ~/.stellar CAPTIVE_CORE_STORAGE_PATH = "" HISTORY_ARCHIVE_URLS =
+    ["http://history.stellar.org/prd/core-testnet/core_testnet_001"]
+    STELLAR_CORE_BINARY_PATH = "/usr/local/bin/stellar-core" 
+```
+</tab-item>
+
 </tabs>
-
-
 
 ### 2. Create a service
 
@@ -396,12 +380,15 @@ cat /etc/systemd/system/$BINARY_NAME.service
 ```
 
 ## Start the services
+
 ```bash
 sudo systemctl enable soroban-rpc
 sudo systemctl daemon-reload
 sudo systemctl restart soroban-rpc
 ```
+
 ## Check logs
+
 ```bash
 journalctl -u soroban-rpc.service -n 100 -f -o cat
 ```
@@ -419,6 +406,7 @@ curl --location 'http://localhost:8000' --header 'Content-Type: application/json
 ```
 
 If the node is successfully synced, the output from above will print
+
 ```json
 {
   "jsonrpc": "2.0",

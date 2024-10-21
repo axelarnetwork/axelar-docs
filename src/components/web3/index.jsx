@@ -1,9 +1,8 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import Web3 from "web3";
 
-import { equals_ignore_case } from "../../utils";
 import evm_chains from "../../data/evm_chains.json";
-import { CHAIN_ID } from "../../reducers/types";
+import { equals_ignore_case } from "../../utils";
 
 export default ({
   environment = "mainnet",
@@ -125,13 +124,13 @@ export default ({
           }
         }
       }}
-      className={`add-to-metamask min-w-max bg-gray-100 dark:bg-gray-900 ${
+      className={`add-to-metamask size-8 items-center justify-center flex bg-background  ${
         at_chain
           ? ""
           : "hover:bg-gray-200 dark:hover:bg-gray-800 cursor-pointer"
-      } rounded-lg flex items-center py-1.5 px-2`}
+      } rounded-full flex items-center `}
     >
-      <img src="/images/wallets/metamask.png" alt="" width={16} height={16} />
+      <img src="/images/wallets/metamask.png" alt="" className="size-5" />
     </button>
   );
 

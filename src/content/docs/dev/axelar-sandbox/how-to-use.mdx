@@ -112,7 +112,7 @@ const gatewayContract = new ethers.Contract(gateway, $abis.gateway, provider);
 const gasReceiverContract = new ethers.Contract(
   gasReceiver,
   $abis.gasReceiver,
-  provider
+  provider,
 );
 
 // instantiate a wrapped usdc contract.
@@ -128,11 +128,11 @@ const signer = await $getSigner(Chain.MOONBEAM);
 const contractFactory = new ethers.ContractFactory(
   $contracts["MessageSender"].abi,
   $contracts["MessageSender"].bytecode,
-  srcSigner
+  srcSigner,
 );
 const contract = await srcContractFactory.deploy(
   $chains.moonbeam.gateway,
-  $chains.moonbeam.gasReceiver
+  $chains.moonbeam.gasReceiver,
 );
 ```
 

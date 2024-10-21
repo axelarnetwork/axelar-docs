@@ -1,10 +1,10 @@
 # Call a contract on chain B from chain A
 
-import { Callout } from "/src/components/callout"
+import { Callout } from "/src/components/callout";
 
 <iframe
-  width="560"
-  height="315"
+  width="100%"
+ className="aspect-video"
   src="https://www.youtube.com/embed/htMVIYzGA34"
   title="YouTube video player"
   frameBorder="0"
@@ -19,7 +19,10 @@ To call a contract on chain B from chain A, the user needs to call `callContract
 - The payload `bytes` to pass to the destination contract.
 
 <Callout emoji="🚨">
-  **NOTE:** The security of your contracts is limited to the security of the chains they integrate with. Since blockchains can have different security practices, we recommend doing due diligence on all chains your contract will be deployed to.
+  **NOTE:** The security of your contracts is limited to the security of the
+  chains they integrate with. Since blockchains can have different security
+  practices, we recommend doing due diligence on all chains your contract will
+  be deployed to.
 </Callout>
 
 If you want to try this out directly on the blockchain, you can [use Remix to try out Axelar's GMP](https://remix.ethereum.org/axelarnetwork/axelar-docs/blob/main/public/samples/gmp-senderreceiver.sol).
@@ -32,7 +35,7 @@ function callContract(
 ) external;
 ```
 
-`AxelarExecutable` has an `execute` function that will be triggered by the Axelar network on the destination chain after the `callContract` function has been executed on the source chain. This will validate the contract call and then invoke *your* `_execute` method, where you should write any custom logic.
+`AxelarExecutable` has an `execute` function that will be triggered by the Axelar network on the destination chain after the `callContract` function has been executed on the source chain. This will validate the contract call and then invoke _your_ `_execute` method, where you should write any custom logic.
 
 ```solidity
 function _execute(
@@ -42,9 +45,7 @@ function _execute(
 ) internal virtual {}
 ```
 
-<Callout emoji="ℹ️">
-  Ensure the payload is encoded `bytes`!
-</Callout>
+<Callout emoji="ℹ️">Ensure the payload is encoded `bytes`!</Callout>
 
 The `payload` passed to `callContract` (and ultimately to `_execute` and `_executeWithToken`) has type `bytes`. Use the ABI encoder/decoder convert your data to `bytes`.
 
@@ -56,7 +57,7 @@ const { ethers } = require("ethers");
 // encoding a string
 const payload = ethers.utils.defaultAbiCoder.encode(
   ["string"],
-  ["Hello from contract A"]
+  ["Hello from contract A"],
 );
 ```
 
@@ -73,5 +74,4 @@ function _execute(
 }
 ```
 
-
-**Learn More:** For a detailed tutorial on building a full-stack interchain decentralized application with Next.js, Solidity, and Axelar's General Message Passing `callContract` to send messages between blockchains, check out our comprehensive guide: [Build a Full-Stack Interchain Application With Next.js, Solidity & Axelar](https://axelar.network/blog/how-to-build-interchain-dapp-with-next.js-solidity-and-Axelar).
+**Learn More:** For a detailed tutorial on building a full-stack interchain decentralized application with Next.js, Solidity, and Axelar's General Message Passing `callContract` to send messages between blockchains, check out our comprehensive guide: [Build a Full-Stack Interchain Application With Next.js, Solidity & Axelar](https://www.axelar.network/blog/how-to-build-interchain-dapp-with-next-js-solidity-and-axelar).

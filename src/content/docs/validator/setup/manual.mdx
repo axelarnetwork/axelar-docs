@@ -1,6 +1,6 @@
 # Manual setup
 
-import { Callout } from "/src/components/callout"
+import { Callout } from "/src/components/callout";
 
 ## Prerequisites
 
@@ -113,7 +113,11 @@ echo export BROADCASTER_ADDRESS=$BROADCASTER_ADDRESS >> $HOME/.profile
 ```
 
 <Callout type="warning" emoji="⚠️">
-  Protect your keyring password: The following instructions instruct you to store your keyring plaintext password in a file on disk. This instruction is safe only if you can prevent unauthorized access to the file. Use your discretion---substitute your own preferred method for securing your keyring password.
+  Protect your keyring password: The following instructions instruct you to
+  store your keyring plaintext password in a file on disk. This instruction is
+  safe only if you can prevent unauthorized access to the file. Use your
+  discretion---substitute your own preferred method for securing your keyring
+  password.
 </Callout>
 
 Choose a secret `{KEYRING_PASSWORD}` and add the following line to `$HOME/.profile`:
@@ -143,8 +147,10 @@ wget https://axelar-mainnet.s3.us-east-2.amazonaws.com/genesis.json -O $HOME/.ax
 wget https://raw.githubusercontent.com/axelarnetwork/axelarate-community/main/resources/mainnet/seeds.toml -O $HOME/.axelar/config/seeds.toml
 
 # set external ip to your config.json file
+
 sed -i.bak 's/external_address = \"\"/external_address = \"'"$(curl -4 ifconfig.co)"':26656\"/g' $HOME/.axelar/config/config.toml
-```
+
+````
 
 </tab-item>
 <tab-item title="Testnet">
@@ -157,7 +163,7 @@ wget https://raw.githubusercontent.com/axelarnetwork/axelarate-community/main/re
 
 # set external ip to your config.json file
 sed -i.bak 's/external_address = \"\"/external_address = \"'"$(curl -4 ifconfig.co)"':26656\"/g' $HOME/.axelar/config/config.toml
-```
+````
 
 </tab-item>
 </tabs>

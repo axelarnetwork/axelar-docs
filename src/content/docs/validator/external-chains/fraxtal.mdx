@@ -13,6 +13,7 @@ Instructions to set up your frax node.
 ## Prerequisites
 
 - [Common Docker Compose Commands](/validator/external-chains/optimism/#common-node-operations)
+
 ```bash
 sudo apt-get install jq -y
 snap install docker
@@ -26,24 +27,26 @@ cd fraxtal-node
 ```
 
 ## Set Environment Variables
+
 Note: Update your shell profile in accordance with the shell you are using
 
 <tabs>
-    <tab-item title="Mainnet">
-        ```bash
-        echo export ENVIRONMENT=mainnet >> $HOME/.profile
-        echo export DOCKER_COMPOSE_FILE_LOCATION=$HOME/fraxtal-node/docker-compose.yml >> $HOME/.profile
-        ```
-    </tab-item>
-    <tab-item title="Testnet">
-        ```bash
-        echo export ENVIRONMENT=testnet >> $HOME/.profile
-        echo export DOCKER_COMPOSE_FILE_LOCATION=$HOME/fraxtal-node/testnet.docker-compose.yml >> $HOME/.profile
-        ```
-    </tab-item>
+  <tab-item title="Mainnet">
+    ```bash echo export ENVIRONMENT=mainnet >> $HOME/.profile echo export
+    DOCKER_COMPOSE_FILE_LOCATION=$HOME/fraxtal-node/docker-compose.yml >>
+    $HOME/.profile 
+```
+  </tab-item>
+  <tab-item title="Testnet">
+    ```bash echo export ENVIRONMENT=testnet >> $HOME/.profile echo export
+    DOCKER_COMPOSE_FILE_LOCATION=$HOME/fraxtal-node/testnet.docker-compose.yml
+    >> $HOME/.profile 
+```
+  </tab-item>
 </tabs>
 
 Apply your changes
+
 ```bash
 source $HOME/.profile
 ```
@@ -54,17 +57,19 @@ source $HOME/.profile
     <tab-item title="Mainnet">
         ```bash
         cp .env.SAMPLE .env
-        ```
+```
 
     </tab-item>
     <tab-item title="Testnet">
         ```bash
         cp .env.testnet.SAMPLE .env.testnet
-        ```
+```
     </tab-item>
+
 </tabs>
 
 Set the following config options in `fraxtal-node/.env.testnet` or `fraxtal-node/.env`:
+
 ```bash
 # Your Ethereum RPC node endpoint. As an L2, your Frax node will verify tx finality by
 # querying your own Ethereum RPC node.
@@ -72,11 +77,13 @@ OP_NODE_L1_ETH_RPC=
 ```
 
 ## Start the node
+
 ```bash
 docker compose -f $DOCKER_COMPOSE_FILE_LOCATION up -d
 ```
 
 This should show an output like this:
+
 ```bash
 [+] Running 3/3
  ✔ mainnet-node 2 layers [⣿⣿]      0B/0B      Pulled                                                                                                         3.0s
@@ -89,11 +96,13 @@ This should show an output like this:
 ```
 
 After it is done, verify by listing the services and their status
- ```bash
+
+```bash
 docker compose -f $DOCKER_COMPOSE_FILE_LOCATION ps
 ```
 
 You should see these 2 services running
+
 ```bash
 NAME                          IMAGE                                                                                                 COMMAND             SERVICE             CREATED             STATUS                    PORTS
 fraxtal-node-testnet-geth-1   us-docker.pkg.dev/oplabs-tools-artifacts/images/op-geth:v1.101305.1                                   "geth-entrypoint"   testnet-geth        24 minutes ago      Up 24 minutes (healthy)   30303/tcp, 30303/udp, 0.0.0.0:8548->8545/tcp, :::8548->8545/tcp, 0.0.0.0:8549->8546/tcp, :::8549->8546/tcp
@@ -119,6 +128,7 @@ fraxtal-node-testnet-geth-1  | INFO [02-04|07:42:29.751] Imported new potential 
 ```bash
 docker compose -f $DOCKER_COMPOSE_FILE_LOCATION logs $ENVIRONMENT-node --since 2m -f
 ```
+
 You should see logs like
 
 ```bash
@@ -142,6 +152,7 @@ echo "$(curl -4 ifconfig.co):8545"
 ```
 
 #### Method:
+
 Check your op node status at port 7545 by
 
 ```bash
@@ -200,20 +211,14 @@ In order for `vald` to connect to your Fraxtal node, your `rpc_addr` should be e
 vald's `config.toml`
 
 <tabs>
-    <tab-item title="Mainnet">
-        ```bash
-        [[axelar_bridge_evm]]
-        name = "fraxtal"
-        rpc_addr = "http://IP:PORT"
-        start-with-bridge = true
-        ```
-    </tab-item>
-    <tab-item title="Testnet">
-        ```bash
-        [[axelar_bridge_evm]]
-        name = "fraxtal"
-        rpc_addr = "http://IP:PORT"
-        start-with-bridge = true
-        ```
-    </tab-item>
+  <tab-item title="Mainnet">
+    ```bash [[axelar_bridge_evm]] name = "fraxtal" rpc_addr = "http://IP:PORT"
+    start-with-bridge = true 
+```
+  </tab-item>
+  <tab-item title="Testnet">
+    ```bash [[axelar_bridge_evm]] name = "fraxtal" rpc_addr = "http://IP:PORT"
+    start-with-bridge = true 
+```
+  </tab-item>
 </tabs>

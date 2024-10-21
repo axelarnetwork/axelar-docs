@@ -1,18 +1,19 @@
 # Common Amplifier Error Messages
 
-import { Callout } from "/src/components/callout"
+import { Callout } from "/src/components/callout";
 
 The following are some common error messages encountered when working with verifiers and relayers on the Amplifier.
 
 <Callout type="error">
-  These errors may be caused by other issues. The reasons given are based off of known causes only.
+  These errors may be caused by other issues. The reasons given are based off of
+  known causes only.
 </Callout>
 
 ## Verifiers
 
 - `command not found: axelard` — The symlink or alias to `axelard` is not working. Use full binary name instead for commands, such as `./axelard` version instead of `axelard version`. Alternatively you can fix your alias, `PATH`, or symlink.
 
-- `command not found: tofnd` — The symlink or alias to `tofnd` is not working. Use full binary name instead for commands, such as `tofnd-darwin-[version] --help` instead of `tofnd --help`.  Alternatively you can fix your alias, `PATH`, or symlink.
+- `command not found: tofnd` — The symlink or alias to `tofnd` is not working. Use full binary name instead for commands, such as `tofnd-darwin-[version] --help` instead of `tofnd --help`. Alternatively you can fix your alias, `PATH`, or symlink.
 
 - `connection failed: transport error` — `ampd` can't connect to `tofnd`. Make sure that you have tofnd running in the background and that the port and hots `tofnd` is listening on match the information in your `ampd` config file.
 
@@ -24,6 +25,6 @@ The following are some common error messages encountered when working with verif
 
 ## Message relayers
 
-- `Generic error: Querier contract error: codespace` —  The message that was supposed to be routed can’t be found. Search for `unfit_for_routing` in your terminal output to see if the message was actually routed. The transaction will succeed even with unsuccessful routing.
+- `Generic error: Querier contract error: codespace` — The message that was supposed to be routed can’t be found. Search for `unfit_for_routing` in your terminal output to see if the message was actually routed. The transaction will succeed even with unsuccessful routing.
 
 - `message index: 0` — There are no new messages to confirm.
