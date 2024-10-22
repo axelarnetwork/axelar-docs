@@ -1,3 +1,5 @@
+import { title } from "process";
+
 export const topLevelNav = [
   {
     title: "Developers",
@@ -35,22 +37,24 @@ export const getNavigation = (section) => {
               title: "Interchain Tokens",
               children: [
                 {
-                  title: "Introduction",
+                  title: "Overview",
                   href: "/dev/send-tokens/interchain-tokens/intro/",
                 },
                 {
-                  title: "Quick Start",
-                  href: "/dev/send-tokens/interchain-tokens/quick-start/",
-                  children: [
-                    {
-                      title: "No Code",
-                      href: "/dev/send-tokens/interchain-tokens/quick-start/no-code/",
-                    },
-                    {
-                      title: "Programmatic",
-                      href: "/dev/send-tokens/interchain-tokens/quick-start/programmatic/",
-                    },
-                  ],
+                  title: "No Code Setup",
+                  href: "/dev/send-tokens/interchain-tokens/no-code/",
+                },
+                {
+                  title: "Create New Token",
+                  href: "/dev/send-tokens/interchain-tokens/create-new-interchain-token/",
+                },
+                {
+                  title: "Register Existing Token",
+                  href: "/dev/send-tokens/interchain-tokens/register-existing-token/",
+                },
+                {
+                  title: "Integrate Custom Token",
+                  href: "/dev/send-tokens/interchain-tokens/integrate-custom-token/",
                 },
                 {
                   title: "Token Manager",
