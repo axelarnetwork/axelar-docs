@@ -79,7 +79,7 @@ PRIVATE_KEY= // Add your account private key here
 
 Then, create a file with the name `hardhat.config.js` and add the following code snippet:
 
-```JavaScript
+```javascript
 require("@nomicfoundation/hardhat-toolbox");
 require("dotenv").config({ path: ".env" });
 
@@ -112,7 +112,7 @@ Create a new file named `newInterchainToken.js` and import the required dependen
 - The address of the Interchain Token Service contract
 - The address of the Interchain Token Factory contract
 
-```JavaScript
+```javascript
 const hre = require("hardhat");
 const crypto = require("crypto");
 const ethers = hre.ethers;
@@ -137,7 +137,7 @@ const interchainTokenFactoryContractAddress =
 
 Next, create a `getSigner()` function in `newInterchainToken.js`. This will obtain a signer for a secure transaction:
 
-```JavaScript
+```javascript
 //...
 
 async function getSigner() {
@@ -150,7 +150,7 @@ async function getSigner() {
 
 Then, create a `getContractInstance()` function in `newInterchainToken.js` . This will get the contract instance based on the contract’s address, ABI, and signer:
 
-```JavaScript
+```javascript
 //...
 
 async function getContractInstance(contractAddress, contractABI, signer) {
@@ -162,7 +162,7 @@ async function getContractInstance(contractAddress, contractABI, signer) {
 
 Now you’re ready to register and deploy your token! Create a `registerAndDeploy()` function for the Fantom testnet. This will create a new token called “New Interchain Token” with the symbol “NIT”:
 
-```JavaScript
+```javascript
 // Register and deploy a new interchain token to the Fantom testnet
 async function registerAndDeploy() {
   // Generate random salt
@@ -232,7 +232,7 @@ async function registerAndDeploy() {
 
 Add a `main()` function for executing the `newInterchainToken.js` script. It will handle any errors that may arise:
 
-```JavaScript
+```javascript
 //...
 
 async function main() {
@@ -264,7 +264,7 @@ FUNCTION_NAME=registerAndDeploy npx hardhat run newInterchainToken.js --network 
 
 You should see something similar to the following on your console:
 
-```JavaScript
+```javascript
 Deployed Token ID: 0x4427c3aab191db9cfc696291f93c6c33e93b5384ea5b25497e457316b50c45e9,
 Token Address: 0xc028ebdF906a890be73C594b6a14858D0552544A,
 Transaction Hash: 0x7b1b6321b5027851a15048fb9743d2b894f19d745441c1daf87d0c5054ed5309,
@@ -290,7 +290,7 @@ You’ve just successfully deployed an Interchain Token to Fantom, which you are
 
 In `newInterchainToken.js`, call `estimateGasFee()` from the [AxelarJS SDK](https://www.notion.so/bd238d757a144a069501f0b481488ef3?pvs=21) to estimate the actual cost of deploying your token on a remote chain:
 
-```JavaScript
+```javascript
 //...
 
 const api = new AxelarQueryAPI({ environment: Environment.TESTNET });
@@ -315,7 +315,7 @@ async function gasEstimator() {
 
 Create a `deployToRemoteChain()` function that will perform token remote deployment on the Polygon Mumbai testnet. Make sure to replace the `salt` value with the salt returned to your terminal from when you ran `registerAndDeploy()`:
 
-```JavaScript
+```javascript
 //...
 
 // Deploy to remote chain: Polygon
@@ -356,7 +356,7 @@ async function deployToRemoteChain() {
 
 Update `main()` to execute `deployToRemoteChain()` :
 
-```JavaScript
+```javascript
 //...
 
 async function main() {
@@ -378,7 +378,7 @@ async function main() {
 
 Run the script in your terminal to register and deploy the token, once again specifying the `fantom` testnet (the source chain where all transactions are taking place):
 
-```JavaScript
+```javascript
 FUNCTION_NAME=deployToRemoteChain npx hardhat run newInterchainToken.js --network fantom
 ```
 
@@ -400,7 +400,7 @@ Now that you have deployed your token both locally to Fantom and remotely to Pol
 
 In `newInterchainToken.js`, create a `transferTokens()` function that will facilitate remote token transfers between chains. Change the address in `interchainToken` to the new token address from the FTM scan that you saved from an earlier step, and change the address in `transfer` to your own wallet address:
 
-```JavaScript
+```javascript
 //...
 
 async function transferTokens() {
@@ -434,7 +434,7 @@ async function transferTokens() {
 
 Update the `main()` to execute `transferTokens()`:
 
-```JavaScript
+```javascript
 //...
 
 async function main() {
@@ -456,7 +456,7 @@ async function main() {
 
 Run the script in your terminal, specifying the `fantom` testnet:
 
-```JavaScript
+```javascript
 FUNCTION_NAME=transferTokens npx hardhat run newInterchainToken.js --network fantom
 ```
 
