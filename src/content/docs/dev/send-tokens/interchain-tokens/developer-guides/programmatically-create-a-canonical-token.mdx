@@ -84,7 +84,7 @@ If you will push this project on GitHub, create a `.gitignore` file and include 
 
 Then, create a file with the name `hardhat.config.js` and add the following code snippet:
 
-```JavaScript
+```javascript
 require("@nomicfoundation/hardhat-toolbox");
 require("dotenv").config({ path: ".env" });
 
@@ -117,7 +117,7 @@ Create a new file named `canonicalInterchainToken.js` and import the required de
 - The address of the [`InterchainTokenService`](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/InterchainTokenService.sol) contract
 - The address of the [`InterchainTokenFactory`](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/InterchainTokenFactory.sol) contract
 
-```JavaScript
+```javascript
 const hre = require("hardhat");
 const crypto = require("crypto");
 const {
@@ -146,7 +146,7 @@ const customTokenAddress = "0x0EF6280417A1BF22c8fF05b54D7A7928a173E605"; // your
 
 Next, create a `getSigner()` function in `canonicalInterchainToken.js`. This will obtain a signer for a secure transaction:
 
-```JavaScript
+```javascript
 //...
 
 async function getSigner() {
@@ -159,7 +159,7 @@ async function getSigner() {
 
 Then, create a `getContractInstance()` function in `canonicalInterchainToken.js` . This will get the contract instance based on the contract’s address, ABI, and signer:
 
-```JavaScript
+```javascript
 //...
 
 async function getContractInstance(contractAddress, contractABI, signer) {
@@ -171,7 +171,7 @@ async function getContractInstance(contractAddress, contractABI, signer) {
 
 Now you’re ready to register your token as a Canonical Interchain Token! Create a `registerCanonicalInterchainToken()` function for the Fantom testnet. This will register a Canonical Interchain Token with your custom token address:
 
-```JavaScript
+```javascript
 // Register Canonical Interchain Token to the Fantom chain.
 async function registerCanonicalInterchainToken() {
   // Get a signer to sign the transaction
@@ -218,7 +218,7 @@ async function registerCanonicalInterchainToken() {
 
 Add a `main()` function to execute the `canonicalInterchainToken.js` script. It will handle any errors that may arise:
 
-```JavaScript
+```javascript
 //...
 
 async function main() {
@@ -272,7 +272,7 @@ You’ve just successfully a Canonical Interchain Token to Fantom, which you are
 
 In `canonicalInterchainToken.js`, call `estimateGasFee()` from the [AxelarJS SDK](https://www.notion.so/bd238d757a144a069501f0b481488ef3?pvs=21) to estimate the actual cost of deploying your remote Canonical Interchain Token on a remote chain:
 
-```JavaScript
+```javascript
 //...
 
 const api = new AxelarQueryAPI({ environment: Environment.TESTNET });
@@ -297,7 +297,7 @@ async function gasEstimator() {
 
 Create a `deployRemoteCanonicalInterchainToken()` function that will perform token remote canonical deployment on the Polygon Mumbai testnet.
 
-```JavaScript
+```javascript
 //...
 
 // deployRemoteCanonicalInterchainToken: On Polygon
@@ -335,7 +335,7 @@ async function deployRemoteCanonicalInterchainToken() {
 
 Update `main()` to execute `deployRemoteCanonicalInterchainToken()` :
 
-```JavaScript
+```javascript
 //...
 
 async function main() {
@@ -379,7 +379,7 @@ Now that you have registered and deployed a Canonical Interchain Token both loca
 
 In `canonicalInterchainToken.js`, create a `transferTokens()` function that will facilitate remote token transfers between chains. Change the token ID to the `tokenId` that you [saved from an earlier step](#store-the-token-id), and change the address in `transfer` to your own wallet address:
 
-```JavaScript
+```javascript
 //...
 
 // Transfer token between chains.
@@ -424,7 +424,7 @@ async function transferTokens() {
 
 Update the `main()` to execute `transferTokens()`:
 
-```JavaScript
+```javascript
 //...
 
 async function main() {
