@@ -14,7 +14,7 @@ Once the token has been deployed and [integrated with ITS](/dev/send-tokens/inte
 
 Send a message alongside a token using the [`callContractWithInterchainToken()`](https://github.com/axelarnetwork/interchain-token-service/blob/4e5f878dafb764ad37728ea239850b6a18a21d85/contracts/InterchainTokenService.sol#L491) function from the [Interchain Token Service](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/InterchainTokenService.sol). You should provide the `tokenId`, `destinationChain`, `destinationAddress`, `amount`, `message`, and `gasValue` as parameters.
 
-```Solidity
+```solidity
 /**
  * @notice Initiates an interchain call contract with interchain token to a destination chain.
  * @param tokenId The unique identifier of the token to be transferred.
