@@ -63,7 +63,7 @@
     },
     {
       "source": "/its/upgrade-token/",
-      "destination": "/dev/send-tokens/interchain-tokens/upgrade-tokens/"
+      "destination": "/dev/send-tokens/interchain-tokens/register-existing-token/"
     },
     {
       "source": "/its/token-executable/",
@@ -522,6 +522,31 @@
     {
       "source": "/dev/cosmos-gmp/",
       "destination": "/dev/cosmos-gmp/overview/",
+      "permanent": true
+    },
+    {
+      "source": "/dev/its/create-new-token/",
+      "destination": "/dev/send-tokens/interchain-tokens/create-new-interchain-token/",
+      "permanent": true
+    },
+    {
+      "source": "/dev/its/custom-token/",
+      "destination": "/dev/send-tokens/interchain-tokens/integrate-custom-token/",
+      "permanent": true
+    },
+    {
+      "source": "/dev/send-tokens/interchain-tokens/quick-start/no-code/",
+      "destination": "/dev/send-tokens/interchain-tokens/no-code/",
+      "permanent": true
+    },
+    {
+      "source": "/dev/send-tokens/interchain-tokens/quick-start/",
+      "destination": "/dev/send-tokens/interchain-tokens/intro/",
+      "permanent": true
+    },
+    {
+      "source": "/dev/send-tokens/interchain-tokens/quick-start/programmatic/",
+      "destination": "/dev/send-tokens/interchain-tokens/create-new-interchain-token/",
       "permanent": true
     }
   ]

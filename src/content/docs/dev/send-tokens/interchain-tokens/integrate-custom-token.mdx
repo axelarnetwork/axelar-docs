@@ -1,0 +1,128 @@
+import { Callout } from "/src/components/callout";
+
+# Integrate Custom Token
+
+Custom tokens are tokens that are independently deployed, as opposed to tokens deployed via the [Interchain Token Service (ITS)](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/InterchainTokenService.sol). These tokens are integrated with ITS across different chains by deploying a Token Manager for them. Once a custom token has a Token Manager deployed for a given chain, it becomes bridgeable between different blockchains that also have a token connected to a Token Manager sharing the same [interchainTokenId](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/InterchainTokenService.sol#L228).
+
+## Install the Axelar ITS Dependency
+
+Install the Axelar Interchain Token Service (ITS) package using npm or any other node package manager:
+
+```bash
+npm i @axelar-network/interchain-token-service
+```
+
+## Build and Deploy Your ERC-20 Token on Multiple Chains
+
+Build your ERC-20 token and deploy it on multiple chains. You can use a tool like the [Create3 Deployer](/dev/solidity-utilities/#create3-deployer) to give your token the same address across multiple chains.
+
+Example token contract:
+
+```solidity
+import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Burnable.sol";
+
+contract MyInterchainToken is ERC20, ERC20Burnable {
+    constructor(address initialOwner)
+        ERC20("My Interchain Token", "ITS")
+    {
+        // Initialization code here
+    }
+
+    function mint(address to, uint256 amount) public onlyMinter {
+        _mint(to, amount);
+    }
+
+    function burn(address from, uint256 amount) public onlyMinter {
+        _burn(from, amount);
+    }
+}
+```
+
+This token is a simple implementation of an ERC20 token but includes the critical functionality needed to integrate with ITS: the ability to `mint()` and `burn()` tokens. ITS interacts with these functions when bridging tokens between chains.
+
+You also have the option to inherit from the [InterchainTokenStandard](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/interchain-token/InterchainTokenStandard.sol#L12) so that your token has cross-chain functionality built-in, such as the `interchainTransfer()` function.
+
+## Integrate the Custom Token with ITS by Deploying a Token Manager
+
+Use the `deployTokenManager` function to create a Token Manager for your token:
+
+```solidity
+bytes32 interchainTokenId = its.deployTokenManager(
+    0xabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefab, // unique salt for token manager deployment
+    '', // destination chain name (empty string for current chain)
+    ITokenManagerType.TokenManagerType.MINT_BURN, // Token Manager type
+    abi.encode(msg.sender.toBytes(), newTokenProxy), // parameters
+    0 // gas value (zero for local deployment)
+);
+```
+
+This function deploys a Token Manager for your token, connects it to ITS upon deployment, and returns the unique interchain token ID.
+
+## Assign the `minter` Role to Your Token's Token Manager
+
+Transfer the minter role to the Token Manager using the `transferMintership` function:
+
+```solidity
+myToken.transferMintership(tokenManagerAddress);
+```
+
+The [`transferMintership()`](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/utils/Minter.sol#L31) function transfers the minter role to the Token Manager. This is necessary because when your token is bridged into a destination chain, the `msg.sender` of the `mint()` call will be the Token Manager.
+
+## Send Token using Interchain Transfer Function
+
+An Interchain Token is an ERC20 that is connected to [ITS](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/InterchainTokenService.sol) upon deployment comes built-in with the `interchainTransfer()` function, which allows users to bridge their token between any blockchain to which it is deployed. Take a look at the diagram below to see how the `interchainTransfer()` function works.
+
+<Callout type="warning">
+  This diagram is interactive click on the function names!
+</Callout>
+
+<object
+  type="image/svg+xml"
+  data="/images/its-transfer.svg"
+  class="hidden dark:block w-full max-w-[50rem] mx-auto py-6"
+>
+  Your browser does not support SVG
+</object>
+<object
+  type="image/svg+xml"
+  data="/images/its-transfer-light.svg"
+  class=" dark:hidden w-full max-w-[50rem] mx-auto py-6"
+>
+  Your browser does not support SVG
+</object>
+
+Use the `interchainTransfer` function to send tokens across chains:
+
+```solidity
+its.interchainTransfer{value: msg.value}(
+    interchainTokenId, // token ID
+    'Ethereum',        // destination chain name
+    address(1),        // receiver address on destination chain
+    123,               // amount to transfer
+    0x,                // metadata (optional)
+    msg.value          // gas value sent for the transfer
+);
+```
+
+The [`interchainTransfer()`](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/interfaces/IInterchainTokenService.sol#L210) function sends a cross-chain transfer via the Interchain Token Service.
+
+<Callout emoji="🚨">
+  **Security Note:** The key used to deploy custom tokens (`deployTokenManager`) is critical for security. If that key is compromised, the token can be compromised across multiple chains.
+
+- Interchain native tokens can only be deployed to more chains via the same deployer key, so that key must be securely retained.
+- Tokens registered on ITS should be cautious about granting mint/burn permissions to other contracts. For example, sharing mint permission with the Polygon native bridge is not supported (the Polygon native bridge only looks for burns, which ITS uses, potentially allowing duplicate sends).
+
+</Callout>
+
+## What's Next
+
+For further examples utilizing the Interchain Token Service, check out the [`axelar-examples`](https://github.com/axelarnetwork/axelar-examples/tree/main/examples/evm) repository on GitHub. There, you can find example implementations such as:
+
+- [`its-custom-token`](https://github.com/axelarnetwork/axelar-examples/tree/main/examples/evm/its-custom-token) — Demonstrates how to use ITS with a custom token implementation.
+- [`its-executable`](https://github.com/axelarnetwork/axelar-examples/tree/main/examples/evm/its-executable) — Demonstrates how to deploy an interchain token and send a cross-chain transfer along with a message.
+- [`its-mint-burn-from`](https://github.com/axelarnetwork/axelar-examples/tree/main/examples/evm/its-mint-burn-from) — Demonstrates how to deploy an interchain token that uses `burnFrom()` instead of `burn()` when bridging tokens.
+
+## Tutorial
+
+For a step-by-step guide on integrating a custom token, check out the [Link Custom Tokens Deployed Across Multiple Chains into Interchain Tokens](/dev/send-tokens/interchain-tokens/developer-guides/link-custom-tokens-deployed-across-multiple-chains-into-interchain-tokens/) tutorial.

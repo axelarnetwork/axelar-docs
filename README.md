@@ -37,9 +37,10 @@ These links redirect to pages in the documentation whose slugs may otherwise be 
 ### ITS
 
 - **Introduction:** https://docs.axelar.dev/its/intro
-- **No-Code ITS Setup:** https://docs.axelar.dev/dev/send-tokens/interchain-tokens/quick-start/no-code/
-- **Programmatic ITS Setup:** https://docs.axelar.dev/dev/send-tokens/interchain-tokens/quick-start/programmatic/
+- **No-Code ITS Setup:** https://docs.axelar.dev/dev/send-tokens/interchain-tokens/no-code/
+- **Create New Interchain Token:** https://docs.axelar.dev/dev/its/create-new-token/
 - **Upgrade Token:** https://docs.axelar.dev/its/upgrade-token
+- **Integrate Custom Token:** https://docs.axelar.dev/dev/its/custom-token/
 - **Interchain Token Executable:** https://docs.axelar.dev/its/token-executable
 - **Flow Limit:** https://docs.axelar.dev/its/flow-limit
 - **Programmatically Create a Token:** https://docs.axelar.dev/its/create-token-tutorial
