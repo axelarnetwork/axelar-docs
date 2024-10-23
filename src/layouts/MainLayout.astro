@@ -14,8 +14,14 @@ type Props = {
   className?: string;
 };
 
-const { title, description, image, hidden, notSidebar, className } =
-  Astro.props;
+const {
+  title,
+  description,
+  image = "/open-graph.webp",
+  hidden,
+  notSidebar,
+  className,
+} = Astro.props;
 
 const shownTitle = title
   ? title + ` | Axelar Documentation`
