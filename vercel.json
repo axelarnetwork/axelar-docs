@@ -23,229 +23,229 @@
       "permanent": true
     },
     {
-      "source": "/dev/send-tokens/interchain-tokens/create-token",
+      "source": "/dev/send-tokens/interchain-tokens/create-token/",
       "destination": "/dev/send-tokens/interchain-tokens/intro/",
       "permanent": true
     },
     {
-      "source": "/dev/send-tokens/interchain-tokens/roadmap",
+      "source": "/dev/send-tokens/interchain-tokens/roadmap/",
       "destination": "/dev/send-tokens/roadmap/",
       "permanent": true
     },
     {
-      "source": "/dev/gas-service/on-chain",
+      "source": "/dev/gas-service/on-chain/",
       "destination": "/dev/gas-service/on-chain-estimation/",
       "permanent": true
     },
     {
-      "source": "/dev/amplifier/chain-integration",
+      "source": "/dev/amplifier/chain-integration/",
       "destination": "/dev/amplifier/chain-integration/introduction/",
       "permanent": true
     },
     {
-      "source": "/dev/send-tokens/overview",
+      "source": "/dev/send-tokens/overview/",
       "destination": "/dev/send-tokens/introduction/",
       "permanent": true
     },
     {
-      "source": "/resources/community/bug-bounty",
+      "source": "/resources/community/bug-bounty/",
       "destination": "/resources/bug-bounty/",
       "permanent": true
     },
     {
-      "source": "/bug-bounty",
+      "source": "/bug-bounty/",
       "destination": "/resources/bug-bounty/",
       "permanent": true
     },
     {
-      "source": "/its/intro",
+      "source": "/its/intro/",
       "destination": "/dev/send-tokens/interchain-tokens/intro/"
     },
     {
-      "source": "/its/upgrade-token",
+      "source": "/its/upgrade-token/",
       "destination": "/dev/send-tokens/interchain-tokens/upgrade-tokens/"
     },
     {
-      "source": "/its/token-executable",
+      "source": "/its/token-executable/",
       "destination": "/dev/send-tokens/interchain-tokens/interchain-token-executable/"
     },
     {
-      "source": "/its/rate-limit",
+      "source": "/its/rate-limit/",
       "destination": "/dev/send-tokens/interchain-tokens/rate-limit/"
     },
     {
-      "source": "/its/create-token-tutorial",
+      "source": "/its/create-token-tutorial/",
       "destination": "/dev/send-tokens/interchain-tokens/developer-guides/programmatically-create-a-token/"
     },
     {
-      "source": "/its/canonical-token-tutorial",
+      "source": "/its/canonical-token-tutorial/",
       "destination": "/dev/send-tokens/interchain-tokens/developer-guides/programmatically-create-a-canonical-token/"
     },
     {
-      "source": "/its/link-token-tutorial",
+      "source": "/its/link-token-tutorial/",
       "destination": "/dev/send-tokens/interchain-tokens/developer-guides/link-custom-tokens-deployed-across-multiple-chains-into-interchain-tokens/"
     },
     {
-      "source": "/dev/reference/interchain-token-service-rate-limit",
+      "source": "/dev/reference/interchain-token-service-rate-limit/",
       "destination": "/dev/send-tokens/interchain-tokens/rate-limit/"
     },
     {
-      "source": "/dev/reference/glossary",
+      "source": "/dev/reference/glossary/",
       "destination": "/dev/send-tokens/glossary/",
       "permanent": true
     },
     {
-      "source": "/dev/glossary",
+      "source": "/dev/glossary/",
       "destination": "/dev/send-tokens/glossary/",
       "permanent": true
     },
     {
-      "source": "/resources/mainnet",
+      "source": "/resources/mainnet/",
       "destination": "/resources/contract-addresses/mainnet/",
       "permanent": true
     },
     {
-      "source": "/resources/testnet",
+      "source": "/resources/testnet/",
       "destination": "/resources/contract-addresses/testnet/",
       "permanent": true
     },
     {
-      "source": "/resources/governance/community-pool-proposals",
+      "source": "/resources/governance/community-pool-proposals/",
       "destination": "/resources/community/community-pool-proposals/",
       "permanent": true
     },
     {
-      "source": "/resources/axelarscan-add",
+      "source": "/resources/axelarscan-add/",
       "destination": "/resources/axelarscan/axelarscan-add/",
       "permanent": true
     },
     {
-      "source": "/resources/wrapped-tokens",
+      "source": "/resources/wrapped-tokens/",
       "destination": "/resources/tokens/wrapped-tokens/",
       "permanent": true
     },
     {
-      "source": "/resources",
+      "source": "/resources/",
       "destination": "/resources/rpc/resources/",
       "permanent": true
     },
     {
-      "source": "/resources/lava-iprpc",
+      "source": "/resources/lava-iprpc/",
       "destination": "/resources/rpc/lava-iprpc/",
       "permanent": true
     },
     {
-      "source": "/dev/general-message-passing/cosmos-gmp",
+      "source": "/dev/general-message-passing/cosmos-gmp/",
       "destination": "/dev/cosmos-gmp/",
       "permanent": true
     },
     {
-      "source": "/dev/general-message-passing/gas-services/intro",
+      "source": "/dev/general-message-passing/gas-services/intro/",
       "destination": "/dev/gas-service/intro/",
       "permanent": true
     },
     {
-      "source": "/dev/general-message-passing/gas-services/pay-gas",
+      "source": "/dev/general-message-passing/gas-services/pay-gas/",
       "destination": "/dev/gas-service/pay-gas/",
       "permanent": true
     },
     {
-      "source": "/dev/general-message-passing/gas-services/increase-gas",
+      "source": "/dev/general-message-passing/gas-services/increase-gas/",
       "destination": "/dev/gas-service/increase-gas/",
       "permanent": true
     },
     {
-      "source": "/dev/general-message-passing/gas-services/refund",
+      "source": "/dev/general-message-passing/gas-services/refund/",
       "destination": "/dev/gas-service/refund/",
       "permanent": true
     },
     {
-      "source": "/dev/general-message-passing/gas-services/pricing",
+      "source": "/dev/general-message-passing/gas-services/pricing/",
       "destination": "/dev/gas-service/pricing/",
       "permanent": true
     },
     {
-      "source": "/dev/general-message-passing/solidity-utilities",
+      "source": "/dev/general-message-passing/solidity-utilities/",
       "destination": "/dev/solidity-utilities/",
       "permanent": true
     },
     {
-      "source": "/dev/general-message-passing/axelar-sandbox/intro",
+      "source": "/dev/general-message-passing/axelar-sandbox/intro/",
       "destination": "/dev/axelar-sandbox/intro/",
       "permanent": true
     },
     {
-      "source": "/dev/general-message-passing/local-dev",
+      "source": "/dev/general-message-passing/local-dev/",
       "destination": "/dev/general-message-passing/developer-guides/example-gmp/",
       "permanent": true
     },
     {
-      "source": "/dev/general-message-passing/example-usdc-cctp",
+      "source": "/dev/general-message-passing/example-usdc-cctp/",
       "destination": "/dev/general-message-passing/developer-guides/example-usdc-cctp/",
       "permanent": true
     },
     {
-      "source": "/dev/general-message-passing/recovery",
+      "source": "/dev/general-message-passing/recovery/",
       "destination": "/dev/general-message-passing/debug/transaction-recovery/",
       "permanent": true
     },
     {
-      "source": "/dev/reference/pricing",
+      "source": "/dev/reference/pricing/",
       "destination": "/dev/gas-service/pricing/",
       "permanent": true
     },
     {
-      "source": "/learn/validators",
+      "source": "/learn/validators/",
       "destination": "/validator/status/register-external-chains/",
       "permanent": true
     },
     {
-      "source": "/validator/setup/health-check",
+      "source": "/validator/setup/health-check/",
       "destination": "/validator/status/health-check/",
       "permanent": true
     },
     {
-      "source": "/validator/setup/stake-axl",
+      "source": "/validator/setup/stake-axl/",
       "destination": "/resources/tokens/stake-axl/",
       "permanent": true
     },
     {
-      "source": "/validator/troubleshoot/leave",
+      "source": "/validator/troubleshoot/leave/",
       "destination": "/validator/status/leave/",
       "permanent": true
     },
     {
-      "source": "/node",
+      "source": "/node/",
       "destination": "/node/config-node/",
       "permanent": true
     },
     {
-      "source": "/validator",
+      "source": "/validator/",
       "destination": "/validator/setup/",
       "permanent": true
     },
     {
-      "source": "/validator/setup",
+      "source": "/validator/setup/",
       "destination": "/validator/setup/overview/",
       "permanent": true
     },
     {
-      "source": "/validator/external-chains",
+      "source": "/validator/external-chains/",
       "destination": "/validator/external-chains/overview/",
       "permanent": true
     },
     {
-      "source": "/validator/troubleshoot",
+      "source": "/validator/troubleshoot/",
       "destination": "/validator/troubleshoot/startup/",
       "permanent": true
     },
     {
-      "source": "/resources/mainnet-releases",
+      "source": "/resources/mainnet-releases/",
       "destination": "/resources/mainnet/",
       "permanent": true
     },
     {
-      "source": "/resources/testnet-releases",
+      "source": "/resources/testnet-releases/",
       "destination": "/resources/testnet/",
       "permanent": true
     },
@@ -265,17 +265,17 @@
       "permanent": true
     },
     {
-      "source": "/dev",
+      "source": "/dev/",
       "destination": "/dev/intro/",
       "permanent": true
     },
     {
-      "source": "/intro",
+      "source": "/intro/",
       "destination": "/learn/",
       "permanent": true
     },
     {
-      "source": "/dev/sdk",
+      "source": "/dev/sdk/",
       "destination": "/learn/sdk/",
       "permanent": true
     },
@@ -285,7 +285,7 @@
       "permanent": true
     },
     {
-      "source": "/dev/cli",
+      "source": "/dev/cli/",
       "destination": "/learn/cli/",
       "permanent": true
     },
@@ -295,57 +295,57 @@
       "permanent": true
     },
     {
-      "source": "/resources/supported",
+      "source": "/resources/supported/",
       "destination": "/dev/chain-names/",
       "permanent": true
     },
     {
-      "source": "/resources/weth",
+      "source": "/resources/weth/",
       "destination": "/resources/wrapped-tokens/",
       "permanent": true
     },
     {
-      "source": "/dev/gmp/examples",
+      "source": "/dev/gmp/examples/",
       "destination": "/dev/general-message-passing/examples/",
       "permanent": true
     },
     {
-      "source": "/dev/build/contract-addresses/mainnet",
+      "source": "/dev/build/contract-addresses/mainnet/",
       "destination": "/dev/reference/mainnet-contract-addresses/",
       "permanent": true
     },
     {
-      "source": "/dev/build/contract-addresses/testnet",
+      "source": "/dev/build/contract-addresses/testnet/",
       "destination": "/dev/reference/testnet-contract-addresses/",
       "permanent": true
     },
     {
-      "source": "/dev/build/chain-names/mainnet",
+      "source": "/dev/build/chain-names/mainnet/",
       "destination": "/dev/reference/mainnet-chain-names/",
       "permanent": true
     },
     {
-      "source": "/dev/build/tokens",
+      "source": "/dev/build/tokens/",
       "destination": "/dev/send-tokens/introduction/",
       "permanent": true
     },
     {
-      "source": "/dev/gmp/overview",
+      "source": "/dev/gmp/overview/",
       "destination": "/dev/general-message-passing/overview/",
       "permanent": true
     },
     {
-      "source": "/dev/guides/example-usdc",
+      "source": "/dev/guides/example-usdc/",
       "destination": "/dev/general-message-passing/example-usdc-cctp/",
       "permanent": true
     },
     {
-      "source": "/dev/build/5-min-starter-examples",
+      "source": "/dev/build/5-min-starter-examples/",
       "destination": "/dev/general-message-passing/examples/",
       "permanent": true
     },
     {
-      "source": "/dev/build/tokens",
+      "source": "/dev/build/tokens/",
       "destination": "/dev/send-tokens/introduction/",
       "permanent": true
     },
@@ -360,152 +360,152 @@
       "permanent": true
     },
     {
-      "source": "/dev/hello-world",
+      "source": "/dev/hello-world/",
       "destination": "/dev/general-message-passing/local-dev/",
       "permanent": true
     },
     {
-      "source": "/dev/gmp-overview",
+      "source": "/dev/gmp-overview/",
       "destination": "/dev/general-message-passing/overview/",
       "permanent": true
     },
     {
-      "source": "/dev/general-message-passing",
+      "source": "/dev/general-message-passing/",
       "destination": "/dev/general-message-passing/overview/",
       "permanent": true
     },
     {
-      "source": "/dev/general-message-passing/build/chain-names",
+      "source": "/dev/general-message-passing/build/chain-names/",
       "destination": "/dev/reference/mainnet-chain-names/",
       "permanent": true
     },
     {
-      "source": "/dev/general-message-passing/build/contract-addresses/mainnet",
+      "source": "/dev/general-message-passing/build/contract-addresses/mainnet/",
       "destination": "/dev/reference/mainnet-contract-addresses/",
       "permanent": true
     },
     {
-      "source": "/dev/general-message-passing/build/contract-addresses/testnet",
+      "source": "/dev/general-message-passing/build/contract-addresses/testnet/",
       "destination": "/dev/reference/testnet-contract-addresses/",
       "permanent": true
     },
     {
-      "source": "/dev/general-message-passing/chain-names",
+      "source": "/dev/general-message-passing/chain-names/",
       "destination": "/dev/reference/mainnet-chain-names/",
       "permanent": true
     },
     {
-      "source": "/dev/general-message-passing/chain-names/testnet",
+      "source": "/dev/general-message-passing/chain-names/testnet/",
       "destination": "/dev/reference/testnet-chain-names/",
       "permanent": true
     },
     {
-      "source": "/dev/general-message-passing/contract-addresses/mainnet",
+      "source": "/dev/general-message-passing/contract-addresses/mainnet/",
       "destination": "/dev/reference/mainnet-contract-addresses/",
       "permanent": true
     },
     {
-      "source": "/dev/general-message-passing/contract-addresses/testnet",
+      "source": "/dev/general-message-passing/contract-addresses/testnet/",
       "destination": "/dev/reference/testnet-contract-addresses/",
       "permanent": true
     },
     {
-      "source": "/dev/general-message-passing/example-airdrop",
+      "source": "/dev/general-message-passing/example-airdrop/",
       "destination": "/dev/general-message-passing/examples/#airdrop",
       "permanent": true
     },
     {
-      "source": "/dev/guides/example-airdrop",
-      "destination": "/dev/general-message-passing/examples/#airdrop",
+      "source": "/dev/guides/example-airdrop/",
+      "destination": "/dev/general-message-passing/examples/#airdrop/",
       "permanent": true
     },
     {
-      "source": "/dev/general-message-passing/example-nft-linker",
-      "destination": "/dev/general-message-passing/examples/#nft-linker",
+      "source": "/dev/general-message-passing/example-nft-linker/",
+      "destination": "/dev/general-message-passing/examples/#nft-linker/",
       "permanent": true
     },
     {
-      "source": "/dev/guides/example-nft-linker",
-      "destination": "/dev/general-message-passing/examples/#nft-linker",
+      "source": "/dev/guides/example-nft-linker/",
+      "destination": "/dev/general-message-passing/examples/#nft-linker/",
       "permanent": true
     },
     {
-      "source": "/dev/guides/example-composable-usdc",
+      "source": "/dev/guides/example-composable-usdc/",
       "destination": "/dev/general-message-passing/example-usdc-cctp/",
       "permanent": true
     },
     {
-      "source": "/dev/general-message-passing/getting-started",
+      "source": "/dev/general-message-passing/getting-started/",
       "destination": "/dev/intro/",
       "permanent": true
     },
     {
-      "source": "/dev/general-message-passing/monitor-recover/monitoring",
+      "source": "/dev/general-message-passing/monitor-recover/monitoring/",
       "destination": "/dev/general-message-passing/monitoring/",
       "permanent": true
     },
     {
-      "source": "/dev/general-message-passing/monitor-recover/recovery",
+      "source": "/dev/general-message-passing/monitor-recover/recovery/",
       "destination": "/dev/general-message-passing/recovery/",
       "permanent": true
     },
     {
-      "source": "/dev/general-message-passing/tokens",
+      "source": "/dev/general-message-passing/tokens/",
       "destination": "/dev/send-tokens/introduction/",
       "permanent": true
     },
     {
-      "source": "/dev/guides/video-guides",
+      "source": "/dev/guides/video-guides/",
       "destination": "https://www.youtube.com/watch?v=PWXmsP_a-ck",
       "permanent": true
     },
     {
-      "source": "/dev/general-message-passing/video-guides",
+      "source": "/dev/general-message-passing/video-guides/",
       "destination": "https://www.youtube.com/watch?v=PWXmsP_a-ck",
       "permanent": true
     },
     {
-      "source": "/dev/general-message-passing/example-composable-usdc",
+      "source": "/dev/general-message-passing/example-composable-usdc/",
       "destination": "/dev/general-message-passing/example-usdc-cctp/",
       "permanent": true
     },
     {
-      "source": "/dev/monitor-recover/recovery#manually-execute-a-transfer",
+      "source": "/dev/monitor-recover/recovery#manually-execute-a-transfer/",
       "destination": "/dev/general-message-passing/recovery#manually-execute-a-transfer/",
       "permanent": true
     },
     {
-      "source": "/dev/monitor-recover/monitoring",
+      "source": "/dev/monitor-recover/monitoring/",
       "destination": "/dev/general-message-passing/monitoring/",
       "permanent": true
     },
     {
-      "source": "/dev/monitor-recover/recovery#increase-gas-payment-to-the-gas-receiver-on-the-source-chain",
-      "destination": "/dev/general-message-passing/recovery/#increase-gas-payment-to-the-gas-receiver-on-the-source-chain",
+      "source": "/dev/monitor-recover/recovery#increase-gas-payment-to-the-gas-receiver-on-the-source-chain/",
+      "destination": "/dev/general-message-passing/recovery/#increase-gas-payment-to-the-gas-receiver-on-the-source-chain/",
       "permanent": true
     },
     {
-      "source": "/dev/monitor-recover/recovery#increase-gas-payment-to-the-gas-receiver-on-the-source-chain",
-      "destination": "/dev/general-message-passing/recovery/#increase-gas-payment-to-the-gas-receiver-on-the-source-chain",
+      "source": "/dev/monitor-recover/recovery#increase-gas-payment-to-the-gas-receiver-on-the-source-chain/",
+      "destination": "/dev/general-message-passing/recovery/#increase-gas-payment-to-the-gas-receiver-on-the-source-chain/",
       "permanent": true
     },
     {
-      "source": "/dev/monitor-recover/monitoring",
+      "source": "/dev/monitor-recover/monitoring/",
       "destination": "/dev/general-message-passing/monitoring/",
       "permanent": true
     },
     {
-      "source": "/dev/monitor-recover/recovery",
+      "source": "/dev/monitor-recover/recovery/",
       "destination": "/dev/general-message-passing/recovery/",
       "permanent": true
     },
     {
-      "source": "/general-message-passing/overview",
+      "source": "/general-message-passing/overview/",
       "destination": "/dev/general-message-passing/overview/",
       "permanent": true
     },
     {
-      "source": "/dev/gmp",
+      "source": "/dev/gmp/",
       "destination": "/dev/general-message-passing/overview/",
       "permanent": true
     },
@@ -515,12 +515,12 @@
       "permanent": true
     },
     {
-      "source": "/dev/send-tokens/interchain-tokens",
+      "source": "/dev/send-tokens/interchain-tokens/",
       "destination": "/dev/send-tokens/interchain-tokens/intro/",
       "permanent": true
     },
     {
-      "source": "/dev/cosmos-gmp",
+      "source": "/dev/cosmos-gmp/",
       "destination": "/dev/cosmos-gmp/overview/",
       "permanent": true
     }
