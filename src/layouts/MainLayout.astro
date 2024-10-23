@@ -29,7 +29,7 @@ const shownTitle = title
 const shownDescription =
   description ||
   "The Axelar Documentation tells you how to get started and be successful using Axelar. Axelar allows developers to build interchain dApps that connect to any blockchain. ";
-const canonicalURL = new URL(Astro.url.pathname, "https://docs.axelar.dev");
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 ---
 
 <!doctype html>
@@ -67,16 +67,21 @@ const canonicalURL = new URL(Astro.url.pathname, "https://docs.axelar.dev");
     <title>{shownTitle}</title>
     <meta content={shownTitle} property="og:title" />
     <meta content={shownTitle} property="twitter:title" />
-
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={Astro.url} />
+    <meta property="twitter:url" content={Astro.url} />
     <meta content={shownDescription} name="description" />
     <meta content={shownDescription} property="og:description" />
     <meta content={shownDescription} property="twitter:description" />
-    {image && <meta content={image} property="og:image" />}
-    {image && <meta content={image} property="twitter:image" />}
+    {image && <meta content={new URL(image, Astro.url)} property="og:image" />}
+    {
+      image && (
+        <meta content={new URL(image, Astro.url)} property="twitter:image" />
+      )
+    }
     <meta content="website" property="og:type" />
     <meta content="summary_large_image" name="twitter:card" />
     <meta content="width=device-width, initial-scale=1" name="viewport" />
-
     {hidden && <meta content="noindex" name="robots" />}
     <link
       rel="sitemap"
