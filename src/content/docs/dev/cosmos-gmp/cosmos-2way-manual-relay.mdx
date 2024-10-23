@@ -1,0 +1,141 @@
+# Manual Relaying Cosmos 2-way Calls
+
+## Overview
+
+Axelar’s off-chain relayer service currently does not support the automatic processing of two-way calls through Cosmos chains. This limitation can affect to halt at the confirmation step. This guide covers how to manually process these transactions to ensure successful completion.
+
+## Manual Relay Process
+
+To manually process a two-way transaction to Cosmos through the Axelar network, perform the following steps:
+
+1. Confirm the gateway transaction on Axelar after the source chain transaction reaches finality.
+2. Monitor the Axelar network for the `MessageReceived` event.
+3. Manually route the message using the `RouteMessage` transaction on Axelar.
+
+## Step-by-Step Guide
+
+### 1. Confirm the Gateway Transaction
+
+After your transaction on the source chain has reached finality, manually confirm it on the Axelar network using the `ConfirmGatewayTx` command.
+
+### Command Usage
+
+```bash
+axelard tx evm confirm-gateway-tx \\
+<source_chain_name> \\
+<source_chain_name_tx_hash> \\
+  --from <your_axelar_account> \\
+  --gas auto \\
+  --gas-adjustment 1.3 \\
+  -y
+```
+
+- `<source_chain_name>`: The source chain name
+- `<source_chain_name_tx_hash>`: The hash of your source chain transaction
+- `<your_axelar_account>`: Your Axelar account name or key
+
+### Example
+
+```bash
+axelard tx evm confirm-gateway-tx \\
+ethereum \\
+0x0eb22acad0b37b2ebfca573944ccd41078ab61a057be8237c62818c0928618b1 \\
+  --from my_axelar_key \\
+  --gas auto \\
+  --gas-adjustment 1.3 \\
+  -y
+```
+
+### Notes
+
+- Ensure the source chain transaction is fully confirmed before executing this command
+- The `y` flag confirms the transaction without prompting
+
+### 2. Monitor for the `MessageReceived` Event
+
+After confirming the gateway transaction, wait for the `MessageReceived` event on the Axelar network. This event indicates that the message from the source chain has been received and is ready to be routed.
+
+### How to Monitor
+
+- AxelarScan Explorer: Visit [AxelarScan Testnet Explorer](https://testnet.axelarscan.io/) and search for your transactions or events related to your account.
+- RPC/WebSocket: Use Axelar's RPC endpoints to programmatically listen for events by polling every block height, as indicated [here](https://github.com/axelarnetwork/axelar-core/blob/2a8810a295bfa8c5831ef8e2dcbfb0fe16d6be4d/vald/start.go#L231).
+
+### Event Details
+
+The `MessageReceived` event provides the following information:
+
+- **id**: A unique identifier for the message, e.g., `0x07ff5d7fa8f782f1...-6`.
+- **payload_hash**: The hash of the message payload.
+- **recipient**: JSON object containing the recipient's chain information and address.
+- **sender**: JSON object containing the sender's chain information and address.
+
+**Example Event Data**:
+
+```json
+{
+  "id": "0x07ff5d7fa8f782f149a54a2d7f3fa5508777bfee11024b91a5e44e7423101ce7-6",
+  "payload_hash": "Oed6eTDbnou/OWAs5qipbsClgpgMeaCrWNxH1OSWxnY=",
+  "recipient": {
+    "chain": {
+      "name": "warden",
+      "supports_foreign_assets": true,
+      "key_type": "KEY_TYPE_NONE",
+      "module": "axelarnet"
+    },
+    "address": "warden1yatzc54ln59caxxnj53rff2s359pezx3hqxpzu2tkyl2f9ud9yvsnvmcme"
+  },
+  "sender": {
+    "chain": {
+      "name": "ethereum-sepolia",
+      "supports_foreign_assets": true,
+      "key_type": "KEY_TYPE_MULTISIG",
+      "module": "evm"
+    },
+    "address": "0xc13328bA9657C94aFfbf4f7d257d61e48199802A"
+  }
+}
+```
+
+### 3. Route the Message Manually
+
+Once the `MessageReceived` event is confirmed, manually route the message by executing `RouteMessageRequest` using [this RPC message](https://github.com/axelarnetwork/axelar-core/blob/29bb3e905af28ccf10cc1f61d50afa4b9a38038e/proto/axelar/axelarnet/v1beta1/tx.proto#L163).
+
+### Command Definition
+
+```bash
+axelard tx axelarnet route-message \
+  "<message_id>" \
+  "<payload>" \
+  --from "<your_axelar_account>" \
+  --gas auto \
+  --gas-adjustment 1.3 \
+  -y
+```
+
+- `<message_id>`: The `id` from the `MessageReceived` event.
+- `<payload>`: The payload data you want to route.
+- `<your_axelar_account>`: Your Axelar account name or key.
+
+### Example
+
+```bash
+axelard tx axelarnet route-message \
+  "0x0eb22acad0b37b2ebfca573944ccd41078ab61a057be8237c62818c0928618b1-6" \
+  "<payload>" \
+  --from "my_axelar_key" \
+  --gas auto \
+  --gas-adjustment 1.3 \
+  -y
+```
+
+### Notes
+
+- Replace the placeholder values with actual data from the `MessageReceived` event.
+- Ensure that the payload is correctly formatted and encoded if necessary.
+
+## Additional Information
+
+- **Error Handling**: If any step fails, verify the correctness of all provided parameters and ensure network connectivity.
+- **Automation**: While this process is manual due to current limitations, you can script these commands to streamline the workflow.
+
+If you require further assistance, please create an issue on our Github support repo [here](https://github.com/axelarnetwork/support).

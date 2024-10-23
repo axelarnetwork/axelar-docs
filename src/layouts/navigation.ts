@@ -214,6 +214,10 @@ export const getNavigation = (section) => {
               children: [
                 { title: "Introduction", href: "/dev/cosmos-gmp/overview/" },
                 {
+                  title: "Cosmos 2-way Call Relay",
+                  href: "/dev/cosmos-gmp/cosmos-2way-manual-relay/",
+                },
+                {
                   title: "Developer Guides",
                   children: [
                     {
