@@ -1,3 +1,4 @@
+import { title } from "process";
 export const topLevelNav = [
   {
     title: "Developers",
@@ -329,15 +330,31 @@ export const getNavigation = (section) => {
           ],
         },
         {
-          title: "Indexers",
+          title: "Tutorials",
           children: [
             {
-              title: "Introduction",
-              href: "/dev/indexers/overview/",
+              title: "Deploy App with Same Address Cross-Chain",
+              href: "https://blog.axelar.dev/how-to-deploy-an-application-with-the-same-address-cross-chain/",
             },
             {
-              title: "SubQuery",
-              href: "/dev/indexers/subquery/",
+              title: "Cross-Chain Governance with OpenZeppelin",
+              href: "https://blog.axelar.dev/cross-chain-governance-with-openzeppelin-governor-and-axelar",
+            },
+            {
+              title: "Building Multichain Stablecoins",
+              href: "https://blog.axelar.dev/building-multichain-stablecoins-part-one",
+            },
+            {
+              title: "Cross-Chain Memecoins with Axelar",
+              href: "https://blog.axelar.dev/cross-chain-memecoins-with-axelar",
+            },
+            {
+              title: "Multichain RWA Lending with GMP",
+              href: "https://blog.axelar.dev/multichain-rwa-lending-with-axelar-gmp",
+            },
+            {
+              title: "Full-Stack Interchain App with Next.js & Solidity",
+              href: "https://blog.axelar.dev/build-a-full-stack-interchain-application-with-nextjs-solidity-axelar",
             },
           ],
         },
