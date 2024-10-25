@@ -2,6 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
+* {
+  scroll-margin-top: 95px;
+}
 @layer base {
   :root {
     --background: #fafafa;
@@ -121,4 +124,18 @@
     border: none !important;
     padding: 0 !important;
   }
+}
+
+.header-links {
+  cursor: pointer;
+}
+.header-links > a {
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+  display: inline-block;
+  margin-left: 0.5rem;
+}
+
+.header-links:hover > a {
+  opacity: 1;
 }
