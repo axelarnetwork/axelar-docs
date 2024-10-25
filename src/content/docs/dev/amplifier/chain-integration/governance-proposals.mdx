@@ -380,6 +380,7 @@ axelard tx gov submit-proposal execute-contract $MULTISIG_CONTRACT_ADDRESS \
 
 For your blockchain to be integrated with the Amplifier service you must have a [reward pool](/dev/amplifier/add-rewards/) setup for your chain's verifiers to be compensated. The reward pool is setup by creating a governance proposal. 
 
+- Note: This must be ran twice. Once for the Voting Verifier contract and once for the Multisig Prover.
 
 ```bash
 export REWARDS_CONTRACT="axelar1vaj9sfzc3z0gpel90wu4ljutncutv0wuhvvwfsh30rqxq422z89qnd989l"
