@@ -2,6 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
+* {
+  scroll-margin-top: 95px;
+}
 @layer base {
   :root {
     --background: #fafafa;
