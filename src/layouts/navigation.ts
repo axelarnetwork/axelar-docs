@@ -1,4 +1,3 @@
-import { title } from "process";
 export const topLevelNav = [
   {
     title: "Developers",
@@ -359,6 +358,10 @@ export const getNavigation = (section) => {
               href: "https://blog.axelar.dev/build-a-full-stack-interchain-application-with-nextjs-solidity-axelar",
             },
           ],
+        },
+        {
+          title: "Indexers",
+          children: [{ title: "SubQuery", href: "/dev/indexers/subquery/" }],
         },
       ],
     });
