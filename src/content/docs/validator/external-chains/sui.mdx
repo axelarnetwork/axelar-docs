@@ -43,11 +43,13 @@ sui-node --version
 cd $HOME
 ```
 
-### Download genesis and config files
+### Restore from Snapshot and setup config files
 
 <tabs>
   <tab-item title="Mainnet" class="bleed">
-    ```bash mkdir -p /opt/sui/config/ cd /opt/sui/config/ curl -fLJO
+    ```bash 
+    mkdir -p /opt/sui/config/ cd /opt/sui/config/
+    curl -fLJO
     https://github.com/MystenLabs/sui-genesis/raw/main/mainnet/genesis.blob wget
     -O fullnode.yaml
     https://raw.githubusercontent.com/MystenLabs/sui/main/crates/sui-config/data/fullnode-template.yaml
@@ -55,10 +57,9 @@ cd $HOME
 ```
   </tab-item>
   <tab-item title="Testnet" class="bleed">
-    ```bash mkdir -p /opt/sui/config/ cd /opt/sui/config/ curl -fLJO
-    https://github.com/MystenLabs/sui-genesis/raw/main/testnet/genesis.blob wget
-    -O fullnode.yaml
-    https://raw.githubusercontent.com/MystenLabs/sui/main/crates/sui-config/data/fullnode-template.yaml
+    ```bash mkdir -p /opt/sui/config/ cd /opt/sui/config/ 
+    curl -fLJO https://github.com/MystenLabs/sui-genesis/raw/main/testnet/genesis.blob 
+    wget -O fullnode.yaml https://raw.githubusercontent.com/MystenLabs/sui/main/crates/sui-config/data/fullnode-template.yaml
     ls 
 ```
   </tab-item>
@@ -108,6 +109,28 @@ Edit the fullnode.yaml file to include peer nodes for state synchronization. App
     /dns/mel-tnt-ssfn-00.testnet.sui.io/udp/8084 peer-id:
     c88742f46e66a11cb8c84aca488065661401ef66f726cb9afeb8a5786d83456e 
 ```
+  </tab-item>
+</tabs>
+
+
+### Restore using Formal Snapshots
+See the [official documentation](https://docs.sui.io/guides/operator/snapshots#restoring-using-formal-snapshots) on this step.
+
+<tabs>
+  <tab-item title="Mainnet" class="bleed">
+    ```bash
+    sui-tool download-formal-snapshot --latest --genesis /opt/sui/config/genesis.blob  \
+        --network testnet \
+        --path /opt/sui/db/  --num-parallel-downloads 50 --no-sign-request
+    ```
+  </tab-item>
+  <tab-item title="Testnet" class="bleed">
+
+    ```bash
+    sui-tool download-formal-snapshot --latest --genesis /opt/sui/config/genesis.blob  \
+        --network mainnet \
+        --path /opt/sui/db/  --num-parallel-downloads 50 --no-sign-request
+    ```
   </tab-item>
 </tabs>
 
