@@ -380,22 +380,41 @@ axelard tx gov submit-proposal execute-contract $MULTISIG_CONTRACT_ADDRESS \
 
 For your blockchain to be integrated with the Amplifier service you must have a [reward pool](/dev/amplifier/add-rewards/) setup for your chain's verifiers to be compensated. The reward pool is setup by creating a governance proposal. 
 
+- Note: This must be ran twice. Once for the Voting Verifier contract and once for the Multisig Prover.
+
 ```bash
 export REWARDS_CONTRACT="axelar1vaj9sfzc3z0gpel90wu4ljutncutv0wuhvvwfsh30rqxq422z89qnd989l"
+export VOTING_VERIFIER_ADDRESS="axelar1x3960tw9cml6xsqtvzt4gmw3scauaxdd83rhs9dmlpjfjf9z9s7qjx8g0j"
 export CHAIN_NAME="AmplifiedChain"
+export EPOCH_DURATION="10" # How often rewards are calculated, specified in number of blocks.
+export REWARDS_PER_EPOCH="100" # Number of tokens distributed as rewards per epoch, split amongst verifiers. 
+export PARTICIPATION_THRESHOLD=["9", "10"] # amount of events verifiers must participate in to earn rewards (9/10 in this example).
 ```
 
 ```bash
-axelard tx gov submit-proposal execute-contract $REWARDS_CONTRACT \
-    --title="Create reward pool for $CHAIN_NAME" \
-    --description="Create a new reward pool to compensate verifiers for $CHAIN_NAME" \
-    --run-as $NETWORK_GOV_ADDRESS \
-    --deposit=100000uamplifier \
-    --keyring-backend test \
-    --from wallet \
-    --gas auto --gas-adjustment 1.5 --gas-prices 0.00005uamplifier \
-    --chain-id=devnet-amplifier \
-    --node $RPC
+ axelard tx gov submit-proposal execute-contract $REWARDS_CONTRACT \ '{
+    "create_pool":{
+        "params": {
+            "epoch_duration": "'"$EPOCH_DURATION"'",
+            "rewards_per_epoch": "'"$REWARDS_PER_EPOCH"'",
+            "participation_threshold": "'"$PARTICIPATION_THRESHOLD"'"
+        }, 
+        "pool_id":{
+            "chain_name":"'"$CHAIN_NAME"'",
+            "contract":"'"$VOTING_VERIFIER_ADDRESS"'"
+        }
+    }
+}' \
+--title="Create reward pool for $CHAIN_NAME" \
+--description="Create a new reward pool to compensate verifiers for $CHAIN_NAME" \
+--run-as $NETWORK_GOV_ADDRESS \
+--keyring-backend test \
+--deposit=100000000uamplifier \
+--from wallet \ 
+--gas auto \
+--gas-adjustment 1.5  \
+--gas-prices 0.00005uamplifier \
+--node  $RPC 
 ```
 
 ## Track your proposal
