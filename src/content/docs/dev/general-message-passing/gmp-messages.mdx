@@ -13,7 +13,7 @@ import { Callout } from "/src/components/callout";
 
 To call a contract on chain B from chain A, the user needs to call `callContract` on the gateway of chain A, specifying:
 
-- The destination chain, which must be an EVM chain from [Chain names](/dev/reference/mainnet-chain-names).
+- The destination chain, which must be an EVM chain from [Chain names](/dev/reference/mainnet-chain-names/).
 - The destination contract address, which must inherit from `AxelarExecutable` defined in [AxelarExecutable.sol](https://github.com/axelarnetwork/axelar-gmp-sdk-solidity/blob/main/contracts/executable/AxelarExecutable.sol).
 - The payload `bytes` to pass to the destination contract.
 
