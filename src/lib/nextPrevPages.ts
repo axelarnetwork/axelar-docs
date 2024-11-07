@@ -2,7 +2,12 @@ import { getNavigation } from "@/layouts/navigation";
 
 export function findPrevAndNextPages(pathname: string) {
   const initialUrl = pathname?.match(/\/([^\/]*)\//)?.[1];
-  const nav = getNavigation(initialUrl);
+  const nav = getNavigation(initialUrl)?.map((item) => {
+    return item?.children?.length
+      ? { ...item, children: item?.children?.filter((child) => !child.href) }
+      : item;
+  });
+  console.log(nav?.[0]);
 
   const currentItem = findItemByHref(nav, pathname);
   if (!currentItem) return { prevPage: null, nextPage: null };
