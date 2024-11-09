@@ -7,7 +7,6 @@ export function findPrevAndNextPages(pathname: string) {
       ? { ...item, children: item?.children?.filter((child) => !child.href) }
       : item;
   });
-  console.log(nav?.[0]);
 
   const currentItem = findItemByHref(nav, pathname);
   if (!currentItem) return { prevPage: null, nextPage: null };
