@@ -1,6 +1,6 @@
 # GMP API
 
-The Axelar Amplifier [GMP (General Message Passing)](/dev/general-message-passing/overview/) API equips developers with comprehensive tools and documentation to interact with Axelar's Amplifier protocol. 
+The Axelar Amplifier [GMP (General Message Passing)](/dev/general-message-passing/overview/) API equips developers with comprehensive tools and documentation to interact with Axelar's Amplifier protocol. The GMP API allows for a more automated message passing integration between amplifier chains. Rather than needing to manually trigger various Amplifier related functionality on the contracts themselves via `axelard` commands, you can use the GMP API to efficiently integrate the Axelar Amplifier GMP API into your applications, enabling seamless cross-chain communication and smart contract interactions.
 
 Each event type includes a detailed schema specifying required properties and their types. We also provide `cURL` examples to illustrate how to interact with the API endpoints, making it straightforward to test and implement in your projects.
 
@@ -374,6 +374,10 @@ curl -X POST $GMP_API_URL/ethereum/events \
   }]
 }'
 ```
+
+## Integration Example
+
+For an example of how to have your Relayer and its components interact with the GMP API, please see the following [guide](https://github.com/axelarnetwork/axelar-examples/blob/main/examples/amplifier/README.md).
 
 
 ## Internal Objects and types
