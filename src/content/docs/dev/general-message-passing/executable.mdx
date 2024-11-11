@@ -2,9 +2,11 @@
 
 ## Overview
 
-The [Axelar Executable Contract](https://github.com/axelarnetwork/axelar-gmp-sdk-solidity/blob/main/contracts/executable/AxelarExecutable.sol) is a component of the Axelar General Message Passing (GMP) flow, allowing the execution of custom logic in response to messages from different blockchains. By simply inheriting from the Axelar Executable your contract can process and respond to incoming cross-chain GMP data.
+The Axelar Executable is a component of the Axelar General Message Passing (GMP) flow, allowing the execution of custom logic in response to messages from different blockchains. By simply inheriting from the Axelar Executable your contract can process and respond to incoming cross-chain GMP data.
 
-## Integration
+## Integration For GMP Executable 
+
+For a [plain GMP executable](/dev/general-message-passing/gmp-tokens-with-messages/) message you can inherit from the [Axelar Executable](https://github.com/axelarnetwork/axelar-gmp-sdk-solidity/blob/b5d0b7bdda0437fce983daffb776669437b809d0/contracts/executable/AxelarExecutable.sol) contract.
 
 1. Import **`AxelarExecutable`** from the Axelar GMP SDK to enable cross-chain capabilities.
 
@@ -18,40 +20,68 @@ The [Axelar Executable Contract](https://github.com/axelarnetwork/axelar-gmp-sdk
    contract MyContract is AxelarExecutable {}
    ```
 
-1. Implement the `virtual` functions defined in Axelar Executable on your own contracts. The functions you implement on your own contract will be automatically triggered by an Axelar relayer on the destination chain once the multichain transaction arrives on the destination chain
+1. Implement the `virtual` functions defined in `AxelarExecutable` on your own contracts. The functions you implement on your own contract will be automatically triggered by an Axelar relayer on the destination chain once the multichain transaction arrives on the destination chain
 
-## GMP Message vs. GMP Message With Token
+## Integration For GMP With Token Executable
 
-There are two relevant functions that can be overriden from AxelarExecutable. The function you want to override depends on whether your sending a GMP message or a GMP message WITH a [Gateway Token](/resources/contract-addresses/mainnet#assets). These two functions are [\_execute()](https://github.com/axelarnetwork/axelar-gmp-sdk-solidity/blob/be86ab9a171f8e12d7695127cf1a6ca867fa1b09/contracts/executable/AxelarExecutable.sol#L55) and [\_executeWithToken()](https://github.com/axelarnetwork/axelar-gmp-sdk-solidity/blob/be86ab9a171f8e12d7695127cf1a6ca867fa1b09/contracts/executable/AxelarExecutable.sol#L61)
+If you are [sending a GMP message with a token](/dev/general-message-passing/gmp-tokens-with-messages/)  and need to handle the executable for a token + gmp msg then you will need to inherit from the [Axelar Executable With Token](https://github.com/axelarnetwork/axelar-gmp-sdk-solidity/blob/b5d0b7bdda0437fce983daffb776669437b809d0/contracts/executable/AxelarExecutableWithToken.sol) contract.
 
+
+1. Import **`AxelarExecutableWithToken`** from the Axelar GMP SDK to enable cross-chain capabilities.
+
+   ```solidity
+   import "@axelar-network/axelar-gmp-sdk-solidity/contracts/executable/AxelarExecutableWithToken.sol";
+   ```
+
+1. Inherit Axelar `AxelarExecutableWithToken` Functions:
+
+   ```solidity
+   contract MyContract is AxelarExecutableWithToken {}
+   ```
+
+1. Implement the `virtual` functions defined in `AxelarExecutableWithToken` on your own contracts. The functions you implement on your own contract will be automatically triggered by an Axelar relayer on the destination chain once the multichain transaction arrives on the destination chain
+
+
+
+## Implementation Comparison
+
+Once you have inherited from the respective Executable contract you can now defined the execution function. This varies slightly depending on whether you are using an execution for a plain GMP message or a GMP message with a token.
+
+<tabs>
+<tab-item title="execute">
 ```solidity
 /*** For GMP Message ***/
 /**
+  @param commandId identifier tx that is guaranteed to be unique from the Axelar network
 	@param sourceChain The chain where the GMP message is sent from
 	@param sourceAddress The address on where the GMP msg is sent from
 	@param payload The GMP message being sent
 **/
-function _execute(string calldata sourceChain, string calldata sourceAddress, bytes calldata payload) internal override {
+function _execute(bytes32 commandId, string calldata sourceChain, string calldata sourceAddress, bytes calldata payload) internal override {
     // Implement your logic on the destination chain
     string memory myGmpMessage = abi.decode(payload, (string));
-
 }
-
+```
+</tab-item>
+<tab-item title="executeWithToken">
+```solidity
 /*** For GMP Message + Token ***/
 /**
+  @param commandId identifier tx that is guaranteed to be unique from the Axelar network
 	@param sourceChain The chain where the GMP message is sent from
 	@param sourceAddress The address on where the GMP msg is sent from
 	@param payload The GMP message being sent
 	@param tokenSymbol The token being sent
 	@param amount The amount of the token being sent
 **/
-function _executeWithToken(string calldata sourceChain, string calldata sourceAddress, bytes calldata payload, string calldata tokenSymbol, uint256 amount) internal override {
+function _executeWithToken(bytes32 commandId, string calldata sourceChain, string calldata sourceAddress, bytes calldata payload, string calldata tokenSymbol, uint256 amount) internal override {
 	address memory receiver = abi.decode(payload, (address));
 	address tokenAddress = gateway.tokenAddresses(tokenSymbol);
 	IERC20(tokenAddress).transfer(receiver, amount);
 }
-
 ```
+</tab-item>
+</tabs>
 
 ## Incoming Message Validation
 
