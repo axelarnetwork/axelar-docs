@@ -130,7 +130,6 @@ export const getNavigation = (section) => {
               title: "Send Messages with Tokens",
               href: "/dev/general-message-passing/gmp-tokens-with-messages/",
             },
-
             {
               title: "Gas Service",
               children: [
@@ -245,6 +244,24 @@ export const getNavigation = (section) => {
                   ],
                 },
               ],
+            },
+            {
+              title: "Stellar Soroban GMP",
+              children: [
+                {
+                title: "Soroban Contracts",
+                href: "/dev/general-message-passing/soroban-gmp/soroban-contracts/"
+                },
+                {
+                title: "GMP Example",
+                href: "/dev/general-message-passing/soroban-gmp/gmp-message-example/"
+                },
+                {
+                title: "ITS",
+                href: "/dev/general-message-passing/soroban-gmp/its/"
+                }
+              ]
+
             },
             {
               title: "Solidity Utilities",
