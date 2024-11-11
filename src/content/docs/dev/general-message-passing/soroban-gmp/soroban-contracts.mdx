@@ -1,0 +1,76 @@
+# Soroban Contracts
+
+The core contracts for Axelar's integration with Stellar Soroban can be found at the [axelar-cgp-soroban](https://github.com/axelarnetwork/axelar-cgp-soroban) repository. 
+
+The Rust based GMP contracts can be thought of similarly to their [EVM](/dev/general-message-passing/gmp-messages/) counterparts. 
+
+At the core of there are two main contracts involved in sending a GMP message, these are the [Gateway Contract](https://github.com/axelarnetwork/axelar-cgp-soroban/tree/main/contracts/axelar-gateway) and the [Gas Service](https://github.com/axelarnetwork/axelar-cgp-soroban/tree/main/contracts/axelar-gas-service).
+
+## Soroban Gateway
+The Gateway facilitates sending and receiving of cross-chain messages to other chains via the Axelar Network.
+
+For sending a GMP message, the `callContract()` function needs to be triggered.
+
+### CallContract
+The `callContract` function triggers your cross-chain message from Stellar to the Axelar Network. When sending a cross-chain message you must specify the destination of your cross-chain message and a given payload.
+    
+The `callContract` function takes five parameters. 
+1. `env`: Standard soroban [env](https://developers.stellar.org/docs/learn/encyclopedia/contract-development/environment-concepts) that provides access to the environment the contract is executing within. 
+1. `caller`: (optional) The sender of the contract call. Inferred as.... ******** TODO REVIEW*************************
+1. `destination_chain`: Name of the chain the message is being sent to.
+1. `destination_address`: Address on the destination chain the message is being sent to.
+1. `payload`: A `bytes` representation of the cross-chain message being sent.
+
+```rust
+pub fn call_contract(
+    env: Env,
+    caller: Address,
+    destination_chain: String,
+    destination_address: String,
+    payload: Bytes,
+){}
+```
+
+## Soroban Gas Service
+The Gas Service handles cross-chain gas payment when making a GMP request. 
+
+When sending a GMP message before triggering the `call_contract()` function on the Gateway, the `pay_gas_for_contract_call()` must be triggered first to pay for the cross-chain transaction.  
+
+### PayGasForContractCall()
+ The `pay_gas_for_contract_call()` allows users to pay for the entirety of the cross-chain transaction in a given token. 
+
+ The `pay_gas_for_contract_call()` takes seven parameters.
+1. `env`: Standard soroban [env](https://developers.stellar.org/docs/learn/encyclopedia/contract-development/environment-concepts) that provides access to the environment the contract is executing within. 
+1. `sender`: (optional) The sender of the gas payment call. Inferred as.... ****** TODO REVIEW ********
+1. `destination_chain`: Name of the chain the message is being sent to.
+1. `destination_address`: Address on the destination chain the message is being sent to.
+1. `payload`: A `bytes` representation of the cross-chain message being sent.
+1. `refund_address`: An address to be refunded if gas amount was overpaid.
+1. `token`: The token being used for payment
+
+Note: The expected [token](https://github.com/axelarnetwork/axelar-cgp-soroban/blob/main/packages/axelar-soroban-std/src/types.rs#L5) is a struct type that requires an `address` and `amount`. 
+
+```rust
+   pub fn pay_gas_for_contract_call(
+        env: Env,
+        sender: Address,
+        destination_chain: String,
+        destination_address: String,
+        payload: Bytes,
+        refund_address: Address,
+        token: Token,
+    ) -> Result<(), ContractError> {}
+```
+
+## Soroban Executable
+The [Executable](https://github.com/axelarnetwork/axelar-cgp-soroban/blob/main/contracts/axelar-gateway/src/executable.rs#L9) is a Rust Trait that will be used to execute a cross-chain call on a Soroban dapp when Stellar is the receiving chain of a cross-chain message.
+
+### Execute 
+The `execute()` function will be triggered by an Axelar relayer when the cross-chain message arrives. Your contract should implement the `execute()` function to handle the incoming cross-chain GMP data.
+
+The `execute()` function takes five parameters.
+1. `env`: 
+1. `source_chain`
+1. `message_id`
+1. `source_address`: 
+1. `payload`: 
