@@ -479,9 +479,18 @@ Prior to running the `ampd` daemon, you will need to set up your wallet with dev
 
 1. Register support for desired chains, enabling `ampd` to participate in voting and signing for your supported chains.
 
+<tabs>
+<tab-item title="devnet">
    ```bash
    ampd register-chain-support validators flow
    ```
+</tab-item>
+<tab-item title="testnet">
+   ```bash
+   ampd register-chain-support amplifier flow
+   ```
+</tab-item>
+</tabs>
 
    Multiple chain names can be passed, separated by a space (`ampd register-chain-support [service name] [chains]...`). Note that any chain you want to support here must be configured in your ampd `config.toml` file.
 
