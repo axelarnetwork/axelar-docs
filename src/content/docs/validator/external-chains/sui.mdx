@@ -111,6 +111,15 @@ Edit the fullnode.yaml file to include peer nodes for state synchronization. App
   </tab-item>
 </tabs>
 
+
+Download the snapshot from the latest epoch.
+
+```bash
+sui-tool download-formal-snapshot --latest --genesis /opt/sui/config/genesis.blob       --network testnet      --path /opt/sui/db/  --num-parallel-downloads 50 --no-sign-request
+```
+
+If you encounter any failures, try lowering the `num-parallel-downloads` value.
+
 ### Setup systemd
 
 Create the systemd service file `/etc/systemd/system/sui.service`
