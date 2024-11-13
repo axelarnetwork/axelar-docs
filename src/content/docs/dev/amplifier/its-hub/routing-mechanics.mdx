@@ -1,0 +1,177 @@
+# Routing Mechanics
+
+[ITS Hub](/dev/amplifier/its-hub/introduction/) modifies the existing token transfer mechanism by introducing a centralized routing point. Instead of ITS Edge Contracts communicating directly, all ITS calls are routed through the ITS Hub. This approach allows for enhanced security measures, balance tracking, and prepares the system for future features.
+
+## How Routing Works
+
+ITS Hub routing works in the following way:
+
+- Dual GMP calls
+- Payload wrapping
+
+### Dual GMP Calls
+
+Each token transfer or deployment involves two General Message Passing (GMP) calls:
+
+1. **From Source Chain to ITS Hub**: The ITS Edge Contract on the source chain sends a GMP call to the ITS Hub, wrapping the original payload.
+2. **From ITS Hub to Destination Chain**: The ITS Hub processes the payload, applies security measures, and forwards it to the ITS Edge Contract on the destination chain.
+
+### Payload Wrapping
+
+To facilitate routing through the ITS Hub, new message types are introduced:
+
+```solidity
+uint256 private constant MESSAGE_TYPE_SEND_TO_HUB = 3;
+uint256 private constant MESSAGE_TYPE_RECEIVE_FROM_HUB = 4;
+```
+
+- **MESSAGE_TYPE_SEND_TO_HUB (3)**: Indicates the message is intended for the ITS Hub.
+- **MESSAGE_TYPE_RECEIVE_FROM_HUB (4)**: Indicates the message is coming from the ITS Hub.
+
+**Example Payload Wrapping:**
+
+On the source chain:
+
+```solidity
+string destinationAddress = trustedAddresses[destinationChain];
+
+if (destinationAddress == itsHubAddress) {
+    payload = abi.encode(
+        MESSAGE_TYPE_SEND_TO_HUB,
+        destinationChain,  // True destination chain
+        originalPayload    // Original ITS payload
+    );
+    destinationChain = axelarChainName; // Route to ITS Hub
+}
+
+gateway.callContract(destinationChain, destinationAddress, payload);
+```
+
+On the ITS Hub:
+
+```solidity
+// Unwrap the payload
+(destinationChain, originalPayload) = abi.decode(payload, (string, bytes));
+
+// Process the payload (apply security checks, balance tracking, etc.)
+
+// Wrap the payload to send to the destination chain
+payload = abi.encode(
+    MESSAGE_TYPE_RECEIVE_FROM_HUB,
+    sourceChain,       // True source chain
+    originalPayload    // Original ITS payload
+);
+
+gateway.callContract(destinationChain, destinationAddress, payload);
+```
+
+## Visualizing the Routing Process
+
+### ITS Chain A to ITS Chain B via ITS Hub
+
+```mermaid
+graph LR
+    ITSA[ITS Chain A]
+    ITSB[ITS Chain B]
+    ITSHub[ITS Hub]
+
+    ITSA -->|Wrapped Payload GMP| ITSHub
+    ITSHub -->|Wrapped Payload GMP| ITSB
+
+    subgraph Axelar Network
+        ITSHub
+    end
+```
+
+## Handling Different Token Types
+
+### ITS Tokens vs. Gateway Tokens
+
+- **ITS Tokens**: Managed entirely by the ITS protocol. The ITS Hub handles their deployment and transfer without special considerations.
+- **Gateway Tokens**: Minted and burned via the Axelar protocol. The ITS Hub interacts with the Axelar Gateway to handle these tokens, ensuring proper minting and burning.
+
+## Interacting with Different Chain Types
+
+### Amplifier Chains
+
+- **Smart Contract Chains**: Have ITS Edge Contracts similar to EVM chains. The routing mechanics are consistent with the dual GMP call approach.
+- **Non-Smart Contract Chains**: The Axelar Gateway on these chains acts as an ITS Edge Contract, translating ITS commands into custom token transfer or deployment transactions.
+
+**Amplifier Chain to ITS Hub**
+
+```mermaid
+sequenceDiagram
+    participant User
+    participant ITS as ITS Edge Contract
+    participant EG as External AxelarGateway
+    participant G as Internal Gateway
+    participant R as Amplifier Router
+    participant A as Axelarnet Gateway
+    participant ITSHub
+
+    User->>ITS: interchainTransfer
+    ITS->>EG: CallContract
+    EG->>G: VerifyMessage
+    G->>R: RouteMessage
+    R->>A: RouteMessage
+    A->>ITSHub: Execute
+```
+
+**ITS Hub to Amplifier Chain**
+
+```mermaid
+sequenceDiagram
+    participant ITSHub
+    participant A as Axelarnet Gateway
+    participant R as Amplifier Router
+    participant AG as Internal Gateway
+    participant E as External Gateway
+    participant ITS as ITS Edge Contract
+
+    ITSHub->>A: CallContract
+    A->>R: RouteMessage
+    R->>AG: RouteMessage
+    AG->>E: ConstructProof
+    E->>ITS: Execute
+```
+
+### Consensus Chains
+
+- Use the existing Axelar protocol for GMP calls.
+- The ITS Hub interacts with consensus modules to handle GMP calls with tokens (Gateway tokens).
+
+**Consensus Chain to ITS Hub with Gateway Token**
+
+```mermaid
+sequenceDiagram
+    participant User
+    participant ITS as ITS Edge Contract
+    participant E as EVM Gateway (Legacy)
+    participant EM as EVM Module
+    participant NR as Nexus Module
+    participant AM as Nexus Gateway
+    participant ITSHub
+
+    User->>ITS: interchainTransfer
+    ITS->>E: CallContractWithToken
+    E->>EM: ConfirmGatewayTx
+    EM->>NR: RouteMessage with payload
+    NR->>AM: routeMsg
+    AM->>ITSHub: wasm Execute
+```
+
+## Security Measures
+
+The ITS Hub enhances security through:
+
+- **Balance Tracking**: Keeps track of the total bridged balance per token per chain to prevent over-escrow or unauthorized minting.
+- **Rate Limits**: Applies per-token rate limits to mitigate risks from compromised chains or contracts.
+- **Centralized Control**: Allows pausing or disconnecting specific chain connections in case of security threats.
+
+## Future Compatibility
+
+The ITS Hub is designed to accommodate future features:
+
+- **GMP Express**: Support for faster message passing without compromising security.
+- **Integration with Axelar and Cosmos Chains**: Enabling ITS functionalities on these chains through the ITS Hub.
+- **Migration Support**: Existing P2P ITS connections can be migrated to route through the ITS Hub.

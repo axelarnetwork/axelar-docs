@@ -1,0 +1,37 @@
+# ITS Hub
+
+import { Callout } from "/src/components/callout";
+
+<Callout>
+  The Interchain Token Service (ITS) Hub is currently under active development,
+  please check back frequently for updates.
+</Callout>
+
+The Interchain Token Service (ITS) Hub is a Cosmwasm [contract](https://github.com/axelarnetwork/axelar-amplifier/tree/feat/its-hub/interchain-token-service) on the Axelar network that acts as a central routing hub for token transfers across Amplifier and consensus chains.
+The ITS Hub is designed to enhance the security, interoperability, and extensibility of cross-chain token transfers by ensuring that all ITS-enabled chains route their token transactions through this hub.
+This approach helps maintain consistent security measures, enables scalability, and supports a diverse set of connected chains, including [EVM](/resources/contract-addresses/mainnet/#evm-contract-addresses) and non-smart contract chains.
+
+Axelar supports two types of tokens: **Gateway Tokens** and **ITS Tokens**.
+
+- **Gateway Tokens**: Cross-chain tokens deployed natively via the Axelar protocol and the old EVM Axelar gateway.
+  These are legacy tokens that the [ITS Edge Contracts](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/InterchainTokenService.sol) support. They are native tokens registered and minted within the Axelar consensus model.
+- **ITS Tokens**: Tokens deployed via ITS and controlled by the ITS protocol. These tokens are based on [General Message Passing (GMP)](/dev/general-message-passing/overview/) and are minted, burned, and managed on the connected [EVM chains](/resources/contract-addresses/mainnet/#evm-contract-addresses) directly.
+
+The ITS Hub supports both token types and enables the secure bridging of these tokens across different types of chains.
+
+ITS Hub brings significant value to Axelar's ecosystem by addressing the limitations of a peer-to-peer Interchain Token Service (ITS) model, which posed security risks in case one of the chains is compromised.
+
+By routing through a central hub, token bridging is simplified and protected by an invariant that tracks the total balance bridged per chain per token.
+
+The key outcomes of the ITS Hub implementation include:
+
+<Callout>
+  Custom ITS token are not supported in the current version of the ITS Hub.
+</Callout>
+
+- **Unified Token Routing**: All token bridging across ITS-enabled chains is handled through the ITS Hub, regardless of chain type ([Amplifier](dev/amplifier/introduction/) or consensus).
+- **Support for ITS and Gateway Tokens**: Both ITS and Gateway Tokens can be securely transferred across chains, reducing fragmentation and complexity.
+- **Balance Invariance**: ITS Hub maintains balance tracking to ensure that tokens escrowed to a chain cannot be over-bridged.
+- **Rate Limits**: Ability to set rate limits per token by chain, adding an additional security layer.
+
+The ITS Hub's future iterations are designed to be compatible with new features like General Message Passing (GMP) express while avoiding breaking changes to the existing ITS contracts.
