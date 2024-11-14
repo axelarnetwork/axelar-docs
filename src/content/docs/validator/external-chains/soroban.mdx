@@ -13,36 +13,36 @@ Set up your Soroban node.
 ## Install required dependencies
 
 In order to build the `Soroban` node, you first need to install all the required dependencies.
-c++ toolchain and headers that supports c++17
-clang >= 12.0
-g++ >= 10.0
-pkg-config
-bison and flex
-libpq-dev unless you ./configure --disable-postgres in the build step below.
-64-bit system
-clang-format-12 (for make format to work)
-sed and perl
-libunwind-dev
-Rust toolchain (see Installing Rust subsection)
-cargo >= 1.74
-rust >= 1.74
+- c++ toolchain and headers that supports c++17
+- clang >= 12.0 (Only >= 14.0 versions are available on 24.04 LTS)
+- g++ >= 10.0
+- pkg-config
+- bison and flex
+- libpq-dev unless you ./configure --disable-postgres in the build step below.
+- 64-bit system
+- clang-format >= 12 (for make format to work)
+- sed and perl
+- libunwind-dev
+- Rust toolchain (see Installing Rust subsection)
+- cargo >= 1.74
+- rust >= 1.74
 
 ```bash
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 sudo apt-get update
-sudo apt-get install -y make git-core libssl-dev pkg-config libclang-12-dev build-essential protobuf-compiler
-sudo apt-get install libudev-dev
+sudo apt-get install -y make git-core libssl-dev pkg-config libclang-18-dev build-essential protobuf-compiler
+sudo apt-get install -y libudev-dev
 source "$HOME/.cargo/env"
 
 # common packages
 sudo apt-get install git build-essential pkg-config autoconf automake libtool bison flex libpq-dev libunwind-dev parallel sed perl postgresql-common postgresql postgresql-contrib
 # if using clang
-sudo apt-get install clang-12
+sudo apt-get install clang-18
 # clang with libstdc++
 sudo apt-get install gcc-10
 # if using g++ or building with libstdc++
 # sudo apt-get install gcc-10 g++-10 cpp-10
-sudo apt-get install clang-format-12
+sudo apt-get install clang-format-18
 ```
 
 ## Install Stellar-Core
@@ -53,23 +53,39 @@ Install the latest versions for the network accordingly [stellar core latest rel
 
 ```bash
 # These are examples - check their docs and release page to opt for the right version
-STELLAR_RELEASE=v21.2.0
-SOROBAN_RELEASE=v21.4.1
+STELLAR_RELEASE=v22.0.0
+SOROBAN_RELEASE=v22.0.0
 ```
 
 ### 1. Install Stellar Core
 
 <tabs>
 <tab-item title="Mainnet" class="bleed">
-    ```bash git clone https://github.com/stellar/stellar-core.git cd
-    stellar-core git checkout $STELLAR_RELEASE git submodule init git submodule
-    update ./autogen.sh ./configure make make check make install 
+    ```bash
+    git clone https://github.com/stellar/stellar-core.git
+    cd stellar-core
+    git checkout $STELLAR_RELEASE
+    git submodule init
+    git submodule update
+    ./autogen.sh
+    ./configure
+    make
+    make check
+    sudo make install
 ```
 </tab-item>
 <tab-item title="Testnet" class="bleed">
-    ```bash git clone https://github.com/stellar/stellar-core.git cd
-    stellar-core git checkout $STELLAR_RELEASE git submodule init git submodule
-    update ./autogen.sh ./configure make make check make install 
+    ```bash
+    git clone https://github.com/stellar/stellar-core.git 
+    cd stellar-core
+    git checkout $STELLAR_RELEASE
+    git submodule init
+    git submodule update
+    ./autogen.sh
+    ./configure
+    make
+    make check
+    sudo make install
 ```
 
 </tab-item>
@@ -86,7 +102,7 @@ SOROBAN_RELEASE=v21.4.1
         cd soroban-rpc
         git checkout $SOROBAN_RELEASE
         make build-soroban-rpc
-        mv soroban-rpc /usr/bin/
+        sudo mv soroban-rpc /usr/bin/
         ```
     </tab-item>
     <tab-item title="Testnet" class="bleed">
@@ -95,7 +111,7 @@ SOROBAN_RELEASE=v21.4.1
         cd soroban-rpc
         git checkout $SOROBAN_RELEASE
         make build-soroban-rpc
-        mv soroban-rpc /usr/bin/
+        sudo mv soroban-rpc /usr/bin/
         ```
     </tab-item>
 </tabs>
@@ -334,21 +350,26 @@ soroban-rpc gen-config-file >> config.toml
 
 <tabs>
 <tab-item title="Mainnet" class="bleed">
-    ```bash # edit ~/.soroban/config.toml and uncomment and set to
-    NETWORK_PASSPHRASE="Public Global Stellar Network ; September 2015" # update
-    to ~/.stellar/config/core.toml CAPTIVE_CORE_CONFIG_PATH="" # update to
-    ~/.stellar CAPTIVE_CORE_STORAGE_PATH = "" HISTORY_ARCHIVE_URLS =
-    ["https://history.stellar.org/prd/core-live/core_live_001"]
+    ```bash
+    # edit ~/.soroban/config/config.toml and uncomment and set to
+    NETWORK_PASSPHRASE="Public Global Stellar Network ; September 2015"
+    # update to ~/.stellar/config/core.toml (should be an absolute path)
+    CAPTIVE_CORE_CONFIG_PATH="<HOME>/.stellar/config/core.toml" 
+    # update to ~/.stellar
+    CAPTIVE_CORE_STORAGE_PATH = "<HOME>/.stellar"
+    HISTORY_ARCHIVE_URLS = ["https://history.stellar.org/prd/core-live/core_live_001"]
     STELLAR_CORE_BINARY_PATH = "/usr/local/bin/stellar-core" 
 ```
 </tab-item>
 <tab-item title="Testnet" class="bleed">
     ```bash # edit ~/.soroban/config.toml and uncomment and set to
-    NETWORK_PASSPHRASE="Test SDF Network ; September 2015" # update to
-    ~/.stellar/config/core.toml CAPTIVE_CORE_CONFIG_PATH="" # update to
-    ~/.stellar CAPTIVE_CORE_STORAGE_PATH = "" HISTORY_ARCHIVE_URLS =
-    ["http://history.stellar.org/prd/core-testnet/core_testnet_001"]
-    STELLAR_CORE_BINARY_PATH = "/usr/local/bin/stellar-core" 
+    NETWORK_PASSPHRASE="Test SDF Network ; September 2015" 
+    # update to ~/.stellar/config/core.toml (should be an absolute path)
+    CAPTIVE_CORE_CONFIG_PATH="<HOME>/.stellar/config/core.toml" 
+    # update to ~/.stellar
+    CAPTIVE_CORE_STORAGE_PATH = "<HOME>/.stellar"
+    HISTORY_ARCHIVE_URLS = ["http://history.stellar.org/prd/core-testnet/core_testnet_001"]
+    STELLAR_CORE_BINARY_PATH = "/usr/local/bin/stellar-core"
 ```
 </tab-item>
 
@@ -366,6 +387,7 @@ After=network-online.target
 
 [Service]
 User=$USER
+WorkingDirectory=$HOME/.soroban/
 ExecStart=$(which $BINARY_NAME) --config-path $CONFIG_PATH
 Restart=always
 RestartSec=3
