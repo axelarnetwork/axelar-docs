@@ -1,3 +1,5 @@
+import { Callout } from "../../../../../components/callout";
+
 # Soroban Contracts
 
 The core contracts for Axelar's integration with Stellar Soroban can be found at the [axelar-cgp-soroban](https://github.com/axelarnetwork/axelar-cgp-soroban) repository. 
@@ -13,10 +15,14 @@ For sending a GMP message, the `callContract()` function needs to be triggered.
 
 ### CallContract
 The `callContract` function triggers your cross-chain message from Stellar to the Axelar Network. When sending a cross-chain message you must specify the destination of your cross-chain message and a given payload.
+
+<Callout emoji="💡">
+Note: In Soroban, you don't need to pass the `env` explicitly when writing contract functions; it is automatically provided to the contract entry points
+</Callout>
     
 The `callContract` function takes five parameters. 
 1. `env`: Standard soroban [env](https://developers.stellar.org/docs/learn/encyclopedia/contract-development/environment-concepts) that provides access to the environment the contract is executing within. 
-1. `caller`: (optional) The sender of the contract call. Inferred as.... ******** TODO REVIEW*************************
+1. `caller`: The sender of the contract call. 
 1. `destination_chain`: Name of the chain the message is being sent to.
 1. `destination_address`: Address on the destination chain the message is being sent to.
 1. `payload`: A `bytes` representation of the cross-chain message being sent.
@@ -41,7 +47,7 @@ When sending a GMP message before triggering the `call_contract()` function on t
 
  The `pay_gas_for_contract_call()` takes seven parameters.
 1. `env`: Standard soroban [env](https://developers.stellar.org/docs/learn/encyclopedia/contract-development/environment-concepts) that provides access to the environment the contract is executing within. 
-1. `sender`: (optional) The sender of the gas payment call. 
+1. `sender`: The sender of the gas payment call. 
 1. `destination_chain`: Name of the chain the message is being sent to.
 1. `destination_address`: Address on the destination chain the message is being sent to.
 1. `payload`: A `bytes` representation of the cross-chain message being sent.
@@ -119,7 +125,7 @@ The `validate()` function will trigger the `validate_message()`, this will confi
 ```
 
 1. `env`: Standard soroban [env](https://developers.stellar.org/docs/learn/encyclopedia/contract-development/environment-concepts) that provides access to the environment the contract is executing within. 
-1. `caller`: (optional) The sender of the contract call. 
+1. `caller`: The intended `destination_address` of the contract call.
 1. `source_chain`: The source chain where the gmp message is coming from.
 1. `message_id`: Identifier for incoming GMP message.
 1. `source_address`: The address on the source chain where the gmp message is coming from/
