@@ -1,6 +1,5 @@
 {
   "framework": null,
-  "trailingSlash": true,
   "redirects": [
     {
       "source": "/dev/amplifier/chain-integration/relay-messages/",

@@ -30,7 +30,7 @@ export default defineConfig({
     }),
   ],
   site: "https://docs.axelar.dev",
-  trailingSlash: "always",
+
   markdown: {
     remarkPlugins: [
       remarkDirective,
