@@ -2,7 +2,7 @@
   "framework": null,
   "redirects": [
     {
-      "source": "/dev/amplifier/chain-integration/relay-messages",
+      "source": "/dev/amplifier/chain-integration/relay-messages/:slash?",
       "destination": "/dev/amplifier/chain-integration/relay-messages/manual/",
       "permanent": true
     },
