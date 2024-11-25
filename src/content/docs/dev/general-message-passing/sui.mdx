@@ -1,0 +1,163 @@
+# General Message Passing with Sui
+
+import { Callout } from "/src/components/callout";
+
+[Sui](https://sui.io/) is a blockchain that has been integrated with the Axelar Network via [the Interchain Amplifier](/dev/amplifier/introduction/). 
+
+Sending messages between Sui and other blockchains follows the same patterns as [GMP messages](/dev/general-message-passing/overview/) on other chains, such as EVM chains.
+
+The SUI gateway and SUI smart contracts sending or receiving messages with the Axelar Network will be written in Move. 
+
+<Callout>
+    Axelar's Sui integration is currently only available on devnet-amplifier. Testnet and mainnet will be available soon.
+</Callout>
+
+## Sending a message from Sui
+Sending a message from Sui involves the following steps:
+
+- Register your transaction with the relayer discovery service via the `register_transaction` function on the relayer discovery service.
+- Prepare the message via the `prepare_message` function on the gateway.
+- Pay gas via the `pay_gas` function on the gas service.
+- Send the message via the `send_message` function on the gateway.
+
+Here's a sample [Move](https://sui.io/move) module that defines `send_call` and `register_transaction` functions that invoke these methods.
+
+```move
+module example::gmp;
+
+use axelar_gateway::channel::{Self, Channel, ApprovedMessage};
+use axelar_gateway::gateway::{Self, Gateway};
+use gas_service::gas_service::GasService;
+use example::utils::concat;
+use relayer_discovery::discovery::RelayerDiscovery;
+use relayer_discovery::transaction;
+use std::ascii::{Self, String};
+use std::type_name;
+use sui::address;
+use sui::coin::Coin;
+use sui::event;
+use sui::hex;
+use sui::sui::SUI;
+
+public struct Singleton has key {
+    id: UID,
+    channel: Channel,
+}
+
+public struct Executed has copy, drop {
+    data: vector<u8>,
+}
+
+fun init(ctx: &mut TxContext) {
+    let singletonId = object::new(ctx);
+    let channel = channel::new(ctx);
+    transfer::share_object(Singleton {
+        id: singletonId,
+        channel,
+    });
+}
+
+public fun register_transaction(
+    discovery: &mut RelayerDiscovery,
+    singleton: &Singleton,
+) {
+	let arguments = vector [
+		vector[2u8],
+		concat(vector[0u8], object::id_address(singleton).to_bytes())
+	];
+
+    let transaction = transaction::new_transaction(
+        true,
+        vector[
+            transaction::new_move_call(
+                transaction::new_function(
+                    address::from_bytes(
+                        hex::decode(
+                            *ascii::as_bytes(
+                                &type_name::get_address(
+                                    &type_name::get<Singleton>(),
+                                ),
+                            ),
+                        ),
+                    ),
+                    ascii::string(b"gmp"),
+                    ascii::string(b"execute"),
+                ),
+                arguments,
+                vector[],
+            ),
+        ],
+    );
+    discovery.register_transaction(&singleton.channel, transaction);
+}
+
+public fun send_call(
+    singleton: &Singleton,
+    gateway: &Gateway,
+    gas_service: &mut GasService,
+    destination_chain: String,
+    destination_address: String,
+    payload: vector<u8>,
+    refund_address: address,
+    coin: Coin<SUI>,
+    params: vector<u8>,
+) {
+
+    let message_ticket = gateway::prepare_message(
+        &singleton.channel,
+        destination_chain,
+        destination_address,
+        payload,
+    );    
+    
+    gas_service.pay_gas(
+        &message_ticket,
+        coin,
+        refund_address,
+        params,
+    );
+
+    gateway.send_message(message_ticket);
+}
+
+```
+
+## Receiving a message on Sui
+You receive messages on your Sui module by implementing an `execute` function.
+
+```move
+public fun execute(call: ApprovedMessage, singleton: &mut Singleton) {
+    let (_, _, _, payload) = singleton.channel.consume_approved_message(call);
+
+    event::emit(Executed { data: payload });
+}
+```
+
+## GMP Example Code
+The code above for sending and receiving can be seen in this [Sui GMP Example](https://github.com/axelarnetwork/axelar-cgp-sui/tree/main/move/example).
+
+Check out this repo, make sure you have `sui` in your path according to the Sui install instructions and run the following:
+```bash
+    npm ci
+    npm run build
+```
+
+## Common Gateway Protocol for Sui
+You can see the Sui implementation of the Common Gateway Protocol in the [Axelar CGP Sui GitHub](https://github.com/axelarnetwork/axelar-cgp-sui/).
+
+Notably you should inspect the [Axelar Gateway code](https://github.com/axelarnetwork/axelar-cgp-sui/tree/main/move/axelar_gateway) as well as the [Sui Gas Service code](https://github.com/axelarnetwork/axelar-cgp-sui/tree/main/move/gas_service). 
+
+
+## Interchain Token Service
+The interchain token service is available for tokens to be deployed to or originated from Sui. All available functions can be seen in the [Sui ITS module](https://github.com/axelarnetwork/axelar-cgp-sui/blob/main/move/its/sources/its.move). ITS functions on Sui are [versioned](https://github.com/axelarnetwork/axelar-cgp-sui/blob/main/move/its/sources/versioned/its_v0.move).
+
+- `new`
+- `deploy_remote_interchain_token`
+- `send_interchain_transfer`
+
+Tokens sent from Sui will be sent to the ITS Hub on the Axelar network and translated into a message to the destination chains' ITS Contract.
+
+<Callout>
+    Custom tokens are not yet available on Sui. You should use the [ITS portal](https://interchain.axelar.dev/) to create or extend tokens on Sui.
+</Callout>
+
