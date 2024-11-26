@@ -114,3 +114,37 @@ const loadSearch = async () => {
 
 document.getElementById("search")?.addEventListener("click", loadSearch);
 document.getElementById("search")?.addEventListener("keydown", loadSearch);
+
+// New function to detect blockchain addresses or transaction hashes
+function isBlockchainAddressOrHash(query) {
+  const cosmosPattern = /^cosmos[a-zA-Z0-9]{39}$/; // Adjust this pattern as needed
+  const evmPattern = /^0x[a-fA-F0-9]{40}$/; // Adjust this pattern as needed
+  return cosmosPattern.test(query) || evmPattern.test(query);
+}
+
+function stateChange({ uiState, setUiState }) {
+  const query = uiState.documentation.query || "";
+  
+  if (query.length < 3) {
+    document.querySelector("#search-results")?.classList.remove("show");
+    return false;
+  } else {
+    document.querySelector("#search-results")?.classList.add("show");
+  }
+
+  if (isBlockchainAddressOrHash(query)) {
+    const searchResultsContainer = document.querySelector("#search-results");
+
+    const axelarscanLink = document.createElement('a');
+    axelarscanLink.href = `https://axelarscan.io/address/${query}`; 
+    axelarscanLink.target = "_blank";
+    axelarscanLink.textContent = "View on Axelarscan";
+    axelarscanLink.style.fontWeight = 'bold';
+    axelarscanLink.style.display = 'block';
+    axelarscanLink.style.marginBottom = '10px';
+
+    searchResultsContainer.insertBefore(axelarscanLink, searchResultsContainer.firstChild);
+  }
+
+  setUiState(uiState);
+}
