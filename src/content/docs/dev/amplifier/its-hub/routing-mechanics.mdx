@@ -71,14 +71,14 @@ gateway.callContract(destinationChain, destinationAddress, payload);
 
 <object
   type="image/svg+xml"
-  data="/images/its-hub-routing-dark.svg"
+  data="/images/its-hub/its-hub-routing-dark.svg"
   class="hidden dark:block w-full max-w-[60rem] mx-auto py-6"
 >
   Your browser does not support SVG
 </object>
 <object
   type="image/svg+xml"
-  data="/images/its-hub-routing-light.svg"
+  data="/images/its-hub/its-hub-routing-light.svg"
   class=" dark:hidden w-full max-w-[60rem] mx-auto py-6"
 >
   Your browser does not support SVG
@@ -100,41 +100,37 @@ gateway.callContract(destinationChain, destinationAddress, payload);
 
 **Amplifier Chain to ITS Hub**
 
-```mermaid
-sequenceDiagram
-    participant User
-    participant ITS as ITS Edge Contract
-    participant EG as External AxelarGateway
-    participant G as Internal Gateway
-    participant R as Amplifier Router
-    participant A as Axelarnet Gateway
-    participant ITSHub
-
-    User->>ITS: interchainTransfer
-    ITS->>EG: CallContract
-    EG->>G: VerifyMessage
-    G->>R: RouteMessage
-    R->>A: RouteMessage
-    A->>ITSHub: Execute
-```
+<object
+  type="image/svg+xml"
+  data="/images/its-hub/amplifier-to-its-dark.svg"
+  class="hidden dark:block w-full max-w-[60rem] mx-auto py-6"
+>
+  Your browser does not support SVG
+</object>
+<object
+  type="image/svg+xml"
+  data="/images/its-hub/amplifier-to-its-light.svg"
+  class=" dark:hidden w-full max-w-[60rem] mx-auto py-6"
+>
+  Your browser does not support SVG
+</object>
 
 **ITS Hub to Amplifier Chain**
 
-```mermaid
-sequenceDiagram
-    participant ITSHub
-    participant A as Axelarnet Gateway
-    participant R as Amplifier Router
-    participant AG as Internal Gateway
-    participant E as External Gateway
-    participant ITS as ITS Edge Contract
-
-    ITSHub->>A: CallContract
-    A->>R: RouteMessage
-    R->>AG: RouteMessage
-    AG->>E: ConstructProof
-    E->>ITS: Execute
-```
+<object
+  type="image/svg+xml"
+  data="/images/its-hub/its-to-amplifier-dark.svg"
+  class="hidden dark:block w-full max-w-[60rem] mx-auto py-6"
+>
+  Your browser does not support SVG
+</object>
+<object
+  type="image/svg+xml"
+  data="/images/its-hub/its-to-amplifier-light.svg"
+  class=" dark:hidden w-full max-w-[60rem] mx-auto py-6"
+>
+  Your browser does not support SVG
+</object>
 
 ### Consensus Chains
 
@@ -143,23 +139,20 @@ sequenceDiagram
 
 **Consensus Chain to ITS Hub with Gateway Token**
 
-```mermaid
-sequenceDiagram
-    participant User
-    participant ITS as ITS Edge Contract
-    participant E as EVM Gateway (Legacy)
-    participant EM as EVM Module
-    participant NR as Nexus Module
-    participant AM as Nexus Gateway
-    participant ITSHub
-
-    User->>ITS: interchainTransfer
-    ITS->>E: CallContractWithToken
-    E->>EM: ConfirmGatewayTx
-    EM->>NR: RouteMessage with payload
-    NR->>AM: routeMsg
-    AM->>ITSHub: wasm Execute
-```
+<object
+  type="image/svg+xml"
+  data="/images/its-hub/consensus-to-its-dark.svg"
+  class="hidden dark:block w-full max-w-[60rem] mx-auto py-6"
+>
+  Your browser does not support SVG
+</object>
+<object
+  type="image/svg+xml"
+  data="/images/its-hub/consensus-to-its-light.svg"
+  class=" dark:hidden w-full max-w-[60rem] mx-auto py-6"
+>
+  Your browser does not support SVG
+</object>
 
 ## Security Measures
 
