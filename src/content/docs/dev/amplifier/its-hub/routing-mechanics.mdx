@@ -69,19 +69,20 @@ gateway.callContract(destinationChain, destinationAddress, payload);
 
 ### ITS Chain A to ITS Chain B via ITS Hub
 
-```mermaid
-graph LR
-    ITSA[ITS Chain A]
-    ITSB[ITS Chain B]
-    ITSHub[ITS Hub]
-
-    ITSA -->|Wrapped Payload GMP| ITSHub
-    ITSHub -->|Wrapped Payload GMP| ITSB
-
-    subgraph Axelar Network
-        ITSHub
-    end
-```
+<object
+  type="image/svg+xml"
+  data="/images/its-hub-routing-dark.svg"
+  class="hidden dark:block w-full max-w-[60rem] mx-auto py-6"
+>
+  Your browser does not support SVG
+</object>
+<object
+  type="image/svg+xml"
+  data="/images/its-hub-routing-light.svg"
+  class=" dark:hidden w-full max-w-[60rem] mx-auto py-6"
+>
+  Your browser does not support SVG
+</object>
 
 ## Handling Different Token Types
 
