@@ -95,6 +95,12 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 
       gtag("config", "G-81ZT0BK1ZB");
     </script>
+    <script>
+      window.intercomSettings = {
+        api_base: "https://api-iam.intercom.io",
+        app_id: "rxsoqwkv",
+      };
+    </script>
     <script src="/src/scripts/index.ts"></script>
     <script is:inline>
       const root = document.documentElement;
@@ -157,7 +163,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
       localStorage.setItem("theme", isDark ? "dark" : "light");
       document.documentElement.setAttribute(
         "data-theme",
-        isDark ? "vitesse-dark" : "light-plus",
+        isDark ? "vitesse-dark" : "light-plus"
       );
     };
 
