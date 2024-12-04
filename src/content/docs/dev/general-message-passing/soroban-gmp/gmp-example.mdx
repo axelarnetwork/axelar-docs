@@ -22,8 +22,6 @@ pub fn __constructor(env: Env, gateway: Address, gas_service: Address) {}
 
 Note: In addition to the `gateway` and `gas service` you will also set an `env` param. This is an instance of the Env struct, which is a core part of the Soroban SDK. The Env struct provides access to various environment-specific functions and capabilities necessary for interacting with the contract's storage, managing resources, and executing contract logic within the Soroban runtime.
 
-
-
 ### Storage
 
 The `gateway` and `gas service` contracts can be stored in the contract's [instance storage](https://developers.stellar.org/docs/learn/encyclopedia/storage/state-archival#instance). Before you can save the two parameters in storage, you must first define the storage variables. Create a new file called `storage_types.rs`
@@ -58,7 +56,47 @@ With the storage now setup you can store your `gateway` and `gas serivce` contra
             .set(&DataKey::GasService, &gas_service);
     }
 ```
- 
- The constructor stores each param at a specific `key` in the `DataKey` `enum` you created before.
 
- 
+The constructor stores each param at a specific `key` in the `DataKey` `enum` you created before.
+
+### Gas Service
+
+The `Gas Service` contract implements the [functionality](https://github.com/axelarnetwork/axelar-cgp-soroban/blob/main/contracts/axelar-gas-service/src/contract.rs) to pay for cross-chain transactions.
+
+```rust
+    pub fn gas_service(env: &Env) -> Address {
+        env.storage().instance().get(&DataKey::GasService).unwrap()
+    }
+```
+
+### Send Cross-Chain Message
+
+To send a cross-chain message you can define a new function called `send()`. It will take the following function signature
+
+```rust
+   pub fn send(
+        env: Env,
+        caller: Address,
+        destination_chain: String,
+        destination_address: String,
+        message: Bytes,
+        gas_token: Token,
+    ) {}
+```
+
+The function takes the following parameters
+
+1. `env`: The environment object, providing access to the blockchain runtime.
+1. `caller`: The address of the account initiating the message send.
+1. `destination_chain`: The name of the destination blockchain.
+1. `destination_address`: The address on the destination blockchain the call is being sent to.
+1. `message`: The message being sent to the destination chain.
+1. `gas_token`: The token used to pay for gas fees.
+
+
+Now you can access an instance for the `Gateway` and `GasService` contracts set in storage in the `constructor`. 
+
+```rust
+    let gateway = AxelarGatewayMessagingClient::new(&env, &Self::gateway(&env));
+    let gas_service = AxelarGasServiceClient::new(&env, &Self::gas_service(&env));
+```
