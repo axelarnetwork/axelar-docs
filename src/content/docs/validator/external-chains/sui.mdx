@@ -121,6 +121,14 @@ Edit the `fullnode.yaml` file to include peer nodes for state synchronization. A
   </tab-item>
 </tabs>
 
+Download the snapshot from the latest epoch.
+
+```bash
+sui-tool download-formal-snapshot --latest --genesis /opt/sui/config/genesis.blob       --network testnet      --path /opt/sui/db/  --num-parallel-downloads 50 --no-sign-request
+```
+
+If you encounter any failures, try lowering the `num-parallel-downloads` value.
+
 Don't forget also to set the value for `object-store-config.bucket` to the correct value as well in that file:
  - `testnet`: `bucket: "mysten-testnet-archives"`
  - `mainnet`: `bucket: "mysten-mainnet-archives"`
