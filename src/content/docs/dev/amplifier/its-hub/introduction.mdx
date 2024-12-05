@@ -26,10 +26,11 @@ By routing through a central hub, token bridging is simplified and protected by 
 The key outcomes of the ITS Hub implementation include:
 
 <Callout>
-  Custom ITS token are not supported in the current version of the ITS Hub.
+  [Custom ITS](/dev/send-tokens/interchain-tokens/integrate-custom-token/) token
+  are not supported in the current version of the ITS Hub.
 </Callout>
 
-- **Unified Token Routing**: All token bridging across ITS-enabled chains is handled through the ITS Hub, regardless of chain type ([Amplifier](dev/amplifier/introduction/) or consensus).
+- **Unified Token Routing**: All token bridging across ITS-enabled chains is handled through the ITS Hub, regardless of chain type ([Amplifier](dev/amplifier/introduction/) or consensus). While peer-to-peer bridging might seem more decentralized, the ITS Hub is necessary to handle complex token translations between different blockchain technology stacks and maintain consistent state tracking.
 - **Support for ITS and Gateway Tokens**: Both ITS and Gateway Tokens can be securely transferred across chains, reducing fragmentation and complexity.
 - **Balance Invariance**: ITS Hub maintains balance tracking to ensure that tokens escrowed to a chain cannot be over-bridged.
 - **Rate Limits**: Ability to set rate limits per token by chain, adding an additional security layer.
