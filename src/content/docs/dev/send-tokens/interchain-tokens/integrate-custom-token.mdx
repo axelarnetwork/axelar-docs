@@ -39,7 +39,7 @@ contract MyInterchainToken is ERC20, ERC20Burnable {
 }
 ```
 
-This token is a simple implementation of an ERC20 token but includes the critical functionality needed to integrate with ITS: the ability to `mint()` and `burn()` tokens. ITS interacts with these functions when bridging tokens between chains.
+This token is a simple implementation of an ERC-20 token but includes the critical functionality needed to integrate with ITS: the ability to `mint()` and `burn()` tokens. ITS interacts with these functions when bridging tokens between chains.
 
 You also have the option to inherit from the [InterchainTokenStandard](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/interchain-token/InterchainTokenStandard.sol#L12) so that your token has cross-chain functionality built-in, such as the `interchainTransfer()` function.
 
@@ -71,7 +71,7 @@ The [`transferMintership()`](https://github.com/axelarnetwork/interchain-token-s
 
 ## Send Token using Interchain Transfer Function
 
-An Interchain Token is an ERC20 that is connected to [ITS](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/InterchainTokenService.sol) upon deployment comes built-in with the `interchainTransfer()` function, which allows users to bridge their token between any blockchain to which it is deployed. Take a look at the diagram below to see how the `interchainTransfer()` function works.
+An Interchain Token is an ERC-20 that is connected to [ITS](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/InterchainTokenService.sol) upon deployment comes built-in with the `interchainTransfer()` function, which allows users to bridge their token between any blockchain to which it is deployed. Take a look at the diagram below to see how the `interchainTransfer()` function works.
 
 <Callout type="warning">
   This diagram is interactive click on the function names!

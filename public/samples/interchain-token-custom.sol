@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-// more suited than OZ ERC20 for proxying because it doesn't require constructor parameters
+// more suited than OZ ERC-20 for proxying because it doesn't require constructor parameters
 import {ERC20} from "@axelar-network/interchain-token-service/contracts/token-implementations/ERC20.sol";
 
 import {IERC20BurnableMintable} from "@axelar-network/interchain-token-service/interfaces/IERC20BurnableMintable.sol";
