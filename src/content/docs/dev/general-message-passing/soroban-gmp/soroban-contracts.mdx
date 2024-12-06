@@ -40,32 +40,34 @@ pub fn call_contract(
 ## Soroban Gas Service
 The Gas Service handles cross-chain gas payment when making a GMP request. 
 
-When sending a GMP message before triggering the `call_contract()` function on the Gateway, the `pay_gas_for_contract_call()` must be triggered first to pay for the cross-chain transaction.  
+When sending a GMP message before triggering the `call_contract()` function on the Gateway, the `pay_gas()` must be triggered first to pay for the cross-chain transaction.  
 
 ### PayGasForContractCall()
- The `pay_gas_for_contract_call()` allows users to pay for the entirety of the cross-chain transaction in a given token. 
+ The `pay_gas()` allows users to pay for the entirety of the cross-chain transaction in a given token. 
 
- The `pay_gas_for_contract_call()` takes seven parameters.
+ The `pay_gas()` takes seven parameters.
 1. `env`: Standard soroban [env](https://developers.stellar.org/docs/learn/encyclopedia/contract-development/environment-concepts) that provides access to the environment the contract is executing within. 
-1. `sender`: The sender of the gas payment call. 
+1. `sender`: The sender of the cross-chain call to the Gateway. 
 1. `destination_chain`: Name of the chain the message is being sent to.
 1. `destination_address`: Address on the destination chain the message is being sent to.
 1. `payload`: A `bytes` representation of the cross-chain message being sent.
-1. `refund_address`: An address to be refunded if gas amount was overpaid.
+1. `spender`: The `address` spending the funds to cover the transaction.
 1. `token`: The token being used for payment
+1. `metadata`: Data sent along with the cross-chain tx
 
 Note: The expected [token](https://github.com/axelarnetwork/axelar-cgp-soroban/blob/main/packages/axelar-soroban-std/src/types.rs#L5) is a struct type that requires an `address` and `amount`. 
 
 ```rust
-pub fn pay_gas_for_contract_call(
+fn pay_gas(
     env: Env,
     sender: Address,
     destination_chain: String,
     destination_address: String,
     payload: Bytes,
-    refund_address: Address,
+    spender: Address,
     token: Token,
-) -> Result<(), ContractError> {}
+    metadata: Bytes,
+) -> Result<(), ContractError>;
 ```
 
 ## Soroban Executable
