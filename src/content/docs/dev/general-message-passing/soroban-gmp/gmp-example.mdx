@@ -8,9 +8,55 @@ To begin, make sure the [Stellar CLI](https://github.com/stellar/stellar-cli) is
 
 Once the Stellar CLI is setup you can run `stellar contract init axelar-gmp`. This will create a new Stellar Soroban project.
 
+### File Structure
+
 Now that you have a Stellar project you can run `cargo install axelar-cgp-soroban` to install the Axelar related functionality to be used in your contract.
 
+For simplicity, you can remove the root files and unnest the files in the `src` folder to be at the root of your project so that your file structures now look like this.
+
+```bash
+Cargo.lock
+Cargo.toml
+Makefile
+src
+```
+
+The files in the `src` folder can now be broken out into a `contract.rs` file, an `event.rs`, and `lib.rs`.
+
+### Integrate Axelar Soroban Dependency
+
+To integrate with the Axelar Network you will need to leverage the contracts in the [Axelar CGP Soroban](https://github.com/axelarnetwork/axelar-cgp-soroban) repository. Currently, this repo is not available on crates.io. To access it's functionality you can reference it as a [git dependency](https://doc.rust-lang.org/cargo/reference/specifying-dependencies.html#specifying-dependencies-from-git-repositories). You can add a dependency for each subcrate in the CGP Soroban repo as follows:
+
+```toml
+[dependencies]
+axelar-gateway = { git = "https://github.com/axelarnetwork/axelar-cgp-soroban", subdir = "contracts/axelar-gateway", features = [
+    'library',
+] }
+axelar-gas-service = { git = "https://github.com/axelarnetwork/axelar-cgp-soroban", subdir = "contracts/axelar-gas-service", features = [
+    'library',
+] }
+axelar-soroban-std = { git = "https://github.com/axelarnetwork/axelar-cgp-soroban", subdir = "packages/axelar-soroban-std" }
+```
+
+## Lib
+
+The `lib.rs` file which contains the `hello_world` code can be moved to the `contract.rs` file. You can replace all that code with a module representation of the contract. Your `lib.rs` file should look like this:
+
+```rust
+#![no_std]
+
+pub mod contract;
+```
+
 ## Contract
+
+You can rename your contract from the default name `Contract` to `AxelarGMP`. You can then begin writing out the `constructor`. Before writing functionality of the contract you can also make several key data types available from the `Soroban SDK`
+
+```rust
+use soroban_sdk::{contract, contractimpl, Address, Env, String, Vec}; 
+```
+
+These unique types will be used throughout the contract.
 
 ### Constructor
 
@@ -46,6 +92,24 @@ Enum Variants:
 Gateway: Represents the storage key for the gateway contract.
 GasService: Represents the storage key for the gas service contract.
 
+For this `enum` to be reachable you must:
+
+1. Define the `storage_types.rs` file in the `lib.rs` file, which at this point should look like this.
+
+```rust
+#![no_std]
+
+pub mod contract;
+
+mod storage_types;
+```
+
+2. Make the file available to your `contracts.rs` repo
+
+```rust
+use crate::storage_types::DataKey;
+```
+
 With the storage now setup you can store your `gateway` and `gas serivce` contracts in storage from the `constructor`. The complete `constructor` should now look like this.
 
 ```rust
@@ -69,6 +133,16 @@ The `Gas Service` contract implements the [functionality](https://github.com/axe
     }
 ```
 
+### Gateway
+
+The `Gateway` contract implements the [functionality](https://github.com/axelarnetwork/axelar-cgp-soroban/blob/main/contracts/axelar-gateway/src/contract.rs) to send cross-chain transactions.
+
+```rust
+   fn gateway(env: &Env) -> Address {
+        env.storage().instance().get(&DataKey::Gateway).unwrap()
+    }
+```
+
 ### Send Cross-Chain Message
 
 To send a cross-chain message you can define a new function called `send()`. It will take the following function signature
@@ -84,6 +158,24 @@ To send a cross-chain message you can define a new function called `send()`. It 
     ) {}
 ```
 
+For the `token` type to be accepted you must make it available as follows:
+
+```rust
+use axelar_soroban_std::types::Token;
+```
+
+You will also need the `GasService` and `Gateway` client types available for other functionality in this function.
+
+The entire list of imported data types should now be
+
+```rust
+use axelar_gas_service::AxelarGasServiceClient;
+use axelar_gateway::AxelarGatewayMessagingClient;
+use crate::storage_types::DataKey;
+use axelar_soroban_std::types::Token;
+use soroban_sdk::{contract, contractimpl, Address, Bytes, Env, String}; // Import the gateway
+```
+
 The function takes the following parameters
 
 1. `env`: The environment object, providing access to the blockchain runtime.
@@ -93,10 +185,24 @@ The function takes the following parameters
 1. `message`: The message being sent to the destination chain.
 1. `gas_token`: The token used to pay for gas fees.
 
-
-Now you can access an instance for the `Gateway` and `GasService` contracts set in storage in the `constructor`. 
+Now you can access an instance for the `Gateway` and `GasService` contracts set in storage in the `constructor`.
 
 ```rust
     let gateway = AxelarGatewayMessagingClient::new(&env, &Self::gateway(&env));
     let gas_service = AxelarGasServiceClient::new(&env, &Self::gas_service(&env));
+```
+
+Before, triggering the cross-chain transaction you must verify the authenticity of the caller's signature by calling [require_auth](https://developers.stellar.org/docs/build/smart-contracts/example-contracts/auth#require_auth)
+
+```rust
+caller.require_auth();
+```
+
+You can now move on to triggering the cross-chain message. This involves two steps.
+
+1. Pay the `GasService`
+1. Trigger the cross-chain call on the `Gateway`
+
+The process of paying the `GasService` involves running the `pay_gas()` function, defined on the `GasService` contract.
+
 ```
