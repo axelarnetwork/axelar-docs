@@ -53,7 +53,7 @@ pub mod contract;
 You can rename your contract from the default name `Contract` to `AxelarGMP`. You can then begin writing out the `constructor`. Before writing functionality of the contract you can also make several key data types available from the `Soroban SDK`
 
 ```rust
-use soroban_sdk::{contract, contractimpl, Address, Env, String, Vec}; 
+use soroban_sdk::{contract, contractimpl, Address, Env, String, Vec};
 ```
 
 These unique types will be used throughout the contract.
@@ -198,11 +198,222 @@ Before, triggering the cross-chain transaction you must verify the authenticity 
 caller.require_auth();
 ```
 
+#### Pay Gas
+
 You can now move on to triggering the cross-chain message. This involves two steps.
 
 1. Pay the `GasService`
 1. Trigger the cross-chain call on the `Gateway`
 
-The process of paying the `GasService` involves running the `pay_gas()` function, defined on the `GasService` contract.
+The process of paying the `GasService` involves running the [pay_gas()](/dev/general-message-passing/soroban-gmp/soroban-contracts/#paygas) function.
 
+```rust
+  gas_service.pay_gas(
+      &env.current_contract_address(),
+      &destination_chain,
+      &destination_address,
+      &message,
+      &caller,
+      &gas_token,
+      &Bytes::new(&env),
+  );
 ```
+
+Once triggered, the gas that is paid to the `GasService` will be used to cover the cost of the relaying the transaction between the two chains, verifying the transaction on the Axelar Network, and gas costs of executing the transaction on the destination chain.
+
+The function takes seven arguments passed in as references:
+
+1. `&env.current_contract_address()`: The address of the sender
+1. `&destination_chain`: The name of the destination chain
+1. `&destination_address`: The receiving address of the cross-chain call on the destination chain
+1. `&message`: The GMP message being sent to the destination chain
+1. `&caller`: The address paying the gas cost
+1. `&gas_token`: The token being used to cover the gas cost
+   {/* 1. `env`: The metadata <<<<< CONFIRM */}
+
+#### Call Contract
+
+With the transaction now paid for, the final step for sending a cross-chain message is to trigger the `callContract()` function on the `Gateway`.
+
+```rust
+    gateway.call_contract(
+        &env.current_contract_address(),
+        &destination_chain,
+        &destination_address,
+        &message,
+    );
+```
+
+For this function you will pass in
+
+1. `&env.current_contract_address()`: The address of the
+1. `&destination_chain`: The name of the destination chain
+1. `&destination_address`: The receiving address of the cross-chain call on the destination chain
+1. `&message`: The GMP message being sent to the destination chain
+
+Your completed `send()` function now should be as follows:
+
+```rust
+ pub fn send(
+        env: Env,
+        caller: Address,
+        destination_chain: String,
+        destination_address: String,
+        message: Bytes,
+        gas_token: Token,
+    ) {
+        let gateway = AxelarGatewayMessagingClient::new(&env, &Self::gateway(&env));
+        let gas_service = AxelarGasServiceClient::new(&env, &Self::gas_service(&env));
+
+        caller.require_auth();
+
+        gas_service.pay_gas(
+            &env.current_contract_address(),
+            &destination_chain,
+            &destination_address,
+            &message,
+            &caller,
+            &gas_token,
+            &Bytes::new(&env),
+        );
+
+        gateway.call_contract(
+            &env.current_contract_address(),
+            &destination_chain,
+            &destination_address,
+            &message,
+        );
+    }
+```
+
+### Receive Cross-Chain Message
+
+Now that you are able to _send_ a cross-chain call you still need to handle the logic to _receive_ a cross-chain call when it sent from another blockchain to your Soroban contract.
+
+When an inbound message is received, an Axelar Relayer will look to trigger the `execute()` function on your contract. To implement the `execute` functionality you can will implement the `AxelarExecutableInterface` [trait](https://doc.rust-lang.org/book/ch10-02-traits.html) to handle the `execute` functionality.
+
+Before defining your new trait you must first make the trait's dependency from the [Axelar-CGP-Soroban repo](https://github.com/axelarnetwork/axelar-cgp-soroban/blob/main/contracts/axelar-gateway/src/executable.rs#L16) available.
+
+```rust
+use axelar_gateway::executable::AxelarExecutableInterface;
+```
+
+Now you can implement trait `AxelarExecutableInterface` trait.
+
+```rust
+#[contractimpl]
+impl AxelarExecutableInterface for AxelarGMP {
+
+}
+```
+
+At this point your editor will be complaining that your implementation is missing the trait's required functionality, `gateway()` and `execute()` functionality.
+
+To resolve the first issue you can move the `gateway()` getter that you defined in the previous section of the contract to your new implementation.
+
+To resolve the second issue you can paste in the signature for the `execute()` function as it's defined in the original trait in the dependency.
+
+```rust
+fn execute(
+    env: Env,
+    source_chain: String,
+    message_id: String,
+    source_address: String,
+    payload: Bytes,
+) {}
+```
+
+#### execute()
+
+With the `execute()` signature now defined you can begin to write out the logic that will be used to handle the message.
+
+The first thing you will want to do is to validate the incoming message. This can be done by triggering the third available function in the Axelar Trait, `validate_message()`. This function will confirm that the Gateway has received an approval from the Axelar verifier set that the message is in fact authentic. You pass it into `let _` to tell the compiler that you do not care about the result of this function, to avoid the unused result warning.
+
+```rust
+let _ = Self::validate_message(&env, &source_chain, &message_id, &source_address, &payload);
+```
+
+#### event
+
+With your message now validated you can [emit an event](https://developers.stellar.org/docs/learn/encyclopedia/contract-development/events) to mark that your message was received at the destination chain.
+
+For maximum modularity you can define the event in a separate `event.rs` file. You can go ahead and make several Soroban SDK types available in the new file.
+
+```rust
+use soroban_sdk::{Bytes, Env, String, Symbol};
+```
+
+Next you can define a new function called `executed()` where you can implement the event emission. This function will accept the same five parameters as the `execute()` function in the `contract.rs` file. The first thing you will want to do in the new function is define the event [topics](https://developers.stellar.org/docs/build/smart-contracts/example-contracts/events#event-topics). Topics allow for filtering events, making it easier for off-chain applications to monitor specific changes within on-chain contracts. For your event's topics you can pass in the following:
+
+Note: The different names between the `executed()` function in the `event.rs` file with the `execute()` function in the `contract.rs` file.
+
+```rust
+    let topics = (
+        Symbol::new(env, "executed"),
+        source_chain,
+        message_id,
+        source_address,
+        payload,
+    );
+```
+
+These topics include
+1. The name of the event, which is simply a [symbol type](https://developers.stellar.org/docs/learn/encyclopedia/contract-development/types/built-in-types#symbol-symbol) of `executed`. 
+1. The originating chain of the tx.
+1. A unique message id for the cross-chain message.
+1. The originating address of the cross-chain message.
+
+With the topics now set you can emit your event using the `publish` function.
+
+```rust
+env.events().publish(topics, (payload,));
+```
+
+The `publish()` function requires the topics, which you previously defined as well as the `payload`, which contains the actual contents of the cross-chain message being emitted.
+
+Your completed `event.rs` file should be as follows
+
+```rust
+use soroban_sdk::{Bytes, Env, String, Symbol};
+
+pub fn executed(
+    env: &Env,
+    source_chain: String,
+    message_id: String,
+    source_address: String,
+    payload: Bytes,
+) {
+    let topics = (
+        Symbol::new(env, "executed"),
+        source_chain,
+        message_id,
+        source_address,
+    );
+
+    env.events().publish(topics, (payload,));
+}
+```
+
+The final thing you now must do is to make the code in the `event.rs` file as a `mod` in the `lib.rs` file.
+
+```rust
+mod event;
+```
+
+With your event now defined you may return to your `contract.rs` file to trigger it in your `execute()` function. First you must make the code from `event.rs` available:
+
+```rust
+use crate::event;
+```
+
+Now you can trigger the `executed()` function that will in turn trigger the `executed` event.
+
+```rust 
+event::executed(&env, source_chain, message_id, source_address, payload);
+```
+
+At this point once your message is received on the destination chain your `execute()` function will ensure that it has been marked as `approved` on the gateway, then it will emit the `executed()` event along with the unique parameters to your cross-chain transaction that was sent to this Soroban contract!
+
+## Testing
+
+Your `gmp-example` contract is now complete. If you run the command `stellar contract build`, your code should compile without any errors. 

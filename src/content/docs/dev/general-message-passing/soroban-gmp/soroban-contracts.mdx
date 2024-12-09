@@ -42,7 +42,7 @@ The Gas Service handles cross-chain gas payment when making a GMP request.
 
 When sending a GMP message before triggering the `call_contract()` function on the Gateway, the `pay_gas()` must be triggered first to pay for the cross-chain transaction.  
 
-### PayGasForContractCall()
+### PayGas()
  The `pay_gas()` allows users to pay for the entirety of the cross-chain transaction in a given token. 
 
  The `pay_gas()` takes seven parameters.
@@ -53,7 +53,7 @@ When sending a GMP message before triggering the `call_contract()` function on t
 1. `payload`: A `bytes` representation of the cross-chain message being sent.
 1. `spender`: The `address` spending the funds to cover the transaction.
 1. `token`: The token being used for payment
-1. `metadata`: Data sent along with the cross-chain tx
+{/* 1. `metadata`: Data sent along with the cross-chain tx <<<<<< CONFIRM */}
 
 Note: The expected [token](https://github.com/axelarnetwork/axelar-cgp-soroban/blob/main/packages/axelar-soroban-std/src/types.rs#L5) is a struct type that requires an `address` and `amount`. 
 
@@ -113,7 +113,7 @@ The `validate()` function takes five parameters.
     ) {}
 ```
 
-The `validate()` function will trigger the `validate_message()`, this will confirm that the incoming GMP message is an authenticated message that has been verified by the Amplifier Verifiers.
+The `validate()` function will trigger the `validate_message()`, this will confirm that the incoming GMP message is an authenticated message that has been verified by the Amplifier Verifiers. Without ensuring that the message is validated malicious actors could in theory pass invalid data to be executed by this function, which is why it is critical to ensure that the data being passed in has been marked as approved on the Gateway
 
 ```rust
      pub fn validate_message(
