@@ -22,6 +22,8 @@ sudo apt install build-essential gcc g++
 ### Clone Hedera Mirror Node Repository
 
 - [Official Documentation](https://docs.hedera.com/hedera/core-concepts/mirror-nodes/run-your-own-beta-mirror-node)
+- [Bootstraping DB Guide](https://github.com/hashgraph/hedera-mirror-node/blob/main/docs/database/bootstrap.md)
+- [Mirror Node Configurations](https://github.com/hashgraph/hedera-mirror-node/blob/main/docs/configuration.md)
 
 Open your terminal and run the following commands
 
@@ -31,6 +33,19 @@ cd hedera-mirror-node
 ```
 
 ### Configure Mirror Node
+
+Before starting your verifier, ensure you have the historical database dump in place. Without it, your verifier will not have the full historical state, causing it to vote "no" on proposals. 
+Follow Hedera’s official [Database Bootstrap Guide](https://github.com/hashgraph/hedera-mirror-node/blob/main/docs/database/bootstrap.md) to properly import the Mirror Node historical data before running the verifier. 
+Verifiers must have this data bootrapped to vote correctly.
+
+**Important Note for Deployment: It is recommended to first test your mirror node configuration on testnet:**
+> 1. Set the `startDate` to match your contract deployment date
+> 2. Allow the node to sync from that date
+> 3. Verify that all data is being captured correctly
+> 4. Make any necessary configuration adjustments
+> 5. Once everything is working as expected on testnet, apply the same configuration to mainnet
+>
+> This approach allows you to validate your setup and fine-tune any parameters before moving to production.
 
 The `application.yml` file is the main configuration file for the Hedera Mirror Node. We'll update that file with GCP/AWS Secret and Access keys and the type of Hedera Network we want to mirror.
 
@@ -43,7 +58,23 @@ hedera:
         cloudProvider: "GCP/s3" #Choose GCP for google or s3 for AWS
         secretKey: Enter secret key from your GCP/AWS account
         gcpProjectId: ENTER GCP PROJECT ID HERE / N/A for AWS
-      network: PREVIEWNET/TESTNET/MAINNET #Pick one network
+      startDate: 1970-01-01T00:00:00Z
+      network: testnet
+      parser:
+        # Exclude specific transaction types
+        exclude:
+          # Exclude all consensus messages to reduce storage
+          - transaction: [CONSENSUSSUBMITMESSAGE]
+          # Exclude treasury account
+          - entity: [0.0.98]
+
+        record:
+          entity:
+            persist:
+              # Disable topic message storage
+              topics: false
+              # Disable topic message lookups
+              topicMessageLookups: false
 ```
 
 ### Run Your Mirror Node
@@ -102,7 +133,7 @@ npm run build
 ```bash
 CHAIN_ID= The network chain id. Local and previewnet envs should use 0x12a (298). Previewnet, Testnet and Mainnet should use 0x129 (297), 0x128 (296) and 0x127 (295) respectively
 
-MIRROR_NODE_URL= The Mirror Node API endpoint. Official endpoints are Previewnet (https://previewnet.mirrornode.hedera.com), Testnet (https://testnet.mirrornode.hedera.com), Mainnet (https://mainnet-public.mirrornode.hedera.com).
+MIRROR_NODE_URL= The Mirror Node API endpoint so wherever you deployed your mirror node (i.e http://localhost:5551). Public endpoints are Previewnet (https://previewnet.mirrornode.hedera.com), Testnet (https://testnet.mirrornode.hedera.com), Mainnet (https://mainnet-public.mirrornode.hedera.com).
 
 HEDERA_NETWORK= Which network to connect to. Can be MAINNET, PREVIEWNET, TESTNET or OTHER
 
@@ -142,6 +173,6 @@ Logs should appear like this
 [2024-10-03 16:49:33.460 +0000] INFO (relay/145017 on xxxxx): Configurations successfully loaded
 [2024-10-03 16:49:33.461 +0000] TRACE (hbar-rate-limit/145017 on xxxxx): remainingBudget=11000000000 tℏ, resetTimestamp=1727974253461
 [2024-10-03 16:49:33.508 +0000] INFO (relay/145017 on xxxxx): SDK client successfully configured to "testnet" for account 0.0.12345 with request timeout value: 10000
-[2024-10-03 16:49:33.511 +0000] INFO (mirror-node/145017 on xxxxx): Mirror Node client successfully configured to REST url: https://testnet.mirrornode.hedera.com/api/v1/ and Web3 url: https://testnet.mirrornode.hedera.com/api/v1/ 
+[2024-10-03 16:49:33.511 +0000] INFO (mirror-node/145017 on xxxxx): Mirror Node client successfully configured to REST url: http://localhost:5551/api/v1/ and Web3 url: http://localhost:5551/api/v1/ 
 [2024-10-03 16:49:33.512 +0000] INFO (relay/145017 on xxxxx): Relay running with chainId=0x128
 ```
