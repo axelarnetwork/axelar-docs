@@ -5,7 +5,7 @@ import { Callout } from "/src/components/callout";
 Instructions for the `2024-Dec-12` testnet upgrade to axelar-core `v1.1.2`.
 Release can be found [here](https://github.com/axelarnetwork/axelar-core/releases/tag/v1.1.2)
 
-Upgrade height `<TODO>` [countdown](https://testnet.mintscan.io/axelar-testnet/blocks/TODO)
+Upgrade height `16665600` [countdown](https://www.mintscan.io/axelar-testnet/block/16665600)
 
 ## About the V1.1.2 upgrade
 The `v1.1.2` upgrade is a non-consensus breaking patch release for `v1.1.x.` `v1.1.x.` Once live, it will enable the deployment of ITS Hub on testnet.
@@ -14,11 +14,11 @@ The `v1.1.2` upgrade is a non-consensus breaking patch release for `v1.1.x.` `v1
 
 
 ```bash
-axelard tx gov vote <TODO> yes --from validator
+axelard tx gov vote 164 yes --from validator
 ```
 
 
-2. Wait for the proposed upgrade block, `<TODO>`. Your node will panic at that block height with a log: `{"level":"error","module":"consensus","err":"UPGRADE \"v1.1.2\" NEEDED at height: ",`. Stop your node after chain halt.
+2. Wait for the proposed upgrade block, `16665600`. Your node will panic at that block height with a log: `{"level":"error","module":"consensus","err":"UPGRADE \"v1.1.2\" NEEDED at height: ",`. Stop your node after chain halt.
 
 ```bash
 pkill -f 'axelard start'
