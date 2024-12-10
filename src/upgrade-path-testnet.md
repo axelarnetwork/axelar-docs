@@ -28,3 +28,4 @@ layout: /src/layouts/None.astro
 | [v0.34.3](/resources/testnet/upgrades/v34/) | 9462850      | 12017025       |
 | [v0.35.3](/resources/testnet/upgrades/v35/) | 12017025     | 14625900       |
 | [v1.0.0](/resources/testnet/upgrades/v11/)  | 14625900     | N/A            |
+| [v1.1.2](/resources/testnet/upgrades/v112/)  | N/A     | N/A            |
