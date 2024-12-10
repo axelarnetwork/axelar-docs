@@ -6,8 +6,8 @@
 
 ITS Hub routing works in the following way:
 
-- Dual GMP calls
-- Payload wrapping
+- [Dual GMP calls](#dual-gmp-calls)
+- [Payload wrapping](#payload-wrapping)
 
 ### Dual GMP Calls
 
@@ -80,18 +80,11 @@ gateway.callContract(destinationChain, destinationAddress, payload);
   class=" dark:hidden w-full max-w-[60rem] mx-auto py-6"
 ></object>
 
-## Handling Different Token Types
-
-### ITS Tokens vs. Gateway Tokens
-
-- **ITS Tokens**: Managed entirely by the ITS protocol. The ITS Hub handles their deployment and transfer without special considerations.
-- **Gateway Tokens**: Minted and burned via the Axelar protocol. The ITS Hub interacts with the Axelar Gateway to handle these tokens, ensuring proper minting and burning.
-
 ## Interacting with Different Chain Types
 
 ### Amplifier Chains
 
-- **Smart Contract Chains**: Have ITS Edge Contracts similar to EVM chains. The routing mechanics are consistent with the dual GMP call approach.
+- **Smart Contract Chains**: Have [ITS Edge Contracts](https://github.com/axelarnetwork/axelar-cgp-sui/tree/main/move/example/sources/its) similar to EVM chains. The routing mechanics are consistent with the dual GMP call approach.
 - **Non-Smart Contract Chains**: The Axelar Gateway on these chains acts as an ITS Edge Contract, translating ITS commands into custom token transfer or deployment transactions.
 
 **Amplifier Chain to ITS Hub**
