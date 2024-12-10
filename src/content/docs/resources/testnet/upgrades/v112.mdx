@@ -43,7 +43,7 @@ cp -r ~/.axelar_testnet/.core/data ~/.axelar-lisbon-3-upgrade-1.1.2/.core/data
 
 
 4. Restart your `axelard` node with the new `v1.1.2` build.
-5. If you're a validator also restart `vald` with `v1.1.2` and `tofnd` with `v0.10.1`.
+5. If you're a validator also restart `vald` with `v1.1.2` and `tofnd` with `v1.0.1`.
 
 Example using join scripts in [axelarate-community git repo](https://github.com/axelarnetwork/axelarate-community):
 
@@ -55,6 +55,6 @@ git checkout main
 git pull
 KEYRING_PASSWORD="pw-1" ./scripts/node.sh -n testnet -a v1.1.2
 # For validators, restart vald/tofnd
-KEYRING_PASSWORD="pw-1" TOFND_PASSWORD="pw-2" ./scripts/validator-tools-host.sh -n testnet -a v1.1.2 -q v0.10.1
+KEYRING_PASSWORD="pw-1" TOFND_PASSWORD="pw-2" ./scripts/validator-tools-host.sh -n testnet -a v1.1.2 -q v1.0.1
 ```
 
