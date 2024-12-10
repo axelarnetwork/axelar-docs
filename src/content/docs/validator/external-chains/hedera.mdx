@@ -131,9 +131,37 @@ npm run build
 ### Create a file named .env in the root directory of the project.
 
 ```bash
-CHAIN_ID= The network chain id. Local and previewnet envs should use 0x12a (298). Previewnet, Testnet and Mainnet should use 0x129 (297), 0x128 (296) and 0x127 (295) respectively
+# CHAIN_ID corresponds to the network chain ID:
+#   - Local environment (using a local mirror node) and Previewnet: 0x12a (298)
+#   - Previewnet: 0x129 (297)
+#   - Testnet:   0x128 (296)
+#   - Mainnet:   0x127 (295)
+CHAIN_ID=
 
-MIRROR_NODE_URL= The Mirror Node API endpoint so wherever you deployed your mirror node (i.e http://localhost:5551). Public endpoints are Previewnet (https://previewnet.mirrornode.hedera.com), Testnet (https://testnet.mirrornode.hedera.com), Mainnet (https://mainnet-public.mirrornode.hedera.com).
+# MIRROR_NODE_URL is the endpoint for the Mirror Node API.
+# For public networks, a single HTTPS endpoint is provided:
+#   - Previewnet: https://previewnet.mirrornode.hedera.com
+#   - Testnet:    https://testnet.mirrornode.hedera.com
+#   - Mainnet:    https://mainnet-public.mirrornode.hedera.com
+#
+# For local environments, the mirror node runs by default on separate ports:
+#   - JSON-RPC (web3) is exposed on port 8545
+#   - REST endpoints are exposed on port 5551
+#
+# Unlike public networks (which proxy all APIs behind a single port 443 endpoint),
+# the default local configuration does not consolidate these ports.
+#
+# If you are using a local relay and want to access both the contracts/call (web3) 
+# and the REST endpoints seamlessly, you need to set up a reverse proxy (e.g., Nginx or Apache)
+# that maps different URL paths to the respective ports.
+#
+# For example, you might proxy:
+#   - /contracts to http://localhost:8545
+#   - /rest to http://localhost:5551
+#
+# Then, set MIRROR_NODE_URL to the reverse proxy endpoint (e.g., http://localhost:8080),
+# and configure the relay accordingly.
+MIRROR_NODE_URL=
 
 HEDERA_NETWORK= Which network to connect to. Can be MAINNET, PREVIEWNET, TESTNET or OTHER
 
@@ -173,6 +201,6 @@ Logs should appear like this
 [2024-10-03 16:49:33.460 +0000] INFO (relay/145017 on xxxxx): Configurations successfully loaded
 [2024-10-03 16:49:33.461 +0000] TRACE (hbar-rate-limit/145017 on xxxxx): remainingBudget=11000000000 tℏ, resetTimestamp=1727974253461
 [2024-10-03 16:49:33.508 +0000] INFO (relay/145017 on xxxxx): SDK client successfully configured to "testnet" for account 0.0.12345 with request timeout value: 10000
-[2024-10-03 16:49:33.511 +0000] INFO (mirror-node/145017 on xxxxx): Mirror Node client successfully configured to REST url: http://localhost:5551/api/v1/ and Web3 url: http://localhost:5551/api/v1/ 
+[2024-10-03 16:49:33.511 +0000] INFO (mirror-node/145017 on xxxxx): Mirror Node client successfully configured to REST url: http://localhost:8080/api/v1/ and Web3 url: http://localhost:8080/api/v1/ 
 [2024-10-03 16:49:33.512 +0000] INFO (relay/145017 on xxxxx): Relay running with chainId=0x128
 ```
