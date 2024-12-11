@@ -17,6 +17,10 @@ The `v1.1.2` upgrade is a non-consensus breaking patch release for `v1.1.x.` `v1
 axelard tx gov vote 164 yes --from validator
 ```
 
+<Callout type="warning" emoji="⚠️">
+  `axelard` must be built with `go-1.23` for this release.
+</Callout>
+
 
 2. Wait for the proposed upgrade block, `16665600`. Your node will panic at that block height with a log: `{"level":"error","module":"consensus","err":"UPGRADE \"v1.1.2\" NEEDED at height: ",`. Stop your node after chain halt.
 
