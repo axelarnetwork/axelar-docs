@@ -1,0 +1,60 @@
+# Testnet upgrade: V1.1.2
+
+import { Callout } from "/src/components/callout";
+
+Instructions for the `2024-Dec-12` testnet upgrade to axelar-core `v1.1.2`.
+Release can be found [here](https://github.com/axelarnetwork/axelar-core/releases/tag/v1.1.2)
+
+Upgrade height `16665600` [countdown](https://www.mintscan.io/axelar-testnet/block/16665600)
+
+## About the V1.1.2 upgrade
+The `v1.1.2` upgrade is a non-consensus breaking patch release for `v1.1.x.` `v1.1.x.` Once live, it will enable the deployment of ITS Hub on testnet.
+
+1. If you're a validator or have delegated to one, please vote for the upgrade proposal via
+
+
+```bash
+axelard tx gov vote 164 yes --from validator
+```
+
+
+2. Wait for the proposed upgrade block, `16665600`. Your node will panic at that block height with a log: `{"level":"error","module":"consensus","err":"UPGRADE \"v1.1.2\" NEEDED at height: ",`. Stop your node after chain halt.
+
+```bash
+pkill -f 'axelard start'
+# Validators need to also stop vald/tofnd
+pkill -f 'vald-start'
+pkill -f tofnd
+```
+
+3. Backup the state:
+
+```bash
+cp -r ~/.axelar_testnet/.core/data ~/.axelar-lisbon-3-upgrade-1.1.2/.core/data
+```
+
+<Callout type="warning" emoji="⚠️">
+  Caution: If you backup the entire folder, `~/.axelar_testnet/.core`, that'll
+  also include your private keys (inside `config` and `keyring-file`
+  subfolders). That can be dangerous if anyone gets access to your backups. We
+  recommend backing up keys separately when you first create your node, and then
+  excluding them from any data backups.
+</Callout>
+
+
+4. Restart your `axelard` node with the new `v1.1.2` build.
+5. If you're a validator also restart `vald` with `v1.1.2` and `tofnd` with `v1.0.1`.
+
+Example using join scripts in [axelarate-community git repo](https://github.com/axelarnetwork/axelarate-community):
+
+
+
+```bash
+# in axelarate-community repo
+git checkout main
+git pull
+KEYRING_PASSWORD="pw-1" ./scripts/node.sh -n testnet -a v1.1.2
+# For validators, restart vald/tofnd
+KEYRING_PASSWORD="pw-1" TOFND_PASSWORD="pw-2" ./scripts/validator-tools-host.sh -n testnet -a v1.1.2 -q v1.0.1
+```
+
