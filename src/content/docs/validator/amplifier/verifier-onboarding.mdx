@@ -45,6 +45,13 @@ tofnd -m create
 mv ~/.tofnd/export ~/.tofnd/export-new-location
 ```
 
+Create an alias or symlink to the `tofnd` binary in your `.bashrc`. Be sure to specify the correct file name which may be a different architecture or later version than v1.0.1.
+
+```bash
+echo "alias tofnd=~/Downloads/tofnd-linux-amd64-v1.0.1" >> ~/.bashrc
+source ~/.bashrc
+```
+
 Now run tofnd.
 
 ```bash
@@ -158,10 +165,8 @@ This will allow you to begin commands with `ampd`. If you set up `ampd` through 
 1. Add an alias to `ampd` at the end of the `.bashrc` file on your machine:
 
    ```bash
-   echo "ampd=~/Downloads/ampd-darwin-arm64-v1.2.0" >> ~/.bashrc
+   echo "alias ampd=~/Downloads/ampd-darwin-arm64-v1.2.0" >> ~/.bashrc
    ```
-
-1. Save and close the file.
 
 1. Reload the file to apply all changes:
 
