@@ -95,8 +95,22 @@ export const getNavigation = (section) => {
               title: "Roadmap",
               href: "/dev/send-tokens/roadmap/",
             },
+            {
+              title: "Deprecated",
+              children: [
+                {
+                  title: "Send Tokens",
+                  href: "/dev/send-tokens/deprecated/send-tokens/",
+                },
+                {
+                  title: "Deposit Address",
+                  href: "/dev/send-tokens/deprecated/deposit-address/",
+                },
+              ],
+            },
           ],
         },
+
         {
           title: "General Message Passing",
           children: [
@@ -267,7 +281,7 @@ export const getNavigation = (section) => {
               children: [
                 {
                   title: "Automatic Relaying",
-                  href: "/dev/amplifier/chain-integration/relay-messages/automatic/",
+                  href: "https://www.notion.so/bright-ambert-2bd/Amplifier-GMP-API-Authentication-EXTERNAL-113c53fccb77807caeeff9882b883a4c",
                 },
                 {
                   title: "Manual Relaying",
@@ -290,6 +304,19 @@ export const getNavigation = (section) => {
             {
               title: "Roadmap",
               href: "/dev/amplifier/roadmap/",
+            },
+            {
+              title: "ITS Hub",
+              children: [
+                {
+                  title: "Introduction",
+                  href: "/dev/amplifier/its-hub/introduction/",
+                },
+                {
+                  title: "Routing Mechanics",
+                  href: "/dev/amplifier/its-hub/routing-mechanics/",
+                },
+              ],
             },
           ],
         },
@@ -358,19 +385,6 @@ export const getNavigation = (section) => {
             {
               title: "Full-Stack Interchain App with Next.js & Solidity",
               href: "https://blog.axelar.dev/build-a-full-stack-interchain-application-with-nextjs-solidity-axelar",
-            },
-          ],
-        },
-        {
-          title: "Indexers",
-          children: [
-            {
-              title: "Introduction",
-              href: "/dev/indexers/overview/",
-            },
-            {
-              title: "SubQuery",
-              href: "/dev/indexers/subquery/",
             },
           ],
         },
