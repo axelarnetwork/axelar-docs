@@ -23,3 +23,4 @@ layout: /src/layouts/None.astro
 | [v0.34.3](/resources/mainnet/upgrades/v34/) | 9151750      | 11795700       |
 | [v0.35.5](/resources/mainnet/upgrades/v35/) | 11795700     | 14231100       |
 | [v1.0.4](/resources/mainnet/upgrades/v31/)  | 14231100     | N/A            |
+| [v1.1.2](/resources/mainnet/upgrades/v112/)  | N/A     | N/A            |
