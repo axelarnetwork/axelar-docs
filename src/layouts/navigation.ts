@@ -95,8 +95,22 @@ export const getNavigation = (section) => {
               title: "Roadmap",
               href: "/dev/send-tokens/roadmap/",
             },
+            {
+              title: "Deprecated",
+              children: [
+                {
+                  title: "Send Tokens",
+                  href: "/dev/send-tokens/deprecated/send-tokens/"
+                },
+                {
+                  title: "Deposit Address",
+                  href: "/dev/send-tokens/deprecated/deposit-address/"
+                }
+              ]
+            },
           ],
         },
+
         {
           title: "General Message Passing",
           children: [
@@ -290,6 +304,19 @@ export const getNavigation = (section) => {
             {
               title: "Roadmap",
               href: "/dev/amplifier/roadmap/",
+            },
+            {
+              title: "ITS Hub",
+              children: [
+                {
+                  title: "Introduction",
+                  href: "/dev/amplifier/its-hub/introduction/",
+                },
+                {
+                  title: "Routing Mechanics",
+                  href: "/dev/amplifier/its-hub/routing-mechanics/",
+                },
+              ],
             },
           ],
         },
