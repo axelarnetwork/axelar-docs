@@ -9,4 +9,6 @@ import "./prism.js";
 import "./safelinks";
 import { showToast } from "./toast";
 import "./wrapTables";
+import "./intercom";
+
 window["showToast"] = showToast;
