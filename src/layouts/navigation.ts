@@ -635,7 +635,7 @@ export const getNavigation = (section) => {
             title: "Mainnet axelard",
             children: [
               {
-                title: "v1.1.2",
+                title: "v1.1",
                 href: "/resources/mainnet/upgrades/v112/",
               },
               {
@@ -704,8 +704,8 @@ export const getNavigation = (section) => {
             title: "Testnet axelard",
             children: [
               {
-                title: "v1.1.2",
-                href: "/resources/testnet/upgrades/v1/",
+                title: "v1.1",
+                href: "/resources/testnet/upgrades/v112/",
               },
               {
                 title: "v1.0",
