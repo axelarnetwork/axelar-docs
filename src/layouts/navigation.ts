@@ -305,6 +305,19 @@ export const getNavigation = (section) => {
               title: "Roadmap",
               href: "/dev/amplifier/roadmap/",
             },
+            {
+              title: "ITS Hub",
+              children: [
+                {
+                  title: "Introduction",
+                  href: "/dev/amplifier/its-hub/introduction/",
+                },
+                {
+                  title: "Routing Mechanics",
+                  href: "/dev/amplifier/its-hub/routing-mechanics/",
+                },
+              ],
+            },
           ],
         },
         {
