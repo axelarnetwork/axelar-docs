@@ -100,13 +100,13 @@ export const getNavigation = (section) => {
               children: [
                 {
                   title: "Send Tokens",
-                  href: "/dev/send-tokens/deprecated/send-tokens/"
+                  href: "/dev/send-tokens/deprecated/send-tokens/",
                 },
                 {
                   title: "Deposit Address",
-                  href: "/dev/send-tokens/deprecated/deposit-address/"
-                }
-              ]
+                  href: "/dev/send-tokens/deprecated/deposit-address/",
+                },
+              ],
             },
           ],
         },
@@ -385,19 +385,6 @@ export const getNavigation = (section) => {
             {
               title: "Full-Stack Interchain App with Next.js & Solidity",
               href: "https://blog.axelar.dev/build-a-full-stack-interchain-application-with-nextjs-solidity-axelar",
-            },
-          ],
-        },
-        {
-          title: "Indexers",
-          children: [
-            {
-              title: "Introduction",
-              href: "/dev/indexers/overview/",
-            },
-            {
-              title: "SubQuery",
-              href: "/dev/indexers/subquery/",
             },
           ],
         },
