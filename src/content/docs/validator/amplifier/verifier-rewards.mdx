@@ -182,3 +182,11 @@ axelard tx wasm execute $REWARDS_CONTRACT_ADDRESS \
 Rewards are distributed to verifiers with a participation rate greater than the threshold as the epoch closes. Rewards are calculated based on the time passed since the last event and the total number of verifiers, and split equally amongst all participating verifiers in the epoch.
 
 `epoch_count` is the maximum number of historical epochs for which to distribute rewards, starting with the oldest. If not specified, rewards will be distributed for the last 10 epochs.
+
+
+## Withdrawing rewards
+By default your verifier rewards will be sent to the address of your verifier (change this with `ampd set-rewards-proxy`). To withdraw your rewards, use `ampd`'s `send-tokens` feature.
+
+```bash 
+ampd send-tokens <destination address> <amount with 6 decimals> uaxl 
+```

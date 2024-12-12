@@ -14,14 +14,37 @@ Chains integrated with Amplifier can [pass GMP messages](/dev/general-message-pa
 1. Verifiers participate in the signing session.
 1. Once enough signatures have been submitted, the relayer gets the fully signed proof from the prover and relays the proof to the destination chain to approve the transactions. This relayer can now execute any approved transactions on the destination chain.
 
-## Axelar contract deployments
+## Live Axelar contract deployments
 
-The following code samples illustrate a transaction from Avalanche to Ethereum Sepolia. Information for other chains can be found on [`testnet.json`](https://github.com/axelarnetwork/axelar-contract-deployments/blob/main/axelar-chains-config/info/testnet.json).
+1. [`Devnet Deployments`](https://github.com/axelarnetwork/axelar-contract-deployments/blob/main/axelar-chains-config/info/devnet-amplifier.json).
+1. [`Stagenet Deployments`](https://github.com/axelarnetwork/axelar-contract-deployments/blob/main/axelar-chains-config/info/stagenet.json).
+1. [`Testnet Deployments`](https://github.com/axelarnetwork/axelar-contract-deployments/blob/main/axelar-chains-config/info/testnet.json).
+1. [`Mainnet Deployments`](https://github.com/axelarnetwork/axelar-contract-deployments/blob/main/axelar-chains-config/info/mainnet.json).
 
 ## Verify messages
 
-[`verify_messages`](https://github.com/axelarnetwork/axelar-amplifier/blob/f76dc8a775b8bb529cf50147bab9259d1ec7f784/packages/gateway-api/src/msg.rs#L9) is a command on the gateway that prompts verifiers to begin voting so that a message can be verified and then routed. It takes a vector of messages to be verified.
+Once a call has been [executed](https://sepolia.etherscan.io/tx/0x4f5b0ed0dc717b317f16c841a407c79226deba7bc15e82ba98b4d4aab1169baf) on an external chain such as Ethereum, the first step is to get that message [verified](https://devnet-amplifier.axelarscan.io/tx/3F1C367A3424CE90FE046ADA41A295910FACA543DC83893784548F214CC2AF7B) with your integration's unique `Verifier Contract`
 
+The [`verify_messages`](https://github.com/axelarnetwork/axelar-amplifier/blob/f76dc8a775b8bb529cf50147bab9259d1ec7f784/packages/gateway-api/src/msg.rs#L9) command on the [gateway](https://github.com/axelarnetwork/axelar-amplifier/blob/main/doc/src/contracts/gateway.md) prompts verifiers (in the case of a VotingVerifier verification choice) to begin voting so that a message can be verified and then routed. It takes a vector of messages to be verified. This example will trigger the [verify_messages](https://github.com/axelarnetwork/axelar-amplifier/blob/f76dc8a775b8bb529cf50147bab9259d1ec7f784/contracts/voting-verifier/src/execute.rs#L96) function in the Voting Verifier contract.
+
+Note: A [Voting Verifier](https://github.com/axelarnetwork/axelar-amplifier/blob/f76dc8a775b8bb529cf50147bab9259d1ec7f784/doc/src/contracts/voting_verifier.md) verification is just one of many possibilities to verify messages. Other options include but are not limited to the use of ZK Proofs or light clients.
+<tabs>
+<tab-item title="devnet">
+```bash
+export SOURCE_CHAIN_GATEWAY="axelar1exenpcymaxz5gpkl0lmv85kxzgm6rk0czn9ysxn0ssf8j7c4rkts8ltcvw" # Chain integrations unique gateway
+export CHAIN_NAME="toronto" # Chain name
+export TX_HASH="0x4f5b0ed0dc717b317f16c841a407c79226deba7bc15e82ba98b4d4aab1169baf" # Hash of tx on Toronto chain
+export TX_EVENT="1" # Index of call-contract event on Toronto chain
+export DESTINATION_CHAIN="avalanche-fuji" # Name of dest chain as indicated in devnet-deployments.json file
+export DESTINATION_ADDRESS="0x8f8dedd09E23E22E1555e9D2C25D7c7332291919" # Receiving dapp address on Avalanche
+export SOURCE_ADDRESS="0x4501dc2E5Da9C3c8Eb6A68ecdE7a351229AA3134" # Sending dapp address on Toronto
+export PAYLOAD_HASH="510904852D8E69EBFD1F84DC0DD0BF7A75C97A8C7EF873BF5BEF26DC41AD1C0F" # Hash of GMP payload sent
+export RPC="http://devnet-amplifier.axelar.dev:26657" # Devnet RPC
+export GAS_PRICE="0.007uamplifier" # Gas price for devnet tx
+export CHAIN_ID="devnet-amplifier" # Devnet chain id
+```
+</tab-item>
+<tab-item title="testnet">
 ```bash
 export SOURCE_CHAIN_GATEWAY="axelar1vnfn0e4vnn58ydpm05wqcc9zp8t5ztwd5rw5f895lykqaezmuccqujmwl2"
 export CHAIN_NAME="avalanche"
@@ -32,7 +55,13 @@ export DESTINATION_ADDRESS="0x8f8dedd09E23E22E1555e9D2C25D7c7332291919"
 export SOURCE_ADDRESS="0x0a3b8dc7706c47b6dd87d771df63875b1c5cd867"
 export PAYLOAD_HASH="220f68445e3cec114bff50cd6b251e3deabc7684b10280c2116b20bcc6795a96"
 export RPC="https://tm.axelar-testnet.lava.build:443"
+export GAS_PRICE="0.007uverifiers" 
+export CHAIN_ID="axelar-testnet-lisbon-3 "
 ```
+</tab-item>
+</tabs>
+
+Running this command will trigger a [vote](https://devnet-amplifier.axelarscan.io/amplifier-poll/axelar1uzfz5v5694llyg0a2aafz4gu3d8njc44vp6fw6j9kscyrrn3x5as50wuux_43) among the chain's registered verifiers to come to consensus about the message that was sent.
 
 ```bash
 axelard tx wasm execute $SOURCE_CHAIN_GATEWAY \
@@ -52,14 +81,46 @@ axelard tx wasm execute $SOURCE_CHAIN_GATEWAY \
     }' \
     --keyring-backend test  \
     --from wallet  \
-    --gas auto --gas-adjustment 1.5 --gas-prices 0.007uverifiers  \
-    --chain-id axelar-testnet-lisbon-3 \
+    --gas auto --gas-adjustment 1.5 --gas-prices $GAS_PRICE  \
+    --chain-id $CHAIN_ID \
     --node $RPC
 ```
 
 ## Route messages
+With the message now verified, the next step is to [route](https://devnet-amplifier.axelarscan.io/tx/C8AD9EA8DC25CF6CDF8CDFE4C8BBD081BE54A89858D95F8556CA447D80C93AF4) the message to the destination chain's [Prover contract](https://github.com/axelarnetwork/axelar-amplifier/blob/main/doc/src/contracts/multisig_prover.md). To do this you can run the [`route_messages`](https://github.com/axelarnetwork/axelar-amplifier/blob/f76dc8a775b8bb529cf50147bab9259d1ec7f784/packages/gateway-api/src/msg.rs#L14) command on the [gateway](https://github.com/axelarnetwork/axelar-amplifier/blob/f76dc8a775b8bb529cf50147bab9259d1ec7f784/contracts/gateway/src/contract/execute.rs#L22). It takes a vector of verified messages to be routed.
 
-[`route_messages`](https://github.com/axelarnetwork/axelar-amplifier/blob/f76dc8a775b8bb529cf50147bab9259d1ec7f784/packages/gateway-api/src/msg.rs#L14) is a command on the gateway that routes successfully verified messages to the destination chain. It takes a vector of verified messages to be routed.
+<tabs>
+<tab-item title="devnet">
+```bash
+export SOURCE_CHAIN_GATEWAY="axelar1exenpcymaxz5gpkl0lmv85kxzgm6rk0czn9ysxn0ssf8j7c4rkts8ltcvw" # Chain integrations unique gateway
+export CHAIN_NAME="toronto" # Chain name
+export TX_HASH="0x4f5b0ed0dc717b317f16c841a407c79226deba7bc15e82ba98b4d4aab1169baf" # Hash of tx on Toronto chain
+export TX_EVENT="1" # Index of call-contract event on Toronto chain
+export DESTINATION_CHAIN="avalanche-fuji" # Name of dest chain as indicated in devnet-deployments.json file
+export DESTINATION_ADDRESS="0x8f8dedd09E23E22E1555e9D2C25D7c7332291919" # Receiving dapp address on Avalanche
+export SOURCE_ADDRESS="0x4501dc2E5Da9C3c8Eb6A68ecdE7a351229AA3134" # Sending dapp address on Toronto
+export PAYLOAD_HASH="510904852D8E69EBFD1F84DC0DD0BF7A75C97A8C7EF873BF5BEF26DC41AD1C0F" # Hash of GMP payload sent
+export RPC="http://devnet-amplifier.axelar.dev:26657" # Devnet RPC
+export GAS_PRICE="0.007uamplifier" # Gas price for devnet tx
+export CHAIN_ID="devnet-amplifier" # Devnet chain id
+```
+</tab-item>
+<tab-item title="testnet">
+```bash
+export SOURCE_CHAIN_GATEWAY="axelar1vnfn0e4vnn58ydpm05wqcc9zp8t5ztwd5rw5f895lykqaezmuccqujmwl2"
+export CHAIN_NAME="avalanche"
+export TX_HASH="0x41d08bd627d7be301e0858312b63b3ede840d7fad145a9da333c26adf5d98614"
+export TX_EVENT="0"
+export DESTINATION_CHAIN="ethereum-sepolia"
+export DESTINATION_ADDRESS="0x8f8dedd09E23E22E1555e9D2C25D7c7332291919"
+export SOURCE_ADDRESS="0x0a3b8dc7706c47b6dd87d771df63875b1c5cd867"
+export PAYLOAD_HASH="220f68445e3cec114bff50cd6b251e3deabc7684b10280c2116b20bcc6795a96"
+export RPC="https://tm.axelar-testnet.lava.build:443"
+export GAS_PRICE="0.007uverifiers"
+export CHAIN_ID="axelar-testnet-lisbon-3"
+```
+</tab-item>
+</tabs>
 
 ```bash
 axelard tx wasm execute $SOURCE_CHAIN_GATEWAY \
@@ -79,18 +140,39 @@ axelard tx wasm execute $SOURCE_CHAIN_GATEWAY \
     }' \
     --keyring-backend test  \
     --from wallet  \
-    --gas auto --gas-adjustment 1.5 --gas-prices 0.007uverifiers  \
-    --chain-id axelar-testnet-lisbon-3 \
+    --gas auto --gas-adjustment 1.5 --gas-prices $GAS_PRICE  \
+    --chain-id $CHAIN_ID \
     --node $RPC
 ```
 
 ## Construct a proof
-
+Now that the message has been routed, the [Prover](https://github.com/axelarnetwork/axelar-amplifier/blob/f76dc8a775b8bb529cf50147bab9259d1ec7f784/doc/src/contracts/multisig_prover.md) of the destination chain can [construct the proof](https://devnet-amplifier.axelarscan.io/tx/6693F9316263A079ECC75664E843BBF91C9F7F0B6A5723102886AF57954C9516) for it.
 [`construct_proof`](https://github.com/axelarnetwork/axelar-amplifier/blob/f76dc8a775b8bb529cf50147bab9259d1ec7f784/contracts/multisig-prover/src/msg.rs#L61) takes a vector of `CrossChainID`s and builds a proof that includes the messages to be routed so that the message can be relayed to the destination gateway. It also passes the message from the gateway to the prover.
 
+<tabs>
+<tab-item title="devnet">
+```bash
+export DESTINATION_CHAIN_MULTISIG_PROVER="axelar14smpvv72hkaajh7rqzuhxum5vj3yh5smftaescucdmfsh9eednyqdme35j" # Chain integrations unique prover
+export CHAIN_NAME="toronto" # Chain name
+export TX_HASH="0x4f5b0ed0dc717b317f16c841a407c79226deba7bc15e82ba98b4d4aab1169baf" # Hash of tx on Toronto chain
+export TX_EVENT="1" # Index of call-contract event on Toronto chain
+export RPC="http://devnet-amplifier.axelar.dev:26657" # Devnet RPC
+export GAS_PRICE="0.007uamplifier" # Gas price for devnet tx
+export CHAIN_ID="devnet-amplifier" # Devnet chain id
+```
+</tab-item>
+<tab-item title="testnet">
 ```bash
 export DESTINATION_CHAIN_MULTISIG_PROVER="axelar1xz4cya4qm2ws6nzperhvc40wdjcq4872fl6d3j2s4cytyx8j80eqenv87g"
+export CHAIN_NAME="avalanche"
+export TX_HASH="0x41d08bd627d7be301e0858312b63b3ede840d7fad145a9da333c26adf5d98614"
+export TX_EVENT="0"
+export RPC="https://tm.axelar-testnet.lava.build:443"
+export GAS_PRICE="0.007uverifiers"
+export CHAIN_ID="axelar-testnet-lisbon-3"
 ```
+</tab-item>
+</tabs>
 
 ```bash
 axelard tx wasm execute $DESTINATION_CHAIN_MULTISIG_PROVER \
@@ -102,22 +184,37 @@ axelard tx wasm execute $DESTINATION_CHAIN_MULTISIG_PROVER \
                         "message_id":"'"$TX_HASH-$TX_EVENT"'"
                     }
                 ]
-            
+
     }' \
     --keyring-backend test \
     --from wallet \
-    --gas auto --gas-adjustment 1.5 --gas-prices 0.007uverifiers \
-    --chain-id axelar-testnet-lisbon-3 \
+    --gas auto --gas-adjustment 1.5 --gas-prices $GAS_PRICE \
+    --chain-id $CHAIN_ID \
     --node $RPC
 ```
 
+
 ## Get the proof
 
-[`get_proof`](https://github.com/axelarnetwork/axelar-amplifier/blob/f76dc8a775b8bb529cf50147bab9259d1ec7f784/contracts/multisig-prover/src/msg.rs#L81) returns the fully signed proof from the multisig prover after verifiers vote.
+Now that the proof has been submitted you can run [`get_proof`](https://github.com/axelarnetwork/axelar-amplifier/blob/f76dc8a775b8bb529cf50147bab9259d1ec7f784/contracts/multisig-prover/src/msg.rs#L81) to return the fully signed proof from the multisig prover.
 
+<tabs>
+<tab-item title="devnet">
 ```bash
-export MULTISIG_SESSION_ID="3457"
+export DESTINATION_CHAIN_MULTISIG_PROVER="axelar14smpvv72hkaajh7rqzuhxum5vj3yh5smftaescucdmfsh9eednyqdme35j" # Chain integrations unique prover
+export MULTISIG_SESSION_ID="1742" # Unique value for each proof generation
+export RPC="http://devnet-amplifier.axelar.dev:26657" # Devnet RPC
 ```
+</tab-item>
+<tab-item title="testnet">
+```bash
+export DESTINATION_CHAIN_MULTISIG_PROVER="axelar1xz4cya4qm2ws6nzperhvc40wdjcq4872fl6d3j2s4cytyx8j80eqenv87g"
+export MULTISIG_SESSION_ID="3457"
+export RPC="https://tm.axelar-testnet.lava.build:443"
+```
+</tab-item>
+</tabs>
+
 
 ```bash
 axelard q wasm contract-state smart $DESTINATION_CHAIN_MULTISIG_PROVER \
@@ -129,8 +226,8 @@ axelard q wasm contract-state smart $DESTINATION_CHAIN_MULTISIG_PROVER \
     --node $RPC
 ```
 
-## Send the proof to the destination chain
 
+## Send the proof to the destination chain
 <tabs>
 
 <tab-item title="<code>cast</code> (Foundry)">
@@ -148,6 +245,7 @@ cast send $OUTPUT \
     --rpc-url $RPC \
     --mnemonic-path ./private.mneumonic
 ```
+
 </tab-item>
 
 <tab-item title="MetaMask">

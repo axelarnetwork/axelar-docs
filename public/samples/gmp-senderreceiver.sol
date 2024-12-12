@@ -26,10 +26,11 @@ contract SenderReceiver is AxelarExecutable {
             msg.sender
         );
 
-        gateway.callContract(destinationChain,destinationAddress,payload);
+        gateway().callContract(destinationChain,destinationAddress,payload);
     }
 
     function _execute(
+        bytes32 commandId, 
         string calldata sourceChain,
         string calldata sourceAddress,
         bytes calldata payload_

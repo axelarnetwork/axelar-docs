@@ -1,3 +1,5 @@
+import { title } from "process";
+
 export const topLevelNav = [
   {
     title: "Developers",
@@ -35,22 +37,24 @@ export const getNavigation = (section) => {
               title: "Interchain Tokens",
               children: [
                 {
-                  title: "Introduction",
+                  title: "Overview",
                   href: "/dev/send-tokens/interchain-tokens/intro/",
                 },
                 {
-                  title: "Quick Start",
-                  href: "/dev/send-tokens/interchain-tokens/quick-start/",
-                  children: [
-                    {
-                      title: "No Code",
-                      href: "/dev/send-tokens/interchain-tokens/quick-start/no-code/",
-                    },
-                    {
-                      title: "Programmatic",
-                      href: "/dev/send-tokens/interchain-tokens/quick-start/programmatic/",
-                    },
-                  ],
+                  title: "No Code Setup",
+                  href: "/dev/send-tokens/interchain-tokens/no-code/",
+                },
+                {
+                  title: "Create New Token",
+                  href: "/dev/send-tokens/interchain-tokens/create-new-interchain-token/",
+                },
+                {
+                  title: "Register Existing Token",
+                  href: "/dev/send-tokens/interchain-tokens/register-existing-token/",
+                },
+                {
+                  title: "Integrate Custom Token",
+                  href: "/dev/send-tokens/interchain-tokens/integrate-custom-token/",
                 },
                 {
                   title: "Token Manager",
@@ -91,8 +95,22 @@ export const getNavigation = (section) => {
               title: "Roadmap",
               href: "/dev/send-tokens/roadmap/",
             },
+            {
+              title: "Deprecated",
+              children: [
+                {
+                  title: "Send Tokens",
+                  href: "/dev/send-tokens/deprecated/send-tokens/"
+                },
+                {
+                  title: "Deposit Address",
+                  href: "/dev/send-tokens/deprecated/deposit-address/"
+                }
+              ]
+            },
           ],
         },
+
         {
           title: "General Message Passing",
           children: [
@@ -287,6 +305,19 @@ export const getNavigation = (section) => {
               title: "Roadmap",
               href: "/dev/amplifier/roadmap/",
             },
+            {
+              title: "ITS Hub",
+              children: [
+                {
+                  title: "Introduction",
+                  href: "/dev/amplifier/its-hub/introduction/",
+                },
+                {
+                  title: "Routing Mechanics",
+                  href: "/dev/amplifier/its-hub/routing-mechanics/",
+                },
+              ],
+            },
           ],
         },
         {
@@ -325,6 +356,35 @@ export const getNavigation = (section) => {
             {
               title: "Testnet Contract Addresses",
               href: "/dev/reference/testnet-contract-addresses/",
+            },
+          ],
+        },
+        {
+          title: "Tutorials",
+          children: [
+            {
+              title: "Deploy App with Same Address Cross-Chain",
+              href: "https://blog.axelar.dev/how-to-deploy-an-application-with-the-same-address-cross-chain/",
+            },
+            {
+              title: "Cross-Chain Governance with OpenZeppelin",
+              href: "https://blog.axelar.dev/cross-chain-governance-with-openzeppelin-governor-and-axelar",
+            },
+            {
+              title: "Building Multichain Stablecoins",
+              href: "https://blog.axelar.dev/building-multichain-stablecoins-part-one",
+            },
+            {
+              title: "Cross-Chain Memecoins with Axelar",
+              href: "https://blog.axelar.dev/cross-chain-memecoins-with-axelar",
+            },
+            {
+              title: "Multichain RWA Lending with GMP",
+              href: "https://blog.axelar.dev/multichain-rwa-lending-with-axelar-gmp",
+            },
+            {
+              title: "Full-Stack Interchain App with Next.js & Solidity",
+              href: "https://blog.axelar.dev/build-a-full-stack-interchain-application-with-nextjs-solidity-axelar",
             },
           ],
         },

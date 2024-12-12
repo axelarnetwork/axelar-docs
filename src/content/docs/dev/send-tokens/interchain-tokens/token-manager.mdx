@@ -4,7 +4,7 @@
 
 ## Token Manager Types
 
-There are different [types](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/interfaces/ITokenManagerType.sol#L10) of token managers available for developers to offer different types of integrations to ITS. These are; `nativeInterchain`, `mintBurnFrom`, `lockUnlock`, `lockUnlockFee`, `mintBurn`, and `gateway`.
+There are different [types](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/interfaces/ITokenManagerType.sol#L10) of token managers available for developers to offer different types of integrations to ITS. These are; `nativeInterchain`, `mintBurnFrom`, `lockUnlock`, `lockUnlockFee`, and `mintBurn`.
 
 Each of these types correspond to an `enum` value. When [deploying a token manager](https://github.com/axelarnetwork/interchain-token-service/blob/7df851d8a4ec4df819961d704bf3067ee8d37521/contracts/InterchainTokenService.sol#L286) developers must pass in the [corresponding value](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/InterchainTokenService.sol#L289) for their desired token manager type.
 
@@ -13,7 +13,6 @@ Each of these types correspond to an `enum` value. When [deploying a token manag
 `Lock/Unlock`: `2`  
 `Lock/UnlockFee`: `3`  
 `Mint/Burn`: `4`  
-`Gateway`: `5`
 
 ### Native Interchain Token
 
@@ -44,10 +43,6 @@ For more details checkout this [Lock/UnlockFee example](https://github.com/axela
 The `mint/burn` token manager type is the most common token manager type used for integrating tokens to ITS. This token manager type is used when there is no home chain for your token and allows you to `burn()` tokens from the source chain and `mint()` tokens on the destination chain. The manager will need to be granted the role to be able to execute the `mint()` and `burn()` function on the token.
 
 For more details checkout this [Mint/Burn example](https://github.com/axelarnetwork/axelar-examples/tree/main/examples/evm/its-custom-token)
-
-### Gateway
-
-For tokens that will be connected with the AxelarGateway this Gateway manager type is also available. It will allow tokens to be sent cross-chain via the `callContractWithToken()` function
 
 ## Flow Limits
 
