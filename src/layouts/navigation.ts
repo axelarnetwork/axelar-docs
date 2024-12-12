@@ -281,7 +281,7 @@ export const getNavigation = (section) => {
               children: [
                 {
                   title: "Automatic Relaying",
-                  href: "/dev/amplifier/chain-integration/relay-messages/automatic/",
+                  href: "https://www.notion.so/bright-ambert-2bd/Amplifier-GMP-API-Authentication-EXTERNAL-113c53fccb77807caeeff9882b883a4c",
                 },
                 {
                   title: "Manual Relaying",
