@@ -5,9 +5,9 @@ import { Callout } from "/src/components/callout";
 Instructions for the `2024-Dec-18` mainnet upgrade to axelar-core `v1.1.2`.
 Release notes can be found [here](https://github.com/axelarnetwork/axelar-core/releases/tag/v1.1.2)
 
-Upgrade height `15892300` [countdown](https://www.mintscan.io/axelar/block/15892300)
+Upgrade height `15890800` [countdown](https://www.mintscan.io/axelar/block/15890800)
 
-## About the V1.1 upgrade
+## About the v1.1 upgrade
 The `v1.1.2` upgrade is a consensus breaking release for Axelar mainnet. It enables the deployment of ITS Hub on mainnet.
 
 1. If you're a validator or have delegated to one, please vote for the upgrade proposal via
@@ -22,7 +22,7 @@ axelard tx gov vote 257 yes --from validator
 </Callout>
 
 
-2. Wait for the proposed upgrade block, `15892300`. Your node will panic at that block height with a log: `{"level":"error","module":"consensus","err":"UPGRADE \"v1.1.2\" NEEDED at height: 15892300",`. Stop your node after chain halt.
+2. Wait for the proposed upgrade block, `15890800`. Your node will panic at that block height with a log: `{"level":"error","module":"consensus","err":"UPGRADE \"v1.1.2\" NEEDED at height: 15890800",`. Stop your node after chain halt.
 
 ```bash
 pkill -f 'axelard start'
