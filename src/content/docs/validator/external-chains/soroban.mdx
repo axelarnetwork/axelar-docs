@@ -27,23 +27,68 @@ In order to build the `Soroban` node, you first need to install all the required
 - cargo >= 1.74
 - rust >= 1.74
 
-```bash
-curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
-sudo apt-get update
-sudo apt-get install -y make git-core libssl-dev pkg-config libclang-18-dev build-essential protobuf-compiler
-sudo apt-get install -y libudev-dev
-source "$HOME/.cargo/env"
+<tabs>
+    <tab-item title="Linux">
+        ```bash
+        curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+        sudo apt-get update
+        sudo apt-get install -y make git-core libssl-dev pkg-config libclang-18-dev build-essential protobuf-compiler
+        sudo apt-get install -y libudev-dev
+        source "$HOME/.cargo/env"
 
-# common packages
-sudo apt-get install git build-essential pkg-config autoconf automake libtool bison flex libpq-dev libunwind-dev parallel sed perl postgresql-common postgresql postgresql-contrib
-# if using clang
-sudo apt-get install clang-18
-# clang with libstdc++
-sudo apt-get install gcc-10
-# if using g++ or building with libstdc++
-# sudo apt-get install gcc-10 g++-10 cpp-10
-sudo apt-get install clang-format-18
-```
+        # common packages
+        sudo apt-get install git build-essential pkg-config autoconf automake libtool bison flex libpq-dev libunwind-dev parallel sed perl postgresql-common postgresql postgresql-contrib
+        # if using clang
+        sudo apt-get install clang-18
+        # clang with libstdc++
+        sudo apt-get install gcc-10
+        # if using g++ or building with libstdc++
+        # sudo apt-get install gcc-10 g++-10 cpp-10
+        sudo apt-get install clang-format-18
+        ```
+    </tab-item>
+    <tab-item title="macOS">
+        ```bash
+        # Install Homebrew (if not already installed)
+        /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+
+        # Add Homebrew to PATH
+        echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> ~/.zprofile
+        eval "$(/opt/homebrew/bin/brew shellenv)"
+
+        # Install Rust
+        curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+        source "$HOME/.cargo/env"
+
+        # Update Homebrew
+        brew update
+
+        # Install essential packages
+        brew install make git pkg-config llvm protobuf libpq parallel
+
+        # Install additional development tools
+        brew install autoconf automake libtool bison flex sed perl
+
+        # Install PostgreSQL
+        brew install postgresql
+        brew services start postgresql
+
+        # Install
+        brew install llvm
+        brew link --force llvm
+        brew install gcc
+
+        # Install clang-format
+        brew install clang-format
+
+        # Configure environment variables (add to ~/.zprofile or ~/.bash_profile)
+        echo 'export PATH="/usr/local/opt/llvm/bin:$PATH"' >> ~/.zprofile
+        echo 'export LDFLAGS="-L/usr/local/opt/llvm/lib"' >> ~/.zprofile
+        echo 'export CPPFLAGS="-I/usr/local/opt/llvm/include"' >> ~/.zprofile
+        source ~/.zprofile
+        ```
+    </tab-item>
+</tabs>
 
 ## Install Stellar-Core
 
@@ -60,36 +105,39 @@ SOROBAN_RELEASE=v22.0.0
 ### 1. Install Stellar Core
 
 <tabs>
-<tab-item title="Mainnet" class="bleed">
-    ```bash
-    git clone https://github.com/stellar/stellar-core.git
-    cd stellar-core
-    git checkout $STELLAR_RELEASE
-    git submodule init
-    git submodule update
-    ./autogen.sh
-    ./configure
-    make
-    make check
-    sudo make install
-```
-</tab-item>
-<tab-item title="Testnet" class="bleed">
-    ```bash
-    git clone https://github.com/stellar/stellar-core.git 
-    cd stellar-core
-    git checkout $STELLAR_RELEASE
-    git submodule init
-    git submodule update
-    ./autogen.sh
-    ./configure
-    make
-    make check
-    sudo make install
-```
+    <tab-item title="Mainnet" class="bleed">
+        ```bash
+        git clone https://github.com/stellar/stellar-core.git
+        cd stellar-core
+        git checkout $STELLAR_RELEASE
+        git submodule init
+        git submodule update
+        ./autogen.sh
+        ./configure
+        make
+        make check
+        sudo make install
+        sudo mv stellar-core /usr/bin/
 
-</tab-item>
-                        </tabs>
+    ```
+    </tab-item>
+    <tab-item title="Testnet" class="bleed">
+        ```bash
+        git clone https://github.com/stellar/stellar-core.git 
+        cd stellar-core
+        git checkout $STELLAR_RELEASE
+        git submodule init
+        git submodule update
+        ./autogen.sh
+        ./configure
+        make
+        make check
+        sudo make install
+        sudo mv stellar-core /usr/bin/
+
+    ```
+    </tab-item>
+</tabs>
 
 
 
@@ -341,7 +389,7 @@ Create ~/.stellar/config/core.toml and add
 
 </tabs>
 
-### 2. Create the config file for soroban
+### 3. Create the config file for soroban
 
 ```bash
 cd ~/.soroban/config/
@@ -376,7 +424,11 @@ soroban-rpc gen-config-file >> config.toml
 
 </tabs>
 
-### 2. Create a service
+# Run the node
+
+## Linux
+
+### Create Service
 
 ```bash
 BINARY_NAME=soroban-rpc
@@ -402,13 +454,24 @@ EOF
 cat /etc/systemd/system/$BINARY_NAME.service
 ```
 
-## Start the services
+### Run Service 
 
 ```bash
 sudo systemctl enable soroban-rpc
 sudo systemctl daemon-reload
 sudo systemctl restart soroban-rpc
 ```
+
+## MacOS
+
+TODO
+
+
+
+
+
+
+
 
 ## Check logs
 
