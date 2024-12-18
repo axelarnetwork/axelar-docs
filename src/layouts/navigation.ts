@@ -792,6 +792,15 @@ export const getNavigation = (section) => {
         href: " /resources/community/community-pool-proposals/",
       },
       {
+        title: "Chain Integration Reports",
+        children: [
+          {
+            title: "Flow",
+            href: "https://github.com/axelarnetwork/amplifier-advisory-committee/blob/main/src/chains/flow-evm/FLOW_EVM_REPORT.md",
+          }
+        ]
+      },
+      {
         title: "Onboard Your IBC chain",
         href: "/resources/ibc-chain-onboarding/",
       },
