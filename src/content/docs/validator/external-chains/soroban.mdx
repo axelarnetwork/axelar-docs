@@ -28,7 +28,7 @@ In order to build the `Soroban` node, you first need to install all the required
 - rust >= 1.74
 
 <tabs>
-    <tab-item title="Linux">
+    <tab-item title="Ubuntu">
         ```bash
         curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
         sudo apt-get update
@@ -426,7 +426,7 @@ soroban-rpc gen-config-file >> config.toml
 
 # Run the node
 
-## Linux
+## Ubuntu
 
 ### Create Service
 
@@ -464,12 +464,66 @@ sudo systemctl restart soroban-rpc
 
 ## MacOS
 
-TODO
+On macOS, you’ll can use a LaunchAgent in ~/Library/LaunchAgents/. For example, create ~/Library/LaunchAgents/com.soroban.rpc.plist:
 
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" 
+  "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+  <dict>
+    <key>Label</key>
+    <string>com.soroban.rpc</string>
 
+    <key>ProgramArguments</key>
+    <array>
+      <string>/usr/local/bin/soroban-rpc</string>
+      <string>--config-path</string>
+      <string>/Users/username/.soroban/config/config.toml</string>
+    </array>
 
+    <key>RunAtLoad</key>
+    <true/>
 
+    <key>KeepAlive</key>
+    <true/>
 
+    <!-- If you use a relative DB_PATH, set the WorkingDirectory: -->
+    <key>WorkingDirectory</key>
+    <string>/Users/username/.soroban/data</string>
+
+    <key>EnvironmentVariables</key>
+    <dict>
+      <key>PATH</key>
+      <string>/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin</string>
+      <!-- Add other necessary environment variables here -->
+    </dict>
+
+    <!-- Soroban logs to stderr by default, so it ends up here. -->
+    <key>StandardOutPath</key>
+    <string>/tmp/com.soroban.rpc.out</string>
+
+    <key>StandardErrorPath</key>
+    <string>/tmp/com.soroban.rpc.err</string>
+  </dict>
+</plist>
+```
+
+### Run Service
+
+Once the LaunchAgent has been setup you can run the service by running
+
+```bash
+launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.soroban.rpc.plist
+launchctl list | grep com.soroban.rpc
+# If it appears with a PID, it's running!
+```
+
+To stop the service run:
+
+```bash
+launchctl remove com.soroban.rpc
+```
 
 
 
@@ -505,3 +559,26 @@ If the node is successfully synced, the output from above will print
   }
 }
 ```
+
+If your node is still syncing it may return a response as follows:
+
+```json
+ % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100   190  100   145  100    45  71888  22310 --:--:-- --:--:-- --:--:--  185k
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "error": {
+    "code": -32603,
+    "message": "[-32603] latency (288h35m28s) since last known ledger closed is too high (>30s)"
+  }
+}
+```
+
+## Common Issues
+Tips & Common Pitfalls
+1. Absolute DB path: On macOS, either set `<key>WorkingDirectory</key>` in your plist or use `DB_PATH="/Users/USERNAME/.soroban/data/soroban_rpc.sqlite"`.
+1. Logs default to stderr: That’s why StandardErrorPath is where you see everything.
+1. To see real-time logs: either run Soroban in the foreground (not via launchd/systemd) or `tail -f` the logs.
+1. `“Bootstrap failed: 5: Input/output error”` (macOS) often just means Soroban had a brief exit or stale job. If Soroban is actually running (PID > 0) and syncing, you can ignore it or use a wrapper script that ensures a zero exit code.
