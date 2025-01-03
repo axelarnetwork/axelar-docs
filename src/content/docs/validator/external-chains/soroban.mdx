@@ -1,6 +1,12 @@
+import { Callout } from "../../../../components/callout";
+
 # Soroban
 
 Set up your Soroban node.
+
+<Callout emoji="💡">
+  These instructions have been tested on version `22.0.0`. Please refer to the official [Stellar releases](https://github.com/stellar/stellar-core/releases) for the latest release
+</Callout>
 
 ## Prerequisites
 
@@ -424,6 +430,7 @@ soroban-rpc gen-config-file >> config.toml
 
 </tabs>
 
+
 # Run the node
 
 ## Ubuntu
@@ -465,6 +472,7 @@ sudo systemctl restart soroban-rpc
 ## MacOS
 
 On macOS, you’ll can use a LaunchAgent in ~/Library/LaunchAgents/. For example, create ~/Library/LaunchAgents/com.soroban.rpc.plist:
+
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
