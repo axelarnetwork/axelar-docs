@@ -1,8 +1,8 @@
 import { Callout } from "../../../../components/callout";
 
-# Soroban
+# Stellar
 
-Set up your Soroban node.
+Set up your Stellar node.
 
 <Callout emoji="💡">
   These instructions have been tested on version `22.0.0`. Please refer to the official [Stellar releases](https://github.com/stellar/stellar-core/releases) for the latest release
@@ -18,7 +18,7 @@ Set up your Soroban node.
 
 ## Install required dependencies
 
-In order to build the `Soroban` node, you first need to install all the required dependencies.
+In order to build the `Stellar` node, you first need to install all the required dependencies.
 - c++ toolchain and headers that supports c++17
 - clang >= 12.0 (Only >= 14.0 versions are available on 24.04 LTS)
 - g++ >= 10.0
@@ -100,7 +100,7 @@ In order to build the `Soroban` node, you first need to install all the required
 
 Soroban-RPC requires an instance of stellar-core binary on the same host. This is referred to as the Captive Core. Since, we are building RPC from source, we recommend considering two approaches to get the stellar-core binary:
 
-Install the latest versions for the network accordingly [stellar core latest release tag](https://github.com/stellar/stellar-core/releases) and [soroban latest release tag](https://github.com/stellar/soroban-rpc/releases)
+Install the latest versions for the network accordingly [stellar core latest release tag](https://github.com/stellar/stellar-core/releases) and [Stelar latest release tag](https://github.com/stellar/stellar-rpc/releases)
 
 ```bash
 # These are examples - check their docs and release page to opt for the right version
@@ -147,7 +147,7 @@ SOROBAN_RELEASE=v22.0.0
 
 
 
-### 2. Install Soroban
+### 2. Install Stellar
 
 <tabs>
     <tab-item title="Mainnet" class="bleed">
@@ -543,7 +543,7 @@ journalctl -u soroban-rpc.service -n 100 -f -o cat
 
 ## Verify RPC
 
-Once your `soroban` node is fully synced, you can run a cURL request to see the status of your node:
+Once your `Stellar` node is fully synced, you can run a cURL request to see the status of your node:
 
 ```bash
 curl --location 'http://localhost:8000' --header 'Content-Type: application/json' --data '{
