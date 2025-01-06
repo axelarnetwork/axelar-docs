@@ -34,7 +34,7 @@ In order to build the `Stellar` node, you first need to install all the required
 - rust >= 1.74
 
 <tabs>
-    <tab-item title="Ubuntu">
+    <tab-item title="ubuntu">
         ```bash
         curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
         sudo apt-get update
@@ -536,10 +536,18 @@ launchctl remove com.soroban.rpc
 
 
 ## Check logs
-
-```bash
-journalctl -u soroban-rpc.service -n 100 -f -o cat
-```
+<tabs>
+  <tab-item title="ubuntu">
+    ```bash
+    journalctl -u soroban-rpc.service -n 100 -f -o cat
+    ```
+  </tab-item>
+  <tab-item title="macOS">
+    ```bash
+    tail -f /tmp/com.soroban.rpc.out
+    ```
+  </tab-item>
+</tabs>
 
 ## Verify RPC
 
