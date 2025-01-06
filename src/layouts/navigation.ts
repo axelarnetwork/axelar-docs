@@ -1,3 +1,20 @@
+import { title } from "process";
+
+export const topLevelNav = [
+  {
+    title: "Developers",
+    href: "/dev/intro/",
+  },
+  {
+    title: "Node Operators",
+    href: "/node/config-node/",
+  },
+  {
+    title: "Validators",
+    href: "/validator/setup/overview/",
+  },
+];
+
 export const getNavigation = (section) => {
   const nav: any[] = [];
   if (section === "dev") {
@@ -20,22 +37,24 @@ export const getNavigation = (section) => {
               title: "Interchain Tokens",
               children: [
                 {
-                  title: "Introduction",
+                  title: "Overview",
                   href: "/dev/send-tokens/interchain-tokens/intro/",
                 },
                 {
-                  title: "Quick Start",
-                  href: "/dev/send-tokens/interchain-tokens/quick-start/",
-                  children: [
-                    {
-                      title: "No Code",
-                      href: "/dev/send-tokens/interchain-tokens/quick-start/no-code/",
-                    },
-                    {
-                      title: "Programmatic",
-                      href: "/dev/send-tokens/interchain-tokens/quick-start/programmatic/",
-                    },
-                  ],
+                  title: "No Code Setup",
+                  href: "/dev/send-tokens/interchain-tokens/no-code/",
+                },
+                {
+                  title: "Create New Token",
+                  href: "/dev/send-tokens/interchain-tokens/create-new-interchain-token/",
+                },
+                {
+                  title: "Register Existing Token",
+                  href: "/dev/send-tokens/interchain-tokens/register-existing-token/",
+                },
+                {
+                  title: "Integrate Custom Token",
+                  href: "/dev/send-tokens/interchain-tokens/integrate-custom-token/",
                 },
                 {
                   title: "Token Manager",
@@ -76,8 +95,22 @@ export const getNavigation = (section) => {
               title: "Roadmap",
               href: "/dev/send-tokens/roadmap/",
             },
+            {
+              title: "Deprecated",
+              children: [
+                {
+                  title: "Send Tokens",
+                  href: "/dev/send-tokens/deprecated/send-tokens/",
+                },
+                {
+                  title: "Deposit Address",
+                  href: "/dev/send-tokens/deprecated/deposit-address/",
+                },
+              ],
+            },
           ],
         },
+
         {
           title: "General Message Passing",
           children: [
@@ -123,7 +156,7 @@ export const getNavigation = (section) => {
                 },
                 {
                   title: "Transaction States",
-                  href: "/dev/gas-service/transaction-state",
+                  href: "/dev/gas-service/transaction-state/",
                 },
                 {
                   title: "Transaction Pricing",
@@ -199,6 +232,10 @@ export const getNavigation = (section) => {
               children: [
                 { title: "Introduction", href: "/dev/cosmos-gmp/overview/" },
                 {
+                  title: "Cosmos 2-way Call Relay",
+                  href: "/dev/cosmos-gmp/cosmos-2way-manual-relay/",
+                },
+                {
                   title: "Developer Guides",
                   children: [
                     {
@@ -244,7 +281,7 @@ export const getNavigation = (section) => {
               children: [
                 {
                   title: "Automatic Relaying",
-                  href: "/dev/amplifier/chain-integration/relay-messages/automatic/",
+                  href: "https://www.notion.so/bright-ambert-2bd/Amplifier-GMP-API-Authentication-EXTERNAL-113c53fccb77807caeeff9882b883a4c",
                 },
                 {
                   title: "Manual Relaying",
@@ -267,6 +304,19 @@ export const getNavigation = (section) => {
             {
               title: "Roadmap",
               href: "/dev/amplifier/roadmap/",
+            },
+            {
+              title: "ITS Hub",
+              children: [
+                {
+                  title: "Introduction",
+                  href: "/dev/amplifier/its-hub/introduction/",
+                },
+                {
+                  title: "Routing Mechanics",
+                  href: "/dev/amplifier/its-hub/routing-mechanics/",
+                },
+              ],
             },
           ],
         },
@@ -310,15 +360,31 @@ export const getNavigation = (section) => {
           ],
         },
         {
-          title: "Indexers",
+          title: "Tutorials",
           children: [
             {
-              title: "Introduction",
-              href: "/dev/indexers/overview/",
+              title: "Deploy App with Same Address Cross-Chain",
+              href: "https://blog.axelar.dev/how-to-deploy-an-application-with-the-same-address-cross-chain/",
             },
             {
-              title: "SubQuery",
-              href: "/dev/indexers/subquery/",
+              title: "Cross-Chain Governance with OpenZeppelin",
+              href: "https://blog.axelar.dev/cross-chain-governance-with-openzeppelin-governor-and-axelar",
+            },
+            {
+              title: "Building Multichain Stablecoins",
+              href: "https://blog.axelar.dev/building-multichain-stablecoins-part-one",
+            },
+            {
+              title: "Cross-Chain Memecoins with Axelar",
+              href: "https://blog.axelar.dev/cross-chain-memecoins-with-axelar",
+            },
+            {
+              title: "Multichain RWA Lending with GMP",
+              href: "https://blog.axelar.dev/multichain-rwa-lending-with-axelar-gmp",
+            },
+            {
+              title: "Full-Stack Interchain App with Next.js & Solidity",
+              href: "https://blog.axelar.dev/build-a-full-stack-interchain-application-with-nextjs-solidity-axelar",
             },
           ],
         },
@@ -569,6 +635,10 @@ export const getNavigation = (section) => {
             title: "Mainnet axelard",
             children: [
               {
+                title: "v1.1",
+                href: "/resources/mainnet/upgrades/v112/",
+              },
+              {
                 title: "v1.0",
                 href: "/resources/mainnet/upgrades/v1/",
               },
@@ -633,6 +703,10 @@ export const getNavigation = (section) => {
           {
             title: "Testnet axelard",
             children: [
+              {
+                title: "v1.1",
+                href: "/resources/testnet/upgrades/v112/",
+              },
               {
                 title: "v1.0",
                 href: "/resources/testnet/upgrades/v1/",
@@ -716,6 +790,15 @@ export const getNavigation = (section) => {
       {
         title: "Community Pool Proposals",
         href: " /resources/community/community-pool-proposals/",
+      },
+      {
+        title: "Chain Integration Reports",
+        children: [
+          {
+            title: "Flow",
+            href: "https://github.com/axelarnetwork/amplifier-advisory-committee/blob/main/src/chains/flow-evm/FLOW_EVM_REPORT.md",
+          }
+        ]
       },
       {
         title: "Onboard Your IBC chain",

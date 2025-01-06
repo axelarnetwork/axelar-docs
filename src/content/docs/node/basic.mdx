@@ -1,6 +1,6 @@
 # Basic node management
 
-import { Callout } from "/src/components/callout"
+import { Callout } from "/src/components/callout";
 
 Start and stop your node, test whether your blockchain is downloaded. Backup your keys and chain data. Create an account, check your AXL balance, get AXL tokens from the faucet.
 
@@ -9,7 +9,6 @@ Start and stop your node, test whether your blockchain is downloaded. Backup you
 - Configure your environment as per [CLI configuration](/node/config-cli/) and [Node configuration](/node/config-node/).
 - Install [lz4](https://lz4.github.io/lz4/)
 - Ensure AXELARD_HOME variable is set in your current session. See https://docs.axelar.dev/node/config-node#home-directory (example AXELARD_HOME="$HOME/.axelar").
-
 
 ## Start your Axelar node
 
@@ -39,7 +38,6 @@ Look for the field `catching_up`:
 
 - `true`: you are still downloading the blockchain.
 - `false`: you have finished downloading the blockchain.
-
 
 ## Stop your Axelar node
 
@@ -85,7 +83,9 @@ $AXELARD_HOME/bin/axelard keys add my_account --home $AXELARD_HOME
 ```
 
 <Callout type="warning" emoji="⚠️">
-  Caution: The above command will print a mnemonic to stdout.  This mnemonic allows you to recover the secret key for your new account.  Be sure to store a backup of the mnemonic in a safe place.
+  Caution: The above command will print a mnemonic to stdout. This mnemonic
+  allows you to recover the secret key for your new account. Be sure to store a
+  backup of the mnemonic in a safe place.
 </Callout>
 
 ## Learn your address
@@ -101,7 +101,8 @@ $AXELARD_HOME/bin/axelard keys show validator -a --home $AXELARD_HOME
 Let `{MY_ADDRESS}` denote the address of your `my_account` account.
 
 <Callout emoji="💡">
-  Tip: Your balance will appear only after you have downloaded the blockchain and exited `catching_up` mode.
+  Tip: Your balance will appear only after you have downloaded the blockchain
+  and exited `catching_up` mode.
 </Callout>
 
 ```bash

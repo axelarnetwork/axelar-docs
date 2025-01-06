@@ -1,6 +1,6 @@
 # Filecoin
 
-import { Callout } from "/src/components/callout"
+import { Callout } from "/src/components/callout";
 
 Set up your Filecoin Mainnet or Testnet Hyperspace node.
 
@@ -23,6 +23,7 @@ In order to build `lotus`, you first need to install all of the required depende
 You can view the official documentation for details on how to build lotus from source [here](https://lotus.filecoin.io/lotus/install/linux/#building-from-source). Instructions below are for Ubuntu.
 
 Install dependencies
+
 ```bash
 sudo apt update
 sudo apt install mesa-opencl-icd ocl-icd-opencl-dev gcc git bzr jq pkg-config curl clang build-essential hwloc libhwloc-dev wget aria2 -y && sudo apt upgrade -y
@@ -37,6 +38,7 @@ curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 Install Golang
 
 You must compile the lotus daemon with the [required](https://lotus.filecoin.io/lotus/install/linux/#go) Go version.
+
 ```bash
 wget -c https://golang.org/dl/go1.19.7.linux-amd64.tar.gz -O - | sudo tar -xz -C /usr/local
 echo 'export PATH=$PATH:/usr/local/go/bin' >> ~/.bashrc && source ~/.bashrc
@@ -61,15 +63,19 @@ Checkout the correct release and build the daemon.
 
 <tabs>
 <tab-item title="Mainnet">
- <pre><code>git checkout releases;
+```bash
+git checkout releases;
 make clean all;
-sudo make install</code></pre>
+sudo make install
+```
 
 </tab-item>
 <tab-item title="Testnet">
- <pre><code>git checkout v1.20.3-hyperspace-nv21-rpc-p01;
+```bash
+git checkout v1.20.3-hyperspace-nv21-rpc-p01;
 make clean hyperspacenet;
-sudo make install</code></pre>
+sudo make install
+```
 
 </tab-item>
 </tabs>
@@ -82,11 +88,15 @@ Download the latest pruned snapshot.
 
 <tabs>
 <tab-item title="Mainnet">
- <pre><code>aria2c -x5 https://forest-archive.chainsafe.dev/latest/mainnet/</code></pre>
+```bash
+aria2c -x5 https://forest-archive.chainsafe.dev/latest/mainnet/
+```
 
 </tab-item>
 <tab-item title="Testnet">
- <pre><code>aria2c -x5 https://forest-archive.chainsafe.dev/latest/calibnet/</code></pre>
+```bash
+aria2c -x5 https://forest-archive.chainsafe.dev/latest/calibnet/
+```
 
 </tab-item>
 </tabs>
@@ -216,22 +226,15 @@ Verify that the block number matches the latest block number on the explorer.
 In order for `vald` to connect to your Filecoin node, your `rpc_addr` should be exposed in
 vald's `config.toml`
 
-
 <tabs>
   <tab-item title="Mainnet">
-  ```bash
-  [[axelar_bridge_evm]]
-  name = "filecoin"
-  rpc_addr = "http://localhost:1234/rpc/v1"
-  start-with-bridge = true
-  ```
+    ```bash [[axelar_bridge_evm]] name = "filecoin" rpc_addr =
+    "http://localhost:1234/rpc/v1" start-with-bridge = true 
+```
   </tab-item>
   <tab-item title="Testnet">
-  ```bash
-  [[axelar_bridge_evm]]
-  name = "filecoin"
-  rpc_addr = "http://localhost:1234/rpc/v1"
-  start-with-bridge = true
-  ```
+    ```bash [[axelar_bridge_evm]] name = "filecoin" rpc_addr =
+    "http://localhost:1234/rpc/v1" start-with-bridge = true 
+```
   </tab-item>
 </tabs>

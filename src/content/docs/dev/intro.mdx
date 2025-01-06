@@ -5,44 +5,85 @@ Axelar enables secure token transfers and communication across different blockch
 To make an interchain transaction with Axelar:
 
 1. Call the contract method on the source chain:
-    * [`callContract()`](/dev/general-message-passing/gmp-messages/) to send messages without tokens, or
-    * [`callContractWithToken()`](/dev/general-message-passing/gmp-tokens-with-messages/) to send messages along with ERC-20 tokens.
+   - [`callContract()`](/dev/general-message-passing/gmp-messages/) to send messages without tokens, or
+   - [`callContractWithToken()`](/dev/general-message-passing/gmp-tokens-with-messages/) to send messages along with ERC-20 tokens.
 1. Pay gas to the [`AxelarGasService`](https://github.com/axelarnetwork/axelar-cgp-solidity/blob/main/contracts/gas-service/AxelarGasService.sol) contract on the source chain.
 
 You can then use [Axelarscan](/dev/intro/#check-interchain-transactions), Axelar’s dedicated blockchain explorer, to execute, recover, or check the status of your transaction.
 
 ## Get started
 
+
 ### Create new cross-chain tokens
 
-* [Create a new Interchain Token](/dev/send-tokens/interchain-tokens/developer-guides/programmatically-create-a-token/)
-* [Upgrade existing ERC-20 tokens to Interchain Tokens](/dev/send-tokens/interchain-tokens/developer-guides/link-custom-tokens-deployed-across-multiple-chains-into-interchain-tokens/)
+<ul class="grid  md:grid-cols-2 gap-x-8 ">
+<li class="[&>p]:my-0">
+ [Create a new Interchain Token](/dev/send-tokens/interchain-tokens/developer-guides/programmatically-create-a-token/)
+ </li>
+ <li class="[&>p]:my-0">
+ [Upgrade existing ERC-20 tokens to Interchain Tokens](/dev/send-tokens/interchain-tokens/developer-guides/link-custom-tokens-deployed-across-multiple-chains-into-interchain-tokens/)
+ </li>
+</ul>
 
 ### Send tokens across chains
 
-* [Send tokens between different blockchains](/dev/send-tokens/introduction/)
-* [Flow limit for sending tokens across chains](/dev/send-tokens/interchain-tokens/flow-limit/)
+<ul class="grid  md:grid-cols-2 gap-x-8 ">
+<li class="[&>p]:my-0">
+ [Send tokens between different blockchains](/dev/send-tokens/introduction/)
+ </li>
+ <li class="[&>p]:my-0">
+ [Flow limit for sending tokens across chains](/dev/send-tokens/interchain-tokens/flow-limit/)
+ </li>
+</ul>
+
+
 
 ### Pass messages between chains
 
-* [Call a smart contract on another chain](/dev/general-message-passing/gmp-messages/)
-* [Call a smart contract on another chain and attach some tokens](/dev/general-message-passing/gmp-tokens-with-messages/)
+<ul class="grid  md:grid-cols-2 gap-x-8 ">
+<li class="[&>p]:my-0">
+[Call a smart contract on another chain](/dev/general-message-passing/gmp-messages/)
+ </li>
+ <li class="[&>p]:my-0">
+ [Flow limit for sending tokens across chains](/dev/send-tokens/interchain-tokens/flow-limit/)
+ </li>
+</ul>
+
+
 
 ### Manage cross-chain gas payments
 
-* [Transaction pricing with the Axelar Gas Service](/dev/gas-service/pricing/)
-* [Pay gas](/dev/gas-service/pay-gas/)
-* [Increase gas](/dev/gas-service/increase-gas/)
-* [Refund gas](/dev/gas-service/refund/)
+<ul class="grid  md:grid-cols-2 gap-x-8 ">
+<li class="[&>p]:my-0">
+[Transaction pricing with the Axelar Gas Service](/dev/gas-service/pricing/)
+ </li>
+ <li class="[&>p]:my-0">
+[Pay gas](/dev/gas-service/pay-gas/)
+ </li>
+ <li class="[&>p]:my-0">
+[Increase gas](/dev/gas-service/increase-gas/)
+ </li>
+ <li class="[&>p]:my-0">
+ [Refund gas](/dev/gas-service/refund/)
+ </li>
+</ul>
 
 ### Check interchain transactions
 
-* [Axelarscan (Mainnet)](https://axelarscan.io/)
-* [Axelarscan (Testnet)](https://testnet.axelarscan.io/)
+
+
+<ul class="grid md:grid-cols-2 gap-x-8 ">
+<li class="[&>p]:my-0">
+[Axelarscan (Mainnet)](https://axelarscan.io/)
+ </li>
+ <li class="[&>p]:my-0">
+[Axelarscan (Testnet)](https://testnet.axelarscan.io/)
+ </li>
+</ul>
 
 ## Tools and resources
 
-* [`axelar-examples`](https://github.com/axelarnetwork/axelar-examples) – Cross-chain sample apps using Axelar that can be executed locally or deployed to testnets
-* [`foundry-axelar-gmp-example`](https://github.com/axelarnetwork/foundry-axelar-gmp-example) – A sample app that integrates with [Axelar GMP](/dev/general-message-passing/overview/) using the [Foundry](https://github.com/foundry-rs/foundry) framework
-* [AxelarJS SDK](/dev/axelarjs-sdk/intro/) – an [npm](https://www.npmjs.com/) library with a collection of APIs and query tools
-* [`axelar-local-dev`](https://github.com/axelarnetwork/axelar-local-dev) – A local cross-chain development environment where you can deploy an app to simulated EVM chains. These chains are preloaded with the [`AxelarGateway`](https://github.com/axelarnetwork/axelar-cgp-solidity/blob/main/contracts/AxelarGateway.sol), `AxelarGasReceiver`, and routed ERC-20 (axlUSDC) token contracts. Deployed apps can be tested against the RPC endpoints and contract addresses of your local development environment.
+- [`axelar-examples`](https://github.com/axelarnetwork/axelar-examples) – Cross-chain sample apps using Axelar that can be executed locally or deployed to testnets
+- [`foundry-axelar-gmp-example`](https://github.com/axelarnetwork/foundry-axelar-gmp-example) – A sample app that integrates with [Axelar GMP](/dev/general-message-passing/overview/) using the [Foundry](https://github.com/foundry-rs/foundry) framework
+- [AxelarJS SDK](/dev/axelarjs-sdk/intro/) – an [npm](https://www.npmjs.com/) library with a collection of APIs and query tools
+- [`axelar-local-dev`](https://github.com/axelarnetwork/axelar-local-dev) – A local cross-chain development environment where you can deploy an app to simulated EVM chains. These chains are preloaded with the [`AxelarGateway`](https://github.com/axelarnetwork/axelar-cgp-solidity/blob/main/contracts/AxelarGateway.sol), `AxelarGasReceiver`, and routed ERC-20 (axlUSDC) token contracts. Deployed apps can be tested against the RPC endpoints and contract addresses of your local development environment.

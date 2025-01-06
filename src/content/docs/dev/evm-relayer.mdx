@@ -12,8 +12,24 @@ The relayer has to go through three basic steps:
 
 The following diagram illustrates a typical relayer flow. Note that the queries for gas fee and gas price have been split into two separate steps:
 
-<p align="center"><img src="/images/evm-relayer-flow.png" height="600" /></p>
 
+
+<object
+  type="image/svg+xml"
+  data="/images/assets/evm-relayer-flow.svg"
+ 
+  class="hidden dark:block w-full max-w-[30rem] mx-auto py-6"
+>
+  Your browser does not support SVG
+</object>
+<object
+  type="image/svg+xml"
+  data="/images/assets/evm-relayer-flow-light.svg"
+ 
+  class=" dark:hidden w-full max-w-[30rem] mx-auto py-6"
+>
+  Your browser does not support SVG
+</object>
 
 ## Build and run your own EVM relayer
 
@@ -93,8 +109,8 @@ relayer_address = "..."
 gas_fee_multiplier = 1.2
 
 estimated_gas = web3.eth.estimate_gas({
-     'from': relayer_address,     
-     'to': payload.To, 
+     'from': relayer_address,
+     'to': payload.To,
      'data': payload.Data
      }) * gas_fee_multiplier
 ```

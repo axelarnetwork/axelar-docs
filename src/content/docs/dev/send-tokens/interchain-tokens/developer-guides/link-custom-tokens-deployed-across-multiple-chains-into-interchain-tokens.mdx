@@ -24,14 +24,14 @@ You will need:
 
 Deploy the following `SimpleCustomToken` on the Fantom and Polygon testnets.
 
-This code utilizes OpenZeppelin's libraries to create a custom ERC20 token with functionalities for minting, burning, and access control. The token includes a minter role, which enables designated addresses to mint or burn tokens. Additionally, it incorporates ERC20Permit for gasless transactions. The contract starts with a predefined supply of tokens minted to the deployer's address and establishes roles for a default administrator and minter:
+This code utilizes OpenZeppelin's libraries to create a custom ERC-20 token with functionalities for minting, burning, and access control. The token includes a minter role, which enables designated addresses to mint or burn tokens. Additionally, it incorporates ERC20Permit for gasless transactions. The contract starts with a predefined supply of tokens minted to the deployer's address and establishes roles for a default administrator and minter:
 
-```Solidity
+```solidity
 
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.18;
 
-// Import OpenZeppelin contracts for ERC20 standard token implementations,
+// Import OpenZeppelin contracts for ERC-20 standard token implementations,
 // burnable tokens, access control mechanisms, and permit functionality
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Burnable.sol";
@@ -71,6 +71,8 @@ contract SimpleCustomToken is ERC20, ERC20Burnable, AccessControl, ERC20Permit {
     }
 }
 ```
+
+To learn how to deploy your own ERC-20 token using Hardhat step by step, check out this [Hardhat guide](https://hardhat.org/tutorial).
 
 ## Set up your development environment
 
@@ -115,7 +117,7 @@ touch .env
 
 ### Add your private key to `.env` and `hardhat.config.js`
 
-[Export your private key](https://support.metamask.io/hc/en-us/articles/360015289632-How-to-Export-an-Account-Private-Key) and add it to the  `.env` file you just created:
+[Export your private key](https://support.metamask.io/managing-my-wallet/secret-recovery-phrase-and-private-keys/how-to-export-an-accounts-private-key/) and add it to the  `.env` file you just created:
 
 ```bash
 PRIVATE_KEY= // Add your account private key here
@@ -128,7 +130,7 @@ PRIVATE_KEY= // Add your account private key here
 
 Then, create a file with the name `hardhat.config.js` and add the following code snippet:
 
-```JavaScript
+```javascript
 require("@nomicfoundation/hardhat-toolbox");
 require("dotenv").config({ path: ".env" });
 
@@ -166,7 +168,7 @@ Create a new file named `customInterchainToken.js` and import the required depen
 - The address of the [`InterchainTokenService`](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/InterchainTokenService.sol) contract
 - The address of your token deployed on Fantom and Polygon testnet
 
-```JavaScript
+```javascript
 const hre = require("hardhat");
 const crypto = require("crypto");
 const ethers = hre.ethers;
@@ -193,7 +195,7 @@ const polygonCustomTokenAddress = "0x7884ac325fa7aedB8A4d7bBD92671e8699f49108"; 
 
 Next, create a `getSigner()` function in `customInterchainToken.js`. This will obtain a signer for a secure transaction:
 
-```JavaScript
+```javascript
 //...
 
 async function getSigner() {
@@ -206,7 +208,7 @@ async function getSigner() {
 
 Then, create a `getContractInstance()` function in `customInterchainToken.js`. This will get the contract instance based on the contract’s address, ABI, and signer:
 
-```JavaScript
+```javascript
 //...
 
 async function getContractInstance(contractAddress, contractABI, signer) {
@@ -218,7 +220,7 @@ async function getContractInstance(contractAddress, contractABI, signer) {
 
 Create a `deployTokenManager()` function for the Fantom testnet. This will deploy a token manager with your custom token address:
 
-```JavaScript
+```javascript
 //...
 
 // Deploy token manager : Fantom
@@ -230,7 +232,7 @@ async function deployTokenManager() {
   const interchainTokenServiceContract = await getContractInstance(
     interchainTokenServiceContractAddress,
     interchainTokenServiceContractABI,
-    signer
+    signer,
   );
 
   // Generate a random salt
@@ -239,7 +241,7 @@ async function deployTokenManager() {
   // Create params
   const params = ethers.utils.defaultAbiCoder.encode(
     ["bytes", "address"],
-    [signer.address, fantomCustomTokenAddress]
+    [signer.address, fantomCustomTokenAddress],
   );
 
   // Deploy the token manager
@@ -248,13 +250,13 @@ async function deployTokenManager() {
     "",
     MINT_BURN,
     params,
-    ethers.utils.parseEther("0.01")
+    ethers.utils.parseEther("0.01"),
   );
 
   // Get the tokenId
   const tokenId = await interchainTokenServiceContract.interchainTokenId(
     signer.address,
-    salt
+    salt,
   );
 
   // Get the token manager address
@@ -267,7 +269,7 @@ async function deployTokenManager() {
 	Transaction Hash: ${deployTxData.hash},
 	Token ID: ${tokenId},
 	Expected token manager address: ${expectedTokenManagerAddress},
-	`
+	`,
   );
 }
 ```
@@ -276,7 +278,7 @@ async function deployTokenManager() {
 
 Add a `main()` function to execute the `customInterchainToken.js` script and handle any errors that may arise:
 
-```JavaScript
+```javascript
 //...
 
 async function main() {
@@ -311,7 +313,7 @@ If you see something similar to the following on your console, you have successf
 ```bash
 Salt: 0x7f5fe989334ad23b77e8da841f672394d021ae83ff0a24afb461ba19d72e3553,
 Transaction Hash: 0x026ee7992de2108ecb83f37119ec84ebed371ff724d38e8fd055cbecde5b77e6,
-Token ID: 0x11780bda6e8238e24cdcd88e9b0088f1ed354c8b03c836f35f9ddb9e2c8be7c5, 
+Token ID: 0x11780bda6e8238e24cdcd88e9b0088f1ed354c8b03c836f35f9ddb9e2c8be7c5,
 Expected Token Manager Address: 0xad8Cf8FF7BBe82269844bBcbA60bAa8f02781f13,
 ```
 
@@ -323,7 +325,7 @@ Copy the token ID, Expected Token Manager, and salt value and store them somewhe
 
 Check the [Fantom testnet scanner](https://testnet.ftmscan.com/) to see if you have successfully [deployed a token manager](https://testnet.ftmscan.com/tx/0x026ee7992de2108ecb83f37119ec84ebed371ff724d38e8fd055cbecde5b77e6).
 
-## Remotely deploy a token manager on the Polygon testnet
+## Deploy a remote token manager on the Polygon testnet
 
 You’ve just successfully deployed a token manager to Fantom, which you are using as your local chain. Now, deploy a token manager remotely to Polygon, which will act as the remote chain in this tutorial. Remember that you can specify any two chains as your local and remote chains.
 
@@ -331,7 +333,7 @@ You’ve just successfully deployed a token manager to Fantom, which you are usi
 
 In `customInterchainToken.js`, call `estimateGasFee()` from the [AxelarJS SDK](https://www.notion.so/bd238d757a144a069501f0b481488ef3?pvs=21) to estimate the actual cost of deploying your remote Canonical Interchain Token on a remote chain:
 
-```JavaScript
+```javascript
 //...
 
 const api = new AxelarQueryAPI({ environment: Environment.TESTNET });
@@ -343,7 +345,7 @@ async function gasEstimator() {
     EvmChain.POLYGON,
     GasToken.FTM,
     700000,
-    1.1
+    1.1,
   );
 
   return gas;
@@ -356,7 +358,7 @@ async function gasEstimator() {
 
 Create a `deployRemoteTokenManager()` function. This will deploy the remote Token Manager on the Polygon testnet. Make sure to change the salts to the value you saved from a previous step.
 
-```JavaScript
+```javascript
 //...
 
 // Deploy remote token manager : Polygon
@@ -368,13 +370,13 @@ async function deployRemoteTokenManager() {
   const interchainTokenServiceContract = await getContractInstance(
     interchainTokenServiceContractAddress,
     interchainTokenServiceContractABI,
-    signer
+    signer,
   );
 
   // Create params
   const param = ethers.utils.defaultAbiCoder.encode(
     ["bytes", "address"],
-    [signer.address, polygonCustomTokenAddress]
+    [signer.address, polygonCustomTokenAddress],
   );
 
   const gasAmount = await gasEstimator();
@@ -386,13 +388,13 @@ async function deployRemoteTokenManager() {
     MINT_BURN,
     param,
     ethers.utils.parseEther("0.01"),
-    { value: gasAmount }
+    { value: gasAmount },
   );
 
   // Get the tokenId
   const tokenId = await interchainTokenServiceContract.interchainTokenId(
     signer.address,
-    "0x7f5fe989334ad23b77e8da841f672394d021ae83ff0a24afb461ba19d72e3553" // change salt
+    "0x7f5fe989334ad23b77e8da841f672394d021ae83ff0a24afb461ba19d72e3553", // change salt
   );
 
   // Get the token manager address
@@ -404,7 +406,7 @@ async function deployRemoteTokenManager() {
 	Transaction Hash: ${deployTxData.hash},
 	Token ID: ${tokenId},
 	Expected token manager address: ${expectedTokenManagerAddress},
-	`
+	`,
   );
 }
 ```
@@ -413,7 +415,7 @@ async function deployRemoteTokenManager() {
 
 Update `main()` to execute `deployRemoteTokenManager()` :
 
-```JavaScript
+```javascript
 //...
 
 async function main() {
@@ -435,7 +437,7 @@ async function main() {
 
 Run the script in your terminal to deploy a token manager remotely, once again specifying the `fantom` testnet (the source chain where all transactions are taking place):
 
-```JavaScript
+```javascript
 FUNCTION_NAME=deployRemoteTokenManager npx hardhat run customInterchainToken.js --network fantom
 ```
 
@@ -443,7 +445,7 @@ You should see something similar to the following on your console:
 
 ```bash
 Transaction Hash: 0x5dbba37f7741d19ca872bb4b2a29523baa002a3d6f0f31834bc34d6d6ca633f5,
-Token ID: 0x11780bda6e8238e24cdcd88e9b0088f1ed354c8b03c836f35f9ddb9e2c8be7c5, 
+Token ID: 0x11780bda6e8238e24cdcd88e9b0088f1ed354c8b03c836f35f9ddb9e2c8be7c5,
 Expected Token Manager Address: 0xad8Cf8FF7BBe82269844bBcbA60bAa8f02781f13,
 ```
 
@@ -468,7 +470,7 @@ You must transfer mint access to the Token Manager address on both chains before
 
 Create a `transferMintAccessToTokenManagerOnFantom()` function that will perform the mint access transfer on the Fantom testnet.
 
-```JavaScript
+```javascript
 //...
 
 // Transfer mint access on all chains to the Expected Token Manager : Fantom
@@ -479,7 +481,7 @@ async function transferMintAccessToTokenManagerOnFantom() {
   const tokenContract = await getContractInstance(
     fantomCustomTokenAddress,
     customTokenABI,
-    signer
+    signer,
   );
 
   // Get the minter role
@@ -487,7 +489,7 @@ async function transferMintAccessToTokenManagerOnFantom() {
 
   const grantRoleTxn = await tokenContract.grantRole(
     getMinterRole,
-    "0xad8Cf8FF7BBe82269844bBcbA60bAa8f02781f13"
+    "0xad8Cf8FF7BBe82269844bBcbA60bAa8f02781f13",
   );
 
   console.log("grantRoleTxn: ", grantRoleTxn.hash);
@@ -498,7 +500,7 @@ async function transferMintAccessToTokenManagerOnFantom() {
 
 Update `main()` to execute `transferMintAccessToTokenManagerOnFantom()` :
 
-```JavaScript
+```javascript
 //...
 
 async function main() {
@@ -538,7 +540,7 @@ Check the [Fantom testnet scanner](https://testnet.ftmscan.com/) to see if you h
 
 Create a `transferMintAccessToTokenManagerOnPolygon()` function that will perform the mint access transfer on the Fantom testnet.
 
-```JavaScript
+```javascript
 //...
 
 // Transfer mint access on all chains to the Expected Token Manager Address : Polygon
@@ -549,7 +551,7 @@ async function transferMintAccessToTokenManagerOnPolygon() {
   const tokenContract = await getContractInstance(
     polygonCustomTokenAddress,
     customTokenABI,
-    signer
+    signer,
   );
 
   // Get the minter role
@@ -557,7 +559,7 @@ async function transferMintAccessToTokenManagerOnPolygon() {
 
   const grantRoleTxn = await tokenContract.grantRole(
     getMinterRole,
-    "0xad8Cf8FF7BBe82269844bBcbA60bAa8f02781f13"
+    "0xad8Cf8FF7BBe82269844bBcbA60bAa8f02781f13",
   );
 
   console.log("grantRoleTxn: ", grantRoleTxn.hash);
@@ -570,7 +572,7 @@ async function transferMintAccessToTokenManagerOnPolygon() {
 
 Update `main()` to execute `transferMintAccessToTokenManagerOnPolygon()` :
 
-```JavaScript
+```javascript
 //...
 
 async function main() {
@@ -614,7 +616,7 @@ Now that you have deployed a `TokenManager` on both Fantom and Polygon testnet, 
 
 In `customInterchainToken.js`, create a `transferTokens()` function that will facilitate remote token transfers between chains. Change the token ID to the `tokenId` that you [saved from an earlier step](### Store the token ID, Expected Token Manager, and salt value), and change the address in `transfer` to your own wallet address:
 
-```JavaScript
+```javascript
 //...
 
 // Transfer tokens : Fantom -> Polygon
@@ -625,7 +627,7 @@ async function transferTokens() {
   const interchainTokenServiceContract = await getContractInstance(
     interchainTokenServiceContractAddress,
     interchainTokenServiceContractABI,
-    signer
+    signer,
   );
   const gasAmount = await gasEstimator();
   const transfer = await interchainTokenServiceContract.interchainTransfer(
@@ -638,7 +640,7 @@ async function transferTokens() {
     {
       // Transaction options should be passed here as an object
       value: gasAmount,
-    }
+    },
   );
 
   console.log("Transfer Transaction Hash:", transfer.hash);
@@ -650,7 +652,7 @@ async function transferTokens() {
 
 Update the `main()` to execute `transferTokens()`:
 
-```JavaScript
+```javascript
 //...
 
 async function main() {
@@ -701,10 +703,9 @@ For further examples utilizing the Interchain Token Service, check out the follo
 - [`its-custom-token`](https://github.com/axelarnetwork/axelar-examples/tree/main/examples/evm/its-custom-token) — Demonstrates how to use the ITS with a custom token implementation.
 - [`its-interchain-token`](https://github.com/axelarnetwork/axelar-examples/tree/main/examples/evm/its-interchain-token) — Demonstrates how to deploy Interchain Tokens that are connected across EVM chains and how to send some tokens across.
 - [`its-canonical-token`](https://github.com/axelarnetwork/axelar-examples/tree/main/examples/evm/its-canonical-token) - Demonstrates how to deploy canonical Interchain Token and send cross-chain transfer for these tokens.
-- [`its-lock-unlock-fee`](https://github.com/axelarnetwork/axelar-examples/tree/main/examples/evm/its-lock-unlock-fee) Demonstrates how to deploy deploy interchain  token with lock/unlock_fee token manager type.
+- [`its-lock-unlock-fee`](https://github.com/axelarnetwork/axelar-examples/tree/main/examples/evm/its-lock-unlock-fee) Demonstrates how to deploy deploy interchain token with lock/unlock_fee token manager type.
 - [`its-executable`](https://github.com/axelarnetwork/axelar-examples/tree/main/examples/evm/its-executable) Demonstrates how to deploy interchain token and send a cross-chain transfer along with a message.
 - [`its-mint-burn-from`](https://github.com/axelarnetwork/axelar-examples/tree/main/examples/evm/its-mint-burn-from) Demonstrates how to deploy interchain token with uses `burnFrom()` on token being bridged rather than `burn()`.
-
 
 ## References
 

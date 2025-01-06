@@ -1,25 +1,27 @@
 # Call a contract on chain B from chain A
 
-import { Callout } from "/src/components/callout"
+import { Callout } from "/src/components/callout";
 
 <iframe
-  width="560"
-  height="315"
+  width="100%"
+ className="aspect-video"
   src="https://www.youtube.com/embed/htMVIYzGA34"
   title="YouTube video player"
-  frameBorder="0"
   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
   allowFullScreen
 ></iframe>
 
 To call a contract on chain B from chain A, the user needs to call `callContract` on the gateway of chain A, specifying:
 
-- The destination chain, which must be an EVM chain from [Chain names](/dev/reference/mainnet-chain-names).
+- The destination chain, which must be an EVM chain from [Chain names](/dev/reference/mainnet-chain-names/).
 - The destination contract address, which must inherit from `AxelarExecutable` defined in [AxelarExecutable.sol](https://github.com/axelarnetwork/axelar-gmp-sdk-solidity/blob/main/contracts/executable/AxelarExecutable.sol).
 - The payload `bytes` to pass to the destination contract.
 
 <Callout emoji="🚨">
-  **NOTE:** The security of your contracts is limited to the security of the chains they integrate with. Since blockchains can have different security practices, we recommend doing due diligence on all chains your contract will be deployed to.
+  **NOTE:** The security of your contracts is limited to the security of the
+  chains they integrate with. Since blockchains can have different security
+  practices, we recommend doing due diligence on all chains your contract will
+  be deployed to.
 </Callout>
 
 If you want to try this out directly on the blockchain, you can [use Remix to try out Axelar's GMP](https://remix.ethereum.org/axelarnetwork/axelar-docs/blob/main/public/samples/gmp-senderreceiver.sol).
@@ -32,19 +34,18 @@ function callContract(
 ) external;
 ```
 
-`AxelarExecutable` has an `execute` function that will be triggered by the Axelar network on the destination chain after the `callContract` function has been executed on the source chain. This will validate the contract call and then invoke *your* `_execute` method, where you should write any custom logic.
+`AxelarExecutable` has an `execute` function that will be triggered by the Axelar network on the destination chain after the `callContract` function has been executed on the source chain. This will validate the contract call and then invoke _your_ `_execute` method, where you should write any custom logic.
 
 ```solidity
 function _execute(
+    bytes32 commandId, 
     string memory sourceChain,
     string memory sourceAddress,
     bytes calldata payload
 ) internal virtual {}
 ```
 
-<Callout emoji="ℹ️">
-  Ensure the payload is encoded `bytes`!
-</Callout>
+<Callout emoji="ℹ️">Ensure the payload is encoded `bytes`!</Callout>
 
 The `payload` passed to `callContract` (and ultimately to `_execute` and `_executeWithToken`) has type `bytes`. Use the ABI encoder/decoder convert your data to `bytes`.
 
@@ -56,7 +57,7 @@ const { ethers } = require("ethers");
 // encoding a string
 const payload = ethers.utils.defaultAbiCoder.encode(
   ["string"],
-  ["Hello from contract A"]
+  ["Hello from contract A"],
 );
 ```
 
@@ -64,6 +65,7 @@ Example of payload decoding in Solidity:
 
 ```solidity
 function _execute(
+    bytes32 commandId, 
     string memory sourceChain,
     string memory sourceAddress,
     bytes calldata payload
@@ -73,5 +75,53 @@ function _execute(
 }
 ```
 
+**Learn More:** For a detailed tutorial on building a full-stack interchain decentralized application with Next.js, Solidity, and Axelar's General Message Passing `callContract` to send messages between blockchains, check out our comprehensive guide: [Build a Full-Stack Interchain Application With Next.js, Solidity & Axelar](https://www.axelar.network/blog/how-to-build-interchain-dapp-with-next-js-solidity-and-axelar).
 
-**Learn More:** For a detailed tutorial on building a full-stack interchain decentralized application with Next.js, Solidity, and Axelar's General Message Passing `callContract` to send messages between blockchains, check out our comprehensive guide: [Build a Full-Stack Interchain Application With Next.js, Solidity & Axelar](https://axelar.network/blog/how-to-build-interchain-dapp-with-next.js-solidity-and-Axelar).
+If you are implementing any underlying token transfer capabilities, you should import the [`InterchainTransferSent`](https://github.com/axelarnetwork/axelar-gmp-sdk-solidity/blob/main/contracts/interfaces/IInterchainTransfer.sol) or [`InterchainTransferReceived`](https://github.com/axelarnetwork/axelar-gmp-sdk-solidity/blob/main/contracts/interfaces/IInterchainTransfer.sol) interfaces and emit events as appropriate so that these events can be tracked.
+```
+interface IInterchainTransferSent {
+    /**
+     * @dev Emitted when a GMP transfer is sent, providing details for volume tracking.
+     * @param destinationChain The Axelar chain identifier of the destination chain.
+     * @param destinationContractAddress The address of the contract on the destination chain that receives the transfer.
+     * @param recipient The address of the final recipient of the transferred assets on the destination chain.
+     * @param token The address of the token contract on the source chain.
+     * @param amount The amount (in atomic units) of tokens transferred.
+     */
+    event InterchainTransferSent(
+        string destinationChain,
+        string destinationContractAddress,
+        address indexed sender,
+        bytes recipient,
+        address indexed token,
+        uint256 amount
+    );
+}
+
+/**
+ * @title IInterchainTransferReceived
+ * @dev Interface for tracking asset value transfers using General Message Passing (GMP) calls in the Axelar Network.
+ * This interface defines an event that should be emitted when a GMP transfer is received,
+ * allowing for standardized volume tracking across different implementations.
+ */
+interface IInterchainTransferReceived {
+    /**
+     * @dev Emitted when an interchain transfer is received, providing details for volume tracking.
+     * @param sourceChain The Axelar chain identifier of the source chain.
+     * @param sourceAddress The address of the contract that initiated the transfer on the source chain.
+     * @param sender The address of the sender in case it is different from the source contract address
+     * @param recipient The address of the final recipient of the transferred assets on the destination chain.
+     * @param token The address of the token contract on the destination chain.
+     * @param amount The amount (in atomic units) of tokens received.
+     */
+    event InterchainTransferReceived(
+        string sourceChain,
+        string sourceAddress,
+        bytes sender,
+        address indexed recipient,
+        address indexed token,
+        uint256 amount
+    );
+}
+```
+

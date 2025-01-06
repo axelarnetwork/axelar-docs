@@ -375,8 +375,8 @@
     {
       "name": "gRPC endpoints",
       "value": [
-        { 
-          "value":"grpc.axelar-testnet.lava.build:443"
+        {
+          "value": "grpc.axelar-testnet.lava.build:443"
         },
         {
           "value": "grpc-axelar-testnet.imperator.co:2062"

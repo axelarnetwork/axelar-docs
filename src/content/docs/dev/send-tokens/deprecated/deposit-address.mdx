@@ -1,0 +1,17 @@
+import { Callout } from "/src/components/callout";
+
+
+# Transfer assets using a deposit address (Deprecated)
+
+<Callout type="warning">
+  Note: Transfering assets via `deposit addresses` are deprecated. For gateway tokens it is recommended to use `callContractWithToken()` and for other tokens it is recommended to use the `Interchain Token Service`.
+</Callout>
+
+A [deposit address](/dev/axelarjs-sdk/token-transfer-dep-addr/) is a temporary one-time address created and monitored by Axelar’s Relayer Services. Deposit addresses generally function for up to 24 hours.
+
+Use a deposit address if:
+
+- You need functionality not offered by the `sendToken()` method, such as Cosmos-to-X.
+- You want to allow token transfers from wallets that do not interact with Axelar, such as when withdrawing funds from a centralized exchange.
+
+To transfer assets using a deposit address, install the AxelarJS SDK and initiate an `AxelarAssetTransfer`.

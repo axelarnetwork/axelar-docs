@@ -1,11 +1,14 @@
 # Old instructions: Quick sync (recommended)
 
-import { Callout } from "/src/components/callout"
+import { Callout } from "/src/components/callout";
 
 Start your Axelar node and download the blockchain.
 
 <Callout emoji="💡">
-  Tip: These instructions synchronize your Axelar node quickly by downloading a recent snapshot of the blockchain. If instead you prefer to synchronize your Axelar node using the Axelar peer-to-peer network then see [Genesis sync](/node/join-genesis/)
+  Tip: These instructions synchronize your Axelar node quickly by downloading a
+  recent snapshot of the blockchain. If instead you prefer to synchronize your
+  Axelar node using the Axelar peer-to-peer network then see [Genesis
+  sync](/node/join-genesis/)
 </Callout>
 
 ## Prerequisites
@@ -32,12 +35,14 @@ Clone the [`axelerate-community`](https://github.com/axelarnetwork/axelarate-com
 git clone https://github.com/axelarnetwork/axelarate-community.git
 cd axelarate-community
 ```
-
+<br/>
 <tabs>
 <tab-item title="Mainnet">
  <div>
 Launch a new Axelar mainnet node with version `0.10.7` of axelar-core:
-<pre><code>./scripts/node.sh -a v0.10.7 -n mainnet</code></pre>
+```bash
+./scripts/node.sh -a v0.10.7 -n mainnet
+```
 Your Axelar node will initialize your data folder `~/.axelar`
 
 </div>
@@ -46,7 +51,9 @@ Your Axelar node will initialize your data folder `~/.axelar`
 <tab-item title="Testnet">
  <div>
 Launch a new Axelar testnet node with version `0.13.6` of axelar-core:
-<pre><code>./scripts/node.sh -a v0.13.6 -n testnet</code></pre>
+```bash
+./scripts/node.sh -a v0.13.6 -n testnet
+```
 Your Axelar node will initialize your data folder `~/.axelar_testnet`
 </div>
 
@@ -63,12 +70,14 @@ BACKUP and DELETE the `validator` account secret mnemonic:
 
 <tabs>
 <tab-item title="Mainnet">
- <pre><code>~/.axelar/validator.txt</code></pre>
-
+ ```bash
+ ~/.axelar/validator.txt
+ ```
 </tab-item>
 <tab-item title="Testnet">
- <pre><code>~/.axelar_testnet/validator.txt</code></pre>
-
+```bash
+~/.axelar_testnet/validator.txt
+ ```
 </tab-item>
 </tabs>
 
@@ -76,11 +85,15 @@ BACKUP but do NOT DELETE the Tendermint consensus secret key (this is needed on 
 
 <tabs>
 <tab-item title="Mainnet">
- <pre><code>~/.axelar/.core/config/priv_validator_key.json</code></pre>
+```bash
+~/.axelar/.core/config/priv_validator_key.json 
+ ```
 
 </tab-item>
 <tab-item title="Testnet">
- <pre><code>~/.axelar_testnet/.core/config/priv_validator_key.json</code></pre>
+ ```bash
+ ~/.axelar_testnet/.core/config/priv_validator_key.json 
+ ```
 
 </tab-item>
 </tabs>
@@ -93,11 +106,15 @@ In a new terminal window:
 
 <tabs>
 <tab-item title="Mainnet">
- <pre><code>tail -f ~/.axelar/logs/axelard.log</code></pre>
+```bash
+tail -f ~/.axelar/logs/axelard.log
+ ```
 
 </tab-item>
 <tab-item title="Testnet">
- <pre><code>tail -f ~/.axelar_testnet/logs/axelard.log</code></pre>
+```bash
+tail -f ~/.axelar_testnet/logs/axelard.log 
+```
 
 </tab-item>
 </tabs>
@@ -118,15 +135,19 @@ Delete your `data` directory:
 
 <tabs>
 <tab-item title="Mainnet">
- <pre><code>rm -r ~/.axelar/.core/data</code></pre>
+ ```bash
+ rm -r ~/.axelar/.core/data
+  ```
 
 </tab-item>
 <tab-item title="Testnet">
- <pre><code>rm -r ~/.axelar_testnet/.core/data</code></pre>
+ ```bash
+ rm -r ~/.axelar_testnet/.core/data
+  ```
 
 </tab-item>
 </tabs>
-
+<br/>
 # Download the latest Axelar blockchain snapshot
 
 Download the latest Axelar blockchain snapshot for your chosen network (testnet or mainnet) from a provider:
@@ -145,12 +166,16 @@ Decompress the downloaded snapshot into your `data` directory:
 
 <tabs>
 <tab-item title="Mainnet">
- <pre><code>lz4 -dc --no-sparse \{SNAPSHOT_FILE
- | tar xfC - ~/.axelar/.core</code></pre>
+ ```bash
+ lz4 -dc --no-sparse \{SNAPSHOT_FILE
+ | tar xfC - ~/.axelar/.core  
+ ```
 </tab-item>
 <tab-item title="Testnet">
- <pre><code>lz4 -dc --no-sparse \{SNAPSHOT_FILE
- | tar xfC - ~/.axelar_testnet/.core</code></pre>
+ ```bash
+ lz4 -dc --no-sparse \{SNAPSHOT_FILE
+ | tar xfC - ~/.axelar_testnet/.core  
+ ```
 </tab-item>
 </tabs>
 
@@ -160,11 +185,15 @@ Resume your Axelar node with the latest version of axelar-core:
 
 <tabs>
 <tab-item title="Mainnet">
- <pre><code>./scripts/node.sh -n mainnet</code></pre>
+ ```bash
+ ./scripts/node.sh -n mainnet  
+ ```
 
 </tab-item>
 <tab-item title="Testnet">
- <pre><code>./scripts/node.sh -n testnet</code></pre>
+ ```bash
+ ./scripts/node.sh -n testnet  
+ ```
 
 </tab-item>
 </tabs>

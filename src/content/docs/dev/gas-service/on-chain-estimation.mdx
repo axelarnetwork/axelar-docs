@@ -1,14 +1,14 @@
 # On-Chain Gas Estimation (Alpha)
 
-import { Callout } from "/src/components/callout"
+import { Callout } from "/src/components/callout";
 
 <Callout>
-The on-chain gas estimation API is currently only available on testnet.
+  The on-chain gas estimation API is currently only available on testnet.
 </Callout>
 
 On-chain gas estimation allows you to estimate interchain transaction gas fees directly from a Solidity contract. You should only use this if you are unable to estimate gas off-chain -- for example, if you have a dApp or service that does not have a UI for initiating transactions.
 
- **This on-chain API overestimates gas costs using a multiplier for volatility.** For more accurate pricing, use the [off-chain gas estimation API](/dev/axelarjs-sdk/axelar-query-api#estimategasfee).
+**This on-chain API overestimates gas costs using a multiplier for volatility.** For more accurate pricing, use the [off-chain gas estimation API](/dev/axelarjs-sdk/axelar-query-api#estimategasfee).
 
 ## Usage
 
@@ -35,7 +35,7 @@ function estimateGasFee(
 ) external view returns (uint256 gasEstimate);
 ```
 
-When using on-chain gas estimation, you should pay gas based on the estimate from the new `payGas()` function on the gas service instead of calling `payNativeGasForContractCall()`. 
+When using on-chain gas estimation, you should pay gas based on the estimate from the new `payGas()` function on the gas service instead of calling `payNativeGasForContractCall()`.
 
 ```solidity
 /**
@@ -165,6 +165,7 @@ contract CallContractGasEstimation is AxelarExecutable {
     }
 }
 ```
+
 ## Transaction execution
 
 Transaction execution is not guaranteed with the on-chain gas estimation API. If you wish to guarantee that your transactions will be executed, please contact the Interop Labs team.

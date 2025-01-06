@@ -1,6 +1,6 @@
 # Arbitrum
 
-import { Callout } from "/src/components/callout"
+import { Callout } from "/src/components/callout";
 
 Set up your Arbitrum Mainnet & Goerli Testnet RPC node
 
@@ -13,6 +13,7 @@ Set up your Arbitrum Mainnet & Goerli Testnet RPC node
 - [Official Documentation](https://developer.offchainlabs.com/node-running/running-a-node)
 
 ## Steps
+
 1. Install Docker
 2. Install Arbitrum image
 3. Configure vald
@@ -37,19 +38,22 @@ Now, you will see this flag in the command below `--l1.url <YOUR_ETH_RPC_URL>` t
 Please provide the RPC URL of your synced [Ethereum node](/validator/external-chains/ethereum/) with this flag.
 
 <Callout type="error" emoji="⚠️">
-  Please use your own Ethereum node instead of using 3rd party providers like alchemy, infura etc. for decentralization/security. Third-party providers also have a specific request limit, and your node can throw 100s of thousands of requests while trying to sync.
+  Please use your own Ethereum node instead of using 3rd party providers like
+  alchemy, infura etc. for decentralization/security. Third-party providers also
+  have a specific request limit, and your node can throw 100s of thousands of
+  requests while trying to sync.
 </Callout>
 
 <tabs>
   <tab-item title="Mainnet">
   ```bash
   docker run --rm -it  -v /some/local/dir/arbitrum:/home/user/.arbitrum -p 0.0.0.0:8547:8547 -p 0.0.0.0:8548:8548 <LATEST_DOCKER_IMAGE> --parent-chain.connection.url <YOUR_ETH_RPC_URL> --chain.id=42161 --http.api=net,web3,eth,debug --http.corsdomain=* --http.addr=0.0.0.0 --http.vhosts=* --init.url="https://snapshot.arbitrum.foundation/arb1/nitro-archive.tar"
-  ```
+```
   </tab-item>
   <tab-item title="Sepolia Testnet">
   ```bash
   docker run --rm -it  -v /some/local/dir/arbitrum:/home/user/.arbitrum -p 0.0.0.0:8547:8547 -p 0.0.0.0:8548:8548 <LATEST_DOCKER_IMAGE> --parent-chain.connection.url <YOUR_ETH_RPC_URL> --chain.id=421613 --http.api=net,web3,eth,debug --http.corsdomain=* --http.addr=0.0.0.0 --http.vhosts=* --init.url="https://snapshot.arbitrum.foundation/sepolia/nitro-archive.tar"
-  ```
+```
   </tab-item>
 </tabs>
 
@@ -78,22 +82,16 @@ If you are testing it remotely, please replace `localhost` with the IP or URL of
 In order for `vald` to connect to your Arbitrum node, your `rpc_addr` should be exposed in
 vald's `config.toml`
 
-
 <tabs>
   <tab-item title="Mainnet">
-  ```bash
-  [[axelar_bridge_evm]]
-  name = "arbitrum"
-  rpc_addr = "http://IP:PORT"
-  start-with-bridge = true
-  ```
+    ```bash [[axelar_bridge_evm]] name = "arbitrum" rpc_addr = "http://IP:PORT"
+    start-with-bridge = true 
+```
   </tab-item>
   <tab-item title="Goerli Testnet">
-  ```bash
-  [[axelar_bridge_evm]]
-  name = "arbitrum"
-  rpc_addr = "http://IP:PORT"
-  start-with-bridge = true
-  ```
+    ```bash [[axelar_bridge_evm]] name = "arbitrum" rpc_addr = "http://IP:PORT"
+    start-with-bridge = true 
+    
+```
   </tab-item>
 </tabs>

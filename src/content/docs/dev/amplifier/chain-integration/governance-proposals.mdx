@@ -1,8 +1,8 @@
 # Chain Integration Governance Proposals
 
-import { Callout } from "/src/components/callout"
+import { Callout } from "/src/components/callout";
 
-New chains are onboarded to the Axelar Amplifier through [community governance](/resources/community/community-pool-proposals). In general, you will need to submit five governance proposals to integrate your chain: 
+New chains are onboarded to the Axelar Amplifier through [community governance](/resources/community/community-pool-proposals). In general, you will need to submit five governance proposals to integrate your chain:
 
 - Proposal to instantiate the voting verifier contract
 - Proposal to instantiate the gateway contract
@@ -31,7 +31,10 @@ You will need to introduce your chain to the community in order for Axelar token
 All of your on-chain proposals will refer back to this introduction, so make sure to be thorough. You should stay present and engage with any questions or comments during the seven-day feedback period, which can include public comments as well as review by a designated advisory committee. When the feedback period is over, submit your on-chain governance proposals to finish the integration of your chain.
 
 <Callout>
-Examples were created with contracts on the `ethereum-sepolia` chain. Please refer to [`devnet-amplifier.json`](https://github.com/axelarnetwork/axelar-contract-deployments/blob/main/axelar-chains-config/info/devnet-amplifier.json) for contracts associated with other chains.
+  Examples were created with contracts on the `ethereum-sepolia` chain. Please
+  refer to
+  [`devnet-amplifier.json`](https://github.com/axelarnetwork/axelar-contract-deployments/blob/main/axelar-chains-config/info/devnet-amplifier.json)
+  for contracts associated with other chains.
 </Callout>
 
 ## Proposal to instantiate the voting verifier contract
@@ -133,6 +136,7 @@ axelard tx gov submit-proposal store-instantiate [path to verifier contract as w
     --builder $BUILDER \
     --code-hash $CODE_HASH
 ```
+
 </tab-item>
 </tabs>
 
@@ -168,6 +172,7 @@ axelard tx gov submit-proposal instantiate-contract $CODE_ID \
     --no-admin \
     --node $RPC
 ```
+
 </tab-item>
 
 <tab-item title="Non-EVM integrators">
@@ -204,6 +209,7 @@ axelard tx gov submit-proposal store-instantiate [path to gateway contract as wa
     --builder $BUILDER \
     --code-hash $CODE_HASH
 ```
+
 </tab-item>
 </tabs>
 
@@ -253,13 +259,15 @@ axelard tx gov submit-proposal instantiate-contract $CODE_ID \
     --admin="axelar1zlr7e5qf3sz7yf890rkh9tcnu87234k6k7ytd9" \
     --node $RPC
 ```
+
 </tab-item>
 
 <tab-item title="Non-EVM integrators">
-Once the feedback period has passed, submit the proposal with the [proper instantiation parameters](https://github.com/axelarnetwork/axelar-amplifier/blob/deab56a75209a158c082cbf9b77caf500eb4ec7c/contracts/multisig-prover/src/msg.rs#L12). 
+Once the feedback period has passed, submit the proposal with the [proper instantiation parameters](https://github.com/axelarnetwork/axelar-amplifier/blob/deab56a75209a158c082cbf9b77caf500eb4ec7c/contracts/multisig-prover/src/msg.rs#L12).
 
 <Callout>
-You will need to wait until the proposal to instantiate your gateway contract passes to get the proper `gateway_address`.
+  You will need to wait until the proposal to instantiate your gateway contract
+  passes to get the proper `gateway_address`.
 </Callout>
 
 ```bash
@@ -308,6 +316,7 @@ axelard tx gov submit-proposal store-instantiate [path to prover contract as was
     --builder $BUILDER \
     --code-hash $CODE_HASH
 ```
+
 </tab-item>
 </tabs>
 
@@ -365,6 +374,47 @@ axelard tx gov submit-proposal execute-contract $MULTISIG_CONTRACT_ADDRESS \
     --gas auto --gas-adjustment 1.5 --gas-prices 0.00005uamplifier \
     --chain-id=devnet-amplifier \
     --node $RPC
+```
+
+## Create a reward pool
+
+For your blockchain to be integrated with the Amplifier service you must have a [reward pool](/dev/amplifier/add-rewards/) setup for your chain's verifiers to be compensated. The reward pool is setup by creating a governance proposal. 
+
+- Note: This must be ran twice. Once for the Voting Verifier contract and once for the Multisig Prover.
+
+```bash
+export REWARDS_CONTRACT="axelar1vaj9sfzc3z0gpel90wu4ljutncutv0wuhvvwfsh30rqxq422z89qnd989l"
+export VOTING_VERIFIER_ADDRESS="axelar1x3960tw9cml6xsqtvzt4gmw3scauaxdd83rhs9dmlpjfjf9z9s7qjx8g0j"
+export CHAIN_NAME="AmplifiedChain"
+export EPOCH_DURATION="10" # How often rewards are calculated, specified in number of blocks.
+export REWARDS_PER_EPOCH="100" # Number of tokens distributed as rewards per epoch, split amongst verifiers. 
+export PARTICIPATION_THRESHOLD=["9", "10"] # amount of events verifiers must participate in to earn rewards (9/10 in this example).
+```
+
+```bash
+ axelard tx gov submit-proposal execute-contract $REWARDS_CONTRACT \ '{
+    "create_pool":{
+        "params": {
+            "epoch_duration": "'"$EPOCH_DURATION"'",
+            "rewards_per_epoch": "'"$REWARDS_PER_EPOCH"'",
+            "participation_threshold": "'"$PARTICIPATION_THRESHOLD"'"
+        }, 
+        "pool_id":{
+            "chain_name":"'"$CHAIN_NAME"'",
+            "contract":"'"$VOTING_VERIFIER_ADDRESS"'"
+        }
+    }
+}' \
+--title="Create reward pool for $CHAIN_NAME" \
+--description="Create a new reward pool to compensate verifiers for $CHAIN_NAME" \
+--run-as $NETWORK_GOV_ADDRESS \
+--keyring-backend test \
+--deposit=100000000uamplifier \
+--from wallet \ 
+--gas auto \
+--gas-adjustment 1.5  \
+--gas-prices 0.00005uamplifier \
+--node  $RPC 
 ```
 
 ## Track your proposal

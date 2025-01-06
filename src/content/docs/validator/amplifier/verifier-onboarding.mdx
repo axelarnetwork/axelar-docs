@@ -1,6 +1,7 @@
 # Become an Amplifier Verifier
 
 import { Callout } from "/src/components/callout";
+import { AMPD } from '/src/config/variables';
 
 <Callout>
   The Axelar Virtual Machine (AVM) and Amplifier are currently under active
@@ -42,6 +43,13 @@ Create a default mnemonic and configuration in `~/.tofnd/`, then back it up and 
 ```bash
 tofnd -m create
 mv ~/.tofnd/export ~/.tofnd/export-new-location
+```
+
+Create an alias or symlink to the `tofnd` binary in your `.bashrc`. Be sure to specify the correct file name which may be a different architecture or later version than v1.0.1.
+
+```bash
+echo "alias tofnd=~/Downloads/tofnd-linux-amd64-v1.0.1" >> ~/.bashrc
+source ~/.bashrc
 ```
 
 Now run tofnd.
@@ -97,24 +105,24 @@ Leave this process running in the background, and perform additional commands in
 
 <tab-item title="Binary">
   Download the [`ampd`
-  binary](https://github.com/axelarnetwork/axelar-amplifier/releases/tag/ampd-v1.0.0)
+  binary](https://github.com/axelarnetwork/axelar-amplifier/releases/tag/ampd-v1.2.0)
   depending on the type of machine you have:
   - Linux:
-  [`ampd-linux-amd64-v1.0.0`](https://github.com/axelarnetwork/axelar-amplifier/releases/download/ampd-v1.0.0/ampd-linux-amd64-v1.0.0)
+  [`ampd-linux-amd64-v1.2.0`](https://github.com/axelarnetwork/axelar-amplifier/releases/download/ampd-v1.2.0/ampd-linux-amd64-v1.2.0)
   - Apple Silicon Mac:
-  [`ampd-darwin-arm64-v1.0.0`](https://github.com/axelarnetwork/axelar-amplifier/releases/download/ampd-v1.0.0/ampd-darwin-arm64-v1.0.0)
+  [`ampd-darwin-arm64-v1.2.0`](https://github.com/axelarnetwork/axelar-amplifier/releases/download/ampd-v1.2.0/ampd-darwin-arm64-v1.2.0)
   - Intel Mac:
-  [`ampd-darwin-amd64-v1.0.0`](https://github.com/axelarnetwork/axelar-amplifier/releases/download/ampd-v1.0.0/ampd-darwin-amd64-v1.0.0)
+  [`ampd-darwin-amd64-v1.2.0`](https://github.com/axelarnetwork/axelar-amplifier/releases/download/ampd-v1.2.0/ampd-darwin-amd64-v1.2.0)
 </tab-item>
 
 <tab-item title="Docker">
-From [Docker](https://hub.docker.com/r/axelarnet/axelar-ampd), pull and run the `1.0.0` version of `ampd`:
+From [Docker](https://hub.docker.com/r/axelarnet/axelar-ampd), pull and run the `1.2.0` version of `ampd`:
 
 
 
 ```bash
-docker pull axelarnet/axelar-ampd:v1.0.0
-docker run axelarnet/axelar-ampd:v1.0.0 verifier-address
+docker pull axelarnet/axelar-ampd:v1.2.0
+docker run axelarnet/axelar-ampd:v1.2.0 verifier-address
 ```
 
 </tab-item>
@@ -134,33 +142,31 @@ This will allow you to begin commands with `ampd`. If you set up `ampd` through 
 1. Add a symbolic link named `ampd` in your binaries folder.:
 
     ```bash
-    sudo ln -s ~/Downloads/ampd-*-v1.0.0 /usr/local/bin/ampd
+    sudo ln -s ~/Downloads/ampd-*-v1.2.0 /usr/local/bin/ampd
     ```
 
 1. Make the binary executable:
 
    ```bash
-   chmod a+x ~/Downloads/ampd-*-v1.0.0
+   chmod a+x ~/Downloads/ampd-*-v*
    ```
 
 1. Restart your terminal.
 
-1. Run `ampd --version` to make sure that the right version of `ampd` is being used. It should be `ampd 1.0.0`.
+1. Run `ampd --version` to make sure that the right version of `ampd` is being used. It should be {AMPD}.
 
 </tab-item>
 
 <tab-item title="<code>bash</code> alias">
    <Callout>
-   Replace `ampd-darwin-arm64-v1.0.0` with the [`ampd` binary you downloaded](/validator/amplifier/verifier-onboarding#set-up-ampd).
+   Replace `ampd-darwin-arm64-v1.2.0` with the [`ampd` binary you downloaded](/validator/amplifier/verifier-onboarding#set-up-ampd).
    </Callout>
 
 1. Add an alias to `ampd` at the end of the `.bashrc` file on your machine:
 
    ```bash
-   echo "ampd=~/Downloads/ampd-darwin-arm64-v1.0.0" >> ~/.bashrc
+   echo "alias ampd=~/Downloads/ampd-darwin-arm64-v1.2.0" >> ~/.bashrc
    ```
-
-1. Save and close the file.
 
 1. Reload the file to apply all changes:
 
@@ -170,18 +176,18 @@ This will allow you to begin commands with `ampd`. If you set up `ampd` through 
 
 1. Restart your terminal.
 
-1. Run `ampd --version` to make sure that the right version of `ampd` was installed on your machine. It should be `ampd 1.0.0`.
+1. Run `ampd --version` to make sure that the right version of `ampd` was installed on your machine. It should be {AMPD}.
 
 </tab-item>
 
 <tab-item title="<code>zsh</code> alias">
    <Callout>
-   Replace `ampd-darwin-arm64-v1.0.0` with the [`ampd` binary you downloaded](/validator/amplifier/verifier-onboarding#set-up-ampd).
+   Replace `ampd-darwin-arm64-v1.2.0` with the [`ampd` binary you downloaded](/validator/amplifier/verifier-onboarding#set-up-ampd).
    </Callout>
 1. Add an alias to `ampd` at the end of the `.zshrc` file on your machine:
 
     ```bash
-    echo "ampd=~/Downloads/ampd-darwin-arm64-v1.0.0" >> ~/.zshrc
+    echo "ampd=~/Downloads/ampd-darwin-arm64-v1.2.0" >> ~/.zshrc
     ```
 
 1. Save and close the file.
@@ -194,7 +200,7 @@ This will allow you to begin commands with `ampd`. If you set up `ampd` through 
 
 1. Restart your terminal.
 
-1. Run `ampd --version` to make sure that the right version of `ampd` was installed on your machine. It should be `ampd 1.0.0`.
+1. Run `ampd --version` to make sure that the right version of `ampd` was installed on your machine. It should be {AMPD}.
 
 </tab-item>
 
@@ -355,7 +361,7 @@ The following are an example `config.toml` files:
 </tab-item>
 <tab-item title="mainnet">
    ```toml
-   # replace with your Axelar testnet node
+   # replace with your Axelar mainnet node
    tm_jsonrpc="http://127.0.0.1:26657"
    tm_grpc="tcp://127.0.0.1:9090"
    event_buffer_cap=100000
@@ -437,7 +443,7 @@ Prior to running the `ampd` daemon, you will need to set up your wallet with dev
      Silicon Mac, you can disable the
      [gatekeeper](https://support.apple.com/guide/security/gatekeeper-and-runtime-protection-sec5599b66df/web)
      for a single binary with `sudo xattr -d com.apple.quarantine
-     ~/Downloads/ampd-darwin-arm64-v1.0.0` or disable gatekeeper globally with
+     ~/Downloads/ampd-darwin-arm64-v1.2.0` or disable gatekeeper globally with
      `sudo spctl --master-disable`.
    </Callout>
 
@@ -449,23 +455,47 @@ Prior to running the `ampd` daemon, you will need to set up your wallet with dev
 
 1. Bond your verifier:
 
-   ```bash
-   ampd bond-verifier amplifier 100000000000 uaxl
-   ```
+   <tabs>
+   <tab-item title="devnet-amplifier">
+      ```bash
+      ampd bond-verifier validators 100 uamplifier
+      ```
+   </tab-item>
+   <tab-item title="testnet">
+      ```bash
+      ampd bond-verifier amplifier 100000000000 uaxl
+      ```
+   </tab-item>
+   <tab-item title="mainnet">
+      ```bash
+      ampd bond-verifier amplifier 50000000000 uaxl
+      ```
+   </tab-item>
+   </tabs>
 
-   Bonded verifiers will stay bonded until they unbond or are removed by governance. The bond for testnet is 100000000000uaxl (100k AXL). The bond for mainnet is 50000000000uaxl (50k AXL).
+   Bonded verifiers will stay bonded until they unbond or are removed by governance. The bond for testnet is 100000000000uamplifier (100k AXL). The bond for mainnet is 50000000000uamplifier (50k AXL).
 
 1. Register your public key with `ecdsa` or `ed25519`:
 
    ```bash
    ampd register-public-key ecdsa
    ```
+   
 
 1. Register support for desired chains, enabling `ampd` to participate in voting and signing for your supported chains.
 
+<tabs>
+<tab-item title="devnet">
+   ```bash
+   ampd register-chain-support validators flow
+   ```
+</tab-item>
+<tab-item title="testnet">
    ```bash
    ampd register-chain-support amplifier flow
    ```
+</tab-item>
+</tabs>
 
    Multiple chain names can be passed, separated by a space (`ampd register-chain-support [service name] [chains]...`). Note that any chain you want to support here must be configured in your ampd `config.toml` file.
 
@@ -492,4 +522,3 @@ ampd --help
 ## Feedback
 
 If you have any feedback or would like to report a bug, please file an issue in the [Axelar Developer Support repository](https://github.com/axelarnetwork/support/issues).
-

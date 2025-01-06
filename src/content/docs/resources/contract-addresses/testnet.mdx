@@ -1,18 +1,19 @@
 # Testnet
 
-import { Callout } from '/src/components/callout'
-import IBCChannels from '/src/components/ibc/channels'
-import TransferFeeCalculator from '/src/components/transfer-fee/calculator'
-import EVMChains from '/src/components/evm/chains'
-import EVMAssets from '/src/components/evm/assets'
-import UpgradePathTestnet from '/src/upgrade-path-testnet.md'
+import { Callout } from '/src/components/callout';
+import IBCChannels from '/src/components/ibc/channels';
+import TransferFeeCalculator from '/src/components/transfer-fee/calculator';
+import EVMChains from '/src/components/evm/chains';
+import EVMAssets from '/src/components/evm/assets';
+import UpgradePathTestnet from '/src/upgrade-path-testnet.md';
+import { AXELARD_TESTNET, TOFND_TESTNET } from '/src/config/variables';
 
 | Variable              | Value     |
 | --------------------- | --------- |
 | `chain-id`            | `axelar-testnet-lisbon-3` |
-| `axelar-core` version | `v1.0.2` |
-| `vald` version        | `v1.0.2` |
-| `tofnd` version       | `v1.0.1` |
+| `axelar-core` version | v{AXELARD_TESTNET} |
+| `vald` version        | v{AXELARD_TESTNET} |
+| `tofnd` version       | v{TOFND_TESTNET} |
 | amplifier contracts   | see [testnet.json](https://github.com/axelarnetwork/axelar-contract-deployments/blob/main/axelar-chains-config/info/testnet.json) |
 
 ## EVM contract addresses
@@ -33,20 +34,19 @@ import UpgradePathTestnet from '/src/upgrade-path-testnet.md'
 <div className="space-y-1 mt-4">
   ## Faucets
 
-  The following faucets can be used to obtain tokens for testing. Note that some of them may require an existing balance in your wallet.
+The following faucets can be used to obtain tokens for testing. Note that some of them may require an existing balance in your wallet.
 
-  - [Polygon](https://mumbaifaucet.com/)
-  - [Moonbeam](https://faucet.moonbeam.network/)
-  - [Fantom](https://faucet.fantom.network/)
-  - [Paradigm](https://faucet.paradigm.xyz/)
-  - [Lotus](https://faucet.calibration.fildev.network/)
-  - [Kava](https://faucet.kava.io/)
-  - [Celo](https://faucet.celo.org/alfajores)
+- [Polygon](https://faucet.quicknode.com/polygon/mumbai)
+- [Moonbeam](https://faucet.moonbeam.network/)
+- [Fantom](https://faucet.fantom.network/)
+- [Paradigm](https://faucet.paradigm.xyz/)
+- [Lotus](https://faucet.calibration.fildev.network/)
+- [Kava](https://faucet.kava.io/)
+- [Celo](https://faucet.celo.org/alfajores)
 </div>
 
 <div className="space-y-1 mt-4">
-  ### Assets
-    Learn more about [wrapped assets like axlUSDC](/learn/axlusdc).
+  ### Assets Learn more about [wrapped assets like axlUSDC](/learn/axlusdc).
   <EVMAssets client:only environment="testnet" />
 </div>
 

@@ -14,10 +14,10 @@ To add a new address to the list of tracked addresses in the [accounts directory
 
 Include the following parameters:
 
-* Address: The address you are looking to add.
-* Name: The name you want to be displayed for your address.
-* Image: The image you want to appear alongside the name.
-* Environment: Whether this address is for mainnet or testnet transactions.
+- Address: The address you are looking to add.
+- Name: The name you want to be displayed for your address.
+- Image: The image you want to appear alongside the name.
+- Environment: Whether this address is for mainnet or testnet transactions.
 
 ## Example
 
@@ -26,11 +26,11 @@ The following example adds the Axelar Governance Address referenced in the image
 ```javascript
 export default [
   {
-    address: 'axelar10d07y265gmmuvt4z0w9aw880jnsr700j7v9daj',
-    name: 'Axelar Governance',
-    image: '/logos/accounts/axelarnet.svg',
-  }
-]
+    address: "axelar10d07y265gmmuvt4z0w9aw880jnsr700j7v9daj",
+    name: "Axelar Governance",
+    image: "/logos/accounts/axelarnet.svg",
+  },
+];
 ```
 
 No `environment` was set, so this address will appear on both [mainnet](https://axelarscan.io/account/axelar10d07y265gmmuvt4z0w9aw880jnsr700j7v9daj) and [testnet](https://testnet.axelarscan.io/account/axelar10d07y265gmmuvt4z0w9aw880jnsr700j7v9daj).
@@ -40,13 +40,10 @@ Add the following to include the address on mainnet only:
 ```javascript
 export default [
   {
-    address: 'axelar10d07y265gmmuvt4z0w9aw880jnsr700j7v9daj',
-    name: 'Axelar Governance',
-    image: '/logos/accounts/axelarnet.svg',
-    environment: 'mainnet'
-  }
-]
+    address: "axelar10d07y265gmmuvt4z0w9aw880jnsr700j7v9daj",
+    name: "Axelar Governance",
+    image: "/logos/accounts/axelarnet.svg",
+    environment: "mainnet",
+  },
+];
 ```
-
-
-

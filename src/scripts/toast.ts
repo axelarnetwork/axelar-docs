@@ -13,13 +13,13 @@ export function showToast(message, duration = 1500) {
   // Show the toast after appending to the DOM so we can transition in
   setTimeout(() => {
     toastElement.classList.add("show");
-    console.log('added');
+    console.log("added");
   }, 10);
 
   // Hide it, then later remove it
   setTimeout(() => {
     toastElement.classList.remove("show");
-    console.log('removed');
+    console.log("removed");
 
     setTimeout(() => {
       document.body.removeChild(toastElement);
