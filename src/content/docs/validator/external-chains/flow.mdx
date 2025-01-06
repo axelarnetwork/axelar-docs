@@ -67,7 +67,7 @@ mkdir ./bootstrap
 <Callout type="info">
     The network address is the address that will be used by the other nodes in the network to talk to your node.
 
-    Please ensure that the address (hostname:port) that you use is accessible from outside and there is no firewall rule blocking egress and **ingress** traffic for that address.
+    Please ensure that the address (hostname&colon;port) that you use is accessible from outside and there is no firewall rule blocking egress and **ingress** traffic for that address.
 </Callout>
 
 This will generate the node information which includes public and private staking keys, public and private networking key and the node ID.
@@ -419,7 +419,7 @@ go build -o evm-gateway cmd/main/main.go
 mv evm-gateway /usr/bin/
 ```
 
-Further details on EVM Gateway building and configuration can be found in the EVM Gateway [repo](https://github.com/onflow/flow-evm-gateway/blob/main/README.md#building).
+Further details on EVM Gateway building and configuration can be found in the EVM Gateway node ops [docs](https://developers.flow.com/networks/node-ops/access-onchain-data/evm-gateway/evm-gateway-setup).
 
 ### Enable EVM address for Flow operator account
 
@@ -449,8 +449,9 @@ EVM operator address and private key is configured for `--coa-address` & `--coa-
 <tab-item title="Mainnet">
         ```bash
         ACCESS_NODE_GRPC_HOST="${YOUR_NODE_ADDRESS}:9000"
+        ACCESS_NODE_SPORK_HOSTS="access-001.mainnet25.nodes.onflow.org:9000"
         FLOW_NETWORK_ID="flow-mainnet"
-        INIT_CADENCE_HEIGHT="211176670" # see below
+        INIT_CADENCE_HEIGHT="85981135"
         COINBASE="${LINKED_EVM_ADDRESS_WITHOUT_0x}"
         COA_ADDRESS="${FLOW_OPERATOR_ACCOUNT_ADDRESS}"
         COA_KEY="${FLOW_OPERATOR_ACCOUNT_PRIVATE_KEY}"
@@ -460,8 +461,9 @@ EVM operator address and private key is configured for `--coa-address` & `--coa-
 <tab-item title="Testnet">
         ```bash
         ACCESS_NODE_GRPC_HOST="${YOUR_NODE_ADDRESS}:9000"
+        ACCESS_NODE_SPORK_HOSTS="access-001.devnet51.nodes.onflow.org:9000"
         FLOW_NETWORK_ID="flow-testnet"
-        INIT_CADENCE_HEIGHT="211176670" # see below
+        INIT_CADENCE_HEIGHT="211176670"
         COINBASE="${LINKED_EVM_ADDRESS_WITHOUT_0x}"
         COA_ADDRESS="${FLOW_OPERATOR_ACCOUNT_ADDRESS}"
         COA_KEY="${FLOW_OPERATOR_ACCOUNT_PRIVATE_KEY}"
@@ -482,6 +484,7 @@ After=network-online.target
 User=$USER
 ExecStart=/usr/bin/evm-gateway \
 --access-node-grpc-host=$ACCESS_NODE_GRPC_HOST \
+--access-node-spork-hosts=$ACCESS_NODE_SPORK_HOSTS \
 --flow-network-id=$FLOW_NETWORK_ID \
 --init-cadence-height=$INIT_CADENCE_HEIGHT \
 --ws-enabled=true \
@@ -490,8 +493,8 @@ ExecStart=/usr/bin/evm-gateway \
 --coa-key=$COA_KEY \
 --rate-limit=9999999 \
 --rpc-host=0.0.0.0 \
---traces-gcp-bucket=devnet51-evm-execution-traces1 \
 --gas-price=$GAS_PRICE
+--tx-state-validation=local-index
 Restart=always
 RestartSec=3
 LimitNOFILE=4096
