@@ -5,7 +5,7 @@ import { Callout } from "../../../../components/callout";
 Set up your Stellar node.
 
 <Callout emoji="💡">
-  These instructions have been tested on version `22.0.0`. Please refer to the official [Stellar releases](https://github.com/stellar/stellar-core/releases) for the latest release
+  These instructions have been tested on version `22.1.0`. Please refer to the official [Stellar releases](https://github.com/stellar/stellar-core/releases) for the latest release
 </Callout>
 
 ## Prerequisites
@@ -104,8 +104,7 @@ Install the latest versions for the network accordingly [stellar core latest rel
 
 ```bash
 # These are examples - check their docs and release page to opt for the right version
-STELLAR_RELEASE=v22.0.0
-SOROBAN_RELEASE=v22.0.0
+STELLAR_RELEASE=v22.1.0
 ```
 
 ### 1. Install Stellar Core
@@ -526,16 +525,7 @@ launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.soroban.rpc.plist
 launchctl list | grep com.soroban.rpc
 # If it appears with a PID, it's running!
 ```
-
-To stop the service run:
-
-```bash
-launchctl remove com.soroban.rpc
-```
-
-
-
-## Check logs
+To check if the service is running run:
 <tabs>
   <tab-item title="ubuntu">
     ```bash
@@ -548,6 +538,15 @@ launchctl remove com.soroban.rpc
     ```
   </tab-item>
 </tabs>
+
+To stop the service run:
+
+```bash
+launchctl remove com.soroban.rpc
+```
+
+
+
 
 ## Verify RPC
 
