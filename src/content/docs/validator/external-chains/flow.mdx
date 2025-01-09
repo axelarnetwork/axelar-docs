@@ -412,11 +412,10 @@ Further details on Access Node setup can be found in the [Access Node setup](htt
 Similar to the access node, build the EVM gateway binary from the latest release tag. The EVM gateway source is available in the [onflow/flow-go](https://github.com/onflow/flow-evm-gateway) repo.
 ```bash
 git clone https://github.com/onflow/flow-evm-gateway.git
-git checkout <latest release tag mentioned here https://github.com/onflow/flow-evm-gateway/releases>
 cd flow-evm-gateway
 git checkout <latest release tag mentioned here https://github.com/onflow/flow-evm-gateway/releases/latest>
-go build -o evm-gateway cmd/main/main.go
-mv evm-gateway /usr/bin/
+make build
+mv flow-evm-gateway /usr/bin/
 ```
 
 Further details on EVM Gateway building and configuration can be found in the EVM Gateway node ops [docs](https://developers.flow.com/networks/node-ops/access-onchain-data/evm-gateway/evm-gateway-setup).
@@ -482,7 +481,7 @@ After=network-online.target
 
 [Service]
 User=$USER
-ExecStart=/usr/bin/evm-gateway \
+ExecStart=/usr/bin/flow-evm-gateway run \
 --access-node-grpc-host=$ACCESS_NODE_GRPC_HOST \
 --access-node-spork-hosts=$ACCESS_NODE_SPORK_HOSTS \
 --flow-network-id=$FLOW_NETWORK_ID \
