@@ -6,11 +6,19 @@ Setup your XRPL EVM Mainnet or Testnet node.
 
 ## Prerequisites
 
-- Minimum hardware requirements: At least 4GB of RAM and a 2.40GHz CPU with 6 cores depending on your request load. Disk/Storage is recommended at least 10GB
 - MacOS or Ubuntu 18.04+
 - Build-essential packages
 - Golang 1.17+
 - [Official Documentation](https://docs.xrplevm.org/docs/evm-sidechain/join-evm-sidechain-devnet)
+
+
+| Resource        | Minimum Recommendation       | Notes                                   |
+|-----------------|------------------------------|-----------------------------------------|
+| Operating System | Linux (AMD64)               | A recent Linux distribution (e.g., Ubuntu 20.04 LTS, CentOS 8, Debian 11) is strongly recommended for stability, security, and compatibility. |
+| CPU             | 4 Physical Cores or More     | Multi-core processors provide enough parallel processing to efficiently handle validation, API requests, and block synchronization. Higher core counts can enhance performance under heavy load. |
+| Memory (RAM)    | 32GB                         | Sufficient memory ensures smooth operation during peak network load, handling large state DB operations, and responding to complex smart contract queries. More memory may further improve performance. |
+| Storage         | 500GB NVMe SSD               | A high-performance NVMe SSD provides fast random access and write speeds, which are essential for maintaining a responsive node database and quickly processing state updates. More storage capacity may be required for archive nodes or long-term data retention. |
+| Network          | 100Mbps                     | A stable 100Mbps connection or faster ensures timely propagation of blocks, efficient peer discovery, and responsive API endpoints. Lower bandwidth may lead to delayed synchronization or performance bottlenecks. |
 
 ## Install
 
@@ -56,9 +64,9 @@ exrpd init <your_moniker> --chain-id exrp_1440002-1
 ```
 This step populates the afforementioned `~/.exrpd` directory with the `config` and `data` directories. 
 
-## Validate From Snapshot
+## Download Snapshot
 
-You can download Peersyst's [snapshot](https://evm-sidechain-snapshots-devnet.s3.us-east-1.amazonaws.com/exrpd-pre-v5.tar.lz4). 
+You can download Peersyst's [snapshot](https://evm-sidechain-snapshots-devnet.s3.us-east-1.amazonaws.com/exrpd.tar.lz4). 
 
 
 <Callout emoji="💡">
