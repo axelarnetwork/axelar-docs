@@ -496,8 +496,8 @@ export const getNavigation = (section) => {
             { title: "Polygon", href: "/validator/external-chains/polygon/" },
             { title: "Scroll", href: "/validator/external-chains/scroll/" },
             {
-              title: "Soroban",
-              href: "/validator/external-chains/soroban/",
+              title: "Stellar",
+              href: "/validator/external-chains/stellar/",
             },
             { title: "Sui", href: "/validator/external-chains/sui/" },
           ],

@@ -98,9 +98,9 @@ In order to build the `Stellar` node, you first need to install all the required
 
 ## Install Stellar-Core
 
-Soroban-RPC requires an instance of stellar-core binary on the same host. This is referred to as the Captive Core. Since, we are building RPC from source, we recommend considering two approaches to get the stellar-core binary:
+Stellar-RPC requires an instance of stellar-core binary on the same host. This is referred to as the Captive Core. Since, we are building RPC from source, we recommend considering two approaches to get the stellar-core binary:
 
-Install the latest versions for the network accordingly [stellar core latest release tag](https://github.com/stellar/stellar-core/releases) and [Stelar latest release tag](https://github.com/stellar/stellar-rpc/releases)
+Install the latest versions for the network accordingly [Stellar core latest release tag](https://github.com/stellar/stellar-core/releases) and [Stellar latest release tag](https://github.com/stellar/stellar-rpc/releases)
 
 ```bash
 # These are examples - check their docs and release page to opt for the right version
@@ -146,48 +146,36 @@ STELLAR_RELEASE=v22.1.0
 
 
 
-### 2. Install Stellar
+### 2. Install Stellar RPC
 
-<tabs>
-    <tab-item title="Mainnet" class="bleed">
-        ```bash
-        git clone https://github.com/stellar/soroban-rpc.git
-        cd soroban-rpc
-        git checkout $SOROBAN_RELEASE
-        make build-soroban-rpc
-        sudo mv soroban-rpc /usr/bin/
-        ```
-    </tab-item>
-    <tab-item title="Testnet" class="bleed">
-        ```bash
-        git clone https://github.com/stellar/soroban-rpc.git
-        cd soroban-rpc
-        git checkout $SOROBAN_RELEASE
-        make build-soroban-rpc
-        sudo mv soroban-rpc /usr/bin/
-        ```
-    </tab-item>
-</tabs>
-
-## Check Versions
 
 ```bash
-soroban-rpc version
-stellar-core version
+git clone https://github.com/stellar/stellar-rpc.git
+cd stellar-rpc
+git checkout $STELLAR_RELEASE
+make build-stellar-rpc
+sudo mv stellar-rpc /usr/bin/
 ```
 
-## Configure soroban node
+
+## Check Version
+
+```bash
+stellar-core version
+stellar-rpc version
+```
+
+## Configure Stellar node
 
 ### 1. Create a config directories
 
 ```bash
 mkdir -p ~/.stellar/config
-mkdir -p ~/.soroban/config
 ```
 
-### 2. Create the config file for stellar
+### 2. Create the config file for Stellar
 
-Create ~/.stellar/config/core.toml and add
+Create `~/.stellar/config/core.toml` and add
 
 <tabs>
 <tab-item title="Mainnet" class="bleed">
@@ -198,6 +186,8 @@ Create ~/.stellar/config/core.toml and add
         NETWORK_PASSPHRASE="Public Global Stellar Network ; September 2015"
 
         DATABASE="sqlite3://stellar.db"
+
+        history-archive-urls = "https://history.stellar.org/prd/core-mainnet/core_mainnet_001,https://history.stellar.org/prd/core-mainnet/core_mainnet_002,https://history.stellar.org/prd/core-mainnet/core_mainnet_003"
 
         # Stellar Pubnet Validators
         [[HOME_DOMAINS]]
@@ -355,12 +345,14 @@ Create ~/.stellar/config/core.toml and add
         HISTORY = "curl -sf https://stellar-history-ins.franklintempleton.com/azinsshf401/{0} -o {1}"
 ```
 </tab-item>
-    <tab-item title="Testnet" class="bleed">
+<tab-item title="Testnet" class="bleed">
         ```bash
         HTTP_PORT=11626
         PUBLIC_HTTP_PORT=false
 
         NETWORK_PASSPHRASE="Test SDF Network ; September 2015"
+
+        history-archive-urls = "https://history.stellar.org/prd/core-testnet/core_testnet_001,https://history.stellar.org/prd/core-testnet/core_testnet_002,https://history.stellar.org/prd/core-testnet/core_testnet_003"
 
         DATABASE="sqlite3://stellar.db"
 
@@ -394,37 +386,92 @@ Create ~/.stellar/config/core.toml and add
 
 </tabs>
 
-### 3. Create the config file for soroban
+### 3. Create the config file for Captive Core
 
 ```bash
-cd ~/.soroban/config/
-soroban-rpc gen-config-file >> config.toml
+mkdir -p ~/.stellar/captive-core/stellar-core.conf
 ```
 
 <tabs>
 <tab-item title="Mainnet" class="bleed">
-    ```bash
-    # edit ~/.soroban/config/config.toml and uncomment and set to
-    NETWORK_PASSPHRASE="Public Global Stellar Network ; September 2015"
-    # update to ~/.stellar/config/core.toml (should be an absolute path)
-    CAPTIVE_CORE_CONFIG_PATH="<HOME>/.stellar/config/core.toml" 
-    # update to ~/.stellar
-    CAPTIVE_CORE_STORAGE_PATH = "<HOME>/.stellar"
-    HISTORY_ARCHIVE_URLS = ["https://history.stellar.org/prd/core-live/core_live_001"]
-    STELLAR_CORE_BINARY_PATH = "/usr/local/bin/stellar-core" 
-```
+  ```conf
+   # Generated file, do not edit
+  BUCKETLIST_DB_INDEX_PAGE_SIZE_EXPONENT = 12
+  DATABASE = "sqlite3://stellar.db"
+  DEPRECATED_SQL_LEDGER_STATE = false
+  EMIT_SOROBAN_TRANSACTION_META_EXT_V1 = true
+  ENABLE_DIAGNOSTICS_FOR_TX_SUBMISSION = true
+  ENABLE_SOROBAN_DIAGNOSTIC_EVENTS = true
+  FAILURE_SAFETY = -1
+  HTTP_PORT = 11626
+  LOG_FILE_PATH = ""
+  NETWORK_PASSPHRASE = "Test SDF Network ; September 2015"
+
+  [[HOME_DOMAINS]]
+  HOME_DOMAIN = "mainnet.stellar.org"
+  QUALITY = "HIGH"
+
+  [[VALIDATORS]]
+  ADDRESS = "core-mainnet1.stellar.org"
+  HISTORY = "curl -sf http://history.stellar.org/prd/core-mainnet/core_mainnet_001/{0} -o {1}"
+  HOME_DOMAIN = "mainnet.stellar.org"
+  NAME = "sdftest1"
+  PUBLIC_KEY = "GDKXE2OZMJIPOSLNA6N6F2BVCI3O777I2OOC4BV7VOYUEHYX7RTRYA7Y"
+
+  [[VALIDATORS]]
+  ADDRESS = "core-mainnet2.stellar.org"
+  HISTORY = "curl -sf http://history.stellar.org/prd/core-mainnet/core_mainnet_002/{0} -o {1}"
+  HOME_DOMAIN = "mainnet.stellar.org"
+  NAME = "sdftest2"
+  PUBLIC_KEY = "GCUCJTIYXSOXKBSNFGNFWW5MUQ54HKRPGJUTQFJ5RQXZXNOLNXYDHRAP"
+
+  [[VALIDATORS]]
+  ADDRESS = "core-mainnet3.stellar.org"
+  HISTORY = "curl -sf http://history.stellar.org/prd/core-testnet/core_testnet_003/{0} -o {1}"
+  HOME_DOMAIN = "mainnet.stellar.org"
+  NAME = "sdftest3"
+  PUBLIC_KEY = "GC2V2EFSXN6SQTWVYA5EPJPBWWIMSD2XQNKUOHGEKB535AQE2I6IXV2Z"
+  ```
 </tab-item>
 <tab-item title="Testnet" class="bleed">
-    ```bash
-    # edit ~/.soroban/config.toml and uncomment and set to
-    NETWORK_PASSPHRASE="Test SDF Network ; September 2015" 
-    # update to ~/.stellar/config/core.toml (should be an absolute path)
-    CAPTIVE_CORE_CONFIG_PATH="<HOME>/.stellar/config/core.toml" 
-    # update to ~/.stellar
-    CAPTIVE_CORE_STORAGE_PATH = "<HOME>/.stellar"
-    HISTORY_ARCHIVE_URLS = ["http://history.stellar.org/prd/core-testnet/core_testnet_001"]
-    STELLAR_CORE_BINARY_PATH = "/usr/local/bin/stellar-core"
-```
+  ```conf
+   # Generated file, do not edit
+  BUCKETLIST_DB_INDEX_PAGE_SIZE_EXPONENT = 12
+  DATABASE = "sqlite3://stellar.db"
+  DEPRECATED_SQL_LEDGER_STATE = false
+  EMIT_SOROBAN_TRANSACTION_META_EXT_V1 = true
+  ENABLE_DIAGNOSTICS_FOR_TX_SUBMISSION = true
+  ENABLE_SOROBAN_DIAGNOSTIC_EVENTS = true
+  FAILURE_SAFETY = -1
+  HTTP_PORT = 11626
+  LOG_FILE_PATH = ""
+  NETWORK_PASSPHRASE = "Test SDF Network ; September 2015"
+
+  [[HOME_DOMAINS]]
+  HOME_DOMAIN = "testnet.stellar.org"
+  QUALITY = "HIGH"
+
+  [[VALIDATORS]]
+  ADDRESS = "core-testnet1.stellar.org"
+  HISTORY = "curl -sf http://history.stellar.org/prd/core-testnet/core_testnet_001/{0} -o {1}"
+  HOME_DOMAIN = "testnet.stellar.org"
+  NAME = "sdftest1"
+  PUBLIC_KEY = "GDKXE2OZMJIPOSLNA6N6F2BVCI3O777I2OOC4BV7VOYUEHYX7RTRYA7Y"
+
+  [[VALIDATORS]]
+  ADDRESS = "core-testnet2.stellar.org"
+  HISTORY = "curl -sf http://history.stellar.org/prd/core-testnet/core_testnet_002/{0} -o {1}"
+  HOME_DOMAIN = "testnet.stellar.org"
+  NAME = "sdftest2"
+  PUBLIC_KEY = "GCUCJTIYXSOXKBSNFGNFWW5MUQ54HKRPGJUTQFJ5RQXZXNOLNXYDHRAP"
+
+  [[VALIDATORS]]
+  ADDRESS = "core-testnet3.stellar.org"
+  HISTORY = "curl -sf http://history.stellar.org/prd/core-testnet/core_testnet_003/{0} -o {1}"
+  HOME_DOMAIN = "testnet.stellar.org"
+  NAME = "sdftest3"
+  PUBLIC_KEY = "GC2V2EFSXN6SQTWVYA5EPJPBWWIMSD2XQNKUOHGEKB535AQE2I6IXV2Z"
+  ```
 </tab-item>
 
 </tabs>
@@ -432,13 +479,37 @@ soroban-rpc gen-config-file >> config.toml
 
 # Run the node
 
+## Manual
+
+Make sure the working directory ~/.stellar/data exists and is writable
+
+```bash
+mkdir -p ~/.stellar/data
+chmod 700 ~/.stellar/data
+```
+
+Run 
+
+```bash
+stellar-rpc \
+  --config-path /Users/<username>/.stellar/config/core.toml \
+  --captive-core-config-path /Users/<username>/.stellar/captive-core/stellar-core.conf \
+  --history-archive-urls \
+    "https://history.stellar.org/prd/core-testnet/core_testnet_001,\
+     https://history.stellar.org/prd/core-testnet/core_testnet_002,\
+     https://history.stellar.org/prd/core-testnet/core_testnet_003"
+```
+
+If all goes well, you should see logs indicating it’s starting up and connecting to testnet.
+If you get a `“Database not found”` error, confirm you used `sqlite3:///Users/<username>/.stellar/data/stellar.db` (absolute path with triple slash).
+
 ## Ubuntu
 
 ### Create Service
 
 ```bash
-BINARY_NAME=soroban-rpc
-CONFIG_PATH=$HOME/.soroban/config/config.toml
+BINARY_NAME=stellar-rpc
+CONFIG_PATH=$HOME/.stellar/config/config.toml
 sudo tee <<EOF >/dev/null /etc/systemd/system/$BINARY_NAME.service
 [Unit]
 Description=$BINARY_NAME daemon
@@ -446,7 +517,7 @@ After=network-online.target
 
 [Service]
 User=$USER
-WorkingDirectory=$HOME/.soroban/
+WorkingDirectory=$HOME/.stellar/
 ExecStart=$(which $BINARY_NAME) --config-path $CONFIG_PATH
 Restart=always
 RestartSec=3
@@ -463,14 +534,14 @@ cat /etc/systemd/system/$BINARY_NAME.service
 ### Run Service 
 
 ```bash
-sudo systemctl enable soroban-rpc
+sudo systemctl enable stellar-rpc
 sudo systemctl daemon-reload
-sudo systemctl restart soroban-rpc
+sudo systemctl restart stellar-rpc
 ```
 
 ## MacOS
 
-On macOS, you’ll can use a LaunchAgent in ~/Library/LaunchAgents/. For example, create ~/Library/LaunchAgents/com.soroban.rpc.plist:
+On macOS, you’ll can use a LaunchAgent in ~/Library/LaunchAgents/. For example, create ~/Library/LaunchAgents/com.stellar.rpc.plist:
 
 
 ```xml
@@ -480,13 +551,15 @@ On macOS, you’ll can use a LaunchAgent in ~/Library/LaunchAgents/. For example
 <plist version="1.0">
   <dict>
     <key>Label</key>
-    <string>com.soroban.rpc</string>
+    <string>com.stellar.rpc</string>
 
     <key>ProgramArguments</key>
     <array>
-      <string>/usr/local/bin/soroban-rpc</string>
+      <string>/usr/local/bin/stellar-rpc</string>
       <string>--config-path</string>
-      <string>/Users/username/.soroban/config/config.toml</string>
+      <string>/Users/benweinberg/.stellar/config/core.toml</string>
+      <string>--history-archive-urls</string>
+      <string>https://history.stellar.org/prd/core-testnet/core_testnet_001,https://history.stellar.org/prd/core-testnet/core_testnet_002,https://history.stellar.org/prd/core-testnet/core_testnet_003</string>
     </array>
 
     <key>RunAtLoad</key>
@@ -495,23 +568,26 @@ On macOS, you’ll can use a LaunchAgent in ~/Library/LaunchAgents/. For example
     <key>KeepAlive</key>
     <true/>
 
-    <!-- If you use a relative DB_PATH, set the WorkingDirectory: -->
     <key>WorkingDirectory</key>
-    <string>/Users/username/.soroban/data</string>
+    <string>/Users/benweinberg/.stellar/data</string>
+
 
     <key>EnvironmentVariables</key>
     <dict>
       <key>PATH</key>
       <string>/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin</string>
       <!-- Add other necessary environment variables here -->
+      <key>CAPTIVE_CORE_CONFIG_PATH</key>
+      <string>/Users/benweinberg/.stellar/captive-core/stellar-core.conf</string>
+      <key>HISTORY_ARCHIVE_URLS</key>
+      <string>https://history.stellar.org/prd/core-testnet/core_testnet_001,https://history.stellar.org/prd/core-testnet/core_testnet_002,https://history.stellar.org/prd/core-testnet/core_testnet_003</string>
     </dict>
 
-    <!-- Soroban logs to stderr by default, so it ends up here. -->
     <key>StandardOutPath</key>
-    <string>/tmp/com.soroban.rpc.out</string>
+    <string>/tmp/com.stellar.rpc.out</string>
 
     <key>StandardErrorPath</key>
-    <string>/tmp/com.soroban.rpc.err</string>
+    <string>/tmp/com.stellar.rpc.out</string>
   </dict>
 </plist>
 ```
@@ -521,20 +597,20 @@ On macOS, you’ll can use a LaunchAgent in ~/Library/LaunchAgents/. For example
 Once the LaunchAgent has been setup you can run the service by running
 
 ```bash
-launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.soroban.rpc.plist
-launchctl list | grep com.soroban.rpc
+launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.stellar.rpc.plist
+launchctl list | grep com.stellar.rpc
 # If it appears with a PID, it's running!
 ```
 To check if the service is running run:
 <tabs>
   <tab-item title="ubuntu">
     ```bash
-    journalctl -u soroban-rpc.service -n 100 -f -o cat
+    journalctl -u stellar-rpc.service -n 100 -f -o cat
     ```
   </tab-item>
   <tab-item title="macOS">
     ```bash
-    tail -f /tmp/com.soroban.rpc.out
+    tail -f /tmp/com.stellar.rpc.out
     ```
   </tab-item>
 </tabs>
@@ -542,7 +618,7 @@ To check if the service is running run:
 To stop the service run:
 
 ```bash
-launchctl remove com.soroban.rpc
+launchctl remove com.stellar.rpc
 ```
 
 
@@ -593,7 +669,8 @@ If your node is still syncing it may return a response as follows:
 
 ## Common Issues
 Tips & Common Pitfalls
-1. Absolute DB path: On macOS, either set `<key>WorkingDirectory</key>` in your plist or use `DB_PATH="/Users/USERNAME/.soroban/data/soroban_rpc.sqlite"`.
+1. Absolute DB path: On macOS, either set `<key>WorkingDirectory</key>` in your plist or use `DB_PATH="/Users/USERNAME/.stellar/data/stellar_rpc.sqlite"`.
 1. Logs default to stderr: That’s why StandardErrorPath is where you see everything.
-1. To see real-time logs: either run Soroban in the foreground (not via launchd/systemd) or `tail -f` the logs.
-1. `“Bootstrap failed: 5: Input/output error”` (macOS) often just means Soroban had a brief exit or stale job. If Soroban is actually running (PID > 0) and syncing, you can ignore it or use a wrapper script that ensures a zero exit code.
+1. To see real-time logs: either run Stellar in the foreground (not via launchd/systemd) or `tail -f` the logs.
+1. `“Bootstrap failed: 5: Input/output error”` (macOS) often just means Stellar had a brief exit or stale job. If Stellar is actually running (PID > 0) and syncing, you can ignore it or use a wrapper script that ensures a zero exit code.
+1. Missing `history-archive-urls`: Ensure you pass it via `--history-archive-urls` or set HISTORY_ARCHIVE_URLS as an environment variable for stellar-rpc—and never put that key in the Captive Core file.
