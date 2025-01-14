@@ -500,6 +500,7 @@ export const getNavigation = (section) => {
               href: "/validator/external-chains/soroban/",
             },
             { title: "Sui", href: "/validator/external-chains/sui/" },
+            { title: "XRP EVM", href: "/validator/external-chains/xrp-evm/" },
           ],
         },
         {
