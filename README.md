@@ -28,7 +28,7 @@ Site navigation is generated in TypeScript based on the section the user is curr
 
 - Content Folder: Contributions are made by adding files to this [folder](/src/content/docs/). This folder structure defines the organization and links within the documentation.
 - Creating a New Page: To add a new page, create a new Markdown file (.md or .mdx) inside the /docs/ folder. Use a descriptive filename that reflects the topic of your page (e.g., /src/content/docs/learn/security.mdx).
-- Updating Navigation: Once you've created a new page, you need to update the navigation bar to include it. Edit the file [src/layouts/navigation.ts](#updating-navigation). This file controls the navigation links throughout the Axelar docs website. Locate the appropriate section and add an entry for your new page, ensuring consistency with the existing navigation style.
+- Updating Navigation: Once you've created a new page, you need to update the navigation bar to include it. Edit the file [`src/layouts/navigation.ts`](https://github.com/axelarnetwork/axelar-docs/blob/main/src/layouts/navigation.ts). This file controls the navigation links throughout the Axelar docs website. Locate the appropriate section and add an entry for your new page, ensuring consistency with the existing navigation style.
 
 ## Short links
 
