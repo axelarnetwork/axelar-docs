@@ -100,13 +100,13 @@ export const getNavigation = (section) => {
               children: [
                 {
                   title: "Send Tokens",
-                  href: "/dev/send-tokens/deprecated/send-tokens/"
+                  href: "/dev/send-tokens/deprecated/send-tokens/",
                 },
                 {
                   title: "Deposit Address",
-                  href: "/dev/send-tokens/deprecated/deposit-address/"
-                }
-              ]
+                  href: "/dev/send-tokens/deprecated/deposit-address/",
+                },
+              ],
             },
           ],
         },
@@ -281,7 +281,7 @@ export const getNavigation = (section) => {
               children: [
                 {
                   title: "Automatic Relaying",
-                  href: "/dev/amplifier/chain-integration/relay-messages/automatic/",
+                  href: "https://www.notion.so/bright-ambert-2bd/Amplifier-GMP-API-Authentication-EXTERNAL-113c53fccb77807caeeff9882b883a4c",
                 },
                 {
                   title: "Manual Relaying",
@@ -385,19 +385,6 @@ export const getNavigation = (section) => {
             {
               title: "Full-Stack Interchain App with Next.js & Solidity",
               href: "https://blog.axelar.dev/build-a-full-stack-interchain-application-with-nextjs-solidity-axelar",
-            },
-          ],
-        },
-        {
-          title: "Indexers",
-          children: [
-            {
-              title: "Introduction",
-              href: "/dev/indexers/overview/",
-            },
-            {
-              title: "SubQuery",
-              href: "/dev/indexers/subquery/",
             },
           ],
         },
@@ -648,6 +635,10 @@ export const getNavigation = (section) => {
             title: "Mainnet axelard",
             children: [
               {
+                title: "v1.1",
+                href: "/resources/mainnet/upgrades/v112/",
+              },
+              {
                 title: "v1.0",
                 href: "/resources/mainnet/upgrades/v1/",
               },
@@ -712,6 +703,10 @@ export const getNavigation = (section) => {
           {
             title: "Testnet axelard",
             children: [
+              {
+                title: "v1.1",
+                href: "/resources/testnet/upgrades/v112/",
+              },
               {
                 title: "v1.0",
                 href: "/resources/testnet/upgrades/v1/",
@@ -795,6 +790,15 @@ export const getNavigation = (section) => {
       {
         title: "Community Pool Proposals",
         href: " /resources/community/community-pool-proposals/",
+      },
+      {
+        title: "Chain Integration Reports",
+        children: [
+          {
+            title: "Flow",
+            href: "https://github.com/axelarnetwork/amplifier-advisory-committee/blob/main/src/chains/flow-evm/FLOW_EVM_REPORT.md",
+          }
+        ]
       },
       {
         title: "Onboard Your IBC chain",

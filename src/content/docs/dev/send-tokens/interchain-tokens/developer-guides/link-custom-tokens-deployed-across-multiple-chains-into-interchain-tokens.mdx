@@ -232,7 +232,7 @@ async function deployTokenManager() {
   const interchainTokenServiceContract = await getContractInstance(
     interchainTokenServiceContractAddress,
     interchainTokenServiceContractABI,
-    signer
+    signer,
   );
 
   // Generate a random salt
@@ -241,7 +241,7 @@ async function deployTokenManager() {
   // Create params
   const params = ethers.utils.defaultAbiCoder.encode(
     ["bytes", "address"],
-    [signer.address, fantomCustomTokenAddress]
+    [signer.address, fantomCustomTokenAddress],
   );
 
   // Deploy the token manager
@@ -250,13 +250,13 @@ async function deployTokenManager() {
     "",
     MINT_BURN,
     params,
-    ethers.utils.parseEther("0.01")
+    ethers.utils.parseEther("0.01"),
   );
 
   // Get the tokenId
   const tokenId = await interchainTokenServiceContract.interchainTokenId(
     signer.address,
-    salt
+    salt,
   );
 
   // Get the token manager address
@@ -269,7 +269,7 @@ async function deployTokenManager() {
 	Transaction Hash: ${deployTxData.hash},
 	Token ID: ${tokenId},
 	Expected token manager address: ${expectedTokenManagerAddress},
-	`
+	`,
   );
 }
 ```
@@ -345,7 +345,7 @@ async function gasEstimator() {
     EvmChain.POLYGON,
     GasToken.FTM,
     700000,
-    1.1
+    1.1,
   );
 
   return gas;
@@ -370,13 +370,13 @@ async function deployRemoteTokenManager() {
   const interchainTokenServiceContract = await getContractInstance(
     interchainTokenServiceContractAddress,
     interchainTokenServiceContractABI,
-    signer
+    signer,
   );
 
   // Create params
   const param = ethers.utils.defaultAbiCoder.encode(
     ["bytes", "address"],
-    [signer.address, polygonCustomTokenAddress]
+    [signer.address, polygonCustomTokenAddress],
   );
 
   const gasAmount = await gasEstimator();
@@ -388,13 +388,13 @@ async function deployRemoteTokenManager() {
     MINT_BURN,
     param,
     ethers.utils.parseEther("0.01"),
-    { value: gasAmount }
+    { value: gasAmount },
   );
 
   // Get the tokenId
   const tokenId = await interchainTokenServiceContract.interchainTokenId(
     signer.address,
-    "0x7f5fe989334ad23b77e8da841f672394d021ae83ff0a24afb461ba19d72e3553" // change salt
+    "0x7f5fe989334ad23b77e8da841f672394d021ae83ff0a24afb461ba19d72e3553", // change salt
   );
 
   // Get the token manager address
@@ -406,7 +406,7 @@ async function deployRemoteTokenManager() {
 	Transaction Hash: ${deployTxData.hash},
 	Token ID: ${tokenId},
 	Expected token manager address: ${expectedTokenManagerAddress},
-	`
+	`,
   );
 }
 ```
@@ -481,7 +481,7 @@ async function transferMintAccessToTokenManagerOnFantom() {
   const tokenContract = await getContractInstance(
     fantomCustomTokenAddress,
     customTokenABI,
-    signer
+    signer,
   );
 
   // Get the minter role
@@ -489,7 +489,7 @@ async function transferMintAccessToTokenManagerOnFantom() {
 
   const grantRoleTxn = await tokenContract.grantRole(
     getMinterRole,
-    "0xad8Cf8FF7BBe82269844bBcbA60bAa8f02781f13"
+    "0xad8Cf8FF7BBe82269844bBcbA60bAa8f02781f13",
   );
 
   console.log("grantRoleTxn: ", grantRoleTxn.hash);
@@ -551,7 +551,7 @@ async function transferMintAccessToTokenManagerOnPolygon() {
   const tokenContract = await getContractInstance(
     polygonCustomTokenAddress,
     customTokenABI,
-    signer
+    signer,
   );
 
   // Get the minter role
@@ -559,7 +559,7 @@ async function transferMintAccessToTokenManagerOnPolygon() {
 
   const grantRoleTxn = await tokenContract.grantRole(
     getMinterRole,
-    "0xad8Cf8FF7BBe82269844bBcbA60bAa8f02781f13"
+    "0xad8Cf8FF7BBe82269844bBcbA60bAa8f02781f13",
   );
 
   console.log("grantRoleTxn: ", grantRoleTxn.hash);
@@ -627,7 +627,7 @@ async function transferTokens() {
   const interchainTokenServiceContract = await getContractInstance(
     interchainTokenServiceContractAddress,
     interchainTokenServiceContractABI,
-    signer
+    signer,
   );
   const gasAmount = await gasEstimator();
   const transfer = await interchainTokenServiceContract.interchainTransfer(
@@ -640,7 +640,7 @@ async function transferTokens() {
     {
       // Transaction options should be passed here as an object
       value: gasAmount,
-    }
+    },
   );
 
   console.log("Transfer Transaction Hash:", transfer.hash);
@@ -694,7 +694,7 @@ Check the [Axelarscan testnet scanner](https://testnet.axelarscan.io/) to see if
 
 You have now programmatically linked custom tokens deployed on multiple chains as Interchain Token using Axelar’s Interchain Token Service and transfer it between two chains.
 
-Great job making it this far! To show your support to the author of this tutorial, please post about your experience and tag [@axelarnetwork](https://twitter.com/axelarnetwork) on Twitter (X).
+Great job making it this far! To show your support to the author of this tutorial, please post about your experience and tag [@axelarnetwork](https://x.com/axelarnetwork) on Twitter (X).
 
 ## What’s next
 

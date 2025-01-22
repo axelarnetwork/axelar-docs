@@ -20,7 +20,7 @@ In this tutorial, you will learn how to:
 You will need:
 
 - A basic understanding of [Solidity](https://www.tutorialspoint.com/solidity/index.htm) and [JavaScript](https://www.w3schools.com/js/)
-- A [MetaMask wallet](https://metamask.io/) with FTM and MATIC funds for testing. If you don’t have these funds, you can get FTM from the [Fantom faucet](https://faucet.fantom.network/) and MATIC from the Mumbai faucets ([1](https://faucet.polygon.technology/), [2](https://faucet.quicknode.com/polygon/mumbai)).
+- A [MetaMask wallet](https://metamask.io/) with FTM and MATIC funds for testing. If you don’t have these funds, you can get FTM from the [Fantom faucet](https://faucet.fantom.network/) and MATIC from the Amoy faucets ([1](https://faucet.polygon.technology/), [2](https://faucet.quicknode.com/polygon/amoy)).
 
 ## **Set up your development environment**
 
@@ -183,18 +183,18 @@ async function registerAndDeploy() {
   const interchainTokenFactoryContract = await getContractInstance(
     interchainTokenFactoryContractAddress,
     interchainTokenFactoryContractABI,
-    signer
+    signer,
   );
   const interchainTokenServiceContract = await getContractInstance(
     interchainTokenServiceContractAddress,
     interchainTokenServiceContractABI,
-    signer
+    signer,
   );
 
   // Generate a unique token ID using the signer's address and salt
   const tokenId = await interchainTokenFactoryContract.interchainTokenId(
     signer.address,
-    salt
+    salt,
   );
 
   // Retrieve new token address
@@ -213,7 +213,7 @@ async function registerAndDeploy() {
       symbol,
       decimals,
       initialSupply,
-      signer.address
+      signer.address,
     );
 
   console.log(
@@ -223,7 +223,7 @@ async function registerAndDeploy() {
   Transaction Hash: ${deployTxData.hash},
   salt: ${salt},
   Expected Token Manager Address: ${expectedTokenManagerAddress},
-     `
+     `,
   );
 }
 ```
@@ -302,7 +302,7 @@ async function gasEstimator() {
     EvmChain.POLYGON,
     GasToken.FTM,
     700000,
-    1.1
+    1.1,
   );
 
   return gas;
@@ -313,7 +313,7 @@ async function gasEstimator() {
 
 ### Perform remote token deployment
 
-Create a `deployToRemoteChain()` function that will perform token remote deployment on the Polygon Mumbai testnet. Make sure to replace the `salt` value with the salt returned to your terminal from when you ran `registerAndDeploy()`:
+Create a `deployToRemoteChain()` function that will perform token remote deployment on the Polygon Amoy testnet. Make sure to replace the `salt` value with the salt returned to your terminal from when you ran `registerAndDeploy()`:
 
 ```javascript
 //...
@@ -326,7 +326,7 @@ async function deployToRemoteChain() {
   const interchainTokenFactoryContract = await getContractInstance(
     interchainTokenFactoryContractAddress,
     interchainTokenFactoryContractABI,
-    signer
+    signer,
   );
 
   // Estimate gas fees
@@ -343,7 +343,7 @@ async function deployToRemoteChain() {
     signer.address,
     "Polygon",
     gasAmount,
-    { value: gasAmount }
+    { value: gasAmount },
   );
 
   console.log(`Transaction Hash: ${txn.hash}`);
@@ -390,7 +390,7 @@ Transaction Hash: 0xca901048c74c3757fcea5d309cd53ef6e21816c841e85145ac8586fa71a9
 
 ### Check the transaction on the Axelar testnet scanner
 
-Check the [Axelarscan testnet scanner](https://testnet.axelarscan.io/) to see if you have successfully created and remotely deployed NIT on the Polygon Mumbai testnet. It should look something like [this](https://testnet.axelarscan.io/gmp/0xca901048c74c3757fcea5d309cd53ef6e21816c841e85145ac8586fa71a9cc48). Make sure that Axelar shows a successful transaction before continuing on to the next step.
+Check the [Axelarscan testnet scanner](https://testnet.axelarscan.io/) to see if you have successfully created and remotely deployed NIT on the Polygon Amoy testnet. It should look something like [this](https://testnet.axelarscan.io/gmp/0xca901048c74c3757fcea5d309cd53ef6e21816c841e85145ac8586fa71a9cc48). Make sure that Axelar shows a successful transaction before continuing on to the next step.
 
 ## Transfer your token between chains
 
@@ -410,7 +410,7 @@ async function transferTokens() {
   const interchainToken = await getContractInstance(
     "0xc028ebdF906a890be73C594b6a14858D0552544A", // Update with new token address
     interchainTokenContractABI, // Interchain Token contract ABI
-    signer
+    signer,
   );
 
   // Calculate gas amount
@@ -422,7 +422,7 @@ async function transferTokens() {
     "0x510e5EA32386B7C48C4DEEAC80e86859b5e2416C", // Update with your own wallet address
     ethers.utils.parseEther("25"), // Transfer 25 tokens
     "0x", // Empty data payload
-    { value: gasAmount } // Transaction options
+    { value: gasAmount }, // Transaction options
   );
   console.log("Transfer Transaction Hash:", transfer.hash);
 }
@@ -470,7 +470,7 @@ If you see this, it means that your interchain transfer has been successful! �
 
 ### Check the transaction on the Axelar testnet scanner
 
-Check the [Axelarscan testnet scanner](https://testnet.axelarscan.io/) to see if you have successfully transferred NIT from the Fantom testnet to the Polygon testnet. It should look something like [this](https://mumbai.polygonscan.com/token/0xc028ebdf906a890be73c594b6a14858d0552544a).
+Check the [Axelarscan testnet scanner](https://testnet.axelarscan.io/) to see if you have successfully transferred NIT from the Fantom testnet to the Polygon testnet. It should look something like [this](https://testnet.axelarscan.io/gmp/0x205554f5e39e29b21f3110ebf813579a3826465746c37a151ed18c992004c6b5).
 
 ### Import the new token into your wallet
 
@@ -480,7 +480,7 @@ You can also import the new token into your own wallet with its contract address
 
 You have now programmatically created a new interchain token called NIT using Axelar’s Interchain Token Service and transferred it between two chains. You should now be able to confidently create and manage your own Interchain Tokens, opening up a wide range of possibilities for token transfers and asset bridges.
 
-Great job making it this far! To show your support to the author of this tutorial, please post about your experience and tag [@axelarnetwork](https://twitter.com/axelarnetwork) on Twitter (X).
+Great job making it this far! To show your support to the author of this tutorial, please post about your experience and tag [@axelarnetwork](https://x.com/axelarnetwork) on Twitter (X).
 
 ## What’s next
 
