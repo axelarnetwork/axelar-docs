@@ -246,19 +246,15 @@ export const getNavigation = (section) => {
               ],
             },
             {
-              title: "Stellar Soroban GMP",
+              title: "Stellar GMP",
               children: [
                 {
-                title: "Soroban Contracts",
-                href: "/dev/general-message-passing/soroban-gmp/soroban-contracts/"
+                title: "Stellar Contracts",
+                href: "/dev/general-message-passing/stellar-gmp/stellar-contracts/"
                 },
                 {
                 title: "GMP Example",
-                href: "/dev/general-message-passing/soroban-gmp/gmp-example/"
-                },
-                {
-                title: "ITS",
-                href: "/dev/general-message-passing/soroban-gmp/its/"
+                href: "/dev/general-message-passing/stellar-gmp/gmp-example/"
                 }
               ]
 
