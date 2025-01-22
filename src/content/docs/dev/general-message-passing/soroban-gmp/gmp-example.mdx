@@ -332,7 +332,7 @@ In your `send()` function you can now simply pass in the `message` payload to th
 let encoded_msg: Bytes = abi_encode(&env, message).unwrap();
 ```
 
-This can be thought of as similar functionality to running `abi.encode()` in a Solidity contract. 
+This can be thought of as similar functionality to running `abi.encode()` in a Solidity contract.
 
 #### Pay Gas
 
@@ -395,7 +395,7 @@ Your completed `send()` function now should be as follows:
         caller: Address,
         destination_chain: String,
         destination_address: String,
-        message: Bytes,
+        message: String,
         gas_token: Token,
     ) {
         let gateway = AxelarGatewayMessagingClient::new(&env, &Self::gateway(&env));
@@ -403,11 +403,13 @@ Your completed `send()` function now should be as follows:
 
         caller.require_auth();
 
+        let encoded_msg: Bytes = abi_encode(&env, message).unwrap();
+
         gas_service.pay_gas(
             &env.current_contract_address(),
             &destination_chain,
             &destination_address,
-            &message,
+            &encoded_msg,
             &caller,
             &gas_token,
             &Bytes::new(&env),
@@ -417,7 +419,7 @@ Your completed `send()` function now should be as follows:
             &env.current_contract_address(),
             &destination_chain,
             &destination_address,
-            &message,
+            &encoded_msg,
         );
     }
 ```
@@ -466,7 +468,60 @@ With the `execute()` signature now defined you can begin to write out the logic 
 The first thing you will want to do is to validate the incoming message. This can be done by triggering the third available function in the Axelar Trait, `validate_message()`. This function will confirm that the Gateway has received an approval from the Axelar verifier set that the message is in fact authentic. You pass it into `let _` to tell the compiler that you do not care about the result of this function, to avoid the unused result warning.
 
 ```rust
-let _ = Self::validate_message(&env, &source_chain, &message_id, &source_address, &payload);
+let _ = Self::validate_message(&env, &source_chain, &message_id, &source_address, &payload)?;
+```
+
+Note: The `?` at the end used to propagate the error that may be returned by the `validate_message()` function
+
+Now with the message validated you can `decode` the function that you previously defined in the `abi.rs` file.
+
+```rust
+let decoded_msg = abi_decode_string(&env, payload).map_err(|_| CustomErrors::FailedDecoding)?;
+```
+
+You can then store the `decoded_msg` in the `DataKey` enum. As of now, the `DataKey` enum is only setup to hold the Gateway and Gas Service contract addresses, let's add in one more key for the recevied message.
+
+Back in your `storage_types.rs` file add a key called `ReceivedMessage. Your completed enum should now looks as follows
+
+```rust
+pub enum DataKey {
+    Gateway,
+    GasService,
+    ReceivedMessage
+}
+```
+
+You can now return to your `execute()` function in the `contract.rs` file and store the `decoded_msg` in the enum
+
+```rust
+//store msg
+env.storage()
+.instance()
+.set(&DataKey::ReceivedMessage, &decoded_msg);
+```
+
+Lastly,you can return the function. Your complete `execute` function should be as follows:
+
+```rust
+fn execute(
+    env: Env,
+    source_chain: String,
+    message_id: String,
+    source_address: String,
+    payload: Bytes,
+) -> Result<(), CustomErrors> {
+    let _ =
+        Self::validate_message(&env, &source_chain, &message_id, &source_address, &payload)?;
+
+    let decoded_msg = abi_decode_string(&env, payload).map_err(|_| CustomErrors::FailedDecoding)?;
+
+    //store msg
+    env.storage()
+        .instance()
+        .set(&DataKey::ReceivedMessage, &decoded_msg);
+
+    Ok(())
+}
 ```
 
 #### event
@@ -518,7 +573,7 @@ pub fn executed(
     source_chain: String,
     message_id: String,
     source_address: String,
-    payload: Bytes,
+    payload: String,
 ) {
     let topics = (
         Symbol::new(env, "executed"),
@@ -553,4 +608,39 @@ At this point once your message is received on the destination chain your `execu
 
 ## Testing
 
-Your `gmp-example` contract is now complete. If you run the command `stellar contract build`, your code should compile without any errors.
+Your `gmp-example` contract is now complete. If you run the command `stellar contract build`, your code should compile without any errors. Next you will need to optimize your contract. To do so run
+
+### Build
+
+```bash
+stellar contract optimize --wasm target/wasm32-unknown-unknown/release/axelar_gmp.wasm
+```
+
+### Deploy
+
+To deploy the contract you can run
+
+```bash
+stellar contract deploy --wasm target/wasm32-unknown-unknown/release/axelar_gmp.optimized.wasm --source <YOUR_WALLET_NAME> --network testnet -- --gateway CBECMRORSIPG4XG4CNZILCH233OXYMLCY4GL3GIO4SURSHTKHDAPEOVM --gas_service CD3KZOLEACWMQSDEQFUJI6ZWC7A7CC7AE7ZFVE4X2DBPYAC6L663GCNN`
+```
+
+Note: The gateway and gas service addresses listed here are for the Stellar devnet deployment, these may change at some point going forward, please check the docs for the latest addresses. Also the Stellar testnet frequently restarts which will lead to these Gateway and Gas Service contracts changing.
+
+### Interact on Chain
+
+Once your contract is now live on chain you can now send a cross-chain message by running the appropriate `stellar-cli` command.
+
+```bash
+stellar contract invoke --network testnet --id <CONTRACT_ADDRESS> --source-account <MY_ACCOUNT> -- send --caller <CALLER_ADDR_NAME> --destination_chain '"<DEST_CHAIN_NAME>"' --message '"<MESSAGE>"' --destination_address '"<DEST_ADDR>"' --gas_token '{ "address": "CDLZFC3SYJYDZT7K67VZ75HPJVIEUVNIXF47ZG2FB2RMQQVU2HHGCYSC", "amount": "10000000000" }'
+```
+
+At this point you should be able to query your Solidity contract to query if a message has gone through successfully.
+
+When you want to receive a message you will send the GMP message from your EVM Solidity contract and this Stellar contract will automatically receive and decode the message. To confirm that the message was received you will need to query this Stellar contract to make sure that a value in the `ReceivedMessage` key in the `DataKey` enum has been set. This can be done by running:
+
+```bash
+stellar contract invoke --network testnet --id <CONTRACT_ADDRESS> --source-account <CALLER_ADDR_NAME> -- received_message
+```
+
+If you successfully have sent the message from the EVM chain then this query should return the `string` that was sent from the source chain in your Stellar contract.
+
