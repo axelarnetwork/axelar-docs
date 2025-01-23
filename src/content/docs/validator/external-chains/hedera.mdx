@@ -35,8 +35,8 @@ cd hedera-mirror-node
 ### Configure Mirror Node
 
 Before starting your verifier, ensure you have the historical database dump in place. Without it, your verifier will not have the full historical state, causing it to vote "no" on proposals. 
-Follow Hedera’s official [Database Bootstrap Guide](https://github.com/hashgraph/hedera-mirror-node/blob/main/docs/database/bootstrap.md) to properly import the Mirror Node historical data before running the verifier. 
-Verifiers must have this data bootrapped to vote correctly.
+Follow Hedera’s official [Database Bootstrap Guide](https://github.com/hashgraph/hedera-mirror-node/blob/main/docs/database/bootstrap.md) to properly import the Mirror Node historical data [*minimal dump*](https://github.com/hashgraph/hedera-mirror-node/blob/main/docs/database/bootstrap.md#download-minimal-db-data-files) before running the verifier. 
+Verifiers must have this data bootsrapped to vote correctly.
 
 **Important Note for Deployment: It is recommended to first test your mirror node configuration on testnet:**
 > 1. Set the `startDate` to match your contract deployment date
