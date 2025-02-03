@@ -9,7 +9,7 @@ Setup your XRPL EVM Mainnet or Testnet node.
 - MacOS or Ubuntu 18.04+
 - Build-essential packages
 - Golang 1.17+
-- [Official Documentation](https://docs.xrplevm.org/docs/evm-sidechain/join-evm-sidechain-devnet)
+- [Official Documentation](https://docs.xrplevm.org/pages/operators/getting-started/system-requirements)
 
 
 | Resource        | Minimum Recommendation       | Notes                                   |
@@ -25,7 +25,7 @@ Setup your XRPL EVM Mainnet or Testnet node.
 To get started with the node setup.
 
 <Callout emoji="💡">
-  This setup has been tested with `exrpd` version `5.0.0`
+  This setup has been tested with `exrpd` version `6.0.0`
 </Callout>
 
 1. Install the latest binary from the official XRPL EVM node [repo](https://github.com/xrplevm/node/releases)
@@ -138,12 +138,12 @@ INF finalized block block_app_hash=... height=13242560 ...
 - Make sure you updated persistent_peers.
 - If you see repeated “No addresses to dial,” your node has zero connections. Re-run the peer script or check the docs for seed nodes.
 
-1. Genesis or config file errors
+2. Genesis or config file errors
 - Ensure the chain ID and all fields (like `initial_height`) are in the correct format (typically string in Cosmos).
 - Re-download the official genesis.json if in doubt.
 
-1. Port collisions
+3. Port collisions
 - If something else is using 26657, you may need to open ~/.exrpd/config/config.toml and change your RPC ports.
 
-1. Minimum gas price error
+4. Minimum gas price error
 - If you receive an error that says `Error: set min gas price in app.toml or flag or env variable: error in app.toml`. Set the `minimum-gas-prices` field in `app.toml` to a value for example `0.25axrp`
