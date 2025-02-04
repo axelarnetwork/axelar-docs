@@ -48,9 +48,7 @@ chmod +x exrpd
 ```bash
 mkdir -p ~/.exrpd
 ```
-Inside it, you will eventually see two subfolders:
-1. `~/.exrpd/config`
-1. `~/.exrpd/data`
+Inside it, you will eventually see two subfolders. The first is `~/.exrpd/config`. The second is `~/.exrpd/data`.
 
 2. Set the chain id
 ```bash
@@ -96,6 +94,21 @@ Inject the peers into your `config.toml` file (persistent_peers):
 ```bash
 sed -i.bak -e "s/^persistent_peers *=.*/persistent_peers = \"$PEERS\"/" \
   ~/.exrpd/config/config.toml
+```
+
+## Ethereum JSON RPC Compatibility 
+
+The XRP EVM node is a CometBFT Node. The `ampd` daemon however will be attempting to interact with your node as an Ethereum JSON RPC compatible node. To configure your CometBFT Node to support Ethereum JSON RPC functionality you need to update your `app.toml` file. In the JSON RPC section of the `app.toml` update the `enable` flag to `true`. 
+
+```toml
+###############################################################################
+###                           JSON RPC Configuration                        ###
+###############################################################################
+
+[json-rpc]
+
+# Enable defines if the JSONRPC server should be enabled.
+enable = true
 ```
 
 ## Run Node
