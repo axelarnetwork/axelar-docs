@@ -171,6 +171,7 @@ stellar-rpc version
 
 ```bash
 mkdir -p ~/.stellar/config
+mkdir -p ~/.stellar-rpc/config
 ```
 
 ### 2. Create the config file for Stellar
@@ -386,96 +387,215 @@ Create `~/.stellar/config/core.toml` and add
 
 </tabs>
 
-### 3. Create the config file for Captive Core
+### 3. Create the config file for Stellar RPC
 
 ```bash
-mkdir -p ~/.stellar/captive-core/stellar-core.conf
+cd ~/.stellar-rpc/config/
+stellar-rpc gen-config-file
 ```
 
-<tabs>
-<tab-item title="Mainnet" class="bleed">
-  ```conf
-   # Generated file, do not edit
-  BUCKETLIST_DB_INDEX_PAGE_SIZE_EXPONENT = 12
-  DATABASE = "sqlite3://stellar.db"
-  DEPRECATED_SQL_LEDGER_STATE = false
-  EMIT_SOROBAN_TRANSACTION_META_EXT_V1 = true
-  ENABLE_DIAGNOSTICS_FOR_TX_SUBMISSION = true
-  ENABLE_SOROBAN_DIAGNOSTIC_EVENTS = true
-  FAILURE_SAFETY = -1
-  HTTP_PORT = 11626
-  LOG_FILE_PATH = ""
-  NETWORK_PASSPHRASE = "Test SDF Network ; September 2015"
+```toml
+# Admin endpoint to listen and serve on. WARNING: this should not be accessible
+# from the Internet and does not use TLS. "" (default) disables the admin server
+# ADMIN_ENDPOINT = ""
 
-  [[HOME_DOMAINS]]
-  HOME_DOMAIN = "mainnet.stellar.org"
-  QUALITY = "HIGH"
+# path to additional configuration for the Stellar Core configuration file used
+# by captive core. It must, at least, include enough details to define a quorum
+# set
+# CAPTIVE_CORE_CONFIG_PATH = ""
 
-  [[VALIDATORS]]
-  ADDRESS = "core-mainnet1.stellar.org"
-  HISTORY = "curl -sf http://history.stellar.org/prd/core-mainnet/core_mainnet_001/{0} -o {1}"
-  HOME_DOMAIN = "mainnet.stellar.org"
-  NAME = "sdftest1"
-  PUBLIC_KEY = "GDKXE2OZMJIPOSLNA6N6F2BVCI3O777I2OOC4BV7VOYUEHYX7RTRYA7Y"
+# Storage location for Captive Core bucket data
+CAPTIVE_CORE_STORAGE_PATH = ""
 
-  [[VALIDATORS]]
-  ADDRESS = "core-mainnet2.stellar.org"
-  HISTORY = "curl -sf http://history.stellar.org/prd/core-mainnet/core_mainnet_002/{0} -o {1}"
-  HOME_DOMAIN = "mainnet.stellar.org"
-  NAME = "sdftest2"
-  PUBLIC_KEY = "GCUCJTIYXSOXKBSNFGNFWW5MUQ54HKRPGJUTQFJ5RQXZXNOLNXYDHRAP"
+# establishes how many ledgers exist between checkpoints, do NOT change this
+# unless you really know what you are doing
+CHECKPOINT_FREQUENCY = 64
 
-  [[VALIDATORS]]
-  ADDRESS = "core-mainnet3.stellar.org"
-  HISTORY = "curl -sf http://history.stellar.org/prd/core-testnet/core_testnet_003/{0} -o {1}"
-  HOME_DOMAIN = "mainnet.stellar.org"
-  NAME = "sdftest3"
-  PUBLIC_KEY = "GC2V2EFSXN6SQTWVYA5EPJPBWWIMSD2XQNKUOHGEKB535AQE2I6IXV2Z"
-  ```
-</tab-item>
-<tab-item title="Testnet" class="bleed">
-  ```conf
-   # Generated file, do not edit
-  BUCKETLIST_DB_INDEX_PAGE_SIZE_EXPONENT = 12
-  DATABASE = "sqlite3://stellar.db"
-  DEPRECATED_SQL_LEDGER_STATE = false
-  EMIT_SOROBAN_TRANSACTION_META_EXT_V1 = true
-  ENABLE_DIAGNOSTICS_FOR_TX_SUBMISSION = true
-  ENABLE_SOROBAN_DIAGNOSTIC_EVENTS = true
-  FAILURE_SAFETY = -1
-  HTTP_PORT = 11626
-  LOG_FILE_PATH = ""
-  NETWORK_PASSPHRASE = "Test SDF Network ; September 2015"
+# configures classic fee stats retention window expressed in number of ledgers
+CLASSIC_FEE_STATS_RETENTION_WINDOW = 10
 
-  [[HOME_DOMAINS]]
-  HOME_DOMAIN = "testnet.stellar.org"
-  QUALITY = "HIGH"
+# SQLite DB path
+DB_PATH = "soroban_rpc.sqlite"
 
-  [[VALIDATORS]]
-  ADDRESS = "core-testnet1.stellar.org"
-  HISTORY = "curl -sf http://history.stellar.org/prd/core-testnet/core_testnet_001/{0} -o {1}"
-  HOME_DOMAIN = "testnet.stellar.org"
-  NAME = "sdftest1"
-  PUBLIC_KEY = "GDKXE2OZMJIPOSLNA6N6F2BVCI3O777I2OOC4BV7VOYUEHYX7RTRYA7Y"
+# Default cap on the amount of events included in a single getEvents response
+DEFAULT_EVENTS_LIMIT = 100
 
-  [[VALIDATORS]]
-  ADDRESS = "core-testnet2.stellar.org"
-  HISTORY = "curl -sf http://history.stellar.org/prd/core-testnet/core_testnet_002/{0} -o {1}"
-  HOME_DOMAIN = "testnet.stellar.org"
-  NAME = "sdftest2"
-  PUBLIC_KEY = "GCUCJTIYXSOXKBSNFGNFWW5MUQ54HKRPGJUTQFJ5RQXZXNOLNXYDHRAP"
+# Default cap on the amount of transactions included in a single getTransactions
+# response
+DEFAULT_TRANSACTIONS_LIMIT = 50
 
-  [[VALIDATORS]]
-  ADDRESS = "core-testnet3.stellar.org"
-  HISTORY = "curl -sf http://history.stellar.org/prd/core-testnet/core_testnet_003/{0} -o {1}"
-  HOME_DOMAIN = "testnet.stellar.org"
-  NAME = "sdftest3"
-  PUBLIC_KEY = "GC2V2EFSXN6SQTWVYA5EPJPBWWIMSD2XQNKUOHGEKB535AQE2I6IXV2Z"
-  ```
-</tab-item>
+# Endpoint to listen and serve on
+ENDPOINT = "localhost:8000"
 
-</tabs>
+# The friendbot URL to be returned by getNetwork endpoint
+# FRIENDBOT_URL = ""
 
+# comma-separated list of stellar history archives to connect with
+HISTORY_ARCHIVE_URLS = []
+
+# configures history retention window for transactions and events, expressed in
+# number of ledgers, the default value is 120960 which corresponds to about 7
+# days of history
+HISTORY_RETENTION_WINDOW = 120960
+
+# Ingestion Timeout when bootstrapping data (checkpoint and in-memory
+# initialization) and preparing ledger reads
+INGESTION_TIMEOUT = "50m0s"
+
+# format used for output logs (json or text)
+# LOG_FORMAT = "text"
+
+# minimum log severity (debug, info, warn, error) to log
+LOG_LEVEL = "info"
+
+# Maximum amount of events allowed in a single getEvents response
+MAX_EVENTS_LIMIT = 10000
+
+# The maximum duration of time allowed for processing a getEvents request. When
+# that time elapses, the rpc server would return -32001 and abort the request's
+# execution
+MAX_GET_EVENTS_EXECUTION_DURATION = "10s"
+
+# The maximum duration of time allowed for processing a getFeeStats request.
+# When that time elapses, the rpc server would return -32001 and abort the
+# request's execution
+MAX_GET_FEE_STATS_EXECUTION_DURATION = "5s"
+
+# The maximum duration of time allowed for processing a getHealth request. When
+# that time elapses, the rpc server would return -32001 and abort the request's
+# execution
+MAX_GET_HEALTH_EXECUTION_DURATION = "5s"
+
+# The maximum duration of time allowed for processing a getLatestLedger request.
+# When that time elapses, the rpc server would return -32001 and abort the
+# request's execution
+MAX_GET_LATEST_LEDGER_EXECUTION_DURATION = "5s"
+
+# The maximum duration of time allowed for processing a getLedgerEntries
+# request. When that time elapses, the rpc server would return -32001 and abort
+# the request's execution
+MAX_GET_LEDGER_ENTRIES_EXECUTION_DURATION = "5s"
+
+# The maximum duration of time allowed for processing a getNetwork request. When
+# that time elapses, the rpc server would return -32001 and abort the request's
+# execution
+MAX_GET_NETWORK_EXECUTION_DURATION = "5s"
+
+# The maximum duration of time allowed for processing a getTransactions request.
+# When that time elapses, the rpc server would return -32001 and abort the
+# request's execution
+MAX_GET_TRANSACTIONS_EXECUTION_DURATION = "5s"
+
+# The maximum duration of time allowed for processing a getTransaction request.
+# When that time elapses, the rpc server would return -32001 and abort the
+# request's execution
+MAX_GET_TRANSACTION_EXECUTION_DURATION = "5s"
+
+# The maximum duration of time allowed for processing a getVersionInfo request.
+# When that time elapses, the rpc server would return -32001 and abort the
+# request's execution
+MAX_GET_VERSION_INFO_EXECUTION_DURATION = "5s"
+
+# maximum ledger latency (i.e. time elapsed since the last known ledger closing
+# time) considered to be healthy (used for the /health endpoint)
+MAX_HEALTHY_LEDGER_LATENCY = "30s"
+
+# The max request execution duration is the predefined maximum duration of time
+# allowed for processing a request. When that time elapses, the server would
+# return 504 and abort the request's execution
+MAX_REQUEST_EXECUTION_DURATION = "25s"
+
+# The maximum duration of time allowed for processing a sendTransaction request.
+# When that time elapses, the rpc server would return -32001 and abort the
+# request's execution
+MAX_SEND_TRANSACTION_EXECUTION_DURATION = "15s"
+
+# The maximum duration of time allowed for processing a simulateTransaction
+# request. When that time elapses, the rpc server would return -32001 and abort
+# the request's execution
+MAX_SIMULATE_TRANSACTION_EXECUTION_DURATION = "15s"
+
+# Maximum amount of transactions allowed in a single getTransactions response
+MAX_TRANSACTIONS_LIMIT = 200
+
+# Network passphrase of the Stellar network transactions should be signed for.
+# Commonly used values are "Test SDF Future Network ; October 2022", "Test SDF
+# Network ; September 2015" and "Public Global Stellar Network ; September 2015"
+# NETWORK_PASSPHRASE = ""
+
+# Enable debug information in preflighting (provides more detailed errors). It
+# should not be enabled in production deployments.
+PREFLIGHT_ENABLE_DEBUG = true
+
+# Number of workers (read goroutines) used to compute preflights for the
+# simulateTransaction endpoint. Defaults to the number of CPUs.
+PREFLIGHT_WORKER_COUNT = 12
+
+# Maximum number of outstanding preflight requests for the simulateTransaction
+# endpoint. Defaults to the number of CPUs.
+PREFLIGHT_WORKER_QUEUE_SIZE = 12
+
+# Maximum number of outstanding GetEvents requests
+REQUEST_BACKLOG_GET_EVENTS_QUEUE_LIMIT = 1000
+
+# Maximum number of outstanding GetFeeStats requests
+REQUEST_BACKLOG_GET_FEE_STATS_QUEUE_LIMIT = 100
+
+# Maximum number of outstanding GetHealth requests
+REQUEST_BACKLOG_GET_HEALTH_QUEUE_LIMIT = 1000
+
+# Maximum number of outstanding GetLatestsLedger requests
+REQUEST_BACKLOG_GET_LATEST_LEDGER_QUEUE_LIMIT = 1000
+
+# Maximum number of outstanding GetLedgerEntries requests
+REQUEST_BACKLOG_GET_LEDGER_ENTRIES_QUEUE_LIMIT = 1000
+
+# Maximum number of outstanding GetNetwork requests
+REQUEST_BACKLOG_GET_NETWORK_QUEUE_LIMIT = 1000
+
+# Maximum number of outstanding GetTransactions requests
+REQUEST_BACKLOG_GET_TRANSACTIONS_QUEUE_LIMIT = 1000
+
+# Maximum number of outstanding GetTransaction requests
+REQUEST_BACKLOG_GET_TRANSACTION_QUEUE_LIMIT = 1000
+
+# Maximum number of outstanding GetVersionInfo requests
+REQUEST_BACKLOG_GET_VERSION_INFO_QUEUE_LIMIT = 1000
+
+# Maximum number of outstanding requests
+REQUEST_BACKLOG_GLOBAL_QUEUE_LIMIT = 5000
+
+# Maximum number of outstanding SendTransaction requests
+REQUEST_BACKLOG_SEND_TRANSACTION_QUEUE_LIMIT = 500
+
+# Maximum number of outstanding SimulateTransaction requests
+REQUEST_BACKLOG_SIMULATE_TRANSACTION_QUEUE_LIMIT = 100
+
+# The request execution warning threshold is the predetermined maximum duration
+# of time that a request can take to be processed before a warning would be
+# generated
+REQUEST_EXECUTION_WARNING_THRESHOLD = "5s"
+
+# configures soroban inclusion fee stats retention window expressed in number of
+# ledgers
+SOROBAN_FEE_STATS_RETENTION_WINDOW = 50
+
+# HTTP port for Captive Core to listen on (0 disables the HTTP server)
+STELLAR_CAPTIVE_CORE_HTTP_PORT = 11626
+
+# path to stellar core binary
+STELLAR_CORE_BINARY_PATH = "/usr/local/bin/stellar-core"
+
+# Timeout used when submitting requests to stellar-core
+STELLAR_CORE_TIMEOUT = "2s"
+
+# URL used to query Stellar Core (local captive core by default)
+# STELLAR_CORE_URL = ""
+
+# Enable strict toml configuration file parsing. This will prevent unknown
+# fields in the config toml from being parsed.
+# STRICT = false
+```
 
 # Run the node
 
@@ -543,51 +663,56 @@ sudo systemctl restart stellar-rpc
 
 On macOS, you’ll can use a LaunchAgent in ~/Library/LaunchAgents/. For example, create ~/Library/LaunchAgents/com.stellar.rpc.plist:
 
-
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" 
   "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
   <dict>
+    <!-- A unique label for the service -->
     <key>Label</key>
     <string>com.stellar.rpc</string>
-
+    
+    <!-- The binary and arguments to run -->
     <key>ProgramArguments</key>
     <array>
+      <!-- Path to the stellar-rpc binary; adjust if installed elsewhere -->
       <string>/usr/local/bin/stellar-rpc</string>
+      <!-- Path to your Stellar RPC config file -->
       <string>--config-path</string>
-      <string>/Users/benweinberg/.stellar/config/core.toml</string>
+      <string>/Users/username/.stellar/config/core.toml</string>
+      <!-- Path to your Captive Core config file -->
+      <string>--captive-core-config-path</string>
+      <string>/Users/username/.stellar/captive-core/stellar-core.conf</string>
+      <!-- History archive URLs (comma-separated) -->
       <string>--history-archive-urls</string>
       <string>https://history.stellar.org/prd/core-testnet/core_testnet_001,https://history.stellar.org/prd/core-testnet/core_testnet_002,https://history.stellar.org/prd/core-testnet/core_testnet_003</string>
     </array>
-
+    
+    <!-- Run as soon as the agent is loaded -->
     <key>RunAtLoad</key>
     <true/>
-
+    
+    <!-- Automatically restart if the process exits -->
     <key>KeepAlive</key>
     <true/>
-
+    
+    <!-- Set the working directory; ensure this directory exists and is writable -->
     <key>WorkingDirectory</key>
-    <string>/Users/benweinberg/.stellar/data</string>
-
-
+    <string>/Users/username/.stellar/data</string>
+    
+    <!-- Set environment variables; adjust the PATH if needed -->
     <key>EnvironmentVariables</key>
     <dict>
       <key>PATH</key>
       <string>/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin</string>
-      <!-- Add other necessary environment variables here -->
-      <key>CAPTIVE_CORE_CONFIG_PATH</key>
-      <string>/Users/benweinberg/.stellar/captive-core/stellar-core.conf</string>
-      <key>HISTORY_ARCHIVE_URLS</key>
-      <string>https://history.stellar.org/prd/core-testnet/core_testnet_001,https://history.stellar.org/prd/core-testnet/core_testnet_002,https://history.stellar.org/prd/core-testnet/core_testnet_003</string>
     </dict>
-
+    
+    <!-- Log output to files (stdout and stderr) -->
     <key>StandardOutPath</key>
-    <string>/tmp/com.stellar.rpc.out</string>
-
+    <string>/Users/username/.stellar/data/com.stellar.rpc.out</string>
     <key>StandardErrorPath</key>
-    <string>/tmp/com.stellar.rpc.out</string>
+    <string>/Users/username/.stellar/data/com.stellar.error.rpc.out</string>
   </dict>
 </plist>
 ```
