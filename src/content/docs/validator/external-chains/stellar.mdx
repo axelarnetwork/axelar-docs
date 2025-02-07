@@ -14,7 +14,7 @@ Set up your Stellar node.
 - MacOS or Ubuntu 18.04+
 - Build-essential packages
 - Golang 1.17+
-- [Official Documentation](https://docs.google.com/document/d/1SIbrFWFgju5RAsi6stDyEtgTa78VEt8f3HhqCLoySx4)
+- [Official Documentation](https://developers.stellar.org/docs/data/rpc/admin-guide)
 
 ## Install required dependencies
 
@@ -98,6 +98,7 @@ In order to build the `Stellar` node, you first need to install all the required
 
 ## Install Stellar-Core
 
+
 Stellar-RPC requires an instance of stellar-core binary on the same host. This is referred to as the Captive Core. Since, we are building RPC from source, we recommend considering two approaches to get the stellar-core binary:
 
 Install the latest versions for the network accordingly [Stellar core latest release tag](https://github.com/stellar/stellar-core/releases) and [Stellar latest release tag](https://github.com/stellar/stellar-rpc/releases)
@@ -108,6 +109,10 @@ STELLAR_RELEASE=v22.1.0
 ```
 
 ### 1. Install Stellar Core
+
+<Callout emoji="💡">
+[Stellar core latest](https://developers.stellar.org/docs/validators/admin-guide/installation) 
+</Callout>
 
 <tabs>
     <tab-item title="Mainnet" class="bleed">
@@ -148,6 +153,10 @@ STELLAR_RELEASE=v22.1.0
 
 ### 2. Install Stellar RPC
 
+<Callout emoji="💡">
+[Stellar RPC latest](https://developers.stellar.org/docs/data/rpc/admin-guide#deploy-your-own-rpc-instance)
+</Callout>
+
 
 ```bash
 git clone https://github.com/stellar/stellar-rpc.git
@@ -187,8 +196,6 @@ Create `~/.stellar/config/core.toml` and add
         NETWORK_PASSPHRASE="Public Global Stellar Network ; September 2015"
 
         DATABASE="sqlite3://stellar.db"
-
-        history-archive-urls = "https://history.stellar.org/prd/core-mainnet/core_mainnet_001,https://history.stellar.org/prd/core-mainnet/core_mainnet_002,https://history.stellar.org/prd/core-mainnet/core_mainnet_003"
 
         # Stellar Pubnet Validators
         [[HOME_DOMAINS]]
