@@ -19,7 +19,7 @@ axelard tx gov vote 201 yes --from validator
 <Callout type="warning" emoji="⚠️">
   `axelard` must be built with `go-1.23` for this release.
 
-  Node operators using binaries need update `wasmvm` to `v1.5.8` [libwasmvm.x86_64.so](https://github.com/CosmWasm/wasmvm/releases/tag/v1.5.8), and add the folder containing the library to `LD_LIBRARY_PATH`.
+  Node operators using binaries need to update `wasmvm` from `v1.3.1` to `v1.5.8` [libwasmvm.x86_64.so](https://github.com/CosmWasm/wasmvm/releases/tag/v1.5.8), and add the folder containing the library to `LD_LIBRARY_PATH`.
   
   If using the community node setup scripts, please update to the latest commit on `main` first.
   `wasmvm` lib will be auto-downloaded to `$AXELARD_HOME/lib` but you'll need to add it to `LD_LIBRARY_PATH` before running the script.
