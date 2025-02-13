@@ -5,7 +5,7 @@ import { Callout } from "/src/components/callout";
 Instructions for the `v1.2` mainnet upgrade to axelar-core `v1.2.1`.
 Release can be found [here](https://github.com/axelarnetwork/axelar-core/releases/tag/v1.2.1)
 
-Upgrade height `TODO` [countdown](https://www.mintscan.io/axelar/block/TODO)
+Upgrade height `16837700` [countdown](https://www.mintscan.io/axelar/block/16837700)
 
 ## About the v1.2 upgrade
 The `v1.2` upgrade is a consensus breaking release for Axelar mainnet.
@@ -13,7 +13,7 @@ The `v1.2` upgrade is a consensus breaking release for Axelar mainnet.
 1. If you're a validator or have delegated to one, please vote for the upgrade proposal via
 
 ```bash
-axelard tx gov vote TODO yes --from validator
+axelard tx gov vote 284 yes --from validator
 ```
 
 <Callout type="warning" emoji="⚠️">
@@ -26,7 +26,7 @@ axelard tx gov vote TODO yes --from validator
 </Callout>
 
 
-2. Wait for the proposed upgrade block, `TODO`. Your node will panic at that block height with a log: `{"level":"error","module":"consensus","err":"UPGRADE \"v1.2\" NEEDED at height: TODO",`. Stop your node after chain halt.
+2. Wait for the proposed upgrade block, `16837700`. Your node will panic at that block height with a log: `{"level":"error","module":"consensus","err":"UPGRADE \"v1.2\" NEEDED at height: 16837700",`. Stop your node after chain halt.
 
 ```bash
 pkill -f 'axelard start'
