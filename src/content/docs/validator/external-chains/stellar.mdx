@@ -1,0 +1,810 @@
+import { Callout } from "../../../../components/callout";
+
+# Stellar
+
+Set up your Stellar node.
+
+<Callout emoji="💡">
+  These instructions have been tested on version `22.1.0`. Please refer to the official [Stellar releases](https://github.com/stellar/stellar-core/releases) for the latest release
+</Callout>
+
+## Prerequisites
+
+- Minimum hardware requirements: At least 4GB of RAM and a 2.40GHz CPU with 6 cores depending on your request load. Disk/Storage is recommended at least 10GB
+- MacOS or Ubuntu 18.04+
+- Build-essential packages
+- Golang 1.17+
+- [Official Documentation](https://developers.stellar.org/docs/data/rpc/admin-guide)
+
+## Install required dependencies
+
+In order to build the `Stellar` node, you first need to install all the required dependencies.
+- c++ toolchain and headers that supports c++17
+- clang >= 12.0 (Only >= 14.0 versions are available on 24.04 LTS)
+- g++ >= 10.0
+- pkg-config
+- bison and flex
+- libpq-dev unless you ./configure --disable-postgres in the build step below.
+- 64-bit system
+- clang-format >= 12 (for make format to work)
+- sed and perl
+- libunwind-dev
+- Rust toolchain (see Installing Rust subsection)
+- cargo >= 1.74
+- rust >= 1.74
+
+<tabs>
+    <tab-item title="ubuntu">
+        ```bash
+        curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+        sudo apt-get update
+        sudo apt-get install -y make git-core libssl-dev pkg-config libclang-18-dev build-essential protobuf-compiler
+        sudo apt-get install -y libudev-dev
+        source "$HOME/.cargo/env"
+
+        # common packages
+        sudo apt-get install git build-essential pkg-config autoconf automake libtool bison flex libpq-dev libunwind-dev parallel sed perl postgresql-common postgresql postgresql-contrib
+        # if using clang
+        sudo apt-get install clang-18
+        # clang with libstdc++
+        sudo apt-get install gcc-10
+        # if using g++ or building with libstdc++
+        # sudo apt-get install gcc-10 g++-10 cpp-10
+# Newer Ubuntu versions no longer package clang-format-12. To build it from source, refer to the documentation: [Installation Instructions](https://github.com/stellar/stellar-core/blob/master/INSTALL.md#ubuntu-2404-and-newer-linux-versions)
+sudo apt-get install clang-format-12
+        ```
+    </tab-item>
+    <tab-item title="macOS">
+        ```bash
+        # Install Homebrew (if not already installed)
+        /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+
+        # Add Homebrew to PATH
+        echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> ~/.zprofile
+        eval "$(/opt/homebrew/bin/brew shellenv)"
+
+        # Install Rust
+        curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+        source "$HOME/.cargo/env"
+
+        # Update Homebrew
+        brew update
+
+        # Install essential packages
+        brew install make git pkg-config llvm protobuf libpq parallel
+
+        # Install additional development tools
+        brew install autoconf automake libtool bison flex sed perl
+
+        # Install PostgreSQL
+        brew install postgresql
+        brew services start postgresql
+
+        # Install
+        brew install llvm
+        brew link --force llvm
+        brew install gcc
+
+        # Install clang-format
+        brew install clang-format
+
+        # Configure environment variables (add to ~/.zprofile or ~/.bash_profile)
+        echo 'export PATH="/usr/local/opt/llvm/bin:$PATH"' >> ~/.zprofile
+        echo 'export LDFLAGS="-L/usr/local/opt/llvm/lib"' >> ~/.zprofile
+        echo 'export CPPFLAGS="-I/usr/local/opt/llvm/include"' >> ~/.zprofile
+        source ~/.zprofile
+        ```
+    </tab-item>
+</tabs>
+
+## Install Stellar-Core
+
+
+Stellar-RPC requires an instance of stellar-core binary on the same host. This is referred to as the Captive Core. Since, we are building RPC from source, we recommend considering two approaches to get the stellar-core binary:
+
+Install the latest versions for the network accordingly [Stellar core latest release tag](https://github.com/stellar/stellar-core/releases) and [Stellar latest release tag](https://github.com/stellar/stellar-rpc/releases)
+
+```bash
+# These are examples - check their docs and release page to opt for the right version
+STELLAR_RELEASE=v22.1.0
+```
+
+### 1. Install Stellar Core
+
+<Callout emoji="💡">
+[Stellar core latest](https://developers.stellar.org/docs/validators/admin-guide/installation) 
+</Callout>
+
+<tabs>
+    <tab-item title="Mainnet" class="bleed">
+        ```bash
+        git clone https://github.com/stellar/stellar-core.git
+        cd stellar-core
+        git checkout $STELLAR_RELEASE
+        git submodule init
+        git submodule update
+        ./autogen.sh
+        ./configure
+        make
+        make check
+        sudo make install
+        sudo mv stellar-core /usr/bin/
+
+    ```
+    </tab-item>
+    <tab-item title="Testnet" class="bleed">
+        ```bash
+        git clone https://github.com/stellar/stellar-core.git 
+        cd stellar-core
+        git checkout $STELLAR_RELEASE
+        git submodule init
+        git submodule update
+        ./autogen.sh
+        ./configure
+        make
+        make check
+        sudo make install
+        sudo mv stellar-core /usr/bin/
+
+    ```
+    </tab-item>
+</tabs>
+
+
+
+### 2. Install Stellar RPC
+
+<Callout emoji="💡">
+[Stellar RPC latest](https://developers.stellar.org/docs/data/rpc/admin-guide#deploy-your-own-rpc-instance)
+</Callout>
+
+
+```bash
+git clone https://github.com/stellar/stellar-rpc.git
+cd stellar-rpc
+git checkout $STELLAR_RELEASE
+make build-stellar-rpc
+sudo mv stellar-rpc /usr/bin/
+```
+
+
+## Check Version
+
+```bash
+stellar-core version
+stellar-rpc version
+```
+
+## Configure Stellar node
+
+### 1. Create a config directories
+
+```bash
+mkdir -p ~/.stellar/config
+mkdir -p ~/.stellar-rpc/config
+```
+
+### 2. Create the config file for Stellar
+
+Create `~/.stellar/config/core.toml` and add
+
+<tabs>
+<tab-item title="Mainnet" class="bleed">
+        ```bash
+        HTTP_PORT=11626
+        PUBLIC_HTTP_PORT=false
+
+        NETWORK_PASSPHRASE="Public Global Stellar Network ; September 2015"
+
+        DATABASE="sqlite3://stellar.db"
+
+        # Stellar Pubnet Validators
+        [[HOME_DOMAINS]]
+        HOME_DOMAIN="stellar.org"
+        QUALITY="HIGH"
+
+        [[HOME_DOMAINS]]
+        HOME_DOMAIN="satoshipay.io"
+        QUALITY="HIGH"
+
+        [[HOME_DOMAINS]]
+        HOME_DOMAIN="lobstr.co"
+        QUALITY="HIGH"
+
+        [[HOME_DOMAINS]]
+        HOME_DOMAIN="www.coinqvest.com"
+        QUALITY="HIGH"
+
+        [[HOME_DOMAINS]]
+        HOME_DOMAIN="publicnode.org"
+        QUALITY="HIGH"
+
+        [[HOME_DOMAINS]]
+        HOME_DOMAIN="stellar.blockdaemon.com"
+        QUALITY="HIGH"
+
+        [[HOME_DOMAINS]]
+        HOME_DOMAIN="www.franklintempleton.com"
+        QUALITY="HIGH"
+
+        [[VALIDATORS]]
+        NAME="sdf_1"
+        HOME_DOMAIN="stellar.org"
+        PUBLIC_KEY="GCGB2S2KGYARPVIA37HYZXVRM2YZUEXA6S33ZU5BUDC6THSB62LZSTYH"
+        ADDRESS="core-live-a.stellar.org:11625"
+        HISTORY="curl -sf https://history.stellar.org/prd/core-live/core_live_001/{0} -o {1}"
+
+        [[VALIDATORS]]
+        NAME="sdf_2"
+        HOME_DOMAIN="stellar.org"
+        PUBLIC_KEY="GCM6QMP3DLRPTAZW2UZPCPX2LF3SXWXKPMP3GKFZBDSF3QZGV2G5QSTK"
+        ADDRESS="core-live-b.stellar.org:11625"
+        HISTORY="curl -sf https://history.stellar.org/prd/core-live/core_live_002/{0} -o {1}"
+
+        [[VALIDATORS]]
+        NAME="sdf_3"
+        HOME_DOMAIN="stellar.org"
+        PUBLIC_KEY="GABMKJM6I25XI4K7U6XWMULOUQIQ27BCTMLS6BYYSOWKTBUXVRJSXHYQ"
+        ADDRESS="core-live-c.stellar.org:11625"
+        HISTORY="curl -sf https://history.stellar.org/prd/core-live/core_live_003/{0} -o {1}"
+
+        [[VALIDATORS]]
+        NAME="satoshipay_singapore"
+        HOME_DOMAIN="satoshipay.io"
+        PUBLIC_KEY="GBJQUIXUO4XSNPAUT6ODLZUJRV2NPXYASKUBY4G5MYP3M47PCVI55MNT"
+        ADDRESS="stellar-sg-sin.satoshipay.io:11625"
+        HISTORY="curl -sf https://stellar-history-sg-sin.satoshipay.io/{0} -o {1}"
+
+        [[VALIDATORS]]
+        NAME="satoshipay_iowa"
+        HOME_DOMAIN="satoshipay.io"
+        PUBLIC_KEY="GAK6Z5UVGUVSEK6PEOCAYJISTT5EJBB34PN3NOLEQG2SUKXRVV2F6HZY"
+        ADDRESS="stellar-us-iowa.satoshipay.io:11625"
+        HISTORY="curl -sf https://stellar-history-us-iowa.satoshipay.io/{0} -o {1}"
+
+        [[VALIDATORS]]
+        NAME="satoshipay_frankfurt"
+        HOME_DOMAIN="satoshipay.io"
+        PUBLIC_KEY="GC5SXLNAM3C4NMGK2PXK4R34B5GNZ47FYQ24ZIBFDFOCU6D4KBN4POAE"
+        ADDRESS="stellar-de-fra.satoshipay.io:11625"
+        HISTORY="curl -sf https://stellar-history-de-fra.satoshipay.io/{0} -o {1}"
+
+        [[VALIDATORS]]
+        NAME="coinqvest_hong_kong"
+        HOME_DOMAIN="www.coinqvest.com"
+        PUBLIC_KEY="GAZ437J46SCFPZEDLVGDMKZPLFO77XJ4QVAURSJVRZK2T5S7XUFHXI2Z"
+        ADDRESS="hongkong.stellar.coinqvest.com:11625"
+        HISTORY="curl -sf https://hongkong.stellar.coinqvest.com/history/{0} -o {1}"
+
+        [[VALIDATORS]]
+        NAME="coinqvest_germany"
+        HOME_DOMAIN="www.coinqvest.com"
+        PUBLIC_KEY="GD6SZQV3WEJUH352NTVLKEV2JM2RH266VPEM7EH5QLLI7ZZAALMLNUVN"
+        ADDRESS="germany.stellar.coinqvest.com:11625"
+        HISTORY="curl -sf https://germany.stellar.coinqvest.com/history/{0} -o {1}"
+
+        [[VALIDATORS]]
+        NAME="coinqvest_finland"
+        HOME_DOMAIN="www.coinqvest.com"
+        PUBLIC_KEY="GADLA6BJK6VK33EM2IDQM37L5KGVCY5MSHSHVJA4SCNGNUIEOTCR6J5T"
+        ADDRESS="finland.stellar.coinqvest.com:11625"
+        HISTORY="curl -sf https://finland.stellar.coinqvest.com/history/{0} -o {1}"
+
+        [[VALIDATORS]]
+        NAME="bootes"
+        HOME_DOMAIN="publicnode.org"
+        PUBLIC_KEY="GCVJ4Z6TI6Z2SOGENSPXDQ2U4RKH3CNQKYUHNSSPYFPNWTLGS6EBH7I2"
+        ADDRESS="bootes.publicnode.org"
+        HISTORY="curl -sf https://bootes-history.publicnode.org/{0} -o {1}"
+
+        [[VALIDATORS]]
+        NAME="hercules"
+        HOME_DOMAIN="publicnode.org"
+        PUBLIC_KEY="GBLJNN3AVZZPG2FYAYTYQKECNWTQYYUUY2KVFN2OUKZKBULXIXBZ4FCT"
+        ADDRESS="hercules.publicnode.org"
+        HISTORY="curl -sf https://hercules-history.publicnode.org/{0} -o {1}"
+
+        [[VALIDATORS]]
+        NAME="lyra"
+        HOME_DOMAIN="publicnode.org"
+        PUBLIC_KEY="GCIXVKNFPKWVMKJKVK2V4NK7D4TC6W3BUMXSIJ365QUAXWBRPPJXIR2Z"
+        ADDRESS="lyra.publicnode.org"
+        HISTORY="curl -sf https://lyra-history.publicnode.org/{0} -o {1}"
+
+        [[VALIDATORS]]
+        NAME="Blockdaemon_Validator_1"
+        HOME_DOMAIN="stellar.blockdaemon.com"
+        PUBLIC_KEY="GAAV2GCVFLNN522ORUYFV33E76VPC22E72S75AQ6MBR5V45Z5DWVPWEU"
+        ADDRESS="stellar-full-validator1.bdnodes.net"
+        HISTORY="curl -sf https://stellar-full-history1.bdnodes.net/{0} -o {1}"
+
+        [[VALIDATORS]]
+        NAME="Blockdaemon_Validator_2"
+        HOME_DOMAIN="stellar.blockdaemon.com"
+        PUBLIC_KEY="GAVXB7SBJRYHSG6KSQHY74N7JAFRL4PFVZCNWW2ARI6ZEKNBJSMSKW7C"
+        ADDRESS="stellar-full-validator2.bdnodes.net"
+        HISTORY="curl -sf https://stellar-full-history2.bdnodes.net/{0} -o {1}"
+
+        [[VALIDATORS]]
+        NAME="Blockdaemon_Validator_3"
+        HOME_DOMAIN="stellar.blockdaemon.com"
+        PUBLIC_KEY="GAYXZ4PZ7P6QOX7EBHPIZXNWY4KCOBYWJCA4WKWRKC7XIUS3UJPT6EZ4"
+        ADDRESS="stellar-full-validator3.bdnodes.net"
+        HISTORY="curl -sf https://stellar-full-history3.bdnodes.net/{0} -o {1}"
+
+        [[VALIDATORS]]
+        NAME = "FT_SCV_1"
+        HOME_DOMAIN = "www.franklintempleton.com"
+        PUBLIC_KEY = "GARYGQ5F2IJEBCZJCBNPWNWVDOFK7IBOHLJKKSG2TMHDQKEEC6P4PE4V"
+        ADDRESS = "stellar1.franklintempleton.com:11625"
+        HISTORY = "curl -sf https://stellar-history-usw.franklintempleton.com/azuswshf401/{0} -o {1}"
+
+        [[VALIDATORS]]
+        NAME = "FT_SCV_2"
+        HOME_DOMAIN = "www.franklintempleton.com"
+        PUBLIC_KEY = "GCMSM2VFZGRPTZKPH5OABHGH4F3AVS6XTNJXDGCZ3MKCOSUBH3FL6DOB"
+        ADDRESS = "stellar2.franklintempleton.com:11625"
+        HISTORY = "curl -sf https://stellar-history-usc.franklintempleton.com/azuscshf401/{0} -o {1}"
+
+        [[VALIDATORS]]
+        NAME = "FT_SCV_3"
+        HOME_DOMAIN = "www.franklintempleton.com"
+        PUBLIC_KEY = "GA7DV63PBUUWNUFAF4GAZVXU2OZMYRATDLKTC7VTCG7AU4XUPN5VRX4A"
+        ADDRESS = "stellar3.franklintempleton.com:11625"
+        HISTORY = "curl -sf https://stellar-history-ins.franklintempleton.com/azinsshf401/{0} -o {1}"
+```
+</tab-item>
+<tab-item title="Testnet" class="bleed">
+        ```bash
+        HTTP_PORT=11626
+        PUBLIC_HTTP_PORT=false
+
+        NETWORK_PASSPHRASE="Test SDF Network ; September 2015"
+
+        history-archive-urls = "https://history.stellar.org/prd/core-testnet/core_testnet_001,https://history.stellar.org/prd/core-testnet/core_testnet_002,https://history.stellar.org/prd/core-testnet/core_testnet_003"
+
+        DATABASE="sqlite3://stellar.db"
+
+        # Stellar Testnet validators
+        [[HOME_DOMAINS]]
+        HOME_DOMAIN="testnet.stellar.org"
+        QUALITY="HIGH"
+
+        [[VALIDATORS]]
+        NAME="sdftest1"
+        HOME_DOMAIN="testnet.stellar.org"
+        PUBLIC_KEY="GDKXE2OZMJIPOSLNA6N6F2BVCI3O777I2OOC4BV7VOYUEHYX7RTRYA7Y"
+        ADDRESS="core-testnet1.stellar.org"
+        HISTORY="curl -sf http://history.stellar.org/prd/core-testnet/core_testnet_001/{0} -o {1}"
+
+        [[VALIDATORS]]
+        NAME="sdftest2"
+        HOME_DOMAIN="testnet.stellar.org"
+        PUBLIC_KEY="GCUCJTIYXSOXKBSNFGNFWW5MUQ54HKRPGJUTQFJ5RQXZXNOLNXYDHRAP"
+        ADDRESS="core-testnet2.stellar.org"
+        HISTORY="curl -sf http://history.stellar.org/prd/core-testnet/core_testnet_002/{0} -o {1}"
+
+        [[VALIDATORS]]
+        NAME="sdftest3"
+        HOME_DOMAIN="testnet.stellar.org"
+        PUBLIC_KEY="GC2V2EFSXN6SQTWVYA5EPJPBWWIMSD2XQNKUOHGEKB535AQE2I6IXV2Z"
+        ADDRESS="core-testnet3.stellar.org"
+        HISTORY="curl -sf http://history.stellar.org/prd/core-testnet/core_testnet_003/{0} -o {1}"
+```
+</tab-item>
+
+</tabs>
+
+### 3. Create the config file for Stellar RPC
+
+```bash
+cd ~/.stellar-rpc/config/
+stellar-rpc gen-config-file
+```
+
+```toml
+# Admin endpoint to listen and serve on. WARNING: this should not be accessible
+# from the Internet and does not use TLS. "" (default) disables the admin server
+# ADMIN_ENDPOINT = ""
+
+# path to additional configuration for the Stellar Core configuration file used
+# by captive core. It must, at least, include enough details to define a quorum
+# set
+# CAPTIVE_CORE_CONFIG_PATH = ""
+
+# Storage location for Captive Core bucket data
+CAPTIVE_CORE_STORAGE_PATH = ""
+
+# establishes how many ledgers exist between checkpoints, do NOT change this
+# unless you really know what you are doing
+CHECKPOINT_FREQUENCY = 64
+
+# configures classic fee stats retention window expressed in number of ledgers
+CLASSIC_FEE_STATS_RETENTION_WINDOW = 10
+
+# SQLite DB path
+DB_PATH = "soroban_rpc.sqlite"
+
+# Default cap on the amount of events included in a single getEvents response
+DEFAULT_EVENTS_LIMIT = 100
+
+# Default cap on the amount of transactions included in a single getTransactions
+# response
+DEFAULT_TRANSACTIONS_LIMIT = 50
+
+# Endpoint to listen and serve on
+ENDPOINT = "localhost:8000"
+
+# The friendbot URL to be returned by getNetwork endpoint
+# FRIENDBOT_URL = ""
+
+# comma-separated list of stellar history archives to connect with
+HISTORY_ARCHIVE_URLS = []
+
+# configures history retention window for transactions and events, expressed in
+# number of ledgers, the default value is 120960 which corresponds to about 7
+# days of history
+HISTORY_RETENTION_WINDOW = 120960
+
+# Ingestion Timeout when bootstrapping data (checkpoint and in-memory
+# initialization) and preparing ledger reads
+INGESTION_TIMEOUT = "50m0s"
+
+# format used for output logs (json or text)
+# LOG_FORMAT = "text"
+
+# minimum log severity (debug, info, warn, error) to log
+LOG_LEVEL = "info"
+
+# Maximum amount of events allowed in a single getEvents response
+MAX_EVENTS_LIMIT = 10000
+
+# The maximum duration of time allowed for processing a getEvents request. When
+# that time elapses, the rpc server would return -32001 and abort the request's
+# execution
+MAX_GET_EVENTS_EXECUTION_DURATION = "10s"
+
+# The maximum duration of time allowed for processing a getFeeStats request.
+# When that time elapses, the rpc server would return -32001 and abort the
+# request's execution
+MAX_GET_FEE_STATS_EXECUTION_DURATION = "5s"
+
+# The maximum duration of time allowed for processing a getHealth request. When
+# that time elapses, the rpc server would return -32001 and abort the request's
+# execution
+MAX_GET_HEALTH_EXECUTION_DURATION = "5s"
+
+# The maximum duration of time allowed for processing a getLatestLedger request.
+# When that time elapses, the rpc server would return -32001 and abort the
+# request's execution
+MAX_GET_LATEST_LEDGER_EXECUTION_DURATION = "5s"
+
+# The maximum duration of time allowed for processing a getLedgerEntries
+# request. When that time elapses, the rpc server would return -32001 and abort
+# the request's execution
+MAX_GET_LEDGER_ENTRIES_EXECUTION_DURATION = "5s"
+
+# The maximum duration of time allowed for processing a getNetwork request. When
+# that time elapses, the rpc server would return -32001 and abort the request's
+# execution
+MAX_GET_NETWORK_EXECUTION_DURATION = "5s"
+
+# The maximum duration of time allowed for processing a getTransactions request.
+# When that time elapses, the rpc server would return -32001 and abort the
+# request's execution
+MAX_GET_TRANSACTIONS_EXECUTION_DURATION = "5s"
+
+# The maximum duration of time allowed for processing a getTransaction request.
+# When that time elapses, the rpc server would return -32001 and abort the
+# request's execution
+MAX_GET_TRANSACTION_EXECUTION_DURATION = "5s"
+
+# The maximum duration of time allowed for processing a getVersionInfo request.
+# When that time elapses, the rpc server would return -32001 and abort the
+# request's execution
+MAX_GET_VERSION_INFO_EXECUTION_DURATION = "5s"
+
+# maximum ledger latency (i.e. time elapsed since the last known ledger closing
+# time) considered to be healthy (used for the /health endpoint)
+MAX_HEALTHY_LEDGER_LATENCY = "30s"
+
+# The max request execution duration is the predefined maximum duration of time
+# allowed for processing a request. When that time elapses, the server would
+# return 504 and abort the request's execution
+MAX_REQUEST_EXECUTION_DURATION = "25s"
+
+# The maximum duration of time allowed for processing a sendTransaction request.
+# When that time elapses, the rpc server would return -32001 and abort the
+# request's execution
+MAX_SEND_TRANSACTION_EXECUTION_DURATION = "15s"
+
+# The maximum duration of time allowed for processing a simulateTransaction
+# request. When that time elapses, the rpc server would return -32001 and abort
+# the request's execution
+MAX_SIMULATE_TRANSACTION_EXECUTION_DURATION = "15s"
+
+# Maximum amount of transactions allowed in a single getTransactions response
+MAX_TRANSACTIONS_LIMIT = 200
+
+# Network passphrase of the Stellar network transactions should be signed for.
+# Commonly used values are "Test SDF Future Network ; October 2022", "Test SDF
+# Network ; September 2015" and "Public Global Stellar Network ; September 2015"
+# NETWORK_PASSPHRASE = ""
+
+# Enable debug information in preflighting (provides more detailed errors). It
+# should not be enabled in production deployments.
+PREFLIGHT_ENABLE_DEBUG = true
+
+# Number of workers (read goroutines) used to compute preflights for the
+# simulateTransaction endpoint. Defaults to the number of CPUs.
+PREFLIGHT_WORKER_COUNT = 12
+
+# Maximum number of outstanding preflight requests for the simulateTransaction
+# endpoint. Defaults to the number of CPUs.
+PREFLIGHT_WORKER_QUEUE_SIZE = 12
+
+# Maximum number of outstanding GetEvents requests
+REQUEST_BACKLOG_GET_EVENTS_QUEUE_LIMIT = 1000
+
+# Maximum number of outstanding GetFeeStats requests
+REQUEST_BACKLOG_GET_FEE_STATS_QUEUE_LIMIT = 100
+
+# Maximum number of outstanding GetHealth requests
+REQUEST_BACKLOG_GET_HEALTH_QUEUE_LIMIT = 1000
+
+# Maximum number of outstanding GetLatestsLedger requests
+REQUEST_BACKLOG_GET_LATEST_LEDGER_QUEUE_LIMIT = 1000
+
+# Maximum number of outstanding GetLedgerEntries requests
+REQUEST_BACKLOG_GET_LEDGER_ENTRIES_QUEUE_LIMIT = 1000
+
+# Maximum number of outstanding GetNetwork requests
+REQUEST_BACKLOG_GET_NETWORK_QUEUE_LIMIT = 1000
+
+# Maximum number of outstanding GetTransactions requests
+REQUEST_BACKLOG_GET_TRANSACTIONS_QUEUE_LIMIT = 1000
+
+# Maximum number of outstanding GetTransaction requests
+REQUEST_BACKLOG_GET_TRANSACTION_QUEUE_LIMIT = 1000
+
+# Maximum number of outstanding GetVersionInfo requests
+REQUEST_BACKLOG_GET_VERSION_INFO_QUEUE_LIMIT = 1000
+
+# Maximum number of outstanding requests
+REQUEST_BACKLOG_GLOBAL_QUEUE_LIMIT = 5000
+
+# Maximum number of outstanding SendTransaction requests
+REQUEST_BACKLOG_SEND_TRANSACTION_QUEUE_LIMIT = 500
+
+# Maximum number of outstanding SimulateTransaction requests
+REQUEST_BACKLOG_SIMULATE_TRANSACTION_QUEUE_LIMIT = 100
+
+# The request execution warning threshold is the predetermined maximum duration
+# of time that a request can take to be processed before a warning would be
+# generated
+REQUEST_EXECUTION_WARNING_THRESHOLD = "5s"
+
+# configures soroban inclusion fee stats retention window expressed in number of
+# ledgers
+SOROBAN_FEE_STATS_RETENTION_WINDOW = 50
+
+# HTTP port for Captive Core to listen on (0 disables the HTTP server)
+STELLAR_CAPTIVE_CORE_HTTP_PORT = 11626
+
+# path to stellar core binary
+STELLAR_CORE_BINARY_PATH = "/usr/local/bin/stellar-core"
+
+# Timeout used when submitting requests to stellar-core
+STELLAR_CORE_TIMEOUT = "2s"
+
+# URL used to query Stellar Core (local captive core by default)
+# STELLAR_CORE_URL = ""
+
+# Enable strict toml configuration file parsing. This will prevent unknown
+# fields in the config toml from being parsed.
+# STRICT = false
+```
+
+# Run the node
+
+## Manual
+
+Make sure the working directory ~/.stellar/data exists and is writable
+
+```bash
+mkdir -p ~/.stellar/data
+chmod 700 ~/.stellar/data
+```
+
+Run 
+
+```bash
+ cd /Users/username/.stellar/data
+stellar-rpc \
+  --config-path /Users/<username>/.stellar/config/core.toml \
+  --captive-core-config-path /Users/<username>/.stellar/captive-core/stellar-core.conf \
+  --history-archive-urls \
+    "https://history.stellar.org/prd/core-testnet/core_testnet_001,\
+     https://history.stellar.org/prd/core-testnet/core_testnet_002,\
+     https://history.stellar.org/prd/core-testnet/core_testnet_003"
+```
+
+If all goes well, you should see logs indicating it’s starting up and connecting to testnet.
+If you get a `“Database not found”` error, confirm you used `sqlite3:///Users/<username>/.stellar/data/stellar.db` (absolute path with triple slash).
+
+## Ubuntu
+
+### Create Service
+
+```bash
+BINARY_NAME=stellar-rpc
+CONFIG_PATH=$HOME/.stellar/config/config.toml
+sudo tee <<EOF >/dev/null /etc/systemd/system/$BINARY_NAME.service
+[Unit]
+Description=$BINARY_NAME daemon
+After=network-online.target
+
+[Service]
+User=$USER
+WorkingDirectory=$HOME/.stellar/
+ExecStart=$(which $BINARY_NAME) --config-path $CONFIG_PATH
+Restart=always
+RestartSec=3
+LimitNOFILE=65536
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+
+cat /etc/systemd/system/$BINARY_NAME.service
+```
+
+### Run Service 
+
+```bash
+sudo systemctl enable stellar-rpc
+sudo systemctl daemon-reload
+sudo systemctl restart stellar-rpc
+```
+
+## MacOS
+
+On macOS, you’ll can use a LaunchAgent in ~/Library/LaunchAgents/. For example, create ~/Library/LaunchAgents/com.stellar.rpc.plist:
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" 
+  "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+  <dict>
+    <!-- A unique label for the service -->
+    <key>Label</key>
+    <string>com.stellar.rpc</string>
+    
+    <!-- The binary and arguments to run -->
+    <key>ProgramArguments</key>
+    <array>
+      <!-- Path to the stellar-rpc binary; adjust if installed elsewhere -->
+      <string>/usr/local/bin/stellar-rpc</string>
+      <!-- Path to your Stellar RPC config file -->
+      <string>--config-path</string>
+      <string>/Users/username/.stellar/config/core.toml</string>
+      <!-- Path to your Captive Core config file -->
+      <string>--captive-core-config-path</string>
+      <string>/Users/username/.stellar/captive-core/stellar-core.conf</string>
+      <!-- History archive URLs (comma-separated) -->
+      <string>--history-archive-urls</string>
+      <string>https://history.stellar.org/prd/core-testnet/core_testnet_001,https://history.stellar.org/prd/core-testnet/core_testnet_002,https://history.stellar.org/prd/core-testnet/core_testnet_003</string>
+    </array>
+    
+    <!-- Run as soon as the agent is loaded -->
+    <key>RunAtLoad</key>
+    <true/>
+    
+    <!-- Automatically restart if the process exits -->
+    <key>KeepAlive</key>
+    <true/>
+    
+    <!-- Set the working directory; ensure this directory exists and is writable -->
+    <key>WorkingDirectory</key>
+    <string>/Users/username/.stellar/data</string>
+    
+    <!-- Set environment variables; adjust the PATH if needed -->
+    <key>EnvironmentVariables</key>
+    <dict>
+      <key>PATH</key>
+      <string>/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin</string>
+    </dict>
+    
+    <!-- Log output to files (stdout and stderr) -->
+    <key>StandardOutPath</key>
+    <string>/Users/username/.stellar/data/com.stellar.rpc.out</string>
+    <key>StandardErrorPath</key>
+    <string>/Users/username/.stellar/data/com.stellar.error.rpc.out</string>
+  </dict>
+</plist>
+```
+
+### Run Service
+
+Once the LaunchAgent has been setup you can run the service by running
+
+```bash
+launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.stellar.rpc.plist
+launchctl list | grep com.stellar.rpc
+# If it appears with a PID, it's running!
+```
+To check if the service is running run:
+<tabs>
+  <tab-item title="ubuntu">
+    ```bash
+    journalctl -u stellar-rpc.service -n 100 -f -o cat
+    ```
+  </tab-item>
+  <tab-item title="macOS">
+    ```bash
+    tail -f /tmp/com.stellar.rpc.out
+    ```
+  </tab-item>
+</tabs>
+
+To stop the service run:
+
+```bash
+launchctl remove com.stellar.rpc
+```
+
+
+
+
+## Verify RPC
+
+Once your `Stellar` node is fully synced, you can run a cURL request to see the status of your node:
+
+```bash
+curl --location 'http://localhost:8000' --header 'Content-Type: application/json' --data '{
+"jsonrpc":"2.0",
+"id":2,
+"method":"getHealth"
+}' | jq
+```
+
+If the node is successfully synced, the output from above will print
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 2,
+  "result": {
+    "status": "healthy",
+    "latestLedger": 52909103,
+    "oldestLedger": 52908928,
+    "ledgerRetentionWindow": 17280
+  }
+}
+```
+
+If your node is still syncing it may return a response as follows:
+
+```json
+ % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100   190  100   145  100    45  71888  22310 --:--:-- --:--:-- --:--:--  185k
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "error": {
+    "code": -32603,
+    "message": "[-32603] latency (288h35m28s) since last known ledger closed is too high (>30s)"
+  }
+}
+```
+
+## Common Issues
+Tips & Common Pitfalls
+1. Absolute DB path: On macOS, either set `<key>WorkingDirectory</key>` in your plist or use `DB_PATH="/Users/USERNAME/.stellar/data/stellar_rpc.sqlite"`.
+1. Logs default to stderr: That’s why StandardErrorPath is where you see everything.
+1. To see real-time logs: either run Stellar in the foreground (not via launchd/systemd) or `tail -f` the logs.
+1. `“Bootstrap failed: 5: Input/output error”` (macOS) often just means Stellar had a brief exit or stale job. If Stellar is actually running (PID > 0) and syncing, you can ignore it or use a wrapper script that ensures a zero exit code.
+1. Missing `history-archive-urls`: Ensure you pass it via `--history-archive-urls` or set HISTORY_ARCHIVE_URLS as an environment variable for stellar-rpc—and never put that key in the Captive Core file.
