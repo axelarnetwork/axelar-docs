@@ -496,8 +496,8 @@ export const getNavigation = (section) => {
             { title: "Polygon", href: "/validator/external-chains/polygon/" },
             { title: "Scroll", href: "/validator/external-chains/scroll/" },
             {
-              title: "Soroban",
-              href: "/validator/external-chains/soroban/",
+              title: "Stellar",
+              href: "/validator/external-chains/stellar/",
             },
             { title: "Sui", href: "/validator/external-chains/sui/" },
           ],
@@ -635,6 +635,10 @@ export const getNavigation = (section) => {
             title: "Mainnet axelard",
             children: [
               {
+                title: "v1.2",
+                href: "/resources/mainnet/upgrades/v121/",
+              },
+              {
                 title: "v1.1",
                 href: "/resources/mainnet/upgrades/v112/",
               },
@@ -703,6 +707,10 @@ export const getNavigation = (section) => {
           {
             title: "Testnet axelard",
             children: [
+              {
+                title: "v1.2",
+                href: "/resources/testnet/upgrades/v121/",
+              },
               {
                 title: "v1.1",
                 href: "/resources/testnet/upgrades/v112/",
