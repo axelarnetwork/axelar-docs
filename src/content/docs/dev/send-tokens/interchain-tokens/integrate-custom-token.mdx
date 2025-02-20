@@ -54,7 +54,8 @@ After deploying your custom tokens on your preferred chains, the next step is to
 
 ### Register Token Metadata with the ITS Contract
 
-Register your token metadata using the [`registerTokenMetadata`](https://github.com/axelarnetwork/interchain-token-service/blob/94677f1072da127a0ee7ff5ab6784dcfe11789e8/contracts/InterchainTokenService.sol#L274) function on the ITS contract. For example, if you are integrating your custom token on chains A, B, and C, you should register token metadata on each chain separately.
+Register your token metadata using the [`registerTokenMetadata`](https://github.com/axelarnetwork/interchain-token-service/blob/94677f1072da127a0ee7ff5ab6784dcfe11789e8/contracts/InterchainTokenService.sol#L274) function on the ITS contract. This function registers metadata for a token on the ITS Hub. This metadata is used for scaling linked tokens.
+For example, if you are integrating your custom token on chains A, B, and C, you should register token metadata on each chain separately.
 
 ```solidity
 function registerTokenMetadata(
