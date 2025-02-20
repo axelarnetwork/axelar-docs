@@ -6,25 +6,25 @@ If you have an [ERC-20](https://docs.openzeppelin.com/contracts/4.x/erc20) token
 
 If you would like to create a wrapped, bridgeable version of your ERC-20 token on other chains, you can register it as a [Canonical Interchain Token](/dev/send-tokens/interchain-tokens/register-existing-token/) using the [`InterchainTokenFactory`](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/InterchainTokenFactory.sol) [contract](https://etherscan.io/address/0x83a93500d23Fbc3e82B410aD07A6a9F7A0670D66).
 
-**Each token can only be registered once as a Canonical Interchain Token.** This ensures unique and streamlined token management across different blockchains. Though you can register your Canonical Interchain Token directly through the [Interchain Token Portal](https://testnet.interchain.axelar.dev/), there are times where you may want to do so programmatically, such as when you have already deployed a token on one chain and wish to deploy a wrapped version of that token on another chain.
+**Each token can only be registered once as a Canonical Interchain Token.** This ensures unique and streamlined token management across different blockchains. Though you can register your Canonical Interchain Token directly through the [Interchain Token Portal](https://interchain.axelar.dev/), there are times where you may want to do so programmatically, such as when you have already deployed a token on one chain and wish to deploy a wrapped version of that token on another chain.
 
 In this tutorial, you will learn how to:
 
 - Programmatically create a Canonical Interchain Token from scratch using Axelar's Interchain Token Service
-- Register a Canonical Interchain Token on the Fantom chain
-- Deploy remote Canonical Interchain Token on the Polygon chain
-- Transfer your token between Fantom and Polygon
+- Register a Canonical Interchain Token on the BSC chain
+- Deploy remote Canonical Interchain Token on the Avalanche Fuji chain
+- Transfer your token between BSC and Avalanche Fuji
 
 ## Prerequisites
 
 You will need:
 
 - A basic understanding of [Solidity](https://www.tutorialspoint.com/solidity/index.htm) and [JavaScript](https://www.w3schools.com/js/)
-- A [wallet](https://metamask.io/) with FTM and MATIC funds for testing. If you don’t have these funds, you can get FTM from the [Fantom faucet](https://faucet.fantom.network/) and MATIC from the Amoy faucets ([1](https://faucet.polygon.technology/), [2](https://faucet.quicknode.com/polygon/amoy)).
+- - A [MetaMask wallet](https://metamask.io/) with tBNB and Avax funds for testing. If you don’t have these funds, you can get tBNB from the [BSC faucet](https://www.bnbchain.org/en/testnet-faucet) and Avax from the Avalanche Fuji faucets ([1](https://faucets.chain.link/fuji), [2](https://core.app/tools/testnet-faucet/)).
 
-## Deploy an ERC-20 token on the Fantom testnet
+## Deploy an ERC-20 token on the BSC testnet
 
-[Create a Simple ERC-20 token](https://bakemytoken.com/ftm) and give it a name and symbol. You can skip this step if you already have an ERC-20 token deployed on the Fantom testnet.
+[Create a Simple ERC-20 token](https://bakemytoken.com/binance) and give it a name and symbol. You can skip this step if you already have an ERC-20 token deployed on the BSC testnet.
 
 ## **Set up your development environment**
 
@@ -54,11 +54,11 @@ Create a folder named `utils`. Inside the folder, create the following new files
 
 - Add the [Interchain Token Service ABI](https://gist.github.com/Olanetsoft/2a632784e6753d34ca7ffc4f73bf58ed) to `interchainTokenServiceABI.json`.
 - Add the [Interchain Token Factory ABI](https://gist.github.com/Olanetsoft/7d24e936f4cf6bd3d10d7b4f9a18d838) to `interchainTokenFactoryABI.json`.
-- Add your custom token ABI to `customTokenABI.json`. You can get this from [FTMScan](https://testnet.ftmscan.com/) with the address of your deployed token.
+- Add your custom token ABI to `customTokenABI.json`. You can get this from [BSC Scan](https://testnet.bscscan.com/) with the address of your deployed token.
 
 ## **Set up an RPC for the local chain**
 
-Back in the root directory, set up an RPC for the Fantom testnet. You will use this as your local (source) chain.
+Back in the root directory, set up an RPC for the BSC testnet. You will use this as your local (source) chain.
 
 ### Create an `.env` file
 
@@ -94,9 +94,9 @@ const PRIVATE_KEY = process.env.PRIVATE_KEY;
 module.exports = {
   solidity: "0.8.18",
   networks: {
-    fantom: {
-      url: "https://rpc.ankr.com/fantom_testnet",
-      chainId: 4002,
+    bsc: {
+      url: "https://bsc-testnet.drpc.org",
+      chainId: 97,
       accounts: [PRIVATE_KEY],
     },
   },
@@ -105,7 +105,7 @@ module.exports = {
 
 ## Register a Canonical Interchain Token on a local chain
 
-Now that you have set up an RPC for the Fantom testnet, you can register a Canonical Interchain Token.
+Now that you have set up an RPC for the BSC testnet, you can register a Canonical Interchain Token.
 
 ### Create a `canonicalInterchainToken.js` script
 
@@ -169,10 +169,10 @@ async function getContractInstance(contractAddress, contractABI, signer) {
 
 ## Register Canonical Interchain Token
 
-Now you’re ready to register your token as a Canonical Interchain Token! Create a `registerCanonicalInterchainToken()` function for the Fantom testnet. This will register a Canonical Interchain Token with your custom token address:
+Now you’re ready to register your token as a Canonical Interchain Token! Create a `registerCanonicalInterchainToken()` function for the BSC testnet. This will register a Canonical Interchain Token with your custom token address:
 
 ```javascript
-// Register Canonical Interchain Token to the Fantom chain.
+// Register Canonical Interchain Token to the BSC chain.
 async function registerCanonicalInterchainToken() {
   // Get a signer to sign the transaction
   const signer = await getSigner();
@@ -240,33 +240,33 @@ main().catch((error) => {
 });
 ```
 
-### Run the `canonicalInterchainToken.js` script to deploy to Fantom
+### Run the `canonicalInterchainToken.js` script to deploy to BSC
 
-Run the script in your terminal to register and deploy the token, specifying the `fantom` testnet:
+Run the script in your terminal to register and deploy the token, specifying the `BSC` testnet:
 
 ```bash
-FUNCTION_NAME=registerCanonicalInterchainToken npx hardhat run canonicalInterchainToken.js --network fantom
+FUNCTION_NAME=registerCanonicalInterchainToken npx hardhat run canonicalInterchainToken.js --network bsc
 ```
 
 If you see something similar to the following on your console, you have successfully registered your token as a Canonical Interchain Token.
 
 ```bash
-Transaction Hash: 0x551cdba803a55bc8989a8eb74165c03563590f8f0161b0eb1308ae3953295de8,
-Token ID: 0x1fe2d9bf8d6d7288224e83399696bcc7ac60421723e6150f8de800e8b1015a7a,
-Expected Token Manager Address: 0x1d680d2B53aEf3E0aDdC7544105A9ae6091bA793,
+Transaction Hash: 0x4ba22486dda650578ed782b8fd4e9a394664e9b4dcb8c2cbd99403543a749325,
+Token ID: 0x90d04b71cd22ebcf0821ff59dd15d10865bf927ed36f0ad6b8c4a8686f0ffe58,
+Expected Token Manager Address: 0xEb910958C32fEB6D85cd1f7c04216BD354834D86,
 ```
 
 ### Store the token ID
 
 Copy the token ID and store it somewhere safe. You will need it to initiate a remote token transfer in a later step.
 
-### Check the transaction on the Fantom testnet scanner
+### Check the transaction on the BSC testnet scanner
 
-Check the [Fantom testnet scanner](https://testnet.ftmscan.com/) to see if you have successfully registered your [token as a Canonical Interchain Token](https://testnet.ftmscan.com/tx/0x551cdba803a55bc8989a8eb74165c03563590f8f0161b0eb1308ae3953295de8).
+Check the [BSC testnet scanner](https://testnet.bscscan.com/) to see if you have successfully registered your [token as a Canonical Interchain Token](https://testnet.bscscan.com/tx/0x4ba22486dda650578ed782b8fd4e9a394664e9b4dcb8c2cbd99403543a749325).
 
 ## Deploy Remote Canonical Interchain Token
 
-You’ve just successfully a Canonical Interchain Token to Fantom, which you are using as your local chain. Now, deploy the token remotely to Polygon, which will be the remote chain in this tutorial. Remember that you can specify any two chains to be your local and remote chains.
+You’ve just successfully a Canonical Interchain Token to BSC, which you are using as your local chain. Now, deploy the token remotely to Avalanche Fuji, which will be the remote chain in this tutorial. Remember that you can specify any two chains to be your local and remote chains.
 
 ### Estimate gas fees
 
@@ -280,9 +280,9 @@ const api = new AxelarQueryAPI({ environment: Environment.TESTNET });
 // Estimate gas costs.
 async function gasEstimator() {
   const gas = await api.estimateGasFee(
-    EvmChain.FANTOM,
-    EvmChain.POLYGON,
-    GasToken.FTM,
+    EvmChain.BINANCE,
+    EvmChain.AVALANCHE,
+    GasToken.ETH,
     700000,
     1.1,
   );
@@ -295,12 +295,12 @@ async function gasEstimator() {
 
 ### Perform remote token deployment
 
-Create a `deployRemoteCanonicalInterchainToken()` function that will perform token remote canonical deployment on the Polygon Amoy testnet.
+Create a `deployRemoteCanonicalInterchainToken()` function that will perform token remote canonical deployment on the Avalanche Fuji testnet.
 
 ```javascript
 //...
 
-// deployRemoteCanonicalInterchainToken: On Polygon
+// deployRemoteCanonicalInterchainToken: On Avalanche Fuji
 async function deployRemoteCanonicalInterchainToken() {
   // Get a signer for authorizing transactions
   const signer = await getSigner();
@@ -316,14 +316,9 @@ async function deployRemoteCanonicalInterchainToken() {
   const gasAmount = await gasEstimator();
 
   // Initiate transaction
-  const txn =
-    await interchainTokenFactoryContract.deployRemoteCanonicalInterchainToken(
-      "Fantom",
-      customTokenAddress, // Your token address
-      "Polygon",
-      gasAmount,
-      { value: gasAmount },
-    );
+  const txn = await interchainTokenFactoryContract[
+    "deployRemoteCanonicalInterchainToken(address,string,uint256)"
+  ](customTokenAddress, "Avalanche", gasAmount, { value: gasAmount });
 
   console.log(`Transaction Hash: ${txn.hash}`);
 }
@@ -353,27 +348,27 @@ async function main() {
 //...
 ```
 
-### Run the `canonicalInterchainToken.js` script to deploy to Polygon
+### Run the `canonicalInterchainToken.js` script to deploy to Avalanche Fuji testnet
 
-Run the script in your terminal to to deploy remote Canonical Interchain Token, once again specifying the `fantom` testnet (the source chain where all transactions are taking place):
+Run the script in your terminal to to deploy remote Canonical Interchain Token, once again specifying the `BSC` testnet (the source chain where all transactions are taking place):
 
 ```bash
-FUNCTION_NAME=deployRemoteCanonicalInterchainToken npx hardhat run canonicalInterchainToken.js --network fantom
+FUNCTION_NAME=deployRemoteCanonicalInterchainToken npx hardhat run canonicalInterchainToken.js --network bsc
 ```
 
 You should see something similar to the following on your console:
 
 ```bash
-Transaction Hash: 0xb963f5ce3402e1787ead0c8f421be79ac06e5b78305b1dbce184806e099d54fd
+Transaction Hash: 0x3c36b04418aca90393435dbe9c2b65d26acc6e9f86aba1f34db27b41d82fda13
 ```
 
 ### Check the transaction on the Axelar testnet scanner
 
-Check the [Axelarscan testnet scanner](https://testnet.axelarscan.io/) to see if you have successfully deployed the remote Canonical Interchain Token “MAT” on the Polygon Amoy testnet. It should look something like [this](https://testnet.axelarscan.io/gmp/0xb963f5ce3402e1787ead0c8f421be79ac06e5b78305b1dbce184806e099d54fd). Make sure that Axelar shows a successful transaction before continuing on to the next step.
+Check the [Axelarscan testnet scanner](https://testnet.axelarscan.io/) to see if you have successfully deployed the remote Canonical Interchain Token “HM” on the Avalanche Fuji testnet. It should look something like [this](https://testnet.axelarscan.io/gmp/0x3c36b04418aca90393435dbe9c2b65d26acc6e9f86aba1f34db27b41d82fda13). Make sure that Axelar shows a successful transaction before continuing on to the next step.
 
 ## Transfer your token between chains
 
-Now that you have registered and deployed a Canonical Interchain Token both locally to Fantom and remotely to Polygon, you can transfer between those two chains via the [`interchainTransfer()`](https://github.com/axelarnetwork/interchain-token-service/blob/9edc4318ac1c17231e65886eea72c0f55469d7e5/contracts/interfaces/IInterchainTokenStandard.sol#L19) method.
+Now that you have registered and deployed a Canonical Interchain Token both locally to BSC and remotely to Avalanche Fuji, you can transfer between those two chains via the [`interchainTransfer()`](https://github.com/axelarnetwork/interchain-token-service/blob/9edc4318ac1c17231e65886eea72c0f55469d7e5/contracts/interfaces/IInterchainTokenStandard.sol#L19) method.
 
 ### Initiate a remote token transfer
 
@@ -407,8 +402,8 @@ async function transferTokens() {
 
   // Send via token
   const transfer = await interchainTokenServiceContract.interchainTransfer(
-    "0x1fe2d9bf8d6d7288224e83399696bcc7ac60421723e6150f8de800e8b1015a7a", // token ID from  registerCanonicalInterchainToken
-    "Polygon", // Destination chain
+    "0x90d04b71cd22ebcf0821ff59dd15d10865bf927ed36f0ad6b8c4a8686f0ffe58", // token ID from  registerCanonicalInterchainToken
+    "Avalanche", // Destination chain
     "0x510e5EA32386B7C48C4DEEAC80e86859b5e2416C", // Destination address. Update with your own wallet address
     ethers.utils.parseEther("50"), // Amount to transfer
     "0x00",
@@ -444,16 +439,16 @@ async function main() {
 
 ### Run the `canonicalInterchainToken.js` script to transfer tokens
 
-Run the script in your terminal, specifying the `fantom` testnet:
+Run the script in your terminal, specifying the `BSC` testnet:
 
 ```bash
-FUNCTION_NAME=transferTokens npx hardhat run canonicalInterchainToken.js --network fantom
+FUNCTION_NAME=transferTokens npx hardhat run canonicalInterchainToken.js --network bsc
 ```
 
 You should see something similar to the following on your console:
 
 ```bash
-Transfer Transaction Hash: 0x3f3632918d68e2129c08a354b619be29906423062e1c700c7bb32118231a20e9
+Transfer Transaction Hash: 0xd46a1941e04d06084eb7df3b1933617eccfb21a77dbcfb3b0399e1ac1c0ee6c9
 ```
 
 If you see this, it means that your interchain transfer has been successful! 🎉
@@ -472,17 +467,17 @@ error: ProviderError: nonce too low
 
 ### Check the transaction on the Axelar testnet scanner
 
-Check the [Axelarscan testnet scanner](https://testnet.axelarscan.io/) to see if you have successfully transferred MAT from the Fantom testnet to the Polygon testnet. It should look something like [this](https://testnet.axelarscan.io/gmp/0x3f3632918d68e2129c08a354b619be29906423062e1c700c7bb32118231a20e9).
+Check the [Axelarscan testnet scanner](https://testnet.axelarscan.io/) to see if you have successfully transferred HM from the BSC testnet to the Avalanche Fuji testnet. It should look something like [this](https://testnet.axelarscan.io/gmp/0xd46a1941e04d06084eb7df3b1933617eccfb21a77dbcfb3b0399e1ac1c0ee6c9).
 
 ### Import the new token into your wallet
 
-You can also import the new token into your own wallet with its contract address that you saved from FTMScan.
+You can also import the new token into your own wallet with its contract address that you saved from BSC Scan.
 
 ## Congratulations!
 
 You have now programmatically created a Canonical Interchain Token using Axelar’s Interchain Token Service and transferred it between two chains. You should now be able to confidently create and manage your own Interchain Tokens, opening up a wide range of possibilities for token transfers and asset bridges.
 
-Great job making it this far! To show your support to the author of this tutorial, please post about your experience and tag [@axelarnetwork](https://x.com/axelarnetwork) on Twitter (X).
+Great job making it this far! To show your support to the author of this tutorial, please post about your experience and tag [@axelarnetwork](https://x.com/axelar) on Twitter (X).
 
 ## What’s next
 
