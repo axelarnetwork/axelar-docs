@@ -7,7 +7,7 @@ If you own an ERC-20 token on a single chain and want a wrapped, bridgeable vers
 You can register your existing token directly via the contract or use the [ITS Portal](/dev/send-tokens/interchain-tokens/no-code/) no-code solution. Take a look at the diagram below to understand the process of registering an existing token as a Canonical Interchain Token.
 
 <Callout type="warning">
-  This diagram is interactive click on the function names!
+  This diagram is interactive—click on the function names!
 </Callout>
 
 <object
@@ -20,57 +20,52 @@ You can register your existing token directly via the contract or use the [ITS P
 <object
   type="image/svg+xml"
   data="/images/its-deployment-diagram-light.svg"
-  class=" dark:hidden w-full max-w-[60rem] mx-auto py-6"
+  class="dark:hidden w-full max-w-[60rem] mx-auto py-6"
 >
   Your browser does not support SVG
 </object>
 
-## Install the Axelar ITS Dependency
+## Register Your Token as a Canonical Token Using the Interchain Token Factory
 
-Install the Axelar Interchain Token Service (ITS) package using npm or any other node package manager:
-
-```bash
-npm i @axelar-network/interchain-token-service
-```
-
-## Register Your Token as a Canonical Token
-
-Use the `registerCanonicalInterchainToken` function to register your token:
+Use the [`registerCanonicalInterchainToken`](https://github.com/axelarnetwork/interchain-token-service/blob/94677f1072da127a0ee7ff5ab6784dcfe11789e8/contracts/InterchainTokenFactory.sol#L402) function to register your token.
 
 ```solidity
-bytes32 tokenId = its.registerCanonicalInterchainToken(
-    myTokenAddress // address of your canonical token
-);
+function registerCanonicalInterchainToken(
+    address tokenAddress // address of your token
+) external payable returns (bytes32 tokenId) {}
 ```
 
-The [`registerCanonicalInterchainToken`](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/InterchainTokenFactory.sol#L240) function deploys a [Lock/Unlock Token Manager](/dev/send-tokens/glossary/#lockunlock) on the source chain, connects it to ITS upon deployment, and returns a unique token ID. When you trigger the `registerCanonicalInterchainToken()` function, that will initiate the process of registering your custom token with a `Lock/Unlock` [token manager](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/token-manager/TokenManager.sol) type to your token's _home chain_. Now that you have registered your token on the home chain, you can call the `deployRemoteCanonicalInterchainToken()`. This will deploy an Interchain Token on a different blockchain that will be connected to your canonical token on the home chain you registered when you called the previous function.
+This function deploys a [Lock/Unlock Token Manager](/dev/send-tokens/glossary/#lockunlock) on the source chain, connects it to ITS upon deployment, and returns a unique token ID. Triggering the `registerCanonicalInterchainToken()` function initiates the process of registering your custom token with a Lock/Unlock token manager type on your token's _home chain_.
 
-Note: This is just one of many different flows you can choose to follow when interacting with ITS.
+Once your token is registered on the home chain, you can call the `deployRemoteCanonicalInterchainToken()` function. This will deploy an Interchain Token on a different blockchain that connects to your canonical token on the home chain.
+
+> **Note:** This is just one of many flows available when interacting with ITS.
 
 ## Deploy a Remote Canonical Interchain Token
 
-Use the `deployRemoteCanonicalInterchainToken` function to deploy the token on a remote chain as a cross-chain transaction:
+Use the [`deployRemoteCanonicalInterchainToken`](https://github.com/axelarnetwork/interchain-token-service/blob/94677f1072da127a0ee7ff5ab6784dcfe11789e8/contracts/InterchainTokenFactory.sol#L450) function to deploy the token on a remote chain as a cross-chain transaction:
 
 ```solidity
-bytes32 tokenId = its.deployRemoteCanonicalInterchainToken{value: msg.value}(
-    'Ethereum',       // original chain name
-    myTokenAddress,   // original token address
-    'Avalanche',      // destination chain name
-    msg.value         // gas sent for token deployment
-);
+function deployRemoteCanonicalInterchainToken(
+    address originalTokenAddress, // original token address
+    string calldata destinationChain, // destination chain name
+    uint256 gasValue // gas value
+) public payable returns (bytes32 tokenId) {};
 ```
 
-The [`deployRemoteCanonicalInterchainToken`](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/InterchainTokenFactory.sol#L257) function deploys a token connected to your registered token on the home chain, making it bridgeable to the destination chain, and returns a token ID.
+This function deploys a token connected to your registered token on the home chain, making it bridgeable to the destination chain, and returns a token ID.
 
 <Callout emoji="🚨">
-  **NOTE:** The security of your token is limited to the security of the chains
-  it integrates with. When making a token interchain, ensure that all the chains
-  it will be deployed to are trustworthy.
+  **NOTE:** The security of your token is only as strong as the security of the
+  chains with which it integrates. When deploying an interchain token, ensure
+  that all target chains are trustworthy.
 </Callout>
 
 ## What's Next
 
-For further examples utilizing the Interchain Token Service, check out the [`axelar-examples`](https://github.com/axelarnetwork/axelar-examples/tree/main/examples/evm) repository on GitHub. There, you can find an example implementation titled [`its-canonical-token`](https://github.com/axelarnetwork/axelar-examples/tree/main/examples/evm/its-canonical-token), which demonstrates how to deploy canonical Interchain Tokens and send cross-chain transfers.
+You can initiate an interchain transfer from your source chain to a destination chain by using the [`interchainTransfer`](https://github.com/axelarnetwork/interchain-token-service/blob/94677f1072da127a0ee7ff5ab6784dcfe11789e8/contracts/InterchainTokenService.sol#L559) method on the [ITS contract](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/InterchainTokenService.sol).
+
+For further examples utilizing the Interchain Token Service, check out the [`axelar-examples`](https://github.com/axelarnetwork/axelar-examples/tree/main/examples/evm) repository on GitHub. There, you will find an example implementation titled [`its-canonical-token`](https://github.com/axelarnetwork/axelar-examples/tree/main/examples/evm/its-canonical-token), which demonstrates how to deploy canonical Interchain Tokens and perform cross-chain transfers.
 
 ## Tutorial
 
