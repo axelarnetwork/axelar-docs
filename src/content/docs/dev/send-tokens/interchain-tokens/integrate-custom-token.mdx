@@ -2,7 +2,7 @@ import { Callout } from "/src/components/callout";
 
 # Integrate Custom Token
 
-Custom tokens are independently deployed tokens, as opposed to those deployed via the [Interchain Token Service (ITS)](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/InterchainTokenService.sol). These tokens are integrated with ITS across different chains by deploying a Token Manager for each. Once a custom token has a Token Manager deployed on a given chain, it becomes bridgeable between blockchains that also have a token connected to a Token Manager sharing the same [interchainTokenId](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/InterchainTokenService.sol#L228).
+Custom tokens are independently deployed tokens, as opposed to those deployed via the [Interchain Token Service (ITS)](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/InterchainTokenService.sol). These tokens are integrated with ITS across different chains by deploying a Token Manager for each. Once a custom token has a Token Manager deployed on a given chain, it becomes bridgeable between blockchains that also have a token connected to a Token Manager sharing the same [interchainTokenId](https://github.com/axelarnetwork/interchain-token-service/blob/v/contracts/InterchainTokenFactory.sol#L94).
 
 ## Install the Axelar ITS Dependency
 
@@ -58,13 +58,13 @@ function registerTokenMetadata(
 ) external payable {};
 ```
 
-This function registers metadata for a token on the [ITS Hub](#). This metadata is used for scaling linked tokens.
+This function registers metadata for a token on the [ITS Hub](/dev/amplifier/its-hub/introduction/). This metadata is used for scaling linked tokens.
 
-> **Note:** Token metadata must be registered before `linkToken` can be called for the corresponding token.
+> **Note:** Token metadata must be registered before `linkToken` can be called for the corresponding token. This function links a remote token on `destinationChain` to a local token corresponding to the `tokenId` computed from the provided `salt`.
 
 ### Register Custom Token with the Interchain Token Factory
 
-After registering token metadata for each of your custom tokens, call the [`registerCustomToken`](https://github.com/axelarnetwork/interchain-token-service/blob/94677f1072da127a0ee7ff5ab6784dcfe11789e8/contracts/InterchainTokenFactory.sol#L515) function on the [Interchain Token Factory](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/InterchainTokenFactory.sol).
+After registering token metadata for each of your custom tokens, call the [`registerCustomToken`](https://github.com/axelarnetwork/interchain-token-service/blob/cc6ef7282e18c6b2842cbf1098b06161e38ea32e/contracts/InterchainTokenService.sol#L298) function on the [Interchain Token Factory](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/InterchainTokenFactory.sol).
 
 ```solidity
 function registerCustomToken(
@@ -87,7 +87,7 @@ function linkToken(
     string calldata destinationChain, // destination chain
     bytes calldata destinationTokenAddress, // destination custom token address
     TokenManagerType tokenManagerType, // token manager type
-    bytes calldata linkParams, // minter address
+    bytes calldata linkParams, // operator address
     uint256 gasValue // gas value
 ) external payable returns (bytes32 tokenId) {}
 ```
@@ -98,7 +98,7 @@ This function links a remote token on `destinationChain` to a local token corres
 
 ### Assign the `minter` Role to Your Token's Token Manager
 
-Transfer the minter role to the Token Manager using the `transferMintership` function on your token. To retrieve your token manager address, use the `tokenManagerAddress` function on the ITS contract by specifying your `tokenId`.
+Transfer the minter role to the Token Manager using the [`transferMintership`](https://github.com/axelarnetwork/interchain-token-service/blob/v/contracts/utils/Minter.sol#L31) function on your token. To retrieve your token manager address, use the `tokenManagerAddress` function on the ITS contract by specifying your `tokenId`.
 
 ```solidity
 yourToken.transferMintership(tokenManagerAddress);
@@ -142,12 +142,17 @@ function interchainTransfer(
 ) external payable whenNotPaused {};
 ```
 
-The [`interchainTransfer()`](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/interfaces/IInterchainTokenService.sol#L210) function sends a cross-chain transfer via the Interchain Token Service.
+The [`interchainTransfer()`](https://github.com/axelarnetwork/interchain-token-service/blob/94677f1072da127a0ee7ff5ab6784dcfe11789e8/contracts/InterchainTokenService.sol#L559) function sends a cross-chain transfer via the Interchain Token Service.
 
 <Callout emoji="🚨">
-  **Security Note:** The key used to deploy custom tokens is critical for security. If that key is compromised, the token can be compromised across multiple chains.
-- Interchain native tokens can only be deployed to additional chains via the same deployer key, so that key must be securely retained.
-- Tokens registered on ITS should be cautious about granting mint/burn permissions to other contracts. For example, sharing mint permission with the Polygon native bridge is not supported (the Polygon native bridge only looks for burns, which ITS uses—potentially allowing duplicate sends).
+  **Security Note:** The key used to deploy custom tokens is critical for
+  security. If that key is compromised, the token can be compromised across
+  multiple chains. - Interchain native tokens can only be deployed to additional
+  chains via the same deployer key, so that key must be securely retained. -
+  Tokens registered on ITS should be cautious about granting mint/burn
+  permissions to other contracts. For example, sharing mint permission with the
+  Polygon native bridge is not supported (the Polygon native bridge only looks
+  for burns, which ITS uses—potentially allowing duplicate sends).
 </Callout>
 
 ## What's Next

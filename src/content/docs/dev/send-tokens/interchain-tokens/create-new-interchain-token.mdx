@@ -21,11 +21,12 @@ function deployInterchainToken(
 ) external payable returns (bytes32 tokenId) {};
 ```
 
-This function [deploys an interchain token](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/InterchainTokenFactory.sol#L118), connects it to ITS upon deployment, and returns the unique token ID.
+This function [deploys an interchain token](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/InterchainTokenFactory.sol#L133), connects it to ITS upon deployment, and returns the unique token ID.
 
 ## Deploy a Remote Interchain Token
 
 Use the [`deployRemoteInterchainToken`](https://github.com/axelarnetwork/interchain-token-service/blob/94677f1072da127a0ee7ff5ab6784dcfe11789e8/contracts/InterchainTokenFactory.sol#L249) function to deploy the token on a remote chain as a cross-chain transaction.
+Using this function, there is no minter role assigned if you need to deploy a token on a remote chain with a minter, use the [`deployRemoteInterchainTokenWithMinter`](https://github.com/axelarnetwork/interchain-token-service/blob/94677f1072da127a0ee7ff5ab6784dcfe11789e8/contracts/InterchainTokenFactory.sol#L269) function. 
 
 ```solidity
 function deployRemoteInterchainToken(
