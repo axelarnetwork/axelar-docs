@@ -1,6 +1,6 @@
-import { Callout } from "/src/components/callout";
-
 # Integrate Custom Token
+
+import { Callout } from "/src/components/callout";
 
 Custom tokens are independently deployed tokens, as opposed to those deployed via the [Interchain Token Service (ITS)](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/InterchainTokenService.sol). These tokens are integrated with ITS across different chains by deploying a Token Manager for each. Once a custom token has a Token Manager deployed on a given chain, it becomes bridgeable between blockchains that also have a token connected to a Token Manager sharing the same [interchainTokenId](https://github.com/axelarnetwork/interchain-token-service/blob/v/contracts/InterchainTokenFactory.sol#L94).
 
@@ -47,10 +47,10 @@ Alternatively, you can inherit from the [InterchainTokenStandard](https://github
 
 After deploying your custom tokens on your preferred chains, the next step is to integrate your token with ITS by following these steps:
 
-- [Register Token Metadata with the ITS Contract](#register-token-metadata-with-the-its-contract)
-- [Register Custom Token with the Interchain Token Factory](#register-custom-token-with-the-interchain-token-factory)
-- [Link Custom Token with the Interchain Token Factory](#link-custom-token-with-the-interchain-token-factory)
-- [Assign the `minter` Role to Your Token's Token Manager](#assign-the-minter-role-to-your-tokens-token-manager)
+1. [Register token metadata with the ITS Contract](#register-token-metadata-with-the-its-contract)
+2. [Register custom token with the Interchain Token Factory](#register-custom-token-with-the-interchain-token-factory)
+3. [Link custom token with the Interchain Token Factory](#link-custom-token-with-the-interchain-token-factory)
+4. [Assign the minter role to your token's Token Manager](#assign-the-minter-role-to-your-tokens-token-manager)
 
 ### Register Token Metadata with the ITS Contract
 
