@@ -60,7 +60,7 @@ function registerTokenMetadata(
 
 This function registers metadata for a token on the [ITS Hub](/dev/amplifier/its-hub/introduction/). This metadata is used for scaling linked tokens.
 
-> **Note:** Token metadata must be registered before `linkToken` can be called for the corresponding token. This function links a remote token on `destinationChain` to a local token corresponding to the `tokenId` computed from the provided `salt`.
+> **Note:** Token metadata must be registered before [`linkToken`](https://github.com/axelarnetwork/interchain-token-service/blob/94677f1072da127a0ee7ff5ab6784dcfe11789e8/contracts/InterchainTokenService.sol#L329) can be called for the corresponding token. This function links a remote token on `destinationChain` to a local token corresponding to the `tokenId` computed from the provided `salt`.
 
 ### Register Custom Token with the Interchain Token Factory
 
