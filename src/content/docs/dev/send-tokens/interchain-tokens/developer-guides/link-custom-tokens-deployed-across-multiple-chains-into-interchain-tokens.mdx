@@ -426,6 +426,8 @@ salt: 0xd58c9142d863dde9f0b9ea68b10cce9470626040187a00c16b7b3d4edae70cf9
 
 In this section, you must link the custom token using the Interchain Token Factory between the chains where your token exists.
 
+The key difference between `registerCustomToken` and `linkToken` lies in their purpose and scope. `registerCustomToken` is used exclusively by the Interchain Token Factory to register custom tokens on the current chain, enabling them to be linked later. It deploys a token manager for the token but does not facilitate cross-chain linking. On the other hand, `linkToken` is a more general function that links a token to a destination chain by deploying a token manager on the target chain. It allows users to connect tokens across chains, enabling interchain transfers. While `registerCustomToken` is limited to local registration, `linkToken` extends functionality to cross-chain interoperability.
+
 To do that, create a function named `linkCustomToken` with the following code snippet.
 
 ```javascript
