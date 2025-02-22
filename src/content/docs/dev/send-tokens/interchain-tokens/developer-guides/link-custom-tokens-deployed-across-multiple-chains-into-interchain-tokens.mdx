@@ -107,7 +107,7 @@ Create a folder named `utils`. Inside the folder, create the following new files
 
 ## Set up an RPC for the local chain
 
-Set up an RPC for the Fantom and Polygon testnet in the root directory.
+Set up an RPC for the BSC and Avalanche Fuji testnet in the root directory.
 
 ### Create an `.env` file
 
@@ -158,7 +158,8 @@ module.exports = {
 
 ## Register token metadata with the ITS Contract on both BSC and Avalanche Fuji chain
 
-Now that you have set up an RPC for the BSC and Avalanche Fuji testnet, you can register token metadata with the ITS Contract on both chains.
+Now that you have set up an RPC for the BSC and Avalanche Fuji testnet, you can register token metadata with the ITS Contract on both chains.  
+The token metadata registers the metadata for a token on the ITS Hub. This metadata is used to scale linked tokens.
 
 ### Create a `customInterchainToken.js` script
 
@@ -168,7 +169,7 @@ Create a new file named `customInterchainToken.js` and import the required depen
 - The [AxelarJS SDK](https://github.com/axelarnetwork/axelarjs-sdk)
 - The custom token contract ABI
 - The address of the [`InterchainTokenService`](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/InterchainTokenService.sol) contract
-- The address of your token deployed on Fantom and Polygon testnet
+- The address of your token deployed on BSC and Avalanche Fuji testnet
 
 ```javascript
 const hre = require("hardhat");
@@ -330,7 +331,7 @@ Run the script in your terminal to register and deploy the token, specifying the
 FUNCTION_NAME=registerTokenMetadataOnAvalanche npx hardhat run customInterchainToken.js --network avalanche
 ```
 
-If you see something similar to the following on your console, you have successfully registered your token metadata on AValanche Fuji.
+If you see something similar to the following on your console, you have successfully registered your token metadata on Avalanche Fuji.
 
 ```bash
 Transaction Hash: 0x026ee7992de2108ecb83f37119ec84ebed371ff724d38e8fd055cbecde5b77e6,
@@ -339,7 +340,7 @@ Transaction Hash: 0x026ee7992de2108ecb83f37119ec84ebed371ff724d38e8fd055cbecde5b
 
 ### Check the transaction on the BSC testnet scanner
 
-Check the [Fantom testnet scanner](https://testnet.bscscan.com/) to see if you have successfully [registered your token metadata](https://testnet.bscscan.com/tx/0xf860bd8802d046fb0c752c355bc73c87e69f701348420c6cbdf82534b87c4822).
+Check the [BSC testnet scanner](https://testnet.bscscan.com/) to see if you have successfully [registered your token metadata](https://testnet.bscscan.com/tx/0xf860bd8802d046fb0c752c355bc73c87e69f701348420c6cbdf82534b87c4822).
 
 ### Check the transaction on the Avalanche Fuji testnet scanner
 
@@ -347,7 +348,7 @@ Check the [Avalanche Fuji testnet scanner](https://testnet.snowtrace.io/) to see
 
 ## Register the custom token with the Interchain Token Factory
 
-You've registered your token metadata on BSC and Avalanche Fuji. Now, register the custom token with the Interchain Token Factory on the source chain, which in this example is BSC.
+You've registered your token metadata on BSC and Avalanche Fuji. Now, register the custom token with the Interchain Token Factory on the BSC.
 
 To do that, use the following code snippet: create a function with the name `registerCustomTokenOnBSC`. This function registers an existing ERC20 token under a `tokenId` computed from the provided `salt`.
 
@@ -495,7 +496,7 @@ Transaction Hash: 0x11c2a212180d7ea2babe7aceb66c32c1e235cc159bceeb4dd6d04411f4a9
 
 ### Check the transaction on the Axelar testnet scanner
 
-Check the [Axelarscan testnet scanner](https://testnet.axelarscan.io/) to see if you have successfully deployed the remote token manager on the Polygon testnet. It should look something like [this](https://testnet.axelarscan.io/gmp/0x11c2a212180d7ea2babe7aceb66c32c1e235cc159bceeb4dd6d04411f4a9669f).
+Check the [Axelarscan testnet scanner](https://testnet.axelarscan.io/) to see if you have successfully registered the custom token on the Avalanche Fuji testnet. It should look something like [this](https://testnet.axelarscan.io/gmp/0x11c2a212180d7ea2babe7aceb66c32c1e235cc159bceeb4dd6d04411f4a9669f).
 
 Add gas if needed. Ensure that Axelar shows a successful transaction before continuing to the next step.
 
@@ -505,7 +506,7 @@ You must transfer mint access to the Token Manager address on both chains before
 
 ### Transfer mint access to the Token Manager address on the BSC testnet
 
-Create a `transferMintAccessToTokenManagerOnBSC()` function that will perform the mint access transfer on the BSC testnet. The token manager is a parameter needed for granting mint access. You need to first retrieve the token manager address using the token ID. So, let's start with that. To do that, use the following code snippet.
+Create a `transferMintAccessToTokenManagerOnBSC()` function that will perform the mint access transfer on the BSC testnet. The token manager is a contract needed for moving your asset from one chain to the other. You need to first retrieve the token manager address using the token ID. So, let's start with that. To do that, use the following code snippet.
 
 ```javascript
 async function getTokenManagerAddress() {
@@ -704,7 +705,7 @@ grantRoleTxn: 0x944bd91373de37592428021e49fc7344dedf8bad8b8f822e43e73de75ef01981
 
 ## Transfer your token between chains
 
-Now that you have deployed a granted mint access to the token manager on both BSC and AValanche testnet, you can transfer your token between those two chains using the [interchainTransfer()](https://github.com/axelarnetwork/interchain-token-service/blob/9edc4318ac1c17231e65886eea72c0f55469d7e5/contracts/InterchainTokenService.sol#L455) method.
+Now that you have deployed a granted mint access to the token manager on both BSC and Avalanche testnet, you can transfer your token between those two chains using the [interchainTransfer()](https://github.com/axelarnetwork/interchain-token-service/blob/9edc4318ac1c17231e65886eea72c0f55469d7e5/contracts/InterchainTokenService.sol#L455) method.
 
 ### Initiate a remote token transfer
 
@@ -765,7 +766,7 @@ async function main() {
 
 ### Run the `customInterchainToken.js` script to transfer tokens
 
-Run the script in your terminal, specifying the `fantom` testnet:
+Run the script in your terminal, specifying the `BSC` testnet:
 
 ```bash
 FUNCTION_NAME=transferTokens npx hardhat run customInterchainToken.js --network bsc
@@ -786,7 +787,7 @@ Check the [Axelarscan testnet scanner](https://testnet.axelarscan.io/) to see if
 
 ## Congratulations!
 
-You have now programmatically linked custom tokens deployed on multiple chains as InterchaTokens, using Axelar's Interchain Token Service to transfer them between chains.
+You have now programmatically linked custom tokens deployed on multiple chains as Interchain Tokens, using Axelar's Interchain Token Service to transfer them between chains.
 
 Great job making it this far! To show your support for the author of this tutorial, please post about your experience and tag [@axelarnetwork](https://x.com/axelar) on Twitter (X).
 
