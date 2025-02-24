@@ -523,7 +523,7 @@ async function getTokenManagerAddress() {
   );
 
   // Register token metadata
-  const tokenId = await interchainTokenServiceContract.interchainTokenId(
+  const tokenId = await interchainTokenServiceContract.linkedTokenId(
     "0x510e5EA32386B7C48C4DEEAC80e86859b5e2416C", // sender
     "0xd58c9142d863dde9f0b9ea68b10cce9470626040187a00c16b7b3d4edae70cf9", // salt, same as previously used
   );
@@ -570,8 +570,8 @@ FUNCTION_NAME=getTokenManagerAddress npx hardhat run customInterchainToken.js --
 You should see something similar to the following on your console:
 
 ```bash
-Token Manager Address: 0x6b2028A5613f2ae18E328432353259a6c9248d39,
-Token ID: 0xe13c7d9da953686aa550ff6f2e19da921bc2b208c85141e17d4e799ce7288b0
+Token Manager Address: 0x1Ca3eAcB1e8C72869d8962f425631A24e19e8a80,
+Token ID: 0xe0898500c75902b24ca99e2bcb77317acfdf01e66b1cacfd1daf75c66ecd8dfb
 
 ```
 
@@ -596,7 +596,7 @@ async function transferMintAccessToTokenManagerOnBSC() {
 
   const grantRoleTxn = await tokenContract.grantRole(
     getMinterRole,
-    "0x6b2028A5613f2ae18E328432353259a6c9248d39", // your token manager address
+    "0x1Ca3eAcB1e8C72869d8962f425631A24e19e8a80", // your token manager address
   );
 
   console.log("grantRoleTxn: ", grantRoleTxn.hash);
@@ -636,11 +636,11 @@ FUNCTION_NAME=transferMintAccessToTokenManagerOnBSC npx hardhat run customInterc
 You should see something similar to the following on your console:
 
 ```bash
-grantRoleTxn: 0x20d78fed685e06b10ec977ae2ebc72d7fbf490edf8ca10d95b943b78a6d35d5f
+grantRoleTxn: 0x82f2fdc151e865d08f776485076cb1e5ba8ffb865f5c4f7e6fedbbe046d5e4e3
 
 ```
 
-Next, grant mint access to the Avalanche Fuji testnet using the folllowing code snippet:
+Next, grant mint access to the Avalanche Fuji testnet using the following code snippet:
 
 ```javascript
 //...
@@ -661,7 +661,7 @@ async function transferMintAccessToTokenManagerOnAvalanche() {
 
   const grantRoleTxn = await tokenContract.grantRole(
     getMinterRole,
-    "0x6b2028A5613f2ae18E328432353259a6c9248d39", // your token manager address
+    "0x1Ca3eAcB1e8C72869d8962f425631A24e19e8a80", // your token manager address
   );
 
   console.log("grantRoleTxn: ", grantRoleTxn.hash);
@@ -701,7 +701,7 @@ FUNCTION_NAME=transferMintAccessToTokenManagerOnAvalanche npx hardhat run custom
 You should see something similar to the following on your console:
 
 ```bash
-grantRoleTxn: 0x944bd91373de37592428021e49fc7344dedf8bad8b8f822e43e73de75ef01981
+grantRoleTxn: 0xdff5ef006caf387b2f86db5ad09837b72107ba9f95561ee47560a05ce55f2cad
 
 ```
 
@@ -728,7 +728,7 @@ async function transferTokens() {
   );
 
   const transfer = await interchainTokenServiceContract.interchainTransfer(
-    "0xe13c7d9da953686aa550ff6f2e19da921bc2b208c85141e17d4e799ce7288b0b", // tokenId, the one you store in the earlier step
+    "0xe0898500c75902b24ca99e2bcb77317acfdf01e66b1cacfd1daf75c66ecd8dfb", // tokenId, the one you store in the earlier step
     "Avalanche", // destination chain
     "0x510e5EA32386B7C48C4DEEAC80e86859b5e2416C", // receiver address
     ethers.utils.parseEther("5"), // amount of token to transfer
@@ -777,7 +777,7 @@ FUNCTION_NAME=transferTokens npx hardhat run customInterchainToken.js --network 
 You should see something similar to the following on your console:
 
 ```bash
-Transfer Transaction Hash: 0x77f0b0abb8f0b5df34a158bf99c7219df87a2d13253a5d5e4d191a2ad5c2fa70
+Transfer Transaction Hash: 0xbb7d242ead9fda8ce8d20654fb1c404c611c04bbb198fe15668a17272862e95b
 
 ```
 
@@ -785,7 +785,7 @@ If you see this, your interchain transfer has been successful! 🎉
 
 ### Check the transaction on the Axelar testnet scanner
 
-Check the [Axelarscan testnet scanner](https://testnet.axelarscan.io/) to see if you have successfully transferred SCT from the [BSC testnet](https://testnet.ftmscan.com/token/0x8D4a6B2A784749BBc412A41C1440C5A67EAB57EE) to the Avalanche Fuji testnet. It should look something like [this](https://testnet.axelarscan.io/gmp/0x77f0b0abb8f0b5df34a158bf99c7219df87a2d13253a5d5e4d191a2ad5c2fa70).
+Check the [Axelarscan testnet scanner](https://testnet.axelarscan.io/) to see if you have successfully transferred SCT from the [BSC testnet](https://testnet.ftmscan.com/token/0x8D4a6B2A784749BBc412A41C1440C5A67EAB57EE) to the Avalanche Fuji testnet. It should look something like [this](https://testnet.axelarscan.io/gmp/0xbb7d242ead9fda8ce8d20654fb1c404c611c04bbb198fe15668a17272862e95b).
 
 ## Congratulations!
 
