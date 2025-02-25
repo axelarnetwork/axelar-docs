@@ -50,8 +50,7 @@ In order to build the `Stellar` node, you first need to install all the required
         sudo apt-get install gcc-10
         # if using g++ or building with libstdc++
         # sudo apt-get install gcc-10 g++-10 cpp-10
-# Newer Ubuntu versions no longer package clang-format-12. To build it from source, refer to the documentation: [Installation Instructions](https://github.com/stellar/stellar-core/blob/master/INSTALL.md#ubuntu-2404-and-newer-linux-versions)
-sudo apt-get install clang-format-12
+        sudo apt-get install clang-format-18
         ```
     </tab-item>
     <tab-item title="macOS">
@@ -189,12 +188,14 @@ mkdir -p ~/.stellar-rpc/config
 Create `~/.stellar/config/core.toml` and add
 
 <tabs>
-<tab-item title="Mainnet" class="bleed">
+  <tab-item title="Mainnet" class="bleed">
         ```bash
         HTTP_PORT=11626
         PUBLIC_HTTP_PORT=false
 
         NETWORK_PASSPHRASE="Public Global Stellar Network ; September 2015"
+
+        HISTORY_ARCHIVE_URLS = "<SET_YOUR_ARCHIVE_NODE>"
 
         DATABASE="sqlite3://stellar.db"
 
@@ -354,14 +355,14 @@ Create `~/.stellar/config/core.toml` and add
         HISTORY = "curl -sf https://stellar-history-ins.franklintempleton.com/azinsshf401/{0} -o {1}"
 ```
 </tab-item>
-<tab-item title="Testnet" class="bleed">
+  <tab-item title="Testnet" class="bleed">
         ```bash
         HTTP_PORT=11626
         PUBLIC_HTTP_PORT=false
 
         NETWORK_PASSPHRASE="Test SDF Network ; September 2015"
 
-        history-archive-urls = "https://history.stellar.org/prd/core-testnet/core_testnet_001,https://history.stellar.org/prd/core-testnet/core_testnet_002,https://history.stellar.org/prd/core-testnet/core_testnet_003"
+        HISTORY_ARCHIVE_URLS = "https://history.stellar.org/prd/core-testnet/core_testnet_001, https://history.stellar.org/prd/core-testnet/core_testnet_002, https://history.stellar.org/prd/core-testnet/core_testnet_003"
 
         DATABASE="sqlite3://stellar.db"
 
@@ -392,10 +393,249 @@ Create `~/.stellar/config/core.toml` and add
         HISTORY="curl -sf http://history.stellar.org/prd/core-testnet/core_testnet_003/{0} -o {1}"
 ```
 </tab-item>
-
 </tabs>
 
-### 3. Create the config file for Stellar RPC
+### 3. Create the config file for Captive Core
+
+In your `/.stellar/captive-core` directory create a file called `stellar-core.conf` for your captive core configuration.
+
+Now in your configuration file you can match Stellar's [mainnet](https://github.com/stellar/go/blob/master/ingest/ledgerbackend/configs/captive-core-pubnet.cfg) configuration and [testnet](https://github.com/stellar/go/blob/master/ingest/ledgerbackend/configs/captive-core-testnet.cfg) configuration.
+
+<tabs>
+  <tab-item title="Mainnet" class="bleed">
+    ```toml
+    # WARNING! Do not use this config in production. Quorum sets should
+    # be carefully selected manually.
+    NETWORK_PASSPHRASE="Public Global Stellar Network ; September 2015"
+    FAILURE_SAFETY=1
+    HTTP_PORT=11626
+    PEER_PORT=11725
+
+    [[HOME_DOMAINS]]
+      HOME_DOMAIN = "publicnode.org"
+      QUALITY = "HIGH"
+
+    [[HOME_DOMAINS]]
+      HOME_DOMAIN = "lobstr"
+      QUALITY = "HIGH"
+
+    [[HOME_DOMAINS]]
+      HOME_DOMAIN = "www.franklintempleton.com"
+      QUALITY = "HIGH"
+
+    [[HOME_DOMAINS]]
+      HOME_DOMAIN = "satoshipay"
+      QUALITY = "HIGH"
+
+    [[HOME_DOMAINS]]
+      HOME_DOMAIN = "stellar.creit.tech"
+      QUALITY = "HIGH"
+
+    [[HOME_DOMAINS]]
+      HOME_DOMAIN = "sdf"
+      QUALITY = "HIGH"
+
+    [[HOME_DOMAINS]]
+      HOME_DOMAIN = "blockdaemon"
+      QUALITY = "HIGH"
+
+    [[VALIDATORS]]
+      ADDRESS = "bootes.publicnode.org:11625"
+      HISTORY = "curl -sf https://bootes-history.publicnode.org/{0} -o {1}"
+      HOME_DOMAIN = "publicnode.org"
+      NAME = "bootes"
+      PUBLIC_KEY = "GCVJ4Z6TI6Z2SOGENSPXDQ2U4RKH3CNQKYUHNSSPYFPNWTLGS6EBH7I2"
+
+    [[VALIDATORS]]
+      ADDRESS = "lyra.publicnode.org:11625"
+      HISTORY = "curl -sf https://lyra-history.publicnode.org/{0} -o {1}"
+      HOME_DOMAIN = "publicnode.org"
+      NAME = "lyra"
+      PUBLIC_KEY = "GCIXVKNFPKWVMKJKVK2V4NK7D4TC6W3BUMXSIJ365QUAXWBRPPJXIR2Z"
+
+    [[VALIDATORS]]
+      ADDRESS = "hercules.publicnode.org:11625"
+      HISTORY = "curl -sf https://hercules-history.publicnode.org/{0} -o {1}"
+      HOME_DOMAIN = "publicnode.org"
+      NAME = "hercules"
+      PUBLIC_KEY = "GBLJNN3AVZZPG2FYAYTYQKECNWTQYYUUY2KVFN2OUKZKBULXIXBZ4FCT"
+
+    [[VALIDATORS]]
+      ADDRESS = "v3.stellar.lobstr.co:11625"
+      HISTORY = "curl -sf https://archive.v3.stellar.lobstr.co/{0} -o {1}"
+      HOME_DOMAIN = "lobstr"
+      NAME = "lobstr_3_north_america"
+      PUBLIC_KEY = "GD5QWEVV4GZZTQP46BRXV5CUMMMLP4JTGFD7FWYJJWRL54CELY6JGQ63"
+
+    [[VALIDATORS]]
+      ADDRESS = "v1.stellar.lobstr.co:11625"
+      HISTORY = "curl -sf https://archive.v1.stellar.lobstr.co/{0} -o {1}"
+      HOME_DOMAIN = "lobstr"
+      NAME = "lobstr_1_eu"
+      PUBLIC_KEY = "GCFONE23AB7Y6C5YZOMKUKGETPIAJA4QOYLS5VNS4JHBGKRZCPYHDLW7"
+
+    [[VALIDATORS]]
+      ADDRESS = "v2.stellar.lobstr.co:11625"
+      HISTORY = "curl -sf https://archive.v2.stellar.lobstr.co/{0} -o {1}"
+      HOME_DOMAIN = "lobstr"
+      NAME = "lobstr_2_eu"
+      PUBLIC_KEY = "GCB2VSADESRV2DDTIVTFLBDI562K6KE3KMKILBHUHUWFXCUBHGQDI7VL"
+
+    [[VALIDATORS]]
+      ADDRESS = "v4.stellar.lobstr.co:11625"
+      HISTORY = "curl -sf https://archive.v4.stellar.lobstr.co/{0} -o {1}"
+      HOME_DOMAIN = "lobstr"
+      NAME = "lobstr_4_asia"
+      PUBLIC_KEY = "GA7TEPCBDQKI7JQLQ34ZURRMK44DVYCIGVXQQWNSWAEQR6KB4FMCBT7J"
+
+    [[VALIDATORS]]
+      ADDRESS = "v5.stellar.lobstr.co:11625"
+      HISTORY = "curl -sf https://archive.v5.stellar.lobstr.co/{0} -o {1}"
+      HOME_DOMAIN = "lobstr"
+      NAME = "lobstr_5_india"
+      PUBLIC_KEY = "GA5STBMV6QDXFDGD62MEHLLHZTPDI77U3PFOD2SELU5RJDHQWBR5NNK7"
+
+    [[VALIDATORS]]
+      ADDRESS = "stellar2.franklintempleton.com:11625"
+      HISTORY = "curl -sf https://stellar-history-usc.franklintempleton.com/azuscshf401/{0} -o {1}"
+      HOME_DOMAIN = "www.franklintempleton.com"
+      NAME = "FT_SCV_2"
+      PUBLIC_KEY = "GCMSM2VFZGRPTZKPH5OABHGH4F3AVS6XTNJXDGCZ3MKCOSUBH3FL6DOB"
+
+    [[VALIDATORS]]
+      ADDRESS = "stellar3.franklintempleton.com:11625"
+      HISTORY = "curl -sf https://stellar-history-ins.franklintempleton.com/azinsshf401/{0} -o {1}"
+      HOME_DOMAIN = "www.franklintempleton.com"
+      NAME = "FT_SCV_3"
+      PUBLIC_KEY = "GA7DV63PBUUWNUFAF4GAZVXU2OZMYRATDLKTC7VTCG7AU4XUPN5VRX4A"
+
+    [[VALIDATORS]]
+      ADDRESS = "stellar1.franklintempleton.com:11625"
+      HISTORY = "curl -sf https://stellar-history-usw.franklintempleton.com/azuswshf401/{0} -o {1}"
+      HOME_DOMAIN = "www.franklintempleton.com"
+      NAME = "FT_SCV_1"
+      PUBLIC_KEY = "GARYGQ5F2IJEBCZJCBNPWNWVDOFK7IBOHLJKKSG2TMHDQKEEC6P4PE4V"
+
+    [[VALIDATORS]]
+      ADDRESS = "stellar-de-fra.satoshipay.io:11625"
+      HISTORY = "curl -sf https://stellar-history-de-fra.satoshipay.io/{0} -o {1}"
+      HOME_DOMAIN = "satoshipay"
+      NAME = "satoshipay_de"
+      PUBLIC_KEY = "GC5SXLNAM3C4NMGK2PXK4R34B5GNZ47FYQ24ZIBFDFOCU6D4KBN4POAE"
+
+    [[VALIDATORS]]
+      ADDRESS = "stellar-sg-sin.satoshipay.io:11625"
+      HISTORY = "curl -sf https://stellar-history-sg-sin.satoshipay.io/{0} -o {1}"
+      HOME_DOMAIN = "satoshipay"
+      NAME = "satoshipay_sg"
+      PUBLIC_KEY = "GBJQUIXUO4XSNPAUT6ODLZUJRV2NPXYASKUBY4G5MYP3M47PCVI55MNT"
+
+    [[VALIDATORS]]
+      ADDRESS = "stellar-us-iowa.satoshipay.io:11625"
+      HISTORY = "curl -sf https://stellar-history-us-iowa.satoshipay.io/{0} -o {1}"
+      HOME_DOMAIN = "satoshipay"
+      NAME = "satoshipay_us"
+      PUBLIC_KEY = "GAK6Z5UVGUVSEK6PEOCAYJISTT5EJBB34PN3NOLEQG2SUKXRVV2F6HZY"
+
+    [[VALIDATORS]]
+      ADDRESS = "gamma.validator.stellar.creit.tech:11625"
+      HISTORY = "curl -sf https://gamma-history.validator.stellar.creit.tech/{0} -o {1}"
+      HOME_DOMAIN = "stellar.creit.tech"
+      NAME = "Gamma Node Validator"
+      PUBLIC_KEY = "GBF7QOLFPTHUEDUPTT4ZTULDTA3QXDIO75JHKJN2IYD7YGQLYUTR75BT"
+
+    [[VALIDATORS]]
+      ADDRESS = "alpha.validator.stellar.creit.tech:11625"
+      HISTORY = "curl -sf https://alpha-history.validator.stellar.creit.tech/{0} -o {1}"
+      HOME_DOMAIN = "stellar.creit.tech"
+      NAME = "Alpha Node Validator"
+      PUBLIC_KEY = "GBPLJDBFZO2H7QQH7YFCH3HFT6EMC42Z2DNJ2QFROCKETAPY54V4DCZD"
+
+    [[VALIDATORS]]
+      ADDRESS = "beta.validator.stellar.creit.tech:11625"
+      HISTORY = "curl -sf https://beta-history.validator.stellar.creit.tech/{0} -o {1}"
+      HOME_DOMAIN = "stellar.creit.tech"
+      NAME = "Beta Node Validator"
+      PUBLIC_KEY = "GDDANSYOYSY5EPSFHBRPCLX6XMHPPLIMHVIDXG6IPQLVVLRI2BN4HMH3"
+
+    [[VALIDATORS]]
+      ADDRESS = "core-live-b.stellar.org:11625"
+      HISTORY = "curl -sf http://history.stellar.org/prd/core-live/core_live_002/{0} -o {1}"
+      HOME_DOMAIN = "sdf"
+      NAME = "SDF 2"
+      PUBLIC_KEY = "GCM6QMP3DLRPTAZW2UZPCPX2LF3SXWXKPMP3GKFZBDSF3QZGV2G5QSTK"
+
+    [[VALIDATORS]]
+      ADDRESS = "core-live-a.stellar.org:11625"
+      HISTORY = "curl -sf http://history.stellar.org/prd/core-live/core_live_001/{0} -o {1}"
+      HOME_DOMAIN = "sdf"
+      NAME = "SDF 1"
+      PUBLIC_KEY = "GCGB2S2KGYARPVIA37HYZXVRM2YZUEXA6S33ZU5BUDC6THSB62LZSTYH"
+
+    [[VALIDATORS]]
+      ADDRESS = "core-live-c.stellar.org:11625"
+      HISTORY = "curl -sf http://history.stellar.org/prd/core-live/core_live_003/{0} -o {1}"
+      HOME_DOMAIN = "sdf"
+      NAME = "SDF 3"
+      PUBLIC_KEY = "GABMKJM6I25XI4K7U6XWMULOUQIQ27BCTMLS6BYYSOWKTBUXVRJSXHYQ"
+
+    [[VALIDATORS]]
+      ADDRESS = "stellar-full-validator3.bdnodes.net:11625"
+      HISTORY = "curl -sf https://stellar-full-history3.bdnodes.net/{0} -o {1}"
+      HOME_DOMAIN = "blockdaemon"
+      NAME = "Blockdaemon Validator 3"
+      PUBLIC_KEY = "GAYXZ4PZ7P6QOX7EBHPIZXNWY4KCOBYWJCA4WKWRKC7XIUS3UJPT6EZ4"
+
+    [[VALIDATORS]]
+      ADDRESS = "stellar-full-validator2.bdnodes.net:11625"
+      HISTORY = "curl -sf https://stellar-full-history2.bdnodes.net/{0} -o {1}"
+      HOME_DOMAIN = "blockdaemon"
+      NAME = "blockdaemon_2"
+      PUBLIC_KEY = "GAVXB7SBJRYHSG6KSQHY74N7JAFRL4PFVZCNWW2ARI6ZEKNBJSMSKW7C"
+
+    [[VALIDATORS]]
+      ADDRESS = "stellar-full-validator1.bdnodes.net:11625"
+      HISTORY = "curl -sf https://stellar-full-history1.bdnodes.net/{0} -o {1}"
+      HOME_DOMAIN = "blockdaemon"
+      NAME = "blockdaemon_1"
+      PUBLIC_KEY = "GAAV2GCVFLNN522ORUYFV33E76VPC22E72S75AQ6MBR5V45Z5DWVPWEU"
+      ```
+  </tab-item>
+  <tab-item title="Testnet" class="bleed">
+    ```toml
+    NETWORK_PASSPHRASE="Test SDF Network ; September 2015"
+    UNSAFE_QUORUM=true
+    FAILURE_SAFETY=1
+
+    [[HOME_DOMAINS]]
+    HOME_DOMAIN="testnet.stellar.org"
+    QUALITY="HIGH"
+
+    [[VALIDATORS]]
+    NAME="sdf_testnet_1"
+    HOME_DOMAIN="testnet.stellar.org"
+    PUBLIC_KEY="GDKXE2OZMJIPOSLNA6N6F2BVCI3O777I2OOC4BV7VOYUEHYX7RTRYA7Y"
+    ADDRESS="core-testnet1.stellar.org"
+    HISTORY="curl -sf http://history.stellar.org/prd/core-testnet/core_testnet_001/{0} -o {1}"
+
+    [[VALIDATORS]]
+    NAME="sdf_testnet_2"
+    HOME_DOMAIN="testnet.stellar.org"
+    PUBLIC_KEY="GCUCJTIYXSOXKBSNFGNFWW5MUQ54HKRPGJUTQFJ5RQXZXNOLNXYDHRAP"
+    ADDRESS="core-testnet2.stellar.org"
+    HISTORY="curl -sf http://history.stellar.org/prd/core-testnet/core_testnet_002/{0} -o {1}"
+
+    [[VALIDATORS]]
+    NAME="sdf_testnet_3"
+    HOME_DOMAIN="testnet.stellar.org"
+    PUBLIC_KEY="GC2V2EFSXN6SQTWVYA5EPJPBWWIMSD2XQNKUOHGEKB535AQE2I6IXV2Z"
+    ADDRESS="core-testnet3.stellar.org"
+    HISTORY="curl -sf http://history.stellar.org/prd/core-testnet/core_testnet_003/{0} -o {1}"
+    ```
+  </tab-item>
+</tabs>
+
+### 4. Create the config file for Stellar RPC
 
 ```bash
 cd ~/.stellar-rpc/config/
@@ -623,10 +863,6 @@ Run
 stellar-rpc \
   --config-path /Users/<username>/.stellar/config/core.toml \
   --captive-core-config-path /Users/<username>/.stellar/captive-core/stellar-core.conf \
-  --history-archive-urls \
-    "https://history.stellar.org/prd/core-testnet/core_testnet_001,\
-     https://history.stellar.org/prd/core-testnet/core_testnet_002,\
-     https://history.stellar.org/prd/core-testnet/core_testnet_003"
 ```
 
 If all goes well, you should see logs indicating it’s starting up and connecting to testnet.
@@ -693,9 +929,6 @@ On macOS, you’ll can use a LaunchAgent in ~/Library/LaunchAgents/. For example
       <!-- Path to your Captive Core config file -->
       <string>--captive-core-config-path</string>
       <string>/Users/username/.stellar/captive-core/stellar-core.conf</string>
-      <!-- History archive URLs (comma-separated) -->
-      <string>--history-archive-urls</string>
-      <string>https://history.stellar.org/prd/core-testnet/core_testnet_001,https://history.stellar.org/prd/core-testnet/core_testnet_002,https://history.stellar.org/prd/core-testnet/core_testnet_003</string>
     </array>
     
     <!-- Run as soon as the agent is loaded -->
@@ -721,7 +954,7 @@ On macOS, you’ll can use a LaunchAgent in ~/Library/LaunchAgents/. For example
     <key>StandardOutPath</key>
     <string>/Users/username/.stellar/data/com.stellar.rpc.out</string>
     <key>StandardErrorPath</key>
-    <string>/Users/username/.stellar/data/com.stellar.error.rpc.out</string>
+    <string>/Users/username/.stellar/data/com.stellar.rpc.out</string>
   </dict>
 </plist>
 ```
@@ -744,7 +977,7 @@ To check if the service is running run:
   </tab-item>
   <tab-item title="macOS">
     ```bash
-    tail -f /tmp/com.stellar.rpc.out
+     tail -f ~/.stellar/data/com.stellar.rpc.out
     ```
   </tab-item>
 </tabs>
