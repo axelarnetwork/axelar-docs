@@ -2,7 +2,7 @@
 
 import { Callout } from "/src/components/callout";
 
-Set up your Arbitrum Mainnet & Goerli Testnet RPC node
+Set up your Arbitrum Mainnet & Sepolia Testnet RPC node
 
 ## Prerequisites
 
@@ -63,7 +63,7 @@ To verify if your node is in sync you can check the latest block from the explor
 Compare it with what you have in `docker ps -q | xargs -L 1 docker logs --tail 10 -f`
 
 - [Mainnet Explorer](https://arbiscan.io)
-- [Testnet Explorer](https://goerli.arbiscan.io)
+- [Testnet Explorer](https://sepolia.arbiscan.io)
 
 #### Test RPC connection
 
@@ -88,7 +88,7 @@ vald's `config.toml`
     start-with-bridge = true 
 ```
   </tab-item>
-  <tab-item title="Goerli Testnet">
+  <tab-item title="Sepolia Testnet">
     ```bash [[axelar_bridge_evm]] name = "arbitrum" rpc_addr = "http://IP:PORT"
     start-with-bridge = true 
     
