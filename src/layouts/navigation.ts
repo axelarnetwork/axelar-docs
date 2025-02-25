@@ -500,6 +500,7 @@ export const getNavigation = (section) => {
               href: "/validator/external-chains/stellar/",
             },
             { title: "Sui", href: "/validator/external-chains/sui/" },
+            { title: "XRPL EVM", href: "/validator/external-chains/xrpl-evm/" },
             { title: "XRPL", href: "/validator/external-chains/xrpl/" },
           ],
         },

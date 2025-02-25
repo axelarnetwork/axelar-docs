@@ -1,0 +1,190 @@
+# XRPL EVM
+
+import { Callout } from "/src/components/callout";
+
+Setup your XRPL EVM Mainnet or Testnet node.
+
+## Prerequisites
+
+- MacOS or Ubuntu 18.04+
+- Build-essential packages
+- Golang 1.17+
+- [Official Documentation](https://docs.xrplevm.org/pages/operators/getting-started/system-requirements)
+
+
+| Resource        | Minimum Recommendation       | Notes                                   |
+|-----------------|------------------------------|-----------------------------------------|
+| Operating System | Linux (AMD64)               | A recent Linux distribution (e.g., Ubuntu 20.04 LTS, CentOS 8, Debian 11) is strongly recommended for stability, security, and compatibility. |
+| CPU             | 4 Physical Cores or More     | Multi-core processors provide enough parallel processing to efficiently handle validation, API requests, and block synchronization. Higher core counts can enhance performance under heavy load. |
+| Memory (RAM)    | 32GB                         | Sufficient memory ensures smooth operation during peak network load, handling large state DB operations, and responding to complex smart contract queries. More memory may further improve performance. |
+| Storage         | 500GB NVMe SSD               | A high-performance NVMe SSD provides fast random access and write speeds, which are essential for maintaining a responsive node database and quickly processing state updates. More storage capacity may be required for archive nodes or long-term data retention. |
+| Network          | 100Mbps                     | A stable 100Mbps connection or faster ensures timely propagation of blocks, efficient peer discovery, and responsive API endpoints. Lower bandwidth may lead to delayed synchronization or performance bottlenecks. |
+
+## Install
+
+To get started with the node setup.
+
+<Callout emoji="💡">
+  This setup has been tested with `exrpd` version `6.0.0`
+</Callout>
+
+1. Install the latest binary from the official XRPL EVM node [repo](https://github.com/xrplevm/node/releases)
+2. Move the binary to your preferred directory
+3. Make the binary executable
+
+```bash
+chmod +x exrpd
+```
+
+4. Confirm if `exrpd` successfully installed by running version command
+
+```bash
+ exrpd version
+```
+
+## Node Configuration
+
+1. Create the .exrpd directory in your user’s home directory:
+```bash
+mkdir -p ~/.exrpd
+```
+Inside it, you will eventually see two subfolders. The first is `~/.exrpd/config`. The second is `~/.exrpd/data`.
+
+2. Set the chain id
+<tabs>
+  <tab-item title="devnet">
+    ```bash
+    exrpd config chain-id exrp_1440002-1
+    ```
+  </tab-item>
+  <tab-item title="testnet">
+    ```bash
+    exrpd config chain-id TBD
+    ```
+  </tab-item>
+  <tab-item title="mainnet">
+    ```bash
+    exrpd config chain-id TBD
+    ```
+  </tab-item>
+</tabs>
+
+3. Initialize the node
+Make sure to replace `<your_moniker>` with a short ASCII-only name for your node (e.g., my-node).
+<tabs>
+  <tab-item title="devnet">
+    ```bash
+    exrpd init <your_moniker> --chain-id exrp_1440002-1
+    ```
+  </tab-item>
+  <tab-item title="testnet">
+    ```bash
+    exrpd init <your_moniker> --chain-id TBD
+    ```
+  </tab-item>
+  <tab-item title="mainnet">
+    ```bash
+    exrpd init <your_moniker> --chain-id TBD
+    ```
+  </tab-item>
+</tabs>
+This step populates the afforementioned `~/.exrpd` directory with the `config` and `data` directories. 
+
+## Download Snapshot
+
+You can download Peersyst's [snapshot](https://evm-sidechain-snapshots-devnet.s3.us-east-1.amazonaws.com/exrpd.tar.lz4). 
+
+
+<Callout emoji="💡">
+    Note: you can also download from genesis but genesis was created with `v1.0.0` and if you downloaded the latest `exrpd` you will be running a later version than that.
+</Callout>
+
+This may take a few hours to complete and will require about ~142gb of storage. Once completed, extract the file into your `~/.exrpd/data` folder. 
+
+
+
+## Add Peers
+
+You need peers so that your node can sync with the devnet. The XRPL EVM Devnet provides a text file listing known peers:
+
+Grab 10 
+```bash
+PEERS=$(curl -sL https://raw.githubusercontent.com/Peersyst/xrp-evm-archive/main/poa-devnet/peers.txt \
+  | sort -R \
+  | head -n 10 \
+  | awk '{print $1}' \
+  | paste -s -d, -)
+
+```
+
+Inject the peers into your `config.toml` file (persistent_peers):
+
+```bash
+sed -i.bak -e "s/^persistent_peers *=.*/persistent_peers = \"$PEERS\"/" \
+  ~/.exrpd/config/config.toml
+```
+
+## Ethereum JSON RPC Compatibility 
+
+The XRP EVM node is a CometBFT Node. The `ampd` daemon however will be attempting to interact with your node as an Ethereum JSON RPC compatible node. To configure your CometBFT Node to support Ethereum JSON RPC functionality you need to update your `app.toml` file. In the JSON RPC section of the `app.toml` update the `enable` flag to `true`. 
+
+```toml
+###############################################################################
+###                           JSON RPC Configuration                        ###
+###############################################################################
+
+[json-rpc]
+
+# Enable defines if the JSONRPC server should be enabled.
+enable = true
+```
+
+## Run Node
+
+At this point your `~/.exrpd` file should have a `config` and `data` file. The config should be wired up with various configurations including the 
+1. `addrbook.json`
+1. `app.toml`
+1. `client.toml`
+1. `config.toml`
+1. `config.toml.bak`
+1. `genesis.json`
+1. `node_key.json`
+1. `priv_validator_key.json`
+
+The `data` directory should contain the data that you extraced from the snpashot you installed before.
+
+Run the following command to start the node
+
+```bash
+exrpd start
+```
+
+You should see logs similar to
+
+```bash
+INF starting ABCI with CometBFT module=server
+...
+INF finalized block block_app_hash=... height=13242560 ...
+```
+
+### Common Observations in Logs
+
+1. `“ERR failed to add block ... got an already committed block #XXXX”`. This just means your node already processed the block from a faster peer.
+1. `Periodic connect/disconnect messages (e.g., SendTimeout, error with peer ...)` This is normal. Tendermint/CometBFT will drop slow or unresponsive peers and reconnect if needed.
+1. `“catching_up”: true` This means your node thinks there are more blocks to fetch. If the Devnet is actively producing blocks, this will remain true until you fully sync. If the network is paused or slow, it may stay true indefinitely, but you’ll still be at the latest block.
+
+### Common Issues
+
+1. No peers
+- Make sure you updated persistent_peers.
+- If you see repeated “No addresses to dial,” your node has zero connections. Re-run the peer script or check the docs for seed nodes.
+
+2. Genesis or config file errors
+- Ensure the chain ID and all fields (like `initial_height`) are in the correct format (typically string in Cosmos).
+- Re-download the official genesis.json if in doubt.
+
+3. Port collisions
+- If something else is using 26657, you may need to open ~/.exrpd/config/config.toml and change your RPC ports.
+
+4. Minimum gas price error
+- If you receive an error that says `Error: set min gas price in app.toml or flag or env variable: error in app.toml`. Set the `minimum-gas-prices` field in `app.toml` to a value for example `0.25axrp`
