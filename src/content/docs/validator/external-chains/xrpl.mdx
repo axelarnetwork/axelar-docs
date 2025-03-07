@@ -1,0 +1,144 @@
+# XRPL
+
+import { Callout } from "/src/components/callout";
+
+Node setup guide for your XRP Ledger Testnet or Mainnet validator.
+
+## Requirements
+
+- [Set up your Amplifier verifier node](https://docs.axelar.dev/validator/amplifier/verifier-onboarding/)
+- Minimum hardware requirements:
+    * CPU: Quad core x86_64 (64-bit)
+    * Memory: 16 GB+ RAM
+    * Disk: 50 GB SSD/NVMe
+- Ubuntu Linux 18.04+ (tested on 22.04) or Debian 10+
+- [Official Documentation](https://xrpl.org/docs/infrastructure/installation)
+
+## Install on Ubuntu or Debian Linux
+
+1. Update repositories:
+
+```bash
+sudo apt -y update
+sudo apt -y install apt-transport-https ca-certificates wget gnupg
+```
+
+2. Add Ripple's package-signing GPG key to your list of trusted keys:
+
+```bash
+sudo install -m 0755 -d /etc/apt/keyrings && \
+    wget -qO- https://repos.ripple.com/repos/api/gpg/key/public | \
+    sudo gpg --dearmor -o /etc/apt/keyrings/ripple.gpg
+```
+
+3. Check the fingerprint of the newly-added key:
+
+```bash
+gpg --show-keys /etc/apt/keyrings/ripple.gpg
+```
+
+The output should include an entry for Ripple such as the following:
+
+```
+pub   rsa3072 2019-02-14 [SC] [expires: 2026-02-17]
+    C0010EC205B35A3310DC90DE395F97FFCCAFD9A2
+uid           TechOps Team at Ripple <techops+rippled@ripple.com>
+sub   rsa3072 2019-02-14 [E] [expires: 2026-02-17]
+```
+
+4. Add the appropriate Ripple repository for your operating system version. Replace `$OS` with:
+- `buster` for Debian 10 Buster
+- `bullseye` for Debian 11 Bullseye
+- `bookworm` for Debian 12 Bookworm
+- `bionic` for Ubuntu 18.04 Bionic Beaver
+- `jammy` for Ubuntu 22.04 Jammy Jellyfish
+- `noble` for Ubuntu 24.04 Noble Numbat
+
+```bash
+echo "deb [signed-by=/etc/apt/keyrings/ripple.gpg] https://repos.ripple.com/repos/rippled-deb $OS stable" | \
+    sudo tee -a /etc/apt/sources.list.d/ripple.list
+```
+
+5. Update the package index to include Ripple's repo and install `rippled`.
+
+```bash
+sudo apt -y update && sudo apt -y install rippled
+```
+
+6. Check the status of the `rippled` service:
+
+```bash
+sudo systemctl status rippled.service
+```
+
+The `rippled` service should start automatically. If not, you can start it manually with:
+
+```bash
+sudo systemctl start rippled.service
+```
+
+If you're configuring a Mainnet `rippled` node, you can skip the next section.
+
+## Just for Testnet
+
+If you are setting up a Testnet `rippled` node, first complete the above proccess, and then follow these next steps:
+
+### 1. Hub configuration
+
+Edit your `rippled.cfg` file located under `/etc/opt/ripple/rippled.cfg`.
+
+1. Set an `[ips]` stanza with the Testnet hub:
+
+```
+[ips]
+s.altnet.rippletest.net 51235
+```
+
+2. Comment out the previous `[ips]` stanza, if there is one.
+
+3. Add a `[network_id]` stanza with the appropriate value:
+
+```
+[network_id]
+testnet
+```
+
+### 2. Trusted validator configuration
+
+Edit your `validators.txt` file located under `/etc/opt/ripple/validators.txt`.
+
+1. Uncomment or add the Testnet `[validator_list_sites]` and `[validator_list_keys]` stanzas:
+
+```
+[validator_list_sites]
+https://vl.altnet.rippletest.net
+
+[validator_list_keys]
+ED264807102805220DA0F312E71FC2C69E1552C9C5790F6C25E3729DEB573D5860
+```
+
+2. Comment out any previous `[validator_list_sites]`, `[validator_list_keys]`, or `[validators]` stanzas.
+
+### 3. Restart the server
+
+```bash
+sudo systemctl restart rippled
+```
+
+You can find more information on connecting to parallel networks [here](https://xrpl.org/docs/infrastructure/configuration/connect-your-rippled-to-the-xrp-test-net).
+
+## Final checks
+
+Use the `rippled` commandline interface to see if your server is synced with the network:
+
+```bash
+rippled server_info
+```
+
+It can take several minutes to sync. When the `server_state` in the response is `full`, then your server is fully synced with the network.
+
+You can query the node with:
+
+```bash
+curl -H 'Content-Type: application/json' -d '{"method":"server_info","params":[{}]}' http://localhost:5005
+```

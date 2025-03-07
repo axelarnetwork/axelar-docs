@@ -11,8 +11,8 @@ The workflow can be summarized in three steps:
 In this tutorial, you will learn how to:
 
 - Programmatically create a new Interchain Token from scratch using Axelar's Interchain Token Service
-- Register and deploy the token locally on the Fantom chain
-- Register and deploy the token remotely on the Polygon chain
+- Register and deploy the token locally on the Binance Smart chain (BSC)
+- Register and deploy the token remotely on the Avalanche Fuji chain
 - Transfer your token between those chains
 
 ## **Prerequisites**
@@ -20,7 +20,7 @@ In this tutorial, you will learn how to:
 You will need:
 
 - A basic understanding of [Solidity](https://www.tutorialspoint.com/solidity/index.htm) and [JavaScript](https://www.w3schools.com/js/)
-- A [MetaMask wallet](https://metamask.io/) with FTM and MATIC funds for testing. If you don’t have these funds, you can get FTM from the [Fantom faucet](https://faucet.fantom.network/) and MATIC from the Mumbai faucets ([1](https://faucet.polygon.technology/), [2](https://faucet.quicknode.com/polygon/mumbai)).
+- A [MetaMask wallet](https://metamask.io/) with tBNB and Avax funds for testing. If you don’t have these funds, you can get tBNB from the [BSC faucet](https://www.bnbchain.org/en/testnet-faucet) and Avax from the Avalanche Fuji faucets ([1](https://faucets.chain.link/fuji), [2](https://core.app/tools/testnet-faucet/)).
 
 ## **Set up your development environment**
 
@@ -54,7 +54,7 @@ Create a folder named `utils`. Inside the folder, create the following new files
 
 ## **Set up an RPC for the local chain**
 
-Next, set up an RPC for the Fantom testnet, which you will be using as your local (source) chain.
+Next, set up an RPC for the BSC testnet, which you will be using as your local (source) chain.
 
 ### Create an `.env` file
 
@@ -74,7 +74,6 @@ PRIVATE_KEY= // Add your account private key here
 
 <aside>
 💡 If you will push this project on GitHub, create a `.gitignore` file and include `.env`.
-
 </aside>
 
 Then, create a file with the name `hardhat.config.js` and add the following code snippet:
@@ -89,9 +88,9 @@ const PRIVATE_KEY = process.env.PRIVATE_KEY;
 module.exports = {
   solidity: "0.8.18",
   networks: {
-    fantom: {
-      url: "https://rpc.ankr.com/fantom_testnet",
-      chainId: 4002,
+    bsc: {
+      url: "https://bsc-testnet.drpc.org",
+      chainId: 97,
       accounts: [PRIVATE_KEY],
     },
   },
@@ -100,7 +99,7 @@ module.exports = {
 
 ## Register and deploy a new Interchain Token to the local chain
 
-Now that you’ve set up a Fantom testnet RPC, you can register and deploy a new Interchain Token. For the purposes of this tutorial, the token you’ll create will be called “New Interchain Token” and have the symbol “NIT”:
+Now that you’ve set up a BSC testnet RPC, you can register and deploy a new Interchain Token. For the purposes of this tutorial, the token you’ll create will be called “New Interchain Token” and have the symbol “NIT”:
 
 ### Create a `newInterchainToken.js` script
 
@@ -160,10 +159,10 @@ async function getContractInstance(contractAddress, contractABI, signer) {
 
 ### Add a deployment function
 
-Now you’re ready to register and deploy your token! Create a `registerAndDeploy()` function for the Fantom testnet. This will create a new token called “New Interchain Token” with the symbol “NIT”:
+Now you’re ready to register and deploy your token! Create a `registerAndDeploy()` function for the BSC testnet. This will create a new token called “New Interchain Token” with the symbol “NIT”:
 
 ```javascript
-// Register and deploy a new interchain token to the Fantom testnet
+// Register and deploy a new interchain token to the BSC testnet
 async function registerAndDeploy() {
   // Generate random salt
   const salt = "0x" + crypto.randomBytes(32).toString("hex");
@@ -183,18 +182,18 @@ async function registerAndDeploy() {
   const interchainTokenFactoryContract = await getContractInstance(
     interchainTokenFactoryContractAddress,
     interchainTokenFactoryContractABI,
-    signer
+    signer,
   );
   const interchainTokenServiceContract = await getContractInstance(
     interchainTokenServiceContractAddress,
     interchainTokenServiceContractABI,
-    signer
+    signer,
   );
 
   // Generate a unique token ID using the signer's address and salt
   const tokenId = await interchainTokenFactoryContract.interchainTokenId(
     signer.address,
-    salt
+    salt,
   );
 
   // Retrieve new token address
@@ -213,7 +212,7 @@ async function registerAndDeploy() {
       symbol,
       decimals,
       initialSupply,
-      signer.address
+      signer.address,
     );
 
   console.log(
@@ -223,7 +222,7 @@ async function registerAndDeploy() {
   Transaction Hash: ${deployTxData.hash},
   salt: ${salt},
   Expected Token Manager Address: ${expectedTokenManagerAddress},
-     `
+     `,
   );
 }
 ```
@@ -254,41 +253,41 @@ main().catch((error) => {
 });
 ```
 
-### Run the `newInterchainToken.js` script to deploy to Fantom
+### Run the `newInterchainToken.js` script to deploy to BSC
 
-Run the script in your terminal to register and deploy the token, specifying the `fantom` testnet:
+Run the script in your terminal to register and deploy the token, specifying the BSC testnet:
 
 ```bash
-FUNCTION_NAME=registerAndDeploy npx hardhat run newInterchainToken.js --network fantom
+FUNCTION_NAME=registerAndDeploy npx hardhat run newInterchainToken.js --network bsc
 ```
 
 You should see something similar to the following on your console:
 
 ```javascript
-Deployed Token ID: 0x4427c3aab191db9cfc696291f93c6c33e93b5384ea5b25497e457316b50c45e9,
-Token Address: 0xc028ebdF906a890be73C594b6a14858D0552544A,
-Transaction Hash: 0x7b1b6321b5027851a15048fb9743d2b894f19d745441c1daf87d0c5054ed5309,
-salt: 0x47ca252a2441a0e420c6ca15944fc902712a120e4be7d753733bb26c55f7098f,
-Expected Token Manager Address: 0xECB7E82E4caBA520a4B9a10E6Ce831884c3685eF,
+Deployed Token ID: 0x46883a49f2798ae966b1bb98f1c2d577d6b4edbcd1fca9d0a28cc2a254852f1e,
+Token Address: 0x5dcDf836212CAc43dacb81af07fF84D805422f6c,
+Transaction Hash: 0xa9a7054dbb348eecbe4f1486d58cda758442489f4a9f0a20d70d1fce63a179dd,
+salt: 0x2ed5cdfe34cf85a1e46aa19679ad29d17d07e8a6197433a2738fabc5e7365d2d,
+Expected Token Manager Address: 0xA7a00f1c3028c81d69F22232822DE82fC8f08403,
 ```
 
-This shows that you have created a new interchain token called New Interchain Token (NIT) and deployed it on the Fantom testnet.
+This shows that you have created a new interchain token called New Interchain Token (NIT) and deployed it on the BSC testnet.
 
-### Check the transaction on the Fantom testnet scanner
+### Check the transaction on the BSC testnet scanner
 
-Check the [Fantom testnet scanner](https://testnet.ftmscan.com/) to see if you have successfully [created](https://testnet.ftmscan.com/token/0xc028ebdf906a890be73c594b6a14858d0552544a) and [locally deployed](https://testnet.ftmscan.com/tx/0x7b1b6321b5027851a15048fb9743d2b894f19d745441c1daf87d0c5054ed5309) a new Interchain Token on the Fantom testnet.
+Check the [BSC testnet scanner](https://testnet.bscscan.com/) to see if you have successfully [created](https://testnet.bscscan.com/tx/0xa9a7054dbb348eecbe4f1486d58cda758442489f4a9f0a20d70d1fce63a179dd) and [locally deployed](https://testnet.bscscan.com/tx/0xa9a7054dbb348eecbe4f1486d58cda758442489f4a9f0a20d70d1fce63a179dd) a new Interchain Token on the BSC testnet.
 
 ### Get new token address
 
-On FTMScan, navigate to the **ERC-20 Tokens Transferred** section and click **New Interchain Token (NIT)**. This should take you to a page for your new token. Copy the token contract address from the **Other Info** section and store it somewhere safe. You will need it to initiate a remote transfer from the token in a later step.
+On BSC Scan, navigate to the **ERC-20 Tokens Transferred** section and click **New Interchain Token (NIT)**. This should take you to a page for your new token. Copy the token contract address from the **Other Info** section and store it somewhere safe. You will need it to initiate a remote transfer from the token in a later step.
 
 ## Deploy an Interchain Token to a remote chain
 
-You’ve just successfully deployed an Interchain Token to Fantom, which you are using as your local chain. Now, deploy it to Polygon, which will be the remote chain in this tutorial. Remember that you can specify any two chains to be your local and remote chains.
+You’ve just successfully deployed an Interchain Token to BSC, which you are using as your local chain. Now, deploy it to Avalanceh Fuji, which will be the remote chain in this tutorial. Remember that you can specify any two chains to be your local and remote chains.
 
 ### Estimate gas fees
 
-In `newInterchainToken.js`, call `estimateGasFee()` from the [AxelarJS SDK](https://www.notion.so/bd238d757a144a069501f0b481488ef3?pvs=21) to estimate the actual cost of deploying your token on a remote chain:
+In `newInterchainToken.js`, call `estimateGasFee()` from the [AxelarJS SDK](https://www.npmjs.com/package/@axelar-network/axelarjs-sdk) to estimate the actual cost of deploying your token on a remote chain:
 
 ```javascript
 //...
@@ -298,9 +297,9 @@ const api = new AxelarQueryAPI({ environment: Environment.TESTNET });
 // Estimate gas costs.
 async function gasEstimator() {
   const gas = await api.estimateGasFee(
-    EvmChain.FANTOM,
-    EvmChain.POLYGON,
-    GasToken.FTM,
+    EvmChain.BINANCE,
+    EvmChain.AVALANCHE,
+    GasToken.ETH,
     700000,
     1.1
   );
@@ -313,13 +312,14 @@ async function gasEstimator() {
 
 ### Perform remote token deployment
 
-Create a `deployToRemoteChain()` function that will perform token remote deployment on the Polygon Mumbai testnet. Make sure to replace the `salt` value with the salt returned to your terminal from when you ran `registerAndDeploy()`:
+Create a `deployToRemoteChain()` function that will perform token remote deployment on the Avlanche Fuji testnet. Make sure to replace the `salt` value with the salt returned to your terminal from when you ran `registerAndDeploy()`:
 
 ```javascript
 //...
 
-// Deploy to remote chain: Polygon
+// Deploy to remote chain: Avalanche Fuji
 async function deployToRemoteChain() {
+    
   // Get a signer for authorizing transactions
   const signer = await getSigner();
   // Get contract for remote deployment
@@ -334,17 +334,17 @@ async function deployToRemoteChain() {
 
   // Salt value from registerAndDeploy(). Replace with your own
   const salt =
-    "0x47ca252a2441a0e420c6ca15944fc902712a120e4be7d753733bb26c55f7098f";
+    "0x2ed5cdfe34cf85a1e46aa19679ad29d17d07e8a6197433a2738fabc5e7365d2d";
 
   // Initiate transaction
-  const txn = await interchainTokenFactoryContract.deployRemoteInterchainToken(
-    "Fantom",
-    salt,
-    signer.address,
-    "Polygon",
-    gasAmount,
-    { value: gasAmount }
-  );
+  const txn = await interchainTokenFactoryContract[
+    "deployRemoteInterchainToken(bytes32,string,uint256)"
+  ](
+      salt, 
+      "Avalanche", 
+      gasAmount, 
+      { value: gasAmount }
+    );
 
   console.log(`Transaction Hash: ${txn.hash}`);
 }
@@ -374,27 +374,27 @@ async function main() {
 //...
 ```
 
-### Run the `newInterchainToken.js` script to deploy to Polygon
+### Run the `newInterchainToken.js` script to deploy to Avalanche Fuji
 
-Run the script in your terminal to register and deploy the token, once again specifying the `fantom` testnet (the source chain where all transactions are taking place):
+Run the script in your terminal to register and deploy the token, once again specifying the `bsc` testnet (the source chain where all transactions are taking place):
 
 ```javascript
-FUNCTION_NAME=deployToRemoteChain npx hardhat run newInterchainToken.js --network fantom
+FUNCTION_NAME=deployToRemoteChain npx hardhat run newInterchainToken.js --network bsc
 ```
 
 You should see something similar to the following on your console:
 
 ```bash
-Transaction Hash: 0xca901048c74c3757fcea5d309cd53ef6e21816c841e85145ac8586fa71a9cc48
+Transaction Hash: 0x7ad7cbbb7b8a76b26eccd97f6c41d6f38066d829f7e0554ab60223b18665f98a
 ```
 
 ### Check the transaction on the Axelar testnet scanner
 
-Check the [Axelarscan testnet scanner](https://testnet.axelarscan.io/) to see if you have successfully created and remotely deployed NIT on the Polygon Mumbai testnet. It should look something like [this](https://testnet.axelarscan.io/gmp/0xca901048c74c3757fcea5d309cd53ef6e21816c841e85145ac8586fa71a9cc48). Make sure that Axelar shows a successful transaction before continuing on to the next step.
+Check the [Axelarscan testnet scanner](https://testnet.axelarscan.io/) to see if you have successfully created and remotely deployed NIT on the Avalanche Fuji testnet. It should look something like [this](https://testnet.axelarscan.io/gmp/0x7ad7cbbb7b8a76b26eccd97f6c41d6f38066d829f7e0554ab60223b18665f98a). Make sure that Axelar shows a successful transaction before continuing on to the next step.
 
 ## Transfer your token between chains
 
-Now that you have deployed your token both locally to Fantom and remotely to Polygon, you can transfer between those two chains using the NIT you just deployed via the [`interchainTransfer()`](https://github.com/axelarnetwork/interchain-token-service/blob/9edc4318ac1c17231e65886eea72c0f55469d7e5/contracts/interfaces/IInterchainTokenStandard.sol#L19) method.
+Now that you have deployed your token both locally to BSC and remotely to Avalanche Fuji, you can transfer between those two chains using the NIT you just deployed via the [`interchainTransfer()`](https://github.com/axelarnetwork/interchain-token-service/blob/9edc4318ac1c17231e65886eea72c0f55469d7e5/contracts/interfaces/IInterchainTokenStandard.sol#L19) method.
 
 ### Initiate a remote token transfer directly from the token
 
@@ -408,7 +408,7 @@ async function transferTokens() {
   const signer = await getSigner();
 
   const interchainToken = await getContractInstance(
-    "0xc028ebdF906a890be73C594b6a14858D0552544A", // Update with new token address
+    "0x5dcDf836212CAc43dacb81af07fF84D805422f6c", // Update with new token address
     interchainTokenContractABI, // Interchain Token contract ABI
     signer
   );
@@ -418,7 +418,7 @@ async function transferTokens() {
 
   // Initiate transfer via token
   const transfer = await interchainToken.interchainTransfer(
-    "Polygon", // Destination chain
+    "Avalanche", // Destination chain
     "0x510e5EA32386B7C48C4DEEAC80e86859b5e2416C", // Update with your own wallet address
     ethers.utils.parseEther("25"), // Transfer 25 tokens
     "0x", // Empty data payload
@@ -454,33 +454,33 @@ async function main() {
 
 ### Run the `newInterchainToken.js` script to transfer tokens
 
-Run the script in your terminal, specifying the `fantom` testnet:
+Run the script in your terminal, specifying the `BSC` testnet:
 
 ```javascript
-FUNCTION_NAME=transferTokens npx hardhat run newInterchainToken.js --network fantom
+FUNCTION_NAME=transferTokens npx hardhat run newInterchainToken.js --network bsc
 ```
 
 You should see something similar to the following on your console:
 
 ```bash
-Transfer Transaction Hash: 0x205554f5e39e29b21f3110ebf813579a3826465746c37a151ed18c992004c6b5
+Transfer Transaction Hash: 0x495f530e603e3bfe425998dcced66e849353a4ba0196cbc0a041ac2f28eb8f96
 ```
 
 If you see this, it means that your interchain transfer has been successful! 🎉
 
 ### Check the transaction on the Axelar testnet scanner
 
-Check the [Axelarscan testnet scanner](https://testnet.axelarscan.io/) to see if you have successfully transferred NIT from the Fantom testnet to the Polygon testnet. It should look something like [this](https://mumbai.polygonscan.com/token/0xc028ebdf906a890be73c594b6a14858d0552544a).
+Check the [Axelarscan testnet scanner](https://testnet.axelarscan.io/) to see if you have successfully transferred NIT from the BSC testnet to the Avalanche Fuji testnet. It should look something like [this](https://testnet.axelarscan.io/gmp/0x495f530e603e3bfe425998dcced66e849353a4ba0196cbc0a041ac2f28eb8f96).
 
 ### Import the new token into your wallet
 
-You can also import the new token into your own wallet with its contract address that you saved from FTMScan. You should have 975 NIT on Fantom and 25 NIT on Polygon.
+You can also import the new token into your own wallet with its contract address that you saved from BSC Scan. You should have 975 NIT on BSC and 25 NIT on Avalanche Fuji.
 
 ## Congratulations!
 
 You have now programmatically created a new interchain token called NIT using Axelar’s Interchain Token Service and transferred it between two chains. You should now be able to confidently create and manage your own Interchain Tokens, opening up a wide range of possibilities for token transfers and asset bridges.
 
-Great job making it this far! To show your support to the author of this tutorial, please post about your experience and tag [@axelarnetwork](https://twitter.com/axelarnetwork) on Twitter (X).
+Great job making it this far! To show your support to the author of this tutorial, please post about your experience and tag [@axelarnetwork](https://x.com/axelar) on Twitter (X).
 
 ## What’s next
 
