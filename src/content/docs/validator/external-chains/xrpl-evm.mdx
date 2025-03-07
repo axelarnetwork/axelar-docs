@@ -50,26 +50,7 @@ mkdir -p ~/.exrpd
 ```
 Inside it, you will eventually see two subfolders. The first is `~/.exrpd/config`. The second is `~/.exrpd/data`.
 
-2. Set the chain id
-<tabs>
-  <tab-item title="devnet">
-    ```bash
-    exrpd config chain-id exrp_1440002-1
-    ```
-  </tab-item>
-  <tab-item title="testnet">
-    ```bash
-    exrpd config chain-id TBD
-    ```
-  </tab-item>
-  <tab-item title="mainnet">
-    ```bash
-    exrpd config chain-id TBD
-    ```
-  </tab-item>
-</tabs>
-
-3. Initialize the node
+2. Initialize the node
 Make sure to replace `<your_moniker>` with a short ASCII-only name for your node (e.g., my-node).
 <tabs>
   <tab-item title="devnet">
@@ -89,6 +70,26 @@ Make sure to replace `<your_moniker>` with a short ASCII-only name for your node
   </tab-item>
 </tabs>
 This step populates the aforementioned `~/.exrpd` directory with the `config` and `data` directories. 
+
+## Download genesis file
+
+<tabs>
+  <tab-item title="devnet">
+    ```bash
+    wget https://raw.githubusercontent.com/Peersyst/xrp-evm-archive/main/poa-devnet/genesis.json -O ~/.exrpd/config/genesis.json
+    ```
+  </tab-item>
+  <tab-item title="testnet">
+    ```bash
+    TBD
+    ```
+  </tab-item>
+  <tab-item title="mainnet">
+    ```bash
+    TBD
+    ```
+  </tab-item>
+</tabs>
 
 ## Download Snapshot
 
