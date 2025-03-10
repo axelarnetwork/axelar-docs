@@ -2,59 +2,53 @@ import { Callout } from "/src/components/callout";
 
 # Create New Token
 
-Interchain Tokens are tokens deployed via the [Interchain Token Service (ITS)](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/InterchainTokenService.sol). These tokens are relatively simple ERC-20s with a built-in integration to ITS, making them bridgeable to other blockchains as soon as the token is deployed. If you are starting fresh and want to deploy a brand new token that will have bridging capabilities from day one, ITS offers you the ability to deploy a token directly through its own contract.
+Interchain Tokens are tokens deployed via the [Interchain Token Service (ITS)](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/InterchainTokenService.sol). These tokens are relatively simple ERC-20 contracts with built-in ITS integration, making them bridgeable to other blockchains as soon as they are deployed.
 
-## Install the Axelar ITS Dependency
-
-Install the Axelar Interchain Token Service (ITS) package using npm or any other node package manager:
-
-```bash
-npm i @axelar-network/interchain-token-service
-```
+If you are starting fresh and want to deploy a brand new token that will have bridging capabilities from day one, ITS offers the ability to deploy a token directly through the [Interchain Token Factory](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/InterchainTokenFactory.sol).
 
 ## Deploy an Interchain Token
 
-Use the `deployInterchainToken` function to deploy a new interchain token on the current chain:
+Use the `deployInterchainToken` function to deploy a new interchain token on your preferred chain.
 
 ```solidity
-bytes32 tokenId = its.deployInterchainToken(
-    0xabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefab, // unique salt for token deployment
-    'My Interchain Token', // token name
-    'ITS', // token symbol
-    18, // token decimals
-    1000000, // initial token Supply
-    msg.sender // address receiving initially minted tokens
-);
+function deployInterchainToken(
+    bytes32 salt,           // unique salt for token deployment
+    string calldata name,   // token name
+    string calldata symbol, // token symbol
+    uint8 decimals,         // token decimals
+    uint256 initialSupply,  // initial token supply
+    address minter          // address receiving the initially minted tokens
+) external payable returns (bytes32 tokenId) {};
 ```
 
-This function [deploys an interchain token](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/InterchainTokenFactory.sol#L118), connects it to ITS upon deployment and returns the unique token ID.
+This function [deploys an interchain token](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/InterchainTokenFactory.sol#L133), connects it to ITS upon deployment, and returns the unique token ID.
 
 ## Deploy a Remote Interchain Token
 
-Use the `deployRemoteInterchainToken` function to deploy the token on a remote chain as a cross-chain transaction:
+Use the [`deployRemoteInterchainToken`](https://github.com/axelarnetwork/interchain-token-service/blob/94677f1072da127a0ee7ff5ab6784dcfe11789e8/contracts/InterchainTokenFactory.sol#L249) function to deploy the token on a remote chain as a cross-chain transaction.
+Using this function, there is no minter role assigned if you need to deploy a token on a remote chain with a minter, use the [`deployRemoteInterchainTokenWithMinter`](https://github.com/axelarnetwork/interchain-token-service/blob/94677f1072da127a0ee7ff5ab6784dcfe11789e8/contracts/InterchainTokenFactory.sol#L269) function. 
 
 ```solidity
-bytes32 tokenId = its.deployRemoteInterchainToken{value: msg.value}(
-    'Ethereum', // original chain Name
-    0xabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefab, // salt
-    msg.sender, // address to distribute token on destination chain
-    "Avalanche", // destination chain name
-    msg.value // gas sent for token deployment
-);
+function deployRemoteInterchainToken(
+    bytes32 salt, // your unique salt value
+    string calldata destinationChain, // destination chain name
+    uint256 gasValue // gas sent for token deployment
+) external payable returns (bytes32 tokenId) {};
 ```
 
-This function [deploys a remote interchain token](https://github.com/axelarnetwork/interchain-token-service/blob/b4a68708c9a2e8098d1cac51d487b9d54661f66a/contracts/InterchainTokenFactory.sol#L168) on a specified destination chain and returns a token ID.
+This function deploys a remote interchain token on a specified destination chain and returns a token ID.
 
 <Callout emoji="🚨">
-  {" "}
-  **NOTE:** The security of your token is limited to the security of the chains
-  it integrates with. When making a token interchain, ensure that all the chains
-  it will be deployed to are trustworthy.{" "}
+  **NOTE:** The security of your token is only as strong as the security of the
+  chains with which it integrates. When deploying an interchain token, ensure
+  that all target chains are trustworthy.
 </Callout>
 
 ## What's Next
 
-For further examples utilizing the Interchain Token Service, check out the [`axelar-examples`](https://github.com/axelarnetwork/axelar-examples/tree/main/examples/evm) repository on GitHub. There, you can find an example implementation titled [`its-interchain-token`](https://github.com/axelarnetwork/axelar-examples/tree/main/examples/evm/its-interchain-token), which demonstrates how to deploy Interchain Tokens connected across EVM chains and how to send tokens across them.
+You can initiate an interchain transfer from your source chain to a destination chain by using the [`interchainTransfer`](https://github.com/axelarnetwork/interchain-token-service/blob/94677f1072da127a0ee7ff5ab6784dcfe11789e8/contracts/InterchainTokenService.sol#L559) method on the [ITS contract](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/InterchainTokenService.sol).
+
+For further examples utilizing the Interchain Token Service, check out the [`axelar-examples`](https://github.com/axelarnetwork/axelar-examples/tree/main/examples/evm) repository on GitHub. There you will find an example implementation titled [`its-interchain-token`](https://github.com/axelarnetwork/axelar-examples/tree/main/examples/evm/its-interchain-token), which demonstrates how to deploy Interchain Tokens across EVM chains and how to transfer tokens between them.
 
 ## Tutorial
 
