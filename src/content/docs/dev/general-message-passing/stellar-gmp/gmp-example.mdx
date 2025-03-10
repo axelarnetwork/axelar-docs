@@ -224,14 +224,14 @@ extern crate alloc;
 
 This will make the required modules available from standard Rust libraries, the Soroban sdk, as well as the newly installed `alloy_sol_types` crate.
 
-You can then defined two new functions
+You can then define two new functions
 
 ```rust
 pub fn abi_encode(env: &Env, message: String) -> Result<Bytes, AbiError> {}
 pub fn abi_decode(env: &Env, message: Bytes) -> Result<String, AbiError> {}
 ```
 
-You will also need to defined the `AbiError` type. This can be done as an `enum`
+You will also need to define the `AbiError` type. This can be done as an `enum`
 
 ```rust
 pub enum AbiError {
@@ -382,7 +382,7 @@ With the transaction now paid for, the final step for sending a cross-chain mess
 
 For this function you will pass in
 
-1. `&env.current_contract_address()`: The address of the
+1. `&env.current_contract_address()`: The address of the calling contract
 1. `&destination_chain`: The name of the destination chain
 1. `&destination_address`: The receiving address of the cross-chain call on the destination chain
 1. `&message`: The GMP message being sent to the destination chain
@@ -426,9 +426,9 @@ Your completed `send()` function now should be as follows:
 
 ### Receive Cross-Chain Message
 
-Now that you are able to _send_ a cross-chain call you still need to handle the logic to _receive_ a cross-chain call when it sent from another blockchain to your Stellar contract.
+Now that you are able to _send_ a cross-chain call you still need to handle the logic to _receive_ a cross-chain call when it is sent from another blockchain to your Stellar contract.
 
-When an inbound message is received, an Axelar Relayer will look to trigger the `execute()` function on your contract. To implement the `execute` functionality you can will implement the `AxelarExecutableInterface` [trait](https://doc.rust-lang.org/book/ch10-02-traits.html) to handle the `execute` functionality.
+When an inbound message is received, an Axelar Relayer will look to trigger the `execute()` function on your contract. To implement the `execute` functionality you can implement the `AxelarExecutableInterface` [trait](https://doc.rust-lang.org/book/ch10-02-traits.html) to handle the `execute` functionality.
 
 Before defining your new trait you must first make the trait's dependency from the [Axelar-CGP-Stellar repo](https://github.com/axelarnetwork/axelar-cgp-Stellar/blob/main/contracts/axelar-gateway/src/executable.rs#L16) available.
 
@@ -445,7 +445,7 @@ impl AxelarExecutableInterface for AxelarGMP {
 }
 ```
 
-At this point your editor will be complaining that your implementation is missing the trait's required functionality, `gateway()` and `execute()` functionality.
+At this point your editor will be complaining that your implementation is missing the trait's required, `gateway()` and `execute()` functionality.
 
 To resolve the first issue you can move the `gateway()` getter that you defined in the previous section of the contract to your new implementation.
 
@@ -481,7 +481,7 @@ let decoded_msg = abi_decode_string(&env, payload).map_err(|_| CustomErrors::Fai
 
 You can then store the `decoded_msg` in the `DataKey` enum. As of now, the `DataKey` enum is only setup to hold the Gateway and Gas Service contract addresses, let's add in one more key for the recevied message.
 
-Back in your `storage_types.rs` file add a key called `ReceivedMessage. Your completed enum should now looks as follows
+Back in your `storage_types.rs` file add a key called `ReceivedMessage. Your completed enum should now look as follows
 
 ```rust
 pub enum DataKey {
@@ -500,7 +500,7 @@ env.storage()
 .set(&DataKey::ReceivedMessage, &decoded_msg);
 ```
 
-Lastly,you can return the function. Your complete `execute` function should be as follows:
+Lastly,you can return `Ok(())`. Your complete `execute` function should be as follows:
 
 ```rust
 fn execute(
@@ -551,7 +551,7 @@ Note: The different names between the `executed()` function in the `event.rs` fi
 These topics include
 
 1. The name of the event, which is simply a [symbol type](https://developers.stellar.org/docs/learn/encyclopedia/contract-development/types/built-in-types#symbol-symbol) of `executed`.
-1. The originating chain of the tx.
+1. The source chain of the tx.
 1. A unique message id for the cross-chain message.
 1. The originating address of the cross-chain message.
 
@@ -586,7 +586,7 @@ pub fn executed(
 }
 ```
 
-The final thing you now must do is to make the code in the `event.rs` file as a `mod` in the `lib.rs` file.
+The final thing you now must do is to add the code in the `event.rs` file as a `mod` in the `lib.rs` file.
 
 ```rust
 mod event;
@@ -624,17 +624,17 @@ To deploy the contract you can run
 stellar contract deploy --wasm target/wasm32-unknown-unknown/release/axelar_gmp.optimized.wasm --source <YOUR_WALLET_NAME> --network testnet -- --gateway CBECMRORSIPG4XG4CNZILCH233OXYMLCY4GL3GIO4SURSHTKHDAPEOVM --gas_service CD3KZOLEACWMQSDEQFUJI6ZWC7A7CC7AE7ZFVE4X2DBPYAC6L663GCNN`
 ```
 
-Note: The gateway and gas service addresses listed here are for the Stellar devnet deployment, these may change at some point going forward, please check the docs for the latest addresses. Also the Stellar testnet frequently restarts which will lead to these Gateway and Gas Service contracts changing.
+Note: The gateway and gas service addresses listed [here](https://github.com/axelarnetwork/axelar-contract-deployments/blob/main/axelar-chains-config/info/devnet-amplifier.json) are for the Stellar devnet deployment, these may change at some point going forward, please check the docs for the latest addresses. Also the Stellar testnet frequently restarts which will lead to these Gateway and Gas Service contracts changing.
 
 ### Interact on Chain
 
-Once your contract is now live on chain you can now send a cross-chain message by running the appropriate `stellar-cli` command.
+Once your contract is live on chain you can now send a cross-chain message by running the appropriate `stellar-cli` command.
 
 ```bash
 stellar contract invoke --network testnet --id <CONTRACT_ADDRESS> --source-account <MY_ACCOUNT> -- send --caller <CALLER_ADDR_NAME> --destination_chain '"<DEST_CHAIN_NAME>"' --message '"<MESSAGE>"' --destination_address '"<DEST_ADDR>"' --gas_token '{ "address": "CDLZFC3SYJYDZT7K67VZ75HPJVIEUVNIXF47ZG2FB2RMQQVU2HHGCYSC", "amount": "10000000000" }'
 ```
 
-At this point you should be able to query your Solidity contract to query if a message has gone through successfully.
+At this point you should be able to query your Solidity contract to check if a message has gone through successfully.
 
 When you want to receive a message you will send the GMP message from your EVM Solidity contract and this Stellar contract will automatically receive and decode the message. To confirm that the message was received you will need to query this Stellar contract to make sure that a value in the `ReceivedMessage` key in the `DataKey` enum has been set. This can be done by running:
 
@@ -642,5 +642,5 @@ When you want to receive a message you will send the GMP message from your EVM S
 stellar contract invoke --network testnet --id <CONTRACT_ADDRESS> --source-account <CALLER_ADDR_NAME> -- received_message
 ```
 
-If you successfully have sent the message from the EVM chain then this query should return the `string` that was sent from the source chain in your Stellar contract.
+If you successfully sent the message from the EVM chain then this query should return the `string` that was sent from the source chain in your Stellar contract.
 

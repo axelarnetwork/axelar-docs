@@ -16,9 +16,6 @@ For sending a GMP message, the `callContract()` function needs to be triggered.
 ### CallContract
 The `callContract` function triggers your cross-chain message from Stellar to the Axelar Network. When sending a cross-chain message you must specify the destination of your cross-chain message and a given payload.
 
-<Callout emoji="💡">
-Note: In Stellar, you don't need to pass the `env` explicitly when writing contract functions; it is automatically provided to the contract entry points
-</Callout>
     
 The `callContract` function takes five parameters. 
 1. `env`: Standard stellar [env](https://developers.stellar.org/docs/learn/encyclopedia/contract-development/environment-concepts) that provides access to the environment the contract is executing within. 
@@ -94,7 +91,7 @@ fn execute(
 ```
 
 ### Validate & Validate Message
-The `validate()` function on the `Executable` will trigger the `validate_message()` that is [defined](https://github.com/axelarnetwork/axelar-cgp-stellar/blob/main/contracts/axelar-gateway/src/contract.rs#L128) on the `Gateway`.
+The `validate()` function on the `Executable` will trigger `validate_message()` that is [defined](https://github.com/axelarnetwork/axelar-cgp-stellar/blob/main/contracts/axelar-gateway/src/contract.rs#L128) on the `Gateway`.
 
 The `validate()` function takes five parameters.
 1. `env`: Standard stellar [env](https://developers.stellar.org/docs/learn/encyclopedia/contract-development/environment-concepts) that provides access to the environment the contract is executing within. 
@@ -113,7 +110,7 @@ The `validate()` function takes five parameters.
     ) {}
 ```
 
-The `validate()` function will trigger the `validate_message()`, this will confirm that the incoming GMP message is an authenticated message that has been verified by the Amplifier Verifiers. Without ensuring that the message is validated malicious actors could in theory pass invalid data to be executed by this function, which is why it is critical to ensure that the data being passed in has been marked as approved on the Gateway
+The `validate()` function will trigger the `validate_message()`, which will confirm that the incoming GMP message is an authenticated message that has been verified by the Amplifier Verifiers. Without ensuring that the message is validated, malicious actors could in theory pass invalid data to be executed by this function, which is why it is critical to ensure that the data being passed in has been marked as approved on the Gateway
 
 ```rust
      pub fn validate_message(
