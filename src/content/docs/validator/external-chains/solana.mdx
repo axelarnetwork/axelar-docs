@@ -1,0 +1,332 @@
+# Solana
+
+import { Callout } from "/src/components/callout";
+
+Instructions to set up your Solana Validator node.
+
+### Requirements
+
+- [Setup your Axelar validator](/validator/setup/overview/)
+- Minimum hardware requirements: CPUs: 2.8GHz 12 cores / 24 threads, RAM: 256 GB Storage (SSD): 2 TB NVMe drive
+- Ubuntu 20.04
+- [Official Documentation](https://docs.anza.xyz/operations/setup-a-validator)
+
+### Install the Solana CLI
+
+Install the Agave release on your local (not the server) machine by running:
+
+```bash
+sh -c "$(curl -sSfL https://release.anza.xyz/v2.2.0/install)"
+```
+
+You can replace v2.2.0 with the release tag matching the software version of your desired release.
+
+Confirm you have the desired version of solana installed by running:
+
+```bash
+solana --version
+```
+
+After a successful install, `agave-install update` may be used to easily update the Solana software to a newer version at any time.
+
+Once you have successfully installed the cli, the next step is to change your config so that it is making requests to the right cluster:
+
+<tabs>
+  <tab-item title="Mainnet">
+    ```bash
+    export SOLANA_METRICS_CONFIG="host=https://metrics.solana.com:8086,db=mainnet-beta,u=mainnet-beta_write,p=password"
+    solana config set --url https://api.mainnet-beta.solana.com
+    ```
+  </tab-item>
+  <tab-item title="Testnet">
+    ```bash
+    export SOLANA_METRICS_CONFIG="host=https://metrics.solana.com:8086,db=tds,u=testnet_write,p=c4fa841aa918bf8274e3e2a44d77568d9861b3ea"
+    solana config set --url https://api.testnet.solana.com/
+    ```
+  </tab-item>
+</tabs>
+
+### Create a new keypair
+
+Create a new keypair for your validator, vote account, and authorized withdrawer.
+
+```bash
+solana-keygen new -o validator-keypair.json
+solana-keygen new -o vote-account-keypair.json
+solana-keygen new -o authorized-withdrawer-keypair.json
+```
+
+### Create a vote account
+
+Create a vote account for your validator.
+
+```bash
+solana config set --keypair ./validator-keypair.json
+```
+
+Now verify your account balance of 0:
+
+```bash
+solana balance
+```
+
+Deposit some SOL into that keypair account in order create a transaction
+
+```bash
+solana airdrop 1
+```
+
+The airdrop sub command does not work on mainnet, so you will have to acquire SOL and transfer it into this keypair's account if you are setting up a mainnet validator.
+
+Create a vote account:
+
+```bash
+solana create-vote-account -ut \
+    --fee-payer ./validator-keypair.json \
+    ./vote-account-keypair.json \
+    ./validator-keypair.json \
+    ./authorized-withdrawer-keypair.json
+```
+
+Note -ut tells the cli command that we would like to use the testnet cluster. If you're creating the RPC node you don't need the vote account.
+
+All commands mentioned so far should be done on your trusted computer and NOT on a server where you intend to run your validator.
+
+Now it's time to connect to the server. SSH into your server.
+
+### Preparing the system
+
+Create a new Ubuntu user, named sol, for running the validator:
+
+```bash
+sudo adduser sol
+sudo usermod -aG sudo sol
+```
+
+Prepare the hard drives or partitions to be used for the validator: for ledger and AccountsDB.
+
+Your system will need to be tuned in order to run properly. Your validator may not start without the settings below.
+
+```bash
+sudo bash -c "cat >/etc/sysctl.d/21-agave-validator.conf <<EOF
+# Increase max UDP buffer sizes
+net.core.rmem_max = 134217728
+net.core.wmem_max = 134217728
+
+# Increase memory mapped files limit
+vm.max_map_count = 1000000
+
+# Increase number of allowed open file descriptors
+fs.nr_open = 1000000
+EOF"
+```
+
+Apply the settings:
+
+```bash
+sudo sysctl -p /etc/sysctl.d/21-agave-validator.conf
+```
+
+Add:
+
+```text
+LimitNOFILE=1000000
+```
+
+to the `[Service]` section of your systemd service file, if you use one. If not:
+
+```text
+DefaultLimitNOFILE=1000000
+```
+
+to `/etc/systemd/system.conf` (`[Manager]` section).
+
+```bash
+sudo bash -c "cat >/etc/security/limits.d/90-solana-nofiles.conf <<EOF
+# Increase process file descriptor count limit
+* - nofile 1000000
+EOF"
+```
+
+On your personal computer, not on the validator, securely copy your validator-keypair.json file and your vote-account-keypair.json file to the validator server:
+
+```bash
+scp validator-keypair.json sol@<server.hostname>:
+scp vote-account-keypair.json sol@<server.hostname>:
+```
+
+On the validator server, switch to the sol user:
+
+```bash
+su - sol
+```
+
+### Install the Solana software
+
+Your remote machine will need the Solana CLI installed to run the Agave validator software. For simplicity, install the cli with user sol. Refer again to Solana's Install Tool or build from source.
+
+### Create A Validator Startup Script
+
+In your sol home directory (e.g. ``/home/sol/`), create a folder called `bin`. Inside that folder create a file called validator.sh and make it executable:
+
+```bash
+mkdir -p /home/sol/bin
+touch /home/sol/bin/validator.sh
+chmod +x /home/sol/bin/validator.sh
+```
+
+Next, open the validator.sh file for editing and paste the following:
+
+<tabs>
+  <tab-item title="Mainnet">
+    ```text
+    #!/bin/bash
+    exec agave-validator \
+        --identity ~/validator-keypair.json \
+        --vote-account ~/vote-account-keypair.json \
+        --known-validator 7Np41oeYqPefeNQEHSv1UDhYrehxin3NStELsSKCT4K2 \
+        --known-validator GdnSyH3YtwcxFvQrVVJMm1JhTS4QVX7MFsX56uJLUfiZ \
+        --known-validator DE1bawNcRJB9rVm3buyMVfr8mBEoyyu73NBovf2oXJsJ \
+        --known-validator CakcnaRDHka2gXyfbEd2d3xsvkJkqsLw2akB3zsN1D2S \
+        --only-known-rpc \
+        --ledger ledger \
+        --rpc-port 8899 \
+        --private-rpc \
+        --dynamic-port-range 8000-8020 \
+        --entrypoint entrypoint.mainnet-beta.solana.com:8001 \
+        --entrypoint entrypoint2.mainnet-beta.solana.com:8001 \
+        --entrypoint entrypoint3.mainnet-beta.solana.com:8001 \
+        --entrypoint entrypoint4.mainnet-beta.solana.com:8001 \
+        --entrypoint entrypoint5.mainnet-beta.solana.com:8001 \
+        --expected-genesis-hash 5eykt4UsFv8P8NJdTREpY1vzqKqZKvdpKuc147dw2N9d \
+        --wal-recovery-mode skip_any_corrupted_record \
+        --limit-ledger-size
+    ```
+  </tab-item>
+  <tab-item title="Testnet">
+    ```text
+    #!/bin/bash
+    exec agave-validator \
+        --identity validator-keypair.json \
+        --vote-account vote-account-keypair.json \
+        --known-validator 5D1fNXzvv5NjV1ysLjirC4WY92RNsVH18vjmcszZd8on \
+        --known-validator dDzy5SR3AXdYWVqbDEkVFdvSPCtS9ihF5kJkHCtXoFs \
+        --known-validator Ft5fbkqNa76vnsjYNwjDZUXoTWpP7VYm3mtsaQckQADN \
+        --known-validator eoKpUABi59aT4rR9HGS3LcMecfut9x7zJyodWWP43YQ \
+        --known-validator 9QxCLckBiJc783jnMvXZubK4wH86Eqqvashtrwvcsgkv \
+        --only-known-rpc \
+        --ledger ledger \
+        --rpc-port 8899 \
+        --dynamic-port-range 8000-8020 \
+        --entrypoint entrypoint.testnet.solana.com:8001 \
+        --entrypoint entrypoint2.testnet.solana.com:8001 \
+        --entrypoint entrypoint3.testnet.solana.com:8001 \
+        --expected-genesis-hash 4uhcVJyU9pJkvQyS88uRDiswHXSCkY3zQawwpjk2NsNY \
+        --wal-recovery-mode skip_any_corrupted_record \
+        --limit-ledger-size
+    ```
+  </tab-item>
+</tabs>
+
+Refer to `agave-validator --help` for more information on what each flag is doing in this script. You can try running to check if working as expected.
+
+```bash
+tail -f agave-validator.log
+```
+
+Check also if gossip protocol is working as expected. More information can be found [here](https://docs.anza.xyz/operations/setup-a-validator#gossip-protocol).
+
+### Creating a service
+
+Assuming you have a user called sol on your machine, create the file `/etc/systemd/system/sol.service` with the following:
+
+```text
+[Unit]
+Description=Solana Validator
+After=network.target
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+Restart=always
+RestartSec=1
+User=sol
+LimitNOFILE=1000000
+LogRateLimitIntervalSec=0
+Environment="PATH=/bin:/usr/bin:/home/sol/.local/share/solana/install/active_release/bin"
+ExecStart=/home/sol/bin/validator.sh
+
+[Install]
+WantedBy=multi-user.target
+```
+
+Ensure that running `/home/sol/bin/validator.sh` manually starts the validator as expected. Don't forget to mark it executable with `chmod +x /home/sol/bin/validator.sh`.
+
+Start the service with:
+
+```bash
+sudo systemctl enable --now sol
+```
+
+## RPC node
+
+Since a Solana RPC server runs the same process as a consensus validator, first follow the instructions above. Below is an example `validator.sh` file for a testnet RPC server.
+
+<tabs>
+  <tab-item title="Mainnet">
+    ```text
+    #!/bin/bash
+    exec agave-validator \
+        --identity ~/validator-keypair.json \
+        --vote-account ~/vote-account-keypair.json \
+        --known-validator 7Np41oeYqPefeNQEHSv1UDhYrehxin3NStELsSKCT4K2 \
+        --known-validator GdnSyH3YtwcxFvQrVVJMm1JhTS4QVX7MFsX56uJLUfiZ \
+        --known-validator DE1bawNcRJB9rVm3buyMVfr8mBEoyyu73NBovf2oXJsJ \
+        --known-validator CakcnaRDHka2gXyfbEd2d3xsvkJkqsLw2akB3zsN1D2S \
+        --only-known-rpc \
+        --full-rpc-api \
+        --ledger ledger \
+        --no-voting \
+        --rpc-port 8899 \
+        --private-rpc \
+        --dynamic-port-range 8000-8020 \
+        --entrypoint entrypoint.mainnet-beta.solana.com:8001 \
+        --entrypoint entrypoint2.mainnet-beta.solana.com:8001 \
+        --entrypoint entrypoint3.mainnet-beta.solana.com:8001 \
+        --entrypoint entrypoint4.mainnet-beta.solana.com:8001 \
+        --entrypoint entrypoint5.mainnet-beta.solana.com:8001 \
+        --expected-genesis-hash 5eykt4UsFv8P8NJdTREpY1vzqKqZKvdpKuc147dw2N9d \
+        --wal-recovery-mode skip_any_corrupted_record \
+        --limit-ledger-size
+    ```
+  </tab-item>
+  <tab-item title="Testnet">
+    ```text
+    #!/bin/bash
+    exec agave-validator \
+        --identity /home/sol/validator-keypair.json \
+        --known-validator 5D1fNXzvv5NjV1ysLjirC4WY92RNsVH18vjmcszZd8on \
+        --known-validator dDzy5SR3AXdYWVqbDEkVFdvSPCtS9ihF5kJkHCtXoFs \
+        --known-validator eoKpUABi59aT4rR9HGS3LcMecfut9x7zJyodWWP43YQ \
+        --known-validator 7XSY3MrYnK8vq693Rju17bbPkCN3Z7KvvfvJx4kdrsSY \
+        --known-validator Ft5fbkqNa76vnsjYNwjDZUXoTWpP7VYm3mtsaQckQADN \
+        --known-validator 9QxCLckBiJc783jnMvXZubK4wH86Eqqvashtrwvcsgkv \
+        --only-known-rpc \
+        --full-rpc-api \
+        --no-voting \
+        --ledger /mnt/ledger \
+        --accounts /mnt/accounts \
+        --log /home/sol/solana-rpc.log \
+        --rpc-port 8899 \
+        --rpc-bind-address 0.0.0.0 \
+        --private-rpc \
+        --dynamic-port-range 8000-8020 \
+        --entrypoint entrypoint.testnet.solana.com:8001 \
+        --entrypoint entrypoint2.testnet.solana.com:8001 \
+        --entrypoint entrypoint3.testnet.solana.com:8001 \
+        --expected-genesis-hash 4uhcVJyU9pJkvQyS88uRDiswHXSCkY3zQawwpjk2NsNY \
+        --wal-recovery-mode skip_any_corrupted_record \
+        --limit-ledger-size
+    ```
+  </tab-item>
+</tabs>
