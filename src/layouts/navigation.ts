@@ -246,6 +246,7 @@ export const getNavigation = (section) => {
                 },
               ],
             },
+            {title: "Sui GMP", href: "/dev/general-message-passing/sui/sui-contracts/"},
             {
               title: "Solidity Utilities",
               href: "/dev/solidity-utilities/",
