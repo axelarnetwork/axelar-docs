@@ -192,7 +192,7 @@ Now you can access an instance for the `Gateway` and `GasService` contracts set 
     let gas_service = AxelarGasServiceClient::new(&env, &Self::gas_service(&env));
 ```
 
-Before, triggering the cross-chain transaction you must verify the authenticity of the caller's signature by calling [require_auth](https://developers.stellar.org/docs/build/smart-contracts/example-contracts/auth#require_auth)
+Before triggering the cross-chain transaction you must verify the authenticity of the caller's signature by calling [require_auth](https://developers.stellar.org/docs/build/smart-contracts/example-contracts/auth#require_auth)
 
 ```rust
 caller.require_auth();
