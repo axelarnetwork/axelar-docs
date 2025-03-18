@@ -202,7 +202,7 @@ caller.require_auth();
 
 This section can be skipped. If you do skip then you must ensure that the `message` being passed into the `send` function is of type `bytes` rather than `string`.
 
-If you are sending a `message` of any type other than bytes than that data type must be encoded to type `bytes`.
+If you are sending a `message` of any type other than bytes then that data type must be encoded to type `bytes`.
 
 To encode the `string` to a `bytes` that your Solidity contract will understand on the destination chain you will need to use the [alloy-sol-types](https://docs.rs/alloy-sol-types/latest/alloy_sol_types/) crate. You can add it to your repo by running `cargo add alloy-sol-types`. Next you will need to enable the `alloc` feature in your `config.toml` file. Do so in your `soroban-sdk` dependency.
 
