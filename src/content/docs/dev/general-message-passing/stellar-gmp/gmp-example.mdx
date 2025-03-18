@@ -471,7 +471,7 @@ The first thing you will want to do is to validate the incoming message. This ca
 let _ = Self::validate_message(&env, &source_chain, &message_id, &source_address, &payload)?;
 ```
 
-Note: The `?` at the end used to propagate the error that may be returned by the `validate_message()` function
+Note: The `?` at the end is used to propagate the error that may be returned by the `validate_message()` function.
 
 Now with the message validated you can `decode` the function that you previously defined in the `abi.rs` file.
 
