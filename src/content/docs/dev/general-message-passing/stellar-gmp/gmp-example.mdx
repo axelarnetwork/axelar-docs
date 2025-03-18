@@ -318,7 +318,7 @@ pub fn abi_decode_string(env: &Env, encoded_bytes: Bytes) -> Result<String, AbiE
 }
 ```
 
-Note the `map_err` error handling for `abi_decode`. This function returns a `Result` therefore a `map_err` must be applied to handle the potential Error. You can use the `AbiError` type to handle the error.
+Note the `map_err` error handling for `abi_decode`. This function returns a `Result`, therefore a `map_err` must be applied to handle the potential Error. You can use the `AbiError` type to handle the error.
 
 With the encoding helper functions now complete you can make the relevant functions available back in your `contract.rs` file.
 
