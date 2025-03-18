@@ -73,7 +73,7 @@ contract SimpleCustomToken is ERC20, ERC20Burnable, AccessControl, ERC20Permit {
 }
 ```
 
-Check out this [Hardhat guide] (https://hardhat.org/tutorial) to learn how to deploy your ERC-20 token using Hardhat step by step.
+Check out this [Hardhat guide](https://hardhat.org/tutorial) to learn how to deploy your ERC-20 token using Hardhat step by step.
 
 ## Set up your development environment
 
@@ -522,8 +522,8 @@ async function getTokenManagerAddress() {
     signer,
   );
 
-  // Register token metadata
-  const tokenId = await interchainTokenServiceContract.linkedTokenId(
+  // Retrieve linked token id
+  const tokenId = await interchainTokenFactoryContract.linkedTokenId(
     "0x510e5EA32386B7C48C4DEEAC80e86859b5e2416C", // sender
     "0xd58c9142d863dde9f0b9ea68b10cce9470626040187a00c16b7b3d4edae70cf9", // salt, same as previously used
   );
