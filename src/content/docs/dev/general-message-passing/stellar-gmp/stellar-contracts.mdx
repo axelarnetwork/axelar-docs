@@ -125,9 +125,9 @@ The `validate()` function will trigger the `validate_message()`, which will conf
 
 1. `env`: Standard stellar [env](https://developers.stellar.org/docs/learn/encyclopedia/contract-development/environment-concepts) that provides access to the environment the contract is executing within. 
 1. `caller`: The intended `destination_address` of the contract call.
-1. `source_chain`: The source chain where the gmp message is coming from.
+1. `source_chain`: The source chain where the GMP message is coming from.
 1. `message_id`: Identifier for incoming GMP message.
-1. `source_address`: The address on the source chain where the gmp message is coming from/
+1. `source_address`: The address on the source chain where the gmp message is coming from.
 1. `payload`: A `bytes` representation of the cross-chain message being sent.
 
 Returns a `bool` indicating whether the incoming GMP message is valid or not.
