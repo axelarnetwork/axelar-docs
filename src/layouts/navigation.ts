@@ -130,7 +130,6 @@ export const getNavigation = (section) => {
               title: "Send Messages with Tokens",
               href: "/dev/general-message-passing/gmp-tokens-with-messages/",
             },
-
             {
               title: "Gas Service",
               children: [
@@ -245,6 +244,20 @@ export const getNavigation = (section) => {
                   ],
                 },
               ],
+            },
+            {
+              title: "Stellar GMP",
+              children: [
+                {
+                title: "Stellar Contracts",
+                href: "/dev/general-message-passing/stellar-gmp/stellar-contracts/"
+                },
+                {
+                title: "GMP Example",
+                href: "/dev/general-message-passing/stellar-gmp/gmp-example/"
+                }
+              ]
+
             },
             {
               title: "Solidity Utilities",
