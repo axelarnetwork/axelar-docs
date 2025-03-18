@@ -481,7 +481,7 @@ let decoded_msg = abi_decode_string(&env, payload).map_err(|_| CustomErrors::Fai
 
 You can then store the `decoded_msg` in the `DataKey` enum. As of now, the `DataKey` enum is only setup to hold the Gateway and Gas Service contract addresses. Let's add in one more key for the received message.
 
-Back in your `storage_types.rs` file add a key called `ReceivedMessage. Your completed enum should now look as follows
+Back in your `storage_types.rs` file, add a key called `ReceivedMessage`. Your completed enum should now look as follows
 
 ```rust
 pub enum DataKey {
