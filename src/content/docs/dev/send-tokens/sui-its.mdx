@@ -86,7 +86,7 @@ Since this function is making a cross-chain call, it will return a [MessageTicke
 
 See here for an [example](https://github.com/axelarnetwork/axelar-contract-deployments/blob/main/sui/its-example.js#L107) of how to run a cross-chain deployment for a new token.
 
-### Send Interchain Transfer
+### Interchain Transfer
 
 Once your token has been integrated with ITS, you can use the `send_interchain_transfer()` function to actually send it cross-chain to another chain where it has been integrated. Sending an interchain transfer is a two step process. The first step is to prepare the [InterchainTransferTicket](#intercha-intransfer-ticket) via the [prepare_interchain_transfer](#prepare-interchain-transfer) function, then once the ticket is created you can trigger the [send_interchain_transfer](#send-interchain-transfer) function.
 
@@ -153,10 +153,82 @@ See here for an [example](https://github.com/axelarnetwork/axelar-contract-deplo
 
 The full `send_interchain_transfer()` implementation can be found [here](https://github.com/axelarnetwork/axelar-cgp-sui/blob/main/move/interchain_token_service/sources/versioned/interchain_token_service_v0.move#L212) 
 
+
 ### Receive Interchain Transfer
+
+When tokens are sent to Sui, the [Relayer Discovery](https://github.com/axelarnetwork/axelar-cgp-sui/blob/main/move/interchain_token_service/sources/discovery.move) package will trigger the `receive_interchain_transfer()` function on the Sui ITS package. 
+
+The function takes 4 parameters: 
+1. `its`: The ITS module that will be updated once the new coin is registered
+1. `ticket`: The ticket of
+1. `clock`: A [clock](https://docs.sui.io/references/framework/sui/clock) module that provides the time of the transfer
+1. `ctx`: The [transaction context](https://docs.sui.io/references/framework/sui/tx_context#sui_tx_context_TxContext) provides the necessary runtime environment for creating or modifying objects and state
+
+```move
+public fun receive_interchain_transfer<T>(
+    self: &mut ITS,
+    approved_message: ApprovedMessage,
+    clock: &Clock,
+    ctx: &mut TxContext,
+) {
+    let value = self.value_mut!(b"receive_interchain_transfer");
+
+    value.receive_interchain_transfer<T>(approved_message, clock, ctx);
+}
+```
+
+Once the relayer triggers this function it in turn triggers the [give_coin()](give-coin) function on the Coin Management program. Then once `give_token()` has run the function will transfer the coin to the destination address.
+
+The full `receive_interchain_transfer()`  can be found [here](https://github.com/axelarnetwork/axelar-cgp-sui/blob/main/move/interchain_token_service/sources/versioned/interchain_token_service_v0.move#L247) 
+
+
 #### Receive Interchain Transfer With Data
 
+If the source chain is sending executable metadata along with the transaction that data will be handled by the `receive_interchain_transfer_with_data()` function. 
+
+It takes the same parameters as the previous `receive_interchain_transfer()` function except it also includes a `channel` parameter. The channel is used to check if the destination address in the payload matches the channel's own address, ensuring that messages with extra data are properly routed.
+
+The key differences with `receive_interchain_transfer_with_data()`, are that the function `asserts` that the `data` being sent is not empty and it does not simply transfer the token to the destination address. This function is designed for transfers that carry extra information and requires additional routing and validation steps, while the standard version is for simple transfers that don’t include extra data and performs the transfer immediately. It is up to the caller to decide how to transfer the coin once the function returns
+
+```move
+public fun receive_interchain_transfer_with_data<T>(
+    self: &mut InterchainTokenService,
+    approved_message: ApprovedMessage,
+    channel: &Channel,
+    clock: &Clock,
+    ctx: &mut TxContext,
+): (String, vector<u8>, vector<u8>, Coin<T>) {
+    let value = self.value_mut!(b"receive_interchain_transfer_with_data");
+
+    value.receive_interchain_transfer_with_data<T>(
+        approved_message,
+        channel,
+        clock,
+        ctx,
+    )
+}
+```
+
+See here for an [example](https://github.com/axelarnetwork/axelar-contract-deployments/blob/main/sui/its-example.js#L124) of how to receive a transfer with data.
+
+The full `receive_interchain_transfer_with_data()` implementation can be found [here](https://github.com/axelarnetwork/axelar-cgp-sui/blob/main/move/interchain_token_service/sources/versioned/interchain_token_service_v0.move#L282)
+
 ## Coin Management
+
+### Give Coin
+
+```move
+public(package) fun give_coin<T>(self: &mut CoinManagement<T>, amount: u64, clock: &Clock, ctx: &mut TxContext): Coin<T> {
+    self.flow_limit.add_flow_in(amount, clock);
+    if (has_capability(self)) {
+        self.mint(amount, ctx)
+    } else {
+        coin::take(self.balance.borrow_mut(), amount, ctx)
+    }
+}
+```
+
+## Flow Limit
 
 
 
