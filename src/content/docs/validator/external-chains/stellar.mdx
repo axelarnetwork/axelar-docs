@@ -857,6 +857,15 @@ In your `config.toml` file for ampd you can set the following configuration to r
     </tab-item>
 </tabs>
 
+## Register Chain Support
+
+Once your verifier is configured run the following command to register chain support.
+
+```bash
+ampd register-chain-support amplifier stellar
+```
+
+
 ## Common Issues
 Tips & Common Pitfalls
 1. Absolute DB path: On macOS, either set `<key>WorkingDirectory</key>` in your plist or use `DB_PATH="/Users/USERNAME/.stellar/data/stellar_rpc.sqlite"`.
