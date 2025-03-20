@@ -857,6 +857,14 @@ In your `config.toml` file for ampd you can set the following configuration to r
     </tab-item>
 </tabs>
 
+## Register ed25519 Key
+
+Stellar requires an `ed25519` key to be registered. To register the key type run:
+
+```bash
+ampd register-public-key ed25519
+```
+
 ## Register Chain Support
 
 Once your verifier is configured run the following command to register chain support.
