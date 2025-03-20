@@ -834,6 +834,7 @@ export const getNavigation = (section) => {
   nav.push({
     header: "Learn more about Axelar",
     children: [
+      { title: "Connected Chains", href: "https://axelarscan.io/resources/chains"},
       { title: "Crosschain Message Flow", href: "/learn/network/flow/" },
       { title: "axlUSDC", href: "/learn/axlusdc/" },
       { title: "Security Overview", href: "/learn/security/" },
