@@ -535,6 +535,20 @@ stellar contract invoke \
   --minter <OPTIONAL_MINTER_ADDRESS>
 ```
 
+#### Deploy Token to Another Chain
+
+```bash
+stellar contract invoke \
+  --network testnet \
+  --id <CONTRACT_ADDRESS> \
+  --source-account <YOUR_WALLET> \
+  -- deploy_remote_interchain_token \
+  --caller <CALLER_ADDRESS> \
+  --salt <SALT_BYTES_32> \
+  --destination_chain '"ethereum"' \
+  --gas_token '{"address": "<GAS_TOKEN_ADDRESS>", "amount": 10000000000}'
+  
+
 #### Transfer Tokens Cross-Chain
 
 ```bash
