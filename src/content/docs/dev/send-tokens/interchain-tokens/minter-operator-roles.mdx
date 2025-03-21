@@ -73,7 +73,7 @@ This prevents accidental transfers to invalid addresses.
 ### Minter Role Usage
 
 1. **Token Supply Management**: The minter can control the total supply by minting or burning tokens.
-2. **Cross-Chain Transfers**: For mint/burn token managers, the minter creates tokens on the destination chain equivalent to what was burned on the source chain.
+2. **Cross-Chain Transfers**: For mint/burn token managers, the minter mints tokens on the destination chain equivalent to what was burned on the source chain.
 3. **Token Migration**: The [`migrateInterchainToken`](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/InterchainTokenService.sol) function in ITS shows how mintership is transferred to optimize token operations.
 
 ### Operator Role Usage
