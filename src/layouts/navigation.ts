@@ -259,7 +259,11 @@ export const getNavigation = (section) => {
                 {
                 title: "GMP Example",
                 href: "/dev/general-message-passing/stellar-gmp/gmp-example/"
-                }
+                },
+                {
+                  title: "ITS Example",
+                  href: "/dev/general-message-passing/stellar-gmp/its-example/"
+                },
               ]
 
             },
