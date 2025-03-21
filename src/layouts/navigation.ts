@@ -69,6 +69,10 @@ export const getNavigation = (section) => {
                   href: "/dev/send-tokens/interchain-tokens/flow-limit/",
                 },
                 {
+                  title: "Minter & Operator Roles",
+                  href: "/dev/send-tokens/interchain-tokens/minter-operator-roles/",
+                },
+                {
                   title: "Developer Guides",
                   children: [
                     {
