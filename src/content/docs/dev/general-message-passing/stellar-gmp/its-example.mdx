@@ -477,7 +477,8 @@ This function allows the operator to set limits on how many tokens can flow in o
 After implementing your contract, build it with Cargo:
 
 ```bash
-cargo build --target wasm32-unknown-unknown --release
+cargo build; cargo test;
+stellar contract build;
 ```
 
 Then optimize the WASM file for deployment:
