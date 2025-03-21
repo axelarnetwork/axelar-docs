@@ -17,7 +17,7 @@ Based on the [`IMinter`](https://github.com/axelarnetwork/interchain-token-servi
 
 When a new Interchain Token is deployed:
 
-- The ITS is initially set as the minter for Native Interchain Tokens
+- ITS is initially set as the minter for Native Interchain Tokens
 - During token manager deployment, mintership can be transferred to the token manager itself
 - In [`TokenHandler.sol`](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/TokenHandler.sol), there is an automatic migration mechanism that transfers mintership from ITS to the token manager when needed:
 
