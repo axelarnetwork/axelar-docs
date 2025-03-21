@@ -835,6 +835,12 @@ export const getNavigation = (section) => {
     header: "Learn more about Axelar",
     children: [
       { title: "Connected Chains", href: "https://axelarscan.io/resources/chains"},
+      { title: "Live Addresses", children: [
+        {title: "Mainnet", href: "https://github.com/axelarnetwork/axelar-contract-deployments/blob/main/axelar-chains-config/info/mainnet.json"},
+        {title: "Testnet", href: "https://github.com/axelarnetwork/axelar-contract-deployments/blob/main/axelar-chains-config/info/testnet.json"},
+        { title: "Stagenet", href: "https://github.com/axelarnetwork/axelar-contract-deployments/blob/main/axelar-chains-config/info/stagenet.json"},
+        {title: "Devnet", href: "https://github.com/axelarnetwork/axelar-contract-deployments/blob/main/axelar-chains-config/info/devnet-amplifier.json"},
+      ]},
       { title: "Crosschain Message Flow", href: "/learn/network/flow/" },
       { title: "axlUSDC", href: "/learn/axlusdc/" },
       { title: "Security Overview", href: "/learn/security/" },
