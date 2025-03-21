@@ -76,17 +76,17 @@ Now we need to create two additional files in the `contracts/axelar-its/src` dir
 
 ### Integrate Axelar Stellar Dependency
 
-To integrate with the Axelar Network you will need to leverage the contracts in the [Axelar CGP Stellar](https://github.com/axelarnetwork/axelar-cgp-stellar) repository. Open the `contracts/axelar-its/Cargo.toml` file and add the following dependencies:
+To integrate with the Axelar Network you will need to leverage the contracts in the [Axelar CGP Stellar](https://github.com/axelarnetwork/axelar-amplifier-stellar) repository. Open the `contracts/axelar-its/Cargo.toml` file and add the following dependencies:
 
 ```toml
 [dependencies]
 soroban-sdk = "22.0.0"
-stellar-axelar-gateway = { git = "https://github.com/axelarnetwork/axelar-cgp-stellar", branch = "main", features = ["library"] }
-stellar-axelar-gas-service = { git = "https://github.com/axelarnetwork/axelar-cgp-stellar", branch = "main", features = ["library"] }
-stellar-interchain-token-service = { git = "https://github.com/axelarnetwork/axelar-cgp-stellar", branch = "main", features = ["library"] }
-stellar-interchain-token = { git = "https://github.com/axelarnetwork/axelar-cgp-stellar", branch = "main", features = ["library"] }
-stellar-token-manager = { git = "https://github.com/axelarnetwork/axelar-cgp-stellar", branch = "main", features = ["library"] }
-stellar-axelar-std = { git = "https://github.com/axelarnetwork/axelar-cgp-stellar", branch = "main" }
+stellar-axelar-gateway = { git = "https://github.com/axelarnetwork/axelar-amplifier-stellar", branch = "main", features = ["library"] }
+stellar-axelar-gas-service = { git = "https://github.com/axelarnetwork/axelar-amplifier-stellar", branch = "main", features = ["library"] }
+stellar-interchain-token-service = { git = "https://github.com/axelarnetwork/axelar-amplifier-stellar", branch = "main", features = ["library"] }
+stellar-interchain-token = { git = "https://github.com/axelarnetwork/axelar-amplifier-stellar", branch = "main", features = ["library"] }
+stellar-token-manager = { git = "https://github.com/axelarnetwork/axelar-amplifier-stellar", branch = "main", features = ["library"] }
+stellar-axelar-std = { git = "https://github.com/axelarnetwork/axelar-amplifier-stellar", branch = "main" }
 ```
 
 ## Lib
