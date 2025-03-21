@@ -10,7 +10,7 @@
       "id": "archway",
       "name": "Archway",
       "network_id": "archway",
-      "image": "/images/assets/archway.svg"
+      "image": "/images/chains/archway.svg"
     },
     {
       "id": "axelarnet",
@@ -28,7 +28,7 @@
       "id": "c4e",
       "name": "C4E",
       "network_id": "c4e",
-      "image": "/images/assets/c4e.svg"
+      "image": "/images/chains/c4e.svg"
     },
     {
       "id": "carbon",
@@ -73,6 +73,12 @@
       "image": "/images/chains/dymension.svg"
     },
     {
+      "id": "elys",
+      "name": "Elys",
+      "network_id": "elys",
+      "image": "/images/chains/elys.svg"
+    },
+    {
       "id": "evmos",
       "name": "Evmos",
       "network_id": "evmos",
@@ -100,7 +106,7 @@
       "id": "injective",
       "name": "Injective",
       "network_id": "injective",
-      "image": "/images/assets/injective.svg"
+      "image": "/images/chains/injective.svg"
     },
     {
       "id": "juno",
@@ -142,7 +148,7 @@
       "id": "nolus",
       "name": "Nolus",
       "network_id": "nolus",
-      "image": "/images/assets/nolus.svg"
+      "image": "/images/chains/nolus.svg"
     },
     {
       "id": "ojo",
@@ -239,6 +245,12 @@
       "name": "XPLA",
       "network_id": "xpla",
       "image": "/images/chains/xpla.svg"
+    },
+    {
+      "id": "xion",
+      "name": "Xion",
+      "network_id": "xion",
+      "image": "/images/chains/xion.svg"
     }
   ],
   "testnet": [
