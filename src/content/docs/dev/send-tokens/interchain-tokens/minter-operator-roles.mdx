@@ -17,9 +17,12 @@ Based on the [`IMinter`](https://github.com/axelarnetwork/interchain-token-servi
 
 When a new Interchain Token is deployed:
 
-- ITS is initially set as the minter for Native Interchain Tokens
-- During token manager deployment, mintership can be transferred to the token manager itself
-- In [`TokenHandler.sol`](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/TokenHandler.sol), there is an automatic migration mechanism that transfers mintership from ITS to the token manager when needed:
+- ITS is initially set as the minter for Native Interchain Tokens.
+- The token manager needs to have the minter role in order to mint tokens when receiving them from another chain and burn tokens when sending them to another chain.
+
+There are two primary ways mintership is transferred to the token manager:
+
+1. Automatic Migration: The [`TokenHandler.sol`](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/TokenHandler.sol) contract contains an automatic migration mechanism that transfers mintership from ITS to the token manager when tokens are processed:
 
 ```solidity
 function _migrateToken(address tokenManager, address tokenAddress, uint256 tokenManagerType) internal {
@@ -29,9 +32,29 @@ function _migrateToken(address tokenManager, address tokenAddress, uint256 token
 }
 ```
 
+2. Manual Migration: Developers can also explicitly migrate mintership by calling the migrateInterchainToken function on the InterchainTokenService contract:
+
+```solidityC
+function migrateInterchainToken(bytes32 tokenId) external onlyOwner {
+    ITokenManager tokenManager_ = deployedTokenManager(tokenId);
+    address tokenAddress = tokenManager_.tokenAddress();
+    IMinter(tokenAddress).transferMintership(address(tokenManager_));
+}
+```
+
+#### Why Token Managers Need Minter Rights:
+
+For the interchain token system to work properly, token managers need minting and burning capabilities because:
+
+- When tokens are sent from Chain A to Chain B, tokens are burned (or locked) on Chain A and must be minted on Chain B.
+- Without minter rights, the token manager cannot mint the corresponding tokens on the destination chain.
+- Having the token manager as the minter creates a trustless system where ITS doesn't need to maintain privileged access to tokens.
+- It allows the token manager to directly control token supply according to cross-chain message validation.
+
 ### Token Manager Integration
 
 For [`NATIVE_INTERCHAIN_TOKEN`](https://github.com/axelarnetwork/interchain-token-service/blob/4ba40851ee13cf98077e38b49f2c106d09a2f67c/contracts/interfaces/ITokenManagerType.sol#L11) and [`MINT_BURN`](https://github.com/axelarnetwork/interchain-token-service/blob/4ba40851ee13cf98077e38b49f2c106d09a2f67c/contracts/interfaces/ITokenManagerType.sol#L15) token manager types, the minter role allows the token manager to mint tokens upon receiving them from another chain and burn tokens when sending them to another chain.
+Its important to note that token manager is required to be whitelisted for these manager types to be used otherwise the manager will not be able to mint/burn.
 
 ## Operator Role
 
@@ -63,7 +86,7 @@ The `linkParams` is used to specify the operator address for the token manager.
 
 Both roles feature a secure two-step transfer process:
 
-1. The current role holder proposes a new address (`proposeOperatorship` or `proposeMintership`).
+1. The current role holder (operator or minter) proposes a new address (`proposeOperatorship` or `proposeMintership`).
 2. The proposed address must accept the role (`acceptOperatorship` or `acceptMintership`).
 
 This prevents accidental transfers to invalid addresses.
