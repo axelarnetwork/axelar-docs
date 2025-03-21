@@ -119,16 +119,63 @@ export const getNavigation = (section) => {
               href: "/dev/general-message-passing/overview/",
             },
             {
-              title: "Examples",
-              href: "/dev/general-message-passing/examples/",
+              title: "EVM GMP", children: [
+                {
+                  title: "Send Messages",
+                  href: "/dev/general-message-passing/evm/gmp-messages/",
+                },
+                {
+                  title: "Send Messages with Tokens",
+                  href: "/dev/general-message-passing/evm/gmp-tokens-with-messages/",
+                },
+                {
+                  title: "Axelar Executable",
+                  href: "/dev/general-message-passing/evm/executable/",
+                },
+                {
+                  title: "Examples",
+                  href: "/dev/general-message-passing/evm/examples/",
+                },
+                {
+                  title: "Solidity Utilities", children:
+                    [
+                      { title: "Create3", href: "/dev/evm/general-message-passing/create3/" },
+                      { title: "Address-String Conversion", href: "dev/evm/general-message-passing/solidity-utilities/" }
+                    ]
+                },
+              ]
             },
             {
-              title: "Send Messages",
-              href: "/dev/general-message-passing/gmp-messages/",
+              title: "Cosmos GMP",
+              children: [
+                { title: "Introduction", href: "/dev/cosmos-gmp/overview/" },
+                {
+                  title: "Cosmos 2-way Call Relay",
+                  href: "/dev/cosmos-gmp/cosmos-2way-manual-relay/",
+                },
+                {
+                  title: "Developer Guides",
+                  children: [
+                    {
+                      title: "Cross-Chain Messaging: EVM to Cosmos",
+                      href: "/dev/cosmos-gmp/developer-guides/cross-chain-messaging-evm-to-cosmos/",
+                    },
+                  ],
+                },
+              ],
             },
             {
-              title: "Send Messages with Tokens",
-              href: "/dev/general-message-passing/gmp-tokens-with-messages/",
+              title: "Stellar GMP",
+              children: [
+                {
+                  title: "Stellar Contracts",
+                  href: "/dev/general-message-passing/stellar-gmp/stellar-contracts/"
+                },
+                {
+                  title: "GMP Example",
+                  href: "/dev/general-message-passing/stellar-gmp/gmp-example/"
+                }
+              ]
             },
             {
               title: "Gas Service",
@@ -145,13 +192,13 @@ export const getNavigation = (section) => {
                   title: "Increase Gas",
                   href: "/dev/gas-service/increase-gas/",
                 },
+                // {
+                //   title: "Refund Gas",
+                //   href: "/dev/gas-service/refund/",
+                // },
                 {
                   title: "Refund Gas",
                   href: "/dev/gas-service/refund/",
-                },
-                {
-                  title: "Specify Gas Refund Address",
-                  href: "/dev/gas-service/specify-gas-refund-address/",
                 },
                 {
                   title: "Transaction States",
@@ -166,18 +213,6 @@ export const getNavigation = (section) => {
                   href: "/dev/gas-service/on-chain-estimation/",
                 },
               ],
-            },
-            {
-              title: "Monitor Transaction State",
-              href: "/dev/general-message-passing/monitoring/",
-            },
-            {
-              title: "Axelar CommandID",
-              href: "/dev/general-message-passing/axelar-commandid/",
-            },
-            {
-              title: "Axelar Executable",
-              href: "/dev/general-message-passing/executable/",
             },
             {
               title: "Verify GMP Transaction",
@@ -204,64 +239,22 @@ export const getNavigation = (section) => {
                 },
               ],
             },
-            {
-              title: "Developer Guides",
-              children: [
-                {
-                  title: "Cross-Chain Swaps with CCTP",
-                  href: "/dev/general-message-passing/developer-guides/example-usdc-cctp/",
-                },
-                {
-                  title: "Hello World GMP Example",
-                  href: "/dev/general-message-passing/developer-guides/example-gmp/",
-                },
-              ],
-            },
+            // {
+            //   title: "Developer Guides",
+            //   children: [
+            //     {
+            //       title: "Cross-Chain Swaps with CCTP",
+            //       href: "/dev/general-message-passing/developer-guides/example-usdc-cctp/",
+            //     },
+            //     {
+            //       title: "Hello World GMP Example",
+            //       href: "/dev/general-message-passing/developer-guides/example-gmp/",
+            //     },
+            //   ],
+            // },
             {
               title: "Express Service",
               href: "/dev/general-message-passing/express/",
-            },
-            {
-              title: "EVM Relayer",
-              href: "/dev/evm-relayer/",
-            },
-
-            {
-              title: "Cosmos GMP",
-              children: [
-                { title: "Introduction", href: "/dev/cosmos-gmp/overview/" },
-                {
-                  title: "Cosmos 2-way Call Relay",
-                  href: "/dev/cosmos-gmp/cosmos-2way-manual-relay/",
-                },
-                {
-                  title: "Developer Guides",
-                  children: [
-                    {
-                      title: "Cross-Chain Messaging: EVM to Cosmos",
-                      href: "/dev/cosmos-gmp/developer-guides/cross-chain-messaging-evm-to-cosmos/",
-                    },
-                  ],
-                },
-              ],
-            },
-            {
-              title: "Stellar GMP",
-              children: [
-                {
-                title: "Stellar Contracts",
-                href: "/dev/general-message-passing/stellar-gmp/stellar-contracts/"
-                },
-                {
-                title: "GMP Example",
-                href: "/dev/general-message-passing/stellar-gmp/gmp-example/"
-                }
-              ]
-
-            },
-            {
-              title: "Solidity Utilities",
-              href: "/dev/solidity-utilities/",
             },
           ],
         },
@@ -396,6 +389,10 @@ export const getNavigation = (section) => {
               href: "https://blog.axelar.dev/build-a-full-stack-interchain-application-with-nextjs-solidity-axelar",
             },
           ],
+        },
+        {
+          title: "EVM Relayer",
+          href: "/dev/evm-relayer/",
         },
       ],
     });
@@ -626,8 +623,12 @@ export const getNavigation = (section) => {
         title: "Axelarscan",
         children: [
           {
-            title: "Add Account to Axelarscan",
+            title: "Label Address In Axelarscan",
             href: "/resources/axelarscan/axelarscan-add/",
+          },
+          {
+            title: "Monitor Transaction State",
+            href: "/dev/general-message-passing/monitoring/",
           },
         ],
       },
@@ -636,7 +637,7 @@ export const getNavigation = (section) => {
         children: [
           { title: "Satellite", href: "/resources/satellite/" },
           { title: "MetaMask", href: "/resources/metamask/" },
-          { title: "Add Network to Keplr Wallet", href: "/resources/keplr/" },
+          { title: "Add Network to Keplr Wallet", href: "/resources/keplr/" }
         ],
       },
       {
@@ -830,8 +831,9 @@ export const getNavigation = (section) => {
   nav.push({
     header: "Learn more about Axelar",
     children: [
-      { title: "Connected Chains", href: "https://axelarscan.io/resources/chains"},
+      { title: "Connected Chains", href: "https://axelarscan.io/resources/chains" },
       { title: "Crosschain Message Flow", href: "/learn/network/flow/" },
+      { title: "Axelar Command Id", href: "/learn/axelar-commandid/"},
       { title: "axlUSDC", href: "/learn/axlusdc/" },
       { title: "Security Overview", href: "/learn/security/" },
       { title: "Interchain Transaction Duration", href: "/learn/txduration/" },

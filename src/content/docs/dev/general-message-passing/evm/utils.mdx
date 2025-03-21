@@ -1,0 +1,21 @@
+
+## String and address utilities
+
+Axelar uses the string representation of addresses (42 characters) for EVM addresses (20 bytes). It is often useful to convert between the two. [`AddressString.sol`](https://github.com/axelarnetwork/axelar-gmp-sdk-solidity/blob/main/contracts/libs/AddressString.sol) is a library that can be used to do so. Below, see an example showing how to use it.
+
+```solidity
+import { StringToAddress, AddressToString } from "@axelar-network/axelar-gmp-sdk-solidity/contracts/libs/AddressString.sol";
+
+contract Test {
+    using AddressToString for address;
+    using StringToAddress for string;
+
+    function addressToString(address address_) external pure returns (string memory) {
+        return address_.toString();
+    }
+
+    function stringToAddress(string calldata string_) external pure returns (address) {
+        return string_.toAddress();
+    }
+}
+```

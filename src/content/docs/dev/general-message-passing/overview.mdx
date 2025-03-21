@@ -129,3 +129,8 @@ Suppose the paid gas (step 2) is insufficient to approve or execute on the desti
 1. The gateway [records](https://github.com/axelarnetwork/cgp-spec/blob/main/solidity/contracts/AxelarGateway.sol#L60) that the destination application contract validated the approval and did not allow `validateContractCall` to be called again (to prevent replay of `execute`).
 
 1. The destination application contract uses the `payload` to [`_execute`](https://github.com/axelarnetwork/cgp-spec/blob/main/solidity/contracts/executable/AxelarExecutable.sol#L23) its logic.
+
+
+## Examples
+
+The [axelar examples](https://github.com/axelarnetwork/axelar-examples/) repo has an array of examples to show the ease of integrating Axelar's GMP protocol into any dApp to bring it cross-chain. The examples range in use cases and complexity but ultimately leverage the two fundamental building blocks for GMP:
