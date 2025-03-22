@@ -1,0 +1,646 @@
+# Stellar GMP Example
+
+Axelar [General Message Passing (GMP)](https://www.axelar.network/blog/general-message-passing-and-how-can-it-change-web3) allows for messages to be sent between two chains. Such messages can be used to power natively cross-chain decentralized applications. With the integration of Stellar to Axelar, Stellar based contracts can now send messages to other [blockchain ecosystems](https://docs.axelar.dev/dev/reference/mainnet-chain-names) connected to Axelar, including (but not limited to) EVM chains.
+
+## Setup
+
+To begin, make sure [Rust](https://www.rust-lang.org/tools/install) and the [Stellar CLI](https://github.com/stellar/stellar-cli) are [setup](https://developers.stellar.org/docs/build/smart-contracts/getting-started/setup) on your local machine.
+
+Once the Stellar CLI is setup you can run `stellar contract init axelar-gmp`. This will create a new Stellar project.
+
+### File Structure
+
+Now that you have a Stellar project you can run `cargo install axelar-cgp-stellar` to install the Axelar related functionality to be used in your contract.
+
+For simplicity, you can remove the root files and unnest the files in the `src` folder to be at the root of your project so that your file structures now look like this.
+
+```bash
+Cargo.lock
+Cargo.toml
+Makefile
+src
+```
+
+The files in the `src` folder can now be broken out into a `contract.rs` file, an `event.rs`, and `lib.rs`.
+
+### Integrate Axelar Stellar Dependency
+
+To integrate with the Axelar Network you will need to leverage the contracts in the [Axelar CGP Stellar](https://github.com/axelarnetwork/axelar-cgp-stellar) repository. Currently, this repo is not available on crates.io. To access it's functionality you can reference it as a [git dependency](https://doc.rust-lang.org/cargo/reference/specifying-dependencies.html#specifying-dependencies-from-git-repositories). You can add a dependency for each subcrate in the CGP Stellar repo as follows:
+
+```toml
+[dependencies]
+axelar-gateway = { git = "https://github.com/axelarnetwork/axelar-cgp-stellar", subdir = "contracts/axelar-gateway", features = [
+    'library',
+] }
+axelar-gas-service = { git = "https://github.com/axelarnetwork/axelar-cgp-stellar", subdir = "contracts/axelar-gas-service", features = [
+    'library',
+] }
+axelar-stellar-std = { git = "https://github.com/axelarnetwork/axelar-cgp-stellar", subdir = "packages/axelar-stellar-std" }
+```
+
+## Lib
+
+The `lib.rs` file which contains the `hello_world` code can be moved to the `contract.rs` file. You can replace all that code with a module representation of the contract. Your `lib.rs` file should look like this:
+
+```rust
+#![no_std]
+
+pub mod contract;
+```
+
+## Contract
+
+You can rename your contract from the default name `Contract` to `AxelarGMP`. You can then begin writing out the `constructor`. Before writing functionality of the contract you can also make several key data types available from the `Stellar SDK`
+
+```rust
+use stellar_sdk::{contract, contractimpl, Address, Env, String, Vec};
+```
+
+These unique types will be used throughout the contract.
+
+### Constructor
+
+In the [constructor](https://github.com/stellar/stellar-protocol/blob/5ef1b45cbab54f57c5ddfc98adb964f26b68bb3b/core/cap-0058.md) function you will need to pass in the Axelar [Gateway]("/dev/general-message-passing/Stellar-gmp/Stellar-contracts/#stellar-gateway") and [Gas Service]("/dev/general-message-passing/stellar-gmp/stellar-contracts/#stellar-gas-service") contracts.
+
+```rust
+pub fn __constructor(env: Env, gateway: Address, gas_service: Address) {}
+```
+
+Note: In addition to the `gateway` and `gas service` you will also set an `env` param. This is an instance of the Env struct, which is a core part of the Stellar SDK. The Env struct provides access to various environment-specific functions and capabilities necessary for interacting with the contract's storage, managing resources, and executing contract logic within the Stellar runtime.
+
+### Storage
+
+The `gateway` and `gas service` contracts can be stored in the contract's [instance storage](https://developers.stellar.org/docs/learn/encyclopedia/storage/state-archival#instance). Before you can save the two parameters in storage, you must first define the storage variables. Create a new file called `storage_types.rs`.
+
+This can be done as follows:
+
+```rust
+use stellar_sdk::contracttype;
+
+#[contracttype]
+#[derive(Clone, Debug)]
+pub enum DataKey {
+    Gateway,
+    GasService,
+}
+```
+
+The `storage_types.rs` file defines the DataKey enum, used as a typed storage key within the contract.
+
+`#[contracttype]`: Marks the enum for serialization and storage by the Stellar SDK.
+Enum Variants:
+Gateway: Represents the storage key for the gateway contract.
+GasService: Represents the storage key for the gas service contract.
+
+For this `enum` to be reachable you must:
+
+1. Define the `storage_types.rs` file in the `lib.rs` file, which at this point should look like this
+
+```rust
+#![no_std]
+
+pub mod contract;
+
+mod storage_types;
+```
+
+2. Make the file available to your `contracts.rs` repo
+
+```rust
+use crate::storage_types::DataKey;
+```
+
+With the storage now setup you can store your `gateway` and `gas service` contracts in storage from the `constructor`. The complete `constructor` should now look like this
+
+```rust
+  pub fn __constructor(env: Env, gateway: Address, gas_service: Address) {
+        env.storage().instance().set(&DataKey::Gateway, &gateway);
+        env.storage()
+            .instance()
+            .set(&DataKey::GasService, &gas_service);
+    }
+```
+
+The constructor stores each param at a specific `key` in the `DataKey` `enum` you created before.
+
+### Gas Service
+
+The `Gas Service` contract implements the [functionality](https://github.com/axelarnetwork/axelar-cgp-stellar/blob/main/contracts/axelar-gas-service/src/contract.rs) to pay for cross-chain transactions.
+
+```rust
+    pub fn gas_service(env: &Env) -> Address {
+        env.storage().instance().get(&DataKey::GasService).unwrap()
+    }
+```
+
+### Gateway
+
+The `Gateway` contract implements the [functionality](https://github.com/axelarnetwork/axelar-cgp-stellar/blob/main/contracts/axelar-gateway/src/contract.rs) to send cross-chain transactions.
+
+```rust
+   fn gateway(env: &Env) -> Address {
+        env.storage().instance().get(&DataKey::Gateway).unwrap()
+    }
+```
+
+### Send Cross-Chain Message
+
+To send a cross-chain message you can define a new function called `send()`. It will take the following function signature
+
+```rust
+   pub fn send(
+        env: Env,
+        caller: Address,
+        destination_chain: String,
+        destination_address: String,
+        message: String,
+        gas_token: Token,
+    ) {}
+```
+
+For the `token` type to be accepted you must make it available as follows:
+
+```rust
+use axelar_stellar_std::types::Token;
+```
+
+You will also need the `GasService` and `Gateway` client types available for other functionality in this function.
+
+The entire list of imported data types should now be
+
+```rust
+use axelar_gas_service::AxelarGasServiceClient;
+use axelar_gateway::AxelarGatewayMessagingClient;
+use crate::storage_types::DataKey;
+use axelar_stellar_std::types::Token;
+use stellar_sdk::{contract, contractimpl, Address, Bytes, Env, String};
+```
+
+The function takes the following parameters
+
+1. `env`: The environment object, providing access to the blockchain runtime.
+1. `caller`: The address of the account initiating the message send.
+1. `destination_chain`: The name of the destination blockchain.
+1. `destination_address`: The address on the destination blockchain the call is being sent to.
+1. `message`: The message being sent to the destination chain.
+1. `gas_token`: The token used to pay for gas fees.
+
+Now you can access an instance for the `Gateway` and `GasService` contracts set in storage in the `constructor`.
+
+```rust
+    let gateway = AxelarGatewayMessagingClient::new(&env, &Self::gateway(&env));
+    let gas_service = AxelarGasServiceClient::new(&env, &Self::gas_service(&env));
+```
+
+Before triggering the cross-chain transaction you must verify the authenticity of the caller's signature by calling [require_auth](https://developers.stellar.org/docs/build/smart-contracts/example-contracts/auth#require_auth)
+
+```rust
+caller.require_auth();
+```
+
+### Encode Message (optional)
+
+This section can be skipped. If you do skip then you must ensure that the `message` being passed into the `send` function is of type `bytes` rather than `string`.
+
+If you are sending a `message` of any type other than bytes then that data type must be encoded to type `bytes`.
+
+To encode the `string` to a `bytes` that your Solidity contract will understand on the destination chain you will need to use the [alloy-sol-types](https://docs.rs/alloy-sol-types/latest/alloy_sol_types/) crate. You can add it to your repo by running `cargo add alloy-sol-types`. Next you will need to enable the `alloc` feature in your `config.toml` file. Do so in your `soroban-sdk` dependency.
+
+```toml
+soroban-sdk =  {version = '22.0.0-rc.3', features = ["alloc"]}
+```
+
+Enabling the `alloc` feature is a dependency of `alloy-sol-types`. For further reading on `alloc` feature check out the [stellar docs](https://developers.stellar.org/docs/build/smart-contracts/example-contracts/alloc).
+
+With the dependency now installed you can create a new file called `abi.rs`. In the `abi.rs` file make the following modules available.
+
+```rust
+use crate::abi::alloc::{string::String as StdString, vec};
+use alloy_sol_types::{sol_data, SolType};
+use soroban_sdk::{contracterror, Bytes, Env, String};
+
+extern crate alloc;
+```
+
+This will make the required modules available from standard Rust libraries, the Soroban sdk, as well as the newly installed `alloy_sol_types` crate.
+
+You can then define two new functions
+
+```rust
+pub fn abi_encode(env: &Env, message: String) -> Result<Bytes, AbiError> {}
+pub fn abi_decode(env: &Env, message: Bytes) -> Result<String, AbiError> {}
+```
+
+You will also need to define the `AbiError` type. This can be done as an `enum`
+
+```rust
+pub enum AbiError {
+    InvalidUtf8 = 1,
+}
+```
+
+Your starter `abi.rs` should look as follows
+
+```rust
+use crate::abi::alloc::{string::String as StdString, vec};
+use alloy_sol_types::{sol_data, SolType};
+use soroban_sdk::{contracterror, Bytes, Env, String};
+
+extern crate alloc;
+
+#[contracterror]
+#[derive(Copy, Clone, Debug, PartialEq, Eq)]
+pub enum AbiError {
+    InvalidUtf8 = 1,
+}
+
+pub fn abi_encode(env: &Env, message: String) -> Result<Bytes, AbiError> {}
+
+pub fn abi_decode_string(env: &Env, encoded_bytes: Bytes) -> Result<String, AbiError> {}
+```
+
+#### Encoding
+
+The encoding function will need to do three things
+
+1. Convert the Soroban `string` type to a standard Rust `std` `string` type.
+1. Trigger the `abi_encode()` function defined in the `alloy_sol_types` dependency
+1. Return a `bytes` type output
+
+To convert the Soroban `String` to the Rust `String` you can define a separate helper function called `to_std_string` as follows:
+
+```rust
+
+// soroban string to std string
+fn to_std_string(soroban_string: String) -> Result<StdString, AbiError> {
+    let length = soroban_string.len() as usize;
+    let mut bytes = vec![0u8; length];
+
+    soroban_string.copy_into_slice(&mut bytes);
+    StdString::from_utf8(bytes).map_err(|_| AbiError::InvalidUtf8)
+}
+```
+
+With the helper function now setup you can implement the previously discussed three steps
+
+```rust
+pub fn abi_encode(env: &Env, message: String) -> Result<Bytes, AbiError> {
+    //Convert soroban str to std str
+    let message = to_std_string(message)?;
+    //Encode std str from sol_data mod
+    let encoded = sol_data::String::abi_encode(&message);
+    //Return soroban bytes with encoded output
+    Ok(Bytes::from_slice(&env, &encoded))
+}
+```
+
+#### Decoding
+
+Decoding will need to be done when receiving a cross-chain message. Messages will be received as `Bytes` and your contract will need to decode it to a more readable `String` type. Like with encoding, decoding will also be done in three steps.
+
+1. Convert the data from raw bytes to a `vec<u8>`
+1. Pass the `vec<u8>` to `sol_data` module's `abi.decode()` function.
+1. Return a new Soroban `string` type from the decoded output.
+
+This can all be done as follows
+
+```rust
+pub fn abi_decode_string(env: &Env, encoded_bytes: Bytes) -> Result<String, AbiError> {
+   // Bytes to Vec<u8> for decoding.
+   let encoded_vec = encoded_bytes.to_alloc_vec();
+
+   //Decode data into Rust String.
+   let rust_string =
+       sol_data::String::abi_decode(&encoded_vec, true).map_err(|_| AbiError::InvalidUtf8)?;
+
+   // Rust String to Soroban String
+   Ok(String::from_str(env, &rust_string))
+}
+```
+
+Note the `map_err` error handling for `abi_decode`. This function returns a `Result`, therefore a `map_err` must be applied to handle the potential Error. You can use the `AbiError` type to handle the error.
+
+With the encoding helper functions now complete you can make the relevant functions available back in your `contract.rs` file.
+
+```rust
+use crate::abi::{abi_decode_string, abi_encode};
+```
+
+In your `send()` function you can now simply pass in the `message` payload to the `abi_encode()` function which will then return a `Bytes` type object that you will use in the rest of your function
+
+```rust
+let encoded_msg: Bytes = abi_encode(&env, message).unwrap();
+```
+
+This can be thought of as similar functionality to running `abi.encode()` in a Solidity contract.
+
+#### Pay Gas
+
+You can now move on to triggering the cross-chain message. This involves two steps.
+
+1. Pay the `GasService`
+1. Trigger the cross-chain call on the `Gateway`
+
+The process of paying the `GasService` involves running the [pay_gas()](/dev/general-message-passing/Stellar-gmp/Stellar-contracts/#paygas) function.
+
+```rust
+  gas_service.pay_gas(
+      &env.current_contract_address(),
+      &destination_chain,
+      &destination_address,
+      &message,
+      &caller,
+      &gas_token,
+      &Bytes::new(&env),
+  );
+```
+
+Once triggered, the gas that is paid to the `GasService` will be used to cover the cost of the relaying the transaction between the two chains, verifying the transaction on the Axelar Network, and gas costs of executing the transaction on the destination chain.
+
+The function takes seven arguments passed in as references:
+
+1. `&env.current_contract_address()`: The address of the sender
+1. `&destination_chain`: The name of the destination chain
+1. `&destination_address`: The receiving address of the cross-chain call on the destination chain
+1. `&message`: The GMP message being sent to the destination chain
+1. `&caller`: The address paying the gas cost
+1. `&gas_token`: The token being used to cover the gas cost
+   {/* 1. `env`: The metadata <<<<< CONFIRM */}
+
+#### Call Contract
+
+With the transaction now paid for, the final step for sending a cross-chain message is to trigger the `callContract()` function on the `Gateway`.
+
+```rust
+    gateway.call_contract(
+        &env.current_contract_address(),
+        &destination_chain,
+        &destination_address,
+        &message,
+    );
+```
+
+For this function you will pass in
+
+1. `&env.current_contract_address()`: The address of the calling contract
+1. `&destination_chain`: The name of the destination chain
+1. `&destination_address`: The receiving address of the cross-chain call on the destination chain
+1. `&message`: The GMP message being sent to the destination chain
+
+Your completed `send()` function now should be as follows:
+
+```rust
+ pub fn send(
+        env: Env,
+        caller: Address,
+        destination_chain: String,
+        destination_address: String,
+        message: String,
+        gas_token: Token,
+    ) {
+        let gateway = AxelarGatewayMessagingClient::new(&env, &Self::gateway(&env));
+        let gas_service = AxelarGasServiceClient::new(&env, &Self::gas_service(&env));
+
+        caller.require_auth();
+
+        let encoded_msg: Bytes = abi_encode(&env, message).unwrap();
+
+        gas_service.pay_gas(
+            &env.current_contract_address(),
+            &destination_chain,
+            &destination_address,
+            &encoded_msg,
+            &caller,
+            &gas_token,
+            &Bytes::new(&env),
+        );
+
+        gateway.call_contract(
+            &env.current_contract_address(),
+            &destination_chain,
+            &destination_address,
+            &encoded_msg,
+        );
+    }
+```
+
+### Receive Cross-Chain Message
+
+Now that you are able to _send_ a cross-chain call you still need to handle the logic to _receive_ a cross-chain call when it is sent from another blockchain to your Stellar contract.
+
+When an inbound message is received, an Axelar Relayer will look to trigger the `execute()` function on your contract. To implement the `execute` functionality you can implement the `AxelarExecutableInterface` [trait](https://doc.rust-lang.org/book/ch10-02-traits.html) to handle the `execute` functionality.
+
+Before defining your new trait you must first make the trait's dependency from the [Axelar-CGP-Stellar repo](https://github.com/axelarnetwork/axelar-cgp-Stellar/blob/main/contracts/axelar-gateway/src/executable.rs#L16) available.
+
+```rust
+use axelar_gateway::executable::AxelarExecutableInterface;
+```
+
+Now you can implement the `AxelarExecutableInterface` trait.
+
+```rust
+#[contractimpl]
+impl AxelarExecutableInterface for AxelarGMP {
+
+}
+```
+
+At this point your editor will be complaining that your implementation is missing the trait's required `gateway()` and `execute()` functionality.
+
+To resolve the first issue you can move the `gateway()` getter that you defined in the previous section of the contract to your new implementation.
+
+To resolve the second issue you can paste in the signature for the `execute()` function as it's defined in the original trait in the dependency.
+
+```rust
+fn execute(
+    env: Env,
+    source_chain: String,
+    message_id: String,
+    source_address: String,
+    payload: Bytes,
+) {}
+```
+
+#### execute()
+
+With the `execute()` signature now defined you can begin to write out the logic that will be used to handle the message.
+
+The first thing you will want to do is to validate the incoming message. This can be done by triggering the third available function in the Axelar Trait, `validate_message()`. This function will confirm that the Gateway has received an approval from the Axelar verifier set that the message is in fact authentic. You pass it into `let _` to tell the compiler that you do not care about the result of this function, to avoid the unused result warning.
+
+```rust
+let _ = Self::validate_message(&env, &source_chain, &message_id, &source_address, &payload)?;
+```
+
+Note: The `?` at the end is used to propagate the error that may be returned by the `validate_message()` function.
+
+Now with the message validated you can `decode` the function that you previously defined in the `abi.rs` file.
+
+```rust
+let decoded_msg = abi_decode_string(&env, payload).map_err(|_| CustomErrors::FailedDecoding)?;
+```
+
+You can then store the `decoded_msg` in the `DataKey` enum. As of now, the `DataKey` enum is only setup to hold the Gateway and Gas Service contract addresses. Let's add in one more key for the received message.
+
+Back in your `storage_types.rs` file, add a key called `ReceivedMessage`. Your completed enum should now look as follows
+
+```rust
+pub enum DataKey {
+    Gateway,
+    GasService,
+    ReceivedMessage
+}
+```
+
+You can now return to your `execute()` function in the `contract.rs` file and store the `decoded_msg` in the enum
+
+```rust
+//store msg
+env.storage()
+.instance()
+.set(&DataKey::ReceivedMessage, &decoded_msg);
+```
+
+Lastly,you can return `Ok(())`. Your complete `execute` function should be as follows:
+
+```rust
+fn execute(
+    env: Env,
+    source_chain: String,
+    message_id: String,
+    source_address: String,
+    payload: Bytes,
+) -> Result<(), CustomErrors> {
+    let _ =
+        Self::validate_message(&env, &source_chain, &message_id, &source_address, &payload)?;
+
+    let decoded_msg = abi_decode_string(&env, payload).map_err(|_| CustomErrors::FailedDecoding)?;
+
+    //store msg
+    env.storage()
+        .instance()
+        .set(&DataKey::ReceivedMessage, &decoded_msg);
+
+    Ok(())
+}
+```
+
+#### event
+
+With your message now validated you can [emit an event](https://developers.stellar.org/docs/learn/encyclopedia/contract-development/events) to mark that your message was received at the destination chain.
+
+For maximum modularity you can define the event in a separate `event.rs` file. You can go ahead and make several Stellar SDK types available in the new file.
+
+```rust
+use Stellar_sdk::{Bytes, Env, String, Symbol};
+```
+
+Next you can define a new function called `executed()` where you can implement the event emission. This function will accept the same five parameters as the `execute()` function in the `contract.rs` file. The first thing you will want to do in the new function is define the event [topics](https://developers.stellar.org/docs/build/smart-contracts/example-contracts/events#event-topics). Topics allow for filtering events, making it easier for off-chain applications to monitor specific changes within on-chain contracts. For your event's topics you can pass in the following:
+
+Note: The different names between the `executed()` function in the `event.rs` file with the `execute()` function in the `contract.rs` file.
+
+```rust
+    let topics = (
+        Symbol::new(env, "executed"),
+        source_chain,
+        message_id,
+        source_address,
+        payload,
+    );
+```
+
+These topics include
+
+1. The name of the event, which is simply a [symbol type](https://developers.stellar.org/docs/learn/encyclopedia/contract-development/types/built-in-types#symbol-symbol) of `executed`.
+1. The source chain of the tx.
+1. A unique message id for the cross-chain message.
+1. The originating address of the cross-chain message.
+
+With the topics now set you can emit your event using the `publish` function.
+
+```rust
+env.events().publish(topics, (payload,));
+```
+
+The `publish()` function requires the topics which you previously defined, as well as the `payload`, which contains the actual contents of the cross-chain message being emitted.
+
+Your completed `event.rs` file should be as follows
+
+```rust
+use Stellar_sdk::{Bytes, Env, String, Symbol};
+
+pub fn executed(
+    env: &Env,
+    source_chain: String,
+    message_id: String,
+    source_address: String,
+    payload: String,
+) {
+    let topics = (
+        Symbol::new(env, "executed"),
+        source_chain,
+        message_id,
+        source_address,
+    );
+
+    env.events().publish(topics, (payload,));
+}
+```
+
+The final thing you now must do is to add the code in the `event.rs` file as a `mod` in the `lib.rs` file.
+
+```rust
+mod event;
+```
+
+With your event now defined you may return to your `contract.rs` file to trigger it in your `execute()` function. First you must make the code from `event.rs` available:
+
+```rust
+use crate::event;
+```
+
+Now you can trigger the `executed()` function that will in turn trigger the `executed` event.
+
+```rust
+event::executed(&env, source_chain, message_id, source_address, payload);
+```
+
+At this point once your message is received on the destination chain your `execute()` function will ensure that it has been marked as `approved` on the gateway, then it will emit the `executed()` event along with the unique parameters to your cross-chain transaction that was sent to this Stellar contract!
+
+## Testing
+
+Your `gmp-example` contract is now complete. If you run the command `stellar contract build`, your code should compile without any errors. Next you will need to optimize your contract. To do so run
+
+### Build
+
+```bash
+stellar contract optimize --wasm target/wasm32-unknown-unknown/release/axelar_gmp.wasm
+```
+
+### Deploy
+
+To deploy the contract you can run
+
+```bash
+stellar contract deploy --wasm target/wasm32-unknown-unknown/release/axelar_gmp.optimized.wasm --source <YOUR_WALLET_NAME> --network testnet -- --gateway CBECMRORSIPG4XG4CNZILCH233OXYMLCY4GL3GIO4SURSHTKHDAPEOVM --gas_service CD3KZOLEACWMQSDEQFUJI6ZWC7A7CC7AE7ZFVE4X2DBPYAC6L663GCNN`
+```
+
+Note: The gateway and gas service addresses listed [here](https://github.com/axelarnetwork/axelar-contract-deployments/blob/main/axelar-chains-config/info/devnet-amplifier.json) are for the Stellar devnet deployment, these may change at some point going forward, please check the docs for the latest addresses. Also the Stellar testnet frequently restarts which will lead to these Gateway and Gas Service contracts changing.
+
+### Interact on Chain
+
+Once your contract is live on chain you can now send a cross-chain message by running the appropriate `stellar-cli` command.
+
+```bash
+stellar contract invoke --network testnet --id <CONTRACT_ADDRESS> --source-account <MY_ACCOUNT> -- send --caller <CALLER_ADDR_NAME> --destination_chain '"<DEST_CHAIN_NAME>"' --message '"<MESSAGE>"' --destination_address '"<DEST_ADDR>"' --gas_token '{ "address": "CDLZFC3SYJYDZT7K67VZ75HPJVIEUVNIXF47ZG2FB2RMQQVU2HHGCYSC", "amount": "10000000000" }'
+```
+
+At this point you should be able to query your Solidity contract to check if a message has gone through successfully.
+
+When you want to receive a message you will send the GMP message from your EVM Solidity contract and this Stellar contract will automatically receive and decode the message. To confirm that the message was received you will need to query this Stellar contract to make sure that a value in the `ReceivedMessage` key in the `DataKey` enum has been set. This can be done by running:
+
+```bash
+stellar contract invoke --network testnet --id <CONTRACT_ADDRESS> --source-account <CALLER_ADDR_NAME> -- received_message
+```
+
+If you successfully sent the message from the EVM chain then this query should return the `string` that was sent from the source chain in your Stellar contract.
+

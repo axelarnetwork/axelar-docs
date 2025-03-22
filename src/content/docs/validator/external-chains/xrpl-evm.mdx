@@ -50,7 +50,26 @@ mkdir -p ~/.exrpd
 ```
 Inside it, you will eventually see two subfolders. The first is `~/.exrpd/config`. The second is `~/.exrpd/data`.
 
-2. Initialize the node
+2. Set the chain id
+<tabs>
+  <tab-item title="devnet">
+    ```bash
+    exrpd config chain-id exrp_1440002-1
+    ```
+  </tab-item>
+  <tab-item title="testnet">
+    ```bash
+    exrpd config chain-id xrplevm_1449000-1
+    ```
+  </tab-item>
+  <tab-item title="mainnet">
+    ```bash
+    exrpd config chain-id TBD
+    ```
+  </tab-item>
+</tabs>
+
+3. Initialize the node
 Make sure to replace `<your_moniker>` with a short ASCII-only name for your node (e.g., my-node).
 <tabs>
   <tab-item title="devnet">
@@ -60,7 +79,7 @@ Make sure to replace `<your_moniker>` with a short ASCII-only name for your node
   </tab-item>
   <tab-item title="testnet">
     ```bash
-    exrpd init <your_moniker> --chain-id TBD
+    exrpd init <your_moniker> --chain-id xrplevm_1449000-1
     ```
   </tab-item>
   <tab-item title="mainnet">
