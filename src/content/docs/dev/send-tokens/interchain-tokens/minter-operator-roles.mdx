@@ -1,0 +1,129 @@
+# Minter and Operator Roles in Interchain Token Service
+
+The [Interchain Token Service (ITS)](https://github.com/axelarnetwork/interchain-token-service/tree/main) uses two key roles to manage permissions and control: **Minter** and **Operator**. These roles implement access control mechanisms that determine who can perform specific actions on tokens and token managers.
+
+## Minter Role
+
+The Minter role controls who can create (mint) and destroy (burn) tokens. This role is critical for managing the token supply across different chains.
+
+Based on the [`IMinter`](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/interfaces/IMinter.sol) interface and the contract implementations, a Minter can:
+
+1. **Mint new tokens**: Create new tokens and assign them to any address.
+2. **Burn tokens**: Destroy tokens from circulation.
+3. **Transfer mintership**: Transfer the minter role to another address.
+4. **Propose mintership change**: Propose a new minter (two-step transfer process).
+
+### Implementation Details
+
+When a new Interchain Token is deployed:
+
+- ITS is initially set as the minter for Native Interchain Tokens.
+- The token manager needs to have the minter role in order to mint tokens when receiving them from another chain and burn tokens when sending them to another chain.
+
+There are two primary ways mintership is transferred to the token manager:
+
+1. Automatic Migration: The [`TokenHandler.sol`](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/TokenHandler.sol) contract contains an automatic migration mechanism that transfers mintership from ITS to the token manager when tokens are processed:
+
+```solidity
+function _migrateToken(address tokenManager, address tokenAddress, uint256 tokenManagerType) internal {
+    if (tokenManagerType == uint256(TokenManagerType.NATIVE_INTERCHAIN_TOKEN) && IMinter(tokenAddress).isMinter(address(this))) {
+        IMinter(tokenAddress).transferMintership(tokenManager);
+    }
+}
+```
+
+2. Manual Migration: Developers can also explicitly migrate mintership by calling the migrateInterchainToken function on the InterchainTokenService contract:
+
+```solidityC
+function migrateInterchainToken(bytes32 tokenId) external onlyOwner {
+    ITokenManager tokenManager_ = deployedTokenManager(tokenId);
+    address tokenAddress = tokenManager_.tokenAddress();
+    IMinter(tokenAddress).transferMintership(address(tokenManager_));
+}
+```
+
+#### Why Token Managers Need Minter Rights:
+
+For the interchain token system to work properly, token managers need minting and burning capabilities because:
+
+- When tokens are sent from Chain A to Chain B, tokens are burned (or locked) on Chain A and must be minted on Chain B.
+- Without minter rights, the token manager cannot mint the corresponding tokens on the destination chain.
+- Having the token manager as the minter creates a trustless system where ITS doesn't need to maintain privileged access to tokens.
+- It allows the token manager to directly control token supply according to cross-chain message validation.
+
+### Token Manager Integration
+
+For [`NATIVE_INTERCHAIN_TOKEN`](https://github.com/axelarnetwork/interchain-token-service/blob/4ba40851ee13cf98077e38b49f2c106d09a2f67c/contracts/interfaces/ITokenManagerType.sol#L11) and [`MINT_BURN`](https://github.com/axelarnetwork/interchain-token-service/blob/4ba40851ee13cf98077e38b49f2c106d09a2f67c/contracts/interfaces/ITokenManagerType.sol#L15) token manager types, the minter role allows the token manager to mint tokens upon receiving them from another chain and burn tokens when sending them to another chain.
+Its important to note that token manager is required to be whitelisted for these manager types to be used otherwise the manager will not be able to mint/burn.
+
+## Operator Role
+
+The Operator role controls who can manage the token manager's configuration and operations. This role has administrative powers over how tokens are handled during cross-chain transfers.
+
+Based on the [`IOperator`](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/interfaces/IOperator.sol) interface and contract implementations, an Operator can:
+
+1. **Set flow limits**: Control the rate at which tokens can flow into or out of a chain.
+2. **Approve service**: Grant permission to the ITS to operate on behalf of the token manager.
+3. **Transfer operatorship**: Transfer the operator role to another address.
+4. **Propose operatorship change**: Propose a new operator (two-step transfer process).
+
+### Implementation Details
+
+ITS operators are set during token manager deployment:
+
+```solidity
+// From InterchainTokenFactory.sol
+
+bytes memory linkParams = '';
+if (operator != address(0)) {
+    linkParams = operator.toBytes();
+}
+```
+
+The `linkParams` is used to specify the operator address for the token manager.
+
+## Role Transitions and Ownership
+
+Both roles feature a secure two-step transfer process:
+
+1. The current role holder (operator or minter) proposes a new address (`proposeOperatorship` or `proposeMintership`).
+2. The proposed address must accept the role (`acceptOperatorship` or `acceptMintership`).
+
+This prevents accidental transfers to invalid addresses.
+
+## Practical Applications
+
+### Minter Role Usage
+
+1. **Token Supply Management**: The minter can control the total supply by minting or burning tokens.
+2. **Cross-Chain Transfers**: For mint/burn token managers, the minter mints tokens on the destination chain equivalent to what was burned on the source chain.
+3. **Token Migration**: The [`migrateInterchainToken`](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/InterchainTokenService.sol) function in ITS shows how mintership is transferred to optimize token operations.
+
+### Operator Role Usage
+
+1. **Flow Control**: Operators can set _flow limits_ for how many tokens can flow in or out of a chain in a given period.
+3. **Service Authorization**: Operators can authorize ITS to interact with token managers.
+
+## Role Interaction in ITS
+
+- The ITS contract initially holds the minter role for native interchain tokens.
+- The token manager typically becomes the minter to handle cross-chain transfers.
+- Custom operators can be specified for token managers.
+- When deploying tokens, the factory allows specifying both minter and operator roles:
+
+```solidity
+// From InterchainTokenFactory.sol
+
+token.transferMintership(minter);
+tokenManager.removeFlowLimiter(address(this));
+tokenManager.addFlowLimiter(minter);
+tokenManager.transferOperatorship(minter);
+```
+
+## Security Considerations
+
+1. **Role Separation**: Minter and Operator roles can be held by different entities for better security.
+2. **Flow Limits**: Operators can set flow limits to prevent large-scale attacks.
+3. **Careful Role Transfer**: The two-step transfer process mitigates the risk of losing control.
+
+The Minter and Operator roles form the foundation of ITS's permission system. Developers can build secure and efficient cross-chain token solutions by understanding how these roles function and interact.
