@@ -824,6 +824,39 @@ If your node is still syncing it may return a response as follows:
 }
 ```
 
+## Ampd Configuration
+
+In your `config.toml` file for ampd you can set the following configuration to register with Stellar
+
+<tabs>
+    <tab-item title="Mainnet" class="bleed">
+        ```toml
+        [[handlers]]
+        type="StellarMsgVerifier"
+        cosmwasm_contract="axelar1dalnx2yvmu3g3aau8m7fj426fk9u8dnzlr5azvqmr4x82rtclats8lhjmu"
+        rpc_url="your_own_rpc"
+
+        [[handlers]]
+        type="StellarVerifierSetVerifier"
+        cosmwasm_contract="axelar1dalnx2yvmu3g3aau8m7fj426fk9u8dnzlr5azvqmr4x82rtclats8lhjmu"
+        rpc_url="your_own_rpc"
+        ```
+    </tab-item>
+    <tab-item title="Testnet" class="bleed">
+        ```toml
+        [[handlers]]
+        type="StellarMsgVerifier"
+        cosmwasm_contract="axelar1j82crkl36gezwlch3ngkcyva9gjrqsz4vr76u3uvazdl7z70sfdsx30ma2"
+        rpc_url="your_own_rpc"
+
+        [[handlers]]
+        type="StellarVerifierSetVerifier"
+        cosmwasm_contract="axelar1j82crkl36gezwlch3ngkcyva9gjrqsz4vr76u3uvazdl7z70sfdsx30ma2"
+        rpc_url="your_own_rpc"
+        ```
+    </tab-item>
+</tabs>
+
 ## Common Issues
 Tips & Common Pitfalls
 1. Absolute DB path: On macOS, either set `<key>WorkingDirectory</key>` in your plist or use `DB_PATH="/Users/USERNAME/.stellar/data/stellar_rpc.sqlite"`.

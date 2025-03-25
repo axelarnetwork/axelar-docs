@@ -69,6 +69,10 @@ export const getNavigation = (section) => {
                   href: "/dev/send-tokens/interchain-tokens/flow-limit/",
                 },
                 {
+                  title: "Minter & Operator Roles",
+                  href: "/dev/send-tokens/interchain-tokens/minter-operator-roles/",
+                },
+                {
                   title: "Developer Guides",
                   children: [
                     {
@@ -130,7 +134,6 @@ export const getNavigation = (section) => {
               title: "Send Messages with Tokens",
               href: "/dev/general-message-passing/gmp-tokens-with-messages/",
             },
-
             {
               title: "Gas Service",
               children: [
@@ -247,6 +250,24 @@ export const getNavigation = (section) => {
               ],
             },
             {title: "Sui GMP", href: "/dev/general-message-passing/sui/sui-programs/"},
+            {
+              title: "Stellar GMP",
+              children: [
+                {
+                title: "Stellar Contracts",
+                href: "/dev/general-message-passing/stellar-gmp/stellar-contracts/"
+                },
+                {
+                title: "GMP Example",
+                href: "/dev/general-message-passing/stellar-gmp/gmp-example/"
+                },
+                {
+                  title: "ITS Example",
+                  href: "/dev/general-message-passing/stellar-gmp/its-example/"
+                },
+              ]
+
+            },
             {
               title: "Solidity Utilities",
               href: "/dev/solidity-utilities/",
@@ -822,6 +843,13 @@ export const getNavigation = (section) => {
   nav.push({
     header: "Learn more about Axelar",
     children: [
+      { title: "Connected Chains", href: "https://axelarscan.io/resources/chains"},
+      { title: "Live Addresses", children: [
+        {title: "Mainnet", href: "https://github.com/axelarnetwork/axelar-contract-deployments/blob/main/axelar-chains-config/info/mainnet.json"},
+        {title: "Testnet", href: "https://github.com/axelarnetwork/axelar-contract-deployments/blob/main/axelar-chains-config/info/testnet.json"},
+        { title: "Stagenet", href: "https://github.com/axelarnetwork/axelar-contract-deployments/blob/main/axelar-chains-config/info/stagenet.json"},
+        {title: "Devnet", href: "https://github.com/axelarnetwork/axelar-contract-deployments/blob/main/axelar-chains-config/info/devnet-amplifier.json"},
+      ]},
       { title: "Crosschain Message Flow", href: "/learn/network/flow/" },
       { title: "axlUSDC", href: "/learn/axlusdc/" },
       { title: "Security Overview", href: "/learn/security/" },
