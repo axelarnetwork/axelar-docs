@@ -1,0 +1,578 @@
+# Stellar ITS Example
+
+## What is the Interchain Token Service?
+
+The [Interchain Token Service (ITS)](https://github.com/axelarnetwork/interchain-token-service) is a protocol that allows tokens to move freely between different blockchains. Think of it as a universal bridge for tokens - it provides a standardized way to:
+
+1.  Create new tokens that automatically exist on multiple blockchains
+2.  Connect existing tokens from one blockchain to other blockchains
+3.  Transfer tokens securely between blockchains
+
+For [Stellar developers](https://developers.stellar.org/), ITS opens up new possibilities to interact with tokens from Ethereum, Polygon, Avalanche, and many other blockchains without needing to understand the intricacies of each chain's token standards.
+
+## How ITS Works on Stellar
+
+Unlike on EVM chains (like Ethereum) where tokens follow the [ERC-20 standard](https://ethereum.org/en/developers/docs/standards/tokens/erc-20/), Stellar has its own native token structure. The Axelar ITS integration adapts to Stellar's unique characteristics:
+
+1.  **Hub Mode Operation**: Stellar ITS works exclusively in "Hub mode" - all cross-chain messages go through the central Axelar network rather than directly between chains.
+
+2.  **Token Representation**: When an external token (like an Ethereum ERC-20) comes to Stellar, it's represented by a Stellar token that's controlled by a special contract called a [`TokenManager`](https://github.com/axelarnetwork/axelar-amplifier-stellar/blob/main/contracts/stellar-interchain-token-service/src/token_manager.rs).
+
+3.  **Trust System**: Instead of trusting specific addresses (as in EVM implementations), Stellar ITS uses a system of trusted chains.
+
+
+With the integration of Stellar to Axelar, Stellar-based contracts can now leverage ITS to interact with tokens from other [blockchain ecosystems](https://docs.axelar.dev/dev/reference/mainnet-chain-names) connected to Axelar.
+
+## Key Components of ITS
+
+Before diving into implementation, let's understand the key components:
+
+1.  **InterchainTokenService**: The main contract that coordinates token-related operations. It's the primary interface for cross-chain token functionality.
+
+2.  **TokenManager**: A contract that handles the minting, burning, and locking of tokens on a specific blockchain. Each token has its own `TokenManager`.
+
+3.  **InterchainToken**: The token contract implementing Stellar's token interface.
+
+4.  **Gateway**: Facilitates the cross-chain message passing between Stellar and other blockchains.
+
+5.  **GasService**: Handles payments for cross-chain transactions. Without this, messages couldn't be relayed between chains.
+
+
+## Setup
+
+To begin, make sure you have [Rust](https://www.rust-lang.org/tools/install) and the [Stellar CLI](https://github.com/stellar/stellar-cli) is [setup](https://developers.stellar.org/docs/build/smart-contracts/getting-started/setup) on your local machine.
+
+Once the Stellar CLI is setup you can run `stellar contract init axelar-its-app`. This will create a new Stellar project with a workspace structure containing a sample contract.
+
+### File Structure
+
+The generated project has the following structure:
+
+```
+axelar-its-app/
+├── Cargo.toml  (workspace config)
+├── .gitignore
+├── Readme.md
+└── contracts/
+    └── hello-world/
+        ├── Makefile
+        ├── Cargo.toml
+        └── src/
+            ├── lib.rs
+            └── test.rs
+```
+
+You can either work with the hello-world contract or create a new contract specifically for ITS. For this guide, we'll rename the `hello-world` directory to `axelar-its`:
+
+```bash
+cd axelar-its-app
+mv contracts/hello-world contracts/axelar-its
+```
+
+Now we need to create two additional files in the `contracts/axelar-its/src` directory:
+
+-   `contract.rs`: Will contain our main contract implementation
+-   `storage_types.rs`: Will define our storage structure
+
+### Integrate Axelar Stellar Dependency
+
+To integrate with the Axelar Network you will need to leverage the contracts in the [Axelar CGP Stellar](https://github.com/axelarnetwork/axelar-amplifier-stellar) repository. Open the `contracts/axelar-its/Cargo.toml` file and add the following dependencies:
+
+```toml
+[dependencies]
+soroban-sdk = "22.0.0"
+stellar-axelar-gateway = { git = "https://github.com/axelarnetwork/axelar-amplifier-stellar", branch = "main", features = ["library"] }
+stellar-axelar-gas-service = { git = "https://github.com/axelarnetwork/axelar-amplifier-stellar", branch = "main", features = ["library"] }
+stellar-interchain-token-service = { git = "https://github.com/axelarnetwork/axelar-amplifier-stellar", branch = "main", features = ["library"] }
+stellar-interchain-token = { git = "https://github.com/axelarnetwork/axelar-amplifier-stellar", branch = "main", features = ["library"] }
+stellar-token-manager = { git = "https://github.com/axelarnetwork/axelar-amplifier-stellar", branch = "main", features = ["library"] }
+stellar-axelar-std = { git = "https://github.com/axelarnetwork/axelar-amplifier-stellar", branch = "main" }
+```
+
+## Lib
+
+Now, modify the `lib.rs` file inside `contracts/axelar-its/src` to include our new modules. Replace its contents with:
+
+```rust
+#![no_std]
+
+pub mod contract;
+mod storage_types;
+```
+
+## Storage Types
+
+Create a new file `storage_types.rs` inside `contracts/axelar-its/src` with the following content:
+
+```rust
+use soroban_sdk::contracttype;
+
+#[contracttype]
+#[derive(Clone, Debug)]
+pub enum DataKey {
+    Gateway,
+    GasService,
+    InterchainTokenService,
+    TokenId,
+    TokenManagerId,
+}
+```
+
+The `storage_types.rs` file defines the `DataKey` enum used as a typed storage key within the contract:
+
+-   `Gateway`: Storage key for the Axelar Gateway contract address.
+-   `GasService`: Storage key for the Axelar Gas Service contract address.
+-   `InterchainTokenService`: Storage key for the Interchain Token Service contract address.
+-   `TokenId`: Storage key for a deployed token ID.
+-   `TokenManagerId`: Storage key for a token manager ID.
+
+## Contract
+
+Now, create a `contract.rs` file with the main contract implementation. First, import the necessary types and modules:
+
+```rust
+use soroban_sdk::{contract, contractimpl, vec, Address, Bytes, BytesN, Env, String, Symbol};
+use soroban_token_sdk::metadata::TokenMetadata;
+use stellar_axelar_gas_service::AxelarGasServiceClient;
+use stellar_axelar_gateway::AxelarGatewayMessagingClient;
+use stellar_axelar_std::types::Token;
+use stellar_axelar_std::{only_operator, only_owner, when_not_paused, Operatable, Ownable, Pausable, Upgradable};
+
+use crate::error::ContractError;
+use crate::storage::{self, TokenIdConfigValue};
+use crate::types::TokenManagerType;
+
+#[contract]
+#[derive(Operatable, Ownable, Pausable, Upgradable)]
+pub struct InterchainTokenService;
+
+#[contractimpl]
+impl InterchainTokenService {
+    // Contract implementation will go here
+}
+```
+
+### Constructor
+
+The constructor initializes the contract with all required addresses and contract hashes:
+
+```rust
+pub fn __constructor(
+    env: Env,
+    owner: Address,
+    operator: Address,
+    gateway: Address,
+    gas_service: Address,
+    its_hub_address: String,
+    chain_name: String,
+    native_token_address: Address,
+    interchain_token_wasm_hash: BytesN<32>,
+    token_manager_wasm_hash: BytesN<32>,
+) {
+    stellar_axelar_std::interfaces::set_owner(&env, &owner);
+    stellar_axelar_std::interfaces::set_operator(&env, &operator);
+    storage::set_gateway(&env, &gateway);
+    storage::set_gas_service(&env, &gas_service);
+    storage::set_its_hub_address(&env, &its_hub_address);
+    storage::set_chain_name(&env, &chain_name);
+    storage::set_native_token_address(&env, &native_token_address);
+    storage::set_interchain_token_wasm_hash(&env, &interchain_token_wasm_hash);
+    storage::set_token_manager_wasm_hash(&env, &token_manager_wasm_hash);
+}
+```
+
+This constructor sets up all the necessary components including:
+
+-   Owner and operator addresses for access control
+-   Gateway and Gas Service addresses for cross-chain messaging
+-   ITS Hub configuration for Hub mode operation
+-   WASM hashes for token and token manager contract deployments
+
+### Trusted Chain Management
+
+Before sending tokens cross-chain, you need to establish trust with other chains:
+
+```rust
+#[only_owner]
+fn set_trusted_chain(env: &Env, chain: String) -> Result<(), ContractError> {
+    // Ensure we don't already trust this chain
+    ensure!(
+        !storage::is_trusted_chain(env, chain.clone()),
+        ContractError::TrustedChainAlreadySet
+    );
+
+    // Add the chain to our trusted chains
+    storage::set_trusted_chain_status(env, chain.clone());
+
+    // Emit event (implementation not shown)
+
+    Ok(())
+}
+
+#[only_owner]
+fn remove_trusted_chain(env: &Env, chain: String) -> Result<(), ContractError> {
+    // Ensure we actually trust this chain
+    ensure!(
+        storage::is_trusted_chain(env, chain.clone()),
+        ContractError::TrustedChainNotSet
+    );
+
+    // Remove the chain from our trusted chains
+    storage::remove_trusted_chain_status(env, chain.clone());
+
+    // Emit event (implementation not shown)
+
+    Ok(())
+}
+
+fn is_trusted_chain(env: &Env, chain: String) -> bool {
+    storage::is_trusted_chain(env, chain)
+}
+```
+
+These functions allow the owner to manage which chains are trusted for cross-chain operations.
+
+### Token Deployment
+
+To create a new interchain token that can be used across multiple blockchains:
+
+```rust
+#[when_not_paused]
+fn deploy_interchain_token(
+    env: &Env,
+    caller: Address,
+    salt: BytesN<32>,
+    token_metadata: TokenMetadata,
+    initial_supply: i128,
+    minter: Option<Address>,
+) -> Result<BytesN<32>, ContractError> {
+    // Verify authentication
+    caller.require_auth();
+
+    // Validate the supply amount
+    ensure!(initial_supply >= 0, ContractError::InvalidInitialSupply);
+
+    // Generate a unique token ID based on caller and salt
+    let token_id = Self::interchain_token_id(env, caller.clone(), salt);
+
+    // Validate token metadata
+    token_metadata.validate()?;
+
+    // Deploy the token
+    let token_address = Self::deploy_token(env, token_id.clone(), token_metadata, minter)?;
+
+    // Mint initial supply if specified
+    if initial_supply > 0 {
+        soroban_sdk::token::StellarAssetClient::new(env, &token_address).mint(&caller, &initial_supply);
+    }
+
+    Ok(token_id)
+}
+
+#[when_not_paused]
+fn deploy_remote_interchain_token(
+    env: &Env,
+    caller: Address,
+    salt: BytesN<32>,
+    destination_chain: String,
+    gas_token: Option<Token>,
+) -> Result<BytesN<32>, ContractError> {
+    // Verify authentication
+    caller.require_auth();
+
+    // Generate token ID
+    let token_id = Self::interchain_token_id(env, caller.clone(), salt);
+
+    // Deploy to remote chain
+    Self::deploy_remote_token(env, caller, token_id.clone(), destination_chain, gas_token)?;
+
+    Ok(token_id)
+}
+```
+
+These functions handle token creation and deployment. The first creates a token locally on Stellar, while the second deploys it to another blockchain.
+
+### Canonical Token Registration
+
+To make an existing Stellar token available on other chains:
+
+```rust
+#[when_not_paused]
+fn register_canonical_token(
+    env: &Env,
+    token_address: Address,
+) -> Result<BytesN<32>, ContractError> {
+    // Validate the token address
+    let _ = token_metadata::token_metadata(env, &token_address, &Self::native_token_address(env))?;
+
+    // Generate a token ID based on the token's address
+    let token_id = Self::canonical_interchain_token_id(env, token_address.clone());
+
+    // Make sure the token isn't already registered
+    Self::ensure_token_not_registered(env, token_id.clone())?;
+
+    // Deploy a token manager for this token
+    let _: Address = Self::deploy_token_manager(
+        env,
+        token_id.clone(),
+        token_address,
+        TokenManagerType::LockUnlock,
+    );
+
+    Ok(token_id)
+}
+
+#[when_not_paused]
+fn deploy_remote_canonical_token(
+    env: &Env,
+    token_address: Address,
+    destination_chain: String,
+    spender: Address,
+    gas_token: Option<Token>,
+) -> Result<BytesN<32>, ContractError> {
+    // Verify authentication
+    spender.require_auth();
+
+    // Generate token ID
+    let token_id = Self::canonical_interchain_token_id(env, token_address);
+
+    // Deploy to remote chain
+    Self::deploy_remote_token(env, spender, token_id.clone(), destination_chain, gas_token)?;
+
+    Ok(token_id)
+}
+```
+
+These functions let you link existing tokens to the ITS network, making them available across chains.
+
+### Cross-Chain Token Transfer
+
+The core function for sending tokens between blockchains:
+
+```rust
+#[when_not_paused]
+fn interchain_transfer(
+    env: &Env,
+    caller: Address,
+    token_id: BytesN<32>,
+    destination_chain: String,
+    destination_address: Bytes,
+    amount: i128,
+    data: Option<Bytes>,
+    gas_token: Option<Token>,
+) -> Result<(), ContractError> {
+    // Validate parameters
+    ensure!(amount > 0, ContractError::InvalidAmount);
+    ensure!(!destination_address.is_empty(), ContractError::InvalidDestinationAddress);
+    if let Some(ref data) = data {
+        ensure!(!data.is_empty(), ContractError::InvalidData);
+    }
+
+    // Verify authentication
+    caller.require_auth();
+
+    // Take tokens from the caller
+    token_handler::take_token(
+        env,
+        &caller,
+        Self::token_id_config_with_extended_ttl(env, token_id.clone())?,
+        amount,
+    )?;
+
+    // Track outgoing token flow (for flow limits)
+    FlowDirection::Out.add_flow(env, token_id.clone(), amount)?;
+
+    // Emit event (implementation not shown)
+
+    // Create the transfer message
+    let message = Message::InterchainTransfer(InterchainTransfer {
+        token_id,
+        source_address: caller.to_string_bytes(),
+        destination_address,
+        amount,
+        data,
+    });
+
+    // Send the message to the destination chain
+    Self::pay_gas_and_call_contract(env, caller, destination_chain, message, gas_token)?;
+
+    Ok(())
+}
+```
+
+This function handles the complete process of sending tokens to another blockchain:
+
+1.  It validates the parameters and caller authentication
+2.  Takes tokens from the caller using the token manager
+3.  Tracks token flow for any limits
+4.  Creates a transfer message
+5.  Handles the cross-chain communication through the gas service and gateway
+
+### Receive Tokens from Other Chains
+
+To receive tokens from other blockchains, the contract must implement message handling:
+
+```rust
+fn execute(
+    env: &Env,
+    source_chain: String,
+    message_id: String,
+    source_address: String,
+    payload: Bytes,
+) -> Result<(), ContractError> {
+    // Validate the message is from the ITS Hub and decode it
+    let (original_source_chain, message) = Self::get_execute_params(
+        env, source_chain, source_address, payload
+    )?;
+
+    // Process the message based on its type
+    match message {
+        Message::InterchainTransfer(transfer) => {
+            Self::execute_transfer_message(env, &original_source_chain, message_id, transfer)
+        }
+        Message::DeployInterchainToken(deploy) => {
+            Self::execute_deploy_message(env, deploy)
+        }
+    }
+}
+```
+
+This function:
+
+1.  Validates that the message is coming from the ITS Hub
+2.  Decodes the message to determine its type
+3.  Processes it appropriately - either as a token transfer or a token deployment
+
+### Flow Limits
+
+The ITS implementation includes a flow limiting system to control how many tokens can move in a given time period:
+
+```rust
+#[only_operator]
+fn set_flow_limit(
+    env: &Env,
+    token_id: BytesN<32>,
+    flow_limit: Option<i128>,
+) -> Result<(), ContractError> {
+    // If a limit is specified, make sure it's positive
+    if let Some(limit) = flow_limit {
+        ensure!(limit > 0, ContractError::InvalidAmount);
+    }
+
+    // Store or remove the flow limit
+    if let Some(limit) = flow_limit {
+        storage::set_flow_limit(env, token_id, &limit);
+    } else {
+        storage::remove_flow_limit(env, token_id);
+    }
+
+    Ok(())
+}
+```
+
+This function allows the operator to set limits on how many tokens can flow in or out over a time period.
+
+## Building and Deploying the Contract
+
+After implementing your contract, build it with Cargo:
+
+```bash
+cargo build; cargo test;
+stellar contract build;
+```
+
+Then optimize the WASM file for deployment:
+
+```bash
+stellar contract optimize --wasm target/wasm32-unknown-unknown/release/stellar_interchain_token_service.wasm
+```
+
+Deploy your contract with all required parameters:
+
+```bash
+stellar contract deploy \
+  --wasm target/wasm32-unknown-unknown/release/stellar_interchain_token_service.optimized.wasm \
+  --source <YOUR_WALLET_NAME> \
+  --network testnet \
+  -- \
+  --owner <OWNER_ADDRESS> \
+  --operator <OPERATOR_ADDRESS> \
+  --gateway <GATEWAY_ADDRESS> \
+  --gas_service <GAS_SERVICE_ADDRESS> \
+  --its_hub_address <ITS_HUB_ADDRESS> \
+  --chain_name "stellar" \
+  --native_token_address <XLM_ADDRESS> \
+  --interchain_token_wasm_hash <INTERCHAIN_TOKEN_WASM_HASH> \
+  --token_manager_wasm_hash <TOKEN_MANAGER_WASM_HASH>
+```
+
+### Interact with the Contract
+
+Once deployed, you can interact with your contract:
+
+#### Set a Trusted Chain
+
+```bash
+stellar contract invoke \
+  --network testnet \
+  --id <CONTRACT_ADDRESS> \
+  --source-account <YOUR_WALLET> \
+  -- set_trusted_chain --chain '"ethereum"'
+```
+
+#### Deploy an Interchain Token
+
+```bash
+stellar contract invoke \
+  --network testnet \
+  --id <CONTRACT_ADDRESS> \
+  --source-account <YOUR_WALLET> \
+  -- deploy_interchain_token \
+  --caller <CALLER_ADDRESS> \
+  --salt <SALT_BYTES_32> \
+  --token_metadata '{"name": "My Token", "symbol": "MTK", "decimal": 8}' \
+  --initial_supply 1000000000 \
+  --minter <OPTIONAL_MINTER_ADDRESS>
+```
+
+#### Deploy Token to Another Chain
+
+```bash
+stellar contract invoke \
+  --network testnet \
+  --id <CONTRACT_ADDRESS> \
+  --source-account <YOUR_WALLET> \
+  -- deploy_remote_interchain_token \
+  --caller <CALLER_ADDRESS> \
+  --salt <SALT_BYTES_32> \
+  --destination_chain '"ethereum"' \
+  --gas_token '{"address": "<GAS_TOKEN_ADDRESS>", "amount": 10000000000}'
+  
+
+#### Transfer Tokens Cross-Chain
+
+```bash
+stellar contract invoke \
+  --network testnet \
+  --id <CONTRACT_ADDRESS> \
+  --source-account <YOUR_WALLET> \
+  -- interchain_transfer \
+  --caller <CALLER_ADDRESS> \
+  --token_id <TOKEN_ID_BYTES_32> \
+  --destination_chain '"ethereum"' \
+  --destination_address <DESTINATION_BYTES> \
+  --amount 1000 \
+  --data <OPTIONAL_DATA_BYTES> \
+  --gas_token '{"address": "<GAS_TOKEN_ADDRESS>", "amount": 10000000000}'
+```
+
+#### Register an Existing Token
+
+```bash
+stellar contract invoke \
+  --network testnet \
+  --id <CONTRACT_ADDRESS> \
+  --source-account <YOUR_WALLET> \
+  -- register_canonical_token \
+  --token_address <TOKEN_ADDRESS>
+```
