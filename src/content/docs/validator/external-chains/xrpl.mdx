@@ -150,17 +150,16 @@ Once your node is up and running, you need to add the XRPL chain to your ampd's 
 For testnet:
 
 ```toml
-  [[handlers]]
-  chain_name="xrpl-test-1"
-  chain_rpc_url="https://s.altnet.rippletest.net:51234"
-  cosmwasm_contract="axelar1nwv2cmp4lmwujpaq9t8t4w2xvcewv49jfzxy7apz4lz60h5ycd6qkjt4fr"
-  type="XRPLMsgVerifier"
+[[handlers]]
+type="XRPLMsgVerifier"
+chain_name="xrpl"
+chain_rpc_url=<YOUR_RPC_URL>
+cosmwasm_contract="axelar1pnynr6wnmchutkv6490mdqqxkz54fnrtmq8krqhvglhsqhmu7wzsnc86sy"
 
-  [[handlers]]
-  multisig_contract="axelar14a4ar5jh7ue4wg28jwsspf23r8k68j7g5d6d3fsttrhp42ajn4xq6zayy5"
-  multisig_prover_contract="axelar18wq8qjlq6vfg2jw2fmvgyphjxrndc7529wq07pvlpnk0j2uvv5fqqqr4gv"
-  type="XRPLMultisigSigner"
-
+[[handlers]]
+type="XRPLMultisigSigner"
+multisig_contract="axelar14a4ar5jh7ue4wg28jwsspf23r8k68j7g5d6d3fsttrhp42ajn4xq6zayy5"
+multisig_prover_contract="axelar1k82qfzu3l6rvc7twlp9lpwsnav507czl6xyrk0xv287t4439ymvsl6n470"
 ```
 
 ### Register Chain 
