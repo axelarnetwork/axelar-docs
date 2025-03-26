@@ -275,12 +275,12 @@ export const getNavigation = (section) => {
               href: "/dev/send-tokens/roadmap/",
             },
             {
-              title: "Glossary",
-              href: "/dev/send-tokens/glossary/",
+                title: "Glossary",
+                href: "/dev/send-tokens/glossary/",
             },
             {
-              title: "Deprecated",
-              children: [
+                title: "Deprecated",
+                children: [
                 {
                   title: "Send Tokens",
                   href: "/dev/send-tokens/deprecated/send-tokens/",
@@ -351,7 +351,14 @@ export const getNavigation = (section) => {
                 },
               ],
             },
-            // TO DO: Add integrations folder here then underneath add the chains individual folder (e.g. XRPL -> prover, verifier, etc)
+            {
+              title: "XRPL",
+              children: [
+                { title: "XRPL Gateway", href: "/dev/amplifier/xrpl/xrpl-gateway/" },
+                { title: "XRPL Verifier", href: "/dev/amplifier/xrpl/xrpl-verifier/" },
+                { title: "XRPL Prover", href: "/dev/amplifier/xrpl/xrpl-prover/" },
+              ]
+            }
           ],
         },
         {
