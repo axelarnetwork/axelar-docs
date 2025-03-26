@@ -1,0 +1,268 @@
+# XRPL Gateway
+
+The XRPL Gateway is a customized [Gateway](https://github.com/commonprefix/axelar-amplifier/tree/main/contracts/axelarnet-gateway/src) contract built for the XRPL chain integration that is deployed on the Axelar Network. The cosmwasm contract provides functionalities for:
+
+1. Message verification and routing.
+1. Messaging routing (based on verification status).
+1. Token management.
+1. Gas accounting.
+
+
+## Message Verification 
+
+This function will be triggered by the Axelar Relayer and will trigger the [VotingVerifier](/dev/amplifier/xrpl/xrpl-verifier/) to prompt a vote by the Axelar Verifiers to validate the outgoing message. The function takes two parameters: 
+
+1. `verifier`: The client for the [Voting Verifier](/dev/amplifier/xrpl/xrpl-verifier/) contract.
+1. `msgs`: A vector of [XRPL messages](#xrpl-messages) using the voting verifier. 
+
+```rust
+pub fn verify_messages(
+    verifier: &xrpl_voting_verifier::Client,
+    msgs: Vec<XRPLMessage>,
+) -> Result<Response, Error> {}
+```
+
+The function will group messages by verification status, filtering those that are eligible for re-verification, and prepares a response with the message received from the Voting Verifier.
+
+
+## Message Routing
+
+Message routing is when messages are actually directed to their appropriate destination. The process is broken down into routing incoming messages and routing outgoing message. The key difference is that *outgoing* messages are messages that have come from the router, so we can assume they are already verified. As opposed to *incoming* messages who's verification status needs to be checked with the Voting Verifier.
+
+### Route Incoming
+
+The `route_incoming_messages()` function processes incoming messages by first checking it's verification status with the Voting Verifier. It then parses the message so that it's suitable for routing. 
+
+The function takes four parameters:
+
+1. `storage`: A reference to the contract's storage to read and write persistent state.
+1. `config`: The [configuration](#gateway-config) for the XRPL Gateway.
+1. `verifier`: The client for the [Voting Verifier](/dev/amplifier/xrpl/xrpl-verifier/) contract.
+1. `msgs_with_payload`: A vector of [XRPL messages](#xrpl-messages) with their payload.
+
+```rust
+pub fn route_incoming_messages(
+    storage: &mut dyn Storage,
+    config: &Config,
+    verifier: &xrpl_voting_verifier::Client,
+    msgs_with_payload: Vec<WithPayload<XRPLMessage>>,
+) -> Result<Response, Error> {}
+```
+
+The two main types of messages that can be parsed are [Interchain Transfer](#interchain-transfer-message) message type and [Call Contract](#call-contract-message) message type. The [Interchain Transfer](#interchain-transfer-message) message type will be used for any cross-chain asset transfer using [ITS Hub](/dev/amplifier/its-hub/introduction/) whereas the latter is for generic [GMP messages](/dev/general-message-passing/overview/#general-message-passing/). Once the message has been processed it can be sent to the [Router contract](https://github.com/axelarnetwork/axelar-amplifier/tree/main/contracts/router) to be [routed](https://github.com/axelarnetwork/axelar-amplifier/blob/main/contracts/router/src/contract/execute.rs#L208).
+
+
+### Route Outgoing
+
+Once a message has been routed by the router the Gateway will save the message to its `outgoing_messages()`. There is no need to go through the verification logic as this was already done in the previous function before the message was routed. 
+
+The function takes four parameters:
+
+1. `storage`: A reference to the contract's storage to read and write persistent state.
+1. `verified`: A vector of verified outgoing messages to be routed.
+1. `its_hub`: The address of ITS Hub for dealing with `interchain_transfer` messages.
+1. `its_hub_chain_name`: The chain name for the hub; the message's source chain must match this.
+
+
+```rust
+pub fn route_outgoing_messages(
+    storage: &mut dyn Storage,
+    verified: Vec<Message>,
+    its_hub: Addr,
+    its_hub_chain_name: &ChainName,
+) -> Result<Response, Error> {}
+```
+
+This function will verify that each message originates from the correct ITS hub address and that its source chain matches the expected hub chain name. If this verification goes through then it will save each valid outgoing message into its persistent storage.
+
+
+## Interchain Token Service (ITS) Functionality
+
+Since XRPL is not a blockchain that allows for the deployment of smart contracts the functionality for what would otherwise be an ITS Edge Contract on XRPL is built directly on the Gateway contract. 
+
+### Register Token Metadata
+
+Registers metadata for a token on the ITS Hub. This metadata is used for scaling linked tokens. The token metadata must be registered before linkToken can be called for the corresponding token.
+
+The function takes three parameters:
+
+1. `config`: The [configuration](#gateway-config) for the XRPL Gateway.
+1. `nexus_client`: The client for the [Nexus](https://github.com/commonprefix/axelar-amplifier/tree/main/packages/axelar-core-std/src/nexus) contract.
+1. `xrpl_token`: The [token](#xrpl-token) to register metadata for.
+
+```rust
+pub fn register_token_metadata(
+    config: &Config,
+    nexus_client: &nexus::Client,
+    xrpl_token: XRPLTokenOrXrp,
+) -> Result<Response, Error> {}
+```
+
+This function will construct a [RegisterTokenMetadata](#register-token-metadata)  message to the hub and route it through the Nexus client.
+
+### Register Local Token
+
+Integrates an XRPL based token to ITS hub. Once the token has been registered both on XRPL and on a remote chain you will be able to use the [link_token](#link-token) function to connect it with registered tokens on other chains. The function takes three parameters:
+
+1. `storage`: A reference to the contract's storage to read and write persistent state.
+1. `config`: The [configuration](#gateway-config) for the XRPL Gateway.
+1. `xrpl_token`: The [token](#xrpl-token) to register.
+
+```rust
+pub fn register_local_token(
+    storage: &mut dyn Storage,
+    config: &Config,
+    xrpl_token: XRPLToken,
+) -> Result<Response, Error> {}
+```
+
+Once execute the function will generate a unique [token_id](#token-id) and save that `token_id` to the Gateway's own state.
+
+### Register Remote Token
+
+To register a token that is deployed on a remote chain you can call the `register_remote_token()` to validate and saves remote token information.
+
+The function takes four parameters:
+
+1. `storage`: A reference to the contract's storage to read and write persistent state.
+1. `xrpl_multisig`:  This multisig account identifier that is expected to be the issuer for the remote token. 
+1. `token_id`: The [token_id](#token-id) to register.
+1. `xrpl_currency`: Identifies the `currency` associated with the remote token
+
+
+```rust
+pub fn register_remote_token(
+    storage: &mut dyn Storage,
+    xrpl_multisig: XRPLAccountId,
+    token_id: TokenId,
+    xrpl_currency: XRPLCurrency,
+) -> Result<Response, Error> {}
+```
+
+Once run the function will checks whether a token with the specified `token_id` is already registered. If a `token_id` is already stored, it verifies that the stored `token_id`  matches the provided `token_id`, otherwise it saves the provided `token_id`. It also verifiers if a token is stored, if non it saves that new token at the Gateway's storage.
+
+### Link Token
+
+### Deploy Remote Token
+
+
+## Gas Accounting
+
+
+## Types
+
+### XRPL Message
+
+An XRPL Message contains 
+
+```rust
+pub enum XRPLMessage {
+    ProverMessage(XRPLProverMessage),
+    InterchainTransferMessage(XRPLInterchainTransferMessage),
+    CallContractMessage(XRPLCallContractMessage),
+    AddGasMessage(XRPLAddGasMessage),
+    AddReservesMessage(XRPLAddReservesMessage),
+}
+```
+
+### XRPL Token
+
+```rust
+pub enum XRPLTokenOrXrp {
+    Xrp,
+    Issued(XRPLToken),
+}
+```
+
+```rust
+pub struct XRPLToken {
+    #[serde(with = "xrpl_account_id_string")]
+    #[schemars(with = "String")]
+    pub issuer: XRPLAccountId,
+    #[serde(with = "xrpl_currency_string")]
+    #[schemars(with = "String")]
+    pub currency: XRPLCurrency,
+}
+```
+
+### Register Token Metadata
+
+```rust
+pub struct RegisterTokenMetadata {
+    pub decimals: u8,
+    pub token_address: nonempty::HexBinary,
+}
+```
+
+#### Interchain Transfer Message
+
+#### Call Contract Message
+
+### Gateway Config
+
+THe config can be found in the Gateway's `state.rs` file. It is set as follows:
+
+```rust
+pub struct Config {
+    pub verifier: Addr,
+    pub router: Addr,
+    pub its_hub: Addr,
+    pub its_hub_chain_name: ChainName,
+    pub chain_name: ChainName,
+    pub xrpl_multisig: XRPLAccountId,
+    pub xrp_token_id: TokenId,
+}
+```
+
+### Token ID
+
+In the context of ITS, a `token_id` is a unique 32-byte identifier that ITS uses to track a token's integration across multiple chains. While a token with the same address may be registered to ITS a number of different times, ITS will only bridge that token to the token with the corresponding `token_id` on the destination chain. 
+
+The `token_id` is uniquely identified by the Gateway by the `salt` passed into the `token_id` function as well as the `chain_name_hash` and `deployer` address passed into the `linked_token_id()` function. 
+
+The full `token_id` registration flow involves `linked_token_id()` function triggering the `link_token_deploy_salt()` and the `token_id()` function
+
+```rust
+pub fn linked_token_id(
+    chain_name_hash: [u8; 32],
+    deployer: &XRPLAccountId,
+    salt: [u8; 32],
+) -> TokenId {
+    token_id(linked_token_deploy_salt(chain_name_hash, deployer, salt))
+}
+```
+
+```rust
+fn linked_token_deploy_salt(
+    chain_name_hash: [u8; 32],
+    deployer: &XRPLAccountId,
+    salt: [u8; 32],
+) -> [u8; 32] {
+    Keccak256::digest(
+        [
+            Keccak256::digest(PREFIX_CUSTOM_TOKEN_SALT).as_slice(),
+            &chain_name_hash,
+            &deployer.as_bytes(),
+            &salt,
+        ]
+        .concat(),
+    )
+    .into()
+}
+```
+
+```rust
+fn token_id(salt: [u8; 32]) -> TokenId {
+    let token_id: [u8; 32] = Keccak256::digest(
+        [
+            Keccak256::digest(PREFIX_TOKEN_ID).as_slice(),
+            TOKEN_FACTORY_DEPLOYER,
+            &salt,
+        ]
+        .concat(),
+    )
+    .into();
+    TokenId::new(token_id)
+}
+```
+
