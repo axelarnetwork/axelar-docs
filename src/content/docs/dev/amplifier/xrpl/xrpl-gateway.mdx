@@ -143,6 +143,29 @@ Once run the function will checks whether a token with the specified `token_id` 
 
 ### Link Token
 
+The link token function allows you to connect the token on XRP to another token on a remote chain. For the `link_token()` function to execute you must first have registered the token on both the XRPL chain and the remote chain. 
+
+The function take six parameters: 
+
+1. `storage`: A reference to the contract's storage to read and write persistent state.
+1. `config`: The [configuration](#gateway-config) for the XRPL Gateway.
+1. `nexus_client`: The client for the [Nexus](https://github.com/commonprefix/axelar-amplifier/tree/main/packages/axelar-core-std/src/nexus) contract.
+1. `token_id`: The [token_id](#token-id) to register.
+1. `destination_chain`: The name of the destination chain that the token will be linked to.
+1. `link_token`: The relevant [link_token_config](#link-token-config) for the token.
+
+
+```rust
+pub fn link_token(
+    storage: &mut dyn Storage,
+    config: &Config,
+    nexus_client: &nexus::Client,
+    token_id: TokenId,
+    destination_chain: ChainNameRaw,
+    link_token: LinkToken,
+) -> Result<Response, Error> {}
+```
+
 ### Deploy Remote Token
 
 
@@ -266,3 +289,18 @@ fn token_id(salt: [u8; 32]) -> TokenId {
 }
 ```
 
+### Link Token Config
+
+The configuration for linking a token. It contains three fields
+
+1. `token_manager_type`: The type of token manager to deploy
+1. `destination_token_address`: The address of the token on the destination chain
+1. `params`: The parameters to be provided to the token manager contract
+
+```rust
+pub struct LinkToken {
+    pub token_manager_type: Uint256,
+    pub destination_token_address: nonempty::HexBinary,
+    pub params: Option<nonempty::HexBinary>,
+}
+```
