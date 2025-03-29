@@ -195,6 +195,10 @@ pub fn deploy_remote_token(
 
 Once the function is triggered it will send a [DeployInterchainToken](https://github.com/commonprefix/axelar-amplifier/blob/main/contracts/interchain-token-service/src/primitives.rs#L61) message to ITS Hub, which will process the deployment on the destination chain.
 
+## Gas accounting
+
+When sending cross-chain transactions users must specify a `gas_fee_amount` to be used to cover the relaying costs. Those extra funds that are sent to cover the fees are stored on the XRPL Multisig account. The Gateway contract is then responsible for tracking the amount of funds that the XRPL multisig  has received so that the relayer can at some point claim those tokens. 
+
 
 ## Types
 
