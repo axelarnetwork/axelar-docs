@@ -99,6 +99,11 @@ export const getNavigation = (section) => {
                     },
                   ],
                 },
+                //leaving xrpl here for now but we'll need to refactor this navigation
+                {
+                  title: "XRPL Interchain Token Service",
+                  href: "/dev/general-message-passing/xrpl/xrpl-gmp/#send-tokens",
+                },
               ],
             },
             {
@@ -274,11 +279,19 @@ export const getNavigation = (section) => {
                   title: "Send Tokens",
                   href: "/dev/send-tokens/deprecated/send-tokens/",
                 },
-                {
-                  title: "Deposit Address",
-                  href: "/dev/send-tokens/deprecated/deposit-address/",
-                },
-              ],
+              ]
+            },
+            {
+              title: "XRPL GMP",
+              href: "/dev/general-message-passing/xrpl/xrpl-gmp/",
+            },
+            {
+              title: "Solidity Utilities",
+              href: "/dev/solidity-utilities/",
+            },
+            {
+              title: "Sandbox",
+              href: "/dev/axelar-sandbox/intro/",
             },
           ],
         },
