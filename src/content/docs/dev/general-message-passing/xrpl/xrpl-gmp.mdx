@@ -1,0 +1,137 @@
+# XRPL General Message Passing (GMP)
+
+The XRPL Blockchain is unique comparison to other blockchains integrated with Axelar. Unlike other blockchains, XRPL does not support smart contracts. As such there is no Axelar Gateway and Axelar Gas Service deployed on the chain the way there is with other EVM and non-EVM blockchain integrations. Since XRPL has no contracts there is also no ability to receive GMP messages from other blockchains, you can only send messages to other blockchains.
+
+## XRPL Multisig
+
+The integration leverages [XRPL Multisig Signing](https://xrpl.org/docs/concepts/accounts/multi-signing) to facilitate message passing. The [multisig](https://github.com/commonprefix/axelar-amplifier/blob/xrpl/contracts/xrpl-multisig-prover/src/xrpl_multisig.rs) is controlled by the [Axelar Verifier set](https://axelarscan.io/verifiers).  
+
+The testnet address for the XRPL multisig is: [rNrjh1KGZk2jBR3wPfAQnoidtFFYQKbQn2](https://testnet.xrpl.org/accounts/rNrjh1KGZk2jBR3wPfAQnoidtFFYQKbQn2).
+
+## Send Message
+
+### Overview
+
+The flow of sending a GMP message from XRPL involves sending a [payment transaction](https://xrpl.org/docs/references/protocol/transactions/types/payment) from your XRPL account to the XRPL multisig with a specified [memo](https://xrpl.org/docs/references/protocol/transactions/common-fields#memos-field) field. Once the multisig receives that transaction, Axelar's relayer will pickup any transaction that it has received with the [call_contract](/xrpl/xrpl-gateway/#call-contract-message) message type specified at which the point the [Amplifier GMP flow](/dev/amplifier/introduction/#general-message-passing-with-amplifier/) will commence. 
+
+### Payment Transaction
+
+Payment transaction types in XRPL represent a transfer of value. They require the following fields:
+
+1. `Transaction Type`: The [type](https://xrpl.org/docs/references/protocol/transactions/types) of XRPL transaction being sent.
+1. `Account`: The sender's account address.
+1. `Amount`: The amount of XRP being sent to cover the transaction fees.
+1. `Destination`: The destination of the transaction
+1. `Memos`: A special field in the payment transaction that is used to specify the message type and the destination chain. 
+
+### Memo
+
+When sending a GMP message the `memo` field contains the relevant metadata for the transaction.
+
+The memo must contain the following fields:
+
+1. `Type`: The type of transaction being sent (ie `call_contract` or `interchain_transfer`)
+1. `Destination Address`: The address of the destination contract on the destination chain.
+1. `Destination Chain`: The name of the destination chain.
+1. `Payload`: The payload of the transaction being sent.    
+
+All the data passed into the memo must be encoded in hex format as a list of objects. Each object has a `MemoType` representing the type data being passed in as well as a `MemoData` representing the data being passed in.
+
+For a complete `JSON` example of the entire required XRPL GMP fields you can look at the following:
+
+```json
+{
+    TransactionType: "Payment",
+    Account: user.address,
+    Amount: "1000000", // (1 xrp)
+    // Amount: { // alternatively, an IOU token amount can be used to cover gas fees
+    //     currency: "ABC", // IOU's currency code
+    //     issuer: "r4DVHyEisbgQRAXCiMtP2xuz5h3dDkwqf1", // IOU issuer's account address
+    //     value: "1" // IOU amount to allocated to gas fees (in this case, 1 ABC.r4DVH)
+    // },
+    Destination: multisig.address,
+    Memos: [
+        {
+            Memo: {
+                MemoType: "74797065", // hex("type")
+                MemoData: "63616c6c5f636f6e7472616374" // hex("call_contract")
+            },
+        },
+        {
+            Memo: {
+                MemoType: "64657374696e6174696f6e5f61646472657373", // hex("destination_address")
+                MemoData: "30413930633041663142303766364143333466333532303334384462666165373342446133353845" // hex("0A90c0Af1B07f6AC34f3520348Dbfae73BDa358E"), in this case: (0x is omitted)
+            },
+        },
+        {
+            Memo: {
+                MemoType: "64657374696E6174696F6E5F636861696E", // hex("destination_chain")
+                MemoData: "7872706c2d65766d2d6465766e6574", // destination chain, hex encoded - hex("xrpl-evm-devnet"), in this case
+            },
+        },
+        {
+            Memo: {
+                MemoType: "7061796c6f6164", // hex("payload")
+                // abi-encoded payload for executable destination contract address:
+                MemoData: "0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000e474d5020776f726b7320746f6f3f000000000000000000000000000000000000",
+            },
+        },
+    ],
+}
+```
+### Example
+
+A full  example can be found [here](https://github.com/axelarnetwork/axelar-contract-deployments/blob/main/xrpl/call-contract.js).
+
+The example makes use of the [XRPL Client library](https://www.npmjs.com/package/xrpl)
+
+The XRPL client simplifies the process of connecting to the XRPL network, building transactions, signing them, and submitting them for processing. Key components of the XRPL client include:
+
+The key function in this example is the `callContract()` function written out as follows.
+
+```js
+async function callContract(_config, wallet, client, chain, options, args) {
+    await client.sendPayment(
+        wallet,
+        {
+            destination: chain.contracts.AxelarGateway.address,
+            amount: parseTokenAmount(options.gasFeeToken, options.gasFeeAmount), // token is either "XRP" or "<currency>.<issuer-address>"
+            memos: [
+                { memoType: hex('type'), memoData: hex('call_contract') },
+                { memoType: hex('destination_address'), memoData: hex(args.destinationAddress.replace('0x', '')) },
+                { memoType: hex('destination_chain'), memoData: hex(args.destinationChain) },
+                { memoType: hex('payload'), memoData: options.payload },
+            ],
+        },
+        options,
+    );
+}
+```
+
+This function constructs the `memo` that will be used for the transaction, passing in the `type`, `destination_address`, `destination_chain`, and `payload`. The [request](https://js.xrpl.org/classes/Client.html#request) functionality of the XRPL client is then used to submit a [signed](https://js.xrpl.org/classes/Wallet.html#sign) transaction.
+
+
+To interact with the example run the following command
+
+```bash
+node xrpl/call-contract.js -e testnet -n xrpl xrpl-evm 0x72d12C77D1eE1DB002F4437E4a96bAc87c3EF948 --gasFeeAmount 1 --gasFeeToken XRP --payload 0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000568656c6c6f000000000000000000000000000000000000000000000000000000 -y
+```
+
+This will send a message to the `0x72d12C77D1eE1DB002F4437E4a96bAc87c3EF948` address on the `XRPL-EVM` chain, with an abi encoded message of '*hello*'. 
+
+Once the command is run you should as a [transaction](https://testnet.axelarscan.io/gmp/0xa229274f4903c539be1d7b60ca03332484b11029f1f5c4d6fd086a62d066ca92) on the Axelarscan explorer where you can track the entire cross-chain transaction.
+
+## Send Tokens with Interchain Token Service
+
+Axelar's integration to XRPL allows for the cross-chain transfer of both the XRPL native token (XRP itself) as well as custom tokens ([IOU](https://learn.xrpl.org/glossary/iou/)) via the [Interchain Token Service Hub](/dev/amplifier/its-hub/introduction/). 
+
+The token transfer flow is similar to that of the regular GMP flow. As with the regular GMP flow, users will be interacting with the [XRPL Multisig Signing](https://xrpl.org/docs/concepts/accounts/multi-signing). The main difference is that the `MessageType` being sent to the multisig is an [interchain_transfer](/xrpl/xrpl-gateway/#interchain-transfer-message/) message type instead of a [call_contract](/xrpl/xrpl-gateway/#call-contract-message) message.
+
+
+### Register Token
+
+### Transfer Token
+
+When transferring a token out of XRPL you will be sending the token from your XRPL account to the multisig contract. The multisig contract will be the custodian of your token on XRPL while it is sent via ITS hub to the destination chain. 
+
+### Receive Token

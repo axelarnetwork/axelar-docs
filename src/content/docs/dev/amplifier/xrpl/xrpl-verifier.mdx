@@ -1,0 +1,76 @@
+# XRPL Voting Verifier
+
+The XRPL Verifier is used to verify cross-chain messages coming out of the XRPL blockchain. It interacts with the external [Axelar Verifier set](https://axelarscan.io/verifiers) who will vote on the authenticity of the XRPL transactions. Transactions that cannot be verified by this contract will not be route to the destination chain.
+
+## Update Voting Threshold
+
+The `update_voting_threshold` function will set the new voting threshold for a message to be marked as verified by the external verifiers. 
+
+The function takes in the following parameters:
+
+1. `deps`: A mutable reference to the storage object.
+1. `new_voting_threshold`: The new voting threshold for the message.
+
+```rust
+pub fn update_voting_threshold(
+    deps: DepsMut,
+    new_voting_threshold: MajorityThreshold,
+) -> Result<Response, ContractError> {}
+```
+
+
+## Verify Message
+
+The `verify_messages()` function verifies a list of XRPL messages and initiates a voting [poll](#poll) for those that require further verification.
+
+```rust
+pub fn verify_messages(
+    deps: DepsMut,
+    env: Env,
+    messages: Vec<XRPLMessage>,
+) -> Result<Response, Report<ContractError>> {}
+```
+
+Once executed the function will creates a new `poll`, taking a snapshot of active verifiers, saving the messages to poll state, and emitting a `PollStarted` event.
+
+## Types
+
+### Majority Threshold
+
+The new threshold amount to be set for the external verifiers to mark a message as verified.
+
+```rust
+pub struct MajorityThreshold {
+    numerator: nonempty::Uint64,
+    denominator: nonempty::Uint64,
+}
+```
+
+### Poll
+
+A poll is used to determine the state of the message verification. It contains
+
+1. `poll_id`: A unique identifier for the poll.
+1. `quorum`: The minimum number of votes required for the poll to be considered valid.
+1. `expires_at`: The time at which the poll will expire.
+1. `poll_size`: The total number of messages in the poll. 
+1. `tallies`: The running tally of weighted votes.
+1. `finished`: A boolean indicating if the poll has finished.
+1. `participation`: A map of the participants in the poll.
+
+```rust
+pub enum Poll {
+    Messages(WeightedPoll),
+}
+
+
+pub struct WeightedPoll {
+    pub poll_id: PollId,
+    pub quorum: nonempty::Uint128,
+    expires_at: u64,
+    pub poll_size: u64,
+    pub tallies: Vec<Tallies>, // running tally of weighted votes
+    finished: bool,
+    pub participation: BTreeMap<String, Participation>,
+}
+```

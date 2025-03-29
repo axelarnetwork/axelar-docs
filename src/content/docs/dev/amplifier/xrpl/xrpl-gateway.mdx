@@ -166,10 +166,34 @@ pub fn link_token(
 ) -> Result<Response, Error> {}
 ```
 
+Once triggered the [linking message](https://github.com/commonprefix/axelar-amplifier/blob/main/contracts/interchain-token-service/src/primitives.rs#L89) is sent to [ITS Hub](/dev/amplifier/its-hub/introduction/), which will process the linking on the destination chain.
+
 ### Deploy Remote Token
 
+The `deploy_remote_token()` function is used to send a cross-chain [GMP message](/dev/general-message-passing/overview/) to deploy a token on a remote chain. 
 
-## Gas Accounting
+The function takes six parameters:
+
+1. `storage`: A reference to the contract's storage to read and write persistent state.
+1. `config`: The [configuration](#gateway-config) for the XRPL Gateway.
+1. `nexus_client`: The client for the [Nexus](https://github.com/commonprefix/axelar-amplifier/tree/main/packages/axelar-core-std/src/nexus) contract.
+1. `token`: The [token](#xrpl-token) being registered
+1. `destination_chain`: The name of the destination chain that the token will be linked to.
+1. `token_metadata`: The [token metadata](#token-metadata) for the token being registered. 
+
+
+```rust
+pub fn deploy_remote_token(
+    storage: &mut dyn Storage,
+    config: &Config,
+    nexus_client: &nexus::Client,
+    token: XRPLTokenOrXrp,
+    destination_chain: ChainNameRaw,
+    token_metadata: TokenMetadata,
+) -> Result<Response, Error> {}
+```
+
+Once the function is triggered it will send a [DeployInterchainToken](https://github.com/commonprefix/axelar-amplifier/blob/main/contracts/interchain-token-service/src/primitives.rs#L61) message to ITS Hub, which will process the deployment on the destination chain.
 
 
 ## Types
@@ -217,9 +241,51 @@ pub struct RegisterTokenMetadata {
 }
 ```
 
-#### Interchain Transfer Message
+### Interchain Transfer Message
 
-#### Call Contract Message
+The `InterchainTransferMessage` is performed by an XRPL user to initiate an interchain transfer call.
+
+```rust
+pub struct XRPLInterchainTransferMessage {
+    #[serde(with = "hex_tx_hash")]
+    #[schemars(with = "String")]
+    pub tx_id: HexTxHash,
+    #[serde(with = "xrpl_account_id_string")]
+    #[schemars(with = "String")]
+    pub source_address: XRPLAccountId,
+    pub destination_chain: ChainName,
+    pub destination_address: nonempty::String,
+    #[serde(with = "hex_option")]
+    #[schemars(with = "String")]
+    pub payload_hash: Option<[u8; 32]>,
+    /// The total amount of tokens sent to the XRPL multisig,
+    /// including the gas fee.
+    pub transfer_amount: XRPLPaymentAmount,
+    pub gas_fee_amount: XRPLPaymentAmount,
+}
+```
+
+### Call Contract Message
+
+The `CallContractMessage` is performed by an XRPL user to initiate a contract call.
+
+```rust
+pub struct XRPLCallContractMessage {
+    #[serde(with = "hex_tx_hash")]
+    #[schemars(with = "String")] // necessary attribute in conjunction with #[serde(with ...)]
+    pub tx_id: HexTxHash,
+    #[serde(with = "xrpl_account_id_string")]
+    #[schemars(with = "String")]
+    pub source_address: XRPLAccountId,
+    pub destination_chain: ChainName,
+    pub destination_address: nonempty::String,
+    #[serde(with = "axelar_wasm_std::hex")]
+    #[schemars(with = "String")]
+    pub payload_hash: [u8; 32],
+    /// Should be exactly equal to the deposited amount.
+    pub gas_fee_amount: XRPLPaymentAmount,
+}
+```
 
 ### Gateway Config
 
@@ -234,6 +300,20 @@ pub struct Config {
     pub chain_name: ChainName,
     pub xrpl_multisig: XRPLAccountId,
     pub xrp_token_id: TokenId,
+}
+```
+
+### Token Metadata
+
+Metadata for a token. It contains two fields:
+
+1. `name`: The name of the token    
+1. `symbol`: The symbol of the token    
+
+```rust
+pub struct TokenMetadata {
+    pub name: nonempty::String,
+    pub symbol: nonempty::String,
 }
 ```
 
