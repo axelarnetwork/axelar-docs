@@ -249,6 +249,7 @@ export const getNavigation = (section) => {
                 },
               ],
             },
+            {title: "Sui GMP", href: "/dev/general-message-passing/sui/sui-programs/"},
             {
               title: "Stellar GMP",
               children: [
