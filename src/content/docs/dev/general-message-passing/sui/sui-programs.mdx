@@ -46,7 +46,7 @@ For sending a GMP message, the `send_message()` function needs to be triggered.
 
 ### Send Message
 
-The send_message function triggers your cross-chain message from Sui to another blockchain via the Axelar Network. The send_message function requires a MessageTicket struct to be passed in. To create the MessageTicket you can trigger the [prepare_message](#prepare-message) function.
+The send_message function triggers your cross-chain message from Sui to another blockchain via the Axelar Network. The `send_message()` function requires a `MessageTicket` struct to be passed in. To create the `MessageTicket` you can trigger the [prepare_message](#prepare-message) function.
 
 
 <Callout emoji="💡">
@@ -63,7 +63,7 @@ public fun send_message(self: &Gateway, message: MessageTicket) {
 
 #### Prepare Message
 
-The `prepare_message()` function is used to create a MessageTicket struct that is required to send a GMP message.
+The `prepare_message()` function is used to create a `MessageTicket` struct that is required to send a GMP message. The intended  behavior is for applications that wish to send calls to return the `message_ticket` and have their frontend send it for easier upgradability
 
 It takes four parameters.
 
@@ -147,10 +147,10 @@ A live example of an execution transaction can be found [here](https://suiscan.x
 
 ## Channel
 
-In Sui there is no ability to check immediate caller of a message (ie there is no msg.sender like in EVM development). What is available is a transaction.origin, which is the root caller of a transaction (similar to tx.origin in EVM development). To identify who the caller of a message is you can use Channels. The Channel is an object that an application first creates and this channel is the identifier for who is calling and receiving the message.
+In Sui there is no ability to check immediate caller of a message (ie there is no msg.sender like in EVM development). What is available is a `transaction.origin`, which is the root caller of a transaction (similar to tx.origin in EVM development). To identify who the caller of a message is you can use `Channels`. The `Channel` is an object that an application first creates and this `channel` is the identifier for who is calling and receiving the message.
 
 
-Channels allow for sending and receiving messages between Sui and other chains. In the context of sending a message the channel acts as a destination for the messages. When the message is sent the destination_id is compared against the id of the channel.
+Channels allow for sending and receiving messages between Sui and other chains. In the context of sending a message the channel acts as a destination for the messages. When the message is sent the `destination_id` is compared against the id of the channel.
 
 ```move
 public struct Channel has key, store {
@@ -159,7 +159,7 @@ public struct Channel has key, store {
 }
 ```
 
-The id specifies the address of the application for the purpose of incoming and outgoing external calls. This id has to match the id of a shared object that is passed in the channel creation method. This shared object can easily be querried by the relayer to get call fullfilment information.
+The id specifies the address of the application for the purpose of incoming and outgoing external calls. This id has to match the id of a shared object that is passed in the channel creation method. This shared object can easily be queried by the relayer to get call fullfillment information.
 
 ### Consume Approved Message
 The `consume_approved_message()` will confirm that the message has been sent to the correct channel.
