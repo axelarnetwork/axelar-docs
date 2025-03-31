@@ -100,6 +100,11 @@ export const getNavigation = (section) => {
               href: "/dev/send-tokens/roadmap/",
             },
             {
+              //TODO refactor the ITS navbar
+              title: "Sui ITS",
+              href: "/dev/send-tokens/sui-its/",
+            },
+            {
               title: "Deprecated",
               children: [
                 {
