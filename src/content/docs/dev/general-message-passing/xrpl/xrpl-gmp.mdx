@@ -121,15 +121,11 @@ This will send a message to the `0x72d12C77D1eE1DB002F4437E4a96bAc87c3EF948` add
 
 Once the command is run you should as a [transaction](https://testnet.axelarscan.io/gmp/0xa229274f4903c539be1d7b60ca03332484b11029f1f5c4d6fd086a62d066ca92) on the Axelarscan explorer where you can track the entire cross-chain transaction.
 
-## Send Tokens with Interchain Token Service
+## Cross-Chain Token Transfer
 
 Axelar's integration to XRPL allows for the cross-chain transfer of both the XRPL native token (XRP itself) as well as custom tokens ([IOU](https://learn.xrpl.org/glossary/iou/)) via the [Interchain Token Service Hub](/dev/amplifier/its-hub/introduction/). 
 
  The token transfer flow is similar to that of the regular GMP flow. As with the regular GMP flow, users will be sending a [payment transaction](https://xrpl.org/docs/references/protocol/transactions/types/payment) to the [XRPL Multisig Signing](https://xrpl.org/docs/concepts/accounts/multi-signing). The main difference is that the `MessageType` being sent to the multisig is an [interchain_transfer](/xrpl/xrpl-gateway/#interchain-transfer-message/) message type instead of a [call_contract](/xrpl/xrpl-gateway/#call-contract-message) message.
-
-
-### Register Token
-TODO
 
 ### Transfer Token
 
@@ -188,11 +184,10 @@ A full `JSON` example of the entire required XRPL Interchain Transfer fields can
             },
         },
     ],
-    ...
 }
 ```
 
-#### Send Token Example
+### Example
 
 A full example can be found [here](https://github.com/axelarnetwork/axelar-contract-deployments/blob/main/xrpl/interchain-transfer.js).
 
