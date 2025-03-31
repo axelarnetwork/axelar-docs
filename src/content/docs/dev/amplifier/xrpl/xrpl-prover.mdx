@@ -1,11 +1,53 @@
+import { Callout } from "../../../../components/callout";
+
 # XRPL Prover
 
-The XRPL multisig prover contract is designed to facilitate and verify [multisig](https://github.com/commonprefix/axelar-amplifier/blob/xrpl/contracts/xrpl-multisig-prover/src/xrpl_multisig.rs) signing sessions by external verifiers for transactions being sent to XRPL from another blockchain. 
+The XRPL multisig prover contract is designed to facilitate and verify [multisig](https://github.com/axelarnetwork/axelar-amplifier/tree/main/contracts/multisig) signing sessions by external verifiers for transactions being sent to XRPL from another blockchain. In the case of XRPL the Prover also assists with tracking `tickets` and setting up `trust lines` for incoming cross-chain asset transfers.
+
+## Construct Payment Proof
+    
+The `construct_payment_proof()` function creation involves creating a new [Axelar Multisig](https://github.com/axelarnetwork/axelar-amplifier/tree/main/contracts/multisig) `Signing Session` on the so that incoming payment messages to XRPL will be confirmed as `Completed` by the [Axelar Verifier set](https://axelarscan.io/verifiers). This function will be triggered by an Axelar Relayer during the cross-chain flow.
+
+```rust
+pub fn construct_payment_proof(
+    storage: &mut dyn Storage,
+    querier: QuerierWrapper,
+    gateway: xrpl_gateway::Client,
+    self_address: Addr,
+    block_height: u64,
+    config: &Config,
+    cc_id: CrossChainId,
+    payload: HexBinary,
+) -> Result<Response, ContractError> {}
+```
+
+After the multisig session has been initiated the generated `proof()` must be queried via the `proof()` function to confirm if the proof has been successfully completed or if still pending.
+
+The `proof()` takes four parameters:
+
+1. `storage`: A mutable reference to the storage object.
+1. `querier_wrapper`: A reference to the querier object.
+1. `multisig_address`: The address of the multisig contract.
+1. `multisig_session_id`: The `id` for the [SigningSession](https://github.com/axelarnetwork/axelar-amplifier/blob/main/contracts/multisig/src/signing.rs#L14) .
+
+```rust
+pub fn proof(
+    storage: &dyn Storage,
+    querier: QuerierWrapper,
+    multisig_address: &Addr,
+    multisig_session_id: Uint64,
+) -> StdResult<ProofResponse> {}
+```
+
+If the proof has is `complete` then prover will trigger the [serialization](https://github.com/commonprefix/axelar-amplifier/blob/d36c7d558517d87088913b1a11a3b34d14dfe181/contracts/xrpl-multisig-prover/src/xrpl_serialize.rs#L565) process to parse the `execute_data` into an XRPL compatible format. 
+
+The serialization flow will create the entire XRPL transaction including fields such as the `gas_fee_amount` and the `sender_address`. The reason for this is that unlike other ecosystems (such as EVM ecosystems), XRPL does not have a contract layer to be called. Therefore the prover needs to construct the transaction.
+ 
 
 ## Construct Trust Proof
 
-To create a proof for a new [trust](#trusts), you can use the `construct_trust_set_proof` function. 
-
+To create a proof for a new [trust set](https://xrpl.org/docs/references/protocol/transactions/types/trustset), you can use the `construct_trust_set_proof` function. 
+ 
 This function takes in the following parameters:
 
 1. `storage`: A mutable reference to the storage object.
@@ -24,77 +66,38 @@ pub fn construct_trust_set_proof(
 ) -> Result<Response, ContractError> {}
 ```
 
-When executed this will send a [start signing message](#start-signing-message) to the multisig contract. 
+When executed this will create a [trust line](https://xrpl.org/docs/concepts/tokens/fungible-tokens/authorized-trust-lines) for the XRPL multisig. A `trust line` is an affirmation sent by a potential receiver of an IOU allowing the IOU to be sent to that address. This `trust line` only needs to be set once for a given IOU by the admin of the Prover.
 
 ## Construct Ticket Proof
 
+Create a new [ticket](https://xrpl.org/docs/concepts/accounts/tickets) proof for a transaction. This function takes in the following parameters:
 
+<Callout emoji="💡">
+  `Tickets` are used instead of `Payment` transaction types to allow for increased throughput. Since tickets do not require to be in sequential order this allows for multiple payments from the XRPL multisig to the destination address.
+</Callout>
+
+
+```rust
+pub fn construct_ticket_create_proof(
+    storage: &mut dyn Storage,
+    self_address: Addr,
+    config: &Config,
+) -> Result<Response, ContractError> {}
+```
+
+This function is executed by the Axelar relayer when less than the maximum ticket amount (250 tickets) is available. The prover should always be at 250 tickets available to increase transaction throughput. If the prover is below 250 tickets then this function is triggered to create the missing tickets.
 
 ## Construct Payment Proof
 
-construct_ticket_create_proof
-
-construct_payment_proof
-
-## Confirm Transaction Status
-
-confirm_prover_message
-
-confirm_add_reserves_message
-
-## Coordinate Multisig Signing Sessions
-
-## Types
-
-### Trusts
-
-The `XRPLTrustSetTx` represents the raw trust type for XRPL. A trust is 
-
 ```rust
-pub struct XRPLTrustSetTx {
-    pub token: XRPLToken,
-    pub account: XRPLAccountId,
-    pub fee: u64,
-    pub sequence: XRPLSequence,
-}
-```
-
-### Tickets
-
-
-### Config
-
-The [config](https://github.com/commonprefix/axelar-amplifier/blob/xrpl/contracts/xrpl-multisig-prover/src/state.rs#L13) for the multisig prover
-
-```rust
-pub struct Config {
-    pub multisig: Addr,
-    pub coordinator: Addr,
-    pub gateway: Addr,
-    pub signing_threshold: MajorityThreshold,
-    pub xrpl_multisig: XRPLAccountId,
-    pub voting_verifier: Addr,
-    pub service_registry: Addr,
-    pub service_name: String,
-    pub chain_name: ChainName,
-    pub verifier_set_diff_threshold: u32,
-    pub xrpl_transaction_fee: u64,
-    pub xrpl_base_reserve: u64,
-    pub xrpl_owner_reserve: u64,
-    pub ticket_count_threshold: u32,
-}
-```
-
-### Start Signing Message
-
-The message sent to the multisig contract to start a signing session. 
-
-```rust
-StartSigningSession {
-    verifier_set_id: String,
-    msg: HexBinary,
-    chain_name: ChainName,
-    /// Address of the contract responsible for signature verification.
-    sig_verifier: Option<String>,
-},
+pub fn construct_payment_proof(
+    storage: &mut dyn Storage,
+    querier: QuerierWrapper,
+    gateway: xrpl_gateway::Client,
+    self_address: Addr,
+    block_height: u64,
+    config: &Config,
+    cc_id: CrossChainId, // TODO: Optimize: Source chain is always axelar.
+    payload: HexBinary,
+) -> Result<Response, ContractError> {
 ```
