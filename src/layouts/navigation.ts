@@ -91,8 +91,8 @@ export const getNavigation = (section) => {
                 },
                 //leaving xrpl here for now but we'll need to refactor this navigation
                 {
-                  title: "XRPL Interchain Token Service",
-                  href: "/dev/general-message-passing/xrpl/xrpl-gmp/#send-tokens",
+                  title: "XRPL",
+                  href: "/dev/general-message-passing/xrpl/xrpl-gmp/#cross-chain-token-transfer",
                 },
               ],
             },
