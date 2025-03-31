@@ -101,8 +101,8 @@ export const getNavigation = (section) => {
                 },
                 //leaving xrpl here for now but we'll need to refactor this navigation
                 {
-                  title: "XRPL Interchain Token Service",
-                  href: "/dev/general-message-passing/xrpl/xrpl-gmp/#send-tokens",
+                  title: "XRPL",
+                  href: "/dev/general-message-passing/xrpl/xrpl-gmp/#cross-chain-token-transfer",
                 },
               ],
             },
@@ -234,6 +234,11 @@ export const getNavigation = (section) => {
                       href: "/dev/send-tokens/interchain-tokens/developer-guides/link-custom-tokens-deployed-across-multiple-chains-into-interchain-tokens/",
                     },
                   ],
+                },
+                //leaving xrpl here for now but we'll need to refactor this navigation
+                {
+                  title: "XRPL",
+                  href: "/dev/general-message-passing/xrpl/xrpl-gmp/#cross-chain-token-transfer",
                 },
               ],
             },
