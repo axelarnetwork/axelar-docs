@@ -369,7 +369,7 @@ export const getNavigation = (section) => {
               children: [
                 { title: "XRPL Gateway", href: "/dev/amplifier/xrpl/xrpl-gateway/" },
                 { title: "XRPL Verifier", href: "/dev/amplifier/xrpl/xrpl-verifier/" },
-                { title: "XRPL Prover", href: "/dev/amplifier/xrpl/xrpl-prover/" },
+                // { title: "XRPL Prover", href: "/dev/amplifier/xrpl/xrpl-prover/" },
               ]
             }
           ],
