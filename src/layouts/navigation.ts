@@ -89,6 +89,11 @@ export const getNavigation = (section) => {
                     },
                   ],
                 },
+                //leaving xrpl here for now but we'll need to refactor this navigation
+                {
+                  title: "XRPL",
+                  href: "/dev/general-message-passing/xrpl/xrpl-gmp/#cross-chain-token-transfer",
+                },
               ],
             },
             {
@@ -254,19 +259,22 @@ export const getNavigation = (section) => {
               title: "Stellar GMP",
               children: [
                 {
-                title: "Stellar Contracts",
-                href: "/dev/general-message-passing/stellar-gmp/stellar-contracts/"
+                  title: "Stellar Contracts",
+                  href: "/dev/general-message-passing/stellar-gmp/stellar-contracts/"
                 },
                 {
-                title: "GMP Example",
-                href: "/dev/general-message-passing/stellar-gmp/gmp-example/"
+                  title: "GMP Example",
+                  href: "/dev/general-message-passing/stellar-gmp/gmp-example/"
                 },
                 {
                   title: "ITS Example",
                   href: "/dev/general-message-passing/stellar-gmp/its-example/"
                 },
               ]
-
+            },
+            {
+              title: "XRPL GMP",
+              href: "/dev/general-message-passing/xrpl/xrpl-gmp/",
             },
             {
               title: "Solidity Utilities",
@@ -340,6 +348,14 @@ export const getNavigation = (section) => {
                 },
               ],
             },
+            {
+              title: "XRPL",
+              children: [
+                { title: "XRPL Gateway", href: "/dev/amplifier/xrpl/xrpl-gateway/" },
+                { title: "XRPL Verifier", href: "/dev/amplifier/xrpl/xrpl-verifier/" },
+                { title: "XRPL Prover", href: "/dev/amplifier/xrpl/xrpl-prover/" },
+              ]
+            }
           ],
         },
         {
@@ -843,13 +859,15 @@ export const getNavigation = (section) => {
   nav.push({
     header: "Learn more about Axelar",
     children: [
-      { title: "Connected Chains", href: "https://axelarscan.io/resources/chains"},
-      { title: "Live Addresses", children: [
-        {title: "Mainnet", href: "https://github.com/axelarnetwork/axelar-contract-deployments/blob/main/axelar-chains-config/info/mainnet.json"},
-        {title: "Testnet", href: "https://github.com/axelarnetwork/axelar-contract-deployments/blob/main/axelar-chains-config/info/testnet.json"},
-        { title: "Stagenet", href: "https://github.com/axelarnetwork/axelar-contract-deployments/blob/main/axelar-chains-config/info/stagenet.json"},
-        {title: "Devnet", href: "https://github.com/axelarnetwork/axelar-contract-deployments/blob/main/axelar-chains-config/info/devnet-amplifier.json"},
-      ]},
+      { title: "Connected Chains", href: "https://axelarscan.io/resources/chains" },
+      {
+        title: "Live Addresses", children: [
+          { title: "Mainnet", href: "https://github.com/axelarnetwork/axelar-contract-deployments/blob/main/axelar-chains-config/info/mainnet.json" },
+          { title: "Testnet", href: "https://github.com/axelarnetwork/axelar-contract-deployments/blob/main/axelar-chains-config/info/testnet.json" },
+          { title: "Stagenet", href: "https://github.com/axelarnetwork/axelar-contract-deployments/blob/main/axelar-chains-config/info/stagenet.json" },
+          { title: "Devnet", href: "https://github.com/axelarnetwork/axelar-contract-deployments/blob/main/axelar-chains-config/info/devnet-amplifier.json" },
+        ]
+      },
       { title: "Crosschain Message Flow", href: "/learn/network/flow/" },
       { title: "axlUSDC", href: "/learn/axlusdc/" },
       { title: "Security Overview", href: "/learn/security/" },
