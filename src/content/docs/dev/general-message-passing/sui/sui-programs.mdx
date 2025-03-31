@@ -280,3 +280,28 @@ The following arguments are required to register a Package:
 By registering the transaction with the discovery system under a specific channel, the relayer later knows exactly which transaction to run when it receives an approved message on that channel.
 
 See [here](https://github.com/axelarnetwork/axelar-cgp-sui/blob/main/move/example/sources/gmp/gmp.move#L27) for an example of how to register a transaction with the Discovery Package.
+
+
+## Types
+
+### MessageTicket
+
+The `MessageTicket` struct is a “hot potato” object designed to encapsulate all the necessary information for a remote contract call. It is meant to be created by a module and then returned to the frontend, which will submit it to the gateway. This design ensures that when the gateway package is upgraded, the application code (modules) does not require any changes, thereby promoting forward compatibility.
+
+The `MessageTicket` struct contains the following fields:
+
+1. `source_id`: Purpose: Represents the address that created the ticket.
+1. `destination_chain`: Specifies the destination chain where the message is intended to be delivered.
+1. `destination_address`: Indicates the address of the destination contract on the destination chain.
+1. `payload`: Contains the serialized data for the remote contract call.
+1. `version`: Captures the version of the `MessageTicket` structure. By embedding a version number, the system can restrict which messages are sent or processed by future packages. This helps ensure that outdated or incompatible messages from earlier versions are not inadvertently processed after an upgrade.
+
+```move
+public struct MessageTicket {
+    source_id: address,
+    destination_chain: String,
+    destination_address: String,
+    payload: vector<u8>,
+    version: u64,
+}
+```
