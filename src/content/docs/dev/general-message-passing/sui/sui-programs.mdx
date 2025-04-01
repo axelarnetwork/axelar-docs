@@ -14,8 +14,6 @@ For all complete Sui GMP implementation check out this [example](https://github.
 
 To interact with the example and send a GMP message checkout this [script](https://github.com/axelarnetwork/axelar-contract-deployments/blob/main/sui/gmp.js)
 
-## Overview
-
 Sending a message from Sui involves the following steps:
 
 - Register your transaction with the [relayer discovery service](https://github.com/axelarnetwork/axelar-cgp-sui/tree/main/move/relayer_discovery) via the `register_transaction()` function on the relayer discovery service.
@@ -46,7 +44,7 @@ For sending a GMP message, the `send_message()` function needs to be triggered.
 
 ### Send Message
 
-The send_message function triggers your cross-chain message from Sui to another blockchain via the Axelar Network. The send_message function requires a MessageTicket struct to be passed in. To create the MessageTicket you can trigger the [prepare_message](#prepare-message) function.
+The send_message function triggers your cross-chain message from Sui to another blockchain via the Axelar Network. The `send_message()` function requires a `MessageTicket` struct to be passed in. To create the `MessageTicket` you can trigger the [prepare_message](#prepare-message) function.
 
 
 <Callout emoji="💡">
@@ -63,7 +61,7 @@ public fun send_message(self: &Gateway, message: MessageTicket) {
 
 #### Prepare Message
 
-The `prepare_message()` function is used to create a MessageTicket struct that is required to send a GMP message.
+The `prepare_message()` function is used to create a `MessageTicket` struct that is required to send a GMP message. The intended  behavior is for applications that wish to send calls to return the `message_ticket` and have their frontend send it for easier upgradability
 
 It takes four parameters.
 
@@ -130,7 +128,7 @@ public fun take_approved_message(
 }
 ```
 
-On your own package the [Relayer Discovery](#relayer-discovery) will then look to call the function you specified for it to call in the register_transaction() flow. If you registered a function called execute() (as was done in this [example](https://github.com/axelarnetwork/axelar-cgp-sui/blob/main/move/example/sources/gmp/gmp.move#L27)) then you can implement the execute() function as follows. 
+On your own package the [Relayer Discovery](#relayer-discovery) will then look to call the function you specified for it to call in the register_transaction() flow. If you registered a function called `execute()` (as was done in this [example](https://github.com/axelarnetwork/axelar-cgp-sui/blob/main/move/example/sources/gmp/gmp.move#L27)) then you can implement the `execute()` function as follows. 
 
 The executable function will pass in the [ApprovedMessage](#approvedmessage) that was [consumed](#consume-approved-message) by the Package's Channel. 
 
@@ -147,10 +145,10 @@ A live example of an execution transaction can be found [here](https://suiscan.x
 
 ## Channel
 
-In Sui there is no ability to check immediate caller of a message (ie there is no msg.sender like in EVM development). What is available is a transaction.origin, which is the root caller of a transaction (similar to tx.origin in EVM development). To identify who the caller of a message is you can use Channels. The Channel is an object that an application first creates and this channel is the identifier for who is calling and receiving the message.
+In Sui there is no ability to check immediate caller of a message (ie there is no msg.sender like in EVM development). What is available is a `transaction.origin`, which is the root caller of a transaction (similar to tx.origin in EVM development). To identify who the caller of a message is you can use `Channels`. The `Channel` is an object that an application first creates and this `channel` is the identifier for who is calling and receiving the message.
 
 
-Channels allow for sending and receiving messages between Sui and other chains. In the context of sending a message the channel acts as a destination for the messages. When the message is sent the destination_id is compared against the id of the channel.
+Channels allow for sending and receiving messages between Sui and other chains. In the context of sending a message the channel acts as a destination for the messages. When the message is sent the `destination_id` is compared against the id of the channel.
 
 ```move
 public struct Channel has key, store {
@@ -159,7 +157,7 @@ public struct Channel has key, store {
 }
 ```
 
-The id specifies the address of the application for the purpose of incoming and outgoing external calls. This id has to match the id of a shared object that is passed in the channel creation method. This shared object can easily be querried by the relayer to get call fullfilment information.
+The id specifies the address of the application for the purpose of incoming and outgoing external calls. This id has to match the id of a shared object that is passed in the channel creation method. This shared object can easily be queried by the relayer to get call fullfillment information.
 
 ### Consume Approved Message
 The `consume_approved_message()` will confirm that the message has been sent to the correct channel.
@@ -216,13 +214,14 @@ The Gas Service handles cross-chain gas payment when making a GMP request.
 
 When sending a GMP message before triggering the `send_message()` function on the Gateway, the `pay_gas()` must be triggered first to pay for the cross-chain transaction.
 
-### PayGas()
+### PayGas
 
 The `pay_gas()` allows users to pay for the entirety of the cross-chain transaction in a given token, it is triggered by either the channel or the user. If it is called by the user the sender will be set as the channel_id.
 
-The `pay_gas()` takes seven parameters.
+The `pay_gas()` takes five parameters.
 
-1. `message_ticket`: The [ticket](#prepare-message) for the message being sent.
+1. `gas_service`: The contract who's storage is set to be updated.
+1. `message_ticket`: The [ticket](#message-ticket) for the message being sent.
 1. `coin`: The [coin](https://docs.sui.io/standards/coin) being used to pay for the transaction.
 1. `refund_address`: The address to be refunded if too much gas is paid.
 1. `params`: Should be passed in as an empty value.
@@ -232,8 +231,6 @@ The `pay_gas()` takes seven parameters.
   The params argument exists to allow for future extensibility of the function. It is not currently used in the implementation.
 </Callout>
 
-
-Note: The expected [token](https://github.com/axelarnetwork/axelar-cgp-stellar/blob/main/packages/axelar-stellar-std/src/types.rs#L5) is a struct type that requires an address and amount.
 
 ```move
 public fun pay_gas<T>(
@@ -281,14 +278,11 @@ By registering the transaction with the discovery system under a specific channe
 
 See [here](https://github.com/axelarnetwork/axelar-cgp-sui/blob/main/move/example/sources/gmp/gmp.move#L27) for an example of how to register a transaction with the Discovery Package.
 
-
-## Types
-
-### MessageTicket
+## Message Ticket
 
 The `MessageTicket` struct is a “hot potato” object designed to encapsulate all the necessary information for a remote contract call. It is meant to be created by a module and then returned to the frontend, which will submit it to the gateway. This design ensures that when the gateway package is upgraded, the application code (modules) does not require any changes, thereby promoting forward compatibility.
 
-The `MessageTicket` struct contains the following fields:
+It contains the following fields:
 
 1. `source_id`: Purpose: Represents the address that created the ticket.
 1. `destination_chain`: Specifies the destination chain where the message is intended to be delivered.
