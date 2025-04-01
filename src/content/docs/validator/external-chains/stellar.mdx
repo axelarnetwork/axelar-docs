@@ -864,6 +864,8 @@ For your node to be recognized by the Axelar network, you need to register your 
 ampd register-chain-support amplifier stellar
 ```
 
+For the Stellar integration you will need to have `ed25519` key registered. To register this key you must ensure you are running `tofnd` version >1.0.1
+
 ## Common Issues
 Tips & Common Pitfalls
 1. Absolute DB path: On macOS, either set `<key>WorkingDirectory</key>` in your plist or use `DB_PATH="/Users/USERNAME/.stellar/data/stellar_rpc.sqlite"`.
