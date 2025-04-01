@@ -278,7 +278,6 @@ By registering the transaction with the discovery system under a specific channe
 
 See [here](https://github.com/axelarnetwork/axelar-cgp-sui/blob/main/move/example/sources/gmp/gmp.move#L27) for an example of how to register a transaction with the Discovery Package.
 
-
 ## Message Ticket
 
 The `MessageTicket` struct is a “hot potato” object designed to encapsulate all the necessary information for a remote contract call. It is meant to be created by a module and then returned to the frontend, which will submit it to the gateway. This design ensures that when the gateway package is upgraded, the application code (modules) does not require any changes, thereby promoting forward compatibility.
