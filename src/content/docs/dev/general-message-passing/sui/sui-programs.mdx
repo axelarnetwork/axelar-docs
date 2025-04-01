@@ -218,9 +218,10 @@ When sending a GMP message before triggering the `send_message()` function on th
 
 The `pay_gas()` allows users to pay for the entirety of the cross-chain transaction in a given token, it is triggered by either the channel or the user. If it is called by the user the sender will be set as the channel_id.
 
-The `pay_gas()` takes seven parameters.
+The `pay_gas()` takes five parameters.
 
-1. `message_ticket`: The [ticket](#prepare-message) for the message being sent.
+1. `gas_service`: The contract who's storage is set to be updated.
+1. `message_ticket`: The [ticket](#message-ticket) for the message being sent.
 1. `coin`: The [coin](https://docs.sui.io/standards/coin) being used to pay for the transaction.
 1. `refund_address`: The address to be refunded if too much gas is paid.
 1. `params`: Should be passed in as an empty value.
@@ -230,8 +231,6 @@ The `pay_gas()` takes seven parameters.
   The params argument exists to allow for future extensibility of the function. It is not currently used in the implementation.
 </Callout>
 
-
-Note: The expected [token](https://github.com/axelarnetwork/axelar-cgp-stellar/blob/main/packages/axelar-stellar-std/src/types.rs#L5) is a struct type that requires an address and amount.
 
 ```move
 public fun pay_gas<T>(
@@ -278,3 +277,26 @@ The following arguments are required to register a Package:
 By registering the transaction with the discovery system under a specific channel, the relayer later knows exactly which transaction to run when it receives an approved message on that channel.
 
 See [here](https://github.com/axelarnetwork/axelar-cgp-sui/blob/main/move/example/sources/gmp/gmp.move#L27) for an example of how to register a transaction with the Discovery Package.
+
+
+## Message Ticket
+
+The `MessageTicket` struct is a “hot potato” object designed to encapsulate all the necessary information for a remote contract call. It is meant to be created by a module and then returned to the frontend, which will submit it to the gateway. This design ensures that when the gateway package is upgraded, the application code (modules) does not require any changes, thereby promoting forward compatibility.
+
+It contains the following fields:
+
+1. `source_id`: Purpose: Represents the address that created the ticket.
+1. `destination_chain`: Specifies the destination chain where the message is intended to be delivered.
+1. `destination_address`: Indicates the address of the destination contract on the destination chain.
+1. `payload`: Contains the serialized data for the remote contract call.
+1. `version`: Captures the version of the `MessageTicket` structure. By embedding a version number, the system can restrict which messages are sent or processed by future packages. This helps ensure that outdated or incompatible messages from earlier versions are not inadvertently processed after an upgrade.
+
+```move
+public struct MessageTicket {
+    source_id: address,
+    destination_chain: String,
+    destination_address: String,
+    payload: vector<u8>,
+    version: u64,
+}
+```
