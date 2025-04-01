@@ -128,7 +128,7 @@ public fun take_approved_message(
 }
 ```
 
-On your own package the [Relayer Discovery](#relayer-discovery) will then look to call the function you specified for it to call in the register_transaction() flow. If you registered a function called execute() (as was done in this [example](https://github.com/axelarnetwork/axelar-cgp-sui/blob/main/move/example/sources/gmp/gmp.move#L27)) then you can implement the execute() function as follows. 
+On your own package the [Relayer Discovery](#relayer-discovery) will then look to call the function you specified for it to call in the register_transaction() flow. If you registered a function called `execute()` (as was done in this [example](https://github.com/axelarnetwork/axelar-cgp-sui/blob/main/move/example/sources/gmp/gmp.move#L27)) then you can implement the `execute()` function as follows. 
 
 The executable function will pass in the [ApprovedMessage](#approvedmessage) that was [consumed](#consume-approved-message) by the Package's Channel. 
 
