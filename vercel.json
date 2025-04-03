@@ -547,6 +547,36 @@
       "source": "/dev/send-tokens/interchain-tokens/quick-start/programmatic(/)?",
       "destination": "/dev/send-tokens/interchain-tokens/create-new-interchain-token/",
       "permanent": true
+    },
+    {
+      "source": "dev/general-message-passing/stellar-gmp/its-example(/)?",
+      "destination": "dev/send-tokens/stellar-its/",
+      "permanent": true
+    },
+    {
+      "source": "/dev/general-message-passing/sui/sui-programs(/)?",
+      "destination": "/dev/general-message-passing/sui/intro/",
+      "permanent": true
+    },
+    {
+      "source": "/dev/general-message-passing/stellar-gmp/stellar-contracts(/)?",
+      "destination": "/dev/general-message-passing/stellar-gmp/intro/",
+      "permanent": true
+    },
+    {
+      "source": "/dev/general-message-passing/stellar-gmp/gmp-example(/)?",
+      "destination": "/dev/general-message-passing/stellar-gmp/gmp-example/",
+      "permanent": true
+    },
+    {
+      "source": "/dev/amplifier/chain-integration/introduction(/)?",
+      "destination": "/dev/amplifier/introduction/",
+      "permanent": true
+    },
+    {
+      "source": "/resources/ibc-chain-onboarding(/)?",
+      "destination": "/dev/ibc-chain-onboarding/",
+      "permanent": true
     }
   ]
 }

@@ -9,9 +9,9 @@ Axelar allows users to prepay gas fees required for relaying messages or executi
 Before we dive into the implementation, it's important to understand how refunds work:
 
 1. When you prepay gas using `payNativeGasForContractCall()` or `payNativeGasForContractCallWithToken()`, you might overpay.
-2. The excess is refunded if the actual gas used is less than what you paid.
-3. The refund is automatically calculated and sent to the specified refund address.
-4. Refunds are made on the source chain.
+1. The excess is refunded if the actual gas used is less than what you paid.
+1. The refund is automatically calculated and sent to the specified refund address.
+1. Refunds are made on the source chain.
 
 ## Specify the refund address
 
@@ -54,7 +54,7 @@ You can customize the refund address by replacing `msg.sender` with any valid ad
    );
    ```
 
-2. To refund to the contract itself:
+1. To refund to the contract itself:
 
    ```solidity
    gasService.payNativeGasForContractCall{ value: msg.value }(
@@ -65,7 +65,7 @@ You can customize the refund address by replacing `msg.sender` with any valid ad
 
    ```
 
-3. To allow the caller to specify a refund address:
+1. To allow the caller to specify a refund address:
 
    ```solidity
    function setRemoteValue

@@ -30,6 +30,164 @@ export const getNavigation = (section) => {
           href: "/dev/intro/",
         },
         {
+          title: "General Message Passing (GMP)",
+          children: [
+            {
+              title: "EVM",
+              children: [
+                {
+                  title: "Introduction",
+                  href: "/dev/general-message-passing/overview/",
+                },
+                {
+                  title: "Examples",
+                  href: "/dev/general-message-passing/examples/",
+                },
+                {
+                  title: "Send Messages",
+                  href: "/dev/general-message-passing/gmp-messages/",
+                },
+                {
+                  title: "Send Messages with Tokens",
+                  href: "/dev/general-message-passing/gmp-tokens-with-messages/",
+                },
+                {
+                  title: "Gas Service",
+                  children: [
+                    {
+                      title: "Introduction",
+                      href: "/dev/gas-service/intro/",
+                    },
+                    {
+                      title: "Estimate and Pay Gas",
+                      href: "/dev/gas-service/pay-gas/",
+                    },
+                    {
+                      title: "Increase Gas",
+                      href: "/dev/gas-service/increase-gas/",
+                    },
+                    {
+                      title: "Refund Gas",
+                      href: "/dev/gas-service/refund/",
+                    },
+                    {
+                      title: "Specify Gas Refund Address",
+                      href: "/dev/gas-service/specify-gas-refund-address/",
+                    },
+                    {
+                      title: "Transaction States",
+                      href: "/dev/gas-service/transaction-state/",
+                    },
+                    {
+                      title: "Transaction Pricing",
+                      href: "/dev/gas-service/pricing/",
+                    },
+                    {
+                      title: "On-Chain Estimation",
+                      href: "/dev/gas-service/on-chain-estimation/",
+                    },
+                  ],
+                },
+                {
+                  title: "Monitor Transaction State",
+                  href: "/dev/general-message-passing/monitoring/",
+                },
+                {
+                  title: "Axelar CommandID",
+                  href: "/dev/general-message-passing/axelar-commandid/",
+                },
+                {
+                  title: "Axelar Executable",
+                  href: "/dev/general-message-passing/executable/",
+                },
+                {
+                  title: "Debug",
+                  children: [
+                    {
+                      title: "Error Messages",
+                      href: "/dev/general-message-passing/debug/error-debugging/",
+                    },
+                    {
+                      title: "Debug a Smart Contract",
+                      href: "/dev/general-message-passing/debug/debugging-your-smart-contract/",
+                    },
+                    {
+                      title: "Fork Mainnet for Local Testing",
+                      href: "/dev/general-message-passing/debug/fork-mainnet/",
+                    },
+                    {
+                      title: "Transaction Recovery",
+                      href: "/dev/general-message-passing/debug/transaction-recovery/",
+                    },
+                  ],
+                },
+                {
+                  title: "EVM Relayer",
+                  href: "/dev/evm-relayer/",
+                },
+              ],
+            },
+            {
+              title: "Cosmos",
+              children: [
+                { title: "Introduction", href: "/dev/cosmos-gmp/overview/" },
+                {
+                  title: "Cosmos 2-way Call Relay",
+                  href: "/dev/cosmos-gmp/cosmos-2way-manual-relay/",
+                },
+                {
+                  title: "Developer Guides",
+                  children: [
+                    {
+                      title: "Cross-Chain Messaging: EVM to Cosmos",
+                      href: "/dev/cosmos-gmp/developer-guides/cross-chain-messaging-evm-to-cosmos/",
+                    },
+                  ],
+                },
+              ],
+            },
+            {
+              title: "Sui",
+              children: [
+                {
+                  title: "Introduction",
+                  href: "/dev/general-message-passing/sui/intro/",
+                },
+                {
+                  title: "GMP Example",
+                  href: "/dev/general-message-passing/sui/gmp-example/",
+                },
+              ],
+            },
+            {
+              title: "Stellar",
+              children: [
+                {
+                  title: "Introduction",
+                  href: "/dev/general-message-passing/stellar-gmp/intro/",
+                },
+                {
+                  title: "GMP Example",
+                  href: "/dev/general-message-passing/stellar-gmp/gmp-example/",
+                },
+              ],
+            },
+
+            {
+              title: "Verify GMP Transaction",
+              href: "/dev/general-message-passing/verify-gmp-tx/",
+            },
+            {
+              title: "Express Service",
+              href: "/dev/general-message-passing/express/",
+            },
+            // {
+            //   title: "Sandbox",
+            //   href: "/dev/axelar-sandbox/intro/",
+            // },
+          ],
+        },
+        {
           title: "Cross-Chain Token Transfer",
           children: [
             { title: "Introduction", href: "/dev/send-tokens/introduction/" },
@@ -92,17 +250,25 @@ export const getNavigation = (section) => {
               ],
             },
             {
-              title: "Glossary",
-              href: "/dev/send-tokens/glossary/",
+              title: "Integrations",
+              children: [
+                {
+                  title: "Sui",
+                  href: "/dev/send-tokens/sui-its/",
+                },
+                {
+                  title: "Stellar",
+                  href: "/dev/send-tokens/stellar-its/",
+                },
+              ],
             },
             {
               title: "Roadmap",
               href: "/dev/send-tokens/roadmap/",
             },
             {
-              //TODO refactor the ITS navbar
-              title: "Sui ITS",
-              href: "/dev/send-tokens/sui-its/",
+              title: "Glossary",
+              href: "/dev/send-tokens/glossary/",
             },
             {
               title: "Deprecated",
@@ -121,179 +287,11 @@ export const getNavigation = (section) => {
         },
 
         {
-          title: "General Message Passing",
-          children: [
-            {
-              title: "Introduction",
-              href: "/dev/general-message-passing/overview/",
-            },
-            {
-              title: "Examples",
-              href: "/dev/general-message-passing/examples/",
-            },
-            {
-              title: "Send Messages",
-              href: "/dev/general-message-passing/gmp-messages/",
-            },
-            {
-              title: "Send Messages with Tokens",
-              href: "/dev/general-message-passing/gmp-tokens-with-messages/",
-            },
-            {
-              title: "Gas Service",
-              children: [
-                {
-                  title: "Introduction",
-                  href: "/dev/gas-service/intro/",
-                },
-                {
-                  title: "Estimate and Pay Gas",
-                  href: "/dev/gas-service/pay-gas/",
-                },
-                {
-                  title: "Increase Gas",
-                  href: "/dev/gas-service/increase-gas/",
-                },
-                {
-                  title: "Refund Gas",
-                  href: "/dev/gas-service/refund/",
-                },
-                {
-                  title: "Specify Gas Refund Address",
-                  href: "/dev/gas-service/specify-gas-refund-address/",
-                },
-                {
-                  title: "Transaction States",
-                  href: "/dev/gas-service/transaction-state/",
-                },
-                {
-                  title: "Transaction Pricing",
-                  href: "/dev/gas-service/pricing/",
-                },
-                {
-                  title: "On-Chain Estimation",
-                  href: "/dev/gas-service/on-chain-estimation/",
-                },
-              ],
-            },
-            {
-              title: "Monitor Transaction State",
-              href: "/dev/general-message-passing/monitoring/",
-            },
-            {
-              title: "Axelar CommandID",
-              href: "/dev/general-message-passing/axelar-commandid/",
-            },
-            {
-              title: "Axelar Executable",
-              href: "/dev/general-message-passing/executable/",
-            },
-            {
-              title: "Verify GMP Transaction",
-              href: "/dev/general-message-passing/verify-gmp-tx/",
-            },
-            {
-              title: "Debug",
-              children: [
-                {
-                  title: "Error Messages",
-                  href: "/dev/general-message-passing/debug/error-debugging/",
-                },
-                {
-                  title: "Debug a Smart Contract",
-                  href: "/dev/general-message-passing/debug/debugging-your-smart-contract/",
-                },
-                {
-                  title: "Fork Mainnet for Local Testing",
-                  href: "/dev/general-message-passing/debug/fork-mainnet/",
-                },
-                {
-                  title: "Transaction Recovery",
-                  href: "/dev/general-message-passing/debug/transaction-recovery/",
-                },
-              ],
-            },
-            {
-              title: "Developer Guides",
-              children: [
-                {
-                  title: "Cross-Chain Swaps with CCTP",
-                  href: "/dev/general-message-passing/developer-guides/example-usdc-cctp/",
-                },
-                {
-                  title: "Hello World GMP Example",
-                  href: "/dev/general-message-passing/developer-guides/example-gmp/",
-                },
-              ],
-            },
-            {
-              title: "Express Service",
-              href: "/dev/general-message-passing/express/",
-            },
-            {
-              title: "EVM Relayer",
-              href: "/dev/evm-relayer/",
-            },
-
-            {
-              title: "Cosmos GMP",
-              children: [
-                { title: "Introduction", href: "/dev/cosmos-gmp/overview/" },
-                {
-                  title: "Cosmos 2-way Call Relay",
-                  href: "/dev/cosmos-gmp/cosmos-2way-manual-relay/",
-                },
-                {
-                  title: "Developer Guides",
-                  children: [
-                    {
-                      title: "Cross-Chain Messaging: EVM to Cosmos",
-                      href: "/dev/cosmos-gmp/developer-guides/cross-chain-messaging-evm-to-cosmos/",
-                    },
-                  ],
-                },
-              ],
-            },
-            {title: "Sui GMP", href: "/dev/general-message-passing/sui/sui-programs/"},
-            {
-              title: "Stellar GMP",
-              children: [
-                {
-                title: "Stellar Contracts",
-                href: "/dev/general-message-passing/stellar-gmp/stellar-contracts/"
-                },
-                {
-                title: "GMP Example",
-                href: "/dev/general-message-passing/stellar-gmp/gmp-example/"
-                },
-                {
-                  title: "ITS Example",
-                  href: "/dev/general-message-passing/stellar-gmp/its-example/"
-                },
-              ]
-
-            },
-            {
-              title: "Solidity Utilities",
-              href: "/dev/solidity-utilities/",
-            },
-            {
-              title: "Sandbox",
-              href: "/dev/axelar-sandbox/intro/",
-            },
-          ],
-        },
-
-        {
-          title: "Amplifier",
+          title: "Chain Integration with Amplifier",
           children: [
             {
               title: "Introduction",
               href: "/dev/amplifier/introduction/",
-            },
-            {
-              title: "Integration Overview",
-              href: "/dev/amplifier/chain-integration/introduction/",
             },
             {
               title: "Integrate a Chain",
@@ -345,7 +343,12 @@ export const getNavigation = (section) => {
                 },
               ],
             },
+            // TO DO: Add integrations folder here then underneath add the chains individual folder (e.g. XRPL -> prover, verifier, etc)
           ],
+        },
+        {
+          title: "Onboard Your IBC chain",
+          href: "/dev/ibc-chain-onboarding/",
         },
         {
           title: "AxelarJS SDK",
@@ -362,27 +365,6 @@ export const getNavigation = (section) => {
             {
               title: "Axelar Query API",
               href: "/dev/axelarjs-sdk/axelar-query-api/",
-            },
-          ],
-        },
-        {
-          title: "Chain and Contract Reference",
-          children: [
-            {
-              title: "Mainnet Chain Names",
-              href: "/dev/reference/mainnet-chain-names/",
-            },
-            {
-              title: "Mainnet Contract Addresses",
-              href: "/dev/reference/mainnet-contract-addresses/",
-            },
-            {
-              title: "Testnet Chain Names",
-              href: "/dev/reference/testnet-chain-names/",
-            },
-            {
-              title: "Testnet Contract Addresses",
-              href: "/dev/reference/testnet-contract-addresses/",
             },
           ],
         },
@@ -412,6 +394,27 @@ export const getNavigation = (section) => {
             {
               title: "Full-Stack Interchain App with Next.js & Solidity",
               href: "https://blog.axelar.dev/build-a-full-stack-interchain-application-with-nextjs-solidity-axelar",
+            },
+          ],
+        },
+        {
+          title: "Chain and Contract Reference",
+          children: [
+            {
+              title: "Mainnet Chain Names",
+              href: "/dev/reference/mainnet-chain-names/",
+            },
+            {
+              title: "Mainnet Contract Addresses",
+              href: "/dev/reference/mainnet-contract-addresses/",
+            },
+            {
+              title: "Testnet Chain Names",
+              href: "/dev/reference/testnet-chain-names/",
+            },
+            {
+              title: "Testnet Contract Addresses",
+              href: "/dev/reference/testnet-contract-addresses/",
             },
           ],
         },
@@ -834,27 +837,46 @@ export const getNavigation = (section) => {
           {
             title: "Flow",
             href: "https://github.com/axelarnetwork/amplifier-advisory-committee/blob/main/src/chains/flow-evm/FLOW_EVM_REPORT.md",
-          }
-        ]
+          },
+        ],
       },
-      {
-        title: "Onboard Your IBC chain",
-        href: "/resources/ibc-chain-onboarding/",
-      },
+
       { title: "Bug Bounty", href: "/resources/bug-bounty/" },
+      {
+        title: "Solidity Utilities",
+        href: "/dev/solidity-utilities/",
+      },
     ],
   });
 
   nav.push({
     header: "Learn more about Axelar",
     children: [
-      { title: "Connected Chains", href: "https://axelarscan.io/resources/chains"},
-      { title: "Live Addresses", children: [
-        {title: "Mainnet", href: "https://github.com/axelarnetwork/axelar-contract-deployments/blob/main/axelar-chains-config/info/mainnet.json"},
-        {title: "Testnet", href: "https://github.com/axelarnetwork/axelar-contract-deployments/blob/main/axelar-chains-config/info/testnet.json"},
-        { title: "Stagenet", href: "https://github.com/axelarnetwork/axelar-contract-deployments/blob/main/axelar-chains-config/info/stagenet.json"},
-        {title: "Devnet", href: "https://github.com/axelarnetwork/axelar-contract-deployments/blob/main/axelar-chains-config/info/devnet-amplifier.json"},
-      ]},
+      {
+        title: "Connected Chains",
+        href: "https://axelarscan.io/resources/chains",
+      },
+      {
+        title: "Live Addresses",
+        children: [
+          {
+            title: "Mainnet",
+            href: "https://github.com/axelarnetwork/axelar-contract-deployments/blob/main/axelar-chains-config/info/mainnet.json",
+          },
+          {
+            title: "Testnet",
+            href: "https://github.com/axelarnetwork/axelar-contract-deployments/blob/main/axelar-chains-config/info/testnet.json",
+          },
+          {
+            title: "Stagenet",
+            href: "https://github.com/axelarnetwork/axelar-contract-deployments/blob/main/axelar-chains-config/info/stagenet.json",
+          },
+          {
+            title: "Devnet",
+            href: "https://github.com/axelarnetwork/axelar-contract-deployments/blob/main/axelar-chains-config/info/devnet-amplifier.json",
+          },
+        ],
+      },
       { title: "Crosschain Message Flow", href: "/learn/network/flow/" },
       { title: "axlUSDC", href: "/learn/axlusdc/" },
       { title: "Security Overview", href: "/learn/security/" },
