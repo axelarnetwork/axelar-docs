@@ -577,6 +577,16 @@
       "source": "/resources/ibc-chain-onboarding(/)?",
       "destination": "/dev/ibc-chain-onboarding/",
       "permanent": true
+    },
+    {
+      "source": "/dev/general-message-passing/monitoring(/)?",
+      "destination": "/resources/axelarscan/monitoring/",
+      "permanent": true
+    },
+    {
+      "source": "/dev/general-message-passing/axelar-commandid(/)?",
+      "destination": "/resources/axelar-commandid/",
+      "permanent": true
     }
   ]
 }

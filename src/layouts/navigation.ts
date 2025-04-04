@@ -33,16 +33,12 @@ export const getNavigation = (section) => {
           title: "General Message Passing (GMP)",
           children: [
             {
+              title: "Introduction",
+              href: "/dev/general-message-passing/overview/",
+            },
+            {
               title: "EVM",
               children: [
-                {
-                  title: "Introduction",
-                  href: "/dev/general-message-passing/overview/",
-                },
-                {
-                  title: "Examples",
-                  href: "/dev/general-message-passing/examples/",
-                },
                 {
                   title: "Send Messages",
                   href: "/dev/general-message-passing/gmp-messages/",
@@ -50,51 +46,6 @@ export const getNavigation = (section) => {
                 {
                   title: "Send Messages with Tokens",
                   href: "/dev/general-message-passing/gmp-tokens-with-messages/",
-                },
-                {
-                  title: "Gas Service",
-                  children: [
-                    {
-                      title: "Introduction",
-                      href: "/dev/gas-service/intro/",
-                    },
-                    {
-                      title: "Estimate and Pay Gas",
-                      href: "/dev/gas-service/pay-gas/",
-                    },
-                    {
-                      title: "Increase Gas",
-                      href: "/dev/gas-service/increase-gas/",
-                    },
-                    {
-                      title: "Refund Gas",
-                      href: "/dev/gas-service/refund/",
-                    },
-                    {
-                      title: "Specify Gas Refund Address",
-                      href: "/dev/gas-service/specify-gas-refund-address/",
-                    },
-                    {
-                      title: "Transaction States",
-                      href: "/dev/gas-service/transaction-state/",
-                    },
-                    {
-                      title: "Transaction Pricing",
-                      href: "/dev/gas-service/pricing/",
-                    },
-                    {
-                      title: "On-Chain Estimation",
-                      href: "/dev/gas-service/on-chain-estimation/",
-                    },
-                  ],
-                },
-                {
-                  title: "Monitor Transaction State",
-                  href: "/dev/general-message-passing/monitoring/",
-                },
-                {
-                  title: "Axelar CommandID",
-                  href: "/dev/general-message-passing/axelar-commandid/",
                 },
                 {
                   title: "Axelar Executable",
@@ -124,6 +75,10 @@ export const getNavigation = (section) => {
                 {
                   title: "EVM Relayer",
                   href: "/dev/evm-relayer/",
+                },
+                {
+                  title: "Examples",
+                  href: "/dev/general-message-passing/examples/",
                 },
               ],
             },
@@ -172,7 +127,43 @@ export const getNavigation = (section) => {
                 },
               ],
             },
-
+            {
+              title: "Gas Service",
+              children: [
+                {
+                  title: "Introduction",
+                  href: "/dev/gas-service/intro/",
+                },
+                {
+                  title: "Estimate and Pay Gas",
+                  href: "/dev/gas-service/pay-gas/",
+                },
+                {
+                  title: "Increase Gas",
+                  href: "/dev/gas-service/increase-gas/",
+                },
+                {
+                  title: "Refund Gas",
+                  href: "/dev/gas-service/refund/",
+                },
+                {
+                  title: "Specify Gas Refund Address",
+                  href: "/dev/gas-service/specify-gas-refund-address/",
+                },
+                {
+                  title: "Transaction States",
+                  href: "/dev/gas-service/transaction-state/",
+                },
+                {
+                  title: "Transaction Pricing",
+                  href: "/dev/gas-service/pricing/",
+                },
+                {
+                  title: "On-Chain Estimation",
+                  href: "/dev/gas-service/on-chain-estimation/",
+                },
+              ],
+            },
             {
               title: "Verify GMP Transaction",
               href: "/dev/general-message-passing/verify-gmp-tx/",
@@ -181,10 +172,6 @@ export const getNavigation = (section) => {
               title: "Express Service",
               href: "/dev/general-message-passing/express/",
             },
-            // {
-            //   title: "Sandbox",
-            //   href: "/dev/axelar-sandbox/intro/",
-            // },
           ],
         },
         {
@@ -634,6 +621,10 @@ export const getNavigation = (section) => {
         href: "/resources/static-configs/static-configs/",
       },
       {
+        title: "Axelar CommandID",
+        href: "/resources/axelar-commandid/",
+      },
+      {
         title: "Tokens",
         children: [
           { title: "Stake AXL Tokens", href: "/resources/tokens/stake-axl/" },
@@ -649,6 +640,10 @@ export const getNavigation = (section) => {
           {
             title: "Add Account to Axelarscan",
             href: "/resources/axelarscan/axelarscan-add/",
+          },
+          {
+            title: "Monitor Transaction State",
+            href: "/resources/axelarscan/monitoring/",
           },
         ],
       },
