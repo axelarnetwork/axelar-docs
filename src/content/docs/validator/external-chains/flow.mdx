@@ -585,3 +585,27 @@ Logs should look like this which means EVM Gateway is indexing the Access Node d
 {"level":"info","component":"ingestion","cadence-height":211179527,"cadence-event-length":1,"time":"2024-09-07T15:35:08Z","message":"received new cadence evm events"}
 {"level":"info","component":"ingestion","hash":"0x133702b182bdff543bfccd0bf380b28a6b4a9de2c1d2123b14601b522bd49a33","evm-height":2857,"cadence-height":211179527,"cadence-id":"e886a98d565f11119f6f38950145c7c86ebf438dbd6c296d88bfac8d72857ccc","parent-hash":"0x7e248dd506b721faeece565382d1f310665c2faa5a0882b49f039b73eddb0b34","tx-hashes-root":"0x56e81f171bcc55a6ff8345e692c0f86e5b48e01b996cadc001622fb5e363b421","time":"2024-09-07T15:35:08Z","message":"new evm block executed event"}
 ```
+
+
+## Ampd
+
+Once your node is setup you will need to configure your verifier to run the [ampd daemon](https://github.com/axelarnetwork/axelar-amplifier/tree/main/ampd). This can be done as follows:
+
+<tabs>
+<tab-item title="Mainnet">
+        ```toml
+        [[handlers]]
+        chain_name="flow"
+        cosmwasm_contract="axelar14a4ar5jh7ue4wg28jwsspf23r8k68j7g5d6d3fsttrhp42ajn4xq6zayy5"
+        type="MultisigSigner"
+        ```
+</tab-item>
+<tab-item title="Testnet">
+        ```toml
+        [[handlers]]
+        chain_name="flow"
+        cosmwasm_contract="axelar14a4ar5jh7ue4wg28jwsspf23r8k68j7g5d6d3fsttrhp42ajn4xq6zayy5"
+        type="MultisigSigner"
+        ```             
+</tab-item>
+</tabs>
