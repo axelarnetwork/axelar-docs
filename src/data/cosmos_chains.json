@@ -433,6 +433,12 @@
       "name": "provenance",
       "network_id": "provenance",
       "image": "/images/chains/provenance.svg"
+    },
+    {
+      "id": "mantra",
+      "name": "Mantra",
+      "network_id": "mantra",
+      "image": "/images/chains/mantra.svg"
     }
   ]
 }
