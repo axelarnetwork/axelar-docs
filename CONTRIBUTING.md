@@ -4,12 +4,14 @@ We appreciate your interest in contributing to Axelar! This document `CONTRIBUTI
 
 ## Table of contents
 
-- [Getting Started](#getting-started)
-- [How to contribute](#how-to-contribute)
-  - [Code of Conduct](#code-of-conduct)
-    - [Standards](#our-standards)
-    - [Responsibilities](#our-responsibilities)
-- [Project structure](#project-structure)
+- [Contributing to Axelar](#contributing-to-axelar)
+  - [Table of contents](#table-of-contents)
+  - [Getting started](#getting-started)
+  - [How to contribute](#how-to-contribute)
+  - [Code of conduct](#code-of-conduct)
+    - [Standards](#standards)
+    - [Responsibilities](#responsibilities)
+  - [Project structure](#project-structure)
 
 ## Getting started
 
@@ -22,16 +24,16 @@ If you are new to contributing to open-source projects, we encourage you to read
 ## How to contribute
 
 1. Before you submit your Pull Request (PR), search the project for an open or closed PR related to your submission. You don't want to duplicate effort.
-2. Fork the repository within your user and clone it to your local machine.
-3. Install the dependencies for the project as indicated in the README.
-4. Create a new branch for your contribution with the following command:
+1. Fork the repository within your user and clone it to your local machine.
+1. Install the dependencies for the project as indicated in the README.
+1. Create a new branch for your contribution with the following command:
 
    ```shell
    git checkout -b my-fix-branch
    ```
 
-5. Make your changes in the new git branch.
-6. Commit your changes. Your commit message should follow the [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) specification.
+1. Make your changes in the new git branch.
+1. Commit your changes. Your commit message should follow the [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) specification.
 
    ```shell
    git commit -a
