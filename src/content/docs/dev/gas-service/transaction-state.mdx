@@ -9,11 +9,11 @@ This guide explains how to track the status of your transactions, identify diffe
 When you initiate a transaction across chains, monitoring its progress is important to ensure successful completion. A typical transaction will pass through several stages:
 
 1. **Sent** — The transaction has been initiated and relayed to the Axelar network.
-2. **Gas Paid** — Gas fees have been paid on the source chain for the transaction to proceed.
-3. **Confirmed** — The transaction has been confirmed on the source chain and awaits approval in the Axelar network.
-4. **Approved** — The transaction has been approved by the Axelar network and is ready to be executed on the destination chain.
-5. **Executed** — The transaction has been successfully executed on the destination chain.
-6. **Excess Gas Refunded** — Any excess gas not used during the transaction is refunded to the sender.
+1. **Gas Paid** — Gas fees have been paid on the source chain for the transaction to proceed.
+1. **Confirmed** — The transaction has been confirmed on the source chain and awaits approval in the Axelar network.
+1. **Approved** — The transaction has been approved by the Axelar network and is ready to be executed on the destination chain.
+1. **Executed** — The transaction has been successfully executed on the destination chain.
+1. **Excess Gas Refunded** — Any excess gas not used during the transaction is refunded to the sender.
 
 ## Common failure states
 
@@ -24,7 +24,7 @@ Despite following the standard flow, transactions can fail at various points due
    - **Solution**:
      - **Axelarscan UI**: If the transaction is unapproved, Axelarscan will show an option to "APPROVE.” Click this to resubmit the request to the network manually. Once approved, the transaction can proceed.
      - **AxelarJS SDK**: Use the SDK's `manualRelayToDestChain` method to programmatically resubmit and approve the transaction.
-2. **Failure to execute on destination chain**
+1. **Failure to execute on destination chain**
    - **Issue**: The transaction fails during execution on the destination chain, which may be due to network congestion, insufficient gas, or other issues.
    - **Solutions**:
      - **Manually execute transfer**
@@ -33,10 +33,10 @@ Despite following the standard flow, transactions can fail at various points due
      - **Increase gas payment**
        - **Axelarscan UI**: Connect your MetaMask wallet, switch to the source chain, and add more gas by clicking the ‘Add gas at source chain’ button. This will relay the transaction with increased gas.
        - **AxelarJS SDK**: Depending on whether native tokens or ERC-20 tokens are used, use the `addNativeGas` or `addGas` method to increase gas payment.
-3. **Insufficient fee or not enough gas**
+1. **Insufficient fee or not enough gas**
    - **Issue**: The transaction fails due to an insufficient fee or not enough gas paid to cover the execution on the destination chain.
    - **Solution**: Increase the gas payment as described above and resubmit the transaction.
-4. **Error execution**
+1. **Error execution**
    - **Issue**: An error occurs during execution, potentially due to issues with the smart contract or external factors like network congestion.
    - **Solution**: Debug the contract according to the error message and retry the transaction using either the Axelarscan UI or the SDK.
 
