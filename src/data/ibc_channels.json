@@ -711,6 +711,17 @@
       "from": "axelarnet",
       "to": "mantra",
       "channel_id": "channel-170"
+    },
+    {
+      "from": "zigchain",
+      "to": "axelarnet",
+      "channel_id": "channel-1"
+    },
+    {
+      "from": "axelarnet",
+      "to": "zigchain",
+      "channel_id": "channel-597"
     }
+
   ]
 }
