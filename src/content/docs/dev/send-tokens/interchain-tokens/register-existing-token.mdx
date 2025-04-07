@@ -89,6 +89,47 @@ When tokens are sent to this contract, the `executeWithInterchainToken` function
 - `token`: The address of the token contract
 - `data`: Any additional data you included with the transfer
 
+Example implementation:
+
+```
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
+
+import "@axelar-network/interchain-token-service/contracts/executable/InterchainTokenExecutable.sol";
+
+contract MyReceiver is InterchainTokenExecutable {
+    // Event to log token receipts
+    event TokensReceived(
+        string sourceChain, 
+        address sender, 
+        uint256 amount, 
+        bytes32 tokenId
+    );
+    
+    // This function will be called automatically when tokens are received
+    function executeWithInterchainToken(
+        bytes32 commandId,
+        string calldata sourceChain,
+        bytes calldata sourceAddress,
+        bytes calldata data,
+        bytes32 tokenId,
+        address token,
+        uint256 amount
+    ) external override {
+        // Extract the sender address from sourceAddress
+        address sender = abi.decode(sourceAddress, (address));
+        
+        // Your execution logic here - for example:
+        // - Process the received payment
+        // - Store transaction information 
+        // - Execute business logic based on data parameter
+        
+        // Emit event for tracking
+        emit TokensReceived(sourceChain, sender, amount, tokenId);
+    }
+}
+```
+
 ### Send Tokens with Custom Data
 
 When calling `interchainTransfer`, include your custom data in the `metadata` parameter using this format:
