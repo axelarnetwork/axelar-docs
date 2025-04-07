@@ -1,25 +1,22 @@
 import { Callout } from "../../../../../components/callout";
 
-# Stellar Contracts
+# Introduction to Stellar GMP Contracts
 
-The core contracts for Axelar's integration with Stellar can be found at the [axelar-cgp-stellar](https://github.com/axelarnetwork/axelar-cgp-stellar) repository. 
-
-The Rust based GMP contracts can be thought of similarly to their [EVM](/dev/general-message-passing/gmp-messages/) counterparts. 
-
-At the core of there are two main contracts involved in sending a GMP message, these are the [Gateway Contract](https://github.com/axelarnetwork/axelar-cgp-stellar/tree/main/contracts/axelar-gateway) and the [Gas Service](https://github.com/axelarnetwork/axelar-cgp-stellar/tree/main/contracts/axelar-gas-service).
+The core contracts for Axelar's integration with Stellar can be found at the [axelar-amplifier-stellar](https://github.com/axelarnetwork/axelar-amplifier-stellar) repository. The Rust based GMP contracts can be thought of similarly to their [EVM](/dev/general-message-passing/gmp-messages/) counterparts. At the core of there are two main contracts involved in sending a GMP message, these are the [Gateway contract](https://github.com/axelarnetwork/axelar-amplifier-stellar/tree/main/contracts/stellar-axelar-gateway) and the [Gas Service](https://github.com/axelarnetwork/axelar-amplifier-stellar/tree/main/contracts/stellar-axelar-gas-service).
 
 ## Stellar Gateway
-The Gateway facilitates sending and receiving of cross-chain messages to other chains via the Axelar Network.
 
+The Gateway facilitates sending and receiving of cross-chain messages to other chains via the Axelar Network.
 For sending a GMP message, the `callContract()` function needs to be triggered.
 
 ### CallContract
+
 The `callContract` function triggers your cross-chain message from Stellar to the Axelar Network. When sending a cross-chain message you must specify the destination of your cross-chain message and a given payload.
 
-    
-The `callContract` function takes five parameters. 
-1. `env`: Standard stellar [env](https://developers.stellar.org/docs/learn/encyclopedia/contract-development/environment-concepts) that provides access to the environment the contract is executing within. 
-1. `caller`: The sender of the contract call. 
+The `callContract` function takes five parameters.
+
+1. `env`: Standard stellar [env](https://developers.stellar.org/docs/learn/encyclopedia/contract-development/environment-concepts) that provides access to the environment the contract is executing within.
+1. `caller`: The sender of the contract call.
 1. `destination_chain`: Name of the chain the message is being sent to.
 1. `destination_address`: Address on the destination chain the message is being sent to.
 1. `payload`: A `bytes` representation of the cross-chain message being sent.
@@ -35,24 +32,27 @@ pub fn call_contract(
 ```
 
 ## Stellar Gas Service
-The Gas Service handles cross-chain gas payment when making a GMP request. 
 
-When sending a GMP message before triggering the `call_contract()` function on the Gateway, the `pay_gas()` must be triggered first to pay for the cross-chain transaction.  
+The Gas Service handles cross-chain gas payment when making a GMP request.
+
+When sending a GMP message before triggering the `call_contract()` function on the Gateway, the `pay_gas()` must be triggered first to pay for the cross-chain transaction.
 
 ### PayGas()
- The `pay_gas()` allows users to pay for the entirety of the cross-chain transaction in a given token. 
 
- The `pay_gas()` takes seven parameters.
-1. `env`: Standard Stellar [env](https://developers.stellar.org/docs/learn/encyclopedia/contract-development/environment-concepts) that provides access to the environment the contract is executing within. 
-1. `sender`: The sender of the cross-chain call to the Gateway. 
+The `pay_gas()` allows users to pay for the entirety of the cross-chain transaction in a given token.
+
+The `pay_gas()` takes seven parameters.
+
+1. `env`: Standard Stellar [env](https://developers.stellar.org/docs/learn/encyclopedia/contract-development/environment-concepts) that provides access to the environment the contract is executing within.
+1. `sender`: The sender of the cross-chain call to the Gateway.
 1. `destination_chain`: Name of the chain the message is being sent to.
 1. `destination_address`: Address on the destination chain the message is being sent to.
 1. `payload`: A `bytes` representation of the cross-chain message being sent.
 1. `spender`: The `address` spending the funds to cover the transaction.
 1. `token`: The token being used for payment
-{/* 1. `metadata`: Data sent along with the cross-chain tx <<<<<< CONFIRM */}
+   {/* 1. `metadata`: Data sent along with the cross-chain tx <<<<<< CONFIRM */}
 
-Note: The expected [token](https://github.com/axelarnetwork/axelar-cgp-stellar/blob/main/packages/axelar-stellar-std/src/types.rs#L5) is a struct type that requires an `address` and `amount`. 
+Note: The expected [token](https://github.com/axelarnetwork/axelar-cgp-stellar/blob/main/packages/axelar-stellar-std/src/types.rs#L5) is a struct type that requires an `address` and `amount`.
 
 ```rust
 fn pay_gas(
@@ -68,13 +68,16 @@ fn pay_gas(
 ```
 
 ## Stellar Executable
+
 The [Executable](https://github.com/axelarnetwork/axelar-cgp-stellar/blob/main/contracts/axelar-gateway/src/executable.rs#L9) is a Rust Trait (not an individual contract) that will be used to execute a cross-chain call on a Stellar dapp when Stellar is the receiving chain of a cross-chain message.
 
-### Execute 
+### Execute
+
 The `execute()` function will be triggered by an Axelar relayer when the cross-chain message arrives. Your contract should implement the `execute()` function to handle the incoming cross-chain GMP data.
 
 The `execute()` function takes five parameters.
-1. `env`: Standard Stellar [env](https://developers.stellar.org/docs/learn/encyclopedia/contract-development/environment-concepts) that provides access to the environment the contract is executing within. 
+
+1. `env`: Standard Stellar [env](https://developers.stellar.org/docs/learn/encyclopedia/contract-development/environment-concepts) that provides access to the environment the contract is executing within.
 1. `source_chain`: The source chain where the gmp message is coming from.
 1. `message_id`: Identifier for incoming GMP message.
 1. `source_address`: The address on the source chain where the gmp message is coming from.
@@ -91,10 +94,12 @@ fn execute(
 ```
 
 ### Validate & Validate Message
+
 The `validate()` function on the `Executable` will trigger `validate_message()` that is [defined](https://github.com/axelarnetwork/axelar-cgp-stellar/blob/main/contracts/axelar-gateway/src/contract.rs#L128) on the `Gateway`.
 
 The `validate()` function takes five parameters.
-1. `env`: Standard stellar [env](https://developers.stellar.org/docs/learn/encyclopedia/contract-development/environment-concepts) that provides access to the environment the contract is executing within. 
+
+1. `env`: Standard stellar [env](https://developers.stellar.org/docs/learn/encyclopedia/contract-development/environment-concepts) that provides access to the environment the contract is executing within.
 1. `source_chain`: The source chain where the GMP message is coming from.
 1. `message_id`: Identifier for incoming GMP message.
 1. `source_address`: The address on the source chain where the GMP message is coming from.
@@ -123,7 +128,7 @@ The `validate()` function will trigger the `validate_message()`, which will conf
     ) -> bool {}
 ```
 
-1. `env`: Standard stellar [env](https://developers.stellar.org/docs/learn/encyclopedia/contract-development/environment-concepts) that provides access to the environment the contract is executing within. 
+1. `env`: Standard stellar [env](https://developers.stellar.org/docs/learn/encyclopedia/contract-development/environment-concepts) that provides access to the environment the contract is executing within.
 1. `caller`: The intended `destination_address` of the contract call.
 1. `source_chain`: The source chain where the GMP message is coming from.
 1. `message_id`: Identifier for incoming GMP message.

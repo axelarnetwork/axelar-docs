@@ -701,6 +701,16 @@
       "from": "axelarnet",
       "to": "provenance",
       "channel_id": "channel-280"
+    },
+    {
+      "from": "mantra",
+      "to": "axelarnet",
+      "channel_id": "channel-6"
+    },
+    {
+      "from": "axelarnet",
+      "to": "mantra",
+      "channel_id": "channel-170"
     }
   ]
 }
