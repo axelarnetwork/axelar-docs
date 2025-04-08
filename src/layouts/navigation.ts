@@ -241,11 +241,25 @@ export const getNavigation = (section) => {
               children: [
                 {
                   title: "Sui",
-                  href: "/dev/send-tokens/sui-its/",
+                  children: [
+                    {
+                      title: "Overview",
+                      href: "/dev/send-tokens/sui/intro/",
+                    },
+                  ],
                 },
                 {
                   title: "Stellar",
-                  href: "/dev/send-tokens/stellar-its/",
+                  children: [
+                    {
+                      title: "Overview",
+                      href: "/dev/send-tokens/stellar/intro/",
+                    },
+                    {
+                      title: "Deploy a New Token",
+                      href: "/dev/send-tokens/stellar/deploy-new-token/",
+                    },
+                  ],
                 },
               ],
             },

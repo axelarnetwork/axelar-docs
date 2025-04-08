@@ -587,6 +587,16 @@
       "source": "/dev/general-message-passing/axelar-commandid(/)?",
       "destination": "/resources/axelar-commandid/",
       "permanent": true
+    },
+    {
+      "source": "/dev/send-tokens/sui-its(/)?",
+      "destination": "/dev/send-tokens/sui-its/intro/",
+      "permanent": true
+    },
+    {
+      "source": "/dev/send-tokens/stellar-its(/)?",
+      "destination": "/dev/send-tokens/stellar-its/intro/",
+      "permanent": true
     }
   ]
 }
