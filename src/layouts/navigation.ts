@@ -122,7 +122,7 @@ export const getNavigation = (section) => {
                   href: "/dev/general-message-passing/stellar-gmp/intro/",
                 },
                 {
-                  title: "GMP Example",
+                  title: "Send Messages",
                   href: "/dev/general-message-passing/stellar-gmp/gmp-example/",
                 },
               ],
