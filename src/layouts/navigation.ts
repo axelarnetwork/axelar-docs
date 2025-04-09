@@ -190,7 +190,7 @@ export const getNavigation = (section) => {
                   href: "/dev/send-tokens/interchain-tokens/no-code/",
                 },
                 {
-                  title: "Create New Token",
+                  title: "Create New Interchain Token",
                   href: "/dev/send-tokens/interchain-tokens/create-new-interchain-token/",
                 },
                 {
@@ -652,7 +652,7 @@ export const getNavigation = (section) => {
         title: "Axelarscan",
         children: [
           {
-            title: "Add Account to Axelarscan",
+            title: "Label Address in Axelarscan",
             href: "/resources/axelarscan/axelarscan-add/",
           },
           {
