@@ -148,41 +148,28 @@ curl -H 'Content-Type: application/json' -d '{"method":"server_info","params":[{
 Once your node is up and running, you need to add the XRPL chain to your [ampd's daemon](https://github.com/axelarnetwork/axelar-amplifier/tree/main/ampd) `config.toml`file. This can be done by adding in the following configuration:
 
 For testnet:
+```toml
+[[handlers]]
+type="XRPLMsgVerifier"
+chain_name="xrpl"
+chain_rpc_url="your_own_rpc"
+cosmwasm_contract="axelar1pnynr6wnmchutkv6490mdqqxkz54fnrtmq8krqhvglhsqhmu7wzsnc86sy"
+
+[[handlers]]
+type="XRPLMultisigSigner"
+multisig_contract="axelar14a4ar5jh7ue4wg28jwsspf23r8k68j7g5d6d3fsttrhp42ajn4xq6zayy5"
+multisig_prover_contract="axelar1k82qfzu3l6rvc7twlp9lpwsnav507czl6xyrk0xv287t4439ymvsl6n470"
+
+[[handlers]]
+type="MultisigSigner" 
+chain_name="xrpl"
+cosmwasm_contract="axelar14a4ar5jh7ue4wg28jwsspf23r8k68j7g5d6d3fsttrhp42ajn4xq6zayy5"
+```
 
 
-
-<tabs>
-    <tab-item title="Mainnet" class="bleed">
-        ```toml
-
-        [[handlers]]
-        type = 'MultisigSigner'
-        chain_name = 'stellar'
-        cosmwasm_contract = 'axelar14a4ar5jh7ue4wg28jwsspf23r8k68j7g5d6d3fsttrhp42ajn4xq6zayy5'
-        ```
-    </tab-item>
-    <tab-item title="Testnet" class="bleed">
-   
-        ```toml
-        [[handlers]]
-        type="XRPLMsgVerifier"
-        chain_name="xrpl"
-        chain_rpc_url="your_own_rpc"
-        cosmwasm_contract="axelar1pnynr6wnmchutkv6490mdqqxkz54fnrtmq8krqhvglhsqhmu7wzsnc86sy"
-
-        [[handlers]]
-        type="XRPLMultisigSigner"
-        multisig_contract="axelar14a4ar5jh7ue4wg28jwsspf23r8k68j7g5d6d3fsttrhp42ajn4xq6zayy5"
-        multisig_prover_contract="axelar1k82qfzu3l6rvc7twlp9lpwsnav507czl6xyrk0xv287t4439ymvsl6n470"
-
-        [[handlers]]
-        type="MultisigSigner" 
-        chain_name="xrpl"
-        cosmwasm_contract="axelar14a4ar5jh7ue4wg28jwsspf23r8k68j7g5d6d3fsttrhp42ajn4xq6zayy5"
-        ```
-    </tab-item>
-</tabs>
-
+<Callout emoji="💡">
+  Mainnet config instructions will be added when XRPL is integrated on mainnet.
+</Callout>
 
 ### Register Chain 
 For your node to be recognized by the Axelar network, you need to register your chain with the `ampd` daemon. This can be done by running:  

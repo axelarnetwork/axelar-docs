@@ -589,23 +589,23 @@ Logs should look like this which means EVM Gateway is indexing the Access Node d
 
 ## Ampd
 
-Once your node is setup you will need to configure your verifier to run the [ampd daemon](https://github.com/axelarnetwork/axelar-amplifier/tree/main/ampd). This can be done as follows:
+Once your node is up and running, you need to add the Flow chain to your [ampd's daemon](https://github.com/axelarnetwork/axelar-amplifier/tree/main/ampd) `config.toml`file. This can be done by adding in the following configuration:
 
 <tabs>
 <tab-item title="Mainnet">
         ```toml
         [[handlers]]
+        type="MultisigSigner"
         chain_name="flow"
         cosmwasm_contract="axelar14a4ar5jh7ue4wg28jwsspf23r8k68j7g5d6d3fsttrhp42ajn4xq6zayy5"
-        type="MultisigSigner"
         ```
 </tab-item>
 <tab-item title="Testnet">
         ```toml
         [[handlers]]
+        type="MultisigSigner"
         chain_name="flow"
         cosmwasm_contract="axelar14a4ar5jh7ue4wg28jwsspf23r8k68j7g5d6d3fsttrhp42ajn4xq6zayy5"
-        type="MultisigSigner"
         ```             
 </tab-item>
 </tabs>

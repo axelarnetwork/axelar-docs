@@ -148,13 +148,13 @@ Logs should appear like this
 
 ## Ampd
 
-Once your node is setup you will need to configure your verifier to run the [ampd daemon](https://github.com/axelarnetwork/axelar-amplifier/tree/main/ampd). 
+Once your node is up and running, you need to add the Hedera chain to your [ampd's daemon](https://github.com/axelarnetwork/axelar-amplifier/tree/main/ampd) `config.toml`file. This can be done by adding in the following configuration:
 
 This can be done as follows for Hedera Testnet:
 
 ```toml
 [[handlers]]
+type="MultisigSigner"
 chain_name="hedera"
 cosmwasm_contract="axelar14a4ar5jh7ue4wg28jwsspf23r8k68j7g5d6d3fsttrhp42ajn4xq6zayy5"
-type="MultisigSigner"
 ```
