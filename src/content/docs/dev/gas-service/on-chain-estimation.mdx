@@ -156,7 +156,13 @@ contract CallContractGasEstimation is AxelarExecutable {
      * @param _sourceAddress address on src chain where tx is originating from
      * @param _payload encoded gmp message sent from src chain
      */
-    function _execute(string calldata _sourceChain, string calldata _sourceAddress, bytes calldata _payload) internal override {
+    function _execute(
+        bytes32 commandId,
+        string calldata _sourceChain,
+        string calldata _sourceAddress, 
+        bytes calldata _payload) internal override {
+            
+        // decode payload
         (message) = abi.decode(_payload, (string));
         sourceChain = _sourceChain;
         sourceAddress = _sourceAddress;
