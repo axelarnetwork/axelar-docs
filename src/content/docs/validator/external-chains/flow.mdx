@@ -595,6 +595,19 @@ Once your node is up and running, you need to add the Flow chain to your [ampd's
 <tab-item title="Mainnet">
         ```toml
         [[handlers]]
+        type= "EvmMsgVerifier"
+        cosmwasm_contract= "axelar1kkqdsqvwq9a7p9fj0w89wpx2m2t0vrxl782aslhq0kdw2xxd2aesv3un04"
+        chain_name= "flow"
+        chain_rpc_url= "your_own_rpc"
+        chain_finalization= "RPCFinalizedBlock"
+
+        type= "EvmVerifierSetVerifier"
+        cosmwasm_contract= "axelar1kkqdsqvwq9a7p9fj0w89wpx2m2t0vrxl782aslhq0kdw2xxd2aesv3un04"
+        chain_name= "flow"
+        chain_rpc_url= "your_own_rpc"
+        chain_finalization= "RPCFinalizedBlock"
+
+        [[handlers]]
         type="MultisigSigner"
         chain_name="flow"
         cosmwasm_contract="axelar14a4ar5jh7ue4wg28jwsspf23r8k68j7g5d6d3fsttrhp42ajn4xq6zayy5"
@@ -602,6 +615,20 @@ Once your node is up and running, you need to add the Flow chain to your [ampd's
 </tab-item>
 <tab-item title="Testnet">
         ```toml
+        [[handlers]]
+        type= "EvmMsgVerifier"
+        chain_finalization= "RPCFinalizedBlock"
+        cosmwasm_contract= "axelar1kkqdsqvwq9a7p9fj0w89wpx2m2t0vrxl782aslhq0kdw2xxd2aesv3un04"
+        chain_name= "flow"
+        chain_rpc_url= "your_own_rpc"
+
+        type= "EvmVerifierSetVerifier"
+        cosmwasm_contract= "axelar1kkqdsqvwq9a7p9fj0w89wpx2m2t0vrxl782aslhq0kdw2xxd2aesv3un04"
+        chain_name= "flow"
+        chain_rpc_url= "your_own_rpc"
+        chain_finalization= "RPCFinalizedBlock"
+
+
         [[handlers]]
         type="MultisigSigner"
         chain_name="flow"
