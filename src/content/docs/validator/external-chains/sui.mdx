@@ -220,3 +220,47 @@ vald's `config.toml`
 ```
   </tab-item>
 </tabs>
+
+
+## Ampd
+
+Once your node is up and running, you need to add the `Sui` chain to your [ampd daemon's](https://github.com/axelarnetwork/axelar-amplifier/tree/main/ampd) `config.toml`file. This can be done by adding in the following configuration:
+
+<tabs>
+<tab-item title="Mainnet">
+        ```toml
+        [[handlers]]
+        type="SuiMsgVerifier"
+        cosmwasm_contract="axelar1sykyha8kzf35kc5hplqk76kdufntjn6w45ntwlevwxp74dqr3rvsq7fazh"
+        rpc_url="your_own_rpc"
+
+        [[handlers]]
+        type="SuiVerifierSetVerifier"
+        cosmwasm_contract="axelar1sykyha8kzf35kc5hplqk76kdufntjn6w45ntwlevwxp74dqr3rvsq7fazh"
+        rpc_url="your_own_rpc"
+
+        [[handlers]]
+        type = 'MultisigSigner'
+        chain_name = 'sui'
+        cosmwasm_contract = 'axelar14a4ar5jh7ue4wg28jwsspf23r8k68j7g5d6d3fsttrhp42ajn4xq6zayy5'
+        ```
+</tab-item>
+<tab-item title="Testnet">
+        ```toml
+        [[handlers]]
+        type="SuiMsgVerifier"
+        cosmwasm_contract="axelar1sykyha8kzf35kc5hplqk76kdufntjn6w45ntwlevwxp74dqr3rvsq7fazh"
+        rpc_url="your_own_rpc"
+
+        [[handlers]]
+        type="SuiVerifierSetVerifier"
+        cosmwasm_contract="axelar1sykyha8kzf35kc5hplqk76kdufntjn6w45ntwlevwxp74dqr3rvsq7fazh"
+        rpc_url="your_own_rpc"
+
+        [[handlers]]
+        type="MultisigSigner"
+        chain_name="sui"
+        cosmwasm_contract="axelar14a4ar5jh7ue4wg28jwsspf23r8k68j7g5d6d3fsttrhp42ajn4xq6zayy5"
+        ```             
+</tab-item>
+</tabs>
