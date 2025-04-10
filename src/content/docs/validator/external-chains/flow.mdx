@@ -596,16 +596,16 @@ Once your node is up and running, you need to add the Flow chain to your [ampd's
         ```toml
         [[handlers]]
         type= "EvmMsgVerifier"
-        cosmwasm_contract= "axelar1kkqdsqvwq9a7p9fj0w89wpx2m2t0vrxl782aslhq0kdw2xxd2aesv3un04"
+        chain_finalization= "RPCFinalizedBlock"
         chain_name= "flow"
         chain_rpc_url= "your_own_rpc"
-        chain_finalization= "RPCFinalizedBlock"
+        cosmwasm_contract= "axelar1kkqdsqvwq9a7p9fj0w89wpx2m2t0vrxl782aslhq0kdw2xxd2aesv3un04"
 
         type= "EvmVerifierSetVerifier"
-        cosmwasm_contract= "axelar1kkqdsqvwq9a7p9fj0w89wpx2m2t0vrxl782aslhq0kdw2xxd2aesv3un04"
+        chain_finalization= "RPCFinalizedBlock"
         chain_name= "flow"
         chain_rpc_url= "your_own_rpc"
-        chain_finalization= "RPCFinalizedBlock"
+        cosmwasm_contract= "axelar1kkqdsqvwq9a7p9fj0w89wpx2m2t0vrxl782aslhq0kdw2xxd2aesv3un04"
         ```
 </tab-item>
 <tab-item title="Testnet">
@@ -613,15 +613,15 @@ Once your node is up and running, you need to add the Flow chain to your [ampd's
         [[handlers]]
         type= "EvmMsgVerifier"
         chain_finalization= "RPCFinalizedBlock"
-        cosmwasm_contract= "axelar1kkqdsqvwq9a7p9fj0w89wpx2m2t0vrxl782aslhq0kdw2xxd2aesv3un04"
         chain_name= "flow"
         chain_rpc_url= "your_own_rpc"
+        cosmwasm_contract= "axelar1kkqdsqvwq9a7p9fj0w89wpx2m2t0vrxl782aslhq0kdw2xxd2aesv3un04"
 
         type= "EvmVerifierSetVerifier"
-        cosmwasm_contract= "axelar1kkqdsqvwq9a7p9fj0w89wpx2m2t0vrxl782aslhq0kdw2xxd2aesv3un04"
+        chain_finalization= "RPCFinalizedBlock"
         chain_name= "flow"
         chain_rpc_url= "your_own_rpc"
-        chain_finalization= "RPCFinalizedBlock"
+        cosmwasm_contract= "axelar1kkqdsqvwq9a7p9fj0w89wpx2m2t0vrxl782aslhq0kdw2xxd2aesv3un04"
         ```             
 </tab-item>
 </tabs>
