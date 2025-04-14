@@ -564,11 +564,6 @@
       "permanent": true
     },
     {
-      "source": "/dev/general-message-passing/stellar-gmp/gmp-example(/)?",
-      "destination": "/dev/general-message-passing/stellar-gmp/gmp-example/",
-      "permanent": true
-    },
-    {
       "source": "/dev/amplifier/chain-integration/introduction(/)?",
       "destination": "/dev/amplifier/introduction/",
       "permanent": true
