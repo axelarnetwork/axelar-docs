@@ -498,9 +498,18 @@ Prior to running the `ampd` daemon, you will need to set up your wallet with dev
 
 1. Register your public key with `ecdsa` or `ed25519`:
 
-   ```bash
-   ampd register-public-key ecdsa
-   ```
+<tabs>
+   <tab-item title="ecdsa">
+      ```bash
+      ampd register-public-key ecdsa
+      ```
+   </tab-item>
+   <tab-item title="ed25519">
+      ```bash
+      ampd register-public-key ed25519
+      ```
+   </tab-item>
+</tabs>
    
 
 1. Register support for desired chains, enabling `ampd` to participate in voting and signing for your supported chains.
