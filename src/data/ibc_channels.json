@@ -389,6 +389,16 @@
       "from": "axelarnet",
       "to": "xpla",
       "channel_id": "channel-49"
+    },
+    {
+      "from": "mantra",
+      "to": "axelarnet",
+      "channel_id": "channel-6"
+    },
+    {
+      "from": "axelarnet",
+      "to": "mantra",
+      "channel_id": "channel-170"
     }
   ],
   "testnet": [
@@ -722,6 +732,5 @@
       "to": "zigchain",
       "channel_id": "channel-597"
     }
-
   ]
 }
