@@ -145,3 +145,30 @@ Logs should appear like this
 [2024-10-03 16:49:33.511 +0000] INFO (mirror-node/145017 on xxxxx): Mirror Node client successfully configured to REST url: https://testnet.mirrornode.hedera.com/api/v1/ and Web3 url: https://testnet.mirrornode.hedera.com/api/v1/ 
 [2024-10-03 16:49:33.512 +0000] INFO (relay/145017 on xxxxx): Relay running with chainId=0x128
 ```
+
+## Ampd
+
+Once your node is up and running, you need to add the `Hedera` chain to your [ampd daemon's](https://github.com/axelarnetwork/axelar-amplifier/tree/main/ampd) `config.toml`file. This can be done by adding in the following configuration:
+
+This can be done as follows for Hedera Testnet:
+
+```toml
+[[handlers]]
+type= "EvmMsgVerifier"
+cosmwasm_contract= "axelar1ce9rcvw8htpwukc048z9kqmyk5zz52d5a7zqn9xlq2pg0mxul9mqxlx2cq"
+chain_name= "hedera"
+chain_rpc_url= "your_own_rpc"
+chain_finalization= "RPCFinalizedBlock"
+
+[[handlers]]
+type= "EvmVerifierSetVerifier"
+cosmwasm_contract= "axelar1ce9rcvw8htpwukc048z9kqmyk5zz52d5a7zqn9xlq2pg0mxul9mqxlx2cq"
+chain_name= "hedera"
+chain_rpc_url= "your_own_rpc"
+chain_finalization= "RPCFinalizedBlock"
+
+[[handlers]]
+type="MultisigSigner"
+chain_name="hedera"
+cosmwasm_contract="axelar14a4ar5jh7ue4wg28jwsspf23r8k68j7g5d6d3fsttrhp42ajn4xq6zayy5"
+```

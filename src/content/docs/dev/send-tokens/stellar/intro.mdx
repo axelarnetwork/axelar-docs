@@ -1,0 +1,162 @@
+# Stellar Interchain Token Service (ITS)
+
+## What is the Interchain Token Service?
+
+The [Interchain Token Service (ITS)](https://github.com/axelarnetwork/interchain-token-service) is a protocol that allows tokens to move freely between different blockchains. Think of it as a universal bridge for tokens - it provides a standardized way to:
+
+1. Create new tokens that automatically exist on multiple blockchains.
+1. Connect existing tokens from one blockchain to other blockchains.
+1. Transfer tokens securely between blockchains.
+
+For [Stellar developers](https://developers.stellar.org/), ITS opens up new possibilities to interact with tokens from Ethereum, Polygon, Avalanche, and many other blockchains without understanding the intricacies of each chain's token standards.
+
+## How ITS Works on Stellar
+
+Unlike on EVM chains (like Ethereum), where tokens follow the [ERC-20 standard](https://ethereum.org/en/developers/docs/standards/tokens/erc-20/), Stellar has its native token structure. The Axelar ITS integration adapts to Stellar's unique characteristics:
+
+1. **Hub Mode Operation**: Stellar ITS works exclusively in "Hub mode" - all cross-chain messages go through the central Axelar network rather than directly between chains.
+
+1. **Token Representation**: When an external token (like an Ethereum ERC-20) comes to Stellar, it's represented by a Stellar token that's controlled by a special contract called a [`TokenManager`](https://github.com/axelarnetwork/axelar-amplifier-stellar/blob/main/contracts/stellar-interchain-token-service/src/token_manager.rs).
+
+1. **Trust System**: Instead of trusting specific addresses (as in EVM implementations), Stellar ITS uses a system of trusted chains.
+
+With the integration of Stellar to Axelar, Stellar-based contracts can now leverage ITS to interact with tokens from other [blockchain ecosystems](https://docs.axelar.dev/dev/reference/mainnet-chain-names) connected to Axelar.
+
+## Key Components of ITS
+
+Before diving into implementation, let's understand the key components:
+
+1. **`InterchainTokenService`**: The main contract that coordinates token-related operations. It's the primary interface for cross-chain token functionality.
+
+1. **`TokenManager`**: A contract that handles tokens' minting, burning, and locking on a specific blockchain. Each token has its own `TokenManager`.
+
+1. **`InterchainToken`**: The token contract implementing Stellar's token interface.
+
+1. **`Gateway`**: Facilitates the cross-chain message passing between Stellar and other blockchains.
+
+1. **`GasService`**: Handles payments for cross-chain transactions. Without this, messages couldn't be relayed between chains.
+
+## What You Can Do With ITS
+
+ITS enables several robust use cases on Stellar:
+
+### Deploy a new Interchain Token on Stellar:
+
+```rust
+fn deploy_interchain_token(
+    env: &Env,
+    caller: Address,
+    salt: BytesN<32>,
+    token_metadata: TokenMetadata,
+    initial_supply: i128,
+    minter: Option<Address>,
+) -> Result<BytesN<32>, ContractError> {
+    // Returns a token_id that uniquely identifies your token across all chains
+}
+```
+
+### Deploy an Interchain Token Remotely to Other Chains:
+
+```rust
+fn deploy_remote_token(
+    env: &Env,
+    caller: Address,
+    salt: BytesN<32>,
+    destination_chain: String,
+    gas_token: Option<Token>,
+) -> Result<BytesN<32>, ContractError> {
+     // Deploys your token to another blockchain like Ethereum, Avalanche, etc.
+}
+```
+
+### Register an Existing Stellar As an Interchain Token to Make It Available on Other Chains
+
+These functions let you link existing tokens to the ITS network, making them available across chains.
+
+```rust
+// Register an existing Stellar token
+fn register_canonical_token(
+    env: &Env,
+    token_address: Address,
+) -> Result<BytesN<32>, ContractError> {
+    // Registers an existing token with the ITS
+}
+
+// Deploy that token to other chains (Ethereum, Avalanche, etc.)
+fn deploy_remote_canonical_token(
+    env: &Env,
+    token_address: Address,
+    destination_chain: String,
+    spender: Address,
+    gas_token: Option<Token>,
+) -> Result<BytesN<32>, ContractError> {
+    // Makes your existing token available on other blockchains
+}
+```
+
+### Transfer Tokens Cross-Chain
+
+Send tokens between Stellar and any supported blockchain:
+
+```rust
+fn interchain_transfer(
+    env: &Env,
+    caller: Address,
+    token_id: BytesN<32>,
+    destination_chain: String,
+    destination_address: Bytes,
+    amount: i128,
+    data: Option<Bytes>,
+    gas_token: Option<Token>,
+) -> Result<(), ContractError> {
+     // Transfers tokens from Stellar to another blockchain
+}
+```
+
+### Trusted Chain Management
+
+Before sending tokens cross-chain, you can check if the destination chain is valid or trusted:
+
+```rust
+fn is_trusted_chain(env: &Env, chain: String) -> bool {
+    storage::is_trusted_chain(env, chain)
+}
+```
+
+### Receive Tokens from Other Chains
+
+To receive tokens from other blockchains, the contract must implement message handling:
+
+```rust
+fn execute(
+    env: &Env,
+    source_chain: String,
+    message_id: String,
+    source_address: String,
+    payload: Bytes,
+) -> Result<(), ContractError> {
+    // This function:
+    // 1. Validates that the message is coming from the ITS Hub
+    // 2. Decodes the message to determine its type
+    // 3. Processes it appropriately - either as a token transfer or a token deployment
+}
+```
+
+### Flow Limits
+
+The ITS implementation includes a flow-limiting system to control how many tokens can move in a given period:
+
+```rust
+#[only_operator]
+fn set_flow_limit(
+    env: &Env,
+    token_id: BytesN<32>,
+    flow_limit: Option<i128>,
+) -> Result<(), ContractError> {}
+```
+
+This function allows the operator to limit how many tokens can flow in or out over time.
+
+## Next Steps
+
+Learn More: Explore our tutorial on [building a rust project from scratch with interchain token service implementation to deploy and transfer tokens from Steller to EVM](). This tutorial will guide you through distributing tokens across multiple chains.

@@ -122,7 +122,7 @@ export const getNavigation = (section) => {
                   href: "/dev/general-message-passing/stellar-gmp/intro/",
                 },
                 {
-                  title: "GMP Example",
+                  title: "Send Messages",
                   href: "/dev/general-message-passing/stellar-gmp/gmp-example/",
                 },
               ],
@@ -145,10 +145,6 @@ export const getNavigation = (section) => {
                 {
                   title: "Refund Gas",
                   href: "/dev/gas-service/refund/",
-                },
-                {
-                  title: "Specify Gas Refund Address",
-                  href: "/dev/gas-service/specify-gas-refund-address/",
                 },
                 {
                   title: "Transaction States",
@@ -190,7 +186,7 @@ export const getNavigation = (section) => {
                   href: "/dev/send-tokens/interchain-tokens/no-code/",
                 },
                 {
-                  title: "Create New Token",
+                  title: "Create New Interchain Token",
                   href: "/dev/send-tokens/interchain-tokens/create-new-interchain-token/",
                 },
                 {
@@ -241,11 +237,25 @@ export const getNavigation = (section) => {
               children: [
                 {
                   title: "Sui",
-                  href: "/dev/send-tokens/sui-its/",
+                  children: [
+                    {
+                      title: "Overview",
+                      href: "/dev/send-tokens/sui/intro/",
+                    },
+                  ],
                 },
                 {
                   title: "Stellar",
-                  href: "/dev/send-tokens/stellar-its/",
+                  children: [
+                    {
+                      title: "Overview",
+                      href: "/dev/send-tokens/stellar/intro/",
+                    },
+                    {
+                      title: "Deploy a New Token",
+                      href: "/dev/send-tokens/stellar/deploy-new-token/",
+                    },
+                  ],
                 },
               ],
             },
@@ -638,7 +648,7 @@ export const getNavigation = (section) => {
         title: "Axelarscan",
         children: [
           {
-            title: "Add Account to Axelarscan",
+            title: "Label Address in Axelarscan",
             href: "/resources/axelarscan/axelarscan-add/",
           },
           {
