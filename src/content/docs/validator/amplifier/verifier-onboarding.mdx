@@ -23,7 +23,7 @@ There are three ways to set up and run a verifier:
 
 ## Set up `tofnd`
 
-`ampd` needs access to a locally running `tofnd` instance in order to onboard as a verifier or run the daemon. See the [tofnd repository](https://github.com/axelarnetwork/tofnd) for more information.
+`ampd` needs access to a locally running `tofnd` instance in order to onboard as a verifier or run the daemon. See the [tofnd repository](https://github.com/axelarnetwork/tofnd) for more information. 
 
 <tabs>
 
@@ -45,7 +45,7 @@ tofnd -m create
 mv ~/.tofnd/export ~/.tofnd/export-new-location
 ```
 
-Create an alias or symlink to the `tofnd` binary in your `.bashrc`. Be sure to specify the correct file name which may be a different architecture or later version than v1.0.1.
+Create an alias or symlink to the `tofnd` binary in your `.bashrc`. Be sure to specify the correct file name which may be a different architecture or later version than `v1.0.1`.
 
 ```bash
 echo "alias tofnd=~/Downloads/tofnd-linux-amd64-v1.0.1" >> ~/.bashrc
@@ -78,6 +78,7 @@ Now run tofnd.
 tofnd
 ```
 
+
 </tab-item>
 
 <tab-item title="Docker">
@@ -93,6 +94,10 @@ docker run -p 50051:50051 --env MNEMONIC_CMD=auto --env NOPASSWORD=true --env AD
 </tabs>
 
 Leave this process running in the background, and perform additional commands in a new terminal window or shell.
+
+<Callout>
+Note: If you are running a validator as well, you must run different `tofnd` instances for `vald` (for your validator) and `ampd` (for your verifier). You cannot use the same `tofnd` instance for both.
+</Callout>
 
 ## Set up `ampd`
 
