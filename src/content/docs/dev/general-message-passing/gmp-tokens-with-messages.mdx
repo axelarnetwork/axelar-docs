@@ -3,7 +3,7 @@
 import { Callout } from "/src/components/callout";
 
 <iframe
- width="100%"
+  width="100%"
   class="aspect-video"
   src="https://www.youtube.com/embed/VkdRSrf4cmY"
   title="YouTube video player"
@@ -44,6 +44,7 @@ The destination contract will be authorized to transfer the ERC-20 identified by
 
 ```solidity
 function _executeWithToken(
+    bytes32 commandId,
     string memory sourceChain,
     string memory sourceAddress,
     bytes calldata payload,
@@ -58,6 +59,7 @@ Suppose our destination contract wants to forward the token it received to a rec
 
 ```solidity
 function _executeWithToken(
+    bytes32 commandId,
     string memory sourceChain,
     string memory sourceAddress,
     bytes calldata payload,
@@ -94,6 +96,7 @@ Example of payload decoding in Solidity:
 
 ```solidity
 function _execute(
+    bytes32 commandId,
     string memory sourceChain,
     string memory sourceAddress,
     bytes calldata payload
@@ -103,4 +106,4 @@ function _execute(
 }
 ```
 
-**Learn More:** Explore our tutorial on building a decentralized application (dApp) for cross-chain airdrops using Solidity, Next.js, and Axelar's General Message Passing with `callContractWithToken`. This tutorial will guide you through the process of distributing tokens across multiple chains: [How to Build a Cross-Chain Airdrop DApp With Solidity, Next.js, and Axelar](https://axelar.network/blog/cross-chain-airdrop-dapp-tutorial).
+**Learn More:** Explore our tutorial on building a decentralized application (dApp) for cross-chain airdrops using Solidity, Next.js, and Axelar's General Message Passing with `callContractWithToken`. This tutorial will guide you through the process of distributing tokens across multiple chains: [How to Build a Cross-Chain Airdrop DApp With Solidity, Next.js, and Axelar](https://blog.axelar.dev/how-to-build-a-cross-chain-airdrop-dapp-with-solidity-nextjs-and-axelar).

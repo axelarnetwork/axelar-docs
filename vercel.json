@@ -564,11 +564,6 @@
       "permanent": true
     },
     {
-      "source": "/dev/general-message-passing/stellar-gmp/gmp-example(/)?",
-      "destination": "/dev/general-message-passing/stellar-gmp/gmp-example/",
-      "permanent": true
-    },
-    {
       "source": "/dev/amplifier/chain-integration/introduction(/)?",
       "destination": "/dev/amplifier/introduction/",
       "permanent": true
@@ -586,6 +581,16 @@
     {
       "source": "/dev/general-message-passing/axelar-commandid(/)?",
       "destination": "/resources/axelar-commandid/",
+      "permanent": true
+    },
+    {
+      "source": "/dev/send-tokens/sui-its(/)?",
+      "destination": "/dev/send-tokens/sui-its/intro/",
+      "permanent": true
+    },
+    {
+      "source": "/dev/send-tokens/stellar-its(/)?",
+      "destination": "/dev/send-tokens/stellar-its/intro/",
       "permanent": true
     }
   ]

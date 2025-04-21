@@ -16,7 +16,6 @@ Think of it as a loan: funds on the destination chain are "loaned out" to the ap
 <object
   type="image/svg+xml"
   data="/images/assets/express.svg"
- 
   class="hidden dark:block w-full max-w-[40rem] mx-auto py-6"
 >
   Your browser does not support SVG
@@ -24,7 +23,6 @@ Think of it as a loan: funds on the destination chain are "loaned out" to the ap
 <object
   type="image/svg+xml"
   data="/images/assets/express-light.svg"
- 
   class=" dark:hidden w-full max-w-[40rem] mx-auto py-6"
 >
   Your browser does not support SVG
@@ -81,7 +79,7 @@ The [`estimateGasFee()`](/dev/axelarjs-sdk/axelar-query-api/#estimategasfee) fun
 
 For example, in an Express transaction from Polygon to Avalanche:
 
-```
+```javascript
 await api.estimateGasFee(
     "Polygon",
     "Avalanche",
@@ -114,7 +112,6 @@ To mitigate this risk, liquidity must be provided to the Express relayers for al
 ### Payload validity during execution
 
 In a non-Express transaction, an Axelar relayer triggers a transaction with either the `execute()` or `executeWithToken()` function. The GMP payload can be assumed to be true as it passes through the [validation process](https://github.com/axelarnetwork/axelar-cgp-solidity/blob/4d01eb6ea1b5413520d9ecab804f815103021148/contracts/AxelarGateway.sol#L233) on the Axelar Gateway. However, in an Express call, the execution on the destination chain occurs before the source chain finalizes. Thus, you cannot rely on the validation process.
-
 Instead, use the [`commandID`](https://github.com/axelarnetwork/axelar-core/blob/main/docs/cli/axelard_query_evm_command.md), the transaction’s unique identifier on the destination chain, to reconstruct the message that was passed in.
 
 ## Sample contract using Express

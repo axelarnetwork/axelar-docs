@@ -240,22 +240,24 @@ The following are an example `config.toml` files:
    party_uid="ampd"
    url="http://127.0.0.1:50051"
 
+
    [[handlers]]
-   cosmwasm_contract="axelar19jxy26z0qnnspa45y5nru0l5rmy9d637z5km2ndjxthfxf5qaswst9290r"
+   chain_name="ethereum-sepolia"
+   chain_rpc_url="https://rpc.ankr.com/eth_sepolia"
+   cosmwasm_contract="axelar1e6jnuljng6aljk0tjct6f0hl9tye6l0n9p067pwx2374h82dmr0s9qcqy9"
+   type="EvmMsgVerifier"
+   chain_finalization="RPCFinalizedBlock"
+
+   [[handlers]]
+   chain_name="ethereum-sepolia"
+   chain_rpc_url="https://rpc.ankr.com/eth_sepolia"
+   cosmwasm_contract="axelar1e6jnuljng6aljk0tjct6f0hl9tye6l0n9p067pwx2374h82dmr0s9qcqy9"
+   type="EvmVerifierSetVerifier"
+
+   [[handlers]]
+   chain_name="ethereum-sepolia"
    type="MultisigSigner"
-
-   [[handlers]]
-   chain_name="ethereum-sepolia"
-   chain_rpc_url="https://rpc.ankr.com/eth_sepolia"
-   cosmwasm_contract="axelar1e6jnuljng6aljk0tjct6f0hl9tye6l0n9p067pwx2374h82dmr0s9qcqy9"
-   type="EvmMsgVerifier"
-   chain_finalization="RPCFinalizedBlock"
-
-   [[handlers]]
-   chain_name="ethereum-sepolia"
-   chain_rpc_url="https://rpc.ankr.com/eth_sepolia"
-   cosmwasm_contract="axelar1e6jnuljng6aljk0tjct6f0hl9tye6l0n9p067pwx2374h82dmr0s9qcqy9"
-   type="EvmVerifierSetVerifier"
+   cosmwasm_contract="axelar19jxy26z0qnnspa45y5nru0l5rmy9d637z5km2ndjxthfxf5qaswst9290r"
 
    [[handlers]]
    chain_name="avalanche"
@@ -269,6 +271,11 @@ The following are an example `config.toml` files:
    chain_rpc_url="https://avalanche-fuji-c-chain-rpc.publicnode.com"
    cosmwasm_contract="axelar1ty7mx0cllgz8xuvhn2j7e3qy8999ssgmjtktyqetl335em0g88lq6rjhl2"
    type="EvmVerifierSetVerifier"
+
+   [[handlers]]
+   chain_name="avalanche"
+   type="MultisigSigner"
+   cosmwasm_contract="axelar19jxy26z0qnnspa45y5nru0l5rmy9d637z5km2ndjxthfxf5qaswst9290r"
    ```
 </tab-item>
 <tab-item title="testnet">
@@ -298,22 +305,23 @@ The following are an example `config.toml` files:
    url="http://127.0.0.1:50051"
 
    [[handlers]]
-   cosmwasm_contract="axelar14a4ar5jh7ue4wg28jwsspf23r8k68j7g5d6d3fsttrhp42ajn4xq6zayy5"
+   chain_name="test-sepolia"
+   chain_rpc_url="https://rpc.ankr.com/eth_sepolia"
+   cosmwasm_contract="axelar1r4rmvn83vrfj4evy5l8cv2nat2v0whm36ds3crn2mhlq8ufmhvts9467zz"
+   chain_finalization="RPCFinalizedBlock"
+   type="EvmMsgVerifier"
+
+   [[handlers]]
+   chain_name="test-sepolia"
+   chain_rpc_url="https://rpc.ankr.com/eth_sepolia"
+   cosmwasm_contract="axelar1r4rmvn83vrfj4evy5l8cv2nat2v0whm36ds3crn2mhlq8ufmhvts9467zz"
+   chain_finalization="RPCFinalizedBlock"
+   type="EvmVerifierSetVerifier"
+
+   [[handlers]]
+   chain_name="test-sepolia"
    type="MultisigSigner"
-
-   [[handlers]]
-   chain_name="test-sepolia"
-   chain_rpc_url="https://rpc.ankr.com/eth_sepolia"
-   cosmwasm_contract="axelar1r4rmvn83vrfj4evy5l8cv2nat2v0whm36ds3crn2mhlq8ufmhvts9467zz"
-   chain_finalization="RPCFinalizedBlock"
-   type="EvmMsgVerifier"
-
-   [[handlers]]
-   chain_name="test-sepolia"
-   chain_rpc_url="https://rpc.ankr.com/eth_sepolia"
-   cosmwasm_contract="axelar1r4rmvn83vrfj4evy5l8cv2nat2v0whm36ds3crn2mhlq8ufmhvts9467zz"
-   chain_finalization="RPCFinalizedBlock"
-   type="EvmVerifierSetVerifier"
+   cosmwasm_contract="axelar14a4ar5jh7ue4wg28jwsspf23r8k68j7g5d6d3fsttrhp42ajn4xq6zayy5"
 
    [[handlers]]
    chain_name="test-avalanche"
@@ -328,6 +336,11 @@ The following are an example `config.toml` files:
    cosmwasm_contract="axelar1hupk5du59cgu4ps5s637rhakwsq0060ycdp57j2ccevna7wqqzrqnfrr0p"
    chain_finalization="ConfirmationHeight"
    type="EvmVerifierSetVerifier"
+
+   [[handlers]]
+   chain_name="test-avalanche"
+   type="MultisigSigner"
+   cosmwasm_contract="axelar14a4ar5jh7ue4wg28jwsspf23r8k68j7g5d6d3fsttrhp42ajn4xq6zayy5"
 
    [[handlers]]
    chain_name="flow"
@@ -342,6 +355,12 @@ The following are an example `config.toml` files:
    cosmwasm_contract="axelar1kkqdsqvwq9a7p9fj0w89wpx2m2t0vrxl782aslhq0kdw2xxd2aesv3un04"
    chain_finalization="RPCFinalizedBlock"
    type="EvmVerifierSetVerifier"
+
+   [[handlers]]
+   chain_name="flow"
+   type="MultisigSigner"
+   cosmwasm_contract="axelar14a4ar5jh7ue4wg28jwsspf23r8k68j7g5d6d3fsttrhp42ajn4xq6zayy5"
+
 
    # For each supported chain
    #[[handlers]]
@@ -386,10 +405,6 @@ The following are an example `config.toml` files:
    url="http://127.0.0.1:50051"
 
    [[handlers]]
-   cosmwasm_contract="axelar14a4ar5jh7ue4wg28jwsspf23r8k68j7g5d6d3fsttrhp42ajn4xq6zayy5"
-   type="MultisigSigner"
-
-  [[handlers]]
    chain_name="flow"
    chain_rpc_url="[flow gateway rpc url]"
    cosmwasm_contract="axelar1kkqdsqvwq9a7p9fj0w89wpx2m2t0vrxl782aslhq0kdw2xxd2aesv3un04"
@@ -402,6 +417,12 @@ The following are an example `config.toml` files:
    cosmwasm_contract="axelar1kkqdsqvwq9a7p9fj0w89wpx2m2t0vrxl782aslhq0kdw2xxd2aesv3un04"
    chain_finalization="RPCFinalizedBlock"
    type="EvmVerifierSetVerifier"
+
+   [[handlers]]
+   chain_name="flow"
+   type="MultisigSigner"
+   cosmwasm_contract="axelar14a4ar5jh7ue4wg28jwsspf23r8k68j7g5d6d3fsttrhp42ajn4xq6zayy5"
+
 
    # For each supported chain
    #[[handlers]]
