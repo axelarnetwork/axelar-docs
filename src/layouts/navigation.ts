@@ -261,6 +261,10 @@ export const getNavigation = (section) => {
                     },
                   ],
                 },
+                {
+                  title: "XRPL",
+                  href: "/dev/general-message-passing/xrpl/xrpl-gmp/#cross-chain-token-transfer",
+                },
               ],
             },
             {
@@ -278,11 +282,11 @@ export const getNavigation = (section) => {
                   title: "Send Tokens",
                   href: "/dev/send-tokens/deprecated/send-tokens/",
                 },
+                {
+                  title: "Deposit Address",
+                  href: "/dev/send-tokens/deprecated/deposit-address/",
+                },
               ]
-            },
-            {
-              title: "XRPL",
-              href: "/dev/general-message-passing/xrpl/xrpl-gmp/#cross-chain-token-transfer",
             },
             {
               title: "Solidity Utilities",
