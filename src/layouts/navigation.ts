@@ -241,10 +241,6 @@ export const getNavigation = (section) => {
                     },
                   ],
                 },
-                {
-                  title: "XRPL",
-                  href: "/dev/general-message-passing/xrpl/xrpl-gmp/#cross-chain-token-transfer",
-                },
               ],
             },
             {
