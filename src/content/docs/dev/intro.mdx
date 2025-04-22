@@ -4,17 +4,17 @@ Axelar enables secure token transfers and communication across different blockch
 
 To make an interchain transaction with Axelar:
 
-1. Call the contract method on the source chain:
-   - [`callContract()`](/dev/general-message-passing/gmp-messages/) to send messages without tokens, or
-   - [`callContractWithToken()`](/dev/general-message-passing/gmp-tokens-with-messages/) to send messages along with ERC-20 tokens.
-1. Pay gas to the [`AxelarGasService`](https://github.com/axelarnetwork/axelar-cgp-solidity/blob/main/contracts/gas-service/AxelarGasService.sol) contract on the source chain.
+1. Call the Gateway contract method on the source chain:
+   - [`callContract()`](/dev/general-message-passing/gmp-messages/) to send messages without tokens.
+   - [`callContractWithToken()`](/dev/general-message-passing/gmp-tokens-with-messages/) to send messages along with a [gateway token](/dev/send-tokens/introduction/#gateway-tokens/).
+1. Pay gas to the [`AxelarGasService`](/dev/gas-service/intro/) contract on the source chain.
 
 You can then use [Axelarscan](/dev/intro/#check-interchain-transactions), Axelar’s dedicated blockchain explorer, to execute, recover, or check the status of your transaction.
 
 ## Get started
 
 
-### Create new cross-chain tokens
+### Create new Interchain Tokens
 
 <ul class="grid  md:grid-cols-2 gap-x-8 ">
 <li class="[&>p]:my-0">
