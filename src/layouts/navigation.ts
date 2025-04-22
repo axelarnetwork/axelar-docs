@@ -217,11 +217,11 @@ export const getNavigation = (section) => {
                   title: "Developer Guides",
                   children: [
                     {
-                      title: "Programmatically Create a Token",
+                      title: "Create an Interchain Token",
                       href: "/dev/send-tokens/interchain-tokens/developer-guides/programmatically-create-a-token/",
                     },
                     {
-                      title: "Programmatically Create a Canonical Token",
+                      title: "Create a Canonical Token",
                       href: "/dev/send-tokens/interchain-tokens/developer-guides/programmatically-create-a-canonical-token/",
                     },
                     {
