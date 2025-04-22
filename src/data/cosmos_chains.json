@@ -439,6 +439,12 @@
       "name": "Mantra",
       "network_id": "mantra",
       "image": "/images/chains/mantra.svg"
+    },
+    {
+      "id": "zigchain",
+      "name": "Zigchain",
+      "network_id": "zigchain",
+      "image": "/images/chains/zigchain.svg"
     }
   ]
 }

@@ -60,20 +60,20 @@ It takes four parameters.
 1. `payload`: A `vector<u8>` representation of the cross-chain message being sent.
 
 ```move
-    public fun prepare_message(
-        channel: &Channel,
-        destination_chain: String,
-        destination_address: String,
-        payload: vector<u8>,
-    ): MessageTicket {
-        message_ticket::new(
-            channel.to_address(),
-            destination_chain,
-            destination_address,
-            payload,
-            VERSION,
-        )
-    }
+public fun prepare_message(
+    channel: &Channel,
+    destination_chain: String,
+    destination_address: String,
+    payload: vector<u8>,
+): MessageTicket {
+    message_ticket::new(
+        channel.to_address(),
+        destination_chain,
+        destination_address,
+        payload,
+        VERSION,
+    )
+}
 ```
 
 ### Receive Message
@@ -123,6 +123,7 @@ The executable function will pass in the [ApprovedMessage](#approvedmessage) tha
 
 ```move
 public fun execute(call: ApprovedMessage, singleton: &mut Singleton) {
+    
     let (_, _, _, payload) = singleton.channel.consume_approved_message(call);
 
     event::emit(Executed { data: payload });
