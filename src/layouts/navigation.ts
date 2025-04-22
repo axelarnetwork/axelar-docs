@@ -299,14 +299,6 @@ export const getNavigation = (section) => {
                 },
               ]
             },
-            {
-              title: "Solidity Utilities",
-              href: "/dev/solidity-utilities/",
-            },
-            {
-              title: "Sandbox",
-              href: "/dev/axelar-sandbox/intro/",
-            },
           ],
         },
 
