@@ -102,11 +102,6 @@ export const getNavigation = (section) => {
                     },
                   ],
                 },
-                //leaving xrpl here for now but we'll need to refactor this navigation
-                {
-                  title: "XRPL",
-                  href: "/dev/general-message-passing/xrpl/xrpl-gmp/#cross-chain-token-transfer",
-                },
               ],
             },
             {
@@ -138,6 +133,10 @@ export const getNavigation = (section) => {
                   href: "/dev/general-message-passing/stellar-gmp/gmp-example/",
                 },
               ],
+            },
+            {
+              title: "XRPL",
+              href: "/dev/general-message-passing/xrpl/xrpl-gmp/",
             },
             {
               title: "Gas Service",
@@ -242,7 +241,6 @@ export const getNavigation = (section) => {
                     },
                   ],
                 },
-                //leaving xrpl here for now but we'll need to refactor this navigation
                 {
                   title: "XRPL",
                   href: "/dev/general-message-passing/xrpl/xrpl-gmp/#cross-chain-token-transfer",
@@ -298,8 +296,8 @@ export const getNavigation = (section) => {
               ]
             },
             {
-              title: "XRPL GMP",
-              href: "/dev/general-message-passing/xrpl/xrpl-gmp/",
+              title: "XRPL",
+              href: "/dev/general-message-passing/xrpl/xrpl-gmp/#cross-chain-token-transfer",
             },
             {
               title: "Solidity Utilities",
