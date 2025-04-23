@@ -85,17 +85,17 @@ export const getNavigation = (section) => {
             {
               title: "Cosmos",
               children: [
-                { title: "Introduction", href: "/dev/cosmos-gmp/overview/" },
+                { title: "Introduction", href: "/dev/general-message-passing/cosmos-gmp/overview/" },
                 {
                   title: "Cosmos 2-way Call Relay",
-                  href: "/dev/cosmos-gmp/cosmos-2way-manual-relay/",
+                  href: "/dev/general-message-passing/cosmos-gmp/cosmos-2way-manual-relay/",
                 },
                 {
                   title: "Developer Guides",
                   children: [
                     {
                       title: "Cross-Chain Messaging: EVM to Cosmos",
-                      href: "/dev/cosmos-gmp/developer-guides/cross-chain-messaging-evm-to-cosmos/",
+                      href: "/dev/general-message-passing/cosmos-gmp/developer-guides/cross-chain-messaging-evm-to-cosmos/",
                     },
                   ],
                 },
