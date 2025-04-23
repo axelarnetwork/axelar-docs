@@ -134,8 +134,8 @@
       "permanent": true
     },
     {
-      "source": "/dev/general-message-passing/cosmos-gmp(/)?",
-      "destination": "/dev/cosmos-gmp/",
+      "source": "/dev/cosmos-gmp(/)?",
+      "destination": "/dev/general-message-passing/cosmos-gmp/",
       "permanent": true
     },
     {
@@ -520,7 +520,7 @@
     },
     {
       "source": "/dev/cosmos-gmp(/)?",
-      "destination": "/dev/cosmos-gmp/overview/",
+      "destination": "/dev/general-message-passing/cosmos-gmp/overview/",
       "permanent": true
     },
     {
