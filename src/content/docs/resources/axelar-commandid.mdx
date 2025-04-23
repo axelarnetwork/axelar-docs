@@ -1,34 +1,12 @@
 # The Axelar `CommandID`
 
 Ensuring the authenticity and integrity of messages is crucial in cross-chain communication. The `CommandID` in the [Axelar network](https://www.axelar.network/) plays a significant role in this process, acting as a unique identifier for interchain messages.
-
-This guide explains what an Axelar `CommandID` is, how it is generated, and its importance in the [Solidity Axelar GMP SDK](https://github.com/axelarnetwork/axelar-gmp-sdk-solidity).
-
+fefwfwfe
 ## What is the Axelar `CommandID`?
 
-Axelar `CommandID` is a unique identifier assigned to each message or command that facilitates interchain communication. It ensures that each message can be tracked, verified, and validated across different blockchain networks, preventing issues such as replay attacks or message tampering.
+Axelar `CommandID` is a unique identifier assigned to each message or command that facilitates interchain communication. It ensures that each message can be tracked, verified, and validated across different blockchain netwofefementation
 
-## How is an Axelar `CommandID` generated?
-
-Generating an Axelar `CommandID` involves combining specific attributes of the message, such as the `sourceChain`, `messageId`, and other relevant data, and then hashing this combination to produce a unique identifier. This process ensures that each `CommandID` is unique for the message it represents.
-
-### Solidity Implementation
-
-In the provided Solidity contract, the `messageToCommandId()` function generates the `CommandID`.
-
-Here's how it works:
-
-```solidity
-/**
- * @notice Compute the commandId for a message.
- * @param sourceChain The name of the source chain as registered on Axelar.
- * @param messageId The unique message id for the message.
- * @return The commandId for the message.
- */
-function messageToCommandId(string calldata sourceChain, string calldata messageId) public pure returns (bytes32) {
-    // Axelar doesn't allow `sourceChain` to contain '_', hence this encoding is unambiguous
-    return keccak256(bytes(string.concat(sourceChain, '_', messageId)));
-}
+In the provided Sfefefef
 ```
 
 This function takes two parameters: `sourceChain` and `messageId`. It concatenates these parameters with an underscore (`_`) separator, ensuring the combination is unique and unambiguous. The concatenated string is then hashed using `keccak256` to produce the `CommandID`. You can view the source code [here](https://github.com/axelarnetwork/axelar-gmp-sdk-solidity/blob/1db893b373ec9fcd7cf838ebea4b3a7a24585791/contracts/gateway/BaseAmplifierGateway.sol#L103C14-L103C32).
