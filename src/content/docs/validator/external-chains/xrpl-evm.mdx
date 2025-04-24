@@ -64,7 +64,7 @@ Inside it, you will eventually see two subfolders. The first is `~/.exrpd/config
   </tab-item>
   <tab-item title="mainnet">
     ```bash
-    exrpd config chain-id TBD
+    exrpd config chain-id xrplevm_1440000-1
     ```
   </tab-item>
 </tabs>
@@ -84,7 +84,7 @@ Make sure to replace `<your_moniker>` with a short ASCII-only name for your node
   </tab-item>
   <tab-item title="mainnet">
     ```bash
-    exrpd init <your_moniker> --chain-id TBD
+    exrpd init <your_moniker> --chain-id xrplevm_1440000-1
     ```
   </tab-item>
 </tabs>
@@ -100,12 +100,12 @@ This step populates the aforementioned `~/.exrpd` directory with the `config` an
   </tab-item>
   <tab-item title="testnet">
     ```bash
-    TBD
+     wget https://raw.githubusercontent.com/xrplevm/networks/main/testnet/genesis.json \ -O ~/.exrpd/config/genesis.json
     ```
   </tab-item>
   <tab-item title="mainnet">
     ```bash
-    TBD
+    wget https://raw.githubusercontent.com/xrplevm/networks/main/mainnet/genesis.json \ -O ~/.exrpd/config/genesis.json
     ```
   </tab-item>
 </tabs>
