@@ -445,6 +445,12 @@
       "name": "Zigchain",
       "network_id": "zigchain",
       "image": "/images/chains/zigchain.svg"
+    },
+    {
+      "id": "babylon",
+      "name": "Babylon",
+      "network_id": "babylon",
+      "image": "/images/chains/babylon.svg"
     }
   ]
 }

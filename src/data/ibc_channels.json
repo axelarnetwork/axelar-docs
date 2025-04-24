@@ -399,6 +399,16 @@
       "from": "axelarnet",
       "to": "mantra",
       "channel_id": "channel-170"
+    },
+    {
+      "from": "babylon",
+      "to": "axelarnet",
+      "channel_id": "channel-2"
+    },
+    {
+      "from": "axelarnet",
+      "to": "babylon",
+      "channel_id": "channel-175"
     }
   ],
   "testnet": [
