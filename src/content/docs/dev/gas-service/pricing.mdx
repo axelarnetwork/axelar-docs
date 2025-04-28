@@ -36,11 +36,11 @@ The `estimateGasFee` method in the [AxelarJS SDK](/dev/axelarjs-sdk/axelar-query
 
 ### Notable Considerations
 
-#### EXECUTION FEE
+#### Execution Fee
 
 While the `estimateGasFee` method builds the components of the gas costs for you, you are still responsible to tell it the amount of gas you believe will be required to execute the `_execute` method on your destination smart contract. The `gasLimit` parameter in the `estimateGasFee()` method can be used to specify the estimated gas limit. Otherwise, the gas limit will be equivalent to the execution gas cost on the destination chain.
 
-#### GAS PRICE VOLATILITY
+#### Gas Price Volatility
 
 Certain EVM chains have really volatile gas prices. To account for this, it is recommended to include certain buffers (i.e. pay additional gas upfront) to avoid situations of transactions getting "stuck" in the pipeline because of out-of-gas issues.
 
@@ -49,36 +49,37 @@ The `estimateGasFee` method exposes two additional optional parameters to enhanc
 1. A `minGasPrice` to be used on the destination chain, and
 1. A `gasMultipler` to be used to multiply the calculated figure by a specified buffer for execution certainty.
 
-#### REFUNDS
+#### Refunds
 
 The remainder of any gas paid upfront for a transaction that is not used by our gas service is refunded to the specified refund address.
 
 `Refund = Gas deposit - Network Base Fee - Execution Fee - approximate gas to process the refund**.`
 \*\*Gas estimated to transfer the refund is usually a bit higher than the actual gas used.
 
-#### ROUND TRIP TRANSACTIONS (TWO-WAY CALLS)
+#### RoundTrips Transactions (Two-way calls)
 
 The gas service will automate any "two-way calls" (i.e. sending GMP transactions from Chain A to Chain B with a return trip back to Chain A), assuming the entire cost of the round-trip transaction is paid on the source chain. The clearest example of this implementation can be found in our [Examples Repo](https://github.com/axelarnetwork/axelar-examples/blob/main/examples/evm/send-ack/SendAckSender.sol#L47).
 
 The `estimateGasFee` method can be used (yet again) to determine the amount of gas required for the round trip. The method needs to be called twice, once for the gas cost for Chain A >> B, then again for the gas cost for Chain B >> A, and the total cost would be the sum of the two estimations. Note: the gas cost estimation is direction-dependent and can be very different for the outbound and return trip directions.
 
-#### HANDLING ERRORS
+#### Handling Errors
 
-Transactions may intermittently stall on their way from a source chain to a destination chain. Common root causes for stalled transactions included: 
-1. Failure to send a valid transaction from the source chain into the Axelar network for processing. 
+Transactions may intermittently stall on their way from a source chain to a destination chain. Common root causes for stalled transactions included:
+
+1. Failure to send a valid transaction from the source chain into the Axelar network for processing.
 1. Insufficient gas payments paid by the user.
 1. Transaction revert on the destination chain.
 
-Every transaction can be seen on Axelarscan with a detailed view of where transactions get "stuck", so one can start there to debug such circumstances. Axelarscan and the AxelarJS SDK expose two approaches to recover stalled transactions: 
+Every transaction can be seen on Axelarscan with a detailed view of where transactions get "stuck", so one can start there to debug such circumstances. Axelarscan and the AxelarJS SDK expose two approaches to recover stalled transactions:
 
-1. Manual execution of the transaction on the destination chain, or 
+1. Manual execution of the transaction on the destination chain, or
 1. Add gas for transactions. More details can be found [here](/dev/general-message-passing/debug/error-debugging/) for debugging and [here](/dev/general-message-passing/debug/transaction-recovery/) and recovery.
 
-## callContractWithToken (General Message Passing)
+## `callContractWithToken` (General Message Passing)
 
 Fees for `callContractWithToken` are almost identical to those of `callContract`, but have an increased execution cost due to the additional gas cost of minting/releasing tokens.
 
-## callContractWithTokenExpress ("GMP Express")
+## `callContractWithTokenExpress` ("GMP Express")
 
 Fees for GMP express include all of the same fees as `callContractWithToken`, plus:
 
