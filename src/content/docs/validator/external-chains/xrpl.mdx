@@ -1,6 +1,6 @@
-# XRPL
-
 import { Callout } from "/src/components/callout";
+
+# XRPL
 
 Node setup guide for your XRP Ledger Testnet or Mainnet validator.
 
@@ -13,6 +13,10 @@ Node setup guide for your XRP Ledger Testnet or Mainnet validator.
     * Disk: 50+ GB SSD/NVMe
 - Ubuntu Linux 18.04+ (tested on 22.04) or Debian 10+
 - [Official Documentation](https://xrpl.org/docs/infrastructure/installation)
+
+<Callout emoji="💡">
+  Note: Verifiers are expected to run at least two months worth of history on their nodes. Please make sure you configure your node to stores two months of history instead of the [default two hours](https://xrpl.org/docs/infrastructure/installation/capacity-planning#disk-space).
+</Callout>
 
 ## Install on Ubuntu or Debian Linux
 
@@ -91,7 +95,7 @@ Edit your `rippled.cfg` file located under `/etc/opt/ripple/rippled.cfg`.
 
 ```
 [ips]
-r.altnet.rippletest.net 51235
+s.altnet.rippletest.net 51235
 ```
 
 2. Comment out the previous `[ips]` stanza, if there is one.
