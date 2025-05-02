@@ -11,13 +11,15 @@ import { Callout } from "/src/components/callout";
   allowFullScreen
 ></iframe>
 
-To call chain B from chain A and send some tokens along the way, the user needs to call `callContractWithToken` on the gateway of chain A, specifying:
+To call chain B from chain A and send some tokens supported by the gateway along the way, the user needs to call `callContractWithToken` on the gateway of chain A, specifying:
 
-- The destination chain, which must be an EVM chain from [Chain names](/dev/reference/mainnet-chain-names/).
+- The destination chain, which must be an EVM chain from [Chain names](https://axelarscan.io/resources/chains).
 - The destination contract address, which must inherit from `AxelarExecutableWithToken` defined in [AxelarExecutableWithToken.sol](https://github.com/axelarnetwork/axelar-gmp-sdk-solidity/blob/main/contracts/executable/AxelarExecutableWithToken.sol).
 - The payload `bytes` to pass to the destination contract.
 - The symbol of the token to transfer, which must be a supported asset ([Mainnet](/resources/contract-addresses/mainnet/) | [Testnet](/resources/contract-addresses/testnet/)).
 - The amount of the token to transfer.
+
+Gateway tokens, as the name implies, are tokens supported at the [Axelar core gateway](https://github.com/axelarnetwork/axelar-cgp-solidity/blob/main/contracts/AxelarGateway.sol) layer. You can find the list of tokens supported [here](https://axelarscan.io/resources/assets?type=gateway).
 
 <Callout emoji="🚨">
   **NOTE:** The security of your contracts, and the tokens passed between them,
@@ -38,7 +40,7 @@ function callContractWithToken(
 ) external;
 ```
 
-`AxelarExecutableWithToken` has an `executeWithToken` function that will be triggered by the Axelar network on the destination chain after the `callContractWithToken` function has been executed on the source chain. This will validate the contract call and then invoke _your_ `_executeWithToken` method, where you should write any custom logic.
+The `AxelarExecutableWithToken`  has an `executeWithToken` function that will be triggered by the Axelar network on the destination chain after the `callContractWithToken` function has been executed on the source chain. This will validate the contract call and then invoke _your_ `_executeWithToken` method, where you should write any custom logic.
 
 The destination contract will be authorized to transfer the ERC-20 identified by the `tokenSymbol`.
 
@@ -53,7 +55,7 @@ function _executeWithToken(
 ) internal virtual {}
 ```
 
-### Example
+### Example Payload
 
 Suppose our destination contract wants to forward the token it received to a recipient provided in the payload. It could be done this way.
 
@@ -80,7 +82,7 @@ function _executeWithToken(
 
 The `payload` passed to `callContract` (and ultimately to the `_execute` and `_executeWithToken`) has type `bytes`. Use the ABI encoder/decoder convert your data to `bytes`.
 
-Example of payload encoding in JavaScript (using ethers.js):
+### Example of payload encoding in JavaScript (using ethers.js):
 
 ```jsx
 const { ethers } = require("ethers");
@@ -92,7 +94,7 @@ const payload = ethers.utils.defaultAbiCoder.encode(
 );
 ```
 
-Example of payload decoding in Solidity:
+### Example of payload decoding in Solidity:
 
 ```solidity
 function _execute(
