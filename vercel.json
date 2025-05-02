@@ -592,6 +592,11 @@
       "source": "/dev/send-tokens/stellar-its(/)?",
       "destination": "/dev/send-tokens/stellar-its/intro/",
       "permanent": true
+    },
+    {
+      "source": "/dev/cosmos-gmp/cosmos-2way-manual-relay(/)?",
+      "destination": "/dev/general-message-passing/cosmos-gmp/cosmos-2way-manual-relay/",
+      "permanent": true
     }
   ]
 }
