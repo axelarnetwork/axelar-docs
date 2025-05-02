@@ -110,13 +110,13 @@ This function does several important things:
 1. It computes a `tokenId` using the same salt you used during token registration
 2. Creates a cross-chain message that instructs the destination chain to deploy a Token Manager for your token
 3. Establishes the connection between your tokens across chains by associating them with the same `tokenId`
-4. Sets up the appropriate Token Manager type that defines how tokens will be bridged (lock/unlock, mint/burn, etc.)
+4. Sets up the appropriate [Token Manager](/dev/send-tokens/interchain-tokens/token-manager/) type that defines how tokens will be bridged (lock/unlock, mint/burn, etc.)
 
 When this function executes, it:
 
 - Takes gas payment for the cross-chain message (this is why it's `payable`)
 - Routes the message through the ITS Hub to the destination chain
-- Triggers the deployment of a Token Manager on the destination chain that's linked to your token
+- Triggers the deployment of a [Token Manager](/dev/send-tokens/interchain-tokens/token-manager/) on the destination chain that's linked to your token
 
 You can see a real example of this function being used in [this transaction on Axelarscan](https://testnet.axelarscan.io/gmp/0x11c2a212180d7ea2babe7aceb66c32c1e235cc159bceeb4dd6d04411f4a9669f), which demonstrates linking a token between BNB chain and Avalanche.
 
@@ -124,7 +124,7 @@ You can see a real example of this function being used in [this transaction on A
 
 ### Assign the `minter` Role to Your Token's Token Manager
 
-Transfer the minter / burn role to the Token Manager using the [`transferMintership`](https://github.com/axelarnetwork/interchain-token-service/blob/v/contracts/utils/Minter.sol#L31) function on your token. To retrieve your token manager address, use the `tokenManagerAddress` function on the ITS contract by specifying your `tokenId`.
+Transfer the minter / burn role to the [Token Manager](/dev/send-tokens/interchain-tokens/token-manager/) using the [`transferMintership`](https://github.com/axelarnetwork/interchain-token-service/blob/v/contracts/utils/Minter.sol#L31) function on your token. To retrieve your token manager address, use the `tokenManagerAddress` function on the ITS contract by specifying your `tokenId`.
 
 ```solidity
 yourToken.transferMintership(tokenManagerAddress);
