@@ -40,7 +40,7 @@ function callContractWithToken(
 ) external;
 ```
 
-The `AxelarExecutableWithToken`  has an `executeWithToken` function that will be triggered by the Axelar network on the destination chain after the `callContractWithToken` function has been executed on the source chain. This will validate the contract call and then invoke _your_ `_executeWithToken` method, where you should write any custom logic.
+The `AxelarExecutableWithToken` has an `executeWithToken` function that will be triggered by the Axelar network on the destination chain after the `callContractWithToken` function has been executed on the source chain. This will validate the contract call and then invoke _your_ `_executeWithToken` method, where you should write any custom logic.
 
 The destination contract will be authorized to transfer the ERC-20 identified by the `tokenSymbol`.
 
