@@ -1,6 +1,6 @@
-# XRPL
-
 import { Callout } from "/src/components/callout";
+
+# XRPL
 
 Node setup guide for your XRP Ledger Testnet or Mainnet validator.
 
@@ -13,6 +13,10 @@ Node setup guide for your XRP Ledger Testnet or Mainnet validator.
     * Disk: 50+ GB SSD/NVMe
 - Ubuntu Linux 18.04+ (tested on 22.04) or Debian 10+
 - [Official Documentation](https://xrpl.org/docs/infrastructure/installation)
+
+<Callout emoji="💡">
+  Note: Verifiers are expected to run at least two months worth of history on their nodes. Please make sure you configure your node to stores two months of history instead of the [default two hours](https://xrpl.org/docs/infrastructure/installation/capacity-planning#disk-space).
+</Callout>
 
 ## Install on Ubuntu or Debian Linux
 
@@ -91,7 +95,7 @@ Edit your `rippled.cfg` file located under `/etc/opt/ripple/rippled.cfg`.
 
 ```
 [ips]
-r.altnet.rippletest.net 51235
+s.altnet.rippletest.net 51235
 ```
 
 2. Comment out the previous `[ips]` stanza, if there is one.
@@ -148,18 +152,40 @@ curl -H 'Content-Type: application/json' -d '{"method":"server_info","params":[{
 Once your node is up and running, you need to add the `XRPL` chain to your [ampd daemon's](https://github.com/axelarnetwork/axelar-amplifier/tree/main/ampd) `config.toml`file. This can be done by adding in the following configuration:
 
 For testnet:
-```toml
-[[handlers]]
-type="XRPLMsgVerifier"
-chain_name="xrpl"
-chain_rpc_url="your_own_rpc"
-cosmwasm_contract="axelar1pnynr6wnmchutkv6490mdqqxkz54fnrtmq8krqhvglhsqhmu7wzsnc86sy"
 
-[[handlers]]
-type="XRPLMultisigSigner"
-multisig_contract="axelar14a4ar5jh7ue4wg28jwsspf23r8k68j7g5d6d3fsttrhp42ajn4xq6zayy5"
-multisig_prover_contract="axelar1k82qfzu3l6rvc7twlp9lpwsnav507czl6xyrk0xv287t4439ymvsl6n470"
-```
+
+<tabs>
+  <tab-item title="Mainnet">
+    ```toml
+    [[handlers]]
+    type="XRPLMsgVerifier"
+    chain_name="xrpl"
+    chain_rpc_url="your_own_rpc"
+    cosmwasm_contract="axelar1lppu77d7h4u7jylw9afctsc2908ea0eh3q6ap82fep5s2qjk9axqvd3sjx"
+
+    [[handlers]]
+    type="XRPLMultisigSigner"
+    multisig_contract="axelar14a4ar5jh7ue4wg28jwsspf23r8k68j7g5d6d3fsttrhp42ajn4xq6zayy5"
+    multisig_prover_contract="axelar12k57j826jl8xldyl2hf9hnc9gwf72zl48xfq4qn20sl4kl8unrxsejqvm8"
+    ```
+  </tab-item>
+  <tab-item title="Testnet">
+    ```toml
+    [[handlers]]
+    type="XRPLMsgVerifier"
+    chain_name="xrpl"
+    chain_rpc_url="your_own_rpc"
+    cosmwasm_contract="axelar1pnynr6wnmchutkv6490mdqqxkz54fnrtmq8krqhvglhsqhmu7wzsnc86sy"
+
+    [[handlers]]
+    type="XRPLMultisigSigner"
+    multisig_contract="axelar14a4ar5jh7ue4wg28jwsspf23r8k68j7g5d6d3fsttrhp42ajn4xq6zayy5"
+    multisig_prover_contract="axelar1k82qfzu3l6rvc7twlp9lpwsnav507czl6xyrk0xv287t4439ymvsl6n470"
+    ```
+  </tab-item>
+</tabs>
+
+
 
 
 <Callout emoji="💡">
