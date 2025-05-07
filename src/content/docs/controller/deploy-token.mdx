@@ -19,7 +19,7 @@ Repeat these instructions for each additional EVM chain.
 
 ## Prerequisites
 
-- Prerequisites for [Controller operations](/controller/)
+- Prerequisites for [Controller operations](../controller/)
 - You will deploy smart contracts to the EVM chain---you need enough native tokens to pay gas fees on that chain. Example: if deploying to Avalanche then you need AVAX tokens, etc.
 - The EVM chain has been added to the network.
 
@@ -37,7 +37,7 @@ axelard tx evm create-deploy-token avalanche terra uusd "Axelar Wrapped UST" UST
 
 If registering an ERC-20 token native to that EVM chain, for e.g. registering `WAVAX` on `Avalanche`, then it's token contract needs to be specified, and the ERC-20 token name and symbol MUST match the value in the token contract:
 
-Retrieve the ERC-20 info from it's token contract. For `WAVAX`, it can found [here](https://snowtrace.io/address/0xb31f66aa3c1e785363f0875a1b74e27b85fd66c7#readContract).
+Retrieve the ERC-20 info from it's token contract. For `WAVAX`, it can found [here](https://snowtrace.io/address/0xB31f66AA3C1e785363F0875A1B74E27b85FD66c7/contract/43114/readContract/).
 
 ```bash
 axelard tx evm create-deploy-token avalanche [native chain] [asset] [erc-20 token name] [erc-20 symbol] [decimals] [capacity] --address [token contract] --from controller --gas auto --gas-adjustment 1.4
@@ -62,7 +62,7 @@ axelard q evm latest-batched-commands avalanche
 axelard q evm gateway-address avalanche
 ```
 
-Submitting this batched data is similar to the description in [Send AXL to an EVM chain](/pages/learn/cli/axl-to-evm).
+Submitting this batched data is similar to the description in [Send AXL to an EVM chain](/learn/cli/axl-to-evm).
 
 - Note the `[EVM_TOKEN_TX_HASH]` for the transaction to the gateway contract.
 
