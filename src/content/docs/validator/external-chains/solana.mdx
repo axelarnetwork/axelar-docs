@@ -13,6 +13,8 @@ Instructions to set up your Solana Validator node.
 
 ### Install the Solana CLI
 
+All commands mentioned in this section should be done on your trusted computer and NOT on a server where you intend to run your validator.
+
 Install the Agave release on your local (not the server) machine by running:
 
 ```bash
@@ -56,6 +58,22 @@ solana-keygen new -o vote-account-keypair.json
 solana-keygen new -o authorized-withdrawer-keypair.json
 ```
 
+Here’s what each keypair is used for:
+
+Validator keypair (validator-keypair.json)
+This is the identity of your validator node. It signs votes, transactions, and blocks. Think of it as the “identity card” for your validator in the Solana network.
+
+Vote account keypair (vote-account-keypair.json)
+This account holds and tracks your validator’s voting credits. It’s linked to your validator identity and records the validator’s participation in consensus.
+
+Authorized withdrawer keypair (authorized-withdrawer-keypair.json)
+This key has permission to withdraw rewards from the vote account. You can (and often should) separate this from the validator operator to improve security, as it controls the movement of funds.
+
+Reminder: Even if you’re familiar with keypair management, here’s a quick best practices review:
+- Store keypairs securely and back them up safely.
+- Never share private keys or store them on insecure machines.
+- Set strict file permissions (`chmod 600`).
+
 ### Create a vote account
 
 Create a vote account for your validator.
@@ -90,11 +108,11 @@ solana create-vote-account -ut \
 
 Note -ut tells the cli command that we would like to use the testnet cluster. If you're creating the RPC node you don't need the vote account.
 
-All commands mentioned so far should be done on your trusted computer and NOT on a server where you intend to run your validator.
-
 Now it's time to connect to the server. SSH into your server.
 
 ### Preparing the system
+
+All commands mentioned below should be done on a server where you intend to run your validator.
 
 Create a new Ubuntu user, named sol, for running the validator:
 
