@@ -21,7 +21,11 @@ export default defineConfig({
     }),
     react(),
     mdx(),
-    sitemap(),
+    sitemap({
+      priority: 0.9,
+      changefreq: "daily",
+      lastmod: new Date(),
+    }),
     tailwind(),
     partytown({
       config: {
