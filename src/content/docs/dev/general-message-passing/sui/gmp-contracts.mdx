@@ -1,6 +1,6 @@
 import { Callout } from "../../../../../components/callout";
 
-# Send a cross-chain message from Sui
+# General Message Passing (GMP) Sui Contracts
 
 Sending a message from Sui involves the following steps:
 
@@ -17,7 +17,7 @@ The [Gateway](/learn/network/flow/#gateways) is the core contract that facilitat
 
 A shared object that anyone can access and user to refer to the Gateway package.
 
-```move
+```rust
 public struct Gateway has key {
     id: UID,
     inner: Versioned,
@@ -41,7 +41,7 @@ The `send_message` function triggers your cross-chain message from Sui to anothe
   contract.
 </Callout>
 
-```move
+```rust
 public fun send_message(self: &Gateway, message: MessageTicket) {
     let value = self.value!(b"send_message");
     value.send_message(message, VERSION);
@@ -59,7 +59,7 @@ It takes four parameters.
 1. `destination_address`: Address on the destination chain to which the message is being sent.
 1. `payload`: A `vector<u8>` representation of the cross-chain message being sent.
 
-```move
+```rust
 public fun prepare_message(
     channel: &Channel,
     destination_chain: String,
@@ -84,7 +84,7 @@ Receiving a message involves two steps. The first involves approving an incoming
 
 An Axelar relayer triggers the Gateway's `approve_message()` function to approve the message. Once the message is marked as approved, the approval is stored in the Gateway object. This will indicate that the message has been confirmed by the Axelar [Verifier set](https://axelarscan.io/verifiers) on the Axelar network itself.
 
-```move
+```rust
 entry fun approve_messages(self: &mut Gateway, message_data: vector<u8>, proof_data: vector<u8>) {
     let value = self.value_mut!(b"approve_messages");
     value.approve_messages(message_data, proof_data);
@@ -97,7 +97,7 @@ A live example of an approval transaction can be found [here](https://suiscan.xy
 
 With the message now marked as approved, the relayer will attempt to execute the message on your Sui contract. For this, the relayer will first trigger the Gateway's take_approved_function(). This function will confirm that the message has already been [approved](#approve-message) and will then begin the [message consumption process](#consume-approved-message)
 
-```move
+```rust
 public fun take_approved_message(
     self: &mut Gateway,
     source_chain: String,
@@ -121,7 +121,7 @@ On your package, the [Relayer Discovery](#relayer-discovery) will then look to c
 
 The executable function will pass in the [ApprovedMessage](#approvedmessage) that was [consumed](#consume-approved-message) by the Package's Channel.
 
-```move
+```rust
 public fun execute(call: ApprovedMessage, singleton: &mut Singleton) {
     
     let (_, _, _, payload) = singleton.channel.consume_approved_message(call);
@@ -138,7 +138,7 @@ In Sui, there is no ability to check the immediate caller of a message (i.e., th
 
 Channels allow for sending and receiving messages between Sui and other chains. When a message is sent, the channel acts as a destination. The `destination_id` is compared to the channel's `id`.
 
-```move
+```rust
 public struct Channel has key, store {
     /// Unique ID of the channel
     id: UID,
@@ -156,7 +156,7 @@ The function takes two parameters.
 1. channel: The [channel](#channel) that the message is being sent to.
 1. approved_message: The [ApprovedMessage](#approvedmessage) struct that is being sent to the destination chain contains relevant parameters of the cross-chain message.
 
-```move
+```rust
 public fun consume_approved_message(channel: &Channel, approved_message: ApprovedMessage): (String, String, String, vector<u8>) {
     let ApprovedMessage {
         source_chain,
@@ -185,7 +185,7 @@ The `ApprovedMessage` contains the following parameters.
 1. `destination_id`: The id of the channel that the message is being sent to.
 1. `payload`: A `vector<u8>` representation of the cross-chain message being sent.
 
-```move
+```rust
 public struct ApprovedMessage {
     source_chain: String,
     message_id: String,
@@ -219,7 +219,7 @@ The `pay_gas()` takes five parameters.
   It is not currently used in the implementation.
 </Callout>
 
-```move
+```rust
 public fun pay_gas<T>(
     self: &mut GasService,
     message_ticket: &MessageTicket,
@@ -244,7 +244,7 @@ In Sui, there is no arbitrary execution like in EVM chains; therefore, unlike in
 
 To be added to this registry, a deployed application on Sui will need to trigger the `register_transaction()` function on the Discovery Package.
 
-```move
+```rust
 public fun register_transaction(self: &mut RelayerDiscovery, channel: &Channel, tx: Transaction) {
     // Get the mutable value associated with the "register_transaction" key.
     let value = self.value_mut!(b"register_transaction");
@@ -268,7 +268,7 @@ See [here](https://github.com/axelarnetwork/axelar-cgp-sui/blob/main/move/exampl
 
 The `MessageTicket` struct is a “hot potato” object designed to encapsulate all the necessary information for a remote contract call. It is meant to be created by a module and then returned to the frontend, which will submit it to the Gateway. This design ensures that the application code (modules) does not require any changes when the gateway package is upgraded, promoting forward compatibility.
 
-```move
+```rust
 public struct MessageTicket {
     source_id: address,
     destination_chain: String,
