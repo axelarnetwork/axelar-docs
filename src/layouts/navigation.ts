@@ -26,7 +26,7 @@ export const getNavigation = (section) => {
           href: "/dev/what-is-mobius-development-stack/",
         },
         {
-          title: "Product Overview",
+          title: "Products Overview",
           href: "/dev/intro/",
         },
         {
