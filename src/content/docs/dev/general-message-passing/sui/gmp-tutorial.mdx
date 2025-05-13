@@ -1,0 +1,214 @@
+import { Callout } from "../../../../../components/callout";
+
+# General Message Passing (GMP) Sui Example
+
+The following is an end-to-end example of how to use the General Message Passing (GMP) feature in Sui. This example demonstrates how to create a simple cross-chain application that allows users to send messages between Sui and an [EVM](https://ethereum.org/en/developers/docs/evm/) chain. 
+
+## Prerequisites
+Before you begin, make sure you have the following prerequisites installed:
+- [Rust](https://www.rust-lang.org/tools/install)
+- [Sui CLI](https://docs.sui.io/build/install)
+- [Sui Move](https://docs.sui.io/build/move)
+- [Sui JS](https://www.npmjs.com/package/@mysten/sui)
+
+## Setup 
+
+This demo will use Sui's Typescript SDK to build and deploy the `move` based on contract. It will use `npm` to install the required dependencies. To begin you can run the following command to spinup your Sui repository.
+
+```bash
+sui move new sui-gmp
+```
+
+This will create a new directory called `sui-gmp` with the following structure:
+
+1. `Move.toml`    
+1. `sources`      
+1. `tests`
+
+You can the run `npm init -y` to add a `package.json` file to the project.
+
+### Move Config
+
+The main configuration for a Sui project is in the `move.toml` file. This file contains the following sections:
+- `[package]`: This section contains the package name, version, and authors.
+- `[dependencies]`: This section contains the dependencies for the package.
+- `[addresses]`: The live addresses of the dependencies for your project.
+- `[dev-dependencies]`: The dev-dependencies section allows overriding dependencies for `--test`.
+- `[dev-addresses]`: The dev-addresses section allows overwriting named addresses for the `--test`.
+
+For now you can clear the boiler plate config and simply add the following:
+
+```toml
+[package]
+name = "gmp_example"
+version = "0.1.0"
+edition = "2024"
+```
+
+## GMP Package
+
+The GMP Package (akin to a smart contract in the EVM ecosystem) will hold the core logic for the cross-chain application. It will be built using the `move` programming language. You can start it off by creating a new `gmp_example.move` file in the `sources` folder adding the name for the module in the code.
+
+```move
+module gmp_example::gmp;
+```
+
+Note: The name `gmp_example` must match the name provided in the `move.toml` file that holds the 
+
+### Dependencies 
+
+TODO
+
+### Imports
+
+TODO`
+
+### `Singleton`
+
+The singleton is a resource type that lives in its own on-chain [object](https://docs.sui.io/concepts/object-model). In the case of this package this object owns the package's [channel](src/content/docs/dev/general-message-passing/sui/gmp-contracts#channel). The `id` of the singleton gives it a unique on-chain object identity.
+
+You can create your package's singleton as follows: 
+
+```rust
+public struct Singleton has key {
+    id: object::UID,
+    channel: Channel,
+}
+```
+
+Where the `id` is the unique identifier for the on-chain object and the `channel` is imported from the [Gateway depdendency](https://github.com/axelarnetwork/axelar-cgp-sui/tree/main/move/axelar_gateway).
+
+### `Init`
+
+With your singleton now setup, you can create your `initialize` function that will be used to [initialize](https://move-book.com/programmability/module-initializer.html) the GMP package. This function will take a single parameter:
+
+1. `ctx: &mut TxContext`: A mutable reference to [TxContext](https://docs.sui.io/references/framework/sui/tx_context#sui_tx_context_TxContext)
+
+In the `init` function you can then setup a new `object` id, create your unique `channel` and associate the two together via the [transfer::share_object](https://docs.sui.io/references/framework/sui/transfer#sui_transfer_share_object) function to publish a `singleton` resource. 
+
+```rust
+fun init(ctx: &mut TxContext) {
+    // Create a new object id for the singleton
+    let singletonId = object::new(ctx);
+    // Create a new channel
+    let channel = channel::new(ctx);
+    // Publish the singleton
+    transfer::share_object(Singleton {
+        id: singletonId,
+        channel,
+    });
+}
+```
+
+### `Send_Call`
+^todo refactor to `Send_Message()`
+
+With your `channel` now setup for your package you can begin to write the functionality to actually send the cross-chain message. The `send_call()` function will take the following parameters:
+
+1. `singleton: &Singleton`: A reference to the `singleton` resource to identify the `channel`
+1. `gateway: &Gateway`: A reference to the [gateway's](/dev/general-message-passing/sui/gmp-example/#sui-gateway) published object id that contains key Axelar functionality
+1. `gas_service: &mut GasService`: A mutable reference to the [gas service's](/dev/general-message-passing/sui/gmp-example/#sui-gas-service) object id 
+1. `destination_chain: String`: The name of the destination chain to send the message to
+1. `destination_address: String`: The recipient address on the destination chain
+1. `payload: vector<u8>`: The payload to send to the destination chain
+1. `refund_address: address`: The address to send any surplus gas payment back to
+1. `coin: Coin<SUI>`: The gas coin to be spent on message delivery
+1. `params: vector<u8>`: For future use, this parameter is currently unused
+
+The function signature can be written out as follows: 
+
+```rust
+public fun send_call(
+    singleton: &Singleton,
+    gateway: &Gateway,
+    gas_service: &mut GasService,
+    destination_chain: String,
+    destination_address: String,
+    payload: vector<u8>,
+    refund_address: address,
+    coin: Coin<SUI>,
+    params: vector<u8>,
+) {}
+```
+
+Note: the `gas_service` param is of specified as mutable because you will eventually update the `GasService` resource’s internal state (by consuming the provided coin).
+
+You can now begin to implement the functionality for `send_call()`.
+
+First you can create a new [Message Ticket](/dev/general-message-passing/sui/gmp-example/#message-ticket). This can be interacting with the `Gateway's` `prepare_message()` function. 
+ 
+```rust
+let message_ticket = gateway::prepare_message(
+    &singleton.channel,
+    destination_chain,
+    destination_address,
+    payload,
+);
+```
+
+The ticket will contain all the relevant parameters needed when triggering a cross-chain message.
+
+Next, you can interact with the `GasService` to pay for the entirety of the cross chain call from the source chain. This can be done by triggering the `pay_gas()` function. The gas payment will be picked up by an Axelar relayer and eventually used to pay for the [execution fee](/dev/gas-service/pay-gas/#execution-fee) on the destination chain. 
+
+```rust
+gas_service.pay_gas(
+    &message_ticket,
+    coin,
+    refund_address,
+    params,
+);
+```
+
+Lastly, you can trigger the Gateway's `send_message()` function to trigger the cross-chain message by passing in the `message_ticket` you created earlier. 
+
+
+```rust
+gateway.send_message(message_ticket);
+```
+
+The complete `send_call()` function should look like this:
+
+```rust
+public fun send_call(
+    singleton: &Singleton,
+    gateway: &Gateway,
+    gas_service: &mut GasService,
+    destination_chain: String,
+    destination_address: String,
+    payload: vector<u8>,
+    refund_address: address,
+    coin: Coin<SUI>,
+    params: vector<u8>,
+) {
+    // Create a new message ticket
+    let message_ticket = gateway::prepare_message(
+        &singleton.channel,
+        destination_chain,
+        destination_address,
+        payload,
+    );
+
+    // Pay for the gas
+    gas_service.pay_gas(
+        &message_ticket,
+        coin,
+        refund_address,
+        params,
+    );
+
+    // Dispatch the cross-chain message
+    gateway.send_message(message_ticket);
+}
+```
+
+
+## Deploy
+
+## Interact With Contract
+
+### Send Message
+
+## Receive Message
+
+
+
