@@ -151,9 +151,6 @@ curl -H 'Content-Type: application/json' -d '{"method":"server_info","params":[{
 ### Ampd Configuration
 Once your node is up and running, you need to add the `XRPL` chain to your [ampd daemon's](https://github.com/axelarnetwork/axelar-amplifier/tree/main/ampd) `config.toml`file. This can be done by adding in the following configuration:
 
-For testnet:
-
-
 <tabs>
   <tab-item title="Mainnet">
     ```toml
@@ -199,3 +196,6 @@ For your node to be recognized by the Axelar network, you need to register your 
 ampd register-chain-support amplifier xrpl
 ```
 
+## Troubleshooting
+
+If your node runs into an issues (such as an `AppHash` error) the node orchestration should perform a `rollback` on crash **before restarting the node** to auto-recover from such errors. The rollback can be performed by running `axelard rollback`. 

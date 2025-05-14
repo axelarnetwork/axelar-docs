@@ -96,7 +96,7 @@ docker run -p 50051:50051 --env MNEMONIC_CMD=auto --env NOPASSWORD=true --env AD
 Leave this process running in the background, and perform additional commands in a new terminal window or shell.
 
 <Callout>
-Note: If you are running a validator as well, you must run different `tofnd` instances for `vald` (for your validator) and `ampd` (for your verifier). You cannot use the same `tofnd` instance for both.
+Note: If you are running a validator as well, you should use a different node for your verifier on both testnet and mainnet and not the validator node. You also must run different `tofnd` instances for `vald` (for your validator) and `ampd` (for your verifier). You cannot use the same `tofnd` instance for both. The node `ampd` points to can use the everything `pruning config`.
 </Callout>
 
 ## Set up `ampd`
