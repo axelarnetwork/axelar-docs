@@ -13,7 +13,7 @@ Before you begin, make sure you have the following prerequisites installed:
 
 ## Setup 
 
-This demo will use Sui's Typescript SDK to build and deploy the `move` based on contract. It will use `npm` to install the required dependencies. To begin you can run the following command to spinup your Sui repository.
+This demo will use Sui's Typescript SDK to build and deploy the `move` based on contract. It will use `npm` to install the required dependencies. To begin you can run the following command to spin-up your Sui repository.
 
 ```bash
 sui move new sui-gmp
@@ -76,7 +76,7 @@ public struct Singleton has key {
 }
 ```
 
-Where the `id` is the unique identifier for the on-chain object and the `channel` is imported from the [Gateway depdendency](https://github.com/axelarnetwork/axelar-cgp-sui/tree/main/move/axelar_gateway).
+Where the `id` is the unique identifier for the on-chain object and the `channel` is imported from the [Gateway dependency](https://github.com/axelarnetwork/axelar-cgp-sui/tree/main/move/axelar_gateway).
 
 ### `Init`
 
@@ -100,10 +100,9 @@ fun init(ctx: &mut TxContext) {
 }
 ```
 
-### `Send_Call`
-^todo refactor to `Send_Message()`
+### `Send_Message`
 
-With your `channel` now setup for your package you can begin to write the functionality to actually send the cross-chain message. The `send_call()` function will take the following parameters:
+With your `channel` now setup for your package you can begin to write the functionality to actually send the cross-chain message. The `send_message()` function will take the following parameters:
 
 1. `singleton: &Singleton`: A reference to the `singleton` resource to identify the `channel`
 1. `gateway: &Gateway`: A reference to the [gateway's](/dev/general-message-passing/sui/gmp-example/#sui-gateway) published object id that contains key Axelar functionality
@@ -118,7 +117,7 @@ With your `channel` now setup for your package you can begin to write the functi
 The function signature can be written out as follows: 
 
 ```rust
-public fun send_call(
+public fun send_message(
     singleton: &Singleton,
     gateway: &Gateway,
     gas_service: &mut GasService,
@@ -133,7 +132,7 @@ public fun send_call(
 
 Note: the `gas_service` param is of specified as mutable because you will eventually update the `GasService` resource’s internal state (by consuming the provided coin).
 
-You can now begin to implement the functionality for `send_call()`.
+You can now begin to implement the functionality for `send_message()`.
 
 First you can create a new [Message Ticket](/dev/general-message-passing/sui/gmp-example/#message-ticket). This can be interacting with the `Gateway's` `prepare_message()` function. 
  
@@ -166,10 +165,10 @@ Lastly, you can trigger the Gateway's `send_message()` function to trigger the c
 gateway.send_message(message_ticket);
 ```
 
-The complete `send_call()` function should look like this:
+The complete `send_message()` function should look like this:
 
 ```rust
-public fun send_call(
+public fun send_message(
     singleton: &Singleton,
     gateway: &Gateway,
     gas_service: &mut GasService,
@@ -201,14 +200,70 @@ public fun send_call(
 }
 ```
 
+### Receive Message
+
+With the package now able to send cross-chain messages, it would be great to also receive messages from other blockchains. This can be done by creating an `execute()` function that will be triggered by our Axelar's relaying infrastructure for any incoming message. The full function signature for the `execute()` function will require two parameters:
+
+1. `call: ApprovedMessage`: The [approved message](/dev/general-message-passing/sui/gmp-contracts/#approvedmessage) that was sent from the source chain
+1. `singleton: &mut Singleton`: A mutable reference to the `singleton` resource so the package can consume messages from its `channel` 
+
+```rust
+public fun execute(
+    call: ApprovedMessage, 
+    singleton: &mut Singleton
+) {}
+```
+
+Within the `execute()` function you can then consume the message by triggering the [consume_approved_message()](/dev/general-message-passing/sui/gmp-contracts/#consume-approved-message) function that is [defined](https://github.com/axelarnetwork/axelar-cgp-sui/blob/main/move/axelar_gateway/sources/channel.move#L85) in the `Channel` module. Once the message is approved you can `emit` a custom event indicating that the execution has gone through successfully. 
+
+Your complete `execute()` function should look like this:
+
+```rust
+public fun execute(
+    call: ApprovedMessage, 
+    singleton: &mut Singleton
+) {
+    // Consume the message
+    let (_, _, _, payload) = singleton.channel.consume_approved_message(call);
+
+    // Emit Executed event
+    event::emit(Executed { data: payload });
+}
+```
+
+This will lead to an error however as you have not yet defined your event, you can do so up top as follows. Note unlike the `Singleton` struct that had a `key` allowing it to be its own on-chain object, the `Executed` struct has a `copy` + `drop` [abilities](https://docs.sui.io/references/sui-api/sui-graphql/reference/types/enums/move-ability) so the event data can be duplicated into the transaction’s event log and then discarded by off-chain indexers. The event itself simply takes a raw payload of bytes that it will be receiving in the cross-chain call.
+
+```rust
+public struct Executed has copy, drop {
+    data: vector<u8>,
+}
+```
+
+With the event now defined up top you should be able to compile the package successfully.
+
+### Register Transaction
+
+Unlike in EVM chains, Sui cross-chain transactions involve an additional step to be able to receive cross-chain messages, beyond just defining the `execute()` function. Packages must be [registered](/dev/general-message-passing/sui/gmp-contracts/#relayer-discovery) with the [Relayer Discovery](https://github.com/axelarnetwork/axelar-cgp-sui/tree/main/move/relayer_discovery). 
+
+You can define a specific function your contract to do just that. The `register_transaction()` function will take the following parameters:
+
+1. `discovery: &mut RelayerDiscovery`: A mutable reference to the `Relayer Discovery` object id. Mutable as the state of the Relayer Discovery will be updated to set the new transaction.
+1. `singleton: &Singleton`: A mutable reference to the `singleton` resource.
+
+```rust
+public fun register_transaction(
+    discovery: &mut RelayerDiscovery, 
+    singleton: &Singleton) {
+}
+```
+
+TODO finish this
+{/* In the function itself you will first need to build a `vector` of arguments that contains the ABI  */}
 
 ## Deploy
 
+TODO
+
 ## Interact With Contract
 
-### Send Message
-
-## Receive Message
-
-
-
+TODO
