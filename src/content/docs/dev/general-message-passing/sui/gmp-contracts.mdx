@@ -264,6 +264,16 @@ By registering the transaction with the discovery system under a specific channe
 
 See [here](https://github.com/axelarnetwork/axelar-cgp-sui/blob/main/move/example/sources/gmp/gmp.move#L27) for an example of how to register a transaction with the Discovery Package.
 
+### Argument Types
+
+There are five argument types that the relayer will know how to handle.
+
+1. `0` For objects followed by exactly 32 bytes that contain the object id.
+1. `1` For pure types followed by the [bcs encoded](https://intro.sui-book.com/advanced-topics/BCS_encoding/lessons/BCS_encoding.html) form of the pure value
+1. `2` For the `ApprovedMessage` object. 
+1. `3` For the `payload` of the contract call to be passed into the execution call. 
+1. `4` For an argument returned from a previous move call, followed by a `u8` specified which call to get the return of (0 for the first transaction AFTER the one that gets ApprovedMessage out), and then another u8 specifying which argument to input
+
 ## Message Ticket
 
 The `MessageTicket` struct is a “hot potato” object designed to encapsulate all the necessary information for a remote contract call. It is meant to be created by a module and then returned to the frontend, which will submit it to the Gateway. This design ensures that the application code (modules) does not require any changes when the gateway package is upgraded, promoting forward compatibility.

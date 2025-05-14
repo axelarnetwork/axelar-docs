@@ -257,9 +257,71 @@ public fun register_transaction(
 }
 ```
 
-### EVM vs. SUI
+The first thing you will need to do is create a nested vector for the arguments that will be used by the relayer when calling the `execute()` function.
 
-In the EVM ecosystem because you inherited from AxelarExecutable, the relayer already knows your contract’s function signature and where to call it. 
+```rust
+let arguments = vector[
+    //arg `2` corresponding to ApprovedMessage
+    vector[2u8],
+    //arg `0` corresponding to an object, which in this case is the singleton 
+    concat(vector[0u8], object::id_address(singleton).to_bytes()),
+];
+```
+
+The `vector[2u8]` corresponds to the `ApprovedMessage` argument that the relayer will need to pass in to the `execute()` function. It is one of [five argument types](/dev/general-message-passing/sui/gmp-contracts/relayer-discover/#argument-types) that the relayer will know how to handle. 
+
+Now that the relayer knows to submit the `ApprovedMessage` to the `execute()` function you can also pass the id of the singleton that will consume the message. To pass in the singleton you `concat` the `0x00` argument type, which tells the relayer that it should an expect an object type with object id of the singleton. 
+
+You now have a template for invoking the `gmp::execute()` function.
+
+Next, you will need to create a [transaction](https://github.com/axelarnetwork/axelar-cgp-sui/blob/main/move/relayer_discovery/sources/types/transaction.move) that uses the `arguments` vector you just created. 
+
+The `new_transaction()` function call expects several parameters.
+
+1. `is_final: bool`: For this you simply pass `true` telling the relayer to execute the transaction.
+1. `move_calls: vector<MoveCall>`: A vector of [MoveCalls](https://github.com/axelarnetwork/axelar-cgp-sui/blob/main/move/relayer_discovery/sources/types/transaction.move#L44)
+
+```rust
+    let transaction = transaction::new_transaction(
+        true,
+        vector[
+            transaction::new_move_call(
+                transaction::new_function(
+                    address::from_bytes(
+                        hex::decode(
+                            *ascii::as_bytes(
+                                &type_name::get_address(
+                                    &type_name::get<Singleton>(),
+                                ),
+                            ),
+                        ),
+                    ),
+                    ascii::string(b"gmp"),
+                    ascii::string(b"execute"),
+                ),
+                arguments,
+                vector[],
+            ),
+        ],
+    );
+```
+
+The `is_final` can simply be set to `true`. The `move_calls()` needs to receive the `function`, `arguments`, and `type_arguments` that will be triggered on that package for the object id that is being sent by the relayer. In your case the function is the `execute` function on the `gmp` module. The `arguments` are the `ApprovedMessage` object and the `singleton` you had put together previously, and the `type_arguments` can be left empty for now.
+
+
+The output of this will be your new `transaction` that you can pass into the Relayer Discover's [register_transaction()](https://github.com/axelarnetwork/axelar-cgp-sui/blob/main/move/relayer_discovery/sources/discovery.move#L93) function along with a reference to your package's `channel` as follows: 
+
+```rust
+discovery.register_transaction(&singleton.channel, transaction);
+```
+
+Once this is called your package will be registered with the Relayer Discovery so it can begin receiving cross-chain messages.
+
+#### Why is this needed?
+
+In the EVM ecosystem because you inherited from AxelarExecutable, the relayer already knows your contract’s function signature and where to call it. This is because on EVM chains contracts also hold their own storage. On Sui chains package logic is separate from objects that are holding the relevant state. As a result the destination that is sent from the source chain will be the `channel_id` as opposed to the `package_id`. In other words  The package ID just tells you which code to run; the channel ID tells you where to run it and which messages to pull in
+
+
 
 TODO finish this
 {/* In the function itself you will first need to build a `vector` of arguments that contains the ABI  */}
