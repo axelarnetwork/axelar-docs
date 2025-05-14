@@ -147,18 +147,13 @@ You can query the node with:
 curl -H 'Content-Type: application/json' -d '{"method":"server_info","params":[{}]}' http://localhost:5005
 ```
 
-## Recovering From Crashes
+## Axelar Node Configuration
 
-Due to ongoing changes in the Cosmos SDK your Axelar node may run into issues when running (such as an `AppHash` error). An example of such an error may appear as follows:
+Due to a bug in the Cosmos SDK that appears when the database is being read from under heavy load, when `ampd` is trying to broadcast transactions, your Axelar node may run into issues when running (such as an `AppHash` error). An example of such an error may appear as follows:
 
-```text
-ERR prevote step: ProposalBlock is invalid err="wrong Block.Header.AppHash.  Expected E2B04C0FA0076BC6805192AE9659042A665B54BFB473ADE522AF582A37C847BF, got E722AD45CBD7060AC9A8A95C936113CC05BBFDC90B0091A3FBE6D0E7F7D9C93A" height=18796195 module=consensus round=0
+`ERR CONSENSUS FAILURE!!! err="precommit step; +2/3 prevoted for an invalid block: wrong Block.Header.AppHash`
 
-
-ERR CONSENSUS FAILURE!!! err="precommit step; +2/3 prevoted for an invalid block: wrong Block.Header.AppHash.  Expected E2B04C0FA0076BC6805192AE9659042A665B54BFB473ADE522AF582A37C847BF, got E722AD45CBD7060AC9A8A95C936113CC05BBFDC90B0091A3FBE6D0E7F7D9C93A" module=consensus stack="goroutine 136 [running]:\nruntime/debug.Stack()\n\truntime/debug/stack.go:26 +0x5e\ngithub.com/tendermint/tendermint/consensus.(*State).receiveRoutine.func2()\n\tgithub.com/tendermint/tendermint@v0.34.27/consensus/state.go:733 +0x46\npanic({0x1e76140?, 0xc12abd6260?})\n\truntime/panic.go:785 +0x132\ngithub.com/tendermint/tendermint/consensus.(*State).enterPrecommit(0xc000399508, 0x11ecea3, 0x0)\n\tgithub.com/tendermint/tendermint@v0.34.27/consensus/state.go:1421 +0x1599\ngithub.com/tendermint/tendermint/consensus.(*State).addVote(0xc000399508, 0xc02bd4fa40, {0xc00d5fe120, 0x28})\n\tgithub.com/tendermint/tendermint@v0.34.27/consensus/state.go:2153 +0x126f\ngithub.com/tendermint/tendermint/consensus.(*State).tryAddVote(0xc000399508, 0xc02bd4fa40, {0xc00d5fe120?, 0x0?})\n\tgithub.com/tendermint/tendermint@v0.34.27/consensus/state.go:1979 +0x26\ngithub.com/tendermint/tendermint/consensus.(*State).handleMsg(0xc000399508, {{0x30a1c60, 0xc1188c2998}, {0xc00d5fe120, 0x28}})\n\tgithub.com/tendermint/tendermint@v0.34.27/consensus/state.go:862 +0x15b\ngithub.com/tendermint/tendermint/consensus.(*State).receiveRoutine(0xc000399508, 0x0)\n\tgithub.com/tendermint/tendermint@v0.34.27/consensus/state.go:769 +0x3f1\ncreated by github.com/tendermint/tendermint/consensus.(*State).OnStart in goroutine 102\n\tgithub.com/tendermint/tendermint@v0.34.27/consensus/state.go:380 +0x10c\n"
-```
-
-If this error appears and your Axelar node crashes as result, then the node orchestration should perform a `rollback` on crash **before restarting the Axelar node** to auto-recover from such errors. The rollback can be performed by running:
+Your node orchestration needs to be updated to perform a `rollback` when a node crashes. The rollback command must be executed **before restarting the Axelar node** to auto-recover from such errors. The rollback can be performed by running:
 
 ```bash
 axelard rollback
