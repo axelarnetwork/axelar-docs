@@ -1,3 +1,5 @@
+import { Callout } from "../../../../../components/callout";
+
 # Register and transfer existing tokens from Stellar to EVM chains using ITS
 
 This guide demonstrates, step-by-step, how to use [Axelar's Interchain Token Service (ITS)](/dev/send-tokens/interchain-tokens/intro/#interchain-token-service) to register an existing token on Stellar and make it available for cross-chain transfers to EVM chains.
@@ -29,6 +31,10 @@ Instead of deploying a brand-new token, ITS let's you register existing tokens y
 - When you transfer your Stellar token to another chain, the ITS _locks_ the token on Stellar
 - It _mints_ a corresponding wrapped token on the destination chain
 - When tokens move back to Stellar, the wrapped tokens are _burned_ and the original tokens are _unlocked_
+
+<Callout emoji="💡">
+  There can only be a single lock/unlock token manager for the token
+</Callout>
 
 ## Part 2: Set up your Stellar ITS project
 
@@ -479,7 +485,10 @@ stellar contract invoke \
 
 It’s a good practice to verify that ITS trusts the destination chain (Avalanche in this case) before sending tokens.
 
-Run:
+A trusted chain is one that the ITS recognizes and allows transfers to and from. To check if Avalanche is trusted, you can use the `is_trusted_chain` function in your contract.
+Replace `YOUR_CONTRACT_ADDRESS` and `YOUR_ACCOUNT_NAME` with your contract address and Stellar account name.
+
+Run the command below:
 
 ```bash
 stellar contract invoke \
