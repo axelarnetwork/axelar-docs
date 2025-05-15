@@ -147,12 +147,21 @@ You can query the node with:
 curl -H 'Content-Type: application/json' -d '{"method":"server_info","params":[{}]}' http://localhost:5005
 ```
 
+## Axelar Node Configuration
+
+Due to a bug in the Cosmos SDK that appears when the database is being read from under heavy load, when `ampd` is trying to broadcast transactions, your Axelar node may run into issues when running (such as an `AppHash` error). An example of such an error may appear as follows:
+
+`ERR CONSENSUS FAILURE!!! err="precommit step; +2/3 prevoted for an invalid block: wrong Block.Header.AppHash`
+
+Your node orchestration needs to be updated to perform a `rollback` when a node crashes. The rollback command must be executed **before restarting the Axelar node** to auto-recover from such errors. The rollback can be performed by running:
+
+```bash
+axelard rollback
+```
+
 
 ### Ampd Configuration
 Once your node is up and running, you need to add the `XRPL` chain to your [ampd daemon's](https://github.com/axelarnetwork/axelar-amplifier/tree/main/ampd) `config.toml`file. This can be done by adding in the following configuration:
-
-For testnet:
-
 
 <tabs>
   <tab-item title="Mainnet">
