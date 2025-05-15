@@ -38,8 +38,8 @@ const firstImage = extractFirstImage(doc.body);
 
 <MainLayout
   image={firstImage}
-  title={headings.find((h) => h.depth === 1)?.text}
-  description={generateMetaDescription(doc.body)}
+  title={doc?.data?.title ?? headings.find((h) => h.depth === 1)?.text}
+  description={doc?.data?.description ?? generateMetaDescription(doc.body)}
 >
   <div class="grid grid-cols-1 lg:grid-cols-12 bg-[#FFFFFF] dark:bg-background">
     <WorldMap className="lg:col-span-9 2xl:col-span-10 w-full flex-1 ">
