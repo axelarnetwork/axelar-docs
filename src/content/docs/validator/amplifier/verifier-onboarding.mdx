@@ -96,7 +96,11 @@ docker run -p 50051:50051 --env MNEMONIC_CMD=auto --env NOPASSWORD=true --env AD
 Leave this process running in the background, and perform additional commands in a new terminal window or shell.
 
 <Callout>
-Note: If you are running a validator as well, you must run different `tofnd` instances for `vald` (for your validator) and `ampd` (for your verifier). You cannot use the same `tofnd` instance for both.
+Note: If you are running a validator as well, you should use a different node for your verifier (the Axelar node that ampd connects to) on both testnet and mainnet than the one being run for your validator node to prevent loss of rewards in case the verifier fails. This node can use the `everything` pruning config to reduce resource use. 
+</Callout>
+
+<Callout>
+Note: You also must run different `tofnd` instances for `vald` (for your validator) and `ampd` (for your verifier). You cannot use the same `tofnd` instance for both.
 </Callout>
 
 ## Set up `ampd`

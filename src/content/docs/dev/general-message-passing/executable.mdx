@@ -2,7 +2,7 @@
 
 ## Overview
 
-The Axelar Executable is a component of the Axelar General Message Passing (GMP) flow, allowing the execution of custom logic in response to messages from different blockchains. By simply inheriting from the Axelar Executable your contract can process and respond to incoming cross-chain GMP data.
+The Axelar Executable is a component of the [Axelar General Message Passing (GMP)](/dev/general-message-passing/overview/) flow, allowing the execution of custom logic in response to messages from different blockchains. By simply inheriting from the Axelar Executable your contract can process and respond to incoming cross-chain GMP data.
 
 ## Integration For GMP Executable 
 
@@ -24,7 +24,7 @@ For a [plain GMP executable](/dev/general-message-passing/gmp-tokens-with-messag
 
 ## Integration For GMP With Token Executable
 
-If you are [sending a GMP message with a token](/dev/general-message-passing/gmp-tokens-with-messages/)  and need to handle the executable for a token + gmp msg then you will need to inherit from the [Axelar Executable With Token](https://github.com/axelarnetwork/axelar-gmp-sdk-solidity/blob/b5d0b7bdda0437fce983daffb776669437b809d0/contracts/executable/AxelarExecutableWithToken.sol) contract.
+If you are [sending a GMP message with a token](/dev/general-message-passing/gmp-tokens-with-messages/)  and need to handle the executable for a token + GMP message then you will need to inherit from the [Axelar Executable With Token](https://github.com/axelarnetwork/axelar-gmp-sdk-solidity/blob/b5d0b7bdda0437fce983daffb776669437b809d0/contracts/executable/AxelarExecutableWithToken.sol) contract.
 
 
 1. Import **`AxelarExecutableWithToken`** from the Axelar GMP SDK to enable cross-chain capabilities.
@@ -89,9 +89,9 @@ The AxelarExecutable contract allows developers to override the `_execute` and t
 
 To solve this problem, AxelarExecutable triggers the Axelar Gateway’s [validateContractCall()](https://github.com/axelarnetwork/axelar-cgp-solidity/blob/8b0ea6693178457b7c155b1efb3ecba6236857cc/contracts/AxelarGateway.sol#L233) function. This function will validate that the incoming message was approved by the Axelar validators and return true if it was. It will then mark the message as a valid to ensure that it is not called more than once. Only once the message is marked as valid will your `_execute()` function be triggered.
 
-By simply inheriting AxelarExecutable and overriding the `_execute()` function defined their you can be confident that the message you’re receiving is an authentic message from the Axelar network.
+By simply inheriting `AxelarExecutable` and overriding the `_execute()` function defined their you can be confident that the message you’re receiving is an authentic message from the Axelar network.
 
-## Upgradeable Contracts
+## Upgradable Contracts
 
 If your contract is upgradeable then you may be unable to inherit from AxelarExecutable as it implements a `constructor` . To get around this issue you can simply call the external `execute()` function (or `executeWithToken()`). By simply making the `execute()` function available the relayer will still trigger this function on your contract and it will run the same way the internal `_execute()` function would if you were overriding from AxelarExecutable. The catch is that the `validateContractCall()` function will not be automatically implemented the way it would be if you were inheriting from AxelarExecutable. To get around this problem simply make sure you implement the `validateContractCall()` functionality yourself in your `execute()` function to ensure the authenticity of the incoming message. Once implemented your `execute()` function should look like this
 
