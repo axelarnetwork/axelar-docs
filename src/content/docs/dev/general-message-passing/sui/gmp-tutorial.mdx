@@ -317,19 +317,319 @@ discovery.register_transaction(&singleton.channel, transaction);
 
 Once this is called your package will be registered with the Relayer Discovery so it can begin receiving cross-chain messages.
 
+Lastly you can define your `concat()` helper function to append the arguments used in the `register_transaction()` function.
+
+```rust
+fun concat<T: copy>(v1: vector<T>, v2: vector<T>): vector<T> {
+    let mut result = v1;
+    result.append(v2);
+    result
+}
+```
+
 #### Why is this needed?
 
 In the EVM ecosystem because you inherited from AxelarExecutable, the relayer already knows your contract’s function signature and where to call it. This is because on EVM chains contracts also hold their own storage. On Sui chains package logic is separate from objects that are holding the relevant state. As a result the destination that is sent from the source chain will be the `channel_id` as opposed to the `package_id`. In other words  The package ID just tells you which code to run; the channel ID tells you where to run it and which messages to pull in
 
-
-
-TODO finish this
-{/* In the function itself you will first need to build a `vector` of arguments that contains the ABI  */}
-
 ## Deploy
 
-TODO
+At this point your `move` GMP Package is now complete. What remains is to deploy the contract to the Sui testnet and send/receive the cross-chain messages. 
+
+To deploy the contract you can make use of [Sui's Typescript SDK](https://www.npmjs.com/package/@mysten/sui)
+
+### Setup
+
+To get setup in the root of your project you can run `npm init -y` to generate a `package.json` file. Next, you can install the following dependencies
+
+- [dotenv](https://www.npmjs.com/package/dotenv)
+- [mysten/sui](https://www.npmjs.com/package/@mysten/sui)
+- [commander](https://www.npmjs.com/package/commander)
+- [axelar-cgp-sui](https://www.npmjs.com/package/@axelar-network/axelar-cgp-sui)
+
+This can be done by running `npm i dotenv @mysten/sui commander @axelar-network/axelar-cgp-sui`.
+
+Open a new `scripts` directory and add a `deploy.js`.
+
+You can then begin writing your deploy script by setting up your new command
+
+```js
+import { Command } from 'commander';
+
+
+const program = new Command();
+program
+  .description('Build and publish a Sui Move package with GMP support')
+  .action(async (opts) => {
+    try {
+      await run(opts);
+    } catch (err) {
+      console.error('❌ Error:', err.message || err);
+      process.exit(1);
+    }
+  });
+
+program.parse(process.argv);
+```
+
+Then define an empty `run()` function up above that will be triggered you when run the script
+
+```js
+async function run() {}
+```
+
+### Build
+
+You can begin by importing the `execSync` helper up top that will be used to run cli commands from your script.
+
+```js
+import { execSync } from 'child_process';
+```
+
+Then in the `run()` function you can use `exectSync()` to run the relevant Sui cli command to build the contract.
+
+```js
+const buildOutput = execSync(
+    `sui move build --dump-bytecode-as-base64`,
+    { encoding: 'utf-8' }
+);
+```
+
+This will return a `buildOutput`, which is the compiled `Move` bytecode serialized as `Base64` strings, packed into a `JSON` object.
+
+You can then obtain the `modules` and `dependencies` from the compiled `buildOutput`.
+
+```js
+const { modules, dependencies } = JSON.parse(buildOutput);
+```
+
+At this point you should be able to run `node scripts/deploy.js` and build your function. The logs should appears as follows
+
+```bash
+INCLUDING DEPENDENCY GasService
+INCLUDING DEPENDENCY RelayerDiscovery
+INCLUDING DEPENDENCY AxelarGateway
+INCLUDING DEPENDENCY Utils
+INCLUDING DEPENDENCY VersionControl
+INCLUDING DEPENDENCY Sui
+INCLUDING DEPENDENCY MoveStdlib
+BUILDING gmp_example
+```
+
+### Access Wallet
+
+Before publishing to the blockchain you need to setup your wallet that will send the transaction.
+
+You can create a new `utils/index.js` file where you can define a new function called `getWallet()`
+
+This function will require several imports up top
+
+```js
+import { ethers } from 'ethers';
+import { Ed25519Keypair } from '@mysten/sui/keypairs/ed25519';
+import { SuiClient } from '@mysten/sui/client';
+import 'dotenv/config';
+```
+
+In the `getWallet()` function will create a new [Ed25519Keypair](https://sdk.mystenlabs.com/typedoc/classes/_mysten_sui.keypairs_ed25519.Ed25519Keypair.html) and `client` object that can be returned to be used later. The keypair will be created based on your private key that should be saved in your `.env` file.
+
+```js
+export function getWallet() {
+  const client = new SuiClient({ url: 'https://fullnode.testnet.sui.io:443' });
+
+  const rawKey = process.env.PRIVATE_KEY;
+  if (!rawKey) {
+    console.error('PRIVATE_KEY not set in your .env');
+    process.exit(1);
+  }
+
+  const keypair = Ed25519Keypair.fromSecretKey(rawKey);
+  return [keypair, client];
+}
+```
+
+Now back in your main `deploy.js` script in your `run()` function you can call `getWallet()` as follows
+
+```js
+  const [keypair, client] = getWallet()
+```
+
+
+### Publish
+To publish the package on chain you will need to sign a transaction from your Sui Wallet that deploys the package. 
+
+First import the `Transaction` from the Sui SDK 
+```js
+import { Transaction } from '@mysten/sui/transactions';
+```
+
+Then back in your `run()` function you can execute the transaction publishing your package.
+
+```js
+//create new tx
+const tx = new Transaction();
+//publish the package
+const [upgradeCap] = tx.publish({ modules, dependencies });
+```
+
+The `modules` and `dependencies` being passed are the same ones that were destructured from the build output above.
+
+The `upgradeCap` that is returned is an on-chain resource that the Sui mints for you whenever you publish a package, the address that holds the `cap` is able to upgrade the package at a future point. Further reading on this can be found [here](https://sdk.mystenlabs.com/typescript/transaction-building/basics#transactions). To ensure you are the one with the ability to upgrade the package that you deploy you can pass the `cap` to your own address. 
+
+This can be done as follows:
+
+```js
+//get your sui address
+const myAddress = keypair.getPublicKey().toSuiAddress();
+
+//transfer upgrade capability to your address
+tx.transferObjects([upgradeCap], myAddress);
+```
+
+Now you can go ahead and publish the transaction by calling the `signAndExecuteTransaction()` function from the Sui client. It expects three parameters:
+
+1. `signer`: The signer of the transaction
+1. `transaction`: The transaction to be executed
+1. `options`: Optional extra configurations to go along with the  transaction
+
+You can make the call as follows:
+
+```js
+const response = await client.signAndExecuteTransaction({
+    signer: keypair,
+    transaction: tx,
+    options: { showObjectChanges: true },
+});
+console.log('✅ Publish succeeded!');
+```
+
+At this point you will have successfully published your package! 
+
+The final thing you will need is to get the `packageId` and the `singletonObjectId` for your package.
+
+At the bottom of your `run()` function you can obtain these two values as follows:
+
+```js
+const publishedChange = response.objectChanges.find(c => c.type === 'published');
+console.log('📦 Published package ID:', publishedChange?.packageId);
+
+
+const [gmpSingletonObjectId] = getObjectIdsByObjectTypes(response, [
+`${publishedChange.packageId}::gmp::Singleton`,
+]);
+console.log('🔑 GMP Singleton Object ID:', gmpSingletonObjectId);
+```
+
+The `packageId` can be found by going through the `objectChanges` in the `response` for the signed transaction. The `gmpSinlgetonObjectId` however requires a helper function called `getObjectIdsByObjectTypes()`.
+
+This helper function that is yet to be defined will find a specified object in a given transaction and return the object's `objectId`. In your case you need to fine the `objectId` for the `singleton`. The function can be written out as follows:
+
+```js
+export const getObjectIdsByObjectTypes = (txn, objectTypes) =>
+  objectTypes.map((objectType) => {
+    const objectId = txn.objectChanges.find((change) =>
+      change.objectType?.includes(objectType)
+    )?.objectId;
+
+    if (!objectId) {
+      throw new Error(`No object found for type: ${objectType}`);
+    }
+    return objectId;
+})
+```
+
+
+Great! At this point when you run `node scripts/deploy.js` you should see the following logs.
+
+```bash
+node scripts/deploy.js
+📦 Building Move package
+INCLUDING DEPENDENCY GasService
+INCLUDING DEPENDENCY RelayerDiscovery
+INCLUDING DEPENDENCY AxelarGateway
+INCLUDING DEPENDENCY Utils
+INCLUDING DEPENDENCY VersionControl
+INCLUDING DEPENDENCY Sui
+INCLUDING DEPENDENCY MoveStdlib
+BUILDING gmp_example
+🚀 Sending publish transaction…
+✅ Publish succeeded!
+📦 Published package ID: 0x9068ae5fb08615d7fd9f869d6d1cf47ec21fa687ca7ab3d7d68b45a7b2cfd041
+🔑 GMP Singleton Object ID: 0x9cbb3582c80ed49ca5d0cacce23b2cdb145bd10421f2c969d36799e3cbd78c52
+```
+
 
 ## Interact With Contract
 
-TODO
+The final (and most exciting) thing that needs to be done is to actually interact with the package now that it's live on-chain. In your `scripts` directory, next to your `deploy.js` script you can create a new script called `gmp.js`.
+
+### Setup
+
+This script will also user the `commander` tool to execute
+
+#### Command Setup
+
+
+
+Similarly to the `deploy` script, you can begin by setting up a new `Command`. This command however will require significantly more parameters than the deployment did, so as to specify the params for the `send_message()` function in your `move` package.
+
+This will prompt you to pass in 
+1. The `destination chain`
+1. The `destination address` on the destination chain
+1. The `id` of the singleton object (that should be logged in your deployment script)
+1. The `fee` you are paying to the [axelar gas service](/dev/general-message-passing/sui/gmp-contracts/#sui-gas-service) when sending the cross-chain transaction.
+1. The `payload` for the gmp message being sent
+1. The `refundAddress` to receive any surplus funds sent to the gas service 
+1. The `packageId` of your live package on the Sui blockchain
+
+```js
+const program = new Command()
+program
+  .command('sendCall')
+  .description('Send a GMP call')
+  .requiredOption('--destChain <chain>', 'Destination chain')
+  .requiredOption('--destAddress <addr>', 'Destination address')
+  .requiredOption('--singletonId <singleton>', 'Singleton object ID')
+  .requiredOption('--fee <amount>', 'Fee in atomic units')
+  .requiredOption('--payload <hex>', 'Payload bytes (hex)')
+  .requiredOption('--refundAddress <addr>', 'Refund address')
+  .requiredOption('--packageId <packageId>', 'Package ID')
+  .action(async (opts) => {
+    const args = { ...program.opts(), ...opts }
+    const [keypair, client] = getWallet()
+    try {
+      await run(
+        keypair,
+        client,
+        [
+          args.destChain,
+          args.destAddress,
+          args.singletonId,
+          args.fee,
+          args.payload,
+          args.refundAddress,
+        ],
+        args.packageId
+      )
+    } catch (error) {
+      console.error('❌ Error:', error.message);
+      process.exit(1);
+    }
+  })
+
+program.parseAsync(process.argv)
+```
+
+In the `action()` for the command you trigger the `getWallet()` and `run()` functions. The `getWallet()` was previously defined in the `utils/index.js` helper file, it can be imported up top.
+
+The `run()` function can be defined up top we will return to this shortly.
+
+```js
+async function run(keypair, client, args, packageId) {}
+```
+
+### Send Message
+
+In the `run()` function that you just defined you can begin to implement the functionality to interact with your contract.
+
+
+### Receive Message
