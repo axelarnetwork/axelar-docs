@@ -3,6 +3,7 @@ import TableOfContents from "@/components/docs/table-of-contents";
 import NextPrevNav from "@/components/ui/NextPrevNav.astro";
 import WorldMap from "@/components/ui/world-map.astro";
 import MainLayout from "@/layouts/MainLayout.astro";
+import { generateMetaDescription } from "@/lib/generateMetaDescription";
 import generateToc from "@/lib/generateToc";
 import { findPrevAndNextPages } from "@/lib/nextPrevPages";
 import { proseClasses } from "@/lib/prose-classes";
@@ -38,34 +39,7 @@ const firstImage = extractFirstImage(doc.body);
 <MainLayout
   image={firstImage}
   title={headings.find((h) => h.depth === 1)?.text}
-  description={(() => {
-    // Get the first h2 heading
-    const h2Heading = headings.find((h) => h.depth === 2)?.text;
-    // Get the first paragraph from the raw content and clean it
-    const firstParagraph = doc.body
-      ?.split("\n\n")[0]
-      ?.replace(/^#.*\n/, "") // Remove title
-      ?.replace(/```[\s\S]*?```/g, "") // Remove code blocks
-      ?.replace(/\[([^\]]+)\]\([^)]+\)/g, "$1") // Convert markdown links to plain text
-      ?.replace(/#/g, "") // Remove all # characters
-      ?.replace(/\*\*/g, "") // Remove bold
-      ?.replace(/\*/g, "") // Remove italic
-      ?.replace(/`/g, "") // Remove inline code
-      ?.replace(/\n/g, " ") // Replace newlines with spaces
-      ?.replace(/\s+/g, " ") // Replace multiple spaces with single space
-      ?.trim();
-
-    // Limit description length to 160 characters
-    const maxLength = 160;
-    const combined =
-      firstParagraph && h2Heading
-        ? `${firstParagraph} ${h2Heading}`
-        : h2Heading || firstParagraph || "";
-
-    return combined.length > maxLength
-      ? combined.substring(0, maxLength - 3) + "..."
-      : combined;
-  })()}
+  description={generateMetaDescription(doc.body)}
 >
   <div class="grid grid-cols-1 lg:grid-cols-12 bg-[#FFFFFF] dark:bg-background">
     <WorldMap className="lg:col-span-9 2xl:col-span-10 w-full flex-1 ">
