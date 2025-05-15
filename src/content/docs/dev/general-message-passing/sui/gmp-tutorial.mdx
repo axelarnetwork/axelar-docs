@@ -631,5 +631,127 @@ async function run(keypair, client, args, packageId) {}
 
 In the `run()` function that you just defined you can begin to implement the functionality to interact with your contract.
 
+First, you can destructure the arguments that were passed in the command
+
+```js
+  const [
+    destinationChain,
+    destinationAddress,
+    singletonId,
+    feeAmount,
+    payload,
+    refundAddress,
+  ] = args
+```
+
+Next, you can create a new `Transaction` object, make sure you import the transaction up top, the way you did in the `deployment` script.
+
+```js
+import { Transaction } from '@mysten/sui/transactions'
+
+//back in your run() function add
+const tx = new Transaction()
+```
+
+Now, you can begin to write up the `moveCall()` to trigger the `send_call()` function. The `moveCall()` will take two parameters
+
+1. `target`: Which entry-function in your module of that package should be invoked
+1. `arguments`: The arguments to be passed into the function being called.
+
+Before writing the `moveCall()` it is worth to review the relevant params. Recall the `send_call()` function expects the following params
+
+```rust
+public fun send_call(
+    singleton: &Singleton,
+    gateway: &Gateway,
+    gas_service: &mut GasService,
+    destination_chain: String,
+    destination_address: String,
+    payload: vector<u8>,
+    refund_address: address,
+    coin: Coin<SUI>,
+    params: vector<u8>,
+) {}
+```
+
+In our destructured array you hav already obtained most of these including; `singletonId`, `destination_chain`, `destination_address`, `payload`, and the `refund_address`.
+
+What you still need to pass in is the `gateway`, `gas_service`, `coin`, and the `params`.
+
+To obtain the four missing parameters you can add the following. First for the missing object ids of the Axelar Gateway](/dev/general-message-passing/sui/gmp-example/#sui-gateway) and [Gas Service](/dev/general-message-passing/sui/gmp-example/#sui-gas-service) (for the purpose of this demo) you can simply hardcode  values of the relevant object ids.
+
+```js
+const gasServiceId = '0xac1a4ad12d781c2f31edc2aa398154d53dbda0d50cb39a4319093e3b357bc27d'
+const gatewayId = '0x6fc18d39a9d7bf46c438bdb66ac9e90e902abffca15b846b32570538982fb3db'
+```
+
+For the `coin` you must generate the appropriate [coin type](https://docs.sui.io/references/framework/sui/coin#sui_coin_Coin) that the package is expecting. This can be done by running the `splitCoins()` function, from the Sui SDK. 
+
+```js
+const unitAmount = getUnitAmount(feeAmount)
+const [coin] = tx.splitCoins(tx.gas, [unitAmount])
+```
+
+`getUnitAmount()` can be added as a helper function in your `./utils/index.js` file.
+
+```js
+import { ethers } from 'ethers';
+
+export function getUnitAmount(amount, decimals = 9) {
+  return ethers.utils.parseUnits(amount, decimals).toBigInt();
+}
+```
+
+Under the hood the `splitCoins()` function is expecting the `tx.gas`, which translates into your wallet's default gas coin and `unitAmount`, whih is the parsed amount of gas you are sending to pay for the call. The `splitCoins()` function will create a new object of exactly the `unitAmount` you passed in. Further reading can be found [here](https://sdk.mystenlabs.com/typescript/transaction-building/basics)
+
+Lastly to get the `payload` you can first `encode()` the `payload` into a `uint8array` of raw `bytes`. Then you can wrap that raw `bytes` array into Sui’s [BCS](https://sdk.mystenlabs.com/bcs) format for a `vector<u8>`
+
+```js
+const encodedPayload = new TextEncoder().encode(payload)
+const serializedPayload = bcs.vector(bcs.u8()).serialize(encodedPayload)
+```
+
+Finally, with all the required data you can pass it into the `moveCall()` function call from your `tx` object as follows:
+
+```js
+tx.moveCall({
+    target: `${packageId}::gmp::send_call`,
+    arguments: [
+        tx.object(singletonId),
+        tx.object(gatewayId),
+        tx.object(gasServiceId),
+        tx.pure(bcs.string().serialize(destinationChain).toBytes()),
+        tx.pure(bcs.string().serialize(destinationAddress).toBytes()),
+        tx.pure(serializedPayload), //
+        tx.pure.address(refundAddress),
+        coin, //
+        tx.pure(
+        bcs
+            .vector(bcs.u8())
+            .serialize(new Uint8Array(arrayify(0x0)))
+            .toBytes()
+        ),
+    ],
+})
+```
+
+Everything that is passed in here now has been either explicitly defined in the steps before or passed in as an argument when calling the script. The only item that is not is the very last item in the argument that goes into the `params` field in the `send_call()` function. This can simply be an empty `bcs` encoded `0x0` value.
+
+With the `tx` call now constructed you can trigger the `signAndExecuteTransaction()` on the Sui client to broadcast the transaction to the network.
+
+```js
+const receipt = await client.signAndExecuteTransaction({
+    signer: keypair,
+    transaction: tx,
+    options: {
+        showEffects: true,
+        showObjectChanges: true,
+        showEvents: true,
+    },
+})
+
+console.log('✅ Tx', receipt.digest)
+```
 
 ### Receive Message
+
