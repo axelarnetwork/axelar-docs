@@ -25,6 +25,17 @@ export default defineConfig({
       priority: 0.9,
       changefreq: "daily",
       lastmod: new Date(),
+      filter: (page) => {
+        const excludeUrls = [
+          "/controller/deploy-token/",
+          "/controller/add-evm-chain/",
+          "/dev/indexers/subquery/",
+          "/dev/indexers/overview/",
+          "/node/join-old/",
+        ];
+
+        return !excludeUrls.some((url) => page.endsWith(url));
+      },
     }),
     tailwind(),
     partytown({
