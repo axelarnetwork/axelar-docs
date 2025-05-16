@@ -112,8 +112,12 @@ export const getNavigation = (section) => {
                   href: "/dev/general-message-passing/sui/intro/",
                 },
                 {
-                  title: "GMP Example",
-                  href: "/dev/general-message-passing/sui/gmp-example/",
+                  title: "GMP Contracts",
+                  href: "/dev/general-message-passing/sui/gmp-contracts/",
+                },
+                {
+                  title: "GMP Tutorial",
+                  href: "/dev/general-message-passing/sui/gmp-tutorial/",
                 },
               ],
             },
