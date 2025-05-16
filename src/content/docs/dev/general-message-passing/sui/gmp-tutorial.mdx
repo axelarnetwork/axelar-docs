@@ -61,7 +61,43 @@ TODO
 
 ### Imports
 
-TODO`
+Before writing up the logic of your package you must import the necessary modules that you will need throughout the package. 
+
+From the [Axelar Gateway's](/dev/general-message-passing/sui/gmp-example/#sui-gateway) [channel mod](https://github.com/axelarnetwork/axelar-cgp-sui/blob/main/move/axelar_gateway/sources/channel.move) you will need the `Channel` and `ApprovedMessage` objects. The gateway's [gateway module](https://github.com/axelarnetwork/axelar-cgp-sui/blob/main/move/axelar_gateway/sources/gateway.move) will use the Gateway object.
+
+```rust
+use axelar_gateway::channel::{Self, Channel, ApprovedMessage};
+use axelar_gateway::gateway::{Self, Gateway};
+```
+From the [Axelar Gas Service](/dev/general-message-passing/sui/gmp-example/#sui-gas-service) you will use the Gas Service object.
+
+```rust
+use gas_service::gas_service::GasService;
+```
+
+From the [Relayer Discovery](https://github.com/axelarnetwork/axelar-cgp-sui/tree/main/move/relayer_discovery) you will use the Relayer Discovery object and Discovery mechanic
+
+```rust
+use relayer_discovery::discovery::RelayerDiscovery;
+use relayer_discovery::transaction;
+```
+
+From standard `move` library helpers you can use the following
+
+```rust
+use std::ascii::{Self, String};
+use std::type_name;
+```
+
+Lastly, from the Sui SDK you can use
+
+```rust
+use sui::address;
+use sui::event;
+use sui::hex;
+use sui::coin::Coin;
+use sui::sui::SUI;
+```
 
 ### `Singleton`
 
@@ -105,8 +141,8 @@ fun init(ctx: &mut TxContext) {
 With your `channel` now setup for your package you can begin to write the functionality to actually send the cross-chain message. The `send_message()` function will take the following parameters:
 
 1. `singleton: &Singleton`: A reference to the `singleton` resource to identify the `channel`
-1. `gateway: &Gateway`: A reference to the [gateway's](/dev/general-message-passing/sui/gmp-example/#sui-gateway) published object id that contains key Axelar functionality
-1. `gas_service: &mut GasService`: A mutable reference to the [gas service's](/dev/general-message-passing/sui/gmp-example/#sui-gas-service) object id 
+1. `gateway: &Gateway`: A reference to the gateway's published object id that contains key Axelar functionality
+1. `gas_service: &mut GasService`: A mutable reference to the gas service's object id 
 1. `destination_chain: String`: The name of the destination chain to send the message to
 1. `destination_address: String`: The recipient address on the destination chain
 1. `payload: vector<u8>`: The payload to send to the destination chain
