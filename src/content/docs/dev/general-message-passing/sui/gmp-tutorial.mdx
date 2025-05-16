@@ -755,3 +755,104 @@ console.log('✅ Tx', receipt.digest)
 
 ### Receive Message
 
+At this point your `gmp.js` script is now complete, there is no extra functionality that needs to be run to `execute()` each incoming message as it is submitted into Sui by the Axelar relayer. The only thing you will need to do is make sure to trigger the `register_transaction()` function that you have previously written ou on your package. We will return to this once the package is deployed.
+
+
+## Testing
+
+### Deploy
+
+Let's now deploy your package to the Sui testnet using your `deploy.js` script. 
+
+Run `node scripts/deploy.js` 
+
+This returns
+
+```bash
+❯ node scripts/deploy.js
+📦 Building Move package
+INCLUDING DEPENDENCY GasService
+INCLUDING DEPENDENCY RelayerDiscovery
+INCLUDING DEPENDENCY AxelarGateway
+INCLUDING DEPENDENCY Utils
+INCLUDING DEPENDENCY VersionControl
+INCLUDING DEPENDENCY Sui
+INCLUDING DEPENDENCY MoveStdlib
+BUILDING gmp_example
+🚀 Sending publish transaction…
+✅ Publish succeeded!
+📦 Published package ID: 0xb05b08f9edcde940dddb5da350b3cd1f4015785db0777079d0954e4bb9e04c3a
+🔑 GMP Singleton Object ID: 0x4ecf424aafacc8bf1589ab557dd96aec51e4ed3d7a6bc5fb4f3acbdca54cd388
+```
+
+### Interact
+
+Now that you have a live package you can begin to interact with it. For this test you can send a message from your new Sui package to an EVM contract on a given EVM chain. We will use this address `0x93294Ed80495194d069FB10636D16638139b0EbA` on the [Avalanche blockchain](https://testnet.snowtrace.io/address/0x93294Ed80495194d069FB10636D16638139b0EbA). The deployed contract corresponds to this [Solidity GMP contract](https://github.com/axelarnetwork/axelar-examples/tree/main/examples/evm/call-contract), it will simply receive an event on Avalanche, emit and `Executed` event and store the message in a storage variable. 
+
+#### Sui --> Avalanche
+
+To send the message using your `gmp.js` you can call the script as follows. 
+
+```bash
+node scripts/gmp.js sendCall \
+  --destChain avalanche \
+  --destAddress 0x93294Ed80495194d069FB10636D16638139b0EbA \
+  --singletonId 0x4ecf424aafacc8bf1589ab557dd96aec51e4ed3d7a6bc5fb4f3acbdca54cd388 \
+  --fee 0.01 \
+  --payload "hello from sui" \
+  --refundAddress <YOUR_WALLET_ADDRESS> \
+  --packageId 0xb05b08f9edcde940dddb5da350b3cd1f4015785db0777079d0954e4bb9e04c3a
+```
+
+This will log out the transaction hash
+
+```bash
+✅ Tx 5xNRuT4wbFSCfgtN2ZVUHPntE5SRA5JATPWSqVKYdY2R
+```
+
+You can then search for your transaction on the [Axelarscan Explorer](https://testnet.axelarscan.io/gmp/5xNRuT4wbFSCfgtN2ZVUHPntE5SRA5JATPWSqVKYdY2R-1)
+
+Now, on the live contract on avalanche you should see the `Executed` event [being emitted](https://testnet.snowtrace.io/tx/0xf8a467a732dc58ff6f904b6cb5e2e601dac3ff5de8024c5f4ec559a8fcd10f85?chainid=43113) and when you query the `message` storage variable it should return `hello from sui`.
+
+#### Avalanche --> Sui
+
+With the Sui -> Avalanche transaction now working let's confirm that you can also receive message on you Sui contract from Avalanche. On the Avalanche side you can either interact with the contract through the explorer/cli/ or remix. We will use [Remix](https://remix.ethereum.org/?#gist=3ce3a199d93fb7b7f36e52082cca8bd5&lang=en&optimize=false&runs=200&evmVersion=null&version=soljson-v0.8.30+commit.73712a01.js) for simplicity.
+
+In your Solidity contract to send the message from Avalanche to Sui you can trigger the `setRemoteValue()` function in your contract and pass in 
+
+1. `destinationChain`: `"sui"`
+1. `destinationAddress`: `<TBD>`
+1. `message`: `"hello from avalanche"`
+
+The reason the `destinationAddress is "tbd" is because you need to first register your gmp package back on Sui with the `RelayerDiscovery`. You can writeup a script to do this but to showcase different ways of interacting with Sui, you can also do this via the [Sui Cli](https://docs.sui.io/references/cli).
+
+#### Register With Relayer Discover
+
+To register with the Relayer Discovery you can run the following command:
+
+```bash
+sui client call \
+  --package 0xb05b08f9edcde940dddb5da350b3cd1f4015785db0777079d0954e4bb9e04c3a \
+  --module gmp \
+  --function register_transaction \
+  --args \
+    0xac080ff19b7d44c9362b83628253a4b55747779096034a72ca62ce89a188305e \
+    0x4ecf424aafacc8bf1589ab557dd96aec51e4ed3d7a6bc5fb4f3acbdca54cd388 \
+  --gas-budget 5000000
+```
+
+This will return a very large log message, the most important note for us however is in the `Transaction Block Events` logs where you can see the emitted `channel_id` for the `TransactionRegistered` event. You can grab that `channel_id` hex value and pass that in as the destiation chain address back on your Avalanche GMP call. An example of a `channel_id` is `0x317cb9668ef6a395eea3b3bf7734444564f5600c9f489d8f35aa197aa32ed324`.
+
+
+Now, back on Avalanche you can complete the call by passing in `0x317cb9668ef6a395eea3b3bf7734444564f5600c9f489d8f35aa197aa32ed324` as the `destinationAddress`
+
+Once you trigger the `setRemoteValue()` (do not forget to pass in a `msg.value` to the call or the transaction will not execute) you should see the transaction going through on [Axelarscan](https://testnet.axelarscan.io/gmp/0xb453a3846ca877550ed90120816edbe0acf91109eca5f0458381acbe85742f42)!
+
+Great! At this point your `execute()` function on your `move` contract should be executing and you should see the `Executed` event being emitted on [Sui](https://suiscan.xyz/testnet/tx/FCMNF9dErhithDaeB5GP9kigtihCnfJbEoctrZqyLP7h). 
+
+
+## Conclusion
+
+You have now successfully built a `move` contract from scratch, deployed it on Sui testnet and sent a GMP message to and from an EVM chain with Sui, congratulations! We are looking forward to seeing what amazing Sui cross-chain GMP applications you will build. The next recommended reading is the Sui Interchain Token Service content to show you how to register fungible assets on Sui and send them to/from other chains connected to Axelar.
+
+Completed source code for this demo can be found here.
