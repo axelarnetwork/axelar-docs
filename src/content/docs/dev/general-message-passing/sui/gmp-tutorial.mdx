@@ -57,7 +57,21 @@ Note: The name `gmp_example` must match the name provided in the `move.toml` fil
 
 ### Dependencies 
 
-TODO
+The dependencies can be setup as follows in your `move.toml` file. The `git` field expects the `cgp-sui` repo where the packages are written. The `rev` represents the specific commit hash where the `published-at` fields are specified for the live packages on Sui. The `subdir` represents where in the `cgp-sui` repo the packages are located.
+
+```toml
+[dependencies]
+AxelarGateway = { git = "https://github.com/axelarnetwork/axelar-cgp-sui.git", rev = "b35227a82f7ca6f941a7e729e1a3b3d48a64b982", subdir = "move/axelar_gateway" }
+GasService = { git = "https://github.com/axelarnetwork/axelar-cgp-sui.git", rev = "b35227a82f7ca6f941a7e729e1a3b3d48a64b982", subdir = "move/gas_service" }
+RelayerDiscovery = { git = "https://github.com/axelarnetwork/axelar-cgp-sui.git", rev = "b35227a82f7ca6f941a7e729e1a3b3d48a64b982", subdir = "move/relayer_discovery" }
+Utils = { git = "https://github.com/axelarnetwork/axelar-cgp-sui.git", rev = "b35227a82f7ca6f941a7e729e1a3b3d48a64b982", subdir = "move/utils" }
+VersionControl = { git = "https://github.com/axelarnetwork/axelar-cgp-sui.git", rev = "b35227a82f7ca6f941a7e729e1a3b3d48a64b982", subdir = "move/version_control" }
+
+
+<Callout emoji="💡">
+  Note: This is a temporary workaround for adding dependencies, this will be updated for a more permanent solution.
+</Callout>
+```
 
 ### Imports
 
