@@ -170,12 +170,12 @@ Once your node is up and running, you need to add the `XRPL` chain to your [ampd
     type="XRPLMsgVerifier"
     chain_name="xrpl"
     chain_rpc_url="your_own_rpc"
-    cosmwasm_contract="axelar1078vczeygpnpugv8lz38uzavashfutxaukxuwqw0a7n3sjfnwfcskru2pn"
-
+    cosmwasm_contract="axelar1lppu77d7h4u7jylw9afctsc2908ea0eh3q6ap82fep5s2qjk9axqvd3sjx"
+    
     [[handlers]]
+    chain_name="xrpl"
+    cosmwasm_contract="axelar14a4ar5jh7ue4wg28jwsspf23r8k68j7g5d6d3fsttrhp42ajn4xq6zayy5"
     type="XRPLMultisigSigner"
-    multisig_contract="axelar14a4ar5jh7ue4wg28jwsspf23r8k68j7g5d6d3fsttrhp42ajn4xq6zayy5"
-    multisig_prover_contract="axelar1w5h7lmxce3zczuljknh836rrqpekn5vvadf253vnn8cx90rg2s5q6wk8yt"
     ```
   </tab-item>
   <tab-item title="Testnet">
@@ -188,8 +188,8 @@ Once your node is up and running, you need to add the `XRPL` chain to your [ampd
 
     [[handlers]]
     type="XRPLMultisigSigner"
-    multisig_contract="axelar14a4ar5jh7ue4wg28jwsspf23r8k68j7g5d6d3fsttrhp42ajn4xq6zayy5"
-    multisig_prover_contract="axelar1k82qfzu3l6rvc7twlp9lpwsnav507czl6xyrk0xv287t4439ymvsl6n470"
+    chain_name="xrpl"
+    cosmwasm_contract="axelar14a4ar5jh7ue4wg28jwsspf23r8k68j7g5d6d3fsttrhp42ajn4xq6zayy5"
     ```
   </tab-item>
 </tabs>
