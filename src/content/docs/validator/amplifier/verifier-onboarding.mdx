@@ -103,18 +103,6 @@ Note: If you are running a validator as well, you should use a different node fo
 Note: You also must run different `tofnd` instances for `vald` (for your validator) and `ampd` (for your verifier). You cannot use the same `tofnd` instance for both.
 </Callout>
 
-`tofnd` configuration requires the following configuration. These control timeout configuration for communication with tendermint gRPC and tofnd.
-
-```toml
-[tm_grpc_timeout]
-nanos="0"
-secs="5"
-
-[tofnd_config.timeout]
-nanos="0"
-secs="3"
-```
-
 ## Set up `ampd`
 
 <tabs>
@@ -260,6 +248,14 @@ The following are an example `config.toml` files:
    key_uid="axelar"
    party_uid="ampd"
    url="http://127.0.0.1:50051"
+
+   [tm_grpc_timeout]
+   nanos="0"
+   secs="5"
+
+   [tofnd_config.timeout]
+   nanos="0"
+   secs="3"
 
 
    [[handlers]]
