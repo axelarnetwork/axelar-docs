@@ -6,7 +6,7 @@ There are two reasons that executions fail:
 
 ### 1. Insufficient gas to execute the transaction
 
-If the prepaid gas is insufficient, you might see `NOT ENOUGH GAS` or other messages indicating the submitted gas is too low to execute, such as `Insufficient gas for executing the transaction`, `intrinsic gas too low`, etc.
+If the prepaid gas is insufficient, for example, this [transaction](https://axelarscan.io/gmp/0x1776026b406ab2aaaedeae83f4a19fc8809000cc8a3b2abd8716587a29460839-1), you might see `NOT ENOUGH GAS` or other messages indicating the submitted gas is too low to execute, such as `Insufficient gas for executing the transaction`, `intrinsic gas too low`, etc.
 
 There are two options to recover the transfer.
 
@@ -21,7 +21,7 @@ If the error is caused by the destination contract logic, you would see followin
 Transaction execution was reverted. Please check the implementation of the destination contract's _execute function.
 ```
 
-**What to do next:** We suggest debugging your contract and then making a new call. You can try to follow the [Debugging your smart contract](/dev/general-message-passing/debug/debugging-your-smart-contract/) guide.
+**What to do next:** We suggest debugging your contract and then making a new call. You can try to follow the [Debugging your smart contract](/dev/general-message-passing/debug/debugging-your-smart-contract/) guide as this is not error an error associated with the Axelar network itself.
 
 <Callout emoji="ℹ️">
   The error message in `reason:` is extracted from the data returned by the

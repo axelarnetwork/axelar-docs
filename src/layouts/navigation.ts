@@ -26,7 +26,7 @@ export const getNavigation = (section) => {
           href: "/dev/what-is-mobius-development-stack/",
         },
         {
-          title: "Product Overview",
+          title: "Products Overview",
           href: "/dev/intro/",
         },
         {
@@ -85,17 +85,20 @@ export const getNavigation = (section) => {
             {
               title: "Cosmos",
               children: [
-                { title: "Introduction", href: "/dev/cosmos-gmp/overview/" },
+                {
+                  title: "Introduction",
+                  href: "/dev/general-message-passing/cosmos-gmp/overview/",
+                },
                 {
                   title: "Cosmos 2-way Call Relay",
-                  href: "/dev/cosmos-gmp/cosmos-2way-manual-relay/",
+                  href: "/dev/general-message-passing/cosmos-gmp/cosmos-2way-manual-relay/",
                 },
                 {
                   title: "Developer Guides",
                   children: [
                     {
                       title: "Cross-Chain Messaging: EVM to Cosmos",
-                      href: "/dev/cosmos-gmp/developer-guides/cross-chain-messaging-evm-to-cosmos/",
+                      href: "/dev/general-message-passing/cosmos-gmp/developer-guides/cross-chain-messaging-evm-to-cosmos/",
                     },
                   ],
                 },
@@ -221,11 +224,11 @@ export const getNavigation = (section) => {
                   title: "Developer Guides",
                   children: [
                     {
-                      title: "Programmatically Create a Token",
+                      title: "Create an Interchain Token",
                       href: "/dev/send-tokens/interchain-tokens/developer-guides/programmatically-create-a-token/",
                     },
                     {
-                      title: "Programmatically Create a Canonical Token",
+                      title: "Create a Canonical Token",
                       href: "/dev/send-tokens/interchain-tokens/developer-guides/programmatically-create-a-canonical-token/",
                     },
                     {
@@ -258,6 +261,10 @@ export const getNavigation = (section) => {
                     {
                       title: "Deploy a New Token",
                       href: "/dev/send-tokens/stellar/deploy-new-token/",
+                    },
+                    {
+                      title: "Register an Existing Token",
+                      href: "/dev/send-tokens/stellar/register-existing-stellar-token/",
                     },
                   ],
                 },

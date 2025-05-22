@@ -3,6 +3,7 @@ import TableOfContents from "@/components/docs/table-of-contents";
 import NextPrevNav from "@/components/ui/NextPrevNav.astro";
 import WorldMap from "@/components/ui/world-map.astro";
 import MainLayout from "@/layouts/MainLayout.astro";
+import { generateMetaDescription } from "@/lib/generateMetaDescription";
 import generateToc from "@/lib/generateToc";
 import { findPrevAndNextPages } from "@/lib/nextPrevPages";
 import { proseClasses } from "@/lib/prose-classes";
@@ -24,9 +25,22 @@ const { doc } = Astro.props;
 
 const pathname = Astro.url.pathname;
 const { Content, headings } = await doc.render();
+
+// Extract first image from content
+const extractFirstImage = (content: string) => {
+  const imageRegex = /!\[.*?\]\((.*?)\)/;
+  const match = content.match(imageRegex);
+  return match ? match[1] : undefined;
+};
+
+const firstImage = extractFirstImage(doc.body);
 ---
 
-<MainLayout title={headings.find((h) => h.depth === 1)?.text}>
+<MainLayout
+  image={firstImage}
+  title={doc?.data?.title ?? headings.find((h) => h.depth === 1)?.text}
+  description={doc?.data?.description ?? generateMetaDescription(doc.body)}
+>
   <div class="grid grid-cols-1 lg:grid-cols-12 bg-[#FFFFFF] dark:bg-background">
     <WorldMap className="lg:col-span-9 2xl:col-span-10 w-full flex-1 ">
       <div class="min-h-[90dvh] sub-container pb-20 py-20 flex flex-col gap-10">

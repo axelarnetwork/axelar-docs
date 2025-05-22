@@ -94,9 +94,13 @@ You can either use the existing deployed contracts and on the devnet via their `
 <tab-item title="Use pre-deployed contracts">
 Use the existing deployments for all three contracts, making note of the existing deployment's `code_id`:
 
-- Voting verifier (code_id: `626`)
-- Gateway (code_id: `616`)
-- Mutisig prover (code_id: `618`)
+- Voting verifier (code_id: `854`)
+- Gateway (code_id: `848`)
+- Mutisig prover (code_id: `855`)
+
+<Callout>
+Note: `code_ids` may change with new releases. You can find the latest code ids in the [Axelar contract deployments repo](https://github.com/axelarnetwork/axelar-contract-deployments/blob/main/axelar-chains-config/info/devnet-amplifier.json)
+</Callout>
 </tab-item>
 
 <tab-item title="Build and deploy contracts">
@@ -220,7 +224,7 @@ Use the existing deployments for all three contracts, making note of the existin
 1. Instantiate the voting verifier contract on the command line. See the [testnet](https://github.com/axelarnetwork/axelar-contract-deployments/blob/main/axelar-chains-config/info/testnet.json), [devnet-amplifier](https://github.com/axelarnetwork/axelar-contract-deployments/blob/main/axelar-chains-config/info/devnet-amplifier.json) configurations for the correct `code_id`.
 
    ```bash
-   export VERIFIER_CODE_ID=626
+   export VERIFIER_CODE_ID=854
    export MY_WALLET_ADDRESS="axelar14r0xzwz8hmkshau39dyja5kx503dx6zu52623h"
    export MY_SOURCE_CHAIN_GATEWAY_ADDRESS="0xCa85f85C72df5f8428a440887CA7c449D94e0D0c"
    ```
@@ -294,7 +298,7 @@ Use the existing deployments for all three contracts, making note of the existin
 1. Instantiate the gateway contract on the command line with the verifier address from the previous step.
 
    ```bash
-   export GATEWAY_CODE_ID=616
+   export GATEWAY_CODE_ID=848
    export MY_VERIFIER_ADDRESS="axelar1x3960tw9cml6xsqtvzt4gmw3scauaxdd83rhs9dmlpjfjf9z9s7qjx8g0j"
    ```
 
@@ -322,7 +326,7 @@ Use the existing deployments for all three contracts, making note of the existin
 1. Instantiate the multisig prover contract on the command line with the gateway address from the previous step.
 
    ```bash
-   export PROVER_CODE_ID=618
+   export PROVER_CODE_ID=855
    export MY_GATEWAY_ADDRESS="axelar1ufs3tlq4umljk0qfe8k5ya0x6hpavn897u2cnf9k0en9jr7qarqqa9263g"
    export MY_CHAIN_ID=43113
    ```

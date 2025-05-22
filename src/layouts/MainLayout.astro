@@ -12,6 +12,8 @@ type Props = {
   hidden?: boolean;
   notSidebar?: boolean;
   className?: string;
+  publishDate?: string;
+  modifiedDate?: string;
 };
 
 const {
@@ -21,11 +23,11 @@ const {
   hidden,
   notSidebar,
   className,
+  publishDate = new Date().toISOString(),
+  modifiedDate = new Date().toISOString(),
 } = Astro.props;
 
-const shownTitle = title
-  ? title + ` | Axelar Documentation`
-  : "Axelar Documentation";
+const shownTitle = title ? title : "Axelar Documentation";
 const shownDescription =
   description ||
   "The Axelar Documentation tells you how to get started and be successful using Axelar. Axelar allows developers to build interchain dApps that connect to any blockchain. ";
@@ -70,7 +72,58 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
     <meta content="website" property="og:type" />
     <meta content="summary_large_image" name="twitter:card" />
     <meta content="width=device-width, initial-scale=1" name="viewport" />
-    {hidden && <meta content="noindex" name="robots" />}
+    {
+      hidden ? (
+        <meta content="noindex" name="robots" />
+      ) : (
+        <meta
+          name="robots"
+          content="INDEX, FOLLOW, MAX-IMAGE-PREVIEW:LARGE, MAX-SNIPPET:-1, MAX-VIDEO-PREVIEW:-1"
+        />
+      )
+    }
+
+    {
+      publishDate && (
+        <meta property="article:published_time" content={publishDate} />
+      )
+    }
+    {
+      modifiedDate && (
+        <meta property="article:modified_time" content={modifiedDate} />
+      )
+    }
+
+    <script
+      type="application/ld+json"
+      set:html={JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "Article",
+        mainEntityOfPage: {
+          "@type": "WebPage",
+          "@id": canonicalURL.toString(),
+        },
+        headline: shownTitle,
+        description: shownDescription,
+        image: new URL(image, Astro.url).toString(),
+        author: {
+          "@type": "Organization",
+          name: "Axelar",
+          url: "https://docs.axelar.dev",
+        },
+        publisher: {
+          "@type": "Organization",
+          name: "Axelar",
+          logo: {
+            "@type": "ImageObject",
+            url: "https://docs.axelar.dev/images/Axelar%20Logo%20Full%20Black@3x.png",
+          },
+        },
+        datePublished: publishDate,
+        dateModified: modifiedDate || publishDate,
+      })}
+    />
+
     <link
       rel="sitemap"
       type="application/xml"
@@ -163,7 +216,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
       localStorage.setItem("theme", isDark ? "dark" : "light");
       document.documentElement.setAttribute(
         "data-theme",
-        isDark ? "vitesse-dark" : "light-plus"
+        isDark ? "vitesse-dark" : "light-plus",
       );
     };
 

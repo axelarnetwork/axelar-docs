@@ -2,7 +2,8 @@
 
 ## Overview
 
-Axelar’s off-chain relayer service currently does not support the automatic processing of two-way calls through Cosmos chains. This limitation can affect to halt at the confirmation step. This guide covers how to manually process these transactions to ensure successful completion.
+Axelar’s off-chain relayer service currently does not support the automatic processing of two-way calls through Cosmos chains. 
+This guide covers how to manually process these transactions to ensure successful completion.
 
 ## Manual Relay Process
 
@@ -53,11 +54,11 @@ ethereum \\
 
 ### 2. Monitor for the `MessageReceived` Event
 
-After confirming the gateway transaction, wait for the `MessageReceived` event on the Axelar network. This event indicates that the message from the source chain has been received and is ready to be routed.
+After confirming the gateway transaction, wait for the [`MessageReceived`](https://github.com/axelarnetwork/axelar-core/blob/4e67aa564db2b10eec25831ed1146c94a9172c60/proto/axelar/nexus/v1beta1/events.proto#L49) event on the Axelar network. This event indicates that the message from the source chain has been received and is ready to be routed.
 
 ### How to Monitor
 
-- AxelarScan Explorer: Visit [AxelarScan Testnet Explorer](https://testnet.axelarscan.io/) and search for your transactions or events related to your account.
+- Axelarscan Explorer: Visit [Axelarscan Testnet Explorer](https://testnet.axelarscan.io/) and search for your transactions or events related to your account.
 - RPC/WebSocket: Use Axelar's RPC endpoints to programmatically listen for events by polling every block height, as indicated [here](https://github.com/axelarnetwork/axelar-core/blob/2a8810a295bfa8c5831ef8e2dcbfb0fe16d6be4d/vald/start.go#L231).
 
 ### Event Details

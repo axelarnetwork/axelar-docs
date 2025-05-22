@@ -1,6 +1,6 @@
-# XRPL
-
 import { Callout } from "/src/components/callout";
+
+# XRPL
 
 Node setup guide for your XRP Ledger Testnet or Mainnet validator.
 
@@ -13,6 +13,10 @@ Node setup guide for your XRP Ledger Testnet or Mainnet validator.
     * Disk: 50+ GB SSD/NVMe
 - Ubuntu Linux 18.04+ (tested on 22.04) or Debian 10+
 - [Official Documentation](https://xrpl.org/docs/infrastructure/installation)
+
+<Callout emoji="💡">
+  Note: Verifiers are expected to run at least two months worth of history on their nodes. Please make sure you configure your node to stores two months of history instead of the [default two hours](https://xrpl.org/docs/infrastructure/installation/capacity-planning#disk-space).
+</Callout>
 
 ## Install on Ubuntu or Debian Linux
 
@@ -91,7 +95,7 @@ Edit your `rippled.cfg` file located under `/etc/opt/ripple/rippled.cfg`.
 
 ```
 [ips]
-r.altnet.rippletest.net 51235
+s.altnet.rippletest.net 51235
 ```
 
 2. Comment out the previous `[ips]` stanza, if there is one.
@@ -143,23 +147,54 @@ You can query the node with:
 curl -H 'Content-Type: application/json' -d '{"method":"server_info","params":[{}]}' http://localhost:5005
 ```
 
+## Axelar Node Configuration
+
+Due to a bug in the Cosmos SDK that appears when the database is being read from under heavy load, when `ampd` is trying to broadcast transactions, your Axelar node may run into issues when running (such as an `AppHash` error). An example of such an error may appear as follows:
+
+`ERR CONSENSUS FAILURE!!! err="precommit step; +2/3 prevoted for an invalid block: wrong Block.Header.AppHash`
+
+Your node orchestration needs to be updated to perform a `rollback` when a node crashes. The rollback command must be executed **before restarting the Axelar node** to auto-recover from such errors. The rollback can be performed by running:
+
+```bash
+axelard rollback
+```
+
 
 ### Ampd Configuration
 Once your node is up and running, you need to add the `XRPL` chain to your [ampd daemon's](https://github.com/axelarnetwork/axelar-amplifier/tree/main/ampd) `config.toml`file. This can be done by adding in the following configuration:
 
-For testnet:
-```toml
-[[handlers]]
-type="XRPLMsgVerifier"
-chain_name="xrpl"
-chain_rpc_url="your_own_rpc"
-cosmwasm_contract="axelar1pnynr6wnmchutkv6490mdqqxkz54fnrtmq8krqhvglhsqhmu7wzsnc86sy"
+<tabs>
+  <tab-item title="Mainnet">
+    ```toml
+    [[handlers]]
+    type="XRPLMsgVerifier"
+    chain_name="xrpl"
+    chain_rpc_url="your_own_rpc"
+    cosmwasm_contract="axelar1078vczeygpnpugv8lz38uzavashfutxaukxuwqw0a7n3sjfnwfcskru2pn"
 
-[[handlers]]
-type="XRPLMultisigSigner"
-multisig_contract="axelar14a4ar5jh7ue4wg28jwsspf23r8k68j7g5d6d3fsttrhp42ajn4xq6zayy5"
-multisig_prover_contract="axelar1k82qfzu3l6rvc7twlp9lpwsnav507czl6xyrk0xv287t4439ymvsl6n470"
-```
+    [[handlers]]
+    type="XRPLMultisigSigner"
+    multisig_contract="axelar14a4ar5jh7ue4wg28jwsspf23r8k68j7g5d6d3fsttrhp42ajn4xq6zayy5"
+    multisig_prover_contract="axelar1w5h7lmxce3zczuljknh836rrqpekn5vvadf253vnn8cx90rg2s5q6wk8yt"
+    ```
+  </tab-item>
+  <tab-item title="Testnet">
+    ```toml
+    [[handlers]]
+    type="XRPLMsgVerifier"
+    chain_name="xrpl"
+    chain_rpc_url="your_own_rpc"
+    cosmwasm_contract="axelar1pnynr6wnmchutkv6490mdqqxkz54fnrtmq8krqhvglhsqhmu7wzsnc86sy"
+
+    [[handlers]]
+    type="XRPLMultisigSigner"
+    multisig_contract="axelar14a4ar5jh7ue4wg28jwsspf23r8k68j7g5d6d3fsttrhp42ajn4xq6zayy5"
+    multisig_prover_contract="axelar1k82qfzu3l6rvc7twlp9lpwsnav507czl6xyrk0xv287t4439ymvsl6n470"
+    ```
+  </tab-item>
+</tabs>
+
+
 
 
 <Callout emoji="💡">

@@ -1,0 +1,653 @@
+import { Callout } from "../../../../../components/callout";
+
+# Register and transfer existing tokens from Stellar to EVM chains using ITS
+
+This guide demonstrates, step-by-step, how to use [Axelar's Interchain Token Service (ITS)](/dev/send-tokens/interchain-tokens/intro/#interchain-token-service) to register an existing token on Stellar and make it available for cross-chain transfers to EVM chains.
+
+By the end, you will be able to:
+
+1. Register an existing token you own on Stellar with Axelar ITS.
+1. Deploy that token representation on an EVM chain (Avalanche Fuji testnet).
+1. Transfer tokens seamlessly between Stellar and the EVM chain.
+
+## Prerequisites
+
+Before starting, make sure you have the following ready:
+
+- Rust installed with the wasm32 target enabled ([installation instructions](https://www.rust-lang.org/tools/install))
+- Stellar CLI installed ([stellar-cli repo](https://github.com/stellar/stellar-cli))
+- A Stellar testnet account funded with test XLM
+- A browser wallet like MetaMask configured to connect to the Avalanche Fuji testnet, or a similar wallet like Rabby
+- An existing token on Stellar that you control or have permission to register
+
+If you don’t yet have a Stellar token, you can create one using tools like [Token Tool](https://tokentool.bitbond.com/) or programmatically. This guide assumes you already have the token address ready.
+
+## Part 1: Understanding the Interchain Token Service
+
+The [Interchain Token Service (ITS)](https://github.com/axelarnetwork/axelar-amplifier-stellar/tree/main/contracts/stellar-interchain-token-service) is a protocol that allows tokens to move freely between different blockchains.
+
+Instead of deploying a brand-new token, ITS let's you register existing tokens you own on Stellar and seamlessly transfer their value across chains. It achieves this through a canonical token integration, meaning:
+
+- When you transfer your Stellar token to another chain, the ITS _locks_ the token on Stellar
+- It _mints_ a corresponding wrapped token on the destination chain
+- When tokens move back to Stellar, the wrapped tokens are _burned_ and the original tokens are _unlocked_
+
+<Callout emoji="💡">
+  There can only be a single lock/unlock token manager for the token
+</Callout>
+
+## Part 2: Set up your Stellar ITS project
+
+Now, let’s build a Stellar smart contract project that integrates with ITS to register and transfer existing tokens.
+
+### Step 1. Initialize a new project
+
+Start by creating a new Stellar contract project and the directory:
+
+```bash
+stellar contract init axelar-its-existing-token
+cd axelar-its-existing-token
+```
+
+This command scaffolds a basic Stellar contract project for you.
+
+> Tip: We'll simplify the default structure as we progress, focusing on the files needed for the ITS integration.
+
+### Step 2: Simplify your project structure
+
+To keep things neat, remove unnecessary folders and consolidate your source files.
+
+- Move the `src` folder to the root of your project directory if it isn’t there already
+- Delete any example or template contract folders, such as `contract/hello-world`
+
+After cleanup later in this section, your folder should look like this:
+
+```bash
+axelar-its-existing-token
+├── src
+│   ├── lib.rs
+├── .gitignore
+├── Cargo.toml
+├── README.md
+```
+
+### Step 3. Configure your dependencies in Cargo.toml
+
+Open `Cargo.toml` in your project root and update it to include dependencies needed for Axelar ITS and Stellar development.
+
+Here’s a sample you can copy:
+
+```toml
+[package]
+name = "axelar-its-existing-token"
+
+version = "0.0.0"
+edition = "2021"
+publish = false
+
+[lib]
+crate-type = ["cdylib"]
+doctest = false
+
+[dependencies]
+soroban-sdk = "22.0.0"
+soroban-token-sdk = "22.0.0"
+stellar-axelar-gateway = { git = "https://github.com/axelarnetwork/axelar-amplifier-stellar", branch = "main", features = ["library"] }
+stellar-axelar-gas-service = { git = "https://github.com/axelarnetwork/axelar-amplifier-stellar", branch = "main", features = ["library"] }
+stellar-interchain-token-service = { git = "https://github.com/axelarnetwork/axelar-amplifier-stellar", branch = "main", features = ["library"] }
+stellar-interchain-token = { git = "https://github.com/axelarnetwork/axelar-amplifier-stellar", branch = "main", features = ["library"] }
+stellar-token-manager = { git = "https://github.com/axelarnetwork/axelar-amplifier-stellar", branch = "main", features = ["library"] }
+stellar-axelar-std = { git = "https://github.com/axelarnetwork/axelar-amplifier-stellar", branch = "main" }
+
+[dev-dependencies]
+soroban-sdk = { version = "22.0.0", features = ["testutils"] }
+
+[profile.release]
+opt-level = "z"
+overflow-checks = true
+debug = 0
+strip = "symbols"
+debug-assertions = false
+panic = "abort"
+codegen-units = 1
+lto = true
+
+[profile.release-with-logs]
+inherits = "release"
+debug-assertions = true
+```
+
+This configuration pulls in Axelar’s Stellar libraries from GitHub and sets up your Rust build profiles for optimal WASM compilation.
+
+## Part 3: Implement the contract logic
+
+Now that the project structure and dependencies are ready, it's time to implement the contract. This contract will interact with the Interchain Token Service (ITS) to register your existing Stellar token and enable cross-chain transfers.
+
+We'll build this step by step by creating the core source files inside the `src` folder.
+
+### Step 1: Define the contract entry point (`lib.rs`)
+
+The `lib.rs` file acts as the main entry point for your contract. Here, you declare the modules your contract uses.
+
+Update `src/lib.rs` with:
+
+```rust
+#![no_std]
+
+pub mod contract;
+pub mod error;
+mod storage_types;
+```
+
+- `contract` will contain the main contract implementation
+- `error` defines error types your contract can return
+- `storage_types` holds data structures used for contract storage
+
+### Step 2: Define contract errors (`error.rs`)
+
+A clear list of error codes helps you handle edge cases and report issues properly.
+
+Create `src/error.rs` with the following content:
+
+```rust
+use stellar_axelar_std::{contracterror, soroban_sdk};
+
+#[contracterror]
+#[derive(Copy, Clone, Debug, PartialEq, Eq)]
+#[repr(u32)]
+pub enum ContractError {
+    TrustedChainAlreadySet = 1,
+    TrustedChainNotSet = 2,
+    InvalidMessageType = 3,
+    UntrustedChain = 4,
+    InvalidAmount = 5,
+    InvalidDestinationAddress = 6,
+    NotHubChain = 7,
+    NotHubAddress = 8,
+    InvalidTokenId = 9,
+    TokenAlreadyRegistered = 10,
+    FlowLimitExceeded = 11,
+    InvalidDestinationChain = 12,
+    InvalidData = 13,
+    InvalidTokenConfig = 14,
+}
+```
+
+Each error has a unique numeric code and a named variant. This helps both you and users understand why a transaction might fail.
+
+### Step 3: Define storage keys (storage_types.rs)
+
+The contract needs to store some key data on-chain. Let's define storage keys in `src/storage_types.rs`:
+
+```rust
+use soroban_sdk::{contracttype, String};
+
+#[contracttype]
+#[derive(Clone, Debug)]
+pub enum DataKey {
+    InterchainTokenService,
+    TokenId,
+    OriginalToken,
+    TrustedChain(String),
+}
+```
+
+This storage structure includes:
+
+- `InterchainTokenService`: Stores the address of the deployed ITS contract
+- `TokenId`: Stores the ID of the registered token
+- `OriginalToken`: Stores the address of the original token we registered
+- `TrustedChain`: Tracks which chains we've marked as trusted
+
+### Step 4: Implement the contract logic (contract.rs)
+
+#### 1. Setup and Initialization
+
+First, let's create the `contract.rs` file inside the `src` folder with a basic setup and initialization functions:
+
+```rust
+use soroban_sdk::{contract, contractimpl, Address, Bytes, BytesN, Env, String};
+use stellar_axelar_std::types::Token;
+use stellar_interchain_token_service::InterchainTokenServiceClient;
+
+use crate::storage_types::DataKey;
+
+#[contract]
+pub struct ExistingTokenApp;
+
+#[contractimpl]
+impl ExistingTokenApp {
+    /// Initialize the contract with the ITS service address
+    pub fn initialize(env: &Env, its_address: Address) {
+        env.storage()
+            .instance()
+            .set(&DataKey::InterchainTokenService, &its_address);
+    }
+
+    /// Get the ITS client
+    fn its_client(env: &Env) -> InterchainTokenServiceClient {
+        let its_address = env
+            .storage()
+            .instance()
+            .get(&DataKey::InterchainTokenService)
+            .unwrap();
+        InterchainTokenServiceClient::new(env, &its_address)
+    }
+
+    /// Check if a chain is trusted
+    pub fn is_trusted_chain(env: &Env, chain: String) -> bool {
+        let its = Self::its_client(env);
+        its.is_trusted_chain(&chain)
+    }
+}
+```
+
+These functions:
+
+- `initialize`: Sets up the contract with the address of the ITS service.
+- `its_client`: Creates an instance of the `InterchainTokenServiceClient`.
+- `is_trusted_chain`: Checks if a chain is trusted by the ITS.
+
+#### 2. Token Registration Functions
+
+Next, let's add functions to register an existing token and retrieve token information:
+
+```rust
+   //...
+
+   /// Register an existing Stellar token for cross-chain use
+    pub fn register_existing_token(
+        env: &Env,
+        caller: Address,
+        token_address: Address,
+    ) -> BytesN<32> {
+        caller.require_auth();
+
+        let its = Self::its_client(env);
+
+        // Register the token - direct call
+        let token_id = its.register_canonical_token(&token_address);
+
+        // Store the token ID and original token address for reference
+        env.storage().instance().set(&DataKey::TokenId, &token_id);
+        env.storage()
+            .instance()
+            .set(&DataKey::OriginalToken, &token_address);
+
+        token_id
+    }
+
+    /// Get the currently stored token ID
+    pub fn get_token_id(env: &Env) -> BytesN<32> {
+        env.storage().instance().get(&DataKey::TokenId).unwrap()
+    }
+
+    /// Get the original token address
+    pub fn get_original_token(env: &Env) -> Address {
+        env.storage()
+            .instance()
+            .get(&DataKey::OriginalToken)
+            .unwrap()
+    }
+```
+
+The `register_existing_token` function:
+
+- Authenticates the caller to ensure they have permission.
+- Registers the existing token with the ITS using `register_canonical_token`.
+- Stores both the generated `token_id` and the original token address.
+- Returns the `token_id` for reference.
+
+The getter functions allow us to retrieve stored token information:
+
+- `get_token_id`: Returns the ITS `token_id`.
+- `get_original_token`: Returns the address of the original token.
+
+#### 3. Cross-Chain Functions
+
+Finally, let's add functions for cross-chain token deployment and transfers:
+
+```rust
+   //...
+
+   /// Deploy the existing registered token to another blockchain
+    pub fn deploy_remote_canonical_token(
+        env: &Env,
+        caller: Address,
+        destination_chain: String,
+        gas_token_address: Address,
+        gas_amount: i128,
+    ) -> BytesN<32> {
+        caller.require_auth();
+
+        let its = Self::its_client(env);
+
+        // Get the original token address
+        let token_address = env
+            .storage()
+            .instance()
+            .get(&DataKey::OriginalToken)
+            .unwrap();
+
+        // Prepare gas token
+        let gas_token = Some(Token {
+            address: gas_token_address,
+            amount: gas_amount,
+        });
+
+        // Deploy to remote chain - direct call
+        let token_id = its.deploy_remote_canonical_token(
+            &token_address,
+            &destination_chain,
+            &caller, // spender
+            &gas_token,
+        );
+
+        token_id
+    }
+
+    /// Transfer interchain tokens to another blockchain
+    pub fn transfer_tokens(
+        env: &Env,
+        caller: Address,
+        token_id: BytesN<32>,
+        destination_chain: String,
+        destination_address: Bytes,
+        amount: i128,
+        gas_token_address: Address,
+        gas_amount: i128,
+    ) {
+        caller.require_auth();
+
+        let its = Self::its_client(env);
+
+        // Basic validation
+        if amount <= 0 {
+            panic!("Invalid amount");
+        }
+
+        if destination_address.len() == 0 {
+            panic!("Invalid destination address");
+        }
+
+        // Prepare gas token
+        let gas_token = Some(Token {
+            address: gas_token_address,
+            amount: gas_amount,
+        });
+
+        // Send the tokens cross-chain - direct call
+        its.interchain_transfer(
+            &caller,
+            &token_id,
+            &destination_chain,
+            &destination_address,
+            &amount,
+            &None, // No additional data
+            &gas_token,
+        );
+    }
+```
+
+The `deploy_remote_canonical_token` function:
+
+- Deploys the registered token to another blockchain.
+- Uses the original token's address (retrieved from storage).
+- Configures gas payment for cross-chain operations.
+- Returns the `token_id`, which remains consistent across chains.
+
+The `transfer_tokens` function:
+
+- Validates the transfer amount and destination address
+- Initiates the cross-chain transfer with appropriate gas payment
+
+With these functions implemented, our contract now provides a complete interface for registering existing tokens and enabling cross-chain transfers.
+
+## Part 4: Build and Deploy the Contract
+
+Once your contract code is complete, follow these steps to compile and deploy it on the Stellar testnet.
+
+### Step 1: Build your contract
+
+```bash
+stellar contract build
+```
+
+You should see output confirming the build succeeded and showing the location of the `.wasm` file:
+
+```
+ℹ️  Build Summary:
+   Wasm File: target/wasm32-unknown-unknown/release/axelar_its_existing_token.wasm
+   Wasm Hash: ...
+   Exported Functions: 8 found
+   ...
+✅ Build Complete
+```
+
+### Step 2: Optimize the WASM file
+
+```bash
+stellar contract optimize --wasm target/wasm32-unknown-unknown/release/axelar_its_existing_token.wasm
+```
+
+This creates an optimized `.wasm` file you will deploy.
+
+### Step 3: Deploy the contract to the Stellar testnet
+
+Use the Stellar CLI to deploy your contract, replacing `YOUR_ACCOUNT_NAME` with your funded Stellar testnet account:
+
+```bash
+stellar contract deploy \
+  --wasm target/wasm32-unknown-unknown/release/axelar_its_existing_token.optimized.wasm \
+  --source YOUR_ACCOUNT_NAME \
+  --network testnet
+```
+
+On success, you’ll receive a contract address. Save this address, you’ll need it to interact with your contract.
+
+Example output:
+
+```bash
+✅ Deployed!
+CCEJZPYGNDQFFNPZBHD474OJILN32J6PELILJX3ZQ5L4OSXU24LBNXMY
+```
+
+Your contract address is `CCEJZPYGNDQFFNPZBHD474OJILN32J6PELILJX3ZQ5L4OSXU24LBNXMY`.
+
+## Part 5: Interacting with your contract on the Stellar testnet
+
+Now that your contract is deployed on the Stellar testnet, you’ll use the Stellar CLI to:
+
+- Initialize your contract by connecting it to the Axelar Interchain Token Service (ITS)
+- Register your existing Stellar token with the ITS through your contract
+- Deploy your registered token representation on the Avalanche Fuji testnet
+- Transfer tokens from Stellar to Avalanche Fuji
+
+### Step 1: Initialize your contract with the ITS address
+
+Before registering tokens or transferring, your contract needs to know where the ITS service lives on Stellar.
+
+Run this command, replacing `YOUR_CONTRACT_ADDRESS` and `YOUR_ACCOUNT_NAME` accordingly:
+
+```bash
+stellar contract invoke \
+  --network testnet \
+  --id YOUR_CONTRACT_ADDRESS \
+  --source-account YOUR_ACCOUNT_NAME \
+  -- \
+  initialize \
+  --its_address CCXT3EAQ7GPQTJWENU62SIFBQ3D4JMNQSB77KRPTGBJ7ZWBYESZQBZRK
+```
+
+> Note: `CCXT3EAQ7GPQTJWENU62SIFBQ3D4JMNQSB77KRPTGBJ7ZWBYESZQBZRK` is the address of the Axelar Interchain Token Service contract on the Stellar testnet. You should confirm this address from the [official Axelar documentation for testnet](https://github.com/axelarnetwork/axelar-contract-deployments/blob/main/axelar-chains-config/info/testnet.json). You only need to run this once after deployment.
+
+### Step 2: Check if Avalanche is a trusted chain
+
+It’s a good practice to verify that ITS trusts the destination chain (Avalanche in this case) before sending tokens.
+
+A trusted chain is one that the ITS recognizes and allows transfers to and from. To check if Avalanche is trusted, you can use the `is_trusted_chain` function in your contract.
+Replace `YOUR_CONTRACT_ADDRESS` and `YOUR_ACCOUNT_NAME` with your contract address and Stellar account name.
+
+Run the command below:
+
+```bash
+stellar contract invoke \
+  --network testnet \
+  --id YOUR_CONTRACT_ADDRESS \
+  --source-account YOUR_ACCOUNT_NAME \
+  -- \
+  is_trusted_chain \
+  --chain '"Avalanche"'
+```
+
+> Note: The quotes around the chain name are required due to how the Stellar CLI handles string parameters. You should get a response confirming that Avalanche is trusted:
+
+```
+ℹ️  Simulation identified as read-only. Send by rerunning with `--send=yes`.
+true
+```
+
+If it returns false, the chain is not yet trusted, and transfers to it won’t work until it’s added.
+
+### Step 3: Register your existing Stellar token
+
+Next, register the Stellar token you want to enable for cross-chain transfers.
+
+Replace `EXISTING_TOKEN_ADDRESS` with your token’s Stellar address and run:
+
+```bash
+stellar contract invoke \
+  --network testnet \
+  --id YOUR_CONTRACT_ADDRESS \
+  --source-account YOUR_ACCOUNT_NAME \
+  -- \
+  register_existing_token \
+  --caller YOUR_ACCOUNT_NAME \
+  --token_address EXISTING_TOKEN_ADDRESS
+```
+
+You should see output similar to:
+
+```
+ℹ️  Signing transaction: <transaction_hash>
+📅 CCXT3EAQ7GPQTJWENU62SIFBQ3D4JMNQSB77KRPTGBJ7ZWBYESZQBZRK - Event: [{"symbol":"canonical_token_registered"},{"bytes":"<token_id>"},{"address":"<token_address>"}] = {"vec":[]}
+📅 CCXT3EAQ7GPQTJWENU62SIFBQ3D4JMNQSB77KRPTGBJ7ZWBYESZQBZRK - Event: [{"symbol":"token_manager_deployed"},{"bytes":"<token_id>"},{"address":"<token_address>"},{"address":"<token_manager_address>"},{"u32":1}] = {"vec":[]}
+"<token_id>"
+```
+
+Example response:
+
+```bash
+ℹ️  Signing transaction: ef633fe0cb694729d0c8edc82ef362245797a86a84121eb75e5fc78d534e0205
+📅 CCXT3EAQ7GPQTJWENU62SIFBQ3D4JMNQSB77KRPTGBJ7ZWBYESZQBZRK - Event: [{"symbol":"token_manager_deployed"},{"bytes":"29aa926bf713f85c3044d3643abb5f591a3aac4494c18e065d22228ac8dfebe8"},{"address":"CCRMJF6QOPL77F2OTX4EPFZGSADCQL76ESSREBIGSZIX57HKFZAS6B4M"},{"address":"CCZ7G5BIFBBYWSWEUUNFYCLEVZYBDEKPUZKUOJZRI23ZAB3DFYEWC5ED"},{"u32":2}] = {"vec":[]}
+"29aa926bf713f85c3044d3643abb5f591a3aac4494c18e065d22228ac8dfebe8"
+```
+
+The response includes your `token_id` - note it as you'll need it later in this tutorial.
+
+### Step 4: Deploy your registered token to the Avalanche Fuji testnet
+
+With your token registered, deploy its representation on the Avalanche Fuji testnet.
+
+Run the command below, replacing values as needed:
+
+```bash
+stellar contract invoke \
+  --network testnet \
+  --id YOUR_CONTRACT_ADDRESS \
+  --source-account YOUR_ACCOUNT_NAME \
+  -- \
+  deploy_remote_canonical_token \
+  --caller YOUR_ACCOUNT_NAME \
+  --destination_chain '"Avalanche"' \
+  --gas_token_address CDLZFC3SYJYDZT7K67VZ75HPJVIEUVNIXF47ZG2FB2RMQQVU2HHGCYSC \
+  --gas_amount 10000000
+```
+
+> Notes:
+>
+> - `CDLZFC3SYJYDZT7K67VZ75HPJVIEUVNIXF47ZG2FB2RMQQVU2HHGCYSC` is the address of the native XLM token on Stellar testnet.
+> - The gas amount is 1 XLM (100,000,00 stroops).
+
+You’ll see transaction logs and events confirming the deployment started, and a `token_id` string returned.
+
+```
+ℹ️  Signing transaction: <transaction_hash>
+📅 CCXT3EAQ7GPQTJWENU62SIFBQ3D4JMNQSB77KRPTGBJ7ZWBYESZQBZRK - Event: [{"symbol":"token_deployment_started"},{"bytes":"<token_id>"},{"address":"<token_address>"},{"string":"Avalanche"},{"string":"<token_name>"},{"string":"<token_symbol>"},{"u32":<token_decimals>},"void"] = {"vec":[]}
+📅 CDLZFC3SYJYDZT7K67VZ75HPJVIEUVNIXF47ZG2FB2RMQQVU2HHGCYSC - Event: [{"symbol":"transfer"}, ... ]
+... more events ...
+"<token_id>"
+```
+
+For example:
+
+````bash
+ℹ️  Signing transaction: bbc44b3f76363d295f62800292b38c690735532b469b3018c59bf84860a31ddc
+...
+{"bytes":"8bb9d9cffca6787421eb6e56752bb87ec0f00900ddd901466475ce4e23a44db2"}] = {...}
+"29aa926bf713f85c3044d3643abb5f591a3aac4494c18e065d22228ac8dfebe8"
+
+This is a cross-chain transaction. You can check its status on Axelarscan testnet explorer by pasting the transaction hash as shown [here](https://testnet.axelarscan.io/gmp/bbc44b3f76363d295f62800292b38c690735532b469b3018c59bf84860a31ddc).
+
+### Step 5: Transfer tokens cross-chain from Stellar to Avalanche
+
+Finally, send some tokens to your Avalanche wallet.
+
+Prepare your Avalanche address (without the `0x` prefix), and run:
+
+```bash
+stellar contract invoke \
+  --network testnet \
+  --id YOUR_CONTRACT_ADDRESS \
+  --source-account YOUR_ACCOUNT_NAME \
+  -- \
+  transfer_tokens \
+  --caller YOUR_ACCOUNT_NAME \
+  --destination_chain '"Avalanche"' \
+  --destination_address '"YOUR_AVALANCHE_ADDRESS"' \
+  --amount 100000000 \
+  --token_id TOKEN_ID \
+  --gas_token_address CDLZFC3SYJYDZT7K67VZ75HPJVIEUVNIXF47ZG2FB2RMQQVU2HHGCYSC \
+  --gas_amount 10000000
+````
+
+> Notes:
+>
+> - The amount is 10 tokens with whatever decimal places your token uses (adjust accordingly).
+> - The gas is still 1 XLM as in the previous example.
+
+You should see output similar to:
+
+```
+ℹ️  Signing transaction: <transaction_hash>
+📅 <ORIGINAL_TOKEN_ADDRESS> - Event: [{"symbol":"transfer"}, ... ] = {"i128": ... }
+📅 CCXT3EAQ7GPQTJWENU62SIFBQ3D4JMNQSB77KRPTGBJ7ZWBYESZQBZRK - Event: [{"symbol":"interchain_transfer_sent"},{"bytes":"<token_id>"},{"address":"<sender_address>"},{"string":"Avalanche"},{"bytes":"<destination_address>"},{"i128":...}] = {"vec":["void"]}
+... more events ...
+```
+
+For example:
+
+```bash
+ℹ️  Signing transaction: 4386580b551692c0b9c1c25c5c7158cbd2270f98fcbfcbdf46f5dd867c5ca645
+{...}
+```
+
+This is a cross-chain transaction. You can check its status on Axelarscan testnet explorer by pasting the transaction hash as shown [here](https://testnet.axelarscan.io/gmp/4386580b551692c0b9c1c25c5c7158cbd2270f98fcbfcbdf46f5dd867c5ca645).
+
+## Part 6: Receiving Tokens on Avalanche Fuji Testnet
+
+After the cross-chain transfer is completed, you can find the address of your token on Avalanche by checking the Axelarscan explorer for your cross-chain transaction or your address on Avalanche Fuji testnet. For example [here](https://testnet.snowtrace.io/address/0x510e5EA32386B7C48C4DEEAC80e86859b5e2416C/tokentxns?tokenaddresses=0xc3Aa19e24aD9dB60A262C753Aaa33F2F9A1b7B16&chainid=43113#erc20)
+
+Now you should be able to see your token balance in your wallet.
+
+You can find the full code example [here](https://github.com/axelarnetwork/stellar-its-example).
+
+## Conclusion
+
+You've now learned how to:
+
+1. Register an existing token on Stellar with the Interchain Token Service
+2. Make it available on an EVM chain
+3. Transfer tokens between blockchains
+
+This approach allows you to make any existing Stellar token cross-chain compatible, opening up new possibilities for your assets.

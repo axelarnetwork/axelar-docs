@@ -52,11 +52,11 @@ In simpler terms, Axelar GMP enables developers to build applications that integ
 
 Axelar has expanded General Message Passing (GMP) to support Cosmos blockchains. With Axelar, you can now send and receive messages on EVM chains and Cosmos chains. Messages sent to Cosmos chains can be received by [CosmWasm smart contracts](https://github.com/axelarnetwork/evm-cosmos-gmp-sample/tree/main/cosmwasm-integration/) (on blockchains with CosmWasm support), or those messages can be received [natively at the consensus layer as part of Go code](https://github.com/axelarnetwork/evm-cosmos-gmp-sample/tree/main/native-integration).
 
-Cosmos GMP works by sending and receiving through [IBC’s memo field](https://medium.com/the-interchain-foundation/moving-beyond-simple-token-transfers-d42b2b1dc29b). Cosmos chains that support GMP should [integrate the appropriate middleware](/dev/cosmos-gmp/overview/#chain-support) and [verify the message source](/dev/cosmos-gmp/overview/#establishing-a-path-of-trust).
+Cosmos GMP works by sending and receiving through [IBC’s memo field](https://medium.com/the-interchain-foundation/moving-beyond-simple-token-transfers-d42b2b1dc29b). Cosmos chains that support GMP should [integrate the appropriate middleware](/dev/cosmos-gmp/overview/#chain-support) and [verify the message source](/dev/general-message-passing/cosmos-gmp/overview/#establishing-a-path-of-trust).
 
 ## Project setup and installation
 
-To start the project setup and installation quickly, clone this [**project on GitHub**](https://github.com/axelarnetwork/cross-chain-airdrop-dapp/tree/start) using the following command:
+To start the project setup and installation quickly, clone this [**project on GitHub**](https://github.com/axelarnetwork/send-message-from-cosmos-to-evm-example) using the following command:
 
 ```bash
 git clone https://github.com/axelarnetwork/send-message-from-cosmos-to-evm-example.git
@@ -524,7 +524,7 @@ console.log(`Osmo balance: ${balanceOsmo.amount / 1e6} OSMO\\n`);
 
 ### Estimate Gas Fee
 
-Estimate the gas fee for sending the message:
+Estimate [the gas fee](/dev/gas-service/pay-gas/) for sending the message:
 
 ```js
 //...
@@ -786,7 +786,7 @@ By mastering these steps, you can effectively create interoperable decentralized
 
 ## Reference
 
-- [Axelar Cosmos General Message Passing](/dev/cosmos-gmp/overview/)
+- [Axelar Cosmos General Message Passing](/dev/general-message-passing/cosmos-gmp/overview/)
 - [Axelarscan Testnet](https://testnet.axelarscan.io/)
 - [Osmosis Testnet Faucet](https://faucet.testnet.osmosis.zone/)
 - [Osmosis Testnet Explorer](https://mintscan.io/osmosis-testnet)

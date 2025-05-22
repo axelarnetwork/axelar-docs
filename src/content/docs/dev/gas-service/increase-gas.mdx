@@ -24,30 +24,6 @@ function addNativeGas(
 ) external payable override;
 ```
 
-In JavaScript or TypeScript, the SDK [abstracts a method that can be invoked directly in a web application](/dev/axelarjs-sdk/tx-status-query-recovery/#21-native-gas-payment).
-
-### `addGas()`
-
-Call `addGas()` to add additional gas payment after initiating a cross-chain call. This function can be called on the transaction’s source chain after calling the gateway to execute a remote contract.
-
-In Solidity, `addGas()` takes the following parameters:
-
-- `txHash` — The transaction hash of the cross-chain call
-- `logIndex` — The log index for the cross-chain call
-- `gasToken` — The ERC-20 token address used to add gas
-- `gasFeeAmount` — The amount of tokens to add as gas
-- `refundAddress` — The address where refunds, if any, should be sent
-
-```solidity
-function addGas(
-    bytes32 txHash,
-    uint256 logIndex,
-    address gasToken,
-    uint256 gasFeeAmount,
-    address refundAddress
-) external override;
-```
-
 In JavaScript or TypeScript, the SDK [abstracts a method that can be invoked directly in a web application](/dev/axelarjs-sdk/tx-status-query-recovery/#22-erc-20-gas-payment). It is similar to a native gas payment, except with Axelar-supported ERC-20 tokens instead of native tokens. Make sure that the ERC-20 tokens you use are supported by Axelar.
 
 - [Supported mainnet chains](/resources/contract-addresses/mainnet/)

@@ -1,6 +1,6 @@
-# Introduction to the `AxelarGasService` contract
+# Introduction to Axelar Gas Service contract
 
-[`AxelarGasService`](https://github.com/axelarnetwork/axelar-gmp-sdk-solidity/blob/main/contracts/interfaces/IAxelarGasService.sol) is a smart contract that manages gas payments and refunds for cross-chain communication on the Axelar network. It allows an application to prepay gas fees on the source chain and increase the gas paid for a transaction. If too much gas is paid for a transaction, it can calculate and refund the sender.
+[`AxelarGasService`](https://github.com/axelarnetwork/axelar-gmp-sdk-solidity/blob/main/contracts/interfaces/IAxelarGasService.sol) is a smart contract that manages gas payments and refunds for cross-chain communication on the Axelar network. It allows an application to [prepay gas fees](https://github.com/axelarnetwork/axelar-cgp-solidity/blob/83012e6f6fb721d7ffaaec9426fdac3c02fced2e/contracts/gas-service/AxelarGasService.sol#L163C14-L163C41) on the source chain and increase the gas paid for a transaction. If too much gas is paid for a transaction, it can calculate and refund the sender.
 
 ## Prepay gas on the source chain
 

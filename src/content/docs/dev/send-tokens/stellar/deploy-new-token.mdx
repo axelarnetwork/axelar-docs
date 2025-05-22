@@ -276,13 +276,13 @@ impl ItsApp {
         token_id
     }
 
-    /// Transfer tokens to another blockchain
+/// Transfer interchain tokens to another blockchain
     pub fn transfer_tokens(
         env: &Env,
         caller: Address,
         token_id: BytesN<32>,
         destination_chain: String,
-        destination_address: String,
+        destination_address: Bytes,
         amount: i128,
         gas_token_address: Address,
         gas_amount: i128,
@@ -300,9 +300,6 @@ impl ItsApp {
             panic!("Invalid destination address");
         }
 
-        // Convert string address to bytes
-        let dest_addr_bytes = Bytes::from_slice(env, destination_address.as_bytes());
-
         // Prepare gas token
         let gas_token = Some(Token {
             address: gas_token_address,
@@ -314,7 +311,7 @@ impl ItsApp {
             &caller,
             &token_id,
             &destination_chain,
-            &dest_addr_bytes,
+            &destination_address,
             &amount,
             &None, // No additional data
             &gas_token,
@@ -517,7 +514,7 @@ stellar contract invoke \
   --caller YOUR_ACCOUNT_NAME \
   --destination_chain '"Avalanche"' \
   --gas_token_address CDLZFC3SYJYDZT7K67VZ75HPJVIEUVNIXF47ZG2FB2RMQQVU2HHGCYSC \
-  --gas_amount 100000000
+  --gas_amount 10000000
 ```
 
 > Notes:
@@ -555,7 +552,7 @@ stellar contract invoke \
   --destination_address '"YOUR_AVALANCHE_ADDRESS"' \
   --amount 100000000 \
   --gas_token_address CDLZFC3SYJYDZT7K67VZ75HPJVIEUVNIXF47ZG2FB2RMQQVU2HHGCYSC \
-  --gas_amount 100000000
+  --gas_amount 10000000
 ```
 
 > Notes:
