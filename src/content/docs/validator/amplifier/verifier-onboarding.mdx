@@ -249,6 +249,13 @@ The following are an example `config.toml` files:
    party_uid="ampd"
    url="http://127.0.0.1:50051"
 
+   [grpc]
+   ip_addr = '127.0.0.1'
+   port = 9090
+   global_concurrency_limit = 1024
+   concurrency_limit_per_connection = 32
+   request_timeout = '30s'
+
    [tm_grpc_timeout]
    nanos="0"
    secs="5"
@@ -320,6 +327,21 @@ The following are an example `config.toml` files:
    key_uid="axelar"
    party_uid="ampd"
    url="http://127.0.0.1:50051"
+
+   [tm_grpc_timeout]
+   nanos="0"
+   secs="5"
+
+   [tofnd_config.timeout]
+   nanos="0"
+   secs="3"
+
+   [grpc]
+   ip_addr = '127.0.0.1'
+   port = 9090
+   global_concurrency_limit = 1024
+   concurrency_limit_per_connection = 32
+   request_timeout = '30s'
 
    [[handlers]]
    chain_name="test-sepolia"
@@ -420,6 +442,21 @@ The following are an example `config.toml` files:
    key_uid="axelar"
    party_uid="ampd"
    url="http://127.0.0.1:50051"
+
+   [tm_grpc_timeout]
+   nanos="0"
+   secs="5"
+
+   [tofnd_config.timeout]
+   nanos="0"
+   secs="3"
+
+   [grpc]
+   ip_addr = '127.0.0.1'
+   port = 9090
+   global_concurrency_limit = 1024
+   concurrency_limit_per_connection = 32
+   request_timeout = '30s'
 
    [[handlers]]
    chain_name="flow"
