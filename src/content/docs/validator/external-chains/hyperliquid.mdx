@@ -84,7 +84,7 @@ After=network.target
 [Service]
 Type=simple
 User=$USER
-ExecStart=/path/to/hl-visor run-non-validator --serve-eth-rpc
+ExecStart=$HOME/hl-visor run-non-validator --serve-eth-rpc
 Restart=on-failure
 
 [Install]
