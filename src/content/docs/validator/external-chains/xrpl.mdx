@@ -147,12 +147,21 @@ You can query the node with:
 curl -H 'Content-Type: application/json' -d '{"method":"server_info","params":[{}]}' http://localhost:5005
 ```
 
+## Axelar Node Configuration
+
+Due to a bug in the Cosmos SDK that appears when the database is being read from under heavy load, when `ampd` is trying to broadcast transactions, your Axelar node may run into issues when running (such as an `AppHash` error). An example of such an error may appear as follows:
+
+`ERR CONSENSUS FAILURE!!! err="precommit step; +2/3 prevoted for an invalid block: wrong Block.Header.AppHash`
+
+Your node orchestration needs to be updated to perform a `rollback` when a node crashes. The rollback command must be executed **before restarting the Axelar node** to auto-recover from such errors. The rollback can be performed by running:
+
+```bash
+axelard rollback
+```
+
 
 ### Ampd Configuration
 Once your node is up and running, you need to add the `XRPL` chain to your [ampd daemon's](https://github.com/axelarnetwork/axelar-amplifier/tree/main/ampd) `config.toml`file. This can be done by adding in the following configuration:
-
-For testnet:
-
 
 <tabs>
   <tab-item title="Mainnet">
@@ -161,12 +170,12 @@ For testnet:
     type="XRPLMsgVerifier"
     chain_name="xrpl"
     chain_rpc_url="your_own_rpc"
-    cosmwasm_contract="axelar1lppu77d7h4u7jylw9afctsc2908ea0eh3q6ap82fep5s2qjk9axqvd3sjx"
-
+    cosmwasm_contract="axelar14rd4uyrqyl0tw75gjn8zqfppmy08t3x3wrsujeqp37l0hghduanscfvkz6"
+    
     [[handlers]]
     type="XRPLMultisigSigner"
-    multisig_contract="axelar14a4ar5jh7ue4wg28jwsspf23r8k68j7g5d6d3fsttrhp42ajn4xq6zayy5"
-    multisig_prover_contract="axelar12k57j826jl8xldyl2hf9hnc9gwf72zl48xfq4qn20sl4kl8unrxsejqvm8"
+    chain_name="xrpl"
+    cosmwasm_contract="axelar14a4ar5jh7ue4wg28jwsspf23r8k68j7g5d6d3fsttrhp42ajn4xq6zayy5"
     ```
   </tab-item>
   <tab-item title="Testnet">
@@ -179,8 +188,8 @@ For testnet:
 
     [[handlers]]
     type="XRPLMultisigSigner"
-    multisig_contract="axelar14a4ar5jh7ue4wg28jwsspf23r8k68j7g5d6d3fsttrhp42ajn4xq6zayy5"
-    multisig_prover_contract="axelar1k82qfzu3l6rvc7twlp9lpwsnav507czl6xyrk0xv287t4439ymvsl6n470"
+    chain_name="xrpl"
+    cosmwasm_contract="axelar14a4ar5jh7ue4wg28jwsspf23r8k68j7g5d6d3fsttrhp42ajn4xq6zayy5"
     ```
   </tab-item>
 </tabs>

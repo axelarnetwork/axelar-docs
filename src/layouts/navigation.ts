@@ -26,7 +26,7 @@ export const getNavigation = (section) => {
           href: "/dev/what-is-mobius-development-stack/",
         },
         {
-          title: "Product Overview",
+          title: "Products Overview",
           href: "/dev/intro/",
         },
         {
@@ -85,7 +85,10 @@ export const getNavigation = (section) => {
             {
               title: "Cosmos",
               children: [
-                { title: "Introduction", href: "/dev/general-message-passing/cosmos-gmp/overview/" },
+                {
+                  title: "Introduction",
+                  href: "/dev/general-message-passing/cosmos-gmp/overview/",
+                },
                 {
                   title: "Cosmos 2-way Call Relay",
                   href: "/dev/general-message-passing/cosmos-gmp/cosmos-2way-manual-relay/",
@@ -109,8 +112,12 @@ export const getNavigation = (section) => {
                   href: "/dev/general-message-passing/sui/intro/",
                 },
                 {
-                  title: "GMP Example",
-                  href: "/dev/general-message-passing/sui/gmp-example/",
+                  title: "GMP Contracts",
+                  href: "/dev/general-message-passing/sui/gmp-contracts/",
+                },
+                {
+                  title: "GMP Tutorial",
+                  href: "/dev/general-message-passing/sui/gmp-tutorial/",
                 },
               ],
             },
@@ -254,6 +261,10 @@ export const getNavigation = (section) => {
                     {
                       title: "Deploy a New Token",
                       href: "/dev/send-tokens/stellar/deploy-new-token/",
+                    },
+                    {
+                      title: "Register an Existing Token",
+                      href: "/dev/send-tokens/stellar/register-existing-stellar-token/",
                     },
                   ],
                 },
