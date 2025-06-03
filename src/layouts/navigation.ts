@@ -532,6 +532,7 @@ export const getNavigation = (section) => {
             { title: "Mantle", href: "/validator/external-chains/mantle/" },
             { title: "Moonbeam", href: "/validator/external-chains/moonbeam/" },
             { title: "Optimism", href: "/validator/external-chains/optimism/" },
+            { title: "Plume", href: "/validator/external-chains/plume/" },
             { title: "Polygon", href: "/validator/external-chains/polygon/" },
             { title: "Scroll", href: "/validator/external-chains/scroll/" },
             { title: "Solana", href: "/validator/external-chains/solana/" },
