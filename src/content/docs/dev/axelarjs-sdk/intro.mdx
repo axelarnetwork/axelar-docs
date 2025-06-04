@@ -1,3 +1,6 @@
+import { Callout } from "/src/components/callout";
+
+
 # AxelarJS SDK
 
 The AxelarJS SDK is an npm library that includes a collection of APIs and query tools.
@@ -24,3 +27,8 @@ Current modules:
 - `AxelarQueryAPI`
   - Collection of helpful predefined queries into the network, e.g., transaction fees for token transfers, cross-chain gas prices for GMP transactions, denom conversions, etc.
   - [Axelar Query API](/dev/axelarjs-sdk/axelar-query-api/).
+
+
+<Callout emoji="ℹ️">
+Note: At the moment, the AxelarJS SDK uses [ethers v5](https://docs.ethers.org/v5/), you will not be able to integrate with newer versions of ethers.
+</Callout>
