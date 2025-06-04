@@ -2,7 +2,7 @@
 
 import { Callout } from "/src/components/callout";
 
-Set up your Plume Mainnet or Testnet node
+Set up your Plume node.
 
 ## Prerequisites
 
@@ -182,9 +182,26 @@ INFO [06-02|08:03:08.570] created block                            l2Block=51 l2
 Once your node is up and running, you need to add the `Plume` chain to your [ampd daemon's](https://github.com/axelarnetwork/axelar-amplifier/tree/main/ampd) `config.toml`file. This can be done by adding in the following configuration:
 
 <tabs>
-    <tab-item title="testnet">
+    <tab-item title="mainnet">
     ```toml
     TBA
+    ```
+    </tab-item>
+    <tab-item title="testnet">
+    ```toml
+    [[handlers]]
+    type="EvmMsgVerifier"
+    chain_name="plume"
+    chain_finalization="RPCFinalizedBlock"
+    chain_rpc_url="youe_own_rpc"
+    cosmwasm_contract="axelar1nrdqke6tcxjuymg5gyd9x3yg35n3wrgarnj3sqskp98z2xnvlx9q82f63t"
+
+    [[handlers]]
+    type="EvmVerifierSetVerifier"
+    chain_name="plume"
+    chain_finalization="RPCFinalizedBlock"
+    chain_rpc_url="your_own_rpc"
+    cosmwasm_contract="axelar1nrdqke6tcxjuymg5gyd9x3yg35n3wrgarnj3sqskp98z2xnvlx9q82f63t"
     ```
     </tab-item>
 </tabs>
