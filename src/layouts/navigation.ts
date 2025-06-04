@@ -274,7 +274,7 @@ export const getNavigation = (section) => {
                 },
                 {
                   title: "XRPL",
-                  href: "/dev/general-message-passing/xrpl/xrpl-gmp/#cross-chain-token-transfer",
+                  href: "/dev/send-tokens/xrpl/xrpl-its/",
                 },
               ],
             },
@@ -359,14 +359,6 @@ export const getNavigation = (section) => {
                 },
               ],
             },
-            {
-              title: "XRPL",
-              children: [
-                { title: "XRPL Gateway", href: "/dev/amplifier/xrpl/xrpl-gateway/" },
-                { title: "XRPL Verifier", href: "/dev/amplifier/xrpl/xrpl-verifier/" },
-                { title: "XRPL Prover", href: "/dev/amplifier/xrpl/xrpl-prover/" },
-              ]
-            }
           ],
         },
         {
