@@ -77,7 +77,11 @@ online_delete=750000
 750000
 ```
 
-7. Configure the `[server]` stanza in `rippled.cfg` securely according to your needs and make sure to prevent unauthorized access to your node.
+7. Configure the `[server]` stanza in `rippled.cfg` securely according to your needs.
+
+<Callout emoji="💡">
+  Note: The default `[server]` parameters may allow for unauthorized administrative access to your node.
+</Callout>
 
 8. Restart the `rippled` service:
 
