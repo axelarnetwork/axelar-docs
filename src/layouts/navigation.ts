@@ -112,8 +112,12 @@ export const getNavigation = (section) => {
                   href: "/dev/general-message-passing/sui/intro/",
                 },
                 {
-                  title: "GMP Example",
-                  href: "/dev/general-message-passing/sui/gmp-example/",
+                  title: "GMP Contracts",
+                  href: "/dev/general-message-passing/sui/gmp-contracts/",
+                },
+                {
+                  title: "GMP Tutorial",
+                  href: "/dev/general-message-passing/sui/gmp-tutorial/",
                 },
               ],
             },
@@ -518,6 +522,7 @@ export const getNavigation = (section) => {
             { title: "Flow", href: "/validator/external-chains/flow/" },
             { title: "Fraxtal", href: "/validator/external-chains/fraxtal/" },
             { title: "Hedera", href: "/validator/external-chains/hedera/" },
+            { title: "Hyperliquid", href: "/validator/external-chains/hyperliquid/" },
             {
               title: "Immutable zkEVM",
               href: "/validator/external-chains/immutable/",
@@ -527,8 +532,10 @@ export const getNavigation = (section) => {
             { title: "Mantle", href: "/validator/external-chains/mantle/" },
             { title: "Moonbeam", href: "/validator/external-chains/moonbeam/" },
             { title: "Optimism", href: "/validator/external-chains/optimism/" },
+            { title: "Plume", href: "/validator/external-chains/plume/" },
             { title: "Polygon", href: "/validator/external-chains/polygon/" },
             { title: "Scroll", href: "/validator/external-chains/scroll/" },
+            { title: "Solana", href: "/validator/external-chains/solana/" },
             {
               title: "Stellar",
               href: "/validator/external-chains/stellar/",
