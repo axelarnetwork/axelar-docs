@@ -10,6 +10,7 @@ Instructions to set up your Hedera mirror node and RPC-relay.
 - Minimum hardware requirements: CPUs: 4 cores RAM: 16 GB Storage (SSD): 500 GB
 - Ubuntu 20.04 LTS or later
 - NPM (installing via [`nvm`](https://github.com/nvm-sh/nvm) is recommended)
+- Redis (used for caching)
 - [Docker](https://docs.docker.com/engine/install/) (>= v20.10.x) installed on your machine. 
 - An Amazon Web Services account/Google Cloud Platform account.
 
@@ -17,7 +18,7 @@ Instructions to set up your Hedera mirror node and RPC-relay.
 
 ```bash
 sudo apt update
-sudo apt install build-essential gcc g++
+sudo apt install build-essential gcc g++ redis
 ```
 
 ### Clone Hedera Mirror Node Repository
@@ -35,6 +36,8 @@ cd hiero-mirror-node
 
 The `application.yml` file is the main configuration file for the Hedera Mirror Node. We'll update that file with GCP/AWS Secret and Access keys and the type of Hedera Network we want to mirror.
 
+For more information about the configuration for the Cloud related credentials, please refer to this documentation for [AWS](https://docs.hedera.com/hedera/core-concepts/mirror-nodes/run-your-own-beta-mirror-node/run-your-own-mirror-node-s3) and for [GCS](https://docs.hedera.com/hedera/core-concepts/mirror-nodes/run-your-own-beta-mirror-node/run-your-own-mirror-node-gcs).
+
 ```application.toml
 hedera:
   mirror:
@@ -50,7 +53,7 @@ hedera:
 ### Run Your Mirror Node
 
 ```bash
-docker compose up
+docker compose up -d
 ```
 
 ### Check Logs
@@ -90,28 +93,6 @@ Open your terminal and run the following commands
 git clone https://github.com/hiero-ledger/hiero-json-rpc-relay.git
 cd hiero-json-rpc-relay
 git checkout tags/v0.68.0 # Or any other specific tag
-```
-
-### Prerequisites
-
-Please make sure that these tools are installed on your machine:
-
-- `node (v20)`
-- `npm`
-- `Redis`
-
-```bash
-# Redis
-sudo apt install redis
-
-# Node v20.9.0
-wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
-
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-
-nvm install v20.9.0
 ```
 
 ### Install dependencies and Build the project
