@@ -16,6 +16,7 @@ Instructions to set up your Hedera mirror node and RPC-relay.
 ### Prerequisites
 
 ```bash
+sudo apt update
 sudo apt install build-essential gcc g++
 ```
 
@@ -26,8 +27,8 @@ sudo apt install build-essential gcc g++
 Open your terminal and run the following commands
 
 ```bash
-git clone https://github.com/hashgraph/hedera-mirror-node
-cd hedera-mirror-node
+git clone https://github.com/hiero-ledger/hiero-mirror-node
+cd hiero-mirror-node
 ```
 
 ### Configure Mirror Node
@@ -86,8 +87,31 @@ You'll need to setup a JSON-RPC relay to let `ampd` intract with your Hedera nod
 Open your terminal and run the following commands
 
 ```bash
-git clone https://github.com/hashgraph/hedera-json-rpc-relay.git
-cd hedera-json-rpc-relay
+git clone https://github.com/hiero-ledger/hiero-json-rpc-relay.git
+cd hiero-json-rpc-relay
+git checkout tags/v0.68.0 # Or any other specific tag
+```
+
+### Prerequisites
+
+Please make sure that these tools are installed on your machine:
+
+- `node (v20)`
+- `npm`
+- `Redis`
+
+```bash
+# Redis
+sudo apt install redis
+
+# Node v20.9.0
+wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+nvm install v20.9.0
 ```
 
 ### Install dependencies and Build the project
@@ -102,9 +126,11 @@ npm run build
 ```bash
 CHAIN_ID= The network chain id. Local and previewnet envs should use 0x12a (298). Previewnet, Testnet and Mainnet should use 0x129 (297), 0x128 (296) and 0x127 (295) respectively
 
-MIRROR_NODE_URL= The Mirror Node API endpoint. Official endpoints are Previewnet (https://previewnet.mirrornode.hedera.com), Testnet (https://testnet.mirrornode.hedera.com), Mainnet (https://mainnet-public.mirrornode.hedera.com).
+MIRROR_NODE_URL=<The Mirror Node API endpoint. Official endpoints are Previewnet (https://previewnet.mirrornode.hedera.com), Testnet (https://testnet.mirrornode.hedera.com), Mainnet (https://mainnet-public.mirrornode.hedera.com).>
 
-HEDERA_NETWORK= Which network to connect to. Can be MAINNET, PREVIEWNET, TESTNET or OTHER
+HEDERA_NETWORK=<Which network to connect to. Can be MAINNET, PREVIEWNET, TESTNET or OTHER>
+
+OPERATOR_KEY_FORMAT=<The key format of OPERATOR_KEY_MAIN, for example Metamask wallet key format is `HEX_ECDSA`>
 
 OPERATOR_ID_MAIN=<AccountID e.g. 0.1.2, can be obtained from portal.hedera.com, wallet or exchange of choice>
 
@@ -114,24 +140,35 @@ OPERATOR_KEY_MAIN=<DER Encoded Private Key, can be obtained from portal.hedera.c
 ### Start the RPC relay server as systemd service
 
 ```bash
-nano /etc/systemd/system/hedera-json-rpc.service
+sudo nano /etc/systemd/system/hiero-json-rpc.service
 ```
 
 ```bash 
 [Unit]
-Description=Hedera JSON-RPC Relayer
+Description=Hiero JSON-RPC Relayer
 After=network.target
 
 [Service]
 Type=simple
-User=$USER
-WorkingDirectory=/path/to/hedera-json-rpc-relayer
-Environment=NODE_ENV=production NVM_DIR=/root/.nvm
+
+# Change with the correct user
+User=ubuntu
+
+# Change with the correct working directory
+WorkingDirectory=/home/ubuntu/hiero-json-rpc-relay
+
+# Update NVM_DIR with the correct value
+Environment=NODE_ENV=production NVM_DIR=/home/ubuntu/.nvm
 ExecStart=/bin/bash -c 'source $NVM_DIR/nvm.sh && npm run start'
 Restart=on-failure
 
 [Install]
 WantedBy=multi-user.target
+```
+
+```bash
+sudo systemctl enable hiero-json-rpc
+sudo systemctl start hiero-json-rpc
 ```
 
 ### Check Logs
@@ -144,6 +181,14 @@ Logs should appear like this
 [2024-10-03 16:49:33.508 +0000] INFO (relay/145017 on xxxxx): SDK client successfully configured to "testnet" for account 0.0.12345 with request timeout value: 10000
 [2024-10-03 16:49:33.511 +0000] INFO (mirror-node/145017 on xxxxx): Mirror Node client successfully configured to REST url: https://testnet.mirrornode.hedera.com/api/v1/ and Web3 url: https://testnet.mirrornode.hedera.com/api/v1/ 
 [2024-10-03 16:49:33.512 +0000] INFO (relay/145017 on xxxxx): Relay running with chainId=0x128
+```
+
+You can also testout the endpoint with sending a `curl`:
+
+```bash
+curl -X POST -H 'Content-Type: application/json' -d '{"jsonrpc":"2.0","id":"2","method":"eth_blockNumber","params":[null]}' http://127.0.0.1:7546
+
+> {"result":"0x7c568e","jsonrpc":"2.0","id":"2"}
 ```
 
 ## Ampd
