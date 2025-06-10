@@ -1,0 +1,908 @@
+import { Callout } from "../../../../../components/callout";
+
+# General Message Passing (GMP) Sui Example
+
+The following is an end-to-end example of how to use the [General Message Passing (GMP)](/dev/general-message-passing/overview/) feature in Sui. This example demonstrates how to create a simple cross-chain application that allows users to send messages between Sui and an [EVM](https://ethereum.org/en/developers/docs/evm/) chain. 
+
+## Prerequisites
+Before you begin, make sure you have the following prerequisites installed:
+- [Rust](https://www.rust-lang.org/tools/install)
+- [Sui CLI](https://docs.sui.io/build/install)
+- [Sui Move](https://docs.sui.io/build/move)
+- [Sui JS](https://www.npmjs.com/package/@mysten/sui)
+
+## Setup 
+
+This demo will use Sui's Typescript SDK to build and deploy the `move` based on contract. It will use `npm` to install the required dependencies. To begin you can run the following command to spin-up your Sui repository.
+
+```bash
+sui move new sui-gmp
+```
+
+This will create a new directory called `sui-gmp` with the following structure:
+
+1. `Move.toml`    
+1. `sources`      
+1. `tests`
+
+You can the run `npm init -y` to add a `package.json` file to the project.
+
+### Move Config
+
+The main configuration for a Sui project is in the `move.toml` file. This file contains the following sections:
+- `[package]`: This section contains the package name, version, and authors.
+- `[dependencies]`: This section contains the dependencies for the package.
+- `[addresses]`: The live addresses of the dependencies for your project.
+- `[dev-dependencies]`: The dev-dependencies section allows overriding dependencies for `--test`.
+- `[dev-addresses]`: The dev-addresses section allows overwriting named addresses for the `--test`.
+
+For now you can clear the boiler plate configuration and simply add the following:
+
+```toml
+[package]
+name = "gmp_example"
+version = "0.1.0"
+edition = "2024"
+```
+
+## GMP Package
+
+The GMP Package (akin to a smart contract in the EVM ecosystem) will hold the core logic for the cross-chain application. It will be built using the `move` programming language. You can start it off by creating a new `gmp_example.move` file in the `sources` folder adding the name for the module in the code.
+
+```move
+module gmp_example::gmp;
+```
+
+Note: The name `gmp_example` must match the name provided in the `move.toml` file that holds the 
+
+### Dependencies 
+
+The dependencies can be setup as follows in your `move.toml` file. The `git` field expects the `cgp-sui` repo where the packages are written. The `rev` represents the specific commit hash where the `published-at` fields are specified for the live packages on Sui. The `subdir` represents where in the `cgp-sui` repo the packages are located.
+
+```toml
+[dependencies]
+AxelarGateway = { git = "https://github.com/axelarnetwork/axelar-cgp-sui.git", rev = "b35227a82f7ca6f941a7e729e1a3b3d48a64b982", subdir = "move/axelar_gateway" }
+GasService = { git = "https://github.com/axelarnetwork/axelar-cgp-sui.git", rev = "b35227a82f7ca6f941a7e729e1a3b3d48a64b982", subdir = "move/gas_service" }
+RelayerDiscovery = { git = "https://github.com/axelarnetwork/axelar-cgp-sui.git", rev = "b35227a82f7ca6f941a7e729e1a3b3d48a64b982", subdir = "move/relayer_discovery" }
+Utils = { git = "https://github.com/axelarnetwork/axelar-cgp-sui.git", rev = "b35227a82f7ca6f941a7e729e1a3b3d48a64b982", subdir = "move/utils" }
+VersionControl = { git = "https://github.com/axelarnetwork/axelar-cgp-sui.git", rev = "b35227a82f7ca6f941a7e729e1a3b3d48a64b982", subdir = "move/version_control" }
+
+```
+
+<Callout emoji="💡">
+  Note: This is a temporary workaround for adding dependencies, this will be updated for a more permanent solution.
+</Callout>
+
+### Required Module Imports
+
+Before writing up the logic of your package you must import the necessary modules that you will need throughout the package. 
+
+From the [Axelar Gateway's](/dev/general-message-passing/sui/gmp-contracts/#sui-gateway) [channel mod](https://github.com/axelarnetwork/axelar-cgp-sui/blob/main/move/axelar_gateway/sources/channel.move) you will need the `Channel` and `ApprovedMessage` objects. The gateway's [gateway module](https://github.com/axelarnetwork/axelar-cgp-sui/blob/main/move/axelar_gateway/sources/gateway.move) will use the Gateway object.
+
+```rust
+use axelar_gateway::channel::{Self, Channel, ApprovedMessage};
+use axelar_gateway::gateway::{Self, Gateway};
+```
+From the [Axelar Gas Service](/dev/general-message-passing/sui/gmp-contracts/#sui-gas-service) you will use the Gas Service object.
+
+```rust
+use gas_service::gas_service::GasService;
+```
+
+From the [Relayer Discovery](https://github.com/axelarnetwork/axelar-cgp-sui/tree/main/move/relayer_discovery) you will use the Relayer Discovery object and Discovery mechanic
+
+```rust
+use relayer_discovery::discovery::RelayerDiscovery;
+use relayer_discovery::transaction;
+```
+
+From standard `move` library helpers you can use the following
+
+```rust
+use std::ascii::{Self, String};
+use std::type_name;
+```
+
+Lastly, from the Sui SDK you can use
+
+```rust
+use sui::address;
+use sui::event;
+use sui::hex;
+use sui::coin::Coin;
+use sui::sui::SUI;
+```
+
+### `Singleton`
+
+The `singleton` is a resource type that lives in its own on-chain [object](https://docs.sui.io/concepts/object-model). In the case of this package this object owns the package's [channel](/dev/general-message-passing/sui/gmp-contracts/#channel). The Singleton's `id` gives it a unique on-chain object identity.
+
+You can create your package's singleton as follows: 
+
+```rust
+public struct Singleton has key {
+    id: object::UID,
+    channel: Channel,
+}
+```
+
+Where the `id` is the unique identifier for the on-chain object and the `channel` is imported from the [Gateway dependency](https://github.com/axelarnetwork/axelar-cgp-sui/tree/main/move/axelar_gateway).
+
+### `Init`
+
+With your singleton now setup, you can create your `initialize` function that will be used to [initialize](https://move-book.com/programmability/module-initializer.html) the GMP package. This function will take a single parameter:
+
+- `ctx: &mut TxContext`: A mutable reference to [TxContext](https://docs.sui.io/references/framework/sui/tx_context#sui_tx_context_TxContext)
+
+In the `init` function you can then setup a new `object` id, create your unique `channel` and associate the two together via the [transfer::share_object](https://docs.sui.io/references/framework/sui/transfer#sui_transfer_share_object) function to publish a `singleton` resource. 
+
+```rust
+fun init(ctx: &mut TxContext) {
+    // Create a new object id for the singleton
+    let singletonId = object::new(ctx);
+    // Create a new channel
+    let channel = channel::new(ctx);
+    // Publish the singleton
+    transfer::share_object(Singleton {
+        id: singletonId,
+        channel,
+    });
+}
+```
+
+### `Send Message`
+
+With your `channel` now setup for your package you can begin to write the functionality to actually send the cross-chain message. The `send_message()` function will take the following parameters:
+
+1. `singleton: &Singleton`: A reference to the `singleton` resource to identify the `channel`
+1. `gateway: &Gateway`: A reference to the gateway's published object id that contains key Axelar functionality
+1. `gas_service: &mut GasService`: A mutable reference to the gas service's object id 
+1. `destination_chain: String`: The name of the destination chain to send the message to
+1. `destination_address: String`: The recipient address on the destination chain
+1. `payload: vector<u8>`: The payload to send to the destination chain
+1. `refund_address: address`: The address to send any surplus gas payment back to
+1. `coin: Coin<SUI>`: The gas coin to be spent on message delivery
+1. `params: vector<u8>`: For future use, this parameter is currently unused and can be passed in with an empty value
+
+The function signature can be written out as follows: 
+
+```rust
+public fun send_message(
+    singleton: &Singleton,
+    gateway: &Gateway,
+    gas_service: &mut GasService,
+    destination_chain: String,
+    destination_address: String,
+    payload: vector<u8>,
+    refund_address: address,
+    coin: Coin<SUI>,
+    params: vector<u8>,
+) {}
+```
+
+Note: the `gas_service` param is of specified as mutable because you will eventually update the `GasService` resource’s internal state (by consuming the provided coin).
+
+You can now begin to implement the functionality for `send_message()`.
+
+First you can create a new [Message Ticket](/dev/general-message-passing/sui/gmp-contracts/#message-ticket). This can be interacting with the `Gateway's` `prepare_message()` function. 
+ 
+```rust
+let message_ticket = gateway::prepare_message(
+    &singleton.channel,
+    destination_chain,
+    destination_address,
+    payload,
+);
+```
+
+The ticket will contain all the relevant parameters needed when triggering a cross-chain message.
+
+Next, you can interact with the `GasService` to pay for the entirety of the cross chain call from the source chain. This can be done by triggering the `pay_gas()` function. The gas payment will be picked up by an Axelar relayer and eventually used to pay for the [execution fee](/dev/gas-service/pay-gas/#execution-fee) on the destination chain. 
+
+```rust
+gas_service.pay_gas(
+    &message_ticket,
+    coin,
+    refund_address,
+    params,
+);
+```
+
+Lastly, you can trigger the Gateway's `send_message()` function to trigger the cross-chain message by passing in the `message_ticket` you created earlier. 
+
+
+```rust
+gateway.send_message(message_ticket);
+```
+
+The complete `send_message()` function should look like this:
+
+```rust
+public fun send_message(
+    singleton: &Singleton,
+    gateway: &Gateway,
+    gas_service: &mut GasService,
+    destination_chain: String,
+    destination_address: String,
+    payload: vector<u8>,
+    refund_address: address,
+    coin: Coin<SUI>,
+    params: vector<u8>,
+) {
+    // Create a new message ticket
+    let message_ticket = gateway::prepare_message(
+        &singleton.channel,
+        destination_chain,
+        destination_address,
+        payload,
+    );
+
+    // Pay for the gas
+    gas_service.pay_gas(
+        &message_ticket,
+        coin,
+        refund_address,
+        params,
+    );
+
+    // Dispatch the cross-chain message
+    gateway.send_message(message_ticket);
+}
+```
+
+### Receive Message
+
+With the package now able to send cross-chain messages, it would be great to also receive messages from other blockchains. This can be done by creating an `execute()` function triggered by Axelar's relaying infrastructure for any incoming message. The full function signature for the `execute()` function will require two parameters:
+
+1. `call: ApprovedMessage`: The [approved message](/dev/general-message-passing/sui/gmp-contracts/#approvedmessage) that was sent from the source chain
+1. `singleton: &mut Singleton`: A mutable reference to the `singleton` resource so the package can consume messages from its `channel` 
+
+```rust
+public fun execute(
+    call: ApprovedMessage, 
+    singleton: &mut Singleton
+) {}
+```
+
+Within the `execute()` function, you can then consume the message by triggering the [consume_approved_message()](/dev/general-message-passing/sui/gmp-contracts/#consume-approved-message) function that is [defined](https://github.com/axelarnetwork/axelar-cgp-sui/blob/main/move/axelar_gateway/sources/channel.move#L85) in the `Channel` module. Once the message is approved, you can `emit` a custom event indicating that the execution has gone through successfully. 
+
+Your complete `execute()` function should look like this:
+
+```rust
+public fun execute(
+    call: ApprovedMessage, 
+    singleton: &mut Singleton
+) {
+    // Consume the message
+    let (_, _, _, payload) = singleton.channel.consume_approved_message(call);
+
+    // Emit Executed event
+    event::emit(Executed { data: payload });
+}
+```
+
+This will lead to an error, however, as you have not yet defined your event, you can do so up top as follows. Note unlike the `Singleton` struct that had a `key` allowing it to be its own on-chain object, the `Executed` struct has a `copy` + `drop` [abilities](https://docs.sui.io/references/sui-api/sui-graphql/reference/types/enums/move-ability) so the event data can be duplicated into the transaction’s event log and then discarded by off-chain indexers. The event takes a raw payload of bytes that it will receive in the cross-chain call.
+
+```rust
+public struct Executed has copy, drop {
+    data: vector<u8>,
+}
+```
+
+With the event now defined up top you should be able to compile the package successfully.
+
+### Register Transaction
+
+Unlike in EVM chains, Sui cross-chain transactions involve an additional step to be able to receive cross-chain messages, beyond just defining the `execute()` function. Packages must be [registered](/dev/general-message-passing/sui/gmp-contracts/#relayer-discovery) with the [Relayer Discovery](https://github.com/axelarnetwork/axelar-cgp-sui/tree/main/move/relayer_discovery). 
+
+You can define a specific function your contract to do just that. The `register_transaction()` function will take the following parameters:
+
+1. `discovery: &mut RelayerDiscovery`: A mutable reference to the `Relayer Discovery` object id. Mutable as the state of the Relayer Discovery will be updated to set the new transaction.
+1. `singleton: &Singleton`: A mutable reference to the `singleton` resource.
+
+```rust
+public fun register_transaction(
+    discovery: &mut RelayerDiscovery, 
+    singleton: &Singleton) {
+}
+```
+
+The first thing you will need to do is create a nested vector for the arguments that will be used by the relayer when calling the `execute()` function.
+
+```rust
+let arguments = vector[
+    //arg `2` corresponding to ApprovedMessage
+    vector[2u8],
+    //arg `0` corresponding to an object, which in this case is the singleton 
+    concat(vector[0u8], object::id_address(singleton).to_bytes()),
+];
+```
+
+The `vector[2u8]` corresponds to the `ApprovedMessage` argument that the relayer will need to pass in to the `execute()` function. It is one of [five argument types](/dev/general-message-passing/sui/gmp-contracts/#argument-types) that the relayer will know how to handle. 
+
+Now that the relayer knows to submit the `ApprovedMessage` to the `execute()` function you can also pass the id of the singleton that will consume the message. To pass in the singleton you `concat` the `0x00` argument type, which tells the relayer that it should an expect an object type with object id of the singleton. 
+
+You now have a template for invoking the `gmp::execute()` function.
+
+Next, you will need to create a [transaction](https://github.com/axelarnetwork/axelar-cgp-sui/blob/main/move/relayer_discovery/sources/types/transaction.move) that uses the `arguments` vector you just created. 
+
+The `new_transaction()` function call expects several parameters.
+
+1. `is_final: bool`: For this you simply pass `true` telling the relayer to execute the transaction.
+1. `move_calls: vector<MoveCall>`: A vector of [MoveCalls](https://github.com/axelarnetwork/axelar-cgp-sui/blob/main/move/relayer_discovery/sources/types/transaction.move#L44)
+
+```rust
+    let transaction = transaction::new_transaction(
+        true,
+        vector[
+            transaction::new_move_call(
+                transaction::new_function(
+                    address::from_bytes(
+                        hex::decode(
+                            *ascii::as_bytes(
+                                &type_name::get_address(
+                                    &type_name::get<Singleton>(),
+                                ),
+                            ),
+                        ),
+                    ),
+                    ascii::string(b"gmp"),
+                    ascii::string(b"execute"),
+                ),
+                arguments,
+                vector[],
+            ),
+        ],
+    );
+```
+
+The `is_final` can simply be set to `true`. The `move_calls()` needs to receive the `function`, `arguments`, and `type_arguments` that will be triggered on that package for the object id that is being sent by the relayer. In your case the function is the `execute` function on the `gmp` module. The `arguments` are the `ApprovedMessage` object and the `singleton` you had put together previously, and the `type_arguments` can be left empty for now.
+
+
+The output of this will be your new `transaction` that you can pass into the Relayer Discover's [register_transaction()](https://github.com/axelarnetwork/axelar-cgp-sui/blob/main/move/relayer_discovery/sources/discovery.move#L93) function along with a reference to your package's `channel` as follows: 
+
+```rust
+discovery.register_transaction(&singleton.channel, transaction);
+```
+
+Once this is called your package will be registered with the Relayer Discovery so it can begin receiving cross-chain messages.
+
+Lastly you can define your `concat()` helper function to append the arguments used in the `register_transaction()` function.
+
+```rust
+fun concat<T: copy>(v1: vector<T>, v2: vector<T>): vector<T> {
+    let mut result = v1;
+    result.append(v2);
+    result
+}
+```
+
+#### Why is this needed?
+
+In the EVM ecosystem because you inherited from AxelarExecutable, the relayer already knows your contract’s function signature and where to call it. This is because on EVM chains contracts also hold their own storage. On Sui chains package logic is separate from objects that are holding the relevant state. As a result the destination that is sent from the source chain will be the `channel_id` as opposed to the `package_id`. In other words, the package ID just tells you which code to run; the channel ID tells you where to run it and which messages to pull in
+
+## Deploy To Sui Testnet
+
+At this point your `move` GMP Package is now complete. What remains is to deploy the contract to the Sui testnet and send/receive the cross-chain messages. 
+
+To deploy the contract you can make use of [Sui's Typescript SDK](https://www.npmjs.com/package/@mysten/sui).
+
+### Setup Sui Deployment
+
+To get setup in the root of your project you can run `npm init -y` to generate a `package.json` file. Next, you can install the following dependencies
+
+- [dotenv](https://www.npmjs.com/package/dotenv)
+- [mysten/sui](https://www.npmjs.com/package/@mysten/sui)
+- [commander](https://www.npmjs.com/package/commander)
+- [axelar-cgp-sui](https://www.npmjs.com/package/@axelar-network/axelar-cgp-sui)
+
+This can be done by running `npm i dotenv @mysten/sui commander @axelar-network/axelar-cgp-sui`.
+
+Open a new `scripts` directory and add a `deploy.js` file.
+
+You can then begin writing your deploy script by setting up your program command in your `deploy.js` file.
+
+```js
+import { Command } from 'commander';
+
+
+const program = new Command();
+program
+  .description('Build and publish a Sui Move package with GMP support')
+  .action(async (opts) => {
+    try {
+      await run(opts);
+    } catch (err) {
+      console.error('❌ Error:', err.message || err);
+      process.exit(1);
+    }
+  });
+
+program.parse(process.argv);
+```
+
+Then define an empty `run()` function up above that will be triggered you when run the script
+
+```js
+async function run() {}
+```
+
+### Build Move Package
+
+You can begin by importing the `execSync` helper up top that will be used to run cli commands from your script.
+
+```js
+import { execSync } from 'child_process';
+```
+
+Then in the `run()` function you can use `exectSync()` to run the relevant Sui cli command to build the contract.
+
+```js
+const buildOutput = execSync(
+    `sui move build --dump-bytecode-as-base64`,
+    { encoding: 'utf-8' }
+);
+```
+
+This will return a `buildOutput`, which is the compiled `Move` bytecode serialized as `Base64` strings, packed into a `JSON` object.
+
+You can then obtain the `modules` and `dependencies` from the compiled `buildOutput`.
+
+```js
+const { modules, dependencies } = JSON.parse(buildOutput);
+```
+
+At this point you should be able to run `node scripts/deploy.js` and build your function. The logs should appears as follows
+
+```bash
+INCLUDING DEPENDENCY GasService
+INCLUDING DEPENDENCY RelayerDiscovery
+INCLUDING DEPENDENCY AxelarGateway
+INCLUDING DEPENDENCY Utils
+INCLUDING DEPENDENCY VersionControl
+INCLUDING DEPENDENCY Sui
+INCLUDING DEPENDENCY MoveStdlib
+BUILDING gmp_example
+```
+
+### Configure Wallet Access for Deployment
+
+Before publishing to the blockchain you need to setup your wallet that will send the transaction.
+
+You can create a new `utils/index.js` file where you can define a new function called `getWallet()`
+
+This function will require several imports up top
+
+```js
+import { ethers } from 'ethers';
+import { Ed25519Keypair } from '@mysten/sui/keypairs/ed25519';
+import { SuiClient } from '@mysten/sui/client';
+import 'dotenv/config';
+```
+
+In the `getWallet()` function will create a new [Ed25519Keypair](https://sdk.mystenlabs.com/typedoc/classes/_mysten_sui.keypairs_ed25519.Ed25519Keypair.html) and `client` object that can be returned to be used later. The keypair will be created based on your private key that should be saved in your `.env` file.
+
+```js
+export function getWallet() {
+  const client = new SuiClient({ url: 'https://fullnode.testnet.sui.io:443' });
+
+  const rawKey = process.env.PRIVATE_KEY;
+  if (!rawKey) {
+    console.error('PRIVATE_KEY not set in your .env');
+    process.exit(1);
+  }
+
+  const keypair = Ed25519Keypair.fromSecretKey(rawKey);
+  return [keypair, client];
+}
+```
+
+Now back in your main `deploy.js` script in your `run()` function you can call `getWallet()` as follows
+
+```js
+  const [keypair, client] = getWallet()
+```
+
+
+### Publish the Package on-chain
+To publish the package on chain you will need to sign a transaction from your Sui Wallet that deploys the package. 
+
+First import the `Transaction` from the Sui SDK 
+```js
+import { Transaction } from '@mysten/sui/transactions';
+```
+
+Then back in your `run()` function you can execute the transaction publishing your package.
+
+```js
+//create new tx
+const tx = new Transaction();
+//publish the package
+const [upgradeCap] = tx.publish({ modules, dependencies });
+```
+
+The `modules` and `dependencies` being passed are the same ones that were destructured from the build output above.
+
+The returned `upgradeCap` is an on-chain resource that the Sui mints for you whenever you publish a package, the address that holds the `cap` is able to upgrade the package at a future point. Further reading on this can be found [here](https://sdk.mystenlabs.com/typescript/transaction-building/basics#transactions). To ensure you are the one with the ability to upgrade the package that you deploy you can pass the `cap` to your own address. 
+
+This can be done as follows:
+
+```js
+//get your sui address
+const myAddress = keypair.getPublicKey().toSuiAddress();
+
+//transfer upgrade capability to your address
+tx.transferObjects([upgradeCap], myAddress);
+```
+
+Now you can go ahead and publish the transaction by calling the `signAndExecuteTransaction()` function from the Sui client. It expects three parameters:
+
+1. `signer`: The signer of the transaction
+1. `transaction`: The transaction to be executed
+1. `options`: Optional extra configurations to go along with the  transaction
+
+You can make the call as follows:
+
+```js
+const response = await client.signAndExecuteTransaction({
+    signer: keypair,
+    transaction: tx,
+    options: { showObjectChanges: true },
+});
+console.log('✅ Publish succeeded!');
+```
+
+At this point you will have successfully published your package! 
+
+The final thing you will need is to get the `packageId` and the `singletonObjectId` for your package.
+
+At the bottom of your `run()` function you can obtain these two values as follows:
+
+```js
+const publishedChange = response.objectChanges.find(c => c.type === 'published');
+console.log('📦 Published package ID:', publishedChange?.packageId);
+
+
+const [gmpSingletonObjectId] = getObjectIdsByObjectTypes(response, [
+`${publishedChange.packageId}::gmp::Singleton`,
+]);
+console.log('🔑 GMP Singleton Object ID:', gmpSingletonObjectId);
+```
+
+The `packageId` can be found by going through the `objectChanges` in the `response` for the signed transaction. The `gmpSinlgetonObjectId` however requires a helper function called `getObjectIdsByObjectTypes()`.
+
+This helper function that is yet to be defined will find a specified object in a given transaction and return the object's `objectId`. In your case you need to fine the `objectId` for the `singleton`. The function can be written out as follows:
+
+```js
+export const getObjectIdsByObjectTypes = (txn, objectTypes) =>
+  objectTypes.map((objectType) => {
+    const objectId = txn.objectChanges.find((change) =>
+      change.objectType?.includes(objectType)
+    )?.objectId;
+
+    if (!objectId) {
+      throw new Error(`No object found for type: ${objectType}`);
+    }
+    return objectId;
+})
+```
+
+
+Great! At this point when you run `node scripts/deploy.js` you should see the following logs.
+
+```bash
+node scripts/deploy.js
+📦 Building Move package
+INCLUDING DEPENDENCY GasService
+INCLUDING DEPENDENCY RelayerDiscovery
+INCLUDING DEPENDENCY AxelarGateway
+INCLUDING DEPENDENCY Utils
+INCLUDING DEPENDENCY VersionControl
+INCLUDING DEPENDENCY Sui
+INCLUDING DEPENDENCY MoveStdlib
+BUILDING gmp_example
+🚀 Sending publish transaction…
+✅ Publish succeeded!
+📦 Published package ID: 0x9068ae5fb08615d7fd9f869d6d1cf47ec21fa687ca7ab3d7d68b45a7b2cfd041
+🔑 GMP Singleton Object ID: 0x9cbb3582c80ed49ca5d0cacce23b2cdb145bd10421f2c969d36799e3cbd78c52
+```
+
+
+## Interact With Contract
+
+The final (and most exciting) thing that needs to be done is to actually interact with the package now that it's live on-chain. In your `scripts` directory, next to your `deploy.js` script you can create a new script called `gmp.js`.
+
+### Setup
+
+This script will also user the `commander` tool to execute
+
+#### Command Setup
+
+
+
+Similarly to the `deploy` script, you can begin by setting up a new `Command`. This command however will require significantly more parameters than the deployment did, so as to specify the params for the `send_message()` function in your `move` package.
+
+This will prompt you to pass in 
+1. The `destination chain`
+1. The `destination address` on the destination chain
+1. The `id` of the singleton object (that should be logged in your deployment script)
+1. The `fee` you are paying to the [axelar gas service](/dev/general-message-passing/sui/gmp-contracts/#sui-gas-service) when sending the cross-chain transaction.
+1. The `payload` for the gmp message being sent
+1. The `refundAddress` to receive any surplus funds sent to the gas service 
+1. The `packageId` of your live package on the Sui blockchain
+
+```js
+const program = new Command()
+program
+  .command('sendCall')
+  .description('Send a GMP call')
+  .requiredOption('--destChain <chain>', 'Destination chain')
+  .requiredOption('--destAddress <addr>', 'Destination address')
+  .requiredOption('--singletonId <singleton>', 'Singleton object ID')
+  .requiredOption('--fee <amount>', 'Fee in atomic units')
+  .requiredOption('--payload <hex>', 'Payload bytes (hex)')
+  .requiredOption('--refundAddress <addr>', 'Refund address')
+  .requiredOption('--packageId <packageId>', 'Package ID')
+  .action(async (opts) => {
+    const args = { ...program.opts(), ...opts }
+    const [keypair, client] = getWallet()
+    try {
+      await run(
+        keypair,
+        client,
+        [
+          args.destChain,
+          args.destAddress,
+          args.singletonId,
+          args.fee,
+          args.payload,
+          args.refundAddress,
+        ],
+        args.packageId
+      )
+    } catch (error) {
+      console.error('❌ Error:', error.message);
+      process.exit(1);
+    }
+  })
+
+program.parseAsync(process.argv)
+```
+
+In the `action()` for the command you trigger the `getWallet()` and `run()` functions. The `getWallet()` was previously defined in the `utils/index.js` helper file, it can be imported up top.
+
+The `run()` function can be defined up top we will return to this shortly.
+
+```js
+async function run(keypair, client, args, packageId) {}
+```
+
+### Send Message
+
+In the `run()` function that you just defined you can begin to implement the functionality to interact with your contract.
+
+First, you can destructure the arguments that were passed in the command
+
+```js
+  const [
+    destinationChain,
+    destinationAddress,
+    singletonId,
+    feeAmount,
+    payload,
+    refundAddress,
+  ] = args
+```
+
+Next, you can create a new `Transaction` object, make sure you import the transaction up top, the way you did in the `deployment` script.
+
+```js
+import { Transaction } from '@mysten/sui/transactions'
+
+//back in your run() function add
+const tx = new Transaction()
+```
+
+Now, you can begin to write up the `moveCall()` to trigger the `send_call()` function. The `moveCall()` will take two parameters
+
+1. `target`: Which entry-function in your module of that package should be invoked
+1. `arguments`: The arguments to be passed into the function being called.
+
+Before writing the `moveCall()` it is worth to review the relevant params. Recall the `send_call()` function expects the following params
+
+```rust
+public fun send_call(
+    singleton: &Singleton,
+    gateway: &Gateway,
+    gas_service: &mut GasService,
+    destination_chain: String,
+    destination_address: String,
+    payload: vector<u8>,
+    refund_address: address,
+    coin: Coin<SUI>,
+    params: vector<u8>,
+) {}
+```
+
+In our destructured array you hav already obtained most of these including; `singletonId`, `destination_chain`, `destination_address`, `payload`, and the `refund_address`.
+
+What you still need to pass in is the `gateway`, `gas_service`, `coin`, and the `params`.
+
+To obtain the four missing parameters you can add the following. First for the missing object ids of the Axelar Gateway](/dev/general-message-passing/sui/gmp-example/#sui-gateway) and [Gas Service](/dev/general-message-passing/sui/gmp-contracts/#sui-gas-service) (for the purpose of this demo) you can simply hardcode  values of the relevant object ids.
+
+```js
+const gasServiceId = '0xac1a4ad12d781c2f31edc2aa398154d53dbda0d50cb39a4319093e3b357bc27d'
+const gatewayId = '0x6fc18d39a9d7bf46c438bdb66ac9e90e902abffca15b846b32570538982fb3db'
+```
+
+For the `coin` you must generate the appropriate [coin type](https://docs.sui.io/references/framework/sui/coin#sui_coin_Coin) that the package is expecting. This can be done by running the `splitCoins()` function, from the Sui SDK. 
+
+```js
+const unitAmount = getUnitAmount(feeAmount)
+const [coin] = tx.splitCoins(tx.gas, [unitAmount])
+```
+
+`getUnitAmount()` can be added as a helper function in your `./utils/index.js` file.
+
+```js
+import { ethers } from 'ethers';
+
+export function getUnitAmount(amount, decimals = 9) {
+  return ethers.utils.parseUnits(amount, decimals).toBigInt();
+}
+```
+
+Under the hood the `splitCoins()` function is expecting the `tx.gas`, which translates into your wallet's default gas coin and `unitAmount`, whih is the parsed amount of gas you are sending to pay for the call. The `splitCoins()` function will create a new object of exactly the `unitAmount` you passed in. Further reading can be found [here](https://sdk.mystenlabs.com/typescript/transaction-building/basics)
+
+Lastly to get the `payload` you can first `encode()` the `payload` into a `uint8array` of raw `bytes`. Then you can wrap that raw `bytes` array into Sui’s [BCS](https://sdk.mystenlabs.com/bcs) format for a `vector<u8>`
+
+```js
+const encodedPayload = new TextEncoder().encode(payload)
+const serializedPayload = bcs.vector(bcs.u8()).serialize(encodedPayload)
+```
+
+Finally, with all the required data you can pass it into the `moveCall()` function call from your `tx` object as follows:
+
+```js
+tx.moveCall({
+    target: `${packageId}::gmp::send_call`,
+    arguments: [
+        tx.object(singletonId),
+        tx.object(gatewayId),
+        tx.object(gasServiceId),
+        tx.pure(bcs.string().serialize(destinationChain).toBytes()),
+        tx.pure(bcs.string().serialize(destinationAddress).toBytes()),
+        tx.pure(serializedPayload), //
+        tx.pure.address(refundAddress),
+        coin, //
+        tx.pure(
+        bcs
+            .vector(bcs.u8())
+            .serialize(new Uint8Array(arrayify(0x0)))
+            .toBytes()
+        ),
+    ],
+})
+```
+
+Everything that is passed in here now has been either explicitly defined in the steps before or passed in as an argument when calling the script. The only item that is not is the very last item in the argument that goes into the `params` field in the `send_call()` function. This can simply be an empty `bcs` encoded `0x0` value.
+
+With the `tx` call now constructed you can trigger the `signAndExecuteTransaction()` on the Sui client to broadcast the transaction to the network.
+
+```js
+const receipt = await client.signAndExecuteTransaction({
+    signer: keypair,
+    transaction: tx,
+    options: {
+        showEffects: true,
+        showObjectChanges: true,
+        showEvents: true,
+    },
+})
+
+console.log('✅ Tx', receipt.digest)
+```
+
+### Receive Message
+
+At this point your `gmp.js` script is now complete, there is no extra functionality that needs to be run to `execute()` each incoming message as it is submitted into Sui by the Axelar relayer. The only thing you will need to do is make sure to trigger the `register_transaction()` function that you have previously written ou on your package. We will return to this once the package is deployed.
+
+
+## Testing
+
+### Deploy Package
+
+Let's now deploy your package to the Sui testnet using your `deploy.js` script. 
+
+Run `node scripts/deploy.js` 
+
+This returns
+
+```bash
+❯ node scripts/deploy.js
+📦 Building Move package
+INCLUDING DEPENDENCY GasService
+INCLUDING DEPENDENCY RelayerDiscovery
+INCLUDING DEPENDENCY AxelarGateway
+INCLUDING DEPENDENCY Utils
+INCLUDING DEPENDENCY VersionControl
+INCLUDING DEPENDENCY Sui
+INCLUDING DEPENDENCY MoveStdlib
+BUILDING gmp_example
+🚀 Sending publish transaction…
+✅ Publish succeeded!
+📦 Published package ID: 0xb05b08f9edcde940dddb5da350b3cd1f4015785db0777079d0954e4bb9e04c3a
+🔑 GMP Singleton Object ID: 0x4ecf424aafacc8bf1589ab557dd96aec51e4ed3d7a6bc5fb4f3acbdca54cd388
+```
+
+### Interact
+
+Now that you have a live package you can begin to interact with it. For this test you can send a message from your new Sui package to an EVM contract on a given EVM chain. We will use this address `0x93294Ed80495194d069FB10636D16638139b0EbA` on the [Avalanche blockchain](https://testnet.snowtrace.io/address/0x93294Ed80495194d069FB10636D16638139b0EbA). The deployed contract corresponds to this [Solidity GMP contract](https://github.com/axelarnetwork/axelar-examples/tree/main/examples/evm/call-contract), it will simply receive an event on Avalanche, emit and `Executed` event and store the message in a storage variable. 
+
+#### Sui --> Avalanche
+
+To send the message using your `gmp.js` you can call the script as follows. 
+
+```bash
+node scripts/gmp.js sendCall \
+  --destChain avalanche \
+  --destAddress 0x93294Ed80495194d069FB10636D16638139b0EbA \
+  --singletonId 0x4ecf424aafacc8bf1589ab557dd96aec51e4ed3d7a6bc5fb4f3acbdca54cd388 \
+  --fee 0.01 \
+  --payload "hello from sui" \
+  --refundAddress <YOUR_WALLET_ADDRESS> \
+  --packageId 0xb05b08f9edcde940dddb5da350b3cd1f4015785db0777079d0954e4bb9e04c3a
+```
+
+This will log out the transaction hash
+
+```bash
+✅ Tx 5xNRuT4wbFSCfgtN2ZVUHPntE5SRA5JATPWSqVKYdY2R
+```
+
+You can then search for your transaction on the [Axelarscan Explorer](https://testnet.axelarscan.io/gmp/5xNRuT4wbFSCfgtN2ZVUHPntE5SRA5JATPWSqVKYdY2R-1)
+
+Now, on the live contract on avalanche you should see the `Executed` event [being emitted](https://testnet.snowtrace.io/tx/0xf8a467a732dc58ff6f904b6cb5e2e601dac3ff5de8024c5f4ec559a8fcd10f85?chainid=43113) and when you query the `message` storage variable it should return `hello from sui`.
+
+#### Avalanche --> Sui
+
+With the Sui -> Avalanche transaction now working let's confirm that you can also receive message on you Sui contract from Avalanche. On the Avalanche side you can either interact with the contract through the explorer/cli/ or remix. We will use [Remix](https://remix.ethereum.org/?#gist=3ce3a199d93fb7b7f36e52082cca8bd5&lang=en&optimize=false&runs=200&evmVersion=null&version=soljson-v0.8.30+commit.73712a01.js) for simplicity.
+
+In your Solidity contract to send the message from Avalanche to Sui you can trigger the `setRemoteValue()` function in your contract and pass in 
+
+1. `destinationChain`: `"sui"`
+1. `destinationAddress`: `<TBD>`
+1. `message`: `"hello from avalanche"`
+
+The reason the `destinationAddress is "tbd" is because you need to first register your gmp package back on Sui with the `RelayerDiscovery`. You can writeup a script to do this but to showcase different ways of interacting with Sui, you can also do this via the [Sui Cli](https://docs.sui.io/references/cli).
+
+#### Register With Relayer Discover
+
+To register with the Relayer Discovery you can run the following command:
+
+```bash
+sui client call \
+  --package 0xb05b08f9edcde940dddb5da350b3cd1f4015785db0777079d0954e4bb9e04c3a \
+  --module gmp \
+  --function register_transaction \
+  --args \
+    0xac080ff19b7d44c9362b83628253a4b55747779096034a72ca62ce89a188305e \
+    0x4ecf424aafacc8bf1589ab557dd96aec51e4ed3d7a6bc5fb4f3acbdca54cd388 \
+  --gas-budget 5000000
+```
+
+This will return a very large log message, the most important note for us however is in the `Transaction Block Events` logs where you can see the emitted `channel_id` for the `TransactionRegistered` event. You can grab that `channel_id` hex value and pass that in as the destiation chain address back on your Avalanche GMP call. An example of a `channel_id` is `0x317cb9668ef6a395eea3b3bf7734444564f5600c9f489d8f35aa197aa32ed324`.
+
+
+Now, back on Avalanche you can complete the call by passing in `0x317cb9668ef6a395eea3b3bf7734444564f5600c9f489d8f35aa197aa32ed324` as the `destinationAddress`
+
+Once you trigger the `setRemoteValue()` (do not forget to pass in a `msg.value` to the call or the transaction will not execute) you should see the transaction going through on [Axelarscan](https://testnet.axelarscan.io/gmp/0xb453a3846ca877550ed90120816edbe0acf91109eca5f0458381acbe85742f42)!
+
+Great! At this point your `execute()` function on your `move` contract should be executing and you should see the `Executed` event being emitted on [Sui](https://suiscan.xyz/testnet/tx/FCMNF9dErhithDaeB5GP9kigtihCnfJbEoctrZqyLP7h). 
+
+
+## Conclusion
+
+You have now successfully built a `move` contract from scratch, deployed it on Sui testnet and sent a GMP message to and from an EVM chain with Sui, congratulations! We are looking forward to seeing what amazing Sui cross-chain GMP applications you will build. The next recommended reading is the Sui Interchain Token Service content to show you how to register fungible assets on Sui and send them to/from other chains connected to Axelar.
+
+Completed source code for this demo can be found [here](https://github.com/axelarnetwork/sui-gmp-demo).
