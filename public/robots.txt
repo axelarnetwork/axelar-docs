@@ -2,6 +2,3 @@ User-agent: *
 Allow: /
 Sitemap: https://docs.axelar.dev/sitemap-0.xml
 
-
-# Meta directives
-INDEX, FOLLOW, MAX-IMAGE-PREVIEW:LARGE, MAX-SNIPPET:-1, MAX-VIDEO-PREVIEW:-1
