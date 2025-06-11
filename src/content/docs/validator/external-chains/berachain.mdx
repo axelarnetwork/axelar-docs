@@ -224,12 +224,46 @@ Once your node is up and running, you need to add the `Berachain` chain to your 
 <tabs>
     <tab-item title="Mainnet">
     ```toml
-    TBA
+    [[handlers]]
+    type="MultisigSigner"
+    chain_name="berachain"
+    cosmwasm_contract="axelar14a4ar5jh7ue4wg28jwsspf23r8k68j7g5d6d3fsttrhp42ajn4xq6zayy5"
+
+    [[handlers]]
+    type="EvmMsgVerifier"
+    chain_finalization="RPCFinalizedBlock"
+    chain_name="berachain"
+    chain_rpc_url="your_own_rpc"
+    cosmwasm_contract="axelar1xx6xdw6mwmfl6u2jygq0zfx2q6uyc8emtt29j9wg78l2l4p739nqmwsgal"
+
+    [[handlers]]
+    type="EvmVerifierSetVerifier"
+    chain_finalization="RPCFinalizedBlock"
+    chain_name="berachain"
+    chain_rpc_url="your_own_rpc"
+    cosmwasm_contract="axelar1xx6xdw6mwmfl6u2jygq0zfx2q6uyc8emtt29j9wg78l2l4p739nqmwsgal"
     ```
     </tab-item>
     <tab-item title="Testnet">
     ```toml
-    TBA
+     [[handlers]]
+    type="MultisigSigner"
+    chain_name="berachain"
+    cosmwasm_contract="axelar14a4ar5jh7ue4wg28jwsspf23r8k68j7g5d6d3fsttrhp42ajn4xq6zayy5"
+
+    [[handlers]]
+    type="EvmMsgVerifier"
+    chain_finalization="RPCFinalizedBlock"
+    chain_name="berachain"
+    chain_rpc_url="your_own_rpc"
+    cosmwasm_contract="axelar1xx6xdw6mwmfl6u2jygq0zfx2q6uyc8emtt29j9wg78l2l4p739nqmwsgal"
+
+    [[handlers]]
+    type="EvmVerifierSetVerifier"
+    chain_finalization="RPCFinalizedBlock"
+    chain_name="berachain"
+    chain_rpc_url="your_own_rpc"
+    cosmwasm_contract="axelar1xx6xdw6mwmfl6u2jygq0zfx2q6uyc8emtt29j9wg78l2l4p739nqmwsgal"
     ```
     </tab-item>
 </tabs>
@@ -239,5 +273,5 @@ Once your node is up and running, you need to add the `Berachain` chain to your 
 For your node to be recognized by the Axelar Network, you need to register your verifier's support for the chain with the `ampd` daemon. This can be done by running:  
 
 ```bash
-TBA
+ampd register-chain-support amplifier berachain 
 ```
