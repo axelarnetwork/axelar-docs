@@ -509,6 +509,7 @@ export const getNavigation = (section) => {
               href: "/validator/external-chains/avalanche/",
             },
             { title: "Base", href: "/validator/external-chains/base/" },
+            { title: "Berachain", href: "/validator/external-chains/berachain/" },
             { title: "Binance", href: "/validator/external-chains/binance/" },
             { title: "Blast", href: "/validator/external-chains/blast/" },
             { title: "Celo", href: "/validator/external-chains/celo/" },
