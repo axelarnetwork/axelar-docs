@@ -401,6 +401,7 @@
       "channel_id": "channel-49"
     },
     {
+<<<<<<< feat/add-move-unit
       "from": "xion",
       "to": "axelarnet",
       "channel_id": "channel-3"
@@ -409,6 +410,26 @@
       "from": "axelarnet",
       "to": "xion",
       "channel_id": "channel-161"
+=======
+      "from": "mantra",
+      "to": "axelarnet",
+      "channel_id": "channel-6"
+    },
+    {
+      "from": "axelarnet",
+      "to": "mantra",
+      "channel_id": "channel-170"
+    },
+    {
+      "from": "babylon",
+      "to": "axelarnet",
+      "channel_id": "channel-2"
+    },
+    {
+      "from": "axelarnet",
+      "to": "babylon",
+      "channel_id": "channel-175"
+>>>>>>> main
     }
   ],
   "testnet": [
@@ -721,6 +742,26 @@
       "from": "axelarnet",
       "to": "provenance",
       "channel_id": "channel-280"
+    },
+    {
+      "from": "mantra",
+      "to": "axelarnet",
+      "channel_id": "channel-6"
+    },
+    {
+      "from": "axelarnet",
+      "to": "mantra",
+      "channel_id": "channel-170"
+    },
+    {
+      "from": "zigchain",
+      "to": "axelarnet",
+      "channel_id": "channel-1"
+    },
+    {
+      "from": "axelarnet",
+      "to": "zigchain",
+      "channel_id": "channel-597"
     }
   ]
 }

@@ -134,8 +134,8 @@
       "permanent": true
     },
     {
-      "source": "/dev/general-message-passing/cosmos-gmp(/)?",
-      "destination": "/dev/cosmos-gmp/",
+      "source": "/dev/cosmos-gmp(/)?",
+      "destination": "/dev/general-message-passing/cosmos-gmp/",
       "permanent": true
     },
     {
@@ -520,7 +520,7 @@
     },
     {
       "source": "/dev/cosmos-gmp(/)?",
-      "destination": "/dev/cosmos-gmp/overview/",
+      "destination": "/dev/general-message-passing/cosmos-gmp/overview/",
       "permanent": true
     },
     {
@@ -546,6 +546,61 @@
     {
       "source": "/dev/send-tokens/interchain-tokens/quick-start/programmatic(/)?",
       "destination": "/dev/send-tokens/interchain-tokens/create-new-interchain-token/",
+      "permanent": true
+    },
+    {
+      "source": "dev/general-message-passing/stellar-gmp/its-example(/)?",
+      "destination": "dev/send-tokens/stellar-its/",
+      "permanent": true
+    },
+    {
+      "source": "/dev/general-message-passing/sui/sui-programs(/)?",
+      "destination": "/dev/general-message-passing/sui/intro/",
+      "permanent": true
+    },
+    {
+      "source": "/dev/general-message-passing/stellar-gmp/stellar-contracts(/)?",
+      "destination": "/dev/general-message-passing/stellar-gmp/intro/",
+      "permanent": true
+    },
+    {
+      "source": "/dev/amplifier/chain-integration/introduction(/)?",
+      "destination": "/dev/amplifier/introduction/",
+      "permanent": true
+    },
+    {
+      "source": "/resources/ibc-chain-onboarding(/)?",
+      "destination": "/dev/ibc-chain-onboarding/",
+      "permanent": true
+    },
+    {
+      "source": "/dev/general-message-passing/monitoring(/)?",
+      "destination": "/resources/axelarscan/monitoring/",
+      "permanent": true
+    },
+    {
+      "source": "/dev/general-message-passing/axelar-commandid(/)?",
+      "destination": "/resources/axelar-commandid/",
+      "permanent": true
+    },
+    {
+      "source": "/dev/send-tokens/sui-its(/)?",
+      "destination": "/dev/send-tokens/sui-its/intro/",
+      "permanent": true
+    },
+    {
+      "source": "/dev/send-tokens/stellar-its(/)?",
+      "destination": "/dev/send-tokens/stellar-its/intro/",
+      "permanent": true
+    },
+    {
+      "source": "/dev/cosmos-gmp/cosmos-2way-manual-relay(/)?",
+      "destination": "/dev/general-message-passing/cosmos-gmp/cosmos-2way-manual-relay/",
+      "permanent": true
+    },
+    {
+      "source": "/dev/cosmos-gmp/overview(/)?",
+      "destination": "/dev/general-message-passing/cosmos-gmp/overview/",
       "permanent": true
     }
   ]

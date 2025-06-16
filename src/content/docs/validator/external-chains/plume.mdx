@@ -1,0 +1,308 @@
+# Plume
+
+import { Callout } from "/src/components/callout";
+
+Set up your Plume node.
+
+## Prerequisites
+
+- [Setup your Axelar validator](/validator/setup/overview/)
+- [Minimum hardware requirements](https://docs.plume.org/plume/developers/how-to-guides/how-to-run-a-node#hardware-requirements):
+  - Memory: 16 GB RAM
+  - CPU: 4 CPU cores
+  - Disk: NVMe SSD storage
+  - [Docker Engine](https://docs.docker.com/engine/install/)
+  - [Docker Compose](https://docs.docker.com/compose/install/)
+- [Official Documentation](https://docs.plume.org/plume/developers/how-to-guides/how-to-run-a-node)
+
+## Running a Plume Node
+
+To run a plume node, you'll have to:
+
+1. [Run a Celestia DA Server](/validator/external-chains/plume/#1-run-a-celestia-da-server)
+
+2. [Run a Plume Nitro Node](/validator/external-chains/plume/#2-run-a-plume-nitro-node)
+
+## 1. Run a Celestia DA Server
+
+Create `celestia-server.yaml` file with the below config to run the Celestia DAS server.
+
+<tabs>
+  <tab-item title="Mainnet">
+  ```yaml
+  services:
+  celestia-server:
+    image: ghcr.io/celestiaorg/nitro-das-celestia:v0.4.3
+    container_name: celestia-server
+    entrypoint:
+      - /bin/celestia-server
+      - --celestia.namespace-id
+      - "00000d048007a33abfeb"
+      - --rpc-addr
+      - "0.0.0.0"
+      - --rpc-port
+      - "26657"
+      - --celestia.rpc
+      - "CELESTIA_ENDPOINT"
+      - --log-level
+      - "DEBUG"
+    ports:
+      - "1317:1317"
+      - "9090:9090"
+      - "26657:26657" # Celestia RPC Port
+      - "1095:1095"
+      - "8080:8080"
+  ```
+  </tab-item>
+  <tab-item title="Testnet">
+  ```yaml
+  services:
+    celestia-server-mocha:
+      image: ghcr.io/celestiaorg/nitro-das-celestia:v0.4.3
+      container_name: celestia-server-mocha
+      entrypoint:
+        - /bin/celestia-server
+        - --celestia.namespace-id
+        - "0cd3a18eab940678"  # Make sure to use 0cd3a18eab940678 as the Namespace ID for Plume Testnet.
+        - --rpc-addr
+        - "0.0.0.0"
+        - --rpc-port
+        - "26657"
+        - --celestia.rpc
+        - "CELESTIA_MOCHA_ENDPOINT" # Replace with your Celestia Mocha RPC URL
+        - --log-level
+        - "DEBUG"
+      ports:
+        - "1317:1317"
+        - "9090:9090"
+        - "26657:26657" # Celestia RPC Port
+        - "1095:1095"
+        - "8080:8080"
+```
+  </tab-item>
+</tabs>
+
+### Start Celestia DA Server
+
+```bash
+docker compose -f celestia-server.yaml up -d
+```
+
+### Check Celestia DA Logs
+
+<tabs>
+  <tab-item title="Mainnet">
+  ```bash
+  docker logs -f celestia-server
+  ```
+  </tab-item>
+  <tab-item title="Testnet">
+  ```bash
+  docker logs -f celestia-server-mocha
+  ```
+  </tab-item>
+</tabs>
+
+## 2. Run a Plume Nitro Node
+
+Create `plume.yaml` file with the below config to run the Plume node.
+
+<tabs>
+  <tab-item title="Mainnet">
+  ```yaml
+  services:
+  plume-mainnet:
+    image: ghcr.io/conduitxyz/plume-nitro:v3.3.2-celestia
+    container_name: plume-mainnet
+    restart: unless-stopped
+    ports:
+      - "8547:8547"
+      - "6070:6070"
+    command:
+      - --chain.id=98866
+      - --chain.name=conduit-orbit-deployer
+      - --http.addr=0.0.0.0
+      - --http.corsdomain=*
+      - --http.vhosts=*
+      - --ws.expose-all
+      - --ws.rpcprefix=/
+      - --ws.port=8547
+      - --ws.addr=0.0.0.0
+      - --ws.origins=*
+      - --http.api=net,web3,eth,txpool,debug,admin,arb,arbdebug,arbtrace
+      - --ws.api=net,web3,eth,txpool,debug
+      - --chain.info-json=[{"chain-id":98866,"parent-chain-id":1,"chain-name":"conduit-orbit-deployer","chain-config":{"chainId":98866,"homesteadBlock":0,"daoForkBlock":null,"daoForkSupport":true,"eip150Block":0,"eip150Hash":"0x0000000000000000000000000000000000000000000000000000000000000000","eip155Block":0,"eip158Block":0,"byzantiumBlock":0,"constantinopleBlock":0,"petersburgBlock":0,"istanbulBlock":0,"muirGlacierBlock":0,"berlinBlock":0,"londonBlock":0,"clique":{"period":0,"epoch":0},"arbitrum":{"EnableArbOS":true,"AllowDebugPrecompiles":false,"DataAvailabilityCommittee":true,"InitialArbOSVersion":32,"InitialChainOwner":"0x5Ec32984332eaB190cA431545664320259D755d8","GenesisBlockNum":0}},"rollup":{"bridge":"0x35381f63091926750F43b2A7401B083263aDEF83","inbox":"0x943fc691242291B74B105e8D19bd9E5DC2fcBa1D","sequencer-inbox":"0x85eC1b9138a8b9659A51e2b51bb0861901040b59","rollup":"0x35c60Cc77b0A8bf6F938B11bd3E9D319a876c2aC","validator-utils":"0x84eA2523b271029FFAeB58fc6E6F1435a280db44","validator-wallet-creator":"0x0A5eC2286bB15893d5b8f320aAbc823B2186BA09","deployed-at":21887008}}]
+      - --node.celestia-cfg.enable=true
+      - --node.celestia-cfg.url=http://celestia-ser:26657
+      - --node.data-availability.enable=true
+      - --node.data-availability.rest-aggregator.enable=true
+      - --node.data-availability.rest-aggregator.urls=https://das-plume-mainnet-1.t.conduit.xyz
+      - --execution.forwarding-target=https://rpc.plume.org
+      - --execution.caching.archive
+      - --parent-chain.connection.url=<ETH_RPC_URL> # Replace with execution layer client like Geth, Erigon, Nethermind, or Reth rpc url
+      - --parent-chain.blob-client.beacon-url=<ETH_BEACON_RPC_URL> # Replace with consensus layer client like Lighthouse, Prysm, Nimbus, or Teku rpc url
+      - --node.staker.enable=false
+      - --node.feed.input.url=wss://relay-plume-mainnet-1.t.conduit.xyz
+      - --node.sequencer=false
+      - --execution.rpc.tx-fee-cap=100
+      - --execution.rpc.gas-cap=500000000
+      - --metrics
+      - --metrics-server.addr=0.0.0.0
+      - --metrics-server.port=6070
+      - --metrics-server.update-interval=5s
+  ```
+  </tab-item>
+  <tab-item title="Testnet">
+  ```yaml
+  services:
+    plume-testnet:
+      image: ghcr.io/conduitxyz/plume-nitro:v3.3.2-celestia
+      container_name: plume-testnet
+      restart: unless-stopped
+      ports:
+        - "8547:8547"
+        - "6070:6070"
+      command:
+        - --chain.id=98867
+        - --chain.name=conduit-orbit-deployer
+        - --http.addr=0.0.0.0
+        - --http.corsdomain=*
+        - --http.vhosts=*
+        - --ws.expose-all
+        - --ws.rpcprefix=/
+        - --ws.port=8547
+        - --ws.addr=0.0.0.0
+        - --ws.origins=*
+        - --http.api=net,web3,eth,txpool,debug,admin,arb,arbdebug,arbtrace
+        - --ws.api=net,web3,eth,txpool,debug
+        - --chain.info-json=[{"chain-id":98867,"parent-chain-id":11155111,"chain-name":"conduit-orbit-deployer","chain-config":{"chainId":98867,"homesteadBlock":0,"daoForkBlock":null,"daoForkSupport":true,"eip150Block":0,"eip150Hash":"0x0000000000000000000000000000000000000000000000000000000000000000","eip155Block":0,"eip158Block":0,"byzantiumBlock":0,"constantinopleBlock":0,"petersburgBlock":0,"istanbulBlock":0,"muirGlacierBlock":0,"berlinBlock":0,"londonBlock":0,"clique":{"period":0,"epoch":0},"arbitrum":{"EnableArbOS":true,"AllowDebugPrecompiles":false,"DataAvailabilityCommittee":true,"InitialArbOSVersion":32,"InitialChainOwner":"0x09a24DD120676EA4034cD47BfA4432a6a87A8a42","GenesisBlockNum":0}},"rollup":{"bridge":"0xC55b89c17d7a35877FA4ea818fea2a70d5765f1c","inbox":"0xb48cdff890199f5De31514024B95F8664F8Af222","sequencer-inbox":"0xbCa991f1831bE1F1E7e5576d5F84A645e70F3E4d","rollup":"0x76268c4a75D1bE588356569acbfE03366d9eDCbD","validator-utils":"0x9d502DD38E6E7FBdd3b7e964345d544ec37f1D72","validator-wallet-creator":"0x684A827456373a0C0379B1C82BA31Ee5E4F88F62","deployed-at":7889627}}]
+        - --node.celestia-cfg.enable=true
+        - --node.celestia-cfg.url=http://celestia-server-mocha:26657
+        - --node.data-availability.enable=true
+        - --node.data-availability.rest-aggregator.enable=true
+        - --node.data-availability.rest-aggregator.urls=https://das-plume-testnet-1.t.conduit.xyz
+        - --execution.forwarding-target=https://testnet-rpc.plume.org
+        - --execution.caching.archive
+        - --parent-chain.connection.url=<ETH_SEPOLIA_RPC_URL> # Replace with execution layer client like Geth, Erigon, Nethermind, or Reth rpc url
+        - --parent-chain.blob-client.beacon-url=<ETH_SEPOLIA_BEACON_RPC_URL> # Replace with consensus layer client like Lighthouse, Prysm, Nimbus, or Teku rpc url
+        - --node.staker.enable=false
+        - --node.feed.input.url=wss://relay-plume-testnet-1.t.conduit.xyz
+        - --node.sequencer=false
+        - --execution.rpc.tx-fee-cap=100
+        - --execution.rpc.gas-cap=500000000
+        - --metrics
+        - --metrics-server.addr=0.0.0.0
+        - --metrics-server.port=6070
+        - --metrics-server.update-interval=5s
+```
+  </tab-item>
+</tabs>
+
+### Start Plume  Nitro Node
+
+<tabs>
+  <tab-item title="Mainnet">
+  ```bash
+  docker-compose -f plume-mainnet.yaml up -d
+  ```
+  </tab-item>
+  <tab-item title="Testnet">
+  ```bash
+  docker-compose -f plume.yaml up -d
+  ```
+  </tab-item>
+</tabs>
+
+### Check Plume  Nitro Node Logs
+
+<tabs>
+  <tab-item title="Mainnet">
+  ```bash
+ docker logs plume-mainnet
+  ```
+  </tab-item>
+  <tab-item title="Testnet">
+  ```bash
+  docker logs -f plume-testnet
+```
+  </tab-item>
+</tabs>
+
+After a few minutes, you should see lines that look like this. This means your node has started syncing with the network and is receiving blocks.
+
+```bash
+INFO [06-02|08:03:03.483] InboxTracker                             sequencerBatchCount=3 messageCount=15 l1Block=7,900,124 l1Timestamp=2025-03-14T09:59:00+0000
+INFO [06-02|08:03:03.496] created block                            l2Block=14 l2BlockHash=8405d0..0bfae6
+INFO [06-02|08:03:04.485] InboxTracker                             sequencerBatchCount=4 messageCount=16 l1Block=7,902,343 l1Timestamp=2025-03-14T17:50:01+0000
+INFO [06-02|08:03:04.498] created block                            l2Block=15 l2BlockHash=f48fcc..2f4412
+INFO [06-02|08:03:05.551] InboxTracker                             sequencerBatchCount=5 messageCount=18 l1Block=7,915,027 l1Timestamp=2025-03-16T14:56:01+0000
+INFO [06-02|08:03:05.568] created block                            l2Block=16 l2BlockHash=368751..af5f8b
+INFO [06-02|08:03:06.124] InboxTracker                             sequencerBatchCount=6 messageCount=30 l1Block=7,916,951 l1Timestamp=2025-03-16T22:00:09+0000
+INFO [06-02|08:03:06.569] created block                            l2Block=29 l2BlockHash=c9f179..bb553e
+INFO [06-02|08:03:06.655] InboxTracker                             sequencerBatchCount=7 messageCount=32 l1Block=7,920,611 l1Timestamp=2025-03-17T10:32:32+0000
+INFO [06-02|08:03:07.570] created block                            l2Block=31 l2BlockHash=37f20a..e11dcc
+INFO [06-02|08:03:07.620] InboxTracker                             sequencerBatchCount=9 messageCount=39 l1Block=7,924,098 l1Timestamp=2025-03-17T22:27:20+0000
+INFO [06-02|08:03:08.381] InboxTracker                             sequencerBatchCount=11 messageCount=52 l1Block=7,925,945 l1Timestamp=2025-03-18T04:15:34+0000
+INFO [06-02|08:03:08.570] created block                            l2Block=51 l2BlockHash=1bd97f..28eb52
+```
+
+## Ampd Configuration
+
+Once your node is up and running, you need to add the `Plume` chain to your [ampd daemon's](https://github.com/axelarnetwork/axelar-amplifier/tree/main/ampd) `config.toml`file. This can be done by adding in the following configuration:
+
+<tabs>
+    <tab-item title="mainnet">
+    ```toml
+    [[handlers]]
+    type="MultisigSigner"
+    chain_name="plume"
+    cosmwasm_contract="axelar14a4ar5jh7ue4wg28jwsspf23r8k68j7g5d6d3fsttrhp42ajn4xq6zayy5"
+
+    [[handlers]]
+    type="EvmMsgVerifier"
+    chain_name="plume"
+    chain_finalization="RPCFinalizedBlock"
+    chain_rpc_url="your_own_rpc"
+    cosmwasm_contract="axelar1nrdqke6tcxjuymg5gyd9x3yg35n3wrgarnj3sqskp98z2xnvlx9q82f63t"
+
+    [[handlers]]
+    type="EvmVerifierSetVerifier"
+    chain_name="plume"
+    chain_finalization="RPCFinalizedBlock"
+    chain_rpc_url="your_own_rpc"
+    cosmwasm_contract="axelar1nrdqke6tcxjuymg5gyd9x3yg35n3wrgarnj3sqskp98z2xnvlx9q82f63t"
+
+    ```
+    </tab-item>
+    <tab-item title="testnet">
+    ```toml
+    [[handlers]]
+    type="MultisigSigner"
+    chain_name="plume"
+    cosmwasm_contract="axelar14a4ar5jh7ue4wg28jwsspf23r8k68j7g5d6d3fsttrhp42ajn4xq6zayy5"
+    
+    [[handlers]]
+    type="EvmMsgVerifier"
+    chain_name="plume"
+    chain_finalization="RPCFinalizedBlock"
+    chain_rpc_url="your_own_rpc"
+    cosmwasm_contract="axelar1nrdqke6tcxjuymg5gyd9x3yg35n3wrgarnj3sqskp98z2xnvlx9q82f63t"
+
+    [[handlers]]
+    type="EvmVerifierSetVerifier"
+    chain_name="plume"
+    chain_finalization="RPCFinalizedBlock"
+    chain_rpc_url="your_own_rpc"
+    cosmwasm_contract="axelar1nrdqke6tcxjuymg5gyd9x3yg35n3wrgarnj3sqskp98z2xnvlx9q82f63t"
+
+    ```
+    </tab-item>
+</tabs>
+
+## Chain Registration
+
+For your node to be recognized by the Axelar Network, you need to register your verifier's support for the chain with the `ampd` daemon. This can be done by running:  
+
+```bash
+ampd register-chain-support amplifier plume
+```

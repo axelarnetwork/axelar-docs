@@ -1,0 +1,277 @@
+# Berachain
+
+import { Callout } from "/src/components/callout";
+
+Set up your Berachain Mainnet or Testnet node
+
+## Prerequisites
+
+- [Setup your Axelar validator](/validator/setup/overview/)
+- [Minimum hardware requirements](https://docs.berachain.com/nodes/quickstart#hardware-requirements-%F0%9F%92%BB):
+  - Memory: 48 GB RAM
+  - CPU: 8 Physical Cores
+  - Disk: 4TB of SSD storage
+- [Official Documentation](https://docs.berachain.com/nodes/quickstart)
+
+## Download clients
+
+Download berachain consensus client from [here](https://github.com/berachain/beacon-kit/releases).
+
+```bash
+wget https://github.com/berachain/beacon-kit/releases/download/v1.2.0/beacond-v1.2.0-linux-amd64.tar.gz
+tar -xzvf beacond-v1.2.0-linux-amd64.tar.gz
+mv beacond-v1.2.0-linux-amd64 beacond
+```
+
+Download any execution client recommended from [here](https://docs.berachain.com/nodes/evm-execution).
+
+```bash
+wget https://github.com/NethermindEth/nethermind/releases/download/1.31.11/nethermind-1.31.11-2be1890e-linux-x64.zip
+unzip nethermind-1.31.11-2be1890e-linux-x64.zip
+```
+
+## Fetch Scripts
+
+```bash
+mkdir beranode
+cd beranode
+git clone https://github.com/berachain/guides
+mv guides/apps/node-scripts/* ./
+rm -r guides
+```
+
+## Configure env variables
+
+```bash
+nano env.sh
+```
+
+The file env.sh contains environment variables used in the other scripts.
+
+
+<tabs>
+  <tab-item title="Mainnet">
+  ```bash
+  #!/bin/bash
+
+  # CHANGE THESE VALUES
+  export CHAIN_SPEC=mainnet
+  export MONIKER_NAME=camembera  # name of your choice
+  export WALLET_ADDRESS_FEE_RECIPIENT=0x9BcaA41DC32627776b1A4D714Eef627E640b3EF5
+  export EL_ARCHIVE_NODE=false # set to true if you want to run an archive node on CL and EL
+  export MY_IP=`curl -s canhazip.com`.    # your node ip address
+
+  # VALUES YOU MIGHT WANT TO CHANGE
+  export LOG_DIR=$(pwd)/logs
+  export JWT_PATH=$BEACOND_CONFIG/jwt.hex
+  export BEACOND_BIN=$(command -v beacond || echo $(pwd)/beacond)       # set path to beacond binary
+  export BEACOND_DATA=$(pwd)/var/beacond
+  export RETH_BIN=$(command -v reth || echo $(pwd)/reth)       # set path to the reth binary
+  export GETH_BIN=$(command -v geth || echo $(pwd)/geth)       # set path to the geth binary
+  export NETHERMIND_BIN=$(command -v Nethermind.Runner || echo $(pwd)/Nethermind.Runner)        # set path to nethermind binary
+  export ERIGON_BIN=$(command -v erigon || echo $(pwd)/erigon)             # set path to erigon binary
+```
+  </tab-item>
+  <tab-item title="Testnet">
+  ```bash
+  #!/bin/bash
+
+  # CHANGE THESE VALUES
+  export CHAIN_SPEC=testnet
+  export MONIKER_NAME=camembera        # name of your choice
+  export WALLET_ADDRESS_FEE_RECIPIENT=0x9BcaA41DC32627776b1A4D714Eef627E640b3EF5
+  export EL_ARCHIVE_NODE=false # set to true if you want to run an archive node on CL and EL
+  export MY_IP=`curl -s canhazip.com`        # your node ip address   
+
+  # VALUES YOU MIGHT WANT TO CHANGE
+  export LOG_DIR=$(pwd)/logs
+  export JWT_PATH=$BEACOND_CONFIG/jwt.hex
+  export BEACOND_BIN=$(command -v beacond || echo $(pwd)/beacond)       # set path to beacond binary
+  export BEACOND_DATA=$(pwd)/var/beacond
+  export RETH_BIN=$(command -v reth || echo $(pwd)/reth)       # set path to the reth binary
+  export GETH_BIN=$(command -v geth || echo $(pwd)/geth)       # set path to the geth binary
+  export NETHERMIND_BIN=$(command -v Nethermind.Runner || echo $(pwd)/Nethermind.Runner)        # set path to nethermind binary
+  export ERIGON_BIN=$(command -v erigon || echo $(pwd)/erigon)             # set path to erigon binary
+```
+  </tab-item>
+</tabs>
+
+
+## Fetch Parameters
+
+The  `fetch-berachain-params.sh` script downloads the key network parameters for Berachain.
+
+```bash
+./fetch-berachain-params.sh
+```
+
+## Set up the Consensus Client 
+
+The script `setup-beacond.sh` invokes `beacond init` and `beacond jwt generate`.
+
+```bash
+./setup-beacond.sh
+```
+
+## Set up the Execution Client 
+
+The `setup-reth`, `setup-geth`, and `setup-nether` scripts create a runtime directory and configuration for their respective chain clients.
+
+```bash
+./setup-nether.sh
+```
+
+## Run Both Clients
+
+Create systemd service file for nethermind:
+
+```bash
+sudo tee <<EOF >/dev/null /etc/systemd/system/nethermind.service
+[Unit]
+Description=Nethermind Client
+After=network.target
+
+[Service]
+User=$USER
+Type=simple
+ExecStart=/path/to/the/$NETHERMIND_BINARY  --config $NETHERMIND_CONFIG_DIR/nethermind.cfg
+Restart=on-failure
+LimitNOFILE=65535
+
+[Install]
+WantedBy=multi-user.target
+EOF
+```
+
+Create systemd service file for beacond:
+
+```bash
+sudo tee <<EOF >/dev/null /etc/systemd/system/beacond.service
+[Unit]
+Description=Beacond Client
+After=network.target
+
+[Service]
+User=$USER
+Type=simple
+ExecStart=/path/to/the/$BEACOND_BINARY start --home $BEACOND_DATA
+Restart=on-failure
+LimitNOFILE=65535
+
+[Install]
+WantedBy=multi-user.target
+EOF
+```
+
+### Start Clients
+
+You can start the clients using snapshots by following the [guide](https://docs.berachain.com/nodes/quickstart#fetch-snapshots-optional).
+
+```bash
+# Reload systemd
+sudo systemctl daemon-reload
+
+# Enable Nethermind and Beacon Chain services to start on b
+sudo systemctl enable nethermind
+sudo systemctl enable beacond
+
+# Start the services
+sudo systemctl start nethermind
+sudo systemctl start beacond
+```
+
+If everything was set-up correctly, your Clients should now be starting the process of synchronization. This will take several hours, depending on your hardware. To check the status of the running service or to follow the logs, you can use:
+
+Check Status:
+
+```bash
+sudo systemctl status nethermind
+sudo systemctl status beacond
+```
+
+Check Logs:
+
+```bash
+sudo journalctl -u nethermind -f
+sudo journalctl -u beacond -f
+```
+
+## Verify sync status
+
+Get current execution block number:
+
+```bash
+curl --location 'http://localhost:8545' \
+--header 'Content-Type: application/json' \
+--data '{
+	"jsonrpc":"2.0",
+	"method":"eth_blockNumber",
+	"params":[],
+	"id":420
+}'
+```
+
+Get current Consensus Block Number:
+
+```bash
+curl -s http://localhost:26657/status | jq '.result.sync_info.latest_block_height'
+```
+
+## Ampd Configuration
+
+Once your node is up and running, you need to add the `Berachain` chain to your [ampd daemon's](https://github.com/axelarnetwork/axelar-amplifier/tree/main/ampd) `config.toml`file. This can be done by adding in the following configuration:
+
+<tabs>
+    <tab-item title="Mainnet">
+    ```toml
+    [[handlers]]
+    type="MultisigSigner"
+    chain_name="berachain"
+    cosmwasm_contract="axelar14a4ar5jh7ue4wg28jwsspf23r8k68j7g5d6d3fsttrhp42ajn4xq6zayy5"
+
+    [[handlers]]
+    type="EvmMsgVerifier"
+    chain_finalization="RPCFinalizedBlock"
+    chain_name="berachain"
+    chain_rpc_url="your_own_rpc"
+    cosmwasm_contract="axelar1xx6xdw6mwmfl6u2jygq0zfx2q6uyc8emtt29j9wg78l2l4p739nqmwsgal"
+
+    [[handlers]]
+    type="EvmVerifierSetVerifier"
+    chain_finalization="RPCFinalizedBlock"
+    chain_name="berachain"
+    chain_rpc_url="your_own_rpc"
+    cosmwasm_contract="axelar1xx6xdw6mwmfl6u2jygq0zfx2q6uyc8emtt29j9wg78l2l4p739nqmwsgal"
+    ```
+    </tab-item>
+    <tab-item title="Testnet">
+    ```toml
+     [[handlers]]
+    type="MultisigSigner"
+    chain_name="berachain"
+    cosmwasm_contract="axelar14a4ar5jh7ue4wg28jwsspf23r8k68j7g5d6d3fsttrhp42ajn4xq6zayy5"
+
+    [[handlers]]
+    type="EvmMsgVerifier"
+    chain_finalization="RPCFinalizedBlock"
+    chain_name="berachain"
+    chain_rpc_url="your_own_rpc"
+    cosmwasm_contract="axelar1xx6xdw6mwmfl6u2jygq0zfx2q6uyc8emtt29j9wg78l2l4p739nqmwsgal"
+
+    [[handlers]]
+    type="EvmVerifierSetVerifier"
+    chain_finalization="RPCFinalizedBlock"
+    chain_name="berachain"
+    chain_rpc_url="your_own_rpc"
+    cosmwasm_contract="axelar1xx6xdw6mwmfl6u2jygq0zfx2q6uyc8emtt29j9wg78l2l4p739nqmwsgal"
+    ```
+    </tab-item>
+</tabs>
+
+## Chain Registration
+
+For your node to be recognized by the Axelar Network, you need to register your verifier's support for the chain with the `ampd` daemon. This can be done by running:  
+
+```bash
+ampd register-chain-support amplifier berachain 
+```

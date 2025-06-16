@@ -9,11 +9,11 @@ This guide explains how to track the status of your transactions, identify diffe
 When you initiate a transaction across chains, monitoring its progress is important to ensure successful completion. A typical transaction will pass through several stages:
 
 1. **Sent** — The transaction has been initiated and relayed to the Axelar network.
-2. **Gas Paid** — Gas fees have been paid on the source chain for the transaction to proceed.
-3. **Confirmed** — The transaction has been confirmed on the source chain and awaits approval in the Axelar network.
-4. **Approved** — The transaction has been approved by the Axelar network and is ready to be executed on the destination chain.
-5. **Executed** — The transaction has been successfully executed on the destination chain.
-6. **Excess Gas Refunded** — Any excess gas not used during the transaction is refunded to the sender.
+1. **Gas Paid** — Gas fees have been paid on the source chain for the transaction to proceed.
+1. **Confirmed** — The transaction has been finalised on the source chain and awaits approval in the Axelar network.
+1. **Approved** — The transaction has been approved by the Axelar network and is ready to be executed on the destination chain.
+1. **Executed** — The transaction has been successfully executed on the destination chain.
+1. **Excess Gas Refunded** — Any excess gas not used during the transaction is refunded to the sender.
 
 ## Common failure states
 
@@ -24,7 +24,7 @@ Despite following the standard flow, transactions can fail at various points due
    - **Solution**:
      - **Axelarscan UI**: If the transaction is unapproved, Axelarscan will show an option to "APPROVE.” Click this to resubmit the request to the network manually. Once approved, the transaction can proceed.
      - **AxelarJS SDK**: Use the SDK's `manualRelayToDestChain` method to programmatically resubmit and approve the transaction.
-2. **Failure to execute on destination chain**
+1. **[Failure to execute on destination chain](https://axelarscan.io/gmp/0xa5a79876ff08b9e8638778cbe25774f57385f3894d86e81b5511004bc33a8b71-14)**
    - **Issue**: The transaction fails during execution on the destination chain, which may be due to network congestion, insufficient gas, or other issues.
    - **Solutions**:
      - **Manually execute transfer**
@@ -33,10 +33,10 @@ Despite following the standard flow, transactions can fail at various points due
      - **Increase gas payment**
        - **Axelarscan UI**: Connect your MetaMask wallet, switch to the source chain, and add more gas by clicking the ‘Add gas at source chain’ button. This will relay the transaction with increased gas.
        - **AxelarJS SDK**: Depending on whether native tokens or ERC-20 tokens are used, use the `addNativeGas` or `addGas` method to increase gas payment.
-3. **Insufficient fee or not enough gas**
+1. **[Insufficient fee](https://axelarscan.io/gmp/0x8fcfbed2e5cb17a3c3f128fc3ed5ce0a6deb2e4494bb587dd95021039bd39322-8) or [not enough gas](https://axelarscan.io/gmp/0x46d2b6c442fe11c2751ac4c4507779368ff92c20a06f4108af165a83c3fdca03-4)**
    - **Issue**: The transaction fails due to an insufficient fee or not enough gas paid to cover the execution on the destination chain.
    - **Solution**: Increase the gas payment as described above and resubmit the transaction.
-4. **Error execution**
+1. [**Error execution**](https://axelarscan.io/gmp/0xd1ebf1217c37c6d510c421b28d2dfdefd596c68abca3d0bfa2efa8b8291a579d-3)
    - **Issue**: An error occurs during execution, potentially due to issues with the smart contract or external factors like network congestion.
    - **Solution**: Debug the contract according to the error message and retry the transaction using either the Axelarscan UI or the SDK.
 
@@ -128,52 +128,6 @@ const { success, transaction, error } = await sdk.addGas(
   txHash,
   gasToken,
 );
-```
-
-## Axelar Query API
-
-The Axelar Query API is a complementary tool that allows for easy querying of the Axelar network, including estimating gas fees and checking transfer fees.
-
-### **Estimate gas fee**
-
-Estimate the gas fee for a GMP transaction:
-
-```tsx
-const gasFee = await sdk.estimateGasFee(
-  EvmChain.ETHEREUM,
-  EvmChain.MOONBEAM,
-  gasLimit,
-  "auto",
-);
-```
-
-### Get transfer fee
-
-Retrieve the transfer fee for a given transaction:
-
-```tsx
-const fee = await sdk.getTransferFee(
-  "Ethereum",
-  "Avalanche",
-  "uausdc",
-  1000000,
-);
-```
-
-### Get denom from symbol
-
-Translate a token symbol to its corresponding denom:
-
-```tsx
-const denom = await sdk.getDenomFromSymbol("aUSDC", "moonbeam");
-```
-
-### Get symbol from denom
-
-Translate a denom to its corresponding symbol:
-
-```tsx
-const symbol = await sdk.getSymbolFromDenom("uausdc", "moonbeam");
 ```
 
 ## Example transaction states

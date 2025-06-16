@@ -1,6 +1,7 @@
+import { Callout } from "/src/components/callout";
+
 # XRPL EVM
 
-import { Callout } from "/src/components/callout";
 
 Setup your XRPL EVM Mainnet or Testnet node.
 
@@ -54,17 +55,17 @@ Inside it, you will eventually see two subfolders. The first is `~/.exrpd/config
 <tabs>
   <tab-item title="devnet">
     ```bash
-    exrpd config chain-id exrp_1440002-1
+    exrpd config set client chain-id exrp_1440002-1
     ```
   </tab-item>
   <tab-item title="testnet">
     ```bash
-    exrpd config chain-id xrplevm_1449000-1
+    exrpd config set client chain-id xrplevm_1449000-1
     ```
   </tab-item>
   <tab-item title="mainnet">
     ```bash
-    exrpd config chain-id TBD
+    exrpd config set client chain-id xrplevm_1440000-1
     ```
   </tab-item>
 </tabs>
@@ -84,7 +85,7 @@ Make sure to replace `<your_moniker>` with a short ASCII-only name for your node
   </tab-item>
   <tab-item title="mainnet">
     ```bash
-    exrpd init <your_moniker> --chain-id TBD
+    exrpd init <your_moniker> --chain-id xrplevm_1440000-1
     ```
   </tab-item>
 </tabs>
@@ -100,12 +101,12 @@ This step populates the aforementioned `~/.exrpd` directory with the `config` an
   </tab-item>
   <tab-item title="testnet">
     ```bash
-    TBD
+     wget https://raw.githubusercontent.com/xrplevm/networks/main/testnet/genesis.json \ -O ~/.exrpd/config/genesis.json
     ```
   </tab-item>
   <tab-item title="mainnet">
     ```bash
-    TBD
+    wget https://raw.githubusercontent.com/xrplevm/networks/main/mainnet/genesis.json \ -O ~/.exrpd/config/genesis.json
     ```
   </tab-item>
 </tabs>
@@ -208,3 +209,68 @@ INF finalized block block_app_hash=... height=13242560 ...
 
 4. Minimum gas price error
 - If you receive an error that says `Error: set min gas price in app.toml or flag or env variable: error in app.toml`. Set the `minimum-gas-prices` field in `app.toml` to a value for example `0.25axrp`
+
+### Ampd Configuration
+Once your node is up and running, you need to add the XRPL-EVM chain to your [ampd daemon's](https://github.com/axelarnetwork/axelar-amplifier/tree/main/ampd) `config.toml`file. This can be done by adding in the following configuration:
+
+
+<tabs>
+  <tab-item title="Mainnet">
+    ```toml
+    [[handlers]]
+    type="EvmMsgVerifier"
+    chain_finalization="RPCFinalizedBlock"
+    chain_name="xrpl-evm"
+    chain_rpc_url="your_own_rpc"
+    cosmwasm_contract="axelar1q8kn9t39ddpce42atk0d6wpdudr6djqxmz689m3nxy92ck0nnftqxfsuyk"
+
+    [[handlers]]
+    type="EvmVerifierSetVerifier"
+    chain_finalization="RPCFinalizedBlock"
+    chain_name="xrpl-evm"
+    chain_rpc_url="your_own_rpc"
+    cosmwasm_contract="axelar1q8kn9t39ddpce42atk0d6wpdudr6djqxmz689m3nxy92ck0nnftqxfsuyk"
+
+    [[handlers]]
+    type="MultisigSigner"
+    chain_name="xrpl-evm"
+    cosmwasm_contract="axelar14a4ar5jh7ue4wg28jwsspf23r8k68j7g5d6d3fsttrhp42ajn4xq6zayy5"
+    ```
+  </tab-item>
+  <tab-item title="Testnet">
+    ```toml
+    [[handlers]]
+    type="EvmMsgVerifier"
+    chain_finalization="RPCFinalizedBlock"
+    chain_name="xrpl-evm"
+    chain_rpc_url="your_own_rpc"
+    cosmwasm_contract="axelar1q8kn9t39ddpce42atk0d6wpdudr6djqxmz689m3nxy92ck0nnftqxfsuyk"
+
+    [[handlers]]
+    type="EvmVerifierSetVerifier"
+    chain_finalization="RPCFinalizedBlock"
+    chain_name="xrpl-evm"
+    chain_rpc_url="your_own_rpc"
+    cosmwasm_contract="axelar1q8kn9t39ddpce42atk0d6wpdudr6djqxmz689m3nxy92ck0nnftqxfsuyk"
+
+    [[handlers]]
+    type="MultisigSigner"
+    chain_name="xrpl-evm"
+    cosmwasm_contract="axelar14a4ar5jh7ue4wg28jwsspf23r8k68j7g5d6d3fsttrhp42ajn4xq6zayy5"
+    ```
+  </tab-item>
+</tabs>
+
+
+<Callout emoji="💡">
+  Mainnet config instructions will be added when XRPL-EVM is integrated on mainnet.
+</Callout>
+
+### Register Chain 
+For your node to be recognized by the Axelar network, you need to register your chain with the `ampd` daemon. This can be done by running:  
+
+```bash
+ampd register-chain-support amplifier xrpl-evm
+```
+
+

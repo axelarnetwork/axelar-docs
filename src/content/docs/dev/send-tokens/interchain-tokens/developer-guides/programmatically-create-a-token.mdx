@@ -1,4 +1,4 @@
-# Programmatically Create a New Token Using the Interchain Token Service
+# Create a new Interchain Token
 
 [Interchain Tokens](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/interchain-token/InterchainToken.sol) are created and managed by Axelar’s [Interchain Token Service](https://github.com/axelarnetwork/interchain-token-service/tree/main), which uses [GMP messages](https://docs.axelar.dev/dev/general-message-passing/overview) to send tokens cross-chain. With it, you can build your own asset bridges, build asset transfers into your interchain dApp, and [take on many other use cases](https://community.axelar.network/t/expanding-the-axelar-ecosystem-ideas-for-infrastructure-projects/2583/2).
 
@@ -73,7 +73,8 @@ PRIVATE_KEY= // Add your account private key here
 ```
 
 <aside>
-💡 If you will push this project on GitHub, create a `.gitignore` file and include `.env`.
+  💡 If you will push this project on GitHub, create a `.gitignore` file and
+  include `.env`.
 </aside>
 
 Then, create a file with the name `hardhat.config.js` and add the following code snippet:
@@ -301,7 +302,7 @@ async function gasEstimator() {
     EvmChain.AVALANCHE,
     GasToken.ETH,
     700000,
-    1.1
+    1.1,
   );
 
   return gas;
@@ -319,14 +320,13 @@ Create a `deployToRemoteChain()` function that will perform token remote deploym
 
 // Deploy to remote chain: Avalanche Fuji
 async function deployToRemoteChain() {
-    
   // Get a signer for authorizing transactions
   const signer = await getSigner();
   // Get contract for remote deployment
   const interchainTokenFactoryContract = await getContractInstance(
     interchainTokenFactoryContractAddress,
     interchainTokenFactoryContractABI,
-    signer
+    signer,
   );
 
   // Estimate gas fees
@@ -339,12 +339,7 @@ async function deployToRemoteChain() {
   // Initiate transaction
   const txn = await interchainTokenFactoryContract[
     "deployRemoteInterchainToken(bytes32,string,uint256)"
-  ](
-      salt, 
-      "Avalanche", 
-      gasAmount, 
-      { value: gasAmount }
-    );
+  ](salt, "Avalanche", gasAmount, { value: gasAmount });
 
   console.log(`Transaction Hash: ${txn.hash}`);
 }
@@ -410,7 +405,7 @@ async function transferTokens() {
   const interchainToken = await getContractInstance(
     "0x5dcDf836212CAc43dacb81af07fF84D805422f6c", // Update with new token address
     interchainTokenContractABI, // Interchain Token contract ABI
-    signer
+    signer,
   );
 
   // Calculate gas amount
@@ -422,7 +417,7 @@ async function transferTokens() {
     "0x510e5EA32386B7C48C4DEEAC80e86859b5e2416C", // Update with your own wallet address
     ethers.utils.parseEther("25"), // Transfer 25 tokens
     "0x", // Empty data payload
-    { value: gasAmount } // Transaction options
+    { value: gasAmount }, // Transaction options
   );
   console.log("Transfer Transaction Hash:", transfer.hash);
 }
@@ -497,4 +492,4 @@ For further examples utilizing the Interchain Token Service, check out the follo
 
 - [Interchain Token Service Documentation](/dev/send-tokens/interchain-tokens/intro/)
 - [Interchain Tokens GitHub Repository](https://github.com/axelarnetwork/interchain-token-service/tree/main)
-- [AxelarJS SDK](https://github.com/axelar-network/axelarjs-sdk)
+- [AxelarJS SDK](https://github.com/axelarnetwork/axelarjs-sdk)

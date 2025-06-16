@@ -1,4 +1,4 @@
-# Link Custom Tokens Deployed Across Multiple Chains into Interchain Tokens
+# Link Custom Tokens Deployed Across Multiple Chains
 
 import { Callout } from "/src/components/callout";
 
@@ -522,6 +522,13 @@ async function getTokenManagerAddress() {
     signer,
   );
 
+  // Get the interchainTokenFactory contract instance
+  const interchainTokenFactoryContract = await getContractInstance(
+    interchainTokenFactoryContractAddress,
+    interchainTokenFactoryContractABI,
+    signer,
+  );
+
   // Retrieve linked token id
   const tokenId = await interchainTokenFactoryContract.linkedTokenId(
     "0x510e5EA32386B7C48C4DEEAC80e86859b5e2416C", // sender
@@ -533,7 +540,7 @@ async function getTokenManagerAddress() {
 
   console.log(`
     Token Manager Address: ${tokenManagerAddress},
-    Token ID: ${tokenManagerAddress}`);
+    Token ID: ${tokenId}`);
 }
 ```
 
@@ -808,4 +815,4 @@ For further examples utilizing the Interchain Token Service, check out the follo
 
 - [Interchain Token Service Documentation](/dev/send-tokens/interchain-tokens/intro/)
 - [Interchain Tokens GitHub Repository](https://github.com/axelarnetwork/interchain-token-service/tree/main)
-- [AxelarJS SDK](https://github.com/axelar-network/axelarjs-sdk)
+- [AxelarJS SDK](https://github.com/axelarnetwork/axelarjs-sdk)

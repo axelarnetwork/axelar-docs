@@ -445,6 +445,24 @@
       "name": "provenance",
       "network_id": "provenance",
       "image": "/images/chains/provenance.svg"
+    },
+    {
+      "id": "mantra",
+      "name": "Mantra",
+      "network_id": "mantra",
+      "image": "/images/chains/mantra.svg"
+    },
+    {
+      "id": "zigchain",
+      "name": "Zigchain",
+      "network_id": "zigchain",
+      "image": "/images/chains/zigchain.svg"
+    },
+    {
+      "id": "babylon",
+      "name": "Babylon",
+      "network_id": "babylon",
+      "image": "/images/chains/babylon.svg"
     }
   ]
 }
