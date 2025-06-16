@@ -38,7 +38,7 @@
       "symbol": "WBTC",
       "image": "/images/assets/wbtc.svg",
       "decimals": 8,
-      "transfer_fee": 1.7e-6
+      "transfer_fee": 1.7e-06
     },
     {
       "id": "weth-wei",
@@ -46,7 +46,7 @@
       "symbol": "WETH",
       "image": "/images/assets/weth.svg",
       "decimals": 18,
-      "transfer_fee": 3.2e-5
+      "transfer_fee": 3.2e-05
     },
     {
       "id": "wmai-wei",
@@ -78,7 +78,7 @@
       "symbol": "wstETH",
       "image": "/images/assets/wsteth.svg",
       "decimals": 18,
-      "transfer_fee": 2.9e-5
+      "transfer_fee": 2.9e-05
     },
     {
       "id": "wusdm-wei",
@@ -166,7 +166,7 @@
       "symbol": "cbETH",
       "image": "/images/assets/cbeth.svg",
       "decimals": 18,
-      "transfer_fee": 3.2e-5
+      "transfer_fee": 3.2e-05
     },
     {
       "id": "sfrxeth-wei",
@@ -174,7 +174,7 @@
       "symbol": "sfrxETH",
       "image": "/images/assets/sfrxeth.svg",
       "decimals": 18,
-      "transfer_fee": 2.9e-5
+      "transfer_fee": 2.9e-05
     },
     {
       "id": "frxeth-wei",
@@ -182,7 +182,7 @@
       "symbol": "frxETH",
       "image": "/images/assets/frxeth.svg",
       "decimals": 18,
-      "transfer_fee": 3.2e-5
+      "transfer_fee": 3.2e-05
     },
     {
       "id": "sfrax-wei",
@@ -206,7 +206,7 @@
       "symbol": "rETH",
       "image": "/images/assets/reth.svg",
       "decimals": 18,
-      "transfer_fee": 2.9e-5
+      "transfer_fee": 2.9e-05
     },
     {
       "id": "arb-wei",
@@ -482,9 +482,9 @@
     },
     {
       "id": "uusd",
-      "name": "USTC - Axelar Wrapped USTC",
-      "symbol": "USTC",
-      "image": "/images/assets/ustc.svg",
+      "name": "UST - Axelar Wrapped UST",
+      "symbol": "UST",
+      "image": "/images/assets/ust.svg",
       "decimals": 6,
       "transfer_fee": 5.0
     },
@@ -582,7 +582,7 @@
       "symbol": "YieldETH",
       "image": "/images/assets/yieldeth.svg",
       "decimals": 18,
-      "transfer_fee": 6.2e-5
+      "transfer_fee": 6.2e-05
     },
     {
       "id": "utori",
@@ -726,7 +726,7 @@
       "symbol": "WETH",
       "image": "/images/assets/weth.svg",
       "decimals": 18,
-      "transfer_fee": 3.2e-5
+      "transfer_fee": 3.2e-05
     },
     {
       "id": "base-weth-wei",
@@ -734,7 +734,7 @@
       "symbol": "WETH",
       "image": "/images/assets/weth.svg",
       "decimals": 18,
-      "transfer_fee": 3.2e-5
+      "transfer_fee": 3.2e-05
     },
     {
       "id": "polygon-weth-wei",
@@ -742,7 +742,7 @@
       "symbol": "WETH",
       "image": "/images/assets/weth.svg",
       "decimals": 18,
-      "transfer_fee": 3.2e-5
+      "transfer_fee": 3.2e-05
     },
     {
       "id": "ubtsg",
@@ -815,6 +815,46 @@
       "image": "/images/assets/usdt.svg",
       "decimals": 6,
       "transfer_fee": 0.1
+    },
+    {
+      "id": "uregen",
+      "name": "REGEN - Axelar Wrapped REGEN",
+      "symbol": "REGEN",
+      "image": "/images/assets/regen.svg",
+      "decimals": 6,
+      "transfer_fee": 3.3
+    },
+    {
+      "id": "uwhale",
+      "name": "WHALE - Axelar Wrapped WHALE",
+      "symbol": "WHALE",
+      "image": "/images/assets/whale.svg",
+      "decimals": 6,
+      "transfer_fee": 60.0
+    },
+    {
+      "id": "uixo",
+      "name": "IXO - Axelar Wrapped IXO",
+      "symbol": "IXO",
+      "image": "/images/assets/ixo.svg",
+      "decimals": 6,
+      "transfer_fee": 60.0
+    },
+    {
+      "id": "uxion",
+      "name": "XION - XION",
+      "symbol": "XION",
+      "image": "/images/assets/xion.svg",
+      "decimals": 6,
+      "transfer_fee": 0.1
+    },
+    {
+      "id": "unit-move",
+      "name": "MOVE - Movement",
+      "symbol": "MOVE",
+      "image": "/images/assets/move.svg",
+      "decimals": 8,
+      "transfer_fee": 0.2
     }
   ],
   "testnet": [
@@ -840,7 +880,7 @@
       "symbol": "wstETH",
       "image": "/images/assets/wsteth.svg",
       "decimals": 18,
-      "transfer_fee": 3e-5
+      "transfer_fee": 3e-05
     },
     {
       "id": "sepolia-wsteth-wei",
@@ -848,7 +888,7 @@
       "symbol": "wstETH",
       "image": "/images/assets/wsteth.svg",
       "decimals": 18,
-      "transfer_fee": 3e-5
+      "transfer_fee": 3e-05
     },
     {
       "id": "celo-wei",
