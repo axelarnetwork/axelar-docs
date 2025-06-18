@@ -10,13 +10,9 @@ Node setup guide for your XRP Ledger Testnet or Mainnet validator.
 - Recommended hardware requirements:
     * CPU: 3+ GHz 64-bit x86_64 processor with 8+ cores
     * Memory: 64 GB RAM
-    * Disk: 50+ GB SSD/NVMe
+    * Disk: 1.5 TB SSD/NVMe
 - Ubuntu Linux 18.04+ (tested on 22.04) or Debian 10+
 - [Official Documentation](https://xrpl.org/docs/infrastructure/installation)
-
-<Callout emoji="💡">
-  Note: Verifiers are expected to run at least two months worth of history on their nodes. Please make sure you configure your node to stores two months of history instead of the [default two hours](https://xrpl.org/docs/infrastructure/installation/capacity-planning#disk-space).
-</Callout>
 
 ## Install on Ubuntu or Debian Linux
 
@@ -69,16 +65,34 @@ echo "deb [signed-by=/etc/apt/keyrings/ripple.gpg] https://repos.ripple.com/repo
 sudo apt -y update && sudo apt -y install rippled
 ```
 
-6. Check the status of the `rippled` service:
+6. Configure your node to store at least a month of ledger history. Edit your `rippled.cfg` file located at `/etc/opt/ripple/rippled.cfg`:
+- Under the `[node_db]` stanza, update `online_delete` (keep the rest of the parameters as is):
+```
+[node_db]
+online_delete=750000
+```
+- Uncomment and set the `[ledger_history]` stanza:
+```
+[ledger_history]
+750000
+```
+
+7. Configure the `[server]` stanza in `rippled.cfg` securely according to your needs.
+
+<Callout emoji="💡">
+  Note: The default `[server]` parameters may allow for unauthorized administrative access to your node.
+</Callout>
+
+8. Restart the `rippled` service:
+
+```bash
+sudo systemctl restart rippled.service
+```
+
+9. Check the status of the `rippled` service:
 
 ```bash
 sudo systemctl status rippled.service
-```
-
-The `rippled` service should start automatically. If not, you can start it manually with:
-
-```bash
-sudo systemctl start rippled.service
 ```
 
 If you're configuring a Mainnet `rippled` node, you can skip the next section.
