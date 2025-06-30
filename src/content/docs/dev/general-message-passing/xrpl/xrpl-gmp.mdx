@@ -32,7 +32,7 @@ When sending a GMP message the `memo` field contains the relevant metadata for t
 
 The memo must contain the following fields:
 
-1. `call_contract`: The type of transaction being sent.
+1. `type`: The type of transaction being sent (in this case, it should be of type `call_contract`).
 1. `destination_address`: The address of the destination contract on the destination chain.
 1. `destination_chain`: The name of the destination chain.
 1. `payload`: The payload of the transaction being sent.    
@@ -55,7 +55,7 @@ For a complete `JSON` example of the entire required XRPL GMP fields you can loo
     Memos: [
         {
             Memo: {
-                MemoType: "74797065", // hex("msg type")
+                MemoType: "74797065", // hex("type")
                 MemoData: "63616c6c5f636f6e7472616374" // hex("call_contract")
             },
         },
@@ -81,7 +81,8 @@ For a complete `JSON` example of the entire required XRPL GMP fields you can loo
     ],
 }
 ```
-### Example
+
+### Example Gmp
 
 A full example can be found [here](https://github.com/axelarnetwork/axelar-contract-deployments/blob/main/xrpl/call-contract.js).
 
@@ -121,4 +122,75 @@ node xrpl/call-contract.js -e testnet -n xrpl xrpl-evm 0x72d12C77D1eE1DB002F4437
 
 This will send a message to the `0x72d12C77D1eE1DB002F4437E4a96bAc87c3EF948` address on the `XRPL-EVM` chain, with an abi encoded message of '*hello*'. 
 
-Once the command is run you should as a [transaction](https://testnet.axelarscan.io/gmp/0xa229274f4903c539be1d7b60ca03332484b11029f1f5c4d6fd086a62d066ca92) on the Axelarscan explorer where you can track the entire cross-chain transaction.
+Once the command is run you should see a [transaction](https://testnet.axelarscan.io/gmp/0xa229274f4903c539be1d7b60ca03332484b11029f1f5c4d6fd086a62d066ca92) on the Axelarscan explorer where you can track the entire cross-chain transaction.
+
+## Add Gas
+
+When making cross-chain transactions gas payments are paid out entirely on the source chain by the sender. Axelar's microservices handle the gas payments on the destination chain as well as on the Axelar network itself. In the event that the gas payment made on the source chain is insufficient to cover the gas fees of the cross-chain transaction, the transaction may get stuck mid-way through the cross-chain transaction. This can happen for a number of reasons for example if the gas price on the destination chain spikes after the transaction has already been sent on the source chain. To unblock a stuck transaction you can make use of the `add_gas` message to the XRPL Multisig to top up the underfunded transaction. 
+
+The memo must contain the following fields:
+
+1. `type`: The type of message being sent, in this case, it should be of type `add_gas`.
+1. `msg_id`: The transaction hash of the underfunded message that needs to be topped up.
+
+The message id must be passed as a hex encoded string. For example the message for the [transaction](https://devnet-amplifier.axelarscan.io/gmp/c7c653d2df83622c277da55df7fe6466098f5bc2e466e1251f42772d07016c8c) with the id `c7c653d2df83622c277da55df7fe6466098f5bc2e466e1251f42772d07016c8c` must be passed in as `6367636535636464646638333632326332373764613535646637666536343630363039386635626332653436366531323531663432373732643037303136633863` (hex encoded).
+
+For a complete `JSON` example of the entire required XRPL Add Gas fields you can look at the following:
+
+```json
+{
+    TransactionType: "Payment",
+    Account: user.address, // sender's account address
+    Amount: "1000000", // amount of XRP, in drops (in this case, 1 XRP), to top-up gas fees with
+    Destination: multisig.address, // Axelar multisig's account address
+    Memos: [
+        {
+            Memo: {
+                MemoType: "74797065", // hex("type")
+                MemoData: "6164645f676173" // hex("add_gas")
+            },
+        },
+        {
+            Memo: {
+                MemoType: "6d73675f6964", // hex("msg_id")
+                MemoData: "63376336353364326466383336323263323737646135356466376665363436363039386635626332653436366531323531663432373732643037303136633863"
+            },
+        },
+    ],
+    ...
+}
+```
+
+### Example Add Gas
+
+A full example can be found [here](https://github.com/axelarnetwork/axelar-contract-deployments/blob/main/xrpl/add-gas.js).
+
+The key function in this example is the `addGas()` function written out as follows.
+
+```js
+async function callContract(config, wallet, client, chain, options, args) {
+    await client.sendPayment(
+        wallet,
+        {
+            destination: chain.contracts.AxelarGateway.address,
+            amount: parseTokenAmount(options.token, options.amount),
+            memos: [
+                { memoType: hex('type'), memoData: hex('add_gas') },
+                { memoType: hex('msg_id'), memoData: hex(options.msgId.toLowerCase().replace('0x', '')) },
+            ],
+        },
+        options,
+    );
+}
+```
+
+This function constructs the `memo` that will be used for the transaction, passing in the `type` and `msg_id`.
+
+
+To interact with the example run the following command
+
+```bash
+node xrpl/add-gas.js -e devnet-amplifier -n xrpl-dev --amount 0.1 --token XRP --msgId <msg-id>
+```
+
+This will send `0.1` XRP to the underfunded transaction with the `msg-id` that you specify.

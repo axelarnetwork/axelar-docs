@@ -26,6 +26,7 @@ What needs to be specified in the `memo` is the following:
 1. `destination_address`: The address of the destination contract on the destination chain.
 1. `destination_chain`: The name of the destination chain.
 1. `gas_fee_amount`: The amount to be used to cover the gas costs. The transfer amount transfer amount minus this gas fee amount.
+1. `payload`: A message to be sent along with the cross-chain asset transfer. This parameter is only needed if you are sending a gmp message, can be ignored if you are simply sending a token without an executable message.
 
 Each of the previously mentioned fields will be passed into the memo as a `MemoType` as an encoded hex. You can then specify the value for each of these fields in the `MemoData` field, also encoded in hex.   
 
@@ -119,3 +120,7 @@ node xrpl/interchain-transfer.js -e testnet  -n xrpl XRP 1 xrpl-evm 0x312dba807E
 This will send an ITS transfer to the `0x312dba807EAE77f01EF3dd21E885052f8F617c5B` address on the `XRPL-EVM` chain.
 
 Once the command is run you should as a [transaction](https://testnet.axelarscan.io/gmp/0x8032a4695f4b663a7699da81760997baabb663dea4afc25b78b3434553fcd09d) on the Axelarscan explorer where you can track the entire cross-chain transaction.
+
+#### Insufficient Gas Error
+
+In the event of an `insufficient gas` error, you can unblock the underfunded transaction by running the [Add Gas](/dev/general-message-passing/xrpl/xrpl-gmp/#add-gas) top up the missing funds. 
