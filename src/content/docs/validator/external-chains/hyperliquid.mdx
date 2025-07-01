@@ -61,17 +61,19 @@ The visor binary spawns and manages the child node process.
 <tabs>
   <tab-item title="Mainnet">
   ```bash
-  echo '{ "root_node_ips": [{"Ip": "1.2.3.4"}], "try_new_peers": false, "chain": "Mainnet" }' > override_gossip_config.json
+  echo '{ "root_node_ips": [{"Ip": "1.2.3.4"}], "try_new_peers": true, "chain": "Mainnet" }' > override_gossip_config.json
 ```
   </tab-item>
   <tab-item title="Testnet">
   ```bash
-  echo '{ "root_node_ips": [{"Ip": "1.2.3.4"}], "try_new_peers": false, "chain": "Testnet" }' > override_gossip_config.json
+  echo '{ "root_node_ips": [{"Ip": "1.2.3.4"}], "try_new_peers": true, "chain": "Testnet" }' > override_gossip_config.json
 ```
   </tab-item>
 </tabs>
 
 For faster bootstrapping, use a known reliable peer. Can be found [here](https://github.com/hyperliquid-dex/node?tab=readme-ov-file#mainnet-non-validator-seed-peers).
+
+**Note:** If you don't find peers for testnet, you can still start the node, but it may take some time to bootstrap.
 
 ## Start the node
 
@@ -116,6 +118,17 @@ After a few minutes, you should see lines that look like this. This means your n
 2025-05-26T06:59:40.688Z WARN >>> hl-node @@ applied block 607619600
 ```
 
+> **Note:** The network can generate up to 100 GB of data per day, so it is strongly recommended to archive or delete old files regularly.  
+> For more details, refer to the [official documentation](https://github.com/hyperliquid-dex/node?tab=readme-ov-file#reading-l1-data).  
+
+To manage storage more efficiently, you can use the following flag: 
+
+```bash
+$HOME/hl-visor run-non-validator --serve-eth-rpc --replica-cmds-style recent-actions
+```
+
+This will automatically retain only the latest two height files, deleting older ones as new data is added. It’s a simple and effective way to reduce disk usage without manual intervention.
+
 ## Check latest block height
 
 To retrieve the latest block height:
@@ -125,6 +138,8 @@ curl -X POST --header 'Content-Type: application/json' \
   --data '{"jsonrpc":"2.0","method":"eth_getBlockByNumber","params":["latest",false],"id":1}' \
   http://localhost:3001/evm
 ```
+
+**Note:** Port `3001` may take few moments to become available after the service has started.
 
 ## Ampd Configuration
 
