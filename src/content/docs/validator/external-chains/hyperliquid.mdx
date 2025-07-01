@@ -147,6 +147,28 @@ Once your node is up and running, you need to add the `Hyperliquid` chain to you
 
 
 <tabs>
+    <tab-item title="mainnet">
+    ```toml
+    [[handlers]]
+    type="MultisigSigner"
+    chain_name="hyperliquid"
+    cosmwasm_contract="axelar14a4ar5jh7ue4wg28jwsspf23r8k68j7g5d6d3fsttrhp42ajn4xq6zayy5"
+
+    [[handlers]]
+    type="EvmMsgVerifier"
+    chain_name="hyperliquid"
+    chain_finalization="RPCFinalizedBlock"
+    chain_rpc_url="your_own_rpc"
+    cosmwasm_contract="axelar1n64vk7l3zagh2eadkuhl7602lxluu86dn9smfxyp7c2e4v8pqj5sv4ypjr"
+
+    [[handlers]]
+    type="EvmVerifierSetVerifier"
+    chain_name="hyperliquid"
+    chain_finalization="RPCFinalizedBlock"
+    chain_rpc_url="your_own_rpc"
+    cosmwasm_contract="axelar1n64vk7l3zagh2eadkuhl7602lxluu86dn9smfxyp7c2e4v8pqj5sv4ypjr"
+    ```
+    </tab-item>
     <tab-item title="testnet">
     ```toml
     [[handlers]]
