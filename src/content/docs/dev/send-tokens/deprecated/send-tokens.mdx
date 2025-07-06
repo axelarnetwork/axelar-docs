@@ -1,4 +1,5 @@
 import { Callout } from "/src/components/callout";
+import { COSMOS_GMP_ADDRESS } from "/src/config/variables";
 
 
 # Send Tokens Cross-Chain (Deprecated)
@@ -56,7 +57,7 @@ Once you call `sendToken()`, watch for the tokens to appear at the address on th
 
 ## Call `sendToken()` on a Cosmos-based source chain
 
-For Cosmos-based source chains, `sendToken()` is a simple IBC transfer of any asset supported on the Axelar network. The message is sent to the address `axelar1dv4u5k73pzqrxlzujxg3qp8kvc3pje7jtdvu72npnt5zhq05ejcsn5qme5`, which is the designated address on the Axelar network for receiving [GMP](/dev/general-message-passing/overview/) messages, and includes a `memo` field with the following payload:
+For Cosmos-based source chains, `sendToken()` is a simple IBC transfer of any asset supported on the Axelar network. The message is sent to the address <code>{COSMOS_GMP_ADDRESS}</code>, which is the designated address on the Axelar network for receiving [GMP](/dev/general-message-passing/overview/) messages, and includes a `memo` field with the following payload:
 
 ```typescript
     {
