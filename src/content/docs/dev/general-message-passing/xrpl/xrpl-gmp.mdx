@@ -22,7 +22,7 @@ Payment transaction types in XRPL represent a transfer of value. They require th
 
 1. `Transaction Type`: The [type](https://xrpl.org/docs/references/protocol/transactions/types) of XRPL transaction being sent.
 1. `Account`: The sender's account address.
-1. `Amount`: The amount of XRP being sent to cover the transaction fees.
+1. `Amount`: The amount of XRP being sent to cover the [cross-chain transaction fees](/dev/gas-service/intro/).
 1. `Destination`: The destination of the transaction.
 1. `Memos`: A special field in the payment transaction that is used to specify the message type, destination chain, destination address, and GMP payload. 
 
@@ -45,7 +45,7 @@ For a complete `JSON` example of the entire required XRPL GMP fields you can loo
 {
     TransactionType: "Payment",
     Account: user.address,
-    Amount: "1000000", // (1 xrp)
+    Amount: "1000000", // (1 xrp) used to pay cross-chain transaction fees.
     // Amount: { // alternatively, an IOU token amount can be used to cover gas fees
     //     currency: "ABC", // IOU's currency code
     //     issuer: "r4DVHyEisbgQRAXCiMtP2xuz5h3dDkwqf1", // IOU issuer's account address

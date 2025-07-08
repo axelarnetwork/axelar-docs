@@ -18,14 +18,14 @@ Axelar's integration to XRPL allows for the cross-chain transfer of both the XRP
 
 The interchain transfer flow is similar to that of the regular [GMP flow](/dev/general-message-passing/xrpl/xrpl-gmp/). As with the regular GMP flow, users will be sending a [payment transaction](https://xrpl.org/docs/references/protocol/transactions/types/payment) to the Gateway account. The main difference is that the `MessageType` being sent to the Gateway is an `interchain_transfer` message type instead of a `call_contract` message.
 
-When transferring a token out of XRPL you will be sending the token from your XRPL account to the Gateway contract. The Gateway will be the custodian of your token on XRPL while it is sent via ITS hub to the destination chain. Sending a token will be similar to sending a regular GMP message in that the information that is sent to the Gateway (and eventually to ITS hub) will need to be specified in the [memo](https://xrpl.org/docs/references/protocol/transactions/common-fields#memos-field) field of the transaction.
+When transferring a token out of XRPL you will be sending the token from your XRPL account to the Gateway contract. The Gateway will be the custodian of your token on XRPL while it is sent via ITS hub to the destination chain until is bridged back to XRPL. Sending a token will be similar to sending a regular GMP message in that the information that is sent to the Gateway (and eventually to ITS hub) will need to be specified in the [memo](https://xrpl.org/docs/references/protocol/transactions/common-fields#memos-field) field of the transaction.
 
 What needs to be specified in the `memo` is the following:
 
 1. `type`: The type of the transaction (which will be `interchain_transfer`)
 1. `destination_address`: The address of the destination contract on the destination chain.
 1. `destination_chain`: The name of the destination chain.
-1. `gas_fee_amount`: The amount to be used to cover the gas costs. The transfer amount transfer amount minus this gas fee amount.
+1. `gas_fee_amount`: The amount to be used to cover the the [cross-chain transaction fees](/dev/gas-service/intro/).
 1. `payload`: A message to be sent along with the cross-chain asset transfer. This parameter is only needed if you are sending a gmp message, can be ignored if you are simply sending a token without an executable message.
 
 Each of the previously mentioned fields will be passed into the memo as a `MemoType` as an encoded hex. You can then specify the value for each of these fields in the `MemoData` field, also encoded in hex.   
