@@ -1,20 +1,20 @@
 # XRPL General Message Passing (GMP)
 
-The XRPL Blockchain is unique compared to other blockchains integrated with Axelar. Unlike other blockchains, XRPL does not support smart contracts. As such there is no Axelar Gateway and Axelar Gas Service deployed on the chain the way there is with other EVM and non-EVM blockchain integrations. Since XRPL has no contracts there is also no ability to receive GMP messages from other blockchains, you can only send messages to other blockchains.
+The XRPL Blockchain is unique compared to other blockchains integrated with Axelar. Unlike other blockchains, XRPL does not support smart contracts. As such there is no Axelar Gateway and Axelar Gas Service deployed on the chain the way there is with other EVM and non-EVM blockchain integrations. Since XRPL has no contracts there is also no ability to receive [GMP messages](/dev/general-message-passing/overview/) from other blockchains, you can only send messages to other blockchains.
 
-## XRPL Multisig
+## XRPL Gateway
 
-The integration leverages [XRPL Multisig Signing](https://xrpl.org/docs/concepts/accounts/multi-signing) to facilitate message passing. The [multisig](https://github.com/commonprefix/axelar-amplifier/blob/xrpl/contracts/xrpl-multisig-prover/src/xrpl_multisig.rs) is controlled by the [Axelar Verifier set](https://axelarscan.io/verifiers).  
+The integration leverages the [XRPL Multisig Signing](https://xrpl.org/docs/concepts/accounts/multi-signing) account type to facilitate message passing. The gateway is controlled by the [Axelar Verifier set](https://axelarscan.io/verifiers).  
 
-The testnet address for the XRPL multisig is: [rNrjh1KGZk2jBR3wPfAQnoidtFFYQKbQn2](https://testnet.xrpl.org/accounts/rNrjh1KGZk2jBR3wPfAQnoidtFFYQKbQn2).
+The testnet address for the XRPL Gateway is: [rNrjh1KGZk2jBR3wPfAQnoidtFFYQKbQn2](https://testnet.xrpl.org/accounts/rNrjh1KGZk2jBR3wPfAQnoidtFFYQKbQn2).
 
-The mainnet address for the XRPL multisig is: [rfmS3zqrQrka8wVyhXifEeyTwe8AMz2Yhw](https://livenet.xrpl.org/accounts/rfmS3zqrQrka8wVyhXifEeyTwe8AMz2Yhw).
+The mainnet address for the XRPL Gateway is: [rfmS3zqrQrka8wVyhXifEeyTwe8AMz2Yhw](https://livenet.xrpl.org/accounts/rfmS3zqrQrka8wVyhXifEeyTwe8AMz2Yhw).
 
 ## Send GMP Message
 
 ### Overview
 
-The flow for sending a GMP message from XRPL involves sending a [payment transaction](https://xrpl.org/docs/references/protocol/transactions/types/payment) from your XRPL account to the XRPL multisig with a specified [memo](https://xrpl.org/docs/references/protocol/transactions/common-fields#memos-field) field. Once the multisig receives that transaction, Axelar's relayer will pickup any transaction that it has received with the `call_contract` message type specified at which the point the [Amplifier GMP flow](/dev/amplifier/introduction/#general-message-passing-with-amplifier) will commence. 
+The flow for sending a GMP message from XRPL involves sending a [payment transaction](https://xrpl.org/docs/references/protocol/transactions/types/payment) from your XRPL account to the XRPL Gateway with a specified [memo](https://xrpl.org/docs/references/protocol/transactions/common-fields#memos-field) field. Once the transaction is confirmed, Axelar's relayer will pickup any transaction sent to the Gateway with the `call_contract` message type specified at which the point the [Amplifier GMP flow](/dev/amplifier/introduction/#general-message-passing-with-amplifier) will commence. 
 
 ### Payment Transaction
 
@@ -24,7 +24,7 @@ Payment transaction types in XRPL represent a transfer of value. They require th
 1. `Account`: The sender's account address.
 1. `Amount`: The amount of XRP being sent to cover the transaction fees.
 1. `Destination`: The destination of the transaction.
-1. `Memos`: A special field in the payment transaction that is used to specify the message type and the destination chain. 
+1. `Memos`: A special field in the payment transaction that is used to specify the message type, destination chain, destination address, and GMP payload. 
 
 ### Memo
 
@@ -51,7 +51,7 @@ For a complete `JSON` example of the entire required XRPL GMP fields you can loo
     //     issuer: "r4DVHyEisbgQRAXCiMtP2xuz5h3dDkwqf1", // IOU issuer's account address
     //     value: "1" // IOU amount to allocated to gas fees (in this case, 1 ABC.r4DVH)
     // },
-    Destination: multisig.address,
+    Destination: gateway.address,
     Memos: [
         {
             Memo: {
@@ -126,7 +126,7 @@ Once the command is run you should see a [transaction](https://testnet.axelarsca
 
 ## Add Gas
 
-When making cross-chain transactions gas payments are paid out entirely on the source chain by the sender. Axelar's microservices handle the gas payments on the destination chain as well as on the Axelar network itself. In the event that the gas payment made on the source chain is insufficient to cover the gas fees of the cross-chain transaction, the transaction may get stuck mid-way through the cross-chain transaction. This can happen for a number of reasons for example if the gas price on the destination chain spikes after the transaction has already been sent on the source chain. To unblock a stuck transaction you can make use of the `add_gas` message to the XRPL Multisig to top up the underfunded transaction. 
+When making cross-chain transactions gas payments are paid out entirely on the source chain by the sender. Axelar's microservices handle the gas payments on the destination chain as well as on the Axelar network itself. In the event that the gas payment made on the source chain is insufficient to cover the gas fees of the cross-chain transaction, the transaction may get stuck mid-way through the cross-chain transaction. This can happen for a number of reasons for example if the gas price on the destination chain spikes after the transaction has already been sent on the source chain. To unblock a stuck transaction you can make use of the `add_gas` message to the XRPL Gateway to top up the underfunded transaction. 
 
 The memo must contain the following fields:
 
@@ -142,7 +142,7 @@ For a complete `JSON` example of the entire required XRPL Add Gas fields you can
     TransactionType: "Payment",
     Account: user.address, // sender's account address
     Amount: "1000000", // amount of XRP, in drops (in this case, 1 XRP), to top-up gas fees with
-    Destination: multisig.address, // Axelar multisig's account address
+    Destination: gateway.address, // Axelar gateway's account address
     Memos: [
         {
             Memo: {

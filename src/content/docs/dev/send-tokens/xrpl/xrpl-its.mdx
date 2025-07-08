@@ -3,22 +3,22 @@
 
 The XRPL Blockchain is unique in comparison to other blockchains integrated with Axelar. Unlike other blockchains, XRPL does not support smart contracts. As such there is no Interchain Token Service contract deployed on the chain the way there is with other EVM and non-EVM blockchain integrations.
 
-## XRPL Multisig
+## XRPL Gateway
 
-The integration leverages [XRPL Multisig Signing](https://xrpl.org/docs/concepts/accounts/multi-signing) to facilitate token transfers. The [multisig](https://github.com/commonprefix/axelar-amplifier/blob/xrpl/contracts/xrpl-multisig-prover/src/xrpl_multisig.rs) is controlled by the [Axelar Verifier set](https://axelarscan.io/verifiers).  
+The integration leverages the [XRPL Multisig Signing](https://xrpl.org/docs/concepts/accounts/multi-signing) account type to facilitate token transfers. The [gateway](https://github.com/commonprefix/axelar-amplifier/blob/xrpl/contracts/xrpl-multisig-prover/src/xrpl_multisig.rs) is controlled by the [Axelar Verifier set](https://axelarscan.io/verifiers).  
 
-The testnet address for the XRPL multisig is: [rNrjh1KGZk2jBR3wPfAQnoidtFFYQKbQn2](https://testnet.xrpl.org/accounts/rNrjh1KGZk2jBR3wPfAQnoidtFFYQKbQn2).
+The testnet address for the XRPL Gateway is: [rNrjh1KGZk2jBR3wPfAQnoidtFFYQKbQn2](https://testnet.xrpl.org/accounts/rNrjh1KGZk2jBR3wPfAQnoidtFFYQKbQn2).
 
-The mainnet address for the XRPL multisig is: [rfmS3zqrQrka8wVyhXifEeyTwe8AMz2Yhw](https://livenet.xrpl.org/accounts/rfmS3zqrQrka8wVyhXifEeyTwe8AMz2Yhw).
+The mainnet address for the XRPL Gateway is: [rfmS3zqrQrka8wVyhXifEeyTwe8AMz2Yhw](https://livenet.xrpl.org/accounts/rfmS3zqrQrka8wVyhXifEeyTwe8AMz2Yhw).
 
 Axelar's integration to XRPL allows for the cross-chain transfer of both the XRPL native token (XRP itself) as well as custom tokens ([IOU](https://learn.xrpl.org/glossary/iou/)).
 
 
 ### Transfer Token
 
-The interchain transfer flow is similar to that of the regular [GMP flow](/dev/general-message-passing/xrpl/xrpl-gmp/). As with the regular GMP flow, users will be sending a [payment transaction](https://xrpl.org/docs/references/protocol/transactions/types/payment) to the [XRPL Multisig Signing](https://xrpl.org/docs/concepts/accounts/multi-signing) account. The main difference is that the `MessageType` being sent to the multisig is an `interchain_transfer` message type instead of a `call_contract` message.
+The interchain transfer flow is similar to that of the regular [GMP flow](/dev/general-message-passing/xrpl/xrpl-gmp/). As with the regular GMP flow, users will be sending a [payment transaction](https://xrpl.org/docs/references/protocol/transactions/types/payment) to the Gateway account. The main difference is that the `MessageType` being sent to the Gateway is an `interchain_transfer` message type instead of a `call_contract` message.
 
-When transferring a token out of XRPL you will be sending the token from your XRPL account to the multisig contract. The multisig contract will be the custodian of your token on XRPL while it is sent via ITS hub to the destination chain. Sending a token will be similar to sending a regular GMP message in that the information that is sent to the multisig (and eventually to ITS hub) will need to be specified in the [memo](https://xrpl.org/docs/references/protocol/transactions/common-fields#memos-field) field of the transaction.
+When transferring a token out of XRPL you will be sending the token from your XRPL account to the Gateway contract. The Gateway will be the custodian of your token on XRPL while it is sent via ITS hub to the destination chain. Sending a token will be similar to sending a regular GMP message in that the information that is sent to the Gateway (and eventually to ITS hub) will need to be specified in the [memo](https://xrpl.org/docs/references/protocol/transactions/common-fields#memos-field) field of the transaction.
 
 What needs to be specified in the `memo` is the following:
 
@@ -42,7 +42,7 @@ A full `JSON` example of the entire required XRPL Interchain Transfer fields can
     //     issuer: "r4DVHyEisbgQRAXCiMtP2xuz5h3dDkwqf1", // IOU issuer's account address
     //     value: "1" // IOU amount to bridge (in this case, 1 ABC.r4DVH), *including* gas fee amount
     // },
-    Destination: multisig.address, 
+    Destination: gateway.address, 
     Memos: [
         {
             Memo: {
