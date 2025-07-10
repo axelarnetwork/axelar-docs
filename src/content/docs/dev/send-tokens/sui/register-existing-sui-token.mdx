@@ -73,7 +73,7 @@ This part can be skipped if you already have a Sui token deployed. For the sake 
 
 We will use the token example straight the official [Sui documentation](https://docs.sui.io/guides/developer/coins). 
 
-The coin has the ability to `drop` (burn) and `mint` coins. In it's `init` function it creates a treasury cap and metadata for the coin, and transfers the initial supply to the sender. When dealing with Sui coins a [treasury cap](https://docs.sui.io/standards/coin#treasury-capability) is used to grant permission to mint additional coins. A token's metadata corresponds to an object that contains information about the token, such as its name, symbol, and decimals.
+The coin has the ability to `drop` (burn) and `mint` coins. In it's `init` function it creates a treasury cap and metadata for the coin, and transfers the initial supply to the sender. When dealing with Sui coins a [treasury cap](https://docs.sui.io/standards/coin#treasury-capability) is used to grant permission to mint additional coins. A coin's [metadata](https://docs.sui.io/references/sui-api/sui-graphql/reference/types/objects/coin-metadata) corresponds to an object that contains information about the token, such as its name, symbol, and decimals.
 
 Once the token is created the rest of the `init` function will freeze the metadata so that anyone can alter this vital information about the token once it's deployed. Finally, the `treasury cap` object is transferred to the deployer, giving them sole ability to mint new tokens.
 
@@ -253,6 +253,8 @@ The `transferObject` function transfers the [upgrade capability](https://docs.su
   console.log('✅ Publish succeeded!')
 ```
 
+TODO note on `showObjectChanges`
+
 
 The final thing to do is to return the relevant objects that will be contained in the transaction response object. This can be done as follows
 
@@ -302,3 +304,112 @@ Great at this point you should now have a completed the deployment of your token
 
 With the token now deployed you will need to `mint` some tokens before being able to actually send a cross-chain transfer. If you are familiar with minting Sui coins feel free to skip this section.
 
+To create a new script to mint tokens you can run the following command:
+
+```bash
+touch scripts/mint.js
+```  
+
+You can create the starter code for the mint script similar to the deployments script. This time however the script will require arguments to be passed in.
+
+The required arguments for the script are
+
+1. `coinPackageId` - The package ID of the coin you deployed.
+1. `treasury` - The treasury cap ID of the coin you deployed.
+
+You should have both of these values in the logs after running the previous script.
+
+```javascript
+import { Command } from 'commander'
+import { Transaction } from '@mysten/sui/transactions'
+import { getWallet } from '../utils/index.js'
+
+async function run(args) {}
+
+
+const program = new Command()
+program
+  .description('Mint Sui Coin')
+  .requiredOption('--coinPackageId <coinPackageId>', 'Coin Package Id')
+  .requiredOption('--treasury <treasury>', 'Treasury')
+  .action(async (opts) => {
+    try {
+      await run(opts)
+    } catch (err) {
+      console.error('❌ Error:', err.message || err)
+      process.exit(1)
+    }
+  })
+
+program.parse(process.argv)
+```
+
+You can then begin to writeup the logic in the `run()` function, similarly to how you did in the previous script, starting off with the `getWallet()` function and creating a new `Transaction` object.
+
+```javascript
+  const [keypair, client] = getWallet()
+  const myAddress = keypair.getPublicKey().toSuiAddress()
+  const mintTx = new Transaction()
+```
+
+As a reminder, the `mint()` function on the Sui token takes in the following parameters:
+
+1. `treasury_cap` - The treasury cap object that allows minting.
+1. `amount` - The amount of tokens to mint.
+1. `recipient` - The address to send the minted tokens to.
+1. `ctx` - The transaction context.
+
+```rust
+public fun mint(
+    treasury_cap: &mut TreasuryCap<MY_CUSTOM_COIN>,
+    amount: u64,
+    recipient: address,
+    ctx: &mut TxContext,
+) {}
+```
+
+To call the `mint()` function you will need to use the [moveCall](https://sdk.mystenlabs.com/typedoc/classes/_mysten_sui.transactions.Transaction.html#movecall) function on the `Transaction` object from Sui's SDK. The `moveCall`  executes a Move call and returns whatever the Sui Move call returns.
+
+Back in the `mint` script in your `run()` function you can create a `move call` as follows:
+
+It requires the first three params from the token's package to be passed in (the context will be injected by the Move VM)
+
+```javascript
+  mintTx.moveCall({
+    target: `${coinPackageId}::my_custom_coin::mint`,
+    arguments: [
+      mintTx.object(treasury), // the cap you extracted
+      mintTx.pure.u64(1), // BigInt for u64
+      mintTx.pure.address(myAddress), // Sui address of the recipient
+    ],
+  })
+```
+
+With the `moveCall` added in must now broadcast the transaction to Sui by running the `signAndExecuteTransaction` as you did before in the deployment script.
+
+```javascript
+  await client.signAndExecuteTransaction({
+    signer: keypair,
+    transaction: mintTx,
+  })
+```
+
+Lastly, you can query the balance of your coin to ensure that the mint was successful. This can be done by running the `getBalance` function from the Sui SDK.
+
+Unlike with the `mint()` you do not need to make a `moveCall` to query the balance, as no state change is being made to Sui. Instead, you can directly call the `getBalance` function on the client object. This will hits the node’s `JSON-RPC` endpoint (the [sui_getBalance](https://www.quicknode.com/docs/sui/suix_getBalance) RPC method) which will return whatever the node has indexed for your address and coin type.
+
+
+```javascript
+  const balance = await client.getBalance({
+    owner: myAddress,
+    coinType: `${coinPackageId}::my_custom_coin::MY_CUSTOM_COIN`,
+  })
+
+  console.log('💰 Minted successfully! New balance:', balance)
+```
+
+Great! At this point you should be able to deploy a new token, mint and confirm the balance has increased. You can compare that your repo matches with [Checkpoint 5](TODO)
+
+## Part 6: Register Token with ITS
+
+With your token now live you can begin the process of registering it with ITS. This will allow you to transfer the token across chains using Axelar's Interchain Token Service.
