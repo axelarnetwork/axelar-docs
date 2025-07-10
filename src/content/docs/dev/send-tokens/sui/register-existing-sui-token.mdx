@@ -1,0 +1,304 @@
+import { Callout } from "../../../../../components/callout";
+
+
+# Register Existing Sui Token With Interchain Token Service
+
+
+This guide demonstrates, step-by-step, how to use [Axelar's Interchain Token Service (ITS)](/dev/send-tokens/interchain-tokens/intro/#interchain-token-service) to register an existing token on Sui and make it available for cross-chain transfers.
+
+By the end, you will be able to:
+
+1. Register an existing token on Sui with Axelar ITS.
+1. Deploy that token representation on an EVM chain (Avalanche Fuji testnet).
+1. Transfer tokens seamlessly between Sui and the EVM chain.
+
+## Prerequisites
+
+Before starting, make sure you have the following ready:
+
+- Rust installed with the wasm32 target enabled ([installation instructions](https://www.rust-lang.org/tools/install))
+- A Sui testnet account funded with testnet tokens
+- The [Sui CLI](https://docs.sui.io/references/cli/client) installed and configured
+- A browser wallet like [Slush Wallet](https://chromewebstore.google.com/detail/slush-%E2%80%94-a-sui-wallet/opcgpfmipidbgpenhmajoajpbobppdil) to connect to Sui testnet.
+
+
+
+
+## Part 1: Understanding the Interchain Token Service
+
+The [Interchain Token Service (ITS)](https://github.com/axelarnetwork/axelar-cgp-sui/tree/main/move/interchain_token_service) is a protocol that allows tokens to move freely between different blockchains.
+
+ITS allows you to register existing tokens you own on Sui and seamlessly transfer their value across chains. It achieves this through a canonical token integration, meaning:
+
+- When you transfer your Sui token to another chain, ITS _locks_ the token on Sui
+- It _mints_ a corresponding wrapped token on the destination chain
+- When tokens move back to Sui, the wrapped tokens are _burned_ and the original tokens are _unlocked_
+
+<Callout emoji="💡">
+  There can only be a single lock/unlock token manager for the token
+</Callout>
+
+## Part 2: Set up your Sui ITS project
+
+To setup a new Sui project run the command:
+```bash
+sui move new its_demo
+```
+
+Among other items, this will create a `sources` folder and `move.toml` file. The `sources` folder will contain the Sui Move code for your ITS project, and the `move.toml` file will contain the configuration for your project.
+
+The three key configurations for your `move.toml` file are 
+
+1. The package - The name of your package being deployed.
+1. The dependencies - The dependencies your package has on other Move packages.
+1. The addresses - The address is a spot for a human readable address of the where the package is deployed.
+
+The completed `move.toml` file should look like this:
+
+```toml
+[package]
+name = "my_coin"
+edition = "2024.beta" # edition = "legacy" to use legacy (pre-2024) Move
+
+[dependencies]
+Sui = { git = "https://github.com/MystenLabs/sui.git", subdir = "crates/sui-framework/packages/sui-framework", rev = "framework/testnet" }
+
+[addresses]
+my_coin = "0x0" #0x0 is a placeholder for a package not yet deployed.
+```
+
+## Part 3: Deploy Sui Token
+
+This part can be skipped if you already have a Sui token deployed. For the sake of this demo we will use a very straightforward token implementation on the Sui testnet. Worth noting that although this token is simple ITS is able to handle much more robust custom token implementations as well.
+
+We will use the token example straight the official [Sui documentation](https://docs.sui.io/guides/developer/coins). 
+
+The coin has the ability to `drop` (burn) and `mint` coins. In it's `init` function it creates a treasury cap and metadata for the coin, and transfers the initial supply to the sender. When dealing with Sui coins a [treasury cap](https://docs.sui.io/standards/coin#treasury-capability) is used to grant permission to mint additional coins. A token's metadata corresponds to an object that contains information about the token, such as its name, symbol, and decimals.
+
+Once the token is created the rest of the `init` function will freeze the metadata so that anyone can alter this vital information about the token once it's deployed. Finally, the `treasury cap` object is transferred to the deployer, giving them sole ability to mint new tokens.
+
+The `mint()` function allows the owner of the treasury cap to mint new tokens and transfer them to a specified recipient.
+
+```rust
+// Declare module
+module my_coin::my_custom_coin;
+
+// Import necessary modules
+use sui::coin::{Self, TreasuryCap};
+
+//move resource type
+public struct MY_CUSTOM_COIN has drop {}
+
+fun init(witness: MY_CUSTOM_COIN, ctx: &mut TxContext) {
+    let (treasury, metadata) = coin::create_currency(
+        witness,
+        6,
+        b"MCC",
+        b"My Custom Token",
+        b"",
+        option::none(),
+        ctx,
+    );
+	//make metadata immutable
+    transfer::public_freeze_object(metadata);
+	//transfer initial supply to sender
+    transfer::public_transfer(treasury, ctx.sender())
+}
+
+
+public fun mint(
+    treasury_cap: &mut TreasuryCap<MY_CUSTOM_COIN>,
+    amount: u64,
+    recipient: address,
+    ctx: &mut TxContext,
+) {
+    let coin = coin::mint(treasury_cap, amount, ctx);
+    transfer::public_transfer(coin, recipient)
+}
+```
+
+
+At this point you should be able to compile your token. This can be done by running  
+
+```bash
+sui move build
+```
+
+Great! At this point you now have a compiled Sui token. Before being able to integrate it to ITS you will need to deploy the token to the Sui testnet first.
+
+
+## Part 4: Deploy Sui Token
+
+Sui allows you to deploy Move packages via the [Sui CLI](https://intro.sui-book.com/unit-one/lessons/5_contract_deployment.html#deploying-the-contract). Although this would work, this document will use Mysten's [JavaScript SDK](https://intro.sui-book.com/unit-one/lessons/5_contract_deployment.html#deploying-the-contract) to deploy the token and interact with deployed packages.
+
+Before building out the deployment script you will need to install the following packages. 
+
+```bash
+npm i commander dotenv @mysten/sui @axelar-network/axelar-cgp-sui
+```
+
+You can create a new file to run the script by running the following command:
+
+```bash
+mkdir scripts
+touch scripts/deploy.js
+```
+
+With your packages now installed you can import the neccessary modules into your `deploy.js` file.
+
+
+```javascript
+import { execSync } from 'child_process'
+import { Command } from 'commander'
+import { Transaction } from '@mysten/sui/transactions'
+```
+
+You can setup your execution environment for your script as follows
+
+```javascript
+async function run() {}
+
+const program = new Command()
+program.description('Deploy Sui Coin').action(async () => {
+  try {
+    await run()
+  } catch (err) {
+    console.error('❌ Error:', err.message || err)
+    process.exit(1)
+  }
+})
+
+program.parse(process.argv)
+```
+
+#### Get Wallet Helper
+
+To interact with the Sui testnet you will need to connect to a wallet. The following function will help you connect to your wallet and return the connected wallet address. You can do this in a separate `utils` file
+
+```bash
+mkdir utils
+touch utils/index.js
+```
+
+Then in your utils you can write the functionality to connect to your wallet.
+
+```javascript
+import { ethers } from 'ethers';
+import { Ed25519Keypair } from '@mysten/sui/keypairs/ed25519';
+import { SuiClient } from '@mysten/sui/client';
+import 'dotenv/config';
+
+async function getWallet() {
+    const client = new SuiClient({ url: 'https://fullnode.testnet.sui.io:443' });
+
+    const rawKey = process.env.PRIVATE_KEY;
+
+    if (!rawKey) {
+        console.error('PRIVATE_KEY not set in your .env');
+        process.exit(1);
+    }
+
+    const keypair = Ed25519Keypair.fromSecretKey(rawKey);
+    return [keypair, client];
+}
+```
+
+For this function to work you must add your private key to a `.env` file in the root of your project. 
+
+The `getWallet` function will return a keypair and a client that you can use to interact with the Sui testnet.
+
+
+With the `getWallet()` function now built out you can return back the deployment script. 
+
+In you `run()` function you can trigger the `getWallet()` function
+
+```javascript
+async function run() {
+  const [keypair, client] = await getWallet();
+  const address = keypair.getPublicKey().toSuiAddress();
+}
+```
+
+Next, you can run the `build` command we ran previously but in the script so you do not need to build each time in the cli. This can be done as follows
+
+```javascript
+const buildOutput = execSync(`sui move build --dump-bytecode-as-base64`, {
+encoding: 'utf-8',
+})
+```
+
+The `--dump-bytecode-as-base64` flag tells sui move build to emit a JSON blob on stdout.
+
+With the package now built you can move on to [publishing](https://docs.sui.io/guides/developer/first-app/publish) it on chain.
+
+To do this you need to create a new [Transaction](https://sdk.mystenlabs.com/typescript/transaction-building/basics) object. Then you can run the `publish` to get the instructions publish the package on chain.  This can be done as follows
+
+```javascript
+  const tx = new Transaction()
+  const [upgradeCap] = tx.publish({ modules, dependencies })
+
+  tx.transferObjects([upgradeCap], myAddress)
+
+  console.log('🚀 Sending publish transaction…')
+```
+
+The `transferObject` function transfers the [upgrade capability](https://docs.sui.io/concepts/sui-move-concepts/packages/upgrade) to the deployer address. To execute on chain you can run the `signAndExecuteTransaction` function as follows from the Sui Client. This function will be signed by your keypair that you previously generated and pass in the `tx` object which contains the `publish` instructions. It can be written as follows:
+
+```javascript
+  const response = await client.signAndExecuteTransaction({
+    signer: keypair,
+    transaction: tx,
+    options: { showObjectChanges: true },
+  })
+  console.log('✅ Publish succeeded!')
+```
+
+
+The final thing to do is to return the relevant objects that will be contained in the transaction response object. This can be done as follows
+
+ 
+```javascript
+// Extract published package ID
+  const publishedChange = response.objectChanges.find(
+    (c) => c.type === 'published'
+  )
+
+  const treasuryChange = response.objectChanges.find(
+    (c) =>
+      c.type === 'created' && c.objectType.startsWith('0x2::coin::TreasuryCap')
+  )
+
+  const packageId = publishedChange?.packageId
+  console.log('📦 Published package ID:', packageId)
+
+  const treasuryCapId = treasuryChange.objectId
+  console.log('💰 Treasury cap:', treasuryCapId)
+```
+
+To run the deployment you can run
+
+```bash
+node scripts/deploy.js
+```
+
+The output should be similar to the following:
+
+```bash
+node scripts/deploy.js
+📦 Building Move package
+INCLUDING DEPENDENCY Sui
+INCLUDING DEPENDENCY MoveStdlib
+BUILDING my_coin
+🚀 Sending publish transaction…
+✅ Publish succeeded!
+📦 Published package ID: 0x129245163917fd5ec0a90ad83216ca1380ddb37ccbd2be246f62e905f78c88a7
+💰 Treasury cap: 0xde83787facc01740a8c0d670ada99364395d4d9a127a723f62316238da2db671
+```
+
+
+Great at this point you should now have a completed the deployment of your token. You can compare that your repo matches with [Checkpoint 4](TODO)
+
+## Part 5: Mint Token
+
+With the token now deployed you will need to `mint` some tokens before being able to actually send a cross-chain transfer. If you are familiar with minting Sui coins feel free to skip this section.
+
