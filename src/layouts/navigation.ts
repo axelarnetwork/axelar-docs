@@ -253,6 +253,10 @@ export const getNavigation = (section) => {
                       title: "Overview",
                       href: "/dev/send-tokens/sui/intro/",
                     },
+                    {
+                      title: "Register an Existing Token",
+                      href: "/dev/send-tokens/sui/register-existing-sui-token/",
+                    },
                   ],
                 },
                 {
