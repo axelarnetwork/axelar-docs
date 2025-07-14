@@ -667,3 +667,235 @@ You can confirm your code is up to date with the [Checkpoint 7](TODO)
 ## Part 8: Transfer Tokens Between Sui and EVM
 
 The final step is to now send a cross-chain transfer between your two deployed tokens. You should have a balance in your wallet from the `mint` script that you ran earlier. 
+
+You can create your final script to transfer your token the same way you did with the previous scripts
+
+```bash
+touch scripts/interchainTransfer.js
+```
+
+The interchain transfer script will require six different arguments to be passed in. 
+
+1. `destinationChain` - The destination chain you want to transfer to (e.g. `ethereum-sepolia`)
+2. `destinationAddress` - The address on the destination chain you want to transfer to.
+3. `coinPackageId` - The package ID of the coin you deployed.
+4. `tokenId` - The token ID of the coin you registered with ITS.
+5. `treasuryCap` - The treasury cap ID of the coin you deployed.
+6. `amount` - The amount of tokens you want to transfer.
+
+You should by now have access to all these values from the logs of your previous scripts. 
+
+Add the standard script boilerplate to your `interchainTransfer.js` file
+
+```javascript
+import { Command } from 'commander'
+import { Transaction } from '@mysten/sui/transactions'
+import { getWallet } from '../utils/index.js'
+import { ethers } from 'ethers'
+import { SUI_TYPE_ARG } from '@mysten/sui/utils'
+import { SUI_PACKAGE_ID, CLOCK_PACKAGE_ID } from '@axelar-network/axelar-cgp-sui'
+import {
+  suiItsPackageId,
+  suiItsObjectId,
+  gasServiceObjectId,
+  gatewayPackageId,
+  gasServicePackageId,
+} from '../utils/constants.js'
+
+
+
+async function run(args) {}
+
+const interchainTransferCommand = new Command()
+interchainTransferCommand
+  .description('Transfer coin from Sui to Ethereum with ITS')
+  .requiredOption('--coinPackageId <coinPackageId>', 'Coin Package Id')
+  .requiredOption('--tokenId <tokenId>', 'The ITS token id')
+  .requiredOption(
+    '--destinationChain <destinationChain>',
+    'The destination chain'
+  )
+  .requiredOption(
+    '--destinationAddress <destinationAddress>',
+    'The destination address'
+  )
+  .requiredOption('--amount <amount>', 'The amount of coins to be sent'),
+  .requiredOption('--coinObjectId <coinObjectId>', 'The coin object Id')
+  .action(async (opts) => {
+    try {
+      await run(opts)
+    } catch (err) {
+      console.error('❌ Error:', err.message || err)
+      process.exit(1)
+    }
+  })
+
+interchainTransferCommand.parse(process.argv)
+```
+
+
+You can then destructure the passed in arguments, get your keypair and client, and create a new `Transaction` object as you did in the previous scripts.
+
+```javascript
+  const {
+    coinPackageId,
+    tokenId,
+    destinationChain,
+    destinationAddress,
+    amount,
+    coinObjectId
+  } = args
+
+  const [keypair, client] = await getWallet()
+
+  const interchainTransferTx = new Transaction()
+  const coinType = `${coinPackageId}::my_custom_coin::MY_CUSTOM_COIN`
+```
+
+To make an [interchain_transfer](/dev/send-tokens/sui/intro/#send-interchain-transfer) call you must first generate a `ticket` by calling the [prepare_interchain_transfer](/dev/send-tokens/sui/intro/#why-prepare-interchain-transfer-is-necessary) function on ITS. This will generate a ticket that can be used to send the transfer across chains. More info on why the two step process for sending an interchain transfer is necessary can be found in the [prepare_interchain_transfer](/dev/send-tokens/sui/intro/#why-prepare-interchain-transfer-is-necessary) doc.
+
+The `prepare_interchain_transfer()` call will take in several parameters that must be obtained first. 
+
+The first of these parameters is the `tokenId`. To obtain the `tokenId` in the correct format that will need to be passed into the `prepare_interchain_transfer()` function, you will need to make a `moveCall` to the ITS package. This can be done as follows:
+
+```javascript
+  const tokenIdObj = interchainTransferTx.moveCall({
+    target: `${suiItsPackageId}::token_id::from_u256`,
+    arguments: [interchainTransferTx.pure.u256(tokenId)],
+  })
+```
+
+Next, you need to fetch the `source_channel`. The [channel](/dev/general-message-passing/sui/intro/#channels) that is generated will be used as the `sourceAddress` when the transaction arrives on the destination chain. You can obtain your `Move` formatted channel as follows.
+
+```javascript
+  const gatewayChannelId = interchainTransferTx.moveCall({
+    target: `${gatewayPackageId}::channel::new`,
+  })
+```
+
+With the two custom Move types now available you can move on to providing the rest of the arguments for the `prepare_interchain_transfer()` function. The generic `Coin` argument that the `prepare_interchain_transfer()` expects will send the entire balance of the Coin object that is sent to it. For example, if you previously minted 100 coins in your `Mint` script you cannot specify an `amount` to send, in other words if you supply the minted coin object to the `prepare_interchain_transfer()` script it will send the entire 100 coins, even if you only wanted to send 50 coins. To get around this issue you can use the [splitCoins](https://docs.sui.io/concepts/transactions/prog-txn-blocks/#splitcoins) to create a new Coin to pass in with the exact amount that you actually want to send. This can be done as follows:
+
+```javascript
+  const [coinsToSend] = interchainTransferTx.splitCoins(coinObjectId, [amount])
+```
+
+The final configuration is to specify the `destination_address`. In the [prepare_interchain_transfer()](/dev/send-tokens/sui/intro/#prepare-interchain-transfer) function signature the `destination_address` is expecting a `vector<u8>` rather than a plain `String`. To obtain the `vector<u8>` in your script you need to use `ethers.utils.arrayify()` to hex-decode the `0x` string into a `Uint8Array` of 20 raw bytes, then pass that into your call as a `vector<u8>`.
+
+Start by obtaining the `Uint8Array` with the available ethers helpers. This will represent your destination address as a raw 20 byte value. This value will be passed in as a vector when calling `prepare_interchain_transfer()`.
+
+```javascript
+const destRaw = ethers.utils.arrayify(destinationAddress)
+```
+
+You now can begin to create your `Move` call to `prepare_interchain_transfer()`. For this call you will need to pass in the `tokenIdObj`, `coinsToSend`, and `gatewayChannelId` objects you had created before. You can also pass in the `destinationChain` as a pure `String`. The destination address should now be passed in as a `vector` using the `destRaw` object you created earlier. The `metadata` field can passed in as an empty `String` as we will not be sending any executable data along with this interchain transfer call.
+
+```javascript
+  const ticket = interchainTransferTx.moveCall({
+    target: `${suiItsPackageId}::interchain_token_service::prepare_interchain_transfer`,
+    typeArguments: [coinType],
+    arguments: [
+      tokenIdObj,
+      coinsToSend,
+      interchainTransferTx.pure.string(destinationChain),
+      interchainTransferTx.pure.vector('u8', destRaw),
+      interchainTransferTx.pure.string('0x'),
+      gatewayChannelId,
+    ],
+  })
+```
+
+Once your script runs you should now receive a ticket that you can pass in to your [send_interchain_transfer()](/dev/send-tokens/sui/intro/#send-interchain-transfer) call. Let's go ahead and do that:
+
+```javascript
+  const interchainTransferTicket = interchainTransferTx.moveCall({
+    target: `${suiItsPackageId}::interchain_token_service::send_interchain_transfer`,
+    typeArguments: [coinType],
+    arguments: [
+      interchainTransferTx.object(suiItsObjectId),
+      ticket,
+      interchainTransferTx.object(SUI_CLOCK_OBJECT_ID),
+    ],
+  })
+```
+
+Notice, this call to `send_interchain_transfer()` is a lot more straightforward than the previous call to create the ticket. It requires the object id of the deployed ITS package, the ticket that you just created, and Sui's [clock object](https://docs.sui.io/references/framework/sui/clock) for calculating time. The clock object can be added to your `constants.js` file as follows
+
+```javascript
+export const SUI_CLOCK_OBJECT_ID = '0x6';
+```
+
+Great, next you must call the `pay_gas()` and `send_message()` functions as you did in your previous cross-chain calls.
+
+These will be very similar to how you called them in your previous script. Notice in these calls the `ticket` that you pass in is not the `ticket` from the `prepare_interchain_transfer()` function, rather it is the ticket generated from the `send_interchain_transfer()` function call.
+
+```javascript
+  interchainTransferTx.moveCall({
+    target: `${gasServicePackageId}::gas_service::pay_gas`,
+    typeArguments: [SUI_TYPE_ARG],
+    arguments: [
+      interchainTransferTx.object(gasServiceObjectId),
+      interchainTransferTicket,
+      gas,
+      interchainTransferTx.object(keypair.getPublicKey().toSuiAddress()),
+      interchainTransferTx.pure.string(''),
+    ],
+  })
+
+  interchainTransferTx.moveCall({
+    target: `${gatewayPackageId}::gateway::send_message`,
+    arguments: [
+      interchainTransferTx.object(gatewayObjectId),
+      interchainTransferTicket,
+    ],
+  })
+```
+
+The final `moveCall` that must be made before broadcasting this transaction is to destroy the channel was created to send the message. This can be done as follows.
+
+```javascript
+  interchainTransferTx.moveCall({
+    target: `${gatewayPackageId}::channel::destroy`,
+    arguments: [interchainTransferTx.object(gatewayChannelId)],
+  })
+```
+
+The object must be destroyed as in Move every object must be explicitly handled, the VM will not allow you to simply leave an object unused in an open transaction. 
+
+<Callout emoji="💡">
+Your options are either to transfer, share, or destroy the object. Since you will no longer need the object, destroying it is the most cost efficient and safest way to handle the object.
+</Callout>
+
+Now with the instruction to destroy the unused object destroyed, you can broadcast the transaction and log the transaction digest.
+
+```javascript
+  const receipt = await client.signAndExecuteTransaction({
+    signer: keypair,
+    transaction: interchainTransferTx,
+    options: { showObjectChanges: true },
+  })
+
+  console.log('🧾 Transaction digest:', receipt.digest)
+```
+
+Great! Your script can now be run as follows
+
+```bash
+ node scripts/interchainTransfer.js --coinPackageId 0x129245163917fd5ec0a90ad83216ca1380ddb37ccbd2be246f62e905f78c88a7 --tokenId 0x291e9b4f659caeecf96e66c008b794dcce55f1b93bfc4f9ca49af54096316ebd --destinationChain "ethereum-sepolia" --destinationAddress "0xc5DcAC3e02f878FE995BF71b1Ef05153b71da8BE" --amount 1 --coinObjectId 0x3094b9c7c131ec18b35e41566615d45ccdb1f6242e71adedd8b2d971b362a5be
+```
+With the following output in your logs
+
+```bash
+🚀 interchain transfer via ITS
+🧾 Transaction digest: 8msndctx8W5zoef7j6ZueypPzCX2dTkYQzU7VWBMkGGo
+```
+
+This interchain transfer can be viewed on the [Axelarscan](https://testnet.axelarscan.io/gmp/8msndctx8W5zoef7j6ZueypPzCX2dTkYQzU7VWBMkGGo) block explorer.
+
+You can even the code at the seventh and final checkpoint. 
+
+## Conclusion
+
+In this guide you have deployed a fresh new custom coin on the Sui blockchain, you have integrated that coin with Axelar's Interchain Token Service and successfully made multiple cross-chain transactions to deploy a remote token on Ethereum and even transfer your integrated token from Sui to Ethereum. Once transferred out of Sui your token will be locked with your token's Token Manager contract on Sui, it will be unlocked when the token is sent back from Ethereum to Sui. 
+
+This guide just scratches the service of the exciting possibilities that Axelar now offers the Sui ecosystem. For simpler integrations with non-custom tokens to Sui we highly encourage you to explore the Axelar [ITS portal](https://interchain.axelar.dev/), which offers a no-code solution for integrating assets to ITS. We would also love to see more advanced customized tokens, such as stablecoins integrated to ITS from Sui. For any open questions please reach out at our [support channel on Github](https://github.com/axelarnetwork/support/issues).
+
