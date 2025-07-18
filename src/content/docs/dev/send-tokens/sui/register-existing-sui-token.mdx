@@ -69,9 +69,9 @@ my_coin = "0x0" #0x0 is a placeholder for a package not yet deployed.
 
 ## Part 3: Deploy Sui Token
 
-This part can be skipped if you already have a Sui token deployed. For the sake of this demo we will use a very straightforward token implementation on the Sui testnet. Worth noting that although this token is simple ITS is able to handle much more robust custom token implementations as well.
+This part can be skipped if you already have a Sui token deployed. For the sake of this demo we will use a very straightforward token implementation on the Sui testnet. Worth noting that although this token is simple, ITS is able to handle much more robust custom token implementations as well.
 
-We will use the token example straight the official [Sui documentation](https://docs.sui.io/guides/developer/coins). 
+We will use the token example straight from the official [Sui documentation](https://docs.sui.io/guides/developer/coins). 
 
 The coin has the ability to `drop` (burn) and `mint` coins. In it's `init` function it creates a treasury cap and metadata for the coin, and transfers the initial supply to the sender. When dealing with Sui coins a [treasury cap](https://docs.sui.io/standards/coin#treasury-capability) is used to grant permission to mint additional coins. A coin's [metadata](https://docs.sui.io/references/sui-api/sui-graphql/reference/types/objects/coin-metadata) corresponds to an object that contains information about the token, such as its name, symbol, and decimals.
 
@@ -126,6 +126,8 @@ sui move build
 
 Great! At this point you now have a compiled Sui token. Before being able to integrate it to ITS you will need to deploy the token to the Sui testnet first.
 
+If you are unable to compile your coin, you can compare your code with the [first checkpoint](https://github.com/benjamin852/sui-its-example/tree/checkpoint1).
+
 
 ## Part 4: Deploy Sui Token
 
@@ -144,7 +146,7 @@ mkdir scripts
 touch scripts/deploy.js
 ```
 
-With your packages now installed you can import the neccessary modules into your `deploy.js` file.
+With your packages now installed you can import the necessary modules into your `deploy.js` file.
 
 
 ```javascript
@@ -183,7 +185,6 @@ touch utils/index.js
 Then in your utils you can write the functionality to connect to your wallet.
 
 ```javascript
-import { ethers } from 'ethers';
 import { Ed25519Keypair } from '@mysten/sui/keypairs/ed25519';
 import { SuiClient } from '@mysten/sui/client';
 import 'dotenv/config';
@@ -253,11 +254,7 @@ The `transferObject` function transfers the [upgrade capability](https://docs.su
   console.log('✅ Publish succeeded!')
 ```
 
-TODO note on `showObjectChanges`
-
-
-The final thing to do is to return the relevant objects that will be contained in the transaction response object. This can be done as follows
-
+The `showObjectChanges` flag will add an extra log to capture all the objects that were updated/created/destroyed throughout the transaction. You will need this flag to be set to `true` to be able to track the relevant `treasury` and new `packageId` of the coin you just deployed.  This can be done as follows
  
 ```javascript
 // Extract published package ID
@@ -297,8 +294,7 @@ BUILDING my_coin
 💰 Treasury cap: 0xde83787facc01740a8c0d670ada99364395d4d9a127a723f62316238da2db671
 ```
 
-
-Great at this point you should now have a completed the deployment of your token. You can compare that your repo matches with [Checkpoint 4](TODO)
+Great at this point you should now have a completed the deployment of your token. You can compare that your repo matches with [Checkpoint 2](https://github.com/benjamin852/sui-its-example/tree/checkpoint2)
 
 ## Part 5: Mint Token
 
@@ -421,7 +417,7 @@ If successful you should see an output similar to the following:
 💰 my token balance 1
 ```
 
-Great! At this point you should be able to deploy a new token, mint and confirm the balance has increased. You can compare that your repo matches with [Checkpoint 5](TODO)
+Great! At this point you should be able to deploy a new token, mint and confirm the balance has increased. You can compare that your repo matches with [Checkpoint 3](https://github.com/benjamin852/sui-its-example/tree/checkpoint3)
 
 ## Part 6: Register Token with ITS
 
@@ -439,11 +435,9 @@ Then create the standard script boilerplate as you did in the previous scripts.
 import { Command } from 'commander'
 import { Transaction } from '@mysten/sui/transactions'
 import { getWallet } from '../utils/index.js'
-
-
+import { suiItsPackageId, suiItsObjectId } from '../utils/constants.js'
 
 async function run(args) {}
-
 
 const registerCoinCommand = new Command()
 registerCoinCommand
@@ -478,12 +472,89 @@ Next you will need to create the correct `typeArgument` that you will need to pa
 const coinType = `${coinPackageId}::my_custom_coin::MY_CUSTOM_COIN`
 ```
 
-TODO -> this is changing with new ITS refactor, confirm latest.
-TODO -> explain basics of how to write Move calls. (ie the whole [itsPackageId::interchain_token_service::register_coin] syntax). Dont forget to talk about the BCS encodings (https://sdk.mystenlabs.com/bcs#basic-types)
+With your `coinType` argument now available you can move on to registering the token with ITS. 
+
+To register your coin with ITS you will need to trigger the `register_coin()` function on ITS. It is written as follows:
+
+```rust
+public fun register_coin<T>(
+  self: &mut InterchainTokenService, 
+  coin_info: CoinInfo<T>, 
+  coin_management: CoinManagement<T>
+  ): TokenId {}
+```
+
+This function will register an existing deployed coin on Sui as the canonical token in relation to other interchain tokens deployed across other blockchains.
+
+In order to trigger this function from your script you must create the necessary `coin_info` and `coin_management` objects that the function expects.
+
+You can create the `coin_info` param in your script as follows:
+
+```javascript
+  const coinInfo = registerCoinTx.moveCall({
+    target: `${suiItsPackageId}::coin_info::from_info`,
+    typeArguments: [coinType],
+    arguments: [
+      registerCoinTx.object('My Custom Token'),
+      registerCoinTx.object('MCC'),
+      registerCoinTx.object('6'),
+    ],
+  })
+```
+
+This will trigger a `MoveCall` on ITS's [Coin Info](https://github.com/axelarnetwork/axelar-cgp-sui/blob/main/move/interchain_token_service/sources/types/coin_info.move) module, returning an object with the certain fields pertaining to the coins metadata.
+
+Next, you can make another `MoveCall` to get the `Coin Management` object.
+
+```javascript
+  const coinManagement = registerCoinTx.moveCall({
+    target: `${suiItsPackageId}::coin_management::new_locked`,
+    typeArguments: [coinType],
+    arguments: [],
+  })
+```
+
+The call to ITS's [Coin Management](https://github.com/axelarnetwork/axelar-cgp-sui/blob/main/move/interchain_token_service/sources/types/coin_management.move) will allow you to specify the type of [manager](/dev/send-tokens/interchain-tokens/token-manager/) you want for your coin. For this canonical integration the `lock/unlock` manager type will suffice. This will lock your coins when you make a cross-chain call for your coin from Sui and unlock your coins when they're moved back into Sui.
 
 When passing in arguments into a Sui function if the argument is a Sui object you need to first make a query to a move package to be able to pass that queried value in as an appropriate Move Object.
 
-TODO the script can be run as follows
+With your two objects now available, you can make the `MoveCall` to the `register_coin()` function. This can be done as follows:
+
+```javascript
+ registerCoinTx.moveCall({
+    target: `${suiItsPackageId}::interchain_token_service::register_coin`,
+    typeArguments: [coinType],
+    arguments: [
+      registerCoinTx.object(suiItsObjectId),
+      registerCoinTx.object(coinInfo),
+      registerCoinTx.object(coinManagement),
+    ],
+  })
+```
+
+With the `MoveCall` now made you can broadcast the transaction. You can include the With the `MoveCall` now made you can broadcast the transaction. You can include the `showEvents` param to provide the logs that you will need to get the `tokenId` from the integrated Sui Coin.
+
+```javascript
+  const deployReceipt = await client.signAndExecuteTransaction({
+    signer: keypair,
+    transaction: registerCoinTx,
+    options: { showObjectChanges: true, showEvents: true },
+  })
+```
+
+Great! With the call now made you can log the `tokenId` as follows
+
+
+```javascript
+  const coinRegisteredEvent = deployReceipt.events.find((event) =>
+    event.type.includes('CoinRegistered')
+  )
+
+  const tokenId = coinRegisteredEvent.parsedJson.token_id.id
+  console.log('🎯 Token ID:', tokenId)
+```
+
+You can now run the script as follows
 
 ```bash
  node scripts/integrateAxelar.js --coinPackageId 0x129245163917fd5ec0a90ad83216ca1380ddb37ccbd2be246f62e905f78c88a7
@@ -491,6 +562,11 @@ TODO the script can be run as follows
 
 🎯 Token ID: 0x291e9b4f659caeecf96e66c008b794dcce55f1b93bfc4f9ca49af54096316ebd
 ```
+
+You can view your transaction [live on the Sui blockchain](https://suiscan.xyz/testnet/tx/JDrH1enDpWzcfvMso5RkdNFPVnGrSDELqderaFAeTcDB). Though this page could be overwhelming at first, the critical piece to note is the first Object Id in the `Object Change` heading. For this token integration the [0x1eebd0cc85790956efbe96763ae1d19a5e548015c7735c1b7929fdc1f26942ef](https://suiscan.xyz/testnet/object/0x1eebd0cc85790956efbe96763ae1d19a5e548015c7735c1b7929fdc1f26942ef/tx-blocks) object corresponds to the [Coin Data](https://github.com/axelarnetwork/axelar-cgp-sui/blob/main/move/interchain_token_service/sources/types/coin_data.move) module. In the `Coin Data` module you can see the relevant info for you [Coin Info](https://github.com/axelarnetwork/axelar-cgp-sui/blob/main/move/interchain_token_service/sources/types/coin_info.move), which confirms your coin's name, symbol, and decimals. The [Coin Management](https://github.com/axelarnetwork/axelar-cgp-sui/blob/main/move/interchain_token_service/sources/types/coin_management.move) field contains the relevant configuration for your coin's integration to ITS. This includes the [flow limit](/dev/send-tokens/interchain-tokens/flow-limit/) value, the [operator's](/dev/send-tokens/interchain-tokens/minter-operator-roles/#operator-role) address, as well as the current balance corresponding to any assets locked that are currently bridged out of Sui. Recall, the `lockUnlock` manager type we integrated with, this is where those assets would be held. 
+
+
+At this point your code should be functioning as the code in [checkpoint 4](https://github.com/benjamin852/sui-its-example/tree/checkpoint4) does.
 
 ## Part 7 :Deploy Interchain Token on Avalanche from Sui
 
@@ -589,7 +665,11 @@ You also must pass in the `coinType` as the `typeArgument` to satisfy the generi
   })
 ``` 
 
-With the `deploy_remote_interchain_token()` function called you must now call the standard [General Message Passing (GMP)](https://docs.axelar.dev/dev/general-message-passing/sui/gmp-contracts/#general-message-passing-gmp-sui-contracts) functions in order to [TODO].
+With the `deploy_remote_interchain_token()` function called you must now call the standard [General Message Passing (GMP)](https://docs.axelar.dev/dev/general-message-passing/sui/gmp-contracts/#general-message-passing-gmp-sui-contracts) functions in order to send the cross-chain transaction. 
+
+<Callout>
+Unlike in EVM chains where you can make a cross-chain call simply by calling `interchainTransfer()`, Sui requires a two step process due to the nature of how upgradable contracts work. Any function from the Move package that returns a ticket, (such as `deploy_remote_interchain_token()`) must explicitly be broadcasted in a cross-chain call with `pay_gas()` and `send_message()`. More info on why the 2step call is necessary can be found [here](/dev/general-message-passing/sui/gmp-contracts/#send-message). 
+</Callout>
 
 
 The first of these functions is the [pay_gas()](/dev/general-message-passing/sui/gmp-contracts/#paygas) function, defined on the [Sui Gas Service](https://github.com/axelarnetwork/axelar-cgp-sui/blob/main/move/gas_service/sources/gas_service.move). It will be used to pay the cost of the cross chain transaction. Further details on gas payment (including the parameters it expects) can be found in the [Sui GMP](/dev/general-message-passing/sui/gmp-tutorial/#send-message-1) tutorial. The gas payment can be written as follows
@@ -630,7 +710,7 @@ The call to `send_message()` can be made as follows:
   })
 ```
 
-With the `pay_gas()` and `send_message()` calls now made your script can now [TODO]
+With the `pay_gas()` and `send_message()` calls now made your script will now make the cross-chain call to your destination chain to deploy the remote ERC20 token.
 
 At this point the final step is to broadcast the transaction to Sui by running the `signAndExecuteTransaction` as you did in the previous scripts. This can be done as follows:
 
