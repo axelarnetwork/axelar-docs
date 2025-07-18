@@ -66,15 +66,16 @@ sudo apt -y update && sudo apt -y install rippled
 ```
 
 6. Configure your node to store at least a month of ledger history. Edit your `rippled.cfg` file located at `/etc/opt/ripple/rippled.cfg`:
-- Under the `[node_db]` stanza, update `online_delete` (keep the rest of the parameters as is):
+- Under the `[node_db]` stanza, update `online_delete` and make sure `advisory_delete=0` (keep the rest of the parameters as is):
 ```
 [node_db]
 online_delete=750000
+advisory_delete=0
 ```
 - Uncomment and set the `[ledger_history]` stanza:
 ```
 [ledger_history]
-750000
+none
 ```
 
 7. Configure the `[server]` stanza in `rippled.cfg` securely according to your needs.

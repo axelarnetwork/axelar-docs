@@ -1,0 +1,127 @@
+# Stacks
+
+import { Callout } from "/src/components/callout";
+
+Instructions to set up your Stacks node.
+
+## Prerequisites
+
+- [Setup your Axelar validator](/validator/setup/overview/)
+- [Minimum hardware requirements](https://docs.stacks.co/guides-and-tutorials/nodes-and-miners/run-a-node-with-docker#requirements):
+  - Memory: 8 GB RAM
+  - CPU: 2 CPU cores
+  - Disk: 500 GB NVMe SSD storage
+  - [Docker Engine](https://docs.docker.com/engine/install/)
+  - [Docker Compose](https://docs.docker.com/compose/install/)
+- [Official Documentation](https://docs.stacks.co/guides-and-tutorials/nodes-and-miners/run-a-node-with-docker)
+
+## Setup Stacks Node
+
+### Clone the Repository
+
+```bash
+git clone https://github.com/stacks-network/stacks-blockchain-docker
+cd stacks-blockchain-docker
+```
+
+Open `manage.sh` script
+
+```bash
+nano +6 manage.sh
+```
+
+Add the following function to support the newer docker compose syntax
+
+```bash
+docker-compose() {
+    docker compose "$@"
+}
+```
+
+**Note:**  This ensures compatibility with newer Docker versions where docker compose replaces the legacy docker-compose.
+
+Make the script executable
+
+```bash
+chmod +x manage.sh
+```
+
+### Start the services
+
+<tabs>
+  <tab-item title="Mainnet">
+  ```bash
+  ./manage.sh -n mainnet -a start
+  ```
+  </tab-item>
+  <tab-item title="Testnet">
+  ```bash
+  ./manage.sh -n testnet -a start
+  ```
+  </tab-item>
+</tabs>
+
+### Check Logs
+
+<tabs>
+  <tab-item title="Mainnet">
+  ```bash
+  ./manage.sh -n mainnet -a logs
+  ```
+  </tab-item>
+  <tab-item title="Testnet">
+  ```bash
+  ./manage.sh -n testnet -a logs
+  ```
+  </tab-item>
+</tabs>
+
+After a few minutes, you should see lines that look like this. This means your node has started syncing with the network and is receiving blocks.
+
+```bash
+stacks-blockchain-api  | {"level":"info","time":"2025-07-13T12:39:13.914Z","pid":19,"hostname":"e15f871c6dad","name":"stacks-node-event","reqId":"req-7","req":{"method":"POST","url":"/new_burn_block","hostname":"stacks-blockchain-api:3700","remoteAddress":"172.21.0.4","remotePort":60142,"bodySize":184},"msg":"incoming request"}
+stacks-blockchain      | INFO [1752410353.915124] [stackslib/src/net/relay.rs:2559] [relayer-http://0.0.0.0:20443] Got chunks for unconfigured StackerDB replica, stackerdb_contract_id: SP000000000000000000002Q6VF78.signers-1-2
+stacks-blockchain      | INFO [1752410353.917114] [stackslib/src/net/relay.rs:2559] [relayer-http://0.0.0.0:20443] Got chunks for unconfigured StackerDB replica, stackerdb_contract_id: SP000000000000000000002Q6VF78.signers-1-2
+stacks-blockchain      | INFO [1752410353.917128] [stackslib/src/net/relay.rs:2559] [relayer-http://0.0.0.0:20443] Got chunks for unconfigured StackerDB replica, stackerdb_contract_id: SP000000000000000000002Q6VF78.signers-1-1
+stacks-blockchain      | INFO [1752410353.919038] [stackslib/src/net/relay.rs:2559] [relayer-http://0.0.0.0:20443] Got chunks for unconfigured StackerDB replica, stackerdb_contract_id: SP000000000000000000002Q6VF78.signers-1-2
+stacks-blockchain-api  | {"level":"info","time":"2025-07-13T12:39:13.921Z","pid":19,"hostname":"e15f871c6dad","name":"stacks-node-event","reqId":"req-7","res":{"statusCode":200,"method":"POST","url":"/new_burn_block","requestBodySize":184,"responseBodySize":15},"responseTime":6.254112005233765,"msg":"request completed"}
+```
+
+### Check the following ports to check the block height
+
+Stacks Blockchain port:
+
+```bash
+curl -sL localhost:20443/v2/info | jq -r
+```
+
+Stacks Blockchain Api service port: 
+
+```bash
+curl -sL localhost:3999 | jq -r
+```
+
+## Ampd Configuration
+
+Once your node is up and running, you need to add the `stacks` chain to your [ampd daemon's](https://github.com/axelarnetwork/axelar-amplifier/tree/main/ampd) `config.toml`file. This can be done by adding in the following configuration:
+
+<tabs>
+    <tab-item title="mainnet">
+    ```toml
+      TBA
+    ```
+    </tab-item>
+    <tab-item title="testnet">
+    ```toml
+      TBA
+    ```
+    </tab-item>
+</tabs>
+
+## Chain Registration
+
+For your node to be recognized by the Axelar Network, you need to register your verifier's support for the chain with the `ampd` daemon. This can be done by running:  
+
+```bash
+ampd register-chain-support amplifier stacks
+```
