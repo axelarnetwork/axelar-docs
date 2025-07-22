@@ -80,6 +80,17 @@ Once your coin has been integrated with ITS, you can use the `send_interchain_tr
 The first step is to prepare the [Interchain Transfer Ticket](#interchain-ransfer-ticket) via the [prepare_interchain_transfer](#prepare-interchain-transfer) function. Once the ticket is created, you can trigger the [send_interchain_transfer](#send-interchain-transfer) function. Breaking up the transfer into a two-step process allows the package to be more flexible in the case of an upgrade.
 
 
+
+<Callout emoji="💡">
+Other functions that return `MessageTickets` in ITS include:
+
+- `link_coin()`
+- `register_coin_metadata()`
+- `deploy_remote_interchain_token()`
+- `send_interchain_transfer()`
+</Callout>
+
+
 #### Prepare Interchain Transfer
 
 This will create the `InterchainTransferTicket` to be passed into the `send_interchain_transfer()`
