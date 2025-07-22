@@ -33,12 +33,14 @@ The `send_message` function triggers your cross-chain message from Sui to anothe
 
 <Callout emoji="💡">
   The reason this process is in two steps is because the Gateway is an upgrade
-  compatible contract. To ensure minimal roadblocks when upgrading the contract
+  compatible contract. To ensure minimal roadblocks when upgrading the contract,
   the functionality of the Gateway was broken up so that if the Gateway does get
   upgraded at some point, applications can always continue to call the logic of
   the V0 `prepare_message()` function and pass the ticket into the V2 version of
   the `send_message()`, this will minimize breaking changes when upgrading the
   contract.
+
+  In short, to ensure backwards compatibility a ticketing system allows for a ticket generation function to consistently maintain tickets across versions, while the actual functions that consume the tickets can evolve as different versions of the package are released.
 </Callout>
 
 ```rust
