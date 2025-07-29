@@ -26,12 +26,12 @@ export default ({ environment = "mainnet" }) => {
           };
 
           const explorer_url = provider_params?.[0]?.blockExplorerUrls?.[0];
-          const gateway_contract_address = _gateways.find(
-            (_c) => _c?.id === id,
-          )?.address;
-          const gas_service_address = _gas_services.find(
-            (_c) => _c?.id === id,
-          )?.address;
+          const gateway_data = _gateways.find((_c) => _c?.id === id);
+          const gateway_contract_address = gateway_data?.address;
+          const gateway_object_id = gateway_data?.objectId;
+          const gas_service_data = _gas_services.find((_c) => _c?.id === id);
+          const gas_service_address = gas_service_data?.address;
+          const gas_service_object_id = gas_service_data?.objectId;
 
           return (
             <div key={i} className="bg-background-neutral-dark rounded-xl p-5">
@@ -96,6 +96,28 @@ export default ({ environment = "mainnet" }) => {
                     )}
                   </div>
                 </div>
+                {id === "sui" && gateway_object_id && (
+                  <div className="flex flex-col flex-wrap justify-between">
+                    <span className="whitespace-nowrap text-sm text-foreground">
+                      Gateway Object ID:
+                    </span>
+                    <div className="flex items-center text-sm space-x-1">
+                      <a
+                        href={`${explorer_url}/object/${gateway_object_id}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="no-underline text-primary font-clash font-semibold"
+                      >
+                        {ellipse(gateway_object_id, 14)}
+                      </a>
+                      <Copy
+                        size={18}
+                        hide={true}
+                        value={gateway_object_id}
+                      />
+                    </div>
+                  </div>
+                )}
                 <div className="flex flex-col flex-wrap justify-between">
                   <span className="whitespace-nowrap text-sm text-foreground">
                     Gas Service Contract:
@@ -124,6 +146,28 @@ export default ({ environment = "mainnet" }) => {
                     )}
                   </div>
                 </div>
+                {id === "sui" && gas_service_object_id && (
+                  <div className="flex flex-col flex-wrap justify-between">
+                    <span className="whitespace-nowrap text-sm text-foreground">
+                      Gas Service Object ID:
+                    </span>
+                    <div className="flex items-center text-sm space-x-1">
+                      <a
+                        href={`${explorer_url}/object/${gas_service_object_id}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="no-underline text-primary font-clash font-semibold"
+                      >
+                        {ellipse(gas_service_object_id, 14)}
+                      </a>
+                      <Copy
+                        size={18}
+                        hide={true}
+                        value={gas_service_object_id}
+                      />
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
           );

@@ -77,7 +77,8 @@
       "address": "0x2d5d7d31F671F86C782533cc367F14109a082712"
     },
     { "id": "sui",
-      "address": "0x695f612a1ee9268d25ca5c03e705819a285ff0c5b4f7720fc75a00cb8c6f3b63"
+      "address": "0x695f612a1ee9268d25ca5c03e705819a285ff0c5b4f7720fc75a00cb8c6f3b63",
+      "objectId": "0x0a3a8e08d156595e5a097964d5d294fcfc9ff75f736b55f44470a93e48bdeb8f"
     }
   ],
   "testnet": [
@@ -198,7 +199,8 @@
       "address": "0xbE406F0189A0B4cf3A05C286473D23791Dd44Cc6"
     },
     { "id": "sui",
-      "address": "0xddf711b99aec5c72594e5cf2da4014b2d30909850a759d2e8090add1088dbbc9"
+      "address": "0xddf711b99aec5c72594e5cf2da4014b2d30909850a759d2e8090add1088dbbc9",
+      "objectId": "0xac1a4ad12d781c2f31edc2aa398154d53dbda0d50cb39a4319093e3b357bc27d"
     }
   ]
 }
