@@ -136,7 +136,7 @@ A live example of an execution transaction can be found [here](https://suiscan.x
 
 ## Channel
 
-In Sui, there is no ability to check the immediate caller of a message (i.e., there is no msg.sender like in EVM development). What is available is a `transaction.origin`, which is the root caller of a transaction (similar to tx.origin in EVM development). To identify who the caller of a message is, you can use `Channels`. The `Channel` is an object that an application first creates, and this `channel` is the identifier for who is calling and receiving the message.
+In Sui, there is no ability to check the immediate caller of a message (i.e., there is no msg.sender like in EVM development). Instead, Sui injects a [txContext](https://docs.sui.io/references/framework/sui/tx_context), which carries the root transaction's signer address (similar to Solidity's `tx.origin`). To identify who the caller of a message is, you can use `Channels`. The `Channel` is an object that an application first creates, and this `channel` is the identifier for who is calling and receiving the message.
 
 Channels allow for sending and receiving messages between Sui and other chains. When a message is sent, the channel acts as a destination. The `destination_id` is compared to the channel's `id`.
 
