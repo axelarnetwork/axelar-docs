@@ -3,7 +3,6 @@
     {
       "id": "sui",
       "name": "Sui",
-      "chain_id": 1,
       "network_id": "sui",
       "provider_params": [
         {
@@ -26,7 +25,6 @@
     {
       "id": "sui",
       "name": "Sui",
-      "chain_id": 2,
       "network_id": "sui",
       "provider_params": [
         {
