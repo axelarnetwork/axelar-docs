@@ -1,0 +1,46 @@
+{
+  "mainnet": [
+    {
+      "id": "sui",
+      "name": "Sui",
+      "network_id": "sui",
+      "provider_params": [
+        {
+          "chainName": "Sui",
+          "nativeCurrency": {
+            "name": "Sui",
+            "symbol": "SUI",
+            "decimals": 9
+          },
+          "blockExplorerUrls": [
+            "https://suiscan.xyz/mainnet",
+            "https://suivision.xyz/"
+          ]
+        }
+      ],
+      "image": "/images/chains/sui.jpg"
+    }
+  ],
+  "testnet": [
+    {
+      "id": "sui",
+      "name": "Sui",
+      "network_id": "sui",
+      "provider_params": [
+        {
+          "chainName": "Sui",
+          "nativeCurrency": {
+            "name": "Sui",
+            "symbol": "SUI",
+            "decimals": 9
+          },
+          "blockExplorerUrls": [
+            "https://suiscan.xyz/testnet",
+            "https://testnet.suivision.xyz/"
+          ]
+        }
+      ],
+      "image": "/images/chains/sui.jpg"
+    }
+  ]
+}
