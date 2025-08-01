@@ -23,13 +23,13 @@ In Sui, there is no ability to check the immediate caller of a message (unlike `
 
 Sending a message from Sui involves these key steps:
 
-1. Register your transaction with the [relayer discovery service](https://github.com/axelarnetwork/axelar-cgp-sui/tree/main/move/relayer_discovery).
 1. Prepare the message via the Gateway.
 1. Pay gas via the Gas Service.
 1. Send the message via the Gateway.
 
 Receiving a message involves:
 
+1. Register your transaction with the [relayer discovery service](https://github.com/axelarnetwork/axelar-cgp-sui/tree/main/move/relayer_discovery).
 1. Message approval by Axelar relayers.
 1. Message execution on your Sui contract.
 
