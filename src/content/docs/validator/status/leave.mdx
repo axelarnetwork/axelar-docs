@@ -8,7 +8,6 @@
 axelard tx snapshot deactivate-proxy --from validator -y -b block
 ```
 
-{/* 2. Wait until the next key rotation for the changes to take place.  In this release, we're triggering key rotation about once a day. So come back in 24 hours, and continue to the next step. If you still get an error after 24 hours, reach out to a team member. */}
 2. Query your network’s key‐rotation window and (optionally) opt out of future rotations.
 
 - Fetch the multisig module parameters and note the `activeEpochCount`
