@@ -75,6 +75,11 @@
     {
       "id": "blast",
       "address": "0xe432150cce91c13a887f7D836923d5597adD8E31"
+    },
+    {
+      "id": "sui",
+      "address": "0xeb055ffc3237c24e305a2bb760fe6551f6ff7c5fdb68735169c0f528fccab373",
+      "objectId": "0xde761b85a85477bba0ca6b4a09bcde7da33db2f64c392f806f24f433971514f5"
     }
   ],
   "testnet": [
@@ -193,6 +198,11 @@
     {
       "id": "linea-sepolia",
       "address": "0xe432150cce91c13a887f7D836923d5597adD8E31"
+    },
+    {
+      "id": "sui",
+      "address": "0x6ddfcdd14a1019d13485a724db892fa0defe580f19c991eaabd690140abb21e4",
+      "objectId": "0x6fc18d39a9d7bf46c438bdb66ac9e90e902abffca15b846b32570538982fb3db"
     }
   ]
 }
