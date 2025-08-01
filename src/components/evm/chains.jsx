@@ -1,4 +1,5 @@
 import evm_chains from "../../data/evm_chains.json";
+import non_evm_chains from "../../data/non_evm_chains.json";
 import gas_services from "../../data/gas_services.json";
 import gateways from "../../data/gateways.json";
 import { ellipse } from "../../utils";
@@ -7,12 +8,17 @@ import AddChain from "../web3";
 
 export default ({ environment = "mainnet" }) => {
   const _evm_chains = evm_chains?.[environment] || [];
+  const _non_evm_chains = non_evm_chains?.[environment] || [];
+  const _all_chains = [..._evm_chains, ..._non_evm_chains];
+
+
+
   const _gateways = gateways?.[environment] || [];
   const _gas_services = gas_services?.[environment] || [];
 
   return (
     <div className="grid lg:grid-cols-2 gap-5 not-prose">
-      {_evm_chains
+      {_all_chains
         .filter((c) => !c?.is_staging)
         .map((c, i) => {
           const { id, chain_id, network_id, name, provider_params, image } = {
@@ -20,12 +26,12 @@ export default ({ environment = "mainnet" }) => {
           };
 
           const explorer_url = provider_params?.[0]?.blockExplorerUrls?.[0];
-          const gateway_contract_address = _gateways.find(
-            (_c) => _c?.id === id,
-          )?.address;
-          const gas_service_address = _gas_services.find(
-            (_c) => _c?.id === id,
-          )?.address;
+          const gateway_data = _gateways.find((_c) => _c?.id === id);
+          const gateway_contract_address = gateway_data?.address;
+          const gateway_object_id = gateway_data?.objectId;
+          const gas_service_data = _gas_services.find((_c) => _c?.id === id);
+          const gas_service_address = gas_service_data?.address;
+          const gas_service_object_id = gas_service_data?.objectId;
 
           return (
             <div key={i} className="bg-background-neutral-dark rounded-xl p-5">
@@ -67,7 +73,11 @@ export default ({ environment = "mainnet" }) => {
                   <div className="flex items-center text-sm space-x-1">
                     {gateway_contract_address ? (
                       <a
-                        href={`${explorer_url}/address/${gateway_contract_address}`}
+                        href={
+                          id === "sui"
+                            ? `${explorer_url}/object/${gateway_contract_address}`
+                            : `${explorer_url}/address/${gateway_contract_address}`
+                        }
                         target="_blank"
                         rel="noopener noreferrer"
                         className="no-underline text-primary font-clash font-semibold"
@@ -86,6 +96,28 @@ export default ({ environment = "mainnet" }) => {
                     )}
                   </div>
                 </div>
+                {id === "sui" && gateway_object_id && (
+                  <div className="flex flex-col flex-wrap justify-between">
+                    <span className="whitespace-nowrap text-sm text-foreground">
+                      Gateway Object ID:
+                    </span>
+                    <div className="flex items-center text-sm space-x-1">
+                      <a
+                        href={`${explorer_url}/object/${gateway_object_id}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="no-underline text-primary font-clash font-semibold"
+                      >
+                        {ellipse(gateway_object_id, 14)}
+                      </a>
+                      <Copy
+                        size={18}
+                        hide={true}
+                        value={gateway_object_id}
+                      />
+                    </div>
+                  </div>
+                )}
                 <div className="flex flex-col flex-wrap justify-between">
                   <span className="whitespace-nowrap text-sm text-foreground">
                     Gas Service Contract:
@@ -93,7 +125,11 @@ export default ({ environment = "mainnet" }) => {
                   <div className="flex items-center text-sm space-x-1">
                     {gas_service_address ? (
                       <a
-                        href={`${explorer_url}/address/${gas_service_address}`}
+                        href={
+                          id === "sui"
+                            ? `${explorer_url}/object/${gas_service_address}`
+                            : `${explorer_url}/address/${gas_service_address}`
+                        }
                         target="_blank"
                         rel="noopener noreferrer"
                         className="no-underline text-primary font-clash font-semibold"
@@ -110,6 +146,28 @@ export default ({ environment = "mainnet" }) => {
                     )}
                   </div>
                 </div>
+                {id === "sui" && gas_service_object_id && (
+                  <div className="flex flex-col flex-wrap justify-between">
+                    <span className="whitespace-nowrap text-sm text-foreground">
+                      Gas Service Object ID:
+                    </span>
+                    <div className="flex items-center text-sm space-x-1">
+                      <a
+                        href={`${explorer_url}/object/${gas_service_object_id}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="no-underline text-primary font-clash font-semibold"
+                      >
+                        {ellipse(gas_service_object_id, 14)}
+                      </a>
+                      <Copy
+                        size={18}
+                        hide={true}
+                        value={gas_service_object_id}
+                      />
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
           );
