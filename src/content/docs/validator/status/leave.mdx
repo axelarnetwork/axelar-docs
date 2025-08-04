@@ -1,3 +1,5 @@
+import { Callout } from "../../../../components/callout";
+
 # Leave the network as a validator
 
 {/* [TODO revise. 2 metrics: consensus bonded/active and tss bonded/active.] */}
@@ -8,9 +10,23 @@
 axelard tx snapshot deactivate-proxy --from validator -y -b block
 ```
 
-2. Wait until the next key rotation for the changes to take place. In this release, we're triggering key rotation about once a day. So come back in 24 hours, and continue to the next step. If you still get an error after 24 hours, reach out to a team member.
+2. Query your network’s key‐rotation window and (optionally) opt out of future rotations.
 
-3. Release your staked coins.
+- Fetch the multisig module parameters and note the `activeEpochCount`
+```bash
+axelard query multisig params
+```
+
+<Callout emoji="💡">
+    Note: Fetching the `activeEpochCount` ensures you know exactly how many rotation cycles you must wait before none of your keys remain active
+</Callout>
+
+
+3. Wait for your keys to fully rotate out.
+
+- Key rotation runs roughly once per day. You must wait activeEpochCount full rotations (e.g. 5 days by default) after deactivating your proxy (and/or after opt-out) before no of your keys remain in the edge contract’s active list. Only then can you safely unbond
+
+4. Release your staked coins.
 
 ```bash
 axelard tx staking unbond [axelarvaloper address] [amount]uaxl --from validator -y -b block
