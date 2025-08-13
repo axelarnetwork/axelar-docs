@@ -17,7 +17,7 @@ The integration consists of two main components:
 
 ### Channels
 
-In Sui, there is no ability to check the immediate caller of a message (unlike `msg.sender` in EVM). The `Channel` object serves as an identifier for who is calling and receiving messages in the Sui ecosystem.
+In Sui, there is no ability to check the immediate caller of a message (unlike `msg.sender` in EVM). The `Channel` object serves as an identifier for who is calling and receiving messages in the Sui ecosystem. A Channel is a Move object that acts as a [capability](https://move-book.com/programmability/capability/)-backed on-chain identity with its own address. You create it and keep it; functions that take `&Channel` require the caller to hold that capability.
 
 ### Message Flow
 
