@@ -2,9 +2,9 @@
 
 ## What is the Interchain Token Service?
 
-The [Interchain Token Service (ITS)](https://github.com/axelarnetwork/interchain-token-service) is a protocol that allows tokens to move freely between different blockchains. Think of it as a universal bridge for tokens - it provides a standardized way to:
+The [Interchain Token Service (ITS)](https://github.com/axelarnetwork/axelar-amplifier-stellar/tree/main/contracts/stellar-interchain-token-service) is a protocol that allows tokens to move freely between different blockchains. Think of it as a universal bridge for tokens - it provides a standardized way to:
 
-1. Create new tokens that automatically exist on multiple blockchains.
+1. Deploy a token onto multiple blockchains that are interlinked.
 1. Connect existing tokens from one blockchain to other blockchains.
 1. Transfer tokens securely between blockchains.
 
@@ -12,11 +12,11 @@ For [Stellar developers](https://developers.stellar.org/), ITS opens up new poss
 
 ## How ITS Works on Stellar
 
-Unlike on EVM chains (like Ethereum), where tokens follow the [ERC-20 standard](https://ethereum.org/en/developers/docs/standards/tokens/erc-20/), Stellar has its native token structure. The Axelar ITS integration adapts to Stellar's unique characteristics:
+Unlike on EVM chains (like Ethereum), where tokens follow the [ERC-20 standard](https://ethereum.org/en/developers/docs/standards/tokens/erc-20/), Stellar has both classic assets (issued with `G...` address) as well as [asset contracts](https://developers.stellar.org/docs/tokens/stellar-asset-contract). ITS integration adapts to Stellar's unique characteristics:
 
-1. **Hub Mode Operation**: Stellar ITS works exclusively in "Hub mode" - all cross-chain messages go through the central Axelar network rather than directly between chains.
+1. **Hub Mode Operation**: Stellar ITS works exclusively in "Hub mode" - all cross-chain messages go through the [ITS Hub](/dev/amplifier/its-hub/introduction/) on the Axelar network rather than directly between chains.
 
-1. **Token Representation**: When an external token (like an Ethereum ERC-20) comes to Stellar, it's represented by a Stellar token that's controlled by a special contract called a [`TokenManager`](https://github.com/axelarnetwork/axelar-amplifier-stellar/blob/main/contracts/stellar-interchain-token-service/src/token_manager.rs).
+1. **Token Representation**: When an external token (like an Ethereum ERC-20) comes to Stellar, it's represented by a Stellar token that's controlled by a special contract called the [`TokenManager`](https://github.com/axelarnetwork/axelar-amplifier-stellar/blob/main/contracts/stellar-interchain-token-service/src/token_manager.rs).
 
 1. **Trust System**: Instead of trusting specific addresses (as in EVM implementations), Stellar ITS uses a system of trusted chains.
 

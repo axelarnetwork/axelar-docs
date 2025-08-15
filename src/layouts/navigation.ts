@@ -267,11 +267,11 @@ export const getNavigation = (section) => {
                       href: "/dev/send-tokens/stellar/intro/",
                     },
                     {
-                      title: "Deploy a New Token",
+                      title: "Deploy a New Token Demo",
                       href: "/dev/send-tokens/stellar/deploy-new-token/",
                     },
                     {
-                      title: "Register an Existing Token",
+                      title: "Register an Existing Token Demo",
                       href: "/dev/send-tokens/stellar/register-existing-stellar-token/",
                     },
                   ],
