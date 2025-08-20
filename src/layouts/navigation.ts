@@ -186,7 +186,7 @@ export const getNavigation = (section) => {
           children: [
             { title: "Introduction", href: "/dev/send-tokens/introduction/" },
             {
-              title: "Interchain Tokens",
+              title: "Interchain Token Service",
               children: [
                 {
                   title: "Overview",
@@ -223,6 +223,10 @@ export const getNavigation = (section) => {
                 {
                   title: "Minter & Operator Roles",
                   href: "/dev/send-tokens/interchain-tokens/minter-operator-roles/",
+                },
+                {
+                  title: "Interchain Transfer",
+                  href: "/dev/send-tokens/interchain-tokens/interchain-transfer/",
                 },
                 {
                   title: "Developer Guides",
