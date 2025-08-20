@@ -16,7 +16,7 @@ Unlike on EVM chains (like Ethereum), where tokens follow the [ERC-20 standard](
 
 1. **Hub Mode Operation**: Stellar ITS works exclusively in "Hub mode" - all cross-chain messages go through the [ITS Hub](/dev/amplifier/its-hub/introduction/) on the Axelar network rather than directly between chains.
 
-1. **Token Representation**: When an external token (like an Ethereum ERC-20) comes to Stellar, it's represented by a Stellar token that's controlled by a special contract called the [`TokenManager`](https://github.com/axelarnetwork/axelar-amplifier-stellar/blob/main/contracts/stellar-interchain-token-service/src/token_manager.rs).
+1. **Token Representation**: When an external token (like an Ethereum ERC-20) comes to Stellar, it's represented by a Stellar token that's controlled by a special contract called the [TokenManager](https://github.com/axelarnetwork/axelar-amplifier-stellar/blob/main/contracts/stellar-interchain-token-service/src/token_manager.rs).
 
 1. **Trust System**: Instead of trusting specific addresses (as in EVM implementations), Stellar ITS uses a system of trusted chains.
 
@@ -26,15 +26,15 @@ With the integration of Stellar to Axelar, Stellar-based contracts can now lever
 
 Before diving into implementation, let's understand the key components:
 
-1. **`InterchainTokenService`**: The main contract that coordinates token-related operations. It's the primary interface for cross-chain token functionality.
+1. **`InterchainTokenService`**: The main [contract](https://github.com/axelarnetwork/axelar-amplifier-stellar/tree/main/contracts/stellar-interchain-token-service) that coordinates token-related operations. It's the primary interface for cross-chain token functionality.
 
-1. **`TokenManager`**: A contract that handles tokens' minting, burning, and locking on a specific blockchain. Each token has its own `TokenManager`.
+1. **`TokenManager`**: A [contract](https://github.com/axelarnetwork/axelar-amplifier-stellar/tree/main/contracts/stellar-token-manager) that handles tokens' minting, burning, and locking on a specific blockchain. Each token has its own `TokenManager`.
 
-1. **`InterchainToken`**: The token contract implementing Stellar's token interface.
+1. **`InterchainToken`**: The token [contract](https://github.com/axelarnetwork/axelar-amplifier-stellar/tree/main/contracts/stellar-interchain-token) implementing Stellar's token interface.
 
-1. **`Gateway`**: Facilitates the cross-chain message passing between Stellar and other blockchains.
+1. **`Gateway`**: A [contract](https://github.com/axelarnetwork/axelar-amplifier-stellar/tree/main/contracts/stellar-axelar-gateway) that facilitates the cross-chain message passing between Stellar and other blockchains.
 
-1. **`GasService`**: Handles payments for cross-chain transactions. Without this, messages couldn't be relayed between chains.
+1. **`GasService`**: A [contract](https://github.com/axelarnetwork/axelar-amplifier-stellar/tree/main/contracts/stellar-axelar-gas-service) that handles payments for cross-chain transactions. Without this, messages couldn't be relayed between chains.
 
 ## What You Can Do With ITS
 
