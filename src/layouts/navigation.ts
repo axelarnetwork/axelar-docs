@@ -274,6 +274,10 @@ export const getNavigation = (section) => {
                       title: "Register an Existing Token Demo",
                       href: "/dev/send-tokens/stellar/register-existing-stellar-token/",
                     },
+                    {
+                      title: "Link Custom Tokens",
+                      href: "https://github.com/axelarnetwork/axelar-contract-deployments/blob/main/stellar/docs/link-token.md",
+                    },
                   ],
                 },
                 {
