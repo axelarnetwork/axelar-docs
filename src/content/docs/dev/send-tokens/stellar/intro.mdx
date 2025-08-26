@@ -144,7 +144,7 @@ fn execute(
 
 ### Flow Limits
 
-The ITS implementation includes a flow-limiting system to control how many tokens can move in a given period:
+The ITS implementation includes a [flow-limiting system](/dev/send-tokens/interchain-tokens/flow-limit/) to control how many tokens can move in a given period:
 
 ```rust
 #[only_operator]
@@ -155,7 +155,65 @@ fn set_flow_limit(
 ) -> Result<(), ContractError> {}
 ```
 
-This function allows the operator to limit how many tokens can flow in or out over time.
+This function allows the [operator](/dev/send-tokens/interchain-tokens/minter-operator-roles/#operator-role) to limit how many tokens can flow in or out over time.
+
+#### Setting Flow Limits
+
+Flow limits are configured per token and can only be set by authorized operators:
+
+```rust
+// Set a flow limit for a token
+client.set_flow_limit(&token_id, &Some(1000_000));
+
+// Remove flow limit (disable flow limiting)
+client.set_flow_limit(&token_id, &None);
+
+// Freeze token transfers (set limit to 0)
+client.set_flow_limit(&token_id, &Some(0));
+```
+
+#### Authorization
+
+- **Only Operators**: Flow limits can only be set by addresses with operator privileges
+- **Per-Token Configuration**: Each token can have its own independent flow limit
+- **Optional Feature**: Tokens without configured flow limits have no transfer restrictions
+
+
+
+#### Query Functions
+
+The ITS contract provides several functions to query flow limit status:
+
+```rust
+// Get the configured flow limit for a token
+fn flow_limit(token_id: BytesN<32>) -> Option<i128>
+
+// Get current epoch's outflow amount
+fn flow_out_amount(token_id: BytesN<32>) -> i128
+
+// Get current epoch's inflow amount  
+fn flow_in_amount(token_id: BytesN<32>) -> i128
+```
+
+#### Error Handling
+
+The system returns specific errors for different flow limit violations:
+
+- **`InvalidFlowLimit`**: Attempted to set a negative flow limit
+- **`FlowAmountExceededLimit`**: Single transfer exceeds the flow limit
+- **`FlowAmountOverflow`**: Cumulative flow would cause integer overflow
+- **`FlowLimitExceeded`**: Net flow would exceed the configured limit
+
+#### Events
+
+Flow limit changes emit events for monitoring and auditing:
+
+```rust
+FlowLimitSetEvent {
+    token_id: BytesN<32>,
+    flow_limit: Option<i128>,
+}
+```
 
 ## Next Steps
 
