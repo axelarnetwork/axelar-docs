@@ -75,7 +75,7 @@ You can see a real example of this function being used in [this transaction on A
 
 ### Register Custom Token with the Interchain Token Factory
 
-The [registerCustomToken()](https://github.com/axelarnetwork/interchain-token-service/blob/cc6ef7282e18c6b2842cbf1098b06161e38ea32e/contracts/InterchainTokenService.sol#L298) function registers an existing ERC-20 token (your custom token) under an `interchainTokenId` computed from the provided `salt`. Once executed, your token's [token manager](/dev/send-tokens/interchain-tokens/token-manager/) will be deployed for that blockchain. This function only needs to be called once on a single "home chain" that your token is being integrated with, as opposed to the `registerTokenMetadata()` function that must be triggered on each chain the token will be linked on. 
+The [registerCustomToken()](https://github.com/axelarnetwork/interchain-token-service/blob/cc6ef7282e18c6b2842cbf1098b06161e38ea32e/contracts/InterchainTokenService.sol#L298) function registers an existing ERC-20 token (your custom token) under an `interchainTokenId` computed from the provided `salt`. Once executed, your token's [token manager](/dev/send-tokens/interchain-tokens/token-manager/) will be deployed for that blockchain. This function only needs to be called once on a single "home" chain that your token is being integrated with, as opposed to the `registerTokenMetadata()` function that must be triggered on each chain the token will be linked on. 
 
 ```solidity
 function registerCustomToken(
