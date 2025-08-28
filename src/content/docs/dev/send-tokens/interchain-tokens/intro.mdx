@@ -60,7 +60,7 @@ A separate [contract](https://github.com/axelarnetwork/interchain-token-service/
 
 A contract that facilitates integration between your token and ITS. Each token integration on a given chain will have its own unique token manager. It is responsible for managing tokens, such as setting locking token balances, or setting flow limits, for interchain transfers. Further reading can be done [here](https://docs.axelar.dev/dev/send-tokens/interchain-tokens/token-manager/)
 
-### Interchain Token Id
+### Interchain Token ID
 
 An `interchainTokenId` is how ITS uniquely registers a given token integration between chains. The id must match across all chains so that when a token is moved out of one chain it is moved into the token with corresponding `interchainTokenId` on the destination chain. This id is calculated by running `keccak256(abi.encode(PREFIX_INTERCHAIN_TOKEN_ID, sender, salt))`. The unique sender address combined with salt ensures that the id is deterministic and collision resistant. 
 
