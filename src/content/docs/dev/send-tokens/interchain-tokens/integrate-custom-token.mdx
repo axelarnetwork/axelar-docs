@@ -43,7 +43,7 @@ contract MyCustomToken is ERC20, ERC20Burnable {
 
 This token is a simple implementation of an ERC-20 token that includes the critical functions needed to integrate with ITS: the ability to `mint()` and `burn()` tokens. ITS calls these functions when bridging tokens between chains.
 
-You can also inherit from the [InterchainTokenStandard](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/interchain-token/InterchainTokenStandard.sol#L12) so that your token has cross-chain functionality built in, such as the [interchainTransfer()](/dev/send-tokens/interchain-tokens/interchain-transfer/) function.
+You can also inherit from the [InterchainTokenStandard](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/interchain-token/InterchainTokenStandard.sol#L12) so your token has built-in cross-chain functionality, such as the [interchainTransfer()](/dev/send-tokens/interchain-tokens/interchain-transfer/) function.
 
 ## Integrate Custom Token with ITS
 
