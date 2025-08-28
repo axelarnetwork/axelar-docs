@@ -113,7 +113,7 @@ You can see a real example of this function being used in [this transaction on B
 
 ### Link Custom Token with the Interchain Token Factory
 
-To connect your custom tokens between different chains, you can use the [`linkToken`](https://github.com/axelarnetwork/interchain-token-service/blob/94677f1072da127a0ee7ff5ab6784dcfe11789e8/contracts/InterchainTokenFactory.sol#L541) function. This can only be called once your token metadata has been [registered](/dev/send-tokens/interchain-tokens/integrate-custom-token/#register-token-metadata-with-the-its-contract) on both chains and at least one of your tokens has been registered on a given home chain via the [registerCustomToken()](/dev/send-tokens/interchain-tokens/integrate-custom-token/#register-custom-token-with-the-interchain-token-factory) function.
+To connect your custom tokens between different chains, you can use the [`linkToken`](https://github.com/axelarnetwork/interchain-token-service/blob/94677f1072da127a0ee7ff5ab6784dcfe11789e8/contracts/InterchainTokenFactory.sol#L541) function. This can only be called once your token metadata has been [registered](/dev/send-tokens/interchain-tokens/integrate-custom-token/#register-token-metadata-with-the-its-contract) on both chains and at least one of your tokens has been registered on a given "home" chain via the [registerCustomToken()](/dev/send-tokens/interchain-tokens/integrate-custom-token/#register-custom-token-with-the-interchain-token-factory) function.
 
 ```solidity
 function linkToken(
