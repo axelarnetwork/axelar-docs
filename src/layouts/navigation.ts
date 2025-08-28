@@ -425,7 +425,7 @@ export const getNavigation = (section) => {
           children: [
             {
               title: "Mainnet Chain Names",
-              href: "/dev/reference/mainnet-chain-names/",
+              href: "https://axelarscan.io/resources/chains",
             },
             {
               title: "Mainnet Contract Addresses",
@@ -433,7 +433,7 @@ export const getNavigation = (section) => {
             },
             {
               title: "Testnet Chain Names",
-              href: "/dev/reference/testnet-chain-names/",
+              href: "https://testnet.axelarscan.io/resources/chains",
             },
             {
               title: "Testnet Contract Addresses",
