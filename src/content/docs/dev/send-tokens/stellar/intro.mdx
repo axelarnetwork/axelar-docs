@@ -12,7 +12,10 @@ For [Stellar developers](https://developers.stellar.org/), ITS opens up new poss
 
 ## How ITS Works on Stellar
 
-Unlike on EVM chains (like Ethereum), where tokens follow the [ERC-20 standard](https://ethereum.org/en/developers/docs/standards/tokens/erc-20/), Stellar has both classic assets (issued with `G...` address) as well as [asset contracts](https://developers.stellar.org/docs/tokens/stellar-asset-contract). ITS integration adapts to Stellar's unique characteristics:
+Unlike on EVM chains (like Ethereum), where tokens follow the [ERC-20 standard](https://ethereum.org/en/developers/docs/standards/tokens/erc-20/), Stellar [assets](https://developers.stellar.org/docs/learn/fundamentals/stellar-data-structures/assets) work a bit differently.
+
+Stellar has its classic assets (issued with `G...` address) as well as [contract tokens](https://developers.stellar.org/docs/tokens/token-interface). The classic assets are native assets that have been part of the Stellar network since its inception, including tokens like XLM, USDC, and EURC, they are issued by Stellar Account and have a built-in [asset contract](https://developers.stellar.org/docs/tokens/stellar-asset-contract). Contract tokens were Introduced with Soroban, CAP-41, they allow for custom logic in token implementation through smart contracts. These are similar to ERC-20 tokens on other chains.
+  ITS integration adapts to Stellar's unique characteristics:
 
 1. **Hub Mode Operation**: Stellar ITS works exclusively in "Hub mode" - all cross-chain messages go through the [ITS Hub](/dev/amplifier/its-hub/introduction/) on the Axelar network rather than directly between chains.
 
