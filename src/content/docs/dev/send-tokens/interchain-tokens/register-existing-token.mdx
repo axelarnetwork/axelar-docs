@@ -2,13 +2,9 @@ import { Callout } from "/src/components/callout";
 
 # Register Existing Token
 
-If you own an ERC-20 token on a single chain and want a wrapped, bridgeable version on other chains, you can register it as a [Canonical Interchain Token](/dev/send-tokens/glossary/#canonical-interchain-token) using the [Interchain Token Factory contract](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/InterchainTokenFactory.sol#L20). Each token can only be registered once as a canonical token on its "home chain".
+If you own an ERC-20 token on a single chain and want a wrapped, bridgeable version on other chains, you can register it as a [Canonical Interchain Token](/dev/send-tokens/glossary/#canonical-interchain-token) using the [Interchain Token Factory contract](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/InterchainTokenFactory.sol). Each token can only be registered once as a canonical token on its "home" chain.
 
 You can register your existing token directly via the contract or use the [ITS Portal](/dev/send-tokens/interchain-tokens/no-code/) no-code solution. Take a look at the diagram below to understand the process of registering an existing token as a Canonical Interchain Token.
-
-<Callout type="warning">
-  This diagram is interactive—click on the function names!
-</Callout>
 
 <object
   type="image/svg+xml"
@@ -27,7 +23,7 @@ You can register your existing token directly via the contract or use the [ITS P
 
 ## Register Your Token as a Canonical Token Using the Interchain Token Factory
 
-Use the [`registerCanonicalInterchainToken`](https://github.com/axelarnetwork/interchain-token-service/blob/94677f1072da127a0ee7ff5ab6784dcfe11789e8/contracts/InterchainTokenFactory.sol#L402) function to register your token.
+Use the [registerCanonicalInterchainToken](https://github.com/axelarnetwork/interchain-token-service/blob/94677f1072da127a0ee7ff5ab6784dcfe11789e8/contracts/InterchainTokenFactory.sol#L402) function to register your token.
 
 ```solidity
 function registerCanonicalInterchainToken(
@@ -41,7 +37,7 @@ Once your token is registered on the home chain, you can call the `deployRemoteC
 
 ## Deploy a Remote Canonical Interchain Token
 
-Use the [`deployRemoteCanonicalInterchainToken`](https://github.com/axelarnetwork/interchain-token-service/blob/94677f1072da127a0ee7ff5ab6784dcfe11789e8/contracts/InterchainTokenFactory.sol#L450) function to deploy the token on a remote chain as a cross-chain transaction:
+Use the [deployRemoteCanonicalInterchainToken](https://github.com/axelarnetwork/interchain-token-service/blob/94677f1072da127a0ee7ff5ab6784dcfe11789e8/contracts/InterchainTokenFactory.sol#L450) function to deploy the token on a remote chain as a cross-chain transaction:
 
 ```solidity
 function deployRemoteCanonicalInterchainToken(
@@ -59,117 +55,12 @@ This function deploys a token connected to your registered token on the home cha
   that all target chains are trustworthy.
 </Callout>
 
-## Execute Code on Token Receipt
-
-When transferring tokens across chains, you might want to execute specific code when the tokens arrive at their destination. This is possible by implementing the `InterchainTokenExecutable` interface in your destination contract.
-
-### Implement the InterchainTokenExecutable Interface
-
-Your destination contract should implement the [InterchainTokenExecutable](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/executable/InterchainTokenExecutable.sol) interface:
-
-```solidity
-interface InterchainTokenExecutable {
-    function executeWithInterchainToken(
-        bytes32 commandId,
-        string calldata sourceChain,
-        bytes calldata sourceAddress,
-        bytes calldata data,
-        bytes32 tokenId,
-        address token,
-        uint256 amount
-    ) external;
-}
-```
-
-When tokens are sent to this contract, the `executeWithInterchainToken` function will be automatically called with:
-
-- `amount`: The quantity of tokens transferred
-- `token`: The address of the token contract
-- `data`: Any additional data you included with the transfer
-
-Example implementation:
-
-```solidity
-// SPDX-License-Identifier: MIT
-pragma solidity ^0.8.0;
-
-import "@axelar-network/interchain-token-service/contracts/executable/InterchainTokenExecutable.sol";
-
-contract MyReceiver is InterchainTokenExecutable {
-    // Event to log token receipts
-    event TokensReceived(
-        string sourceChain, 
-        address sender, 
-        uint256 amount, 
-        bytes32 tokenId
-    );
-    
-    // This function will be called automatically when tokens are received
-    function executeWithInterchainToken(
-        bytes32 commandId,
-        string calldata sourceChain,
-        bytes calldata sourceAddress,
-        bytes calldata data,
-        bytes32 tokenId,
-        address token,
-        uint256 amount
-    ) external override {
-        // Extract the sender address from sourceAddress
-        address sender = abi.decode(sourceAddress, (address));
-        
-        // Your execution logic here - for example:
-        // - Process the received payment
-        // - Store transaction information 
-        // - Execute business logic based on data parameter
-        
-        // Emit event for tracking
-        emit TokensReceived(sourceChain, sender, amount, tokenId);
-    }
-}
-```
-
-### Send Tokens with Custom Data
-
-When calling `interchainTransfer`, include your custom data in the `metadata` parameter using this format:
-
-```solidity
-bytes metadata = bytes.concat(bytes4(0), yourCustomPayload);
-```
-
-Example usage:
-
-```solidity
-// Encode function parameters or any data you want to pass
-bytes memory yourCustomPayload = abi.encode(param1, param2, param3);
-
-// Format metadata properly for execution
-bytes memory metadata = bytes.concat(bytes4(0), yourCustomPayload);
-
-// Send the interchain transfer with the metadata
-interchainTokenService.interchainTransfer(
-    tokenId,
-    destinationChain,
-    destinationAddress,
-    amount,
-    metadata,
-    gasValue
-);
-```
-
-This will:
-
-1. Transfer tokens to the destination contract
-2. Call `executeWithInterchainToken` on that contract
-3. Pass your custom data in the `data` parameter
-4. Provide the transferred amount in the `amount` parameter
-
-For a full implementation example, see the [its-executable](https://github.com/axelarnetwork/axelar-examples/tree/main/examples/evm/its-executable) example repository.
 
 ## What's Next
 
-You can initiate an interchain transfer from your source chain to a destination chain by using the [`interchainTransfer`](https://github.com/axelarnetwork/interchain-token-service/blob/94677f1072da127a0ee7ff5ab6784dcfe11789e8/contracts/InterchainTokenService.sol#L559) method on the [ITS contract](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/InterchainTokenService.sol).
+You can initiate an interchain transfer from your source chain to a destination chain by using the [interchainTransfer()](/dev/send-tokens/interchain-tokens/interchain-transfer/) method on the [ITS contract](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/InterchainTokenService.sol).
 
-For further examples utilizing the Interchain Token Service, check out the [`axelar-examples`](https://github.com/axelarnetwork/axelar-examples/tree/main/examples/evm) repository on GitHub. There, you will find an example implementation titled [`its-canonical-token`](https://github.com/axelarnetwork/axelar-examples/tree/main/examples/evm/its-canonical-token), which demonstrates how to deploy canonical Interchain Tokens and perform cross-chain transfers.
+For further examples utilizing the Interchain Token Service, check out the [Axelar Examples](https://github.com/axelarnetwork/axelar-examples/tree/main/examples/evm) repository on GitHub. There, you will find an example implementation titled [its-canonical-token](https://github.com/axelarnetwork/axelar-examples/tree/main/examples/evm/its-canonical-token), which demonstrates how to deploy canonical Interchain Tokens and perform cross-chain transfers.
 
 ## Tutorial
 

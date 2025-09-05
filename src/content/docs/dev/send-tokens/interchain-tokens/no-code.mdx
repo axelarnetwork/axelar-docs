@@ -25,7 +25,7 @@ To deploy a new token:
 1. Add your new token’s name, symbol, decimals, and amount to mint. You can also mark the token as `mintable`, which will allow the token minter to mint new tokens.
 1. Select additional chains for your token to be available on. You can optionally add the token amount to mint on each selected chain.
 
-If your connected wallet has enough funds, your new token will become available on each chain you selected. It will follow the [Interchain Token Standard](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/interfaces/IInterchainTokenStandard.sol), so users can call the [`interchainTransfer()`](https://github.com/axelarnetwork/interchain-token-service/blob/9223108211b977d9138fdd67d5b4a641fc35c18c/contracts/interfaces/IInterchainTokenService.sol#L210) method on the token itself to transfer between blockchains.
+If your connected wallet has enough funds, your new token will become available on each chain you selected. It will follow the [Interchain Token Standard](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/interfaces/IInterchainTokenStandard.sol), so users can call the [`interchainTransfer()`](/dev/send-tokens/interchain-tokens/interchain-transfer/) method on the token itself to transfer between blockchains.
 
 ## Connect Existing Token
 

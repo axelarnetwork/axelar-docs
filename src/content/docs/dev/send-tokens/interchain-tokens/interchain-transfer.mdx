@@ -1,0 +1,92 @@
+import { Callout } from "/src/components/callout";
+
+# Interchain Transfer
+
+Tokens connected to the Interchain Token Service (ITS) can be transferred between chains by using the `interchainTransfer()` function. The `interchainTransfer()` function is [defined](https://github.com/axelarnetwork/interchain-token-service/blob/releases/2.1.x/contracts/InterchainTokenService.sol#L559) on the ITS edge contract. In addition to existing on the ITS contract itself, tokens inheriting from the [Interchain Token Standard](https://github.com/axelarnetwork/interchain-token-service/blob/releases/2.1.x/contracts/interchain-token/InterchainTokenStandard.sol) will also have access to the `interchainTransfer()` function, so you can send an interchain transfer directly from the token contract itself.
+
+The `interchainTransfer()` function takes the following parameters
+
+1. `tokenId`: The [interchainTokenId](/dev/send-tokens/interchain-tokens/intro/#interchain-token-id) of the token being sent.
+1. `destinationChain`: The name of the chain the token is being sent to.
+1. `destinationAddress`: The receiving address of the cross-chain transfer.
+1. `amount`: The amount of tokens being sent.
+
+It is defined as follows:
+
+```solidity
+function interchainTransfer(
+    bytes32 tokenId,
+    string calldata destinationChain,
+    bytes calldata destinationAddress,
+    uint256 amount
+) external payable{}
+```
+
+## What It Does
+
+When triggered, ITS via the [Token Handler](/dev/send-tokens/interchain-tokens/intro/#token-handler) Pulls the tokens from `msg.sender` using [takeToken()](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/TokenHandler.sol#L67) function. For mint/burn managers, this will involve burning the token on the source whereas for lock/unlock managers, this will involve escrows/locks on the source via the `safeTransferFrom()` function. The `takeToken()` function will also decrement the [flow limit](/dev/send-tokens/interchain-tokens/token-manager/#flow-limits) for the token being moved out of that blockchain.
+
+With the token now either burnt or held by the Token Manager ITS will then send a cross-chain [GMP message](/dev/general-message-passing/overview/) with a payload containing the following:
+
+```solidity
+bytes memory payload = abi.encode(
+    MESSAGE_TYPE_INTERCHAIN_TRANSFER, //message type identifier
+    tokenId,
+    sourceAddress.toBytes(),
+    destinationAddress,
+    amount,
+    data
+);
+```
+
+Once the GMP message arrives to the destination chain, ITS will then call the [giveToken()](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/TokenHandler.sol#L33) function to either `mint` or `unlock` tokens to for the end receiver (depending on which Token Manager Type is used). The `giveToken()` function will also increment the [flow limit](/dev/send-tokens/interchain-tokens/token-manager/#flow-limits) for the token being moved into that blockchain.
+
+You can see a live example of an interchain transfer being called [here on the Axelarscan Explorer](https://testnet.axelarscan.io/gmp/0xbb7d242ead9fda8ce8d20654fb1c404c611c04bbb198fe15668a17272862e95b-3).
+
+## Diagram
+
+Refer to the diagram below to see how the `interchainTransfer()` function works.
+
+
+<object
+  type="image/svg+xml"
+  data="/images/its-transfer.svg"
+  class="hidden dark:block w-full max-w-[50rem] mx-auto py-6"
+>
+  Your browser does not support SVG
+</object>
+<object
+  type="image/svg+xml"
+  data="/images/its-transfer-light.svg"
+  class=" dark:hidden w-full max-w-[50rem] mx-auto py-6"
+>
+  Your browser does not support SVG
+</object>
+
+
+
+## Error Handling
+
+Common errors and their meanings:
+
+| Error | Description | Resolution |
+|-------|-------------|------------|
+| `NotToken` | Caller is not the expected token | Only the token contract can call certain functions |
+| `ZeroAmount` | Transfer amount is 0 | Provide a non-zero amount |
+| `EmptyDestinationAddress` | No destination address provided | Include valid destination address |
+| `FlowLimitExceeded` | Transfer exceeds flow limit | Wait for next epoch or reduce amount |
+| `UntrustedChain` | Destination chain not trusted | Contact operators to add chain |
+| `Paused` | Service is paused | Wait for service to be unpaused |
+| `TakeTokenFailed` | Failed to take tokens from sender | Ensure sufficient balance and approval |
+| `GiveTokenFailed` | Failed to give tokens to recipient | Check token manager configuration |
+
+## Best Practices
+
+1. **Always verify destination chain names** - Use exact chain names as registered in ITS
+2. **Encode addresses correctly** - Follow chain-specific encoding requirements
+3. **Provide sufficient gas** - Calculate gas needs based on destination chain costs
+4. **Monitor flow limits** - Check current flow before large transfers
+5. **Handle failures gracefully** - Implement retry logic for failed transfers
+6. **Test on testnet first** - Verify complete flow before mainnet deployment
+7. **Use event monitoring** - Track `InterchainTransfer` events for confirmation
+8. **Implement receive handlers** - For contract calls, ensure proper token handling

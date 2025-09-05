@@ -4,7 +4,7 @@ import { Callout } from "/src/components/callout";
 
 Custom tokens are independently deployed tokens, as opposed to [InterchainTokens](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/interchain-token/InterchainToken.sol) deployed via the [Interchain Token Service (ITS)](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/InterchainTokenService.sol). These tokens are integrated with ITS across different chains by deploying a Token Manager for each.
 
-Once a custom token has a Token Manager deployed on a given chain, it becomes bridgeable between blockchains that also have a token connected to a Token Manager sharing the same [`interchainTokenId`](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/InterchainTokenService.sol#L262).
+Once a custom token has a Token Manager deployed on a given chain, it becomes bridgeable between blockchains that also have a token connected to a Token Manager sharing the same [`interchainTokenId`](/dev/send-tokens/interchain-tokens/intro/#interchain-token-id).
 
 ## Install the Axelar ITS Dependency
 
@@ -24,9 +24,9 @@ Example token contract:
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Burnable.sol";
 
-contract MyInterchainToken is ERC20, ERC20Burnable {
+contract MyCustomToken is ERC20, ERC20Burnable {
     constructor(address initialOwner)
-        ERC20("My Interchain Token", "ITS")
+        ERC20("My Custom Token", "MCT")
     {
         // Initialization code here
     }
@@ -43,7 +43,7 @@ contract MyInterchainToken is ERC20, ERC20Burnable {
 
 This token is a simple implementation of an ERC-20 token that includes the critical functions needed to integrate with ITS: the ability to `mint()` and `burn()` tokens. ITS calls these functions when bridging tokens between chains.
 
-Alternatively, you can inherit from the [InterchainTokenStandard](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/interchain-token/InterchainTokenStandard.sol#L12) so that your token has cross-chain functionality built in, such as the `interchainTransfer()` function.
+You can also inherit from the [InterchainTokenStandard](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/interchain-token/InterchainTokenStandard.sol#L12) so your token has built-in cross-chain functionality, such as the [interchainTransfer()](/dev/send-tokens/interchain-tokens/interchain-transfer/) function.
 
 ## Integrate Custom Token with ITS
 
@@ -57,7 +57,7 @@ After deploying your custom tokens on your preferred chains, the next step is to
 ### Register Token Metadata with the ITS Contract
 
 Register your token metadata using the [`registerTokenMetadata`](https://github.com/axelarnetwork/interchain-token-service/blob/94677f1072da127a0ee7ff5ab6784dcfe11789e8/contracts/InterchainTokenService.sol#L274) function on the ITS contract. This function registers metadata for a token on the ITS Hub. This metadata is used for scaling linked tokens.
-For example, if you are integrating your custom token on chains A, B, and C, you should register token metadata on each chain separately.
+For example, if you are integrating your custom token on chains A, B, and C, you should register token metadata on each chain separately. The `registerTokenMetadata()` function must be called on each chain the token will be linked on. When triggered, a cross-chain message will be sent from your source chain to ITS Hub on Axelar.
 
 ```solidity
 function registerTokenMetadata(
@@ -70,9 +70,12 @@ This function registers metadata for a token on the [ITS Hub](/dev/amplifier/its
 
 > **Note:** Token metadata must be registered before [`linkToken`](https://github.com/axelarnetwork/interchain-token-service/blob/94677f1072da127a0ee7ff5ab6784dcfe11789e8/contracts/InterchainTokenService.sol#L329) can be called for the corresponding token. This function links a remote token on `destinationChain` to a local token corresponding to the `tokenId` computed from the provided `salt`.
 
+You can see a real example of this function being used in [this transaction on Axelarscan](https://testnet.axelarscan.io/gmp/0xf860bd8802d046fb0c752c355bc73c87e69f701348420c6cbdf82534b87c4822-2), which demonstrates registering a token metadata on BNB.
+
+
 ### Register Custom Token with the Interchain Token Factory
 
-After registering token metadata for each of your custom tokens, call the [`registerCustomToken`](https://github.com/axelarnetwork/interchain-token-service/blob/cc6ef7282e18c6b2842cbf1098b06161e38ea32e/contracts/InterchainTokenService.sol#L298) function on the [Interchain Token Factory](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/InterchainTokenFactory.sol).
+The [registerCustomToken()](https://github.com/axelarnetwork/interchain-token-service/blob/cc6ef7282e18c6b2842cbf1098b06161e38ea32e/contracts/InterchainTokenService.sol#L298) function registers an existing ERC-20 token (your custom token) under an `interchainTokenId` computed from the provided `salt`. Once executed, your token's [token manager](/dev/send-tokens/interchain-tokens/token-manager/) will be deployed for that blockchain. This function only needs to be called once on a single "home" chain that your token is being integrated with, as opposed to the `registerTokenMetadata()` function that must be triggered on each chain the token will be linked on. 
 
 ```solidity
 function registerCustomToken(
@@ -83,15 +86,34 @@ function registerCustomToken(
 ) external payable returns (bytes32 tokenId) {};
 ```
 
-This function registers an existing ERC-20 token (your custom token) under a `tokenId` computed from the provided `salt`. A token metadata registration message will also be sent to the ITS Hub. Then, the token can be linked to remote tokens on different chains by submitting the `linkToken` function from the same `msg.sender` using the same `salt`.
+This function is called from the [Interchain Token Factory](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/InterchainTokenFactory.sol) rather than directly from ITS because the Factory provides additional utility functions and standardized `interchainTokenId`  computation logic.
 
-Note: This function is called from the Interchain Token Factory rather than directly from ITS because the Factory provides additional utility functions and standardized `tokenId`  computation logic.
-It simplifies the deployment process by managing the salt derivation and tracking of token deployments, making it easier for developers to work with custom tokens while maintaining consistency across chains.
+<Callout emoji="🚨">
+  **Security Note:** The key used to register custom tokens is critical for
+  security. If that key is compromised, the token can be compromised across
+  multiple chains. - Interchain native tokens can only be deployed to additional
+  chains via the same deployer key, so that key must be securely retained. -
+  Tokens registered on ITS should be cautious about granting mint/burn
+  permissions to other contracts. For example, sharing mint permission with the
+  Polygon native bridge is not supported (the Polygon native bridge only looks
+  for burns, which ITS uses—potentially allowing duplicate sends).
+</Callout>
+
+
+#### Parameters
+
+1. `salt:` The salt is used to compute the `interchainTokenId`. It must be unique for your token integration to ensure the `interchainTokenId` does not intersect with another `interchainTokenId`. If the combination of the `salt` and `sender` is not unique, the transaction will revert.
+1. `tokenAddress`: The token address being linked.
+1. `tokenManagerType`: The [type](/dev/send-tokens/interchain-tokens/token-manager/#token-manager-types) of manager being integrated. The value passed in must correspond to the `enum` value of the manager. (ie 2 for [lockUnlock](/dev/send-tokens/interchain-tokens/token-manager/#lockunlock), 4 for [mintBurn](/dev/send-tokens/interchain-tokens/token-manager/#mintburn)).
+1. `operator`: The address that will hold the [operator](/dev/send-tokens/interchain-tokens/minter-operator-roles/#operator-role) role for this token's token manager.
+
+
+You can see a real example of this function being used in [this transaction on BSC Scan](https://testnet.bscscan.com/tx/0xf0c3fbbece17cc12d9de76182540afb4f5c6c47aeca65c40f9d58f71e362dffe), which demonstrates registering a custom token on BNB.
 
 
 ### Link Custom Token with the Interchain Token Factory
 
-To link a custom token, use the [`linkToken`](https://github.com/axelarnetwork/interchain-token-service/blob/94677f1072da127a0ee7ff5ab6784dcfe11789e8/contracts/InterchainTokenFactory.sol#L541) function to link your custom tokens on your respective chains.
+To connect your custom tokens between different chains, you can use the [`linkToken`](https://github.com/axelarnetwork/interchain-token-service/blob/94677f1072da127a0ee7ff5ab6784dcfe11789e8/contracts/InterchainTokenFactory.sol#L541) function. This can only be called once your token metadata has been [registered](/dev/send-tokens/interchain-tokens/integrate-custom-token/#register-token-metadata-with-the-its-contract) on both chains and at least one of your tokens has been registered on a given "home" chain via the [registerCustomToken()](/dev/send-tokens/interchain-tokens/integrate-custom-token/#register-custom-token-with-the-interchain-token-factory) function.
 
 ```solidity
 function linkToken(
@@ -106,79 +128,18 @@ function linkToken(
 
 This function does the following:
 
-1. It computes a `tokenId` using the same salt you used during token registration
-2. Creates a cross-chain message that instructs the destination chain to deploy a Token Manager for your token
-3. Establishes the connection between your tokens across chains by associating them with the same `tokenId`
-4. Sets up the appropriate [Token Manager](/dev/send-tokens/interchain-tokens/token-manager/) type that defines how tokens will be bridged (lock/unlock, mint/burn, etc.)
-
-When this function executes, it:
-
-- Takes gas payment for the cross-chain message (this is why it's `payable`)
-- Routes the message through the ITS Hub to the destination chain
-- Triggers the deployment of a [Token Manager](/dev/send-tokens/interchain-tokens/token-manager/) on the destination chain that's linked to your token
+1. It computes a `interchainTokenId` using the same salt you used during token registration.
+2. Creates a cross-chain message that instructs the destination chain to deploy a [Token Manager](/dev/send-tokens/interchain-tokens/token-manager/) for your token.
+3. Establishes the connection between your tokens across chains by associating them with the same `interchainTokenId`.
+4. Sets up the appropriate [Token Manager](/dev/send-tokens/interchain-tokens/token-manager/#token-manager-types) type that defines how tokens will be bridged (lock/unlock, mint/burn, etc.).
 
 You can see a real example of this function being used in [this transaction on Axelarscan](https://testnet.axelarscan.io/gmp/0x11c2a212180d7ea2babe7aceb66c32c1e235cc159bceeb4dd6d04411f4a9669f), which demonstrates linking a token between BNB chain and Avalanche.
 
-> **Note:** A local token must be registered first using the `registerCustomToken` function. The entire linking process might take a few minutes to complete as the cross-chain message propagates through the Axelar network.
 
 ### Assign the `minter` Role to Your Token's Token Manager
 
-Transfer the minter / burn role to the [Token Manager](/dev/send-tokens/interchain-tokens/token-manager/) using the [`transferMintership`](https://github.com/axelarnetwork/interchain-token-service/blob/v/contracts/utils/Minter.sol#L31) function on your token. To retrieve your token manager address, use the `tokenManagerAddress` function on the ITS contract by specifying your `tokenId`.
+Transfer the minter / burn role to the [Token Manager](/dev/send-tokens/interchain-tokens/token-manager/) using the [transferMintership()](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/utils/Minter.sol#L31) function on your token (or any AccessControls contract that may be handling role management for your token). To retrieve your token manager address, use the `tokenManagerAddress` function on the ITS contract by specifying your `tokenId`. This is role transfer is necessary because when your token is bridged to a destination chain, the `msg.sender` of the `mint()` call will be the Token Manager.
 
-```solidity
-yourToken.transferMintership(tokenManagerAddress);
-```
-
-The [`transferMintership()`](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/utils/Minter.sol#L31) function transfers the minter role to the Token Manager. This is necessary because when your token is bridged to a destination chain, the `msg.sender` of the `mint()` call will be the Token Manager.
-
-## Send Tokens Using the Interchain Transfer Function
-
-An [Interchain Token](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/interchain-token/InterchainToken.sol) is an ERC-20 connected to [ITS](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/InterchainTokenService.sol) upon deployment and comes built in with the `interchainTransfer()` function, which allows users to bridge their token between any blockchain on which it is deployed. Refer to the diagram below to see how the `interchainTransfer()` function works.
-
-<Callout type="warning">
-  This diagram is interactive—click on the function names!
-</Callout>
-
-<object
-  type="image/svg+xml"
-  data="/images/its-transfer.svg"
-  class="hidden dark:block w-full max-w-[50rem] mx-auto py-6"
->
-  Your browser does not support SVG
-</object>
-<object
-  type="image/svg+xml"
-  data="/images/its-transfer-light.svg"
-  class=" dark:hidden w-full max-w-[50rem] mx-auto py-6"
->
-  Your browser does not support SVG
-</object>
-
-Use the [`interchainTransfer`](https://github.com/axelarnetwork/interchain-token-service/blob/94677f1072da127a0ee7ff5ab6784dcfe11789e8/contracts/InterchainTokenService.sol#L559) function to send tokens across chains.
-
-```solidity
-function interchainTransfer(
-    bytes32 tokenId, // token ID
-    string calldata destinationChain, // destination chain name
-    bytes calldata destinationAddress, // receiver address on destination chain
-    uint256 amount, // amount to transfer
-    bytes calldata metadata, // metadata (optional)
-    uint256 gasValue // gas value sent for the transfer
-) external payable whenNotPaused {};
-```
-
-The [`interchainTransfer()`](https://github.com/axelarnetwork/interchain-token-service/blob/94677f1072da127a0ee7ff5ab6784dcfe11789e8/contracts/InterchainTokenService.sol#L559) function sends a cross-chain transfer via the Interchain Token Service.
-
-<Callout emoji="🚨">
-  **Security Note:** The key used to deploy custom tokens is critical for
-  security. If that key is compromised, the token can be compromised across
-  multiple chains. - Interchain native tokens can only be deployed to additional
-  chains via the same deployer key, so that key must be securely retained. -
-  Tokens registered on ITS should be cautious about granting mint/burn
-  permissions to other contracts. For example, sharing mint permission with the
-  Polygon native bridge is not supported (the Polygon native bridge only looks
-  for burns, which ITS uses—potentially allowing duplicate sends).
-</Callout>
 
 ## What's Next
 
