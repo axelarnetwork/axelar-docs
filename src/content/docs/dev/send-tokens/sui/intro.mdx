@@ -20,7 +20,7 @@ To integrate a coin with Sui you must first register the coin with ITS. There ar
 
 ### Register Coin From Info
 
-If you do not have any metadata available for your coin then you will need to register your token via the `register_coin_from_info()` function. The function returns a new [TokenId](#token-id) and takes five parameters:
+If you want to register your coin by explicitly passing in its information you will need to register your coin via the `register_coin_from_info()` function. The function returns a new [TokenId](#token-id) and takes five parameters:
 
 1. `its`: The ITS object that will be updated once the new coin is registered.
 1. `name`: The name of the coin being registered.
@@ -44,18 +44,18 @@ This will be a commonly used registration flow as Sui coins often times [freeze]
 
 ### Register Coin from Metadata
 
-If you do have the metadata available then you can register the coin via `register_coin_from_metadata()` function. The function returns a new [TokenId](#token-id) and takes three parameters:
+If you do not want to explicitly pass in your coin's info, then you can register the coin via `register_coin_from_metadata()` function. Whereas the previous `register_coin_from_info()` may be simpler to use, this coin registration prevents against human error, for example, a typo in the symbol or name since the coin paramaters are not validated in any way. The function returns a new [TokenId](#token-id) and takes three parameters:
 
 1. `its`: The ITS object that will be updated once the new coin is registered.
-1. `metadata` A generic reference to the coin's metadata that contains the coins name, symbol, and decimals.
+1. `metadata`: A generic reference to the coin's metadata that contains the coins name, symbol, and decimals.
 1. `coin_management`: The type of [management](#coin-management) the coin is registered with.
 
 ```rust
-    public(package) fun register_coin_from_metadata<T>(
-        self: &mut InterchainTokenService,
-        metadata: &CoinMetadata<T>,
-        coin_management: CoinManagement<T>,
-    ): TokenId {}
+public(package) fun register_coin_from_metadata<T>(
+    self: &mut InterchainTokenService,
+    metadata: &CoinMetadata<T>,
+    coin_management: CoinManagement<T>,
+): TokenId {}
 ```
 
 The coin management must be constructed beforehand, ITS will not construct this automatically for you.
@@ -64,7 +64,7 @@ The coin management must be constructed beforehand, ITS will not construct this 
 To integrate a coin into ITS, the `register_coin()` function must be called. This function takes in the following parameters:
 
 1. `its`: The ITS object that will be updated once the new coin is registered
-1. `coin_info`: The [coin info](#coin-info) represents the of the coin
+1. `coin_info`: The [coin info](#coin-info) represents the name, symbol and decimals of the coin
 1. `coin_management`: The type of [management](#coin-management) the coin is registered with. 
 
 However, before you can register your coin, you must first create a [coin-manager](#coin-management) and a [coin-info](#coin-info) for it.
@@ -87,11 +87,11 @@ See [here](https://github.com/axelarnetwork/axelar-contract-deployments/blob/mai
 
 ## Register Coin Metadata
 
-The `register_coin_from_metadata()` function is used to register the [TokenMetadata](https://github.com/axelarnetwork/axelar-amplifier/blob/main/packages/interchain-token-service-std/src/primitives.rs#L82) msg type with [ITS Hub](/dev/amplifier/its-hub/introduction/) in order to register token data in ITS hub.. This function is required to be called on each chain where you token is being integrated to ITS on if you are planning on linking a custom token. 
+The `register_coin_metadata()` function is used to register the [TokenMetadata](https://github.com/axelarnetwork/axelar-amplifier/blob/main/packages/interchain-token-service-std/src/primitives.rs#L82) msg type with [ITS Hub](/dev/amplifier/its-hub/introduction/) in order to register token data in ITS hub. This function is required to be called on each chain where you token is being integrated to ITS on if you are planning on linking a custom token. 
 
 Note: This function is separate from [register_coin_from_metadata](#register-coin-from-metadata), which is used for registering canonical tokens for Sui.
 
-The `register_coin_from_metadata()` returns a [MessageTicket](/dev/general-message-passing/sui/gmp-contracts/#message-ticket) and takes the following two parameters:
+The `register_coin_metadata()` returns a [MessageTicket](/dev/general-message-passing/sui/gmp-contracts/#message-ticket) and takes the following two parameters:
 
 1. `its`: The ITS object that will be updated once the token's metadata is registered.
 1. `coin_metadata`: The metadata of the coin to be registered.
@@ -111,22 +111,22 @@ If you are looking to connect your custom coin on Sui to a custom coin on anothe
 The function takes seven parameters and returns a [MessageTicket](/dev/general-message-passing/sui/gmp-contracts/#message-ticket). 
 
 1. `its`: The ITS object that will be updated once the new token is linked.
-1. `deployer` The the deployer’s [channel](/dev/general-message-passing/sui/gmp-contracts/#channel) capability. Used to derive the custom [tokenId](#token-id) with the `salt` and `chain_name`, so only that channel’s holder can link that custom token.
+1. `deployer` The deployer’s [channel](/dev/general-message-passing/sui/gmp-contracts/#channel) capability. Used to derive the custom [tokenId](#token-id) with the `salt` and `chain_name`, so only that channel’s holder can link that custom token.
 1. `destination_chain`: The name of the chain where the token is being linked to.
 1. `destination_token_address`: The address of the token the sui coin is being linked to.
 1. `token_manager_type`: The [type of manager](#coin-management) to be deployed on the destination chain.
-1. `link_params` A 32 byte representation of an address to be used as the operator on the destination chain.
+1. `link_params`: An array of bytes representing an address to be used as the operator on the destination chain
 
 ```rust
-    public fun link_coin(
-        self: &InterchainTokenService,
-        deployer: &Channel,
-        salt: Bytes32,
-        destination_chain: String,
-        destination_token_address: vector<u8>,
-        token_manager_type: TokenManagerType,
-        link_params: vector<u8>,
-    ): MessageTicket {}
+public fun link_coin(
+    self: &InterchainTokenService,
+    deployer: &Channel,
+    salt: Bytes32,
+    destination_chain: String,
+    destination_token_address: vector<u8>,
+    token_manager_type: TokenManagerType,
+    link_params: vector<u8>,
+): MessageTicket {}
 ```
 
 The complete linking token flow is as follows:
@@ -160,7 +160,7 @@ public fun deploy_remote_interchain_token<T>(
 
 Since this function makes a cross-chain call, it will return a [MessageTicket](/dev/general-message-passing/sui/gmp-contracts/#message-ticket) for the cross-chain transaction. The full implementation of the `deploy_remote_interchain_token()` can be found [here](https://github.com/axelarnetwork/axelar-cgp-sui/blob/v1.1.3/move/interchain_token_service/sources/versioned/interchain_token_service_v0.move#L178).
 
-See here for an [example](https://github.com/axelarnetwork/axelar-contract-deployments/blob/main/sui/its-example.js#L107) of how to run a cross-chain deployment for a new token.
+See here for an [example](https://github.com/axelarnetwork/axelar-contract-deployments/blob/main/sui/its-example.js#L107) of how to run a cross-chain deployment for a new coin.
 
 ## Interchain Transfer
 
@@ -186,7 +186,7 @@ This will create the `InterchainTransferTicket` to be passed into the `send_inte
 
 The function takes six parameters:
 
-1. `token_id`: The id of the token being sent.
+1. `token_id`: The id of the coin being sent.
 1. `coin`: The actual [coin](https://docs.sui.io/standards/coin) being sent.
 1. `destination_chain`: The name of the chain the coin is being sent to.
 1. `destination_address`: The address on the destination chain the coin is being sent to.
@@ -262,7 +262,7 @@ When tokens are sent to Sui, the [Relayer Discovery](https://github.com/axelarne
 The function takes four parameters:
 
 1. `its`: The ITS object that will be updated once the new coin is registered.
-1. `approved_message`: The cross-chain [message](/dev/general-message-passing/sui/sui-programs/#approvedmessage) sent with the receiving instructions for the token.
+1. `approved_message`: The cross-chain [message](/dev/general-message-passing/sui/sui-programs/#approvedmessage) sent with the receiving instructions for the coin.
 1. `clock`: A [clock](https://docs.sui.io/references/framework/sui/clock) module that provides the time of the transfer.
 1. `ctx`: The [transaction context](https://docs.sui.io/references/framework/sui/tx_context#sui_tx_context_TxContext) provides the necessary runtime environment for creating or modifying objects and state.
 
@@ -344,7 +344,7 @@ A coin management object must be created before the coin is registered with ITS.
 
 ### Capped Management
 
-Capped Management types create a new `CoinManagement` with a [Treasury Cap](https://docs.sui.io/standards/coin#treasury-capability). This type of `CoinManagement` allows the minting and burning of coins, meaning when the token is sent out of Sui, it is burned, and when it is sent back into Sui, it is minted. This is a valuable manager type if your coin is natively integrated into a number chain. In other words, when there is no canonical implementation of the token on a single chain on which all other tokens depend, Integrating a `capped` manager type involves calling the following factory function.
+Capped Management types create a new `CoinManagement` with a [Treasury Cap](https://docs.sui.io/standards/coin#treasury-capability). This type of `CoinManagement` allows the minting and burning of coins, meaning when the coin is sent out of Sui, it is burned, and when it is sent back into Sui, it is minted. This is a valuable manager type if your coin is natively integrated into a number chain. In other words, when there is no canonical implementation of the coin on a single chain on which all other coins depend, Integrating a `capped` manager type involves calling the following factory function.
 
 ```rust
 public fun new_with_cap<T>(treasury_cap: TreasuryCap<T>): CoinManagement<T> {
@@ -363,7 +363,7 @@ See [here](https://github.com/axelarnetwork/axelar-contract-deployments/blob/mai
 
 ### Locked Management
 
-Locked Management types Create a new `CoinManagement` with a `Balance`. The stored `Balance` can be used to take and put coins. This manager type will lock the sent coin with ITS when the coin is sent out of Sui and unlock the coin when it is sent back into the Sui ecosystem. This type of manager is very useful if Sui is the _home-chain_ for your ITS integration and you use wrapped tokens on other chains that derive back to the canonical token on Sui. Integrating the ` new_locked` manager type involves calling the following factory function.
+Locked Management types Create a new `CoinManagement` with a `Balance`. The stored `Balance` can be used to take and put coins. This manager type will lock the sent coin with ITS when the coin is sent out of Sui and unlock the coin when it is sent back into the Sui ecosystem. This type of manager is very useful if Sui is the _home-chain_ for your ITS integration and you use wrapped coins on other chains that derive back to the canonical coin on Sui. Integrating the ` new_locked` manager type involves calling the following factory function.
 
 ```rust
 public fun new_locked<T>(): CoinManagement<T> {
@@ -432,7 +432,7 @@ public fun set_flow_limit_as_token_operator<T>(
 ) {}
 ```
 
-Note: A flow limit of `0` corresponds to no flow limit set at all. If you wish to remove your flow limit it should be set to 0. To halt transfers of your token in/out of Sui you can set the flow limit to a near `0` value, effectively halting cross-chain transfers.
+Note: A flow limit of `0` corresponds to no flow limit set at all. If you wish to remove your flow limit it should be set to 0. To halt transfers of your coin in/out of Sui you can set the flow limit to a near `0` value, effectively halting cross-chain transfers.
 
 ## Roles
 
@@ -456,7 +456,7 @@ public fun add_distributor<T>(self: &mut CoinManagement<T>, distributor: address
 }
 ```
 
-The `add_distributor()` function must be called before the token is [registered](#register-coin). This function can be called by the address that  owns a [Coin Management](#coin-management). However, once the coin is registered with ITS this function is no longer callable as ownership of the `Coin Management` object (which in turn owns the `Distributor` object) is passed to ITS itself. If in the future you wish to change the `Distributor` that was set before the coin was registered, you can transfer the `Distributor` with the [transfer distributor](#transfer-distributor) function.
+The `add_distributor()` function must be called before the coin is [registered](#register-coin). This function can be called by the address that  owns a [Coin Management](#coin-management). However, once the coin is registered with ITS this function is no longer callable as ownership of the `Coin Management` object (which in turn owns the `Distributor` object) is passed to ITS itself. If in the future you wish to change the `Distributor` that was set before the coin was registered, you can transfer the `Distributor` with the [transfer distributor](#transfer-distributor) function.
 
 
 #### Transfer Distributor
@@ -467,7 +467,7 @@ The function takes four parameters:
 
 1. `self`: The module that will be updated once the `distributor` is set.
 1. `channel`: The channel that is able to update the `distributor`.
-1. `token_id`: The id of the token that will receive the new operator.
+1. `token_id`: The id of the coin that will receive the new operator.
 1. `new_distributor`: The address of the new `distributor` to be set. 
 
 ```rust
@@ -482,7 +482,7 @@ public(package) fun transfer_distributorship<T>(
 
 ### Operator
 
-An address authorized to update [flow limits](#flow-limit) for token transfers. When setting a new flow limit, the module verifies that the caller's channel address matches the stored operator address to ensure only the operator can make that change. An operator can be registered by triggering the `add_operator()` function.
+An address authorized to update [flow limits](#flow-limit) for coin transfers. When setting a new flow limit, the module verifies that the caller's channel address matches the stored operator address to ensure only the operator can make that change. An operator can be registered by triggering the `add_operator()` function.
 
 
 #### Add Operator
@@ -500,7 +500,7 @@ public fun add_operator<T>(self: &mut CoinManagement<T>, operator: address) {
 }
 ```
 
-The `add_operator()` function must be called before the token is [registered](#register-coin). This function can be called by the address that has created the [Coin Management](#coin-management) object. However, once the coin is registered with ITS this function is no longer callable as ownership of the `Coin Management` object (which in turn owns the `Operator` object) is passed to ITS itself. If in the future you wish to change the `Operator` that was set before the coin was registered, you can transfer the `Operator` with the [transfer operator](#transfer-operator) function.
+The `add_operator()` function must be called before the coin is [registered](#register-coin). This function can be called by the address that has created the [Coin Management](#coin-management) object. However, once the coin is registered with ITS this function is no longer callable as ownership of the `Coin Management` object (which in turn owns the `Operator` object) is passed to ITS itself. If in the future you wish to change the `Operator` that was set before the coin was registered, you can transfer the `Operator` with the [transfer operator](#transfer-operator) function.
 
 #### Transfer Operator
 
@@ -508,7 +508,7 @@ The `transfer_operatorship()` function takes four parameters:
 
 1. `self`: The module that will be updated once the new `operator` is set.
 1. `channel`: The channel that is able to update the `operator`.
-1. `token_id`: The id of the token that will receive the new `operator`.
+1. `token_id`: The id of the coin that will receive the new `operator`.
 1. `new_operator`: The address of the new `operator` to be set. 
 
 
@@ -524,7 +524,7 @@ public fun transfer_operatorship<T>(
 
 ## Flow Limit
 
-A [Flow Limit](/dev/send-tokens/interchain-tokens/flow-limit/) represent the volume of a coin that can be transferred in/out of Sui via ITS. This limit plays a critical role in maintaining network integrity and security. When coins are sent out of Sui. The flow limit logic can be found in its own [Flow Limit Module](https://github.com/axelarnetwork/axelar-cgp-sui/blob/main/move/interchain_token_service/sources/types/flow_limit.move). The duration of a `flow_limit` is set to an `epoch`. An `epoch` lasts for six hours. It is calculated as follows:
+A [Flow Limit](/dev/send-tokens/interchain-tokens/flow-limit/) represents the volume of a coin that can be transferred in/out of Sui via ITS. This limit plays a critical role in maintaining network integrity and security. When coins are sent out of Sui. The flow limit logic can be found in its own [Flow Limit Module](https://github.com/axelarnetwork/axelar-cgp-sui/blob/main/move/interchain_token_service/sources/types/flow_limit.move). The duration of a `flow_limit` is set to an `epoch`. An `epoch` lasts for six hours. It is calculated as follows:
 
 ```rust
 const EPOCH_TIME: u64 = 6 * 60 * 60 * 1000;
@@ -570,7 +570,7 @@ public(package) fun add_flow_out(self: &mut FlowLimit, amount: u64, clock: &Cloc
 
 A `tokenId` is a unique identifier for an ITS integration. Since ITS is a permissionless service, anyone can, in theory, integrate a deployed coin. The `tokenId` differentiates between the potentially many different integrations of a coin with ITS.
 
-The module for the Sui token id can be found [here](https://github.com/axelarnetwork/axelar-cgp-sui/blob/main/move/interchain_token_service/sources/types/token_id.move).
+The module for the Sui coin id can be found [here](https://github.com/axelarnetwork/axelar-cgp-sui/blob/main/move/interchain_token_service/sources/types/token_id.move).
 
 A `TokenId` is a wrapper of a coin's address.
 
@@ -606,11 +606,11 @@ public struct CoinInfo<phantom T> has store {
 }
 ```
 
-You can run one of two factory functionalities to create a new Coin Info module for your token.
+You can run one of two factory functionalities to create a new Coin Info module for your coin.
 
 ### From Info
 
-This will create new Coin Info based on the given name, symbol, and decimals. The selection alongside the coin type will result in a unique TokenId.
+This will create new Coin Info based on the given name, symbol, and decimals. The selection alongside the coin type will result in a unique `TokenId`.
 
 ```rust
 public fun from_info<T>(name: String, symbol: ascii::String, decimals: u8): CoinInfo<T> {
@@ -628,7 +628,7 @@ An example of how to register a new Coin Info with `from_info()` can be found [h
 
 ### From Metadata
 
-This will create a new coin info from the given `CoinMetadata` object. This can only be done once per token since there is only one CoinMetadata per Coin.
+This will create a new coin info from the given `CoinMetadata` object. This can only be done once per coin since there is only one CoinMetadata per Coin.
 
 ```rust
 public fun from_metadata<T>(metadata: CoinMetadata<T>): CoinInfo<T> {
