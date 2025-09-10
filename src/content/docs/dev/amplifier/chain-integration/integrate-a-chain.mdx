@@ -239,7 +239,7 @@ Note: `code_ids` may change with new releases. You can find the latest code ids 
            "voting_threshold":["1","1"],
            "block_expiry":"10",
            "confirmation_height":1,
-           "source_chain":"test",
+           "source_chain":"'"$YOUR_CHAIN_NAME"'",
            "rewards_address":"axelar1vaj9sfzc3z0gpel90wu4ljutncutv0wuhvvwfsh30rqxq422z89qnd989l",
            "msg_id_format":"hex_tx_hash_and_event_index",
            "address_format": "eip55"
@@ -249,7 +249,7 @@ Note: `code_ids` may change with new releases. You can find the latest code ids 
        --gas auto --gas-adjustment 1.5 --gas-prices 0.00005uamplifier\
        --chain-id devnet-amplifier \
        --node http://devnet-amplifier.axelar.dev:26657 \
-       --label test-voting-verifier \
+       --label ${CHAIN_NAME}-voting-verifier \
        --admin $MY_WALLET_ADDRESS
    ```
 
@@ -315,7 +315,7 @@ Note: `code_ids` may change with new releases. You can find the latest code ids 
        --gas auto --gas-adjustment 1.5 --gas-prices 0.00005uamplifier\
        --chain-id devnet-amplifier \
        --node http://devnet-amplifier.axelar.dev:26657 \
-       --label test-gateway \
+       --label ${CHAIN_NAME}-gateway \
        --admin $MY_WALLET_ADDRESS
    ```
 
@@ -345,7 +345,7 @@ Note: `code_ids` may change with new releases. You can find the latest code ids 
            "voting_verifier_address": "'"$MY_VERIFIER_ADDRESS"'",
            "signing_threshold": ["1","1"],
            "service_name": "validators",
-           "chain_name":"test",
+           "chain_name":"'"$YOUR_CHAIN_NAME"'",
            "verifier_set_diff_threshold": 1,
            "encoder": "abi",
            "key_type": "ecdsa",
@@ -356,7 +356,7 @@ Note: `code_ids` may change with new releases. You can find the latest code ids 
        --gas auto --gas-adjustment 1.5 --gas-prices 0.00005uamplifier\
        --chain-id devnet-amplifier \
        --node http://devnet-amplifier.axelar.dev:26657 \
-       --label test-prover  \
+       --label ${CHAIN_NAME}-prover  \
        --admin $MY_WALLET_ADDRESS
    ```
 
