@@ -1,0 +1,158 @@
+import { Callout } from "../../../../../components/callout";
+
+# Interchain Transfer
+
+Once your coin has been integrated with ITS, you can use the `send_interchain_transfer()` function to send it cross-chain to another chain where it has been integrated. Sending an interchain transfer is a two-step process.
+
+The first step is to prepare the [Interchain Transfer Ticket](#interchain-ransfer-ticket) via the [prepare_interchain_transfer](#prepare-interchain-transfer) function. Once the ticket is created, you can trigger the [send_interchain_transfer](#send-interchain-transfer) function. Breaking up the transfer into a two-step process allows the package to be more flexible in the case of an upgrade.
+
+
+
+<Callout emoji="💡">
+Other functions that return `MessageTickets` in ITS include:
+
+- `link_coin()`
+- `register_coin_metadata()`
+- `deploy_remote_interchain_token()`
+- `send_interchain_transfer()`
+</Callout>
+
+
+## Prepare Interchain Transfer
+
+This will create the `InterchainTransferTicket` to be passed into the `send_interchain_transfer()`
+
+The function takes six parameters:
+
+1. `token_id`: The id of the coin being sent.
+1. `coin`: The actual [coin](https://docs.sui.io/standards/coin) being sent.
+1. `destination_chain`: The name of the chain the coin is being sent to.
+1. `destination_address`: The address on the destination chain the coin is being sent to.
+1. `metadata`: Executable data being sent along with the coin for a contract on the destination chain to handle.
+1. `source_channel`: The [channel](/dev/general-message-passing/sui/gmp-contracts/#channel) where the message is being sent to. This channel will serve as the source address for the transaction on the destination chain.
+
+```rust
+public fun prepare_interchain_transfer<T>(
+    token_id: TokenId,
+    coin: Coin<T>,
+    destination_chain: String,
+    destination_address: vector<u8>,
+    metadata: vector<u8>,
+    source_channel: &Channel,
+): InterchainTransferTicket<T> {
+    interchain_transfer_ticket::new<T>(
+        token_id,
+        coin.into_balance(),
+        source_channel.to_address(),
+        destination_chain,
+        destination_address,
+        metadata,
+        VERSION,
+    )
+}
+```
+
+
+## Why Prepare Interchain Transfer is Necessary?
+
+In EVM upgradability on the other hand, smart contracts are replaced atomically. This means that when you upgrade a contract, the proxy automatically knows that it should make a `delegatecall` to a new implementation (as the upgrade comes from swapping in a new implementation at the proxy's storage slot, making the old implementation unreachable). This means that when a package is upgraded, the shared objects created by the old package continue to exist and retain their original data structures, even as new package versions are deployed. Unlike EVM where a proxy immediately redirects all calls to the new implementation, Sui objects must explicitly manage which version of the package logic should handle their operations.
+
+If ITS were to get updated to a new version, the ITS object itself upgrades to the new version, but tickets created before the upgrade still exist with their old version stamps. To ensure backwards compatibility and prevent version mismatches, the `prepare_interchain_transfer()` function creates a `ticket` with a version stamp indicating which version of ITS was active when the ticket was created. When `send_interchain_transfer()` processes the ticket, it can check the version compatibility and either:
+
+1. Process the ticket with v0-compatible logic if it's an old ticket
+1. Process it with v1 logic if it's a new ticket
+1. Reject it if the ticket is from a newer version than the current ITS
+
+## Send Interchain Transfer
+
+With the ticket now created, you can use it with the `send_interchain_transfer()` function. Once called, `send_interchain_transfer()` will trigger the cross-chain call to send the coin from the source chain to the destination chain.
+
+The function takes three parameters:
+
+1. `its`: The ITS object that will be updated once the new coin is registered.
+1. `ticket`: The [ticket](#interchain-transfer-ticket) representing the coin transfer.
+1. `clock`: A [clock](https://docs.sui.io/references/framework/sui/clock) module that provides the time of the transfer.
+
+```rust
+public fun send_interchain_transfer<T>(
+    self: &mut InterchainTokenService,
+    ticket: InterchainTransferTicket<T>,
+    clock: &Clock,
+): MessageTicket {
+    let value = self.value_mut!(b"send_interchain_transfer");
+
+    value.send_interchain_transfer<T>(
+        ticket,
+        VERSION,
+        clock,
+    )
+}
+```
+
+See here for an [example](https://github.com/axelarnetwork/axelar-contract-deployments/blob/main/sui/its-example.js#L65) of how to use the `send_interchain_transfer()`
+
+The full `send_interchain_transfer()` implementation can be found [here](https://github.com/axelarnetwork/axelar-cgp-sui/blob/main/move/interchain_token_service/sources/versioned/interchain_token_service_v0.move#L212)
+
+
+# Receive Interchain Transfer
+
+When tokens are sent to Sui, the [Relayer Discovery](https://github.com/axelarnetwork/axelar-cgp-sui/blob/main/move/interchain_token_service/sources/discovery.move) module triggers the `receive_interchain_transfer()` function on the Sui ITS module. An application must register with the `relayer_discovery` and use a `channel` they control as the destination address to receive tokens with data.
+
+The function takes four parameters:
+
+1. `its`: The ITS object that will be updated once the new coin is registered.
+1. `approved_message`: The cross-chain [message](/dev/general-message-passing/sui/sui-programs/#approvedmessage) sent with the receiving instructions for the coin.
+1. `clock`: A [clock](https://docs.sui.io/references/framework/sui/clock) module that provides the time of the transfer.
+1. `ctx`: The [transaction context](https://docs.sui.io/references/framework/sui/tx_context#sui_tx_context_TxContext) provides the necessary runtime environment for creating or modifying objects and state.
+
+```rust
+public fun receive_interchain_transfer<T>(
+    self: &mut InterchainTokenService,
+    approved_message: ApprovedMessage,
+    clock: &Clock,
+    ctx: &mut TxContext,
+) {
+    let value = self.value_mut!(b"receive_interchain_transfer");
+
+    value.receive_interchain_transfer<T>(approved_message, clock, ctx);
+}
+```
+
+Once the relayer triggers this function, it, in turn, triggers the [give_coin](#give-coin) function on the Coin Management program. Once `give_coin()` has run, the function will transfer the coin to the destination address.
+
+The full `receive_interchain_transfer()` can be found [here](https://github.com/axelarnetwork/axelar-cgp-sui/blob/main/move/interchain_token_service/sources/versioned/interchain_token_service_v0.move#L247)
+
+## Receive Interchain Transfer With Data
+
+If the source chain sends executable metadata along with the transaction, the `receive_interchain_transfer_with_data()` function will handle that data.
+
+It takes the same parameters as the previous `receive_interchain_transfer()` function, except it also includes a `channel` parameter. The channel checks if the payload's destination address matches the channel's address, ensuring that messages with extra data are correctly routed.
+
+For the channel to be available, the package must be registered with `relayer_discovery` and use a `channel` they control as the destination address.
+
+The key difference with `receive_interchain_transfer_with_data()` is that the function `asserts` that the `data` being sent is not empty and does not simply transfer the coin to the destination address. This function is designed for transfers that carry extra information and require additional routing and validation steps, while the standard version is for simple transfers that don't include extra data and perform the transfer immediately. It is up to the caller to decide how to transfer the coin once the function returns.
+
+```rust
+public fun receive_interchain_transfer_with_data<T>(
+    self: &mut InterchainTokenService,
+    approved_message: ApprovedMessage,
+    channel: &Channel,
+    clock: &Clock,
+    ctx: &mut TxContext,
+): (String, vector<u8>, vector<u8>, Coin<T>) {
+    let value = self.value_mut!(b"receive_interchain_transfer_with_data");
+
+    value.receive_interchain_transfer_with_data<T>(
+        approved_message,
+        channel,
+        clock,
+        ctx,
+    )
+}
+```
+
+See here for an [example](https://github.com/axelarnetwork/axelar-contract-deployments/blob/main/sui/its-example.js#L124) of how to receive a transfer with data.
+
+The full `receive_interchain_transfer_with_data()` implementation can be found [here](https://github.com/axelarnetwork/axelar-cgp-sui/blob/main/move/interchain_token_service/sources/versioned/interchain_token_service_v0.move#L282)
+
+
