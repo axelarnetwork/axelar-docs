@@ -48,8 +48,6 @@ The function is defined as follows:
 public fun register_coin_metadata<T>(self: &InterchainTokenService, coin_metadata: &CoinMetadata<T>): MessageTicket {}
 ```
 
-You can see a real example of this function being used in [this transaction on Axelarscan](TODO), which demonstrates registering a token metadata.
-
 ## Create a coin manager
 
 Before you can register your coin, you must first create a [coin-manager](/dev/send-tokens/sui/coin-management/) (also referred to as a [token manager](/dev/send-tokens/interchain-tokens/token-manager/) for ITS EVM chains). When creating a manager you must consider what type of manager you want to integrate. You have the choice between a [capped manager](/dev/send-tokens/sui/coin-management/#capped-management) and a [locked manager](/dev/send-tokens/sui/coin-management/#locked-management)
@@ -84,7 +82,7 @@ public(package) fun register_custom_coin<T>(
 
 Once executed, the function will return a unique [tokenId](/dev/send-tokens/sui/intro/#token-id) and an optional [treasury cap reclaimer](/dev/send-tokens/sui/intro/#treasury-cap-reclaimer). At this point your coin's metadata should be registered on Sui and the remote chain that you intend to connect your coin to. You should now also have a `tokenId` for your coin on Sui that stores that passed in `coin_management` object.
 
-You can see a real example of this function being used in [this transaction on Axelarscan](TODO), which demonstrates registering a custom coin.
+
 
 ## Link custom coin
 
@@ -113,7 +111,6 @@ Once executed the `link_coin()` function will make a cross-chain gmp call to the
 
 You can see an example of how to trigger the `link_coin()` function [here](https://github.com/axelarnetwork/axelar-contract-deployments/blob/main/sui/its.js#L466)
 
-You can see a live call to the `link_coin()` call [here](TODO)
 
 
 
