@@ -258,8 +258,20 @@ export const getNavigation = (section) => {
                       href: "/dev/send-tokens/sui/intro/",
                     },
                     {
-                      title: "Register an Existing Token Demo",
-                      href: "/dev/send-tokens/sui/register-existing-sui-token/",
+                      title: "Coin Management",
+                      href: "/dev/send-tokens/sui/coin-management/",
+                    },
+                    {
+                      title: "Link Custom Coins",
+                      href: "/dev/send-tokens/sui/link-coin/",
+                    },
+                    {
+                      title: "Register an Existing Coin",
+                      href: "/dev/send-tokens/sui/register-existing-coin/",
+                    },
+                    {
+                      title: "Register Existing Coin Guide",
+                      href: "/dev/send-tokens/sui/register-existing-coin-guide/",
                     },
                   ],
                 },
