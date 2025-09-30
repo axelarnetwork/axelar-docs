@@ -632,7 +632,7 @@
           "rpcUrls": [
             "https://rpc.api.moonbase.moonbeam.network",
             "https://rpc.testnet.moonbeam.network",
-            "https://moonbase-alpha.public.blastapi.io"
+            "https://moonbase-alpha.drpc.org"
           ],
           "nativeCurrency": {
             "name": "Dev",
