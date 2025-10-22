@@ -455,19 +455,19 @@
     {
       "id": "celo",
       "name": "Celo",
-      "chain_id": 44787,
+      "chain_id": 11142220,
       "network_id": "celo",
       "provider_params": [
         {
-          "chainId": "0xAEF3",
-          "chainName": "Celo Alfajores Testnet",
-          "rpcUrls": ["https://alfajores-forno.celo-testnet.org"],
+          "chainId": "0xaa044c",
+          "chainName": "Celo Sepolia Testnet",
+          "rpcUrls": ["https://rpc.ankr.com/celo_sepolia"],
           "nativeCurrency": {
             "name": "Celo",
             "symbol": "CELO",
             "decimals": 18
           },
-          "blockExplorerUrls": ["https://alfajores.celoscan.io/"]
+          "blockExplorerUrls": ["https://celo-sepolia.blockscout.com/"]
         }
       ],
       "image": "/images/chains/celo.svg"
