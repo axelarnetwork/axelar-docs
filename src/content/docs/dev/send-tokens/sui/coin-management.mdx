@@ -1,0 +1,250 @@
+# Coin Management
+
+A centerpiece of the ITS design is the [Coin Management](https://github.com/axelarnetwork/axelar-cgp-sui/blob/main/move/interchain_token_service/sources/types/coin_management.move) module (akin to the [token manager](/dev/send-tokens/interchain-tokens/token-manager/) contract for EVM chains). The `Coin Management` module facilitates integrating the `coin` and `ITS`. It is created before registering a coin. It encapsulates key functionalities such as minting, burning, managing balances, and enforcing [flow limits](#flow-limit) for cross‐chain operations. 
+
+Coin managers can be initialized as either a [capped](#capped-management) manager or [locked](#locked-management). The module stores the following fields:
+
+1. `treasury_cap`: An optional [capability](https://docs.sui.io/standards/coin#treasury-capability) that, if present, allows minting and burning of coins.
+1. `balance`: An optional balance used when managing locked coins (i.e., already in circulation).
+1. `distributor`: An optional address authorized for minting and burning operations.
+1. `operator`: An optional address authorized to set flow limits for the coin.
+1. `flow_limit`: A structure that tracks coins' allowed inflow and outflow to control their movement.
+1. `dust`: A field (type u256) tracking leftover coins after transfers.
+
+```rust
+public struct CoinManagement<phantom T> has store {
+    treasury_cap: Option<TreasuryCap<T>>,
+    balance: Option<Balance<T>>,
+    distributor: Option<address>,
+    operator: Option<address>,
+    flow_limit: FlowLimit,
+    dust: u256,
+}
+```
+
+A coin management object must be created before the coin is registered with ITS. 
+
+## Capped Management
+
+Capped Management types create a new `CoinManagement` with a [Treasury Cap](https://docs.sui.io/standards/coin#treasury-capability). This type of `CoinManagement` allows the minting and burning of coins, meaning when the coin is sent out of Sui, it is burned, and when it is sent back into Sui, it is minted. This is a valuable manager type if your coin is natively integrated into a number chain. In other words, when there is no canonical implementation of the coin on a single chain on which all other coins depend, Integrating a `capped` manager type involves calling the following factory function.
+
+```rust
+public fun new_with_cap<T>(treasury_cap: TreasuryCap<T>): CoinManagement<T> {
+    CoinManagement<T> {
+        treasury_cap: option::some(treasury_cap),
+        balance: option::none(),
+        distributor: option::none(),
+        operator: option::none(),
+        flow_limit: flow_limit::new(),
+        dust: 0,
+    }
+}
+```
+
+See [here](https://github.com/axelarnetwork/axelar-contract-deployments/blob/main/sui/its-example.js#L201) for an example of deploying new capped managers.
+
+## Locked Management
+
+Locked Management types Create a new `CoinManagement` with a `Balance`. The stored `Balance` can be used to take and put coins. This manager type will lock the sent coin with ITS when the coin is sent out of Sui and unlock the coin when it is sent back into the Sui ecosystem. This type of manager is very useful if Sui is the _home-chain_ for your ITS integration and you use wrapped coins on other chains that derive back to the canonical coin on Sui. Integrating the ` new_locked` manager type involves calling the following factory function.
+
+```rust
+public fun new_locked<T>(): CoinManagement<T> {
+    CoinManagement<T> {
+        treasury_cap: option::none(),
+        balance: option::some(balance::zero()),
+        distributor: option::none(),
+        operator: option::none(),
+        flow_limit: flow_limit::new(),
+        dust: 0,
+    }
+}
+```
+
+See [here](https://github.com/axelarnetwork/axelar-contract-deployments/blob/main/sui/its-example.js#195) for an example of deploying a new locked manager.
+
+## Give Coin
+
+The Management module triggers the `give_coin()` function when the coin is sent into the Sui ecosystem. This function updates the incoming [flow limit](#flow-limit) and then either mints new coins (if the instance has a [treasury capability](https://docs.sui.io/standards/coin#treasury-capability)) or withdraws coins from the internal balance. It returns the coin object that is ready to be transferred.
+
+```rust
+public(module) fun give_coin<T>(self: &mut CoinManagement<T>, amount: u64, clock: &Clock, ctx: &mut TxContext): Coin<T> {
+    self.flow_limit.add_flow_in(amount, clock);
+    if (has_capability(self)) {
+        self.mint(amount, ctx)
+    } else {
+        coin::take(self.balance.borrow_mut(), amount, ctx)
+    }
+}
+```
+
+## Take Balance
+
+When the coin is out of the Sui ecosystem, the Management module will trigger the `take_balance()` function. This function updates the [flow limit](#flow-limit) for an outgoing transfer and then either burns the coins (if the minting capability is available) or merges the deducted amount into the stored balance. It returns the numeric amount (as a `u64`) taken.
+
+```rust
+public(package) fun take_balance<T>(self: &mut CoinManagement<T>, to_take: Balance<T>, clock: &Clock): u64 {
+    self.flow_limit.add_flow_out(to_take.value(), clock);
+    let amount = to_take.value();
+    if (has_capability(self)) {
+        self.burn(to_take);
+    } else {
+        self.balance.borrow_mut().join(to_take);
+    };
+    amount
+}
+```
+
+## Set Flow Limit
+
+To set a specific [flow limit](#flow-limit) amount, trigger the `set_flow_limit_as_token_operator()` function.
+
+The function takes four parameters:
+
+1. `self`: The module that will be updated once the `flow_limit` is set.
+1. `channel`: A reference to the `Channel` object to derive the caller's address. The address is checked to ensure that only the authorized operator can change the `flow_limit`.
+1. `token_id`: The [token id](/dev/send-tokens/sui/intro/#token-id) representing the token to be set.
+1. `limit`: An optional unsigned 64-bit integer representing the new flow limit.
+
+```rust
+public fun set_flow_limit_as_token_operator<T>(
+    self: &mut InterchainTokenService,
+    channel: &Channel,
+    token_id: TokenId,
+    limit: Option<u64>,
+) {}
+```
+
+Note: A flow limit of `0` corresponds to no flow limit set at all. If you wish to remove your flow limit it should be set to 0. To halt transfers of your coin in/out of Sui you can set the flow limit to a near `0` value, effectively halting cross-chain transfers.
+
+
+## Roles
+
+The Coin Management module has set roles that can handle specific functionality.
+
+### Distributor
+
+An address set within the CoinManagement instance that is authorized to perform minting/burning operations. Only CoinManagement instances with a [treasury capability](https://docs.sui.io/standards/coin#treasury-capability) can add a distributor. 
+
+#### Add Distributor
+
+The `add_distributor()` function in the [Coin Management package](https://github.com/axelarnetwork/axelar-cgp-sui/blob/main/move/interchain_token_service/sources/types/coin_management.move) takes two parameters:
+
+1. `self`: The module that will be updated once the `distributor` is set.
+1. `distributor`: The address of the `distributor` to be set. The address that is added should be an [address](https://docs.sui.io/references/sui-api/sui-graphql/reference/types/objects/address) type of your Channel.
+
+```rust
+public fun add_distributor<T>(self: &mut CoinManagement<T>, distributor: address) {
+    assert!(self.has_treasury_cap(), EDistributorNeedsTreasuryCap);
+    self.distributor.fill(distributor);
+}
+```
+
+The `add_distributor()` function must be called before the coin is registered. This function can be called by the address that  owns a [Coin Management](#coin-management). However, once the coin is registered with ITS this function is no longer callable as ownership of the `Coin Management` object (which in turn owns the `Distributor` object) is passed to ITS itself. If in the future you wish to change the `Distributor` that was set before the coin was registered, you can transfer the `Distributor` with the [transfer distributor](#transfer-distributor) function.
+
+
+#### Transfer Distributor
+
+After registration, CoinManagement is owned by ITS and `add_distributor()` is no longer callable. To change/remove the distributor, call `transfer_distributorship()`. This succeeds only if `current_distributor_channel.to_address()` matches the stored distributor.
+
+The function takes four parameters:
+
+1. `self`: The module that will be updated once the `distributor` is set.
+1. `channel`: The channel that is able to update the `distributor`.
+1. `token_id`: The id of the coin that will receive the new operator.
+1. `new_distributor`: The address of the new `distributor` to be set. 
+
+```rust
+public(package) fun transfer_distributorship<T>(
+    self: &mut InterchainTokenService_v0,
+    channel: &Channel,
+    token_id: TokenId,
+    new_distributor: Option<address>,
+) {}
+```
+
+
+### Operator
+
+An address authorized to update [flow limits](#flow-limit) for coin transfers. When setting a new flow limit, the module verifies that the caller's channel address matches the stored operator address to ensure only the operator can make that change. An operator can be registered by triggering the `add_operator()` function.
+
+
+#### Add Operator
+
+The `add_operator()` function defined in the [Coin Management package](https://github.com/axelarnetwork/axelar-cgp-sui/blob/main/move/interchain_token_service/sources/types/coin_management.move) takes two parameters:
+
+1. `self`: The module that will be updated once the `operator` is set.
+1. `operator`: The address of the `operator` to be set. The address that is added should be an [address](https://docs.sui.io/references/sui-api/sui-graphql/reference/types/objects/address) type of your Channel.
+
+It is defined as follows:
+
+```rust
+public fun add_operator<T>(self: &mut CoinManagement<T>, operator: address) {
+    self.operator.fill(operator);
+}
+```
+
+The `add_operator()` function must be called before the coin is [registered](#register-coin). This function can be called by the address that has created the [Coin Management](#coin-management) object. However, once the coin is registered with ITS this function is no longer callable as ownership of the `Coin Management` object (which in turn owns the `Operator` object) is passed to ITS itself. If in the future you wish to change the `Operator` that was set before the coin was registered, you can transfer the `Operator` with the [transfer operator](#transfer-operator) function.
+
+#### Transfer Operator
+
+The `transfer_operatorship()` function takes four parameters:
+
+1. `self`: The module that will be updated once the new `operator` is set.
+1. `channel`: The channel that is able to update the `operator`.
+1. `token_id`: The id of the coin that will receive the new `operator`.
+1. `new_operator`: The address of the new `operator` to be set. 
+
+
+```rust
+public fun transfer_operatorship<T>(
+    self: &mut InterchainTokenService,
+    channel: &Channel,
+    token_id: TokenId,
+    new_operator: Option<address>,
+) {}
+```
+
+
+## Flow Limit
+
+A [Flow Limit](/dev/send-tokens/interchain-tokens/flow-limit/) represents the volume of a coin that can be transferred in/out of Sui via ITS. This limit plays a critical role in maintaining network integrity and security. When coins are sent out of Sui. The flow limit logic can be found in its own [Flow Limit Module](https://github.com/axelarnetwork/axelar-cgp-sui/blob/main/move/interchain_token_service/sources/types/flow_limit.move). The duration of a `flow_limit` is set to an `epoch`. An `epoch` lasts for six hours. It is calculated as follows:
+
+```rust
+const EPOCH_TIME: u64 = 6 * 60 * 60 * 1000;
+```
+
+The module has several pieces of functionality that are triggered by the [Coin Management](#coin-management) module.
+
+### Add Flow In
+
+This is triggered each time the `give_coin()` function is executed. It increments the `flow_in` value to track when the `flow_limit` is reached.
+
+```rust
+public(package) fun add_flow_in(self: &mut FlowLimit, amount: u64, clock: &Clock) {
+    if (self.flow_limit.is_none()) {
+        return
+    };
+    let flow_limit = *self.flow_limit.borrow() as u128;
+
+    update_epoch(self, clock);
+    assert!(self.flow_in + (amount as u128) < flow_limit + self.flow_out, EFlowLimitExceeded);
+    self.flow_in = self.flow_in + (amount as u128);
+}
+```
+
+### Add Flow Out
+
+This is triggered each time the `take_balance()` function is executed. It increments the `flow_out` value to track when the `flow_limit` is reached.
+
+```rust
+public(package) fun add_flow_out(self: &mut FlowLimit, amount: u64, clock: &Clock) {
+    if (self.flow_limit.is_none()) {
+        return
+    };
+    let flow_limit = *self.flow_limit.borrow() as u128;
+
+    update_epoch(self, clock);
+    assert!(self.flow_out + (amount as u128) < flow_limit + self.flow_in, EFlowLimitExceeded);
+    self.flow_out = self.flow_out + (amount as u128);
+}
+```
