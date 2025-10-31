@@ -64,7 +64,7 @@ To register your coin, you will need to pass in the following parameters:
 1. `deployer`: A [channel](/dev/general-message-passing/sui/gmp-contracts/#channel) capability. Used to derive the custom [tokenId](/dev/send-tokens/sui/intro/#token-id) with the `salt` and `chain_name`, so only that channel’s holder can link that custom token.
 1. `salt`: A unique salt, used to derive a unique `interchainTokenId` for the coin.
 1. `coin_metadata`: The metadata of the coin to be registered, passed in as a hexadecimal object ID (for example, `0x9c1ef3ed7231f1757397a0969811d9368f6a44d139c6260a94a92e2331d6bb45`).
-1. `coin_management`: The type of [management](#coin-management) the coin is registered with.
+1. `coin_management`: The type of [management](/dev/send-tokens/sui/coin-management/) the coin is registered with.
 1. `ctx`: The [transaction context](https://docs.sui.io/references/framework/sui/tx_context#sui_tx_context_TxContext) provides the necessary runtime environment for creating or modifying objects and state.
 
 The function is defined as follows:
