@@ -24,8 +24,6 @@ public(package) fun register_coin_from_info<T>(
 ): TokenId {}
 ```
 
-This will be a commonly used registration flow as Sui coins often times [freeze](https://docs.sui.io/concepts/object-ownership/immutable#create-immutable-object) its metadata so that no one can alter critical configuration about the coin such as its name, symbol, and decimals.
-
 ## Register Coin from Metadata
 
 If you do not want to explicitly pass in your coin's info, then you can register the coin via `register_coin_from_metadata()` function. Whereas the previous `register_coin_from_info()` may be simpler to use, this coin registration prevents against human error, for example, a typo in the symbol or name since the coin parameters are not validated in any way. The function returns a new [TokenId](/dev/send-tokens/sui/intro/#token-id) and takes three parameters:
