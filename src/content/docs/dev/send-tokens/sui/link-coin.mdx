@@ -89,7 +89,8 @@ Once executed, the function will return a unique [tokenId](/dev/send-tokens/sui/
 Once your coin is now setup on Sui and you have an additional token deployed on a separate chain, you can use the `link_coin()` function to connect the two assets with the end goal of sending `interchain_transfer()` calls between the two chains. The call to `link_coin()` takes seven parameters and returns a [MessageTicket](/dev/general-message-passing/sui/gmp-contracts/#message-ticket). 
 
 1. `its`: The ITS object that will be updated once the new token is linked.
-1. `deployer` The deployer’s [channel](/dev/general-message-passing/sui/gmp-contracts/#channel) capability. Used to derive the custom [tokenId](/dev/send-tokens/sui/intro/#token-id) with the `salt` and `chain_name`, so only that channel’s holder can link that custom token.
+1. `deployer`: The deployer's [channel](/dev/general-message-passing/sui/gmp-contracts/#channel) capability. Used to derive the custom [tokenId](/dev/send-tokens/sui/intro/#token-id) with the `salt` and `chain_name`, so only that channel's holder can link that custom token.
+1. `salt`: A unique salt, used to derive a unique `interchainTokenId` for the coin.
 1. `destination_chain`: The name of the chain where the token is being linked to.
 1. `destination_token_address`: The address of the token the sui coin is being linked to.
 1. `token_manager_type`: The [type of manager](/dev/send-tokens/sui/coin-management/) to be deployed on the destination chain.
