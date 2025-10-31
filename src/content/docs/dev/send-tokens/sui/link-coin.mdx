@@ -1,6 +1,6 @@
 # Link Custom Coins
 
-import { Callout } from "/src/components/callout";
+import { Callout } from "../../../../../components/callout";
 
 Custom coins are independently deployed coins on Sui, as opposed to [InterchainCoins](https://github.com/axelarnetwork/axelar-cgp-sui/blob/main/move/interchain_token/sources/interchain_token.move) deployed via the Interchain Token Service (ITS). To link your coin on Sui to a token on another blockchain you will need to ensure that the coin is registered with [ITS Hub](https://docs.axelar.dev/dev/amplifier/its-hub/introduction/) and deploy a [token manager](/dev/send-tokens/sui/coin-management/) for that coin on Sui as well as the chains the coin is being linked with.
 
