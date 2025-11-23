@@ -1,0 +1,54 @@
+import { Callout } from "../../../../../components/callout";
+
+# Solana GMP Integration Introduction
+
+[Solana](https://solana.com/) is a blockchain that has been integrated with the Axelar Network via the [Interchain Amplifier](/dev/amplifier/introduction/). This integration enables cross-chain communication between Solana and [other blockchains](https://axelarscan.io/resources/chains) in the Axelar ecosystem.
+
+## Overview
+
+Sending messages between Solana and other blockchains follows similar patterns as [GMP messages](/dev/general-message-passing/overview/) on other chains, such as EVM chains. The core packages for Axelar's integration with Solana can be found in the [axelar-amplifier-solana](https://github.com/axelarnetwork/axelar-amplifier-solana) repository.
+
+The integration consists of two main components:
+
+1. **[Gateway Program](/dev/general-message-passing/solana/gmp-contracts/)** - Authenticates and facilitates the sending and receiving of cross-chain messages.
+2. **[Gas Service Program]()** - Handles cross-chain gas payment for message delivery. {/*TODO gas service doc*/}
+
+## Key Concepts
+
+### Outbound Message Flow
+
+Sending a message from Solana to another chain involves these steps:
+
+1. **Pay gas** - Call the Gas Service with the payload hash and destination details to pay for execution on the destination chain.
+2. **Send message** - Trigger the [call contract](/dev/general-message-passing/solana/gmp-contracts/#outgoing-gmp-message) instruction on the Gateway to emit the cross-chain message.
+3. **Relayer processes** - Axelar's relayer picks up the message and routes it through the Axelar Network to the destination chain.
+
+### Inbound Message Flow
+
+Receiving a message on Solana from another chain involves:
+
+1. **Message approval** - The message marked as `approved` by Axelar's Verifier Set on the Gateway program via the [approve message](/dev/general-message-passing/solana/gmp-contracts/#approve-message) instruction.
+2. **Relayer execution** - Axelar's relayer calls your destination program's `execute` instruction.
+3. **Message validation** - Your program validates the message via CPI (Cross-Program Invocation) to the Gateway program via the [validate message](/dev/general-message-passing/solana/gmp-contracts/#validate-message) instruction.
+4. **Payload processing** - Once validated, your program processes the message payload and executes your program's own logic.
+
+### Solana-Specific Considerations
+
+When working with Axelar on Solana, keep in mind:
+
+- **Program Derived Addresses (PDAs)**: Solana programs use [PDAs](https://solana.com/docs/core/pda) instead of private keys for signing. Your program will need a signing PDA to call the Gateway.
+- **Cross-Program Invocations (CPIs)**: Interaction with the Gateway and Gas Service happens via [CPIs](https://solana.com/docs/core/cpi).
+- **Account Model**: Unlike EVM's storage model, Solana uses an [account-based](https://solana.com/docs/core/accounts) architecture where state is stored in separate accounts.
+- **Anchor Framework**: The Axelar Solana programs are built using the [Anchor framework](https://www.anchor-lang.com/), which provides helpful abstractions.
+
+<Callout emoji="💡">
+    **Note:** The Gateway Program handles message authentication and state management, while your destination program handles the actual message execution and business logic.
+</Callout>
+
+## Resources
+
+- For a complete Solana GMP implementation, check out the [Memo example program](https://github.com/axelarnetwork/axelar-amplifier-solana/tree/main/programs/solana-axelar-memo).
+- For test examples showing how to send and receive messages, see the [Memo tests](https://github.com/axelarnetwork/axelar-amplifier-solana/tree/main/programs/solana-axelar-memo/tests).
+- For the core Gateway implementation, see the [Gateway program](https://github.com/axelarnetwork/axelar-amplifier-solana/tree/main/programs/solana-axelar-gateway).
+- To learn more about Solana program development, visit the [Solana documentation](https://solana.com/docs).
+
