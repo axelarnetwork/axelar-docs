@@ -92,6 +92,9 @@
         },
         {
           "value": "https://api-axelar.validatrium.club"
+        },
+        {
+          "value": "https://axelar-archrest.chainode.tech"
         }
       ]
     },
