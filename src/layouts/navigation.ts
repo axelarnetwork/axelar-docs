@@ -790,6 +790,10 @@ export const getNavigation = (section) => {
             title: "Testnet axelard",
             children: [
               {
+                title: "v1.3.1",
+                href: "/resources/testnet/upgrades/v131/",
+              },
+              {
                 title: "v1.3.0",
                 href: "/resources/testnet/upgrades/v130/",
               },
