@@ -20,7 +20,7 @@ The release for the upgrade can be found [here](https://github.com/axelarnetwork
 
 ## About the v1.3.1 upgrade
 
-The `v1.3.1` upgrade is required to support the Axelar Network's upgrade to [Cosmos SDK v0.5.0](https://cosmos-docs.mintlify.app/sdk/v0.50/build). This upgrade will allow for faster block times (from 5s to 1s) on Axelar as well as support for the latest security features of the Cosmos SDK.
+The `v1.3.1` upgrade is required to support the Axelar Network's upgrade to [Cosmos SDK v0.50](https://cosmos-docs.mintlify.app/sdk/v0.50/build). This upgrade will allow for faster block times (from 5s to 1s) on Axelar as well as support for the latest security features of the Cosmos SDK.
 
 ## Upgrade Instructions
 
@@ -54,8 +54,8 @@ cp -r ~/.axelar_testnet/.core/data ~/.axelar-lisbon-3-upgrade-1.3.0/.core/data
 </Callout>
 
 4. Lower the `timeout_commit` config in `.axelar/config/config.toml` from `5s` to `1s`.
-5. Restart your `axelard` node with the new `v1.3.1` build as well as `ampd` with the new `v1.13.1` binaries.
-6. If you're a validator also restart `vald` with `v1.3.1` and `tofnd` with `v1.0.1`. TODO confirm tofnd version
+5. Restart your `axelard` node with the new `v1.3.1` build as well as `ampd` with the new `v1.13.2` binaries.
+6. If you're a validator also restart `vald` with `v1.3.1` and `tofnd` with `v1.0.1`.
 
 Example using join scripts in [axelarate-community git repo](https://github.com/axelarnetwork/axelarate-community):
 
@@ -70,13 +70,12 @@ KEYRING_PASSWORD="pw-1" TOFND_PASSWORD="pw-2" ./scripts/validator-tools-host.sh 
 
 ## Ampd
 
-For verifiers, a new `ampd` [upgrade](https://github.com/axelarnetwork/axelar-contract-deployments/blob/main/releases/ampd/2025-11-17-ampd-v1.13.1.md) is required to support `axelard v1.3.0`   The `ampd` upgrade must be done **after**  completing the `axelard` upgrade.
+For verifiers, a new `ampd` [upgrade](https://github.com/axelarnetwork/axelar-contract-deployments/blob/main/releases/ampd/2025-11-17-ampd-v1.13.2.md) is required to support `axelard v1.3.1`   The `ampd` upgrade must be done **after**  completing the `axelard` upgrade.
 
 ### Instructions
 
-Restart `ampd` with the new binary after deploying axelard `v1.3`. The relevant `ampd` release can be found [here](https://github.com/axelarnetwork/axelar-amplifier/releases/tag/ampd-v1.13.1).
+Restart `ampd` with the new binary after deploying axelard `v1.3.1`. The relevant `ampd` release can be found [here](https://github.com/axelarnetwork/axelar-amplifier/releases/tag/ampd-v1.13.2).
 
-**Important**: If you are upgrading directly from ampd v1.12.x, you need to do the correct adjustments to the config file according to the [ampd v1.13.0 release doc].
 
 ## Troubleshooting
 
