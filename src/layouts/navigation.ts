@@ -307,12 +307,12 @@ export const getNavigation = (section) => {
               href: "/dev/send-tokens/roadmap/",
             },
             {
-                title: "Glossary",
-                href: "/dev/send-tokens/glossary/",
+              title: "Glossary",
+              href: "/dev/send-tokens/glossary/",
             },
             {
-                title: "Deprecated",
-                children: [
+              title: "Deprecated",
+              children: [
                 {
                   title: "Send Tokens",
                   href: "/dev/send-tokens/deprecated/send-tokens/",
@@ -789,6 +789,10 @@ export const getNavigation = (section) => {
           {
             title: "Testnet axelard",
             children: [
+              {
+                title: "v1.3.1",
+                href: "/resources/testnet/upgrades/v131/",
+              },
               {
                 title: "v1.2",
                 href: "/resources/testnet/upgrades/v121/",
