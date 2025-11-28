@@ -794,10 +794,6 @@ export const getNavigation = (section) => {
                 href: "/resources/testnet/upgrades/v131/",
               },
               {
-                title: "v1.3.0",
-                href: "/resources/testnet/upgrades/v130/",
-              },
-              {
                 title: "v1.2",
                 href: "/resources/testnet/upgrades/v121/",
               },
