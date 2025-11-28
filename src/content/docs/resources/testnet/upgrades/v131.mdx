@@ -6,6 +6,8 @@ Instructions for the testnet upgrade axelar-core `v1.3.1`.
 
 The release for the upgrade can be found [here](https://github.com/axelarnetwork/axelar-core/releases/tag/v1.3.1).
 
+Upgrade height `22091922` [countdown](https://www.mintscan.io/axelar-testnet/block/22091922)
+
 ## Binary Types
 
 The v1.3.1 release provides **two Linux binaries**:
@@ -43,10 +45,10 @@ The `v1.3.1` upgrade is required to support the Axelar Network's migration to [C
 1. If you're a validator or have delegated to one, please vote for the upgrade proposal via:
 
 ```bash
-axelard tx gov vote TODO_PROPOSAL_ID yes --from validator
+axelard tx gov vote 404 yes --from validator
 ```
 
-2. Wait for the proposed upgrade block, `TODO_UPGRADE_HEIGHT`. Your node will panic at that block height with a log: `{"level":"error","module":"consensus","err":"UPGRADE \"v1.3.1\" NEEDED at height: TODO_UPGRADE_HEIGHT",`.
+2. Wait for the proposed upgrade block, `22091922`. Your node will panic at that block height with a log: `{"level":"error","module":"consensus","err":"UPGRADE \"v1.3.1\" NEEDED at height: 22091922",`.
 
 Stop your node after chain halt:
 
