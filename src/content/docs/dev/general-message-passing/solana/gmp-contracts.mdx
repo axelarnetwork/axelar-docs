@@ -335,9 +335,9 @@ pub fn execute_handler(
 
 
 
-## Events
+### Events
 
-### CallContractEvent
+#### CallContractEvent
 
 Emitted when a program calls `call_contract`.
 
@@ -351,7 +351,7 @@ pub struct CallContractEvent {
 }
 ```
 
-### MessageApprovedEvent
+#### MessageApprovedEvent
 
 Emitted when a message is approved.
 
@@ -367,7 +367,7 @@ pub struct MessageApprovedEvent {
 }
 ```
 
-### MessageExecutedEvent
+#### MessageExecutedEvent
 
 Emitted when a message is validated and executed.
 
@@ -384,9 +384,134 @@ pub struct MessageExecutedEvent {
 ```
 
 
+## Axelar Gas Service
+
+The Solana Axelar [Gas Service](/dev/gas-service/intro/#introduction-to-axelar-gas-service-contract) is a Solana [program](https://github.com/axelarnetwork/axelar-amplifier-solana/tree/main/programs/solana-axelar-gas-service) that enables cross-chain message passing between Solana and other blockchains via Axelar. The Gas Service is used to pay for the entirety of the cross-chain transaction in a given token including the [Base and Execution Fees](/dev/gas-service/pricing/#callcontract-general-message-passing) for the cross-chain transaction.
+
+
+### Key Gas Service Accounts
+
+The Gas Service Program uses the following accounts.
+
+
+#### Treasury
+
+The [treasury](https://github.com/axelarnetwork/axelar-amplifier-solana/blob/main/programs/solana-axelar-gas-service/src/state/treasury.rs) pda holds funds collected by the Gas Service Program. It is used in core Gas Service functionality such as paying for the cross-chain transaction and refunding the sender.
+
+
+### Pay Gas
+
+The key instructions of the Gas Service Program that developers will need to interact with to send a cross-chain transaction is the [pay_gas()](https://github.com/axelarnetwork/axelar-amplifier-solana/blob/main/programs/solana-axelar-gas-service/src/instructions/pay_gas.rs) instruction. The gas payment must be made to the Gas Service before the call to the Gateway to trigger the cross-chain transaction.
+
+The `pay_gas()` instruction takes the following parameters:
+
+
+1. `destination_chain`: Name of the chain the message is being sent to.
+1. `destination_address`: Address on the destination chain the message is being sent to.
+1. `payload_hash`: A 32 `byte` representation of the cross-chain message being sent.
+1. `amount`: The gas payment amount in [lamports](https://solana.com/docs/references/terminology#lamport).
+1. `refund_address`: The address to be refunded if too much gas is paid.
+
+It requires the following accounts to satisfy the `ctx`:
+
+1. `sender`: The [Incoming message](/dev/general-message-passing/solana/gmp-contracts/#incoming-message) PDA that must be in `approved` status.
+1. `treasury`: The [treasury](/dev/general-message-passing/solana/gmp-contracts/#treasury) PDA.
+1. `system_program`: The Solana [System Program](https://solana.com/docs/core/programs#the-system-program) account.
+
+
+```rust
+pub fn pay_gas(
+    ctx: Context<PayGas>,
+    destination_chain: String,
+    destination_address: String,
+    payload_hash: [u8; 32],
+    amount: u64,
+    refund_address: Pubkey,
+) -> Result<()> {}
+```
+
+Once executed, the instruction validates that the payment amount is greater than zero. It then transfers the specified amount of SOL from the sender's account to the Gas Service [treasury PDA](/dev/general-message-passing/solana/gmp-contracts/#treasury). Finally, it emits a [GasPaidEvent](/dev/general-message-passing/solana/gmp-contracts/#gaspaidevent).
+
+### Add Gas 
+
+The [addGas()](https://github.com/axelarnetwork/axelar-amplifier-solana/blob/main/programs/solana-axelar-gas-service/src/instructions/add_gas.rs) instruction is used to add additional gas to a cross-chain transaction after it has been paid for in the an insufficient amount of gas was sent to cover the cross-chain transaction.
+
+The `payGas()` instruction takes the following parameters:
+
+1. `message_id`: The transaction hash of the cross-chain call.
+1. `amount`: The amount of gas to add in [lamports](https://solana.com/docs/references/terminology#lamport).
+1. `refund_address`: The address to be refunded if too much gas is added.
+
+It requires the following accounts to satisfy the `ctx`:
+
+1. `sender`: The account paying for the additional gas (must be a signer).
+1. `treasury`: The [treasury](/dev/general-message-passing/solana/gmp-contracts/#treasury) PDA.
+1. `system_program`: The Solana [System Program](https://solana.com/docs/core/programs#the-system-program) account.
+
+
+```rust
+pub fn add_gas(
+    ctx: Context<AddGas>,
+    message_id: String,
+    amount: u64,
+    refund_address: Pubkey,
+) -> Result<()> {}
+```
+
+Once executed, the instruction validates that the amount is not zero, transfers the specified amount of `lamports` from the sender to the [treasury](/dev/general-message-passing/solana/gmp-contracts/#treasury) PDA via a CPI call to the System Program, and emits a [GasAddedEvent](/dev/general-message-passing/solana/gmp-contracts/#gasaddedevent) containing the sender's public key, `message_id`, `amount`, and `refund_address`.
+
+
+### Events
+
+#### GasPaidEvent
+
+Emitted when a gas payment is made.
+
+```rust
+#[event]
+#[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord)]
+pub struct GasPaidEvent {
+    /// The sender/payer of gas
+    pub sender: Pubkey,
+    /// Destination chain on the Axelar network
+    pub destination_chain: String,
+    /// Destination address on the Axelar network
+    pub destination_address: String,
+    /// The payload hash for the event we're paying for
+    pub payload_hash: [u8; 32],
+    /// The amount of SOL paid
+    pub amount: u64,
+    /// The refund address
+    pub refund_address: Pubkey,
+    /// Optional SPL token account (sender)
+    pub spl_token_account: Option<Pubkey>,
+}
+```
+
+#### GasAddedEvent
+
+Emitted when additional gas is added to a cross-chain transaction.
+
+```rust
+#[event]
+#[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord)]
+pub struct GasAddedEvent {
+    /// The sender/payer of gas
+    pub sender: Pubkey,
+    /// Message Id
+    pub message_id: MessageId,
+    /// The amount of SOL added
+    pub amount: u64,
+    /// The refund address
+    pub refund_address: Pubkey,
+    /// Optional SPL token account (sender)
+    pub spl_token_account: Option<Pubkey>,
+}
+```
+
 ## Example
 
-A full example of the sending a GMP message can be found [here](https://github.com/axelarnetwork/axelar-amplifier-solana/tree/main/programs/solana-axelar-memo).
+A full example of the sending a GMP message can be found [here](https://github.com/axelarnetwork/axelar-amplifier-solana/blob/main/programs/solana-axelar-memo/src/instructions/send_memo.rs). The same program can be used for receiving a GMP message. The functionality for that can be found [here](https://github.com/axelarnetwork/axelar-amplifier-solana/blob/main/programs/solana-axelar-memo/src/instructions/execute.rs).
 
 ## Support
 
