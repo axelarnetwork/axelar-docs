@@ -315,7 +315,7 @@ pub fn execute_handler(
     ctx: Context<Execute>,
     message: Message,
     payload: Vec<u8>,
-    encoding_scheme: solana_axelar_gateway::executable::ExecutablePayloadEncodingScheme,,
+    encoding_scheme: solana_axelar_gateway::executable::ExecutablePayloadEncodingScheme,
 ) -> Result<()> {
     // Validate the message - this performs CPI to gateway
     validate_message(
@@ -414,7 +414,7 @@ The `pay_gas()` instruction takes the following parameters:
 
 It requires the following accounts to satisfy the `ctx`:
 
-1. `sender`: The [Incoming message](/dev/general-message-passing/solana/gmp-contracts/#incoming-message) PDA that must be in `approved` status.
+1. `sender`: The account paying for the additional gas (must be a signer).
 1. `treasury`: The [treasury](/dev/general-message-passing/solana/gmp-contracts/#treasury) PDA.
 1. `system_program`: The Solana [System Program](https://solana.com/docs/core/programs#the-system-program) account.
 
@@ -434,9 +434,9 @@ Once executed, the instruction validates that the payment amount is greater than
 
 ### Add Gas 
 
-The [addGas()](https://github.com/axelarnetwork/axelar-amplifier-solana/blob/main/programs/solana-axelar-gas-service/src/instructions/add_gas.rs) instruction is used to add additional gas to a cross-chain transaction after it has been paid for in the an insufficient amount of gas was sent to cover the cross-chain transaction.
+The [addGas()](https://github.com/axelarnetwork/axelar-amplifier-solana/blob/main/programs/solana-axelar-gas-service/src/instructions/add_gas.rs) instruction is used to add additional gas to a cross-chain transaction if an insufficient amount of gas was initially sent to cover the cross-chain transaction.
 
-The `payGas()` instruction takes the following parameters:
+The `addGas()` instruction takes the following parameters:
 
 1. `message_id`: The transaction hash of the cross-chain call.
 1. `amount`: The amount of gas to add in [lamports](https://solana.com/docs/references/terminology#lamport).

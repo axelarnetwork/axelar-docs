@@ -10,8 +10,8 @@ Sending messages between Solana and other blockchains follows similar patterns a
 
 The integration consists of two main components:
 
-1. **[Gateway Program](/dev/general-message-passing/solana/gmp-contracts/)** - Authenticates and facilitates the sending and receiving of cross-chain messages.
-2. **[Gas Service Program]()** - Handles cross-chain gas payment for message delivery. {/*TODO gas service doc*/}
+1. **[Gateway Program](/dev/general-message-passing/solana/gmp-contracts/#axelar-gateway)** - Authenticates and facilitates the sending and receiving of cross-chain messages.
+1. **[Gas Service Program](/dev/general-message-passing/solana/gmp-contracts/#axelar-gas-service)** - Handles cross-chain gas payment for message delivery. {/*TODO gas service doc*/}
 
 ## Key Concepts
 
@@ -20,17 +20,17 @@ The integration consists of two main components:
 Sending a message from Solana to another chain involves these steps:
 
 1. **Pay gas** - Call the Gas Service with the payload hash and destination details to pay for execution on the destination chain.
-2. **Send message** - Trigger the [call contract](/dev/general-message-passing/solana/gmp-contracts/#outgoing-gmp-message) instruction on the Gateway to emit the cross-chain message.
-3. **Relayer processes** - Axelar's relayer picks up the message and routes it through the Axelar Network to the destination chain.
+1. **Send message** - Trigger the [call contract](/dev/general-message-passing/solana/gmp-contracts/#outgoing-gmp-message) instruction on the Gateway to emit the cross-chain message.
+1. **Relayer processes** - Axelar's relayer picks up the message and routes it through the Axelar Network to the destination chain.
 
 ### Inbound Message Flow
 
 Receiving a message on Solana from another chain involves:
 
 1. **Message approval** - The message marked as `approved` by Axelar's Verifier Set on the Gateway program via the [approve message](/dev/general-message-passing/solana/gmp-contracts/#approve-message) instruction.
-2. **Relayer execution** - Axelar's relayer calls your destination program's `execute` instruction.
-3. **Message validation** - Your program validates the message via CPI (Cross-Program Invocation) to the Gateway program via the [validate message](/dev/general-message-passing/solana/gmp-contracts/#validate-message) instruction.
-4. **Payload processing** - Once validated, your program processes the message payload and executes your program's own logic.
+1. **Relayer execution** - Axelar's relayer calls your destination program's `execute` instruction.
+1. **Message validation** - Your program validates the message via CPI (Cross-Program Invocation) to the Gateway program via the [validate message](/dev/general-message-passing/solana/gmp-contracts/#validate-message) instruction.
+1. **Payload processing** - Once validated, your program processes the message payload and executes your program's own logic.
 
 ### Solana-Specific Considerations
 
