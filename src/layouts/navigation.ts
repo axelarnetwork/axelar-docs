@@ -320,12 +320,12 @@ export const getNavigation = (section) => {
               href: "/dev/send-tokens/roadmap/",
             },
             {
-                title: "Glossary",
-                href: "/dev/send-tokens/glossary/",
+              title: "Glossary",
+              href: "/dev/send-tokens/glossary/",
             },
             {
-                title: "Deprecated",
-                children: [
+              title: "Deprecated",
+              children: [
                 {
                   title: "Send Tokens",
                   href: "/dev/send-tokens/deprecated/send-tokens/",
@@ -681,9 +681,7 @@ export const getNavigation = (section) => {
       {
         title: "RPCs",
         children: [
-          { title: "RPC Endpoints", href: "/resources/rpc/resources/" },
-          { title: "Free Public RPC", href: "/resources/rpc/lava-iprpc/" },
-          { title: "REST Interface", href: "https://axelar.lava.build/" },
+          { title: "RPC Endpoints", href: "/resources/rpc/resources/" }
         ],
       },
       {
@@ -804,6 +802,10 @@ export const getNavigation = (section) => {
           {
             title: "Testnet axelard",
             children: [
+              {
+                title: "v1.3.1",
+                href: "/resources/testnet/upgrades/v131/",
+              },
               {
                 title: "v1.2",
                 href: "/resources/testnet/upgrades/v121/",
