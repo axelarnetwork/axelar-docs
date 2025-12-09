@@ -135,6 +135,19 @@ export const getNavigation = (section) => {
               ],
             },
             {
+              title: "Solana",
+              children: [
+                {
+                  title: "Introduction",
+                  href: "/dev/general-message-passing/solana/intro/",
+                },
+                {
+                  title: "Send Messages",
+                  href: "/dev/general-message-passing/solana/gmp-contracts/",
+                },
+              ],
+            },
+            {
               title: "XRPL",
               href: "/dev/general-message-passing/xrpl/xrpl-gmp/",
             },

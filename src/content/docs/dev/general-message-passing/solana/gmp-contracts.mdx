@@ -1,0 +1,521 @@
+import { Callout } from "../../../../../components/callout";
+
+# Solana GMP Contracts
+
+## Axelar Gateway
+
+The Solana Axelar [Gateway](/learn/network/flow/#gateways) is a Solana [program](https://github.com/axelarnetwork/axelar-amplifier-solana/tree/main/programs/solana-axelar-gateway) that enables cross-chain message passing between Solana and other blockchains via Axelar. It serves as the authentication layer for [General Message Passing (GMP)](/dev/general-message-passing/overview/) messages, verifying that incoming cross-chain messages are properly signed by Axelar's verifier set.
+
+
+The Solana Axelar Gateway is the Solana-side implementation of Axelar's cross-chain gateway protocol. It enables:
+
+- **Outbound Messages**: The functionality to send messages to other chains via the [call_contract](/dev/general-message-passing/solana/gmp-contracts/#outgoing-gmp-message) instruction.
+- **Inbound Messages**: The functionality to validate and approve incoming cross-chain messages from other chains.
+- **Verifier Management**: The gateway manages Axelar verifier sets and their rotation.
+- **Message Authentication**: Cryptographic verification of cross-chain messages using threshold signatures.
+
+
+### Key Gateway Accounts
+
+#### Gateway Config
+
+The [Gateway Config](https://github.com/axelarnetwork/axelar-amplifier-solana/blob/main/programs/solana-axelar-gateway/src/state/config.rs) is the root configuration [PDA](https://solana.com/docs/core/pda) storing verifier set information.
+
+```rust
+pub struct GatewayConfig {
+    /// current epoch points to the latest signer set hash
+    pub current_epoch: VerifierSetEpoch,
+    /// how many n epochs do we consider valid
+    pub previous_verifier_set_retention: VerifierSetEpoch,
+    /// the minimum delay required between rotations
+    pub minimum_rotation_delay: RotationDelaySecs,
+    /// timestamp tracking of when the previous rotation happened
+    pub last_rotation_timestamp: Timestamp,
+    /// The gateway operator.
+    pub operator: Pubkey,
+    /// The domain separator, used as an input for hashing payloads.
+    pub domain_separator: [u8; 32],
+    /// The canonical bump for this account.
+    pub bump: u8,
+    /// padding for bump
+    pub _padding: [u8; 7],
+}
+```
+
+#### Incoming Message
+
+The [Incoming Message](https://github.com/axelarnetwork/axelar-amplifier-solana/blob/main/programs/solana-axelar-gateway/src/state/incoming_message.rs) account is used for tracking individual message state. This PDA is [derived](https://github.com/axelarnetwork/axelar-amplifier-solana/blob/main/programs/solana-axelar-gateway/src/state/incoming_message.rs#L19) via the [command_id](/resources/axelar-commandid/) of the message. This PDA is used to track the status of the message (status of `approved` or `executed`) and the hash of the message and payload.
+
+```rust
+pub struct IncomingMessage {
+    /// PDA bump seed for this incoming message account
+    pub bump: u8,
+    /// PDA bump seed for the signing PDA associated with this message
+    pub signing_pda_bump: u8,
+    /// Padding bytes for struct alignment
+    pub _pad: [u8; 3],
+    /// The current status of the message (approved or executed)
+    pub status: MessageStatus,
+    /// Hash of the message content
+    pub message_hash: [u8; 32],
+    /// Hash of the message payload
+    pub payload_hash: [u8; 32],
+}
+```
+
+#### Verification Session
+
+The [Verification Session](https://github.com/axelarnetwork/axelar-amplifier-solana/blob/main/programs/solana-axelar-gateway/src/state/verification_session.rs) account is used for tracking the status of the signature verification process. This PDA is derived via the `payload_merkle_root` of the message.
+
+```rust
+pub struct SignatureVerificationSessionData {
+    /// Signature verification session
+    pub signature_verification: SignatureVerification,
+    /// Seed bump for this account's PDA
+    pub bump: u8,
+    /// Padding for memory alignment.
+    pub _pad: [u8; 15],
+}
+```
+
+#### Verifier Set Tracker
+
+The [Verifier Set Tracker](https://github.com/axelarnetwork/axelar-amplifier-solana/blob/main/programs/solana-axelar-gateway/src/state/verifier_set_tracker.rs) account is used for tracking verifier set epochs and hashes. This PDA is derived via the `verifier_set_hash`.
+
+```rust
+pub struct VerifierSetTracker {
+    /// The canonical bump for this account.
+    pub bump: u8,
+    /// Padding for the bump
+    pub _padding: [u8; 7],
+    /// The epoch associated with this verifier set
+    pub epoch: Epoch,
+    /// The verifier set hash
+    pub verifier_set_hash: [u8; 32],
+}
+```
+
+
+### Outgoing GMP Message
+
+The [call_contract](https://github.com/axelarnetwork/axelar-amplifier-solana/blob/main/programs/solana-axelar-gateway/src/instructions/call_contract.rs) instruction defined in the Gateway, will trigger the cross-chain GMP flow. 
+
+The instruction takes four parameters:
+
+1. `destination_chain`: The name of the destination chain.
+1. `destination_contract_address`: The address on the destination chain where the call will be sent to.
+1. `payload`: The message payload in `bytes` format.
+1. `signing_pda_bump`: The [bump](https://solana.stackexchange.com/questions/2271/what-is-the-bump-in-a-program-derived-address) seed for the signing PDA (if the caller is a program).
+
+The instruction requires the following [accounts](https://github.com/axelarnetwork/axelar-amplifier-solana/blob/main/programs/solana-axelar-gateway/src/instructions/call_contract.rs#L8):
+
+1. `caller`: The program or account initiating the call
+1. `signing_pda`: An optional `u8` PDA signer
+1. `gateway_root_pda`: [Gateway configuration](/dev/general-message-passing/solana/gmp-contracts/#gateway-config) PDA
+
+The handler for this instruction is defined as follows:
+
+```rust
+pub fn call_contract_handler(
+    ctx: Context<CallContract>,
+    destination_chain: String,
+    destination_contract_address: String,
+    payload: Vec<u8>,
+    signing_pda_bump: u8,
+) -> Result<()> {}
+```
+
+#### Calling from a direct wallet
+
+If the caller is a direct wallet (akin to an [EVM EOA](https://ethereum.org/developers/docs/accounts#externally-owned-accounts-and-key-pairs)) you will interact with the accounts as follows:
+
+```rust
+let accounts = CallContract {
+    caller: user_account.to_account_info(),    // The user's wallet account triggering the call
+    signing_pda: None,                         // Not needed for an EOA signature
+    gateway_root_pda: gateway_config.to_account_info(), // The on-chain gateway configuration account
+};
+```
+
+#### Calling from a separate program
+
+If the caller is a separate program that uses a [CPI](https://solana.com/docs/core/cpi), you must derive a signing PDA using `CALL_CONTRACT_SIGNING_SEED` and your program ID. 
+
+Once you have derived the `signing_pda`, pass it as `Some(signing_pda)` to the `signing_pda` field of the `CallContract` accounts struct. Then invoke the instruction using `CpiContext::new_with_signer()` with the PDA's seeds so it can sign on behalf of your program.
+
+<Callout emoji="💡">
+    **Note:** Programs on Solana don’t possess private keys to prove your program authorized a call, which is why they must sign via Program Derived Addresses (PDAs). The `signing PDA` is an account derived from a unique seed and the program ID meaning that only your program can sign for it. When interacting with the Gateway it will need the signing PDA to verify that your program authorized the call.
+</Callout>
+
+The process is done as follows:
+
+```rust
+use solana_axelar_gateway::cpi::accounts::CallContract;
+use anchor_lang::prelude::*;
+
+// In your instruction handler
+pub fn send_message(
+    ctx: Context<SendMessage>,
+    destination_chain: String,
+    destination_address: String,
+    payload: Vec<u8>,
+) -> Result<()> {
+
+    // Derive the signing PDA
+    let (signing_pda, bump) = Pubkey::find_program_address(
+        &[CALL_CONTRACT_SIGNING_SEED],   // b"gtw-call-contract"
+        ctx.program_id,                 // Your program's ID
+    );
+
+    // Create the accounts for the CPI
+    let accounts = CallContract {
+        caller: ctx.program_id.to_account_info(),           // Your program's ID
+        signing_pda: Some(signing_pda.to_account_info()),   // The derived PDA
+        gateway_root_pda: gateway_config.to_account_info(), // Gateway PDA
+    };
+
+
+    // Prepare signer seed for PDA to sign CPI
+    let seeds = &[&[
+        CALL_CONTRACT_SIGNING_SEED,
+        &[bump], 
+    ]];
+
+    // Create a CPI 
+    let cpi_ctx = CpiContext::new_with_signer(
+        gateway_program.to_account_info(), // Gateway program ID
+        accounts, // Accounts for the CPI context
+        seeds, // Prepare signer seed for PDA to sign CPI
+    );
+
+    // Trigger the call contract instruction
+    solana_axelar_gateway::cpi::call_contract(
+        cpi_ctx,
+        destination_chain,
+        destination_address,
+        payload,
+        bump,
+    )?;
+
+    Ok(())
+}
+```
+
+Once executed, the Gateway emits a [CallContractEvent](/dev/general-message-passing/solana/gmp-contracts/#callcontractevent).
+
+### Incoming GMP Message 
+
+The Gateway Program is also a key component in the receiving of a GMP [message](/dev/general-message-passing/solana/gmp-contracts/#incoming-message). The Gateway Program will be responsible for marking a message as `approved` and then validating the message once the destination program is executing it.
+
+#### Approve Message 
+
+Once a message has gone through the Amplifier flow, [Axelar's Multisig Prover](https://github.com/axelarnetwork/axelar-amplifier/tree/main/contracts/multisig-prover) constructs signatures for a batch of messages containing this message. Before individual messages can be approved, these signatures must first be verified on-chain by calling the [verify_signature](https://github.com/axelarnetwork/axelar-amplifier-solana/blob/main/programs/solana-axelar-gateway/src/instructions/verify_signature.rs) instruction multiple times (once per verifier) until enough voting weight accumulates to meet the signing threshold. Once the batch is verified, the [approve_message](https://github.com/axelarnetwork/axelar-amplifier-solana/blob/main/programs/solana-axelar-gateway/src/instructions/approve_message.rs) instruction can be called for individual messages within that batch. It takes a merkle proof demonstrating the message is part of the verified batch and marks the incoming message as approved, allowing it to be executed by the destination program.
+
+
+<Callout emoji="💡">
+    **Note:** Axelar's Solana relayer will handle this call to the `approve_message` instruction automatically so external developers/ users will not have to worry about handling this logic themselves.
+</Callout>
+
+The instruction takes two parameters: 
+
+1. `merklized_message`: A [MerklizedMessage](https://github.com/axelarnetwork/axelar-amplifier-solana/blob/main/crates/solana-axelar-std/src/message.rs#L135) struct containing the message leaf node and merkle proof.
+1. `payload_merkle_root`: The merkle root of the batch of messages signed by the Axelar multisig prover.
+
+It takes the following [accounts](https://github.com/axelarnetwork/axelar-amplifier-solana/blob/main/programs/solana-axelar-gateway/src/instructions/approve_message.rs#L14):
+
+1. `gateway_root_pda`: The [Gateway configuration](/dev/general-message-passing/solana/gmp-contracts/#gateway-config) PDA containing the domain separator and valid epoch range.
+1. `funder`: The account funding the incoming message PDA.
+1. `verification_session_account`: The Verification session PDA tracking signature collection progress for this specific merkle root.
+1. `incoming_message_pda`: The [Incoming message](/dev/general-message-passing/solana/gmp-contracts/#incoming-message) PDA tracking the status of the message.
+
+The handler is defined as follows:
+
+```rust
+pub fn approve_message_handler(
+    ctx: Context<ApproveMessage>,
+    merklized_message: MerklizedMessage,
+    payload_merkle_root: [u8; 32],
+) -> Result<()> {}
+```
+
+Once executed, the function will mark the incoming message as approved, allowing it to be executed by the destination program.
+
+#### Validate Message
+
+After a message has been approved by the Gateway (via `approve_message`), the destination program must validate and execute it. The [validate_message](https://github.com/axelarnetwork/axelar-amplifier-solana/blob/main/programs/solana-axelar-gateway/src/instructions/validate_message.rs) instruction is called via [CPI](https://solana.com/docs/core/cpi) from the destination program to verify that:
+
+1. The message has been approved by the Gateway
+2. The caller is the intended destination program
+3. The message content matches what was approved
+
+Once validated, the instruction marks the message as `executed`. This ensures that each approved message can only be executed once by its designated recipient.
+
+To ensure a secure execution of the arbitrary logic on the receiving destination program. The `validate_message` instruction should be called prior to executing the destination program's own logic.
+
+<Callout emoji="💡">
+    **Note:** Unlike the `approve_message` instruction which is called by Axelar's relayer, the `validate_message` instruction must be called by your destination program as part of its execute handler. This is typically done using the [executable_accounts](/dev/general-message-passing/solana/gmp-contracts/#executable-macro) macro and `validate_message` helper function provided by the Gateway SDK.
+</Callout>
+
+The instruction takes one parameter:
+
+1. `message`: A [Message](https://github.com/axelarnetwork/axelar-amplifier-solana/blob/main/crates/solana-axelar-std/src/message.rs) struct containing the cross-chain message details.
+
+It requires the following accounts:
+
+1. `incoming_message_pda`: The [Incoming message](/dev/general-message-passing/solana/gmp-contracts/#incoming-message) PDA that must be in `approved` status.
+1. `caller`: The signing PDA from the destination program (must match the `destination_address` in the message).
+1. `gateway_root_pda`: The [Gateway configuration](/dev/general-message-passing/solana/gmp-contracts/#gateway-config) PDA containing domain separator and validation data.
+
+The handler is defined as follows:
+
+```rust
+pub fn validate_message_handler(
+    ctx: Context<ValidateMessage>,
+    message: Message,
+) -> Result<()> {}
+```
+
+Once executed successfully, the Gateway emits a [MessageExecutedEvent](/dev/general-message-passing/solana/gmp-contracts/#messageexecutedevent) and updates the incoming message status to `executed`, preventing any future execution attempts of the same message.
+
+
+### Executable Macro
+
+
+The Executable Macro is used by your destination program (separate from the gateway) to receive Axelar GMP messages. It will interact with other instructions from the Gateway, such as the [Validate Message](/dev/general-message-passing/solana/gmp-contracts/#validate-message) instruction before executing your own logic. 
+
+The [executable_accounts!](https://github.com/axelarnetwork/axelar-amplifier-solana/blob/main/programs/solana-axelar-gateway/src/executable.rs#L106) macro generates the program's required account structure .  
+
+```rust
+use anchor_lang::prelude::*; 
+use solana_axelar_gateway::{executable::*, executable_accounts};
+
+
+// Generate the required account structure
+executable_accounts!(Execute);
+
+// NOTE: Do not add #[instruction(message: Message, payload: Vec<u8>)] 
+// to this struct due to an Anchor limitation
+#[derive(Accounts)]
+pub struct Execute<'info> {
+    // GMP Accounts - generated by the macro
+    pub executable: AxelarExecuteAccounts<'info>,
+    
+    // Your program accounts here
+    #[account(mut)]
+    pub my_account: Account<'info, MyAccount>,
+}
+```
+
+Create an execute instruction that validates and processes the message:
+
+```rust
+use solana_axelar_gateway::executable::{Message, ExecutablePayloadEncodingScheme, validate_message};
+
+pub fn execute_handler(
+    ctx: Context<Execute>,
+    message: Message,
+    payload: Vec<u8>,
+    encoding_scheme: solana_axelar_gateway::executable::ExecutablePayloadEncodingScheme,
+) -> Result<()> {
+    // Validate the message - this performs CPI to gateway
+    validate_message(
+        ctx.accounts,
+        message,
+        &payload,
+        encoding_scheme,
+    )?;
+    
+    // Process your payload
+    let data = deserialize_payload(&payload)?;
+    ctx.accounts.my_account.process(data)?;
+    
+    Ok(())
+}
+```
+
+
+
+### Events
+
+#### CallContractEvent
+
+Emitted when a program calls `call_contract`.
+
+```rust
+pub struct CallContractEvent {
+    pub sender: Pubkey,
+    pub payload_hash: [u8; 32],
+    pub destination_chain: String,
+    pub destination_contract_address: String,
+    pub payload: Vec<u8>,
+}
+```
+
+#### MessageApprovedEvent
+
+Emitted when a message is approved.
+
+```rust
+pub struct MessageApprovedEvent {
+    pub command_id: [u8; 32],
+    pub destination_address: Pubkey,
+    pub payload_hash: [u8; 32],
+    pub source_chain: String,
+    pub cc_id: String,
+    pub source_address: String,
+    pub destination_chain: String,
+}
+```
+
+#### MessageExecutedEvent
+
+Emitted when a message is validated and executed.
+
+```rust
+pub struct MessageExecutedEvent {
+    pub command_id: [u8; 32],
+    pub destination_address: Pubkey,
+    pub payload_hash: [u8; 32],
+    pub source_chain: String,
+    pub cc_id: String,
+    pub source_address: String,
+    pub destination_chain: String,
+}
+```
+
+
+## Axelar Gas Service
+
+The Solana Axelar [Gas Service](/dev/gas-service/intro/#introduction-to-axelar-gas-service-contract) is a Solana [program](https://github.com/axelarnetwork/axelar-amplifier-solana/tree/main/programs/solana-axelar-gas-service) that enables cross-chain message passing between Solana and other blockchains via Axelar. The Gas Service is used to pay for the entirety of the cross-chain transaction in a given token including the [Base and Execution Fees](/dev/gas-service/pricing/#callcontract-general-message-passing) for the cross-chain transaction.
+
+
+### Key Gas Service Accounts
+
+The Gas Service Program uses the following accounts.
+
+
+#### Treasury
+
+The [treasury](https://github.com/axelarnetwork/axelar-amplifier-solana/blob/main/programs/solana-axelar-gas-service/src/state/treasury.rs) pda holds funds collected by the Gas Service Program. It is used in core Gas Service functionality such as paying for the cross-chain transaction and refunding the sender.
+
+
+### Pay Gas
+
+The key instructions of the Gas Service Program that developers will need to interact with to send a cross-chain transaction is the [pay_gas()](https://github.com/axelarnetwork/axelar-amplifier-solana/blob/main/programs/solana-axelar-gas-service/src/instructions/pay_gas.rs) instruction. The gas payment must be made to the Gas Service before the call to the Gateway to trigger the cross-chain transaction.
+
+The `pay_gas()` instruction takes the following parameters:
+
+
+1. `destination_chain`: Name of the chain the message is being sent to.
+1. `destination_address`: Address on the destination chain the message is being sent to.
+1. `payload_hash`: A 32 `byte` representation of the cross-chain message being sent.
+1. `amount`: The gas payment amount in [lamports](https://solana.com/docs/references/terminology#lamport).
+1. `refund_address`: The address to be refunded if too much gas is paid.
+
+It requires the following accounts to satisfy the `ctx`:
+
+1. `sender`: The account paying for the additional gas (must be a signer).
+1. `treasury`: The [treasury](/dev/general-message-passing/solana/gmp-contracts/#treasury) PDA.
+1. `system_program`: The Solana [System Program](https://solana.com/docs/core/programs#the-system-program) account.
+
+
+```rust
+pub fn pay_gas(
+    ctx: Context<PayGas>,
+    destination_chain: String,
+    destination_address: String,
+    payload_hash: [u8; 32],
+    amount: u64,
+    refund_address: Pubkey,
+) -> Result<()> {}
+```
+
+Once executed, the instruction validates that the payment amount is greater than zero. It then transfers the specified amount of SOL from the sender's account to the Gas Service [treasury PDA](/dev/general-message-passing/solana/gmp-contracts/#treasury). Finally, it emits a [GasPaidEvent](/dev/general-message-passing/solana/gmp-contracts/#gaspaidevent).
+
+### Add Gas 
+
+The [addGas()](https://github.com/axelarnetwork/axelar-amplifier-solana/blob/main/programs/solana-axelar-gas-service/src/instructions/add_gas.rs) instruction is used to add additional gas to a cross-chain transaction if an insufficient amount of gas was initially sent to cover the cross-chain transaction.
+
+The `addGas()` instruction takes the following parameters:
+
+1. `message_id`: The transaction hash of the cross-chain call.
+1. `amount`: The amount of gas to add in [lamports](https://solana.com/docs/references/terminology#lamport).
+1. `refund_address`: The address to be refunded if too much gas is added.
+
+It requires the following accounts to satisfy the `ctx`:
+
+1. `sender`: The account paying for the additional gas (must be a signer).
+1. `treasury`: The [treasury](/dev/general-message-passing/solana/gmp-contracts/#treasury) PDA.
+1. `system_program`: The Solana [System Program](https://solana.com/docs/core/programs#the-system-program) account.
+
+
+```rust
+pub fn add_gas(
+    ctx: Context<AddGas>,
+    message_id: String,
+    amount: u64,
+    refund_address: Pubkey,
+) -> Result<()> {}
+```
+
+Once executed, the instruction validates that the amount is not zero, transfers the specified amount of `lamports` from the sender to the [treasury](/dev/general-message-passing/solana/gmp-contracts/#treasury) PDA via a CPI call to the System Program, and emits a [GasAddedEvent](/dev/general-message-passing/solana/gmp-contracts/#gasaddedevent) containing the sender's public key, `message_id`, `amount`, and `refund_address`.
+
+
+### Events
+
+#### GasPaidEvent
+
+Emitted when a gas payment is made.
+
+```rust
+#[event]
+#[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord)]
+pub struct GasPaidEvent {
+    /// The sender/payer of gas
+    pub sender: Pubkey,
+    /// Destination chain on the Axelar network
+    pub destination_chain: String,
+    /// Destination address on the Axelar network
+    pub destination_address: String,
+    /// The payload hash for the event we're paying for
+    pub payload_hash: [u8; 32],
+    /// The amount of SOL paid
+    pub amount: u64,
+    /// The refund address
+    pub refund_address: Pubkey,
+    /// Optional SPL token account (sender)
+    pub spl_token_account: Option<Pubkey>,
+}
+```
+
+#### GasAddedEvent
+
+Emitted when additional gas is added to a cross-chain transaction.
+
+```rust
+#[event]
+#[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord)]
+pub struct GasAddedEvent {
+    /// The sender/payer of gas
+    pub sender: Pubkey,
+    /// Message Id
+    pub message_id: MessageId,
+    /// The amount of SOL added
+    pub amount: u64,
+    /// The refund address
+    pub refund_address: Pubkey,
+    /// Optional SPL token account (sender)
+    pub spl_token_account: Option<Pubkey>,
+}
+```
+
+## Example
+
+A full example of the sending a GMP message can be found [here](https://github.com/axelarnetwork/axelar-amplifier-solana/blob/main/programs/solana-axelar-memo/src/instructions/send_memo.rs). The same program can be used for receiving a GMP message. The functionality for that can be found [here](https://github.com/axelarnetwork/axelar-amplifier-solana/blob/main/programs/solana-axelar-memo/src/instructions/execute.rs).
+
+## Support
+
+- For general questions please reach out at our [support channel](https://github.com/axelarnetwork/support/issues) on GitHub
+- For issues with any of the Solana programs please open an issue on the Axelar Solana Repository [here](https://github.com/axelarnetwork/axelar-amplifier-solana/issues)
+
+
