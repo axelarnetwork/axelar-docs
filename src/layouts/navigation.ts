@@ -730,6 +730,10 @@ export const getNavigation = (section) => {
             title: "Mainnet axelard",
             children: [
               {
+                title: "v1.3",
+                href: "https://github.com/axelarnetwork/axelar-contract-deployments/blob/main/releases/axelard/2025-11-v1.3.2.md",
+              },
+              {
                 title: "v1.2",
                 href: "/resources/mainnet/upgrades/v121/",
               },
