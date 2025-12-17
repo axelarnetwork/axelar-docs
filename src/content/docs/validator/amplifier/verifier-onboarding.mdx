@@ -233,26 +233,41 @@ The following are an example `config.toml` files:
    ```toml
    tm_jsonrpc="http://devnet-amplifier.axelar.dev:26657"
    tm_grpc="tcp://devnet-amplifier.axelar.dev:9090"
-   event_buffer_cap=10000
+   event_buffer_cap=100000
+   tm_grpc_timeout="5s"
+
+   [event_processor]
+   retry_delay="1s"
+   retry_max_attempts=3
+   stream_timeout="15s"
+   stream_buffer_size=100000
+   delay="500ms"
+   tx_broadcast_buffer_size=10
+
+   [event_sub]
+   poll_interval="1s"
+   block_processing_buffer=10
+   retry_delay="3s"
+   retry_max_attempts=3
 
    [service_registry]
    cosmwasm_contract="axelar1c9fkszt5lq34vvvlat3fxj6yv7ejtqapz04e97vtc9m5z9cwnamq8zjlhz"
 
    [broadcast]
-   batch_gas_limit="20000000"
-   broadcast_interval="1s"
    chain_id="devnet-amplifier"
-   gas_adjustment="2"
-   gas_price="0.00005uamplifier"
-   queue_cap="1000"
+   gas_price="0.007uaxl"
    tx_fetch_interval="1000ms"
-   tx_fetch_max_retries="15"
+   tx_fetch_max_retries=15
+   batch_gas_limit="20000000"
+   tx_confirmation_buffer_size=10
+   tx_confirmation_queue_cap=1000
 
    [tofnd_config]
    batch_gas_limit="10000000"
    key_uid="axelar"
    party_uid="ampd"
    url="http://127.0.0.1:50051"
+   timeout="3s"
 
    [grpc]
    ip_addr = '127.0.0.1'
@@ -260,15 +275,9 @@ The following are an example `config.toml` files:
    global_concurrency_limit = 1024
    concurrency_limit_per_connection = 32
    request_timeout = '30s'
-
-   [tm_grpc_timeout]
-   nanos="0"
-   secs="5"
-
-   [tofnd_config.timeout]
-   nanos="0"
-   secs="3"
-
+ 
+   [grpc.blockchain_service]
+   chains=[]
 
    [[handlers]]
    chain_name="ethereum-sepolia"
@@ -313,190 +322,481 @@ The following are an example `config.toml` files:
    tm_jsonrpc="http://127.0.0.1:26657"
    tm_grpc="tcp://127.0.0.1:9090"
    event_buffer_cap=100000
+   tm_grpc_timeout="5s"
+
+   [event_processor]
+   retry_delay="1s"
+   retry_max_attempts=3
+   stream_timeout="15s"
+   stream_buffer_size=100000
+   delay="500ms"
+   tx_broadcast_buffer_size=10
+
+   [event_sub]
+   poll_interval="1s"
+   block_processing_buffer=10
+   retry_delay="3s"
+   retry_max_attempts=3
 
    [service_registry]
    cosmwasm_contract="axelar1rpj2jjrv3vpugx9ake9kgk3s2kgwt0y60wtkmcgfml5m3et0mrls6nct9m"
 
    [broadcast]
-   batch_gas_limit="20000000"
-   broadcast_interval="1s"
    chain_id="axelar-testnet-lisbon-3"
-   gas_adjustment="2"
    gas_price="0.007uaxl"
-   queue_cap="1000"
    tx_fetch_interval="1000ms"
-   tx_fetch_max_retries="15"
+   tx_fetch_max_retries=15
+   batch_gas_limit="20000000"
+   tx_confirmation_buffer_size=10
+   tx_confirmation_queue_cap=1000
 
    [tofnd_config]
-   batch_gas_limit="10000000"
+   batch_gas_limit=10000000
    key_uid="axelar"
    party_uid="ampd"
    url="http://127.0.0.1:50051"
-
-   [tm_grpc_timeout]
-   nanos="0"
-   secs="5"
-
-   [tofnd_config.timeout]
-   nanos="0"
-   secs="3"
+   timeout="3s"
 
    [grpc]
-   ip_addr = '127.0.0.1'
-   port = 9090
-   global_concurrency_limit = 1024
-   concurrency_limit_per_connection = 32
-   request_timeout = '30s'
+   ip_addr="127.0.0.1"
+   port=9090
+   global_concurrency_limit=1024
+   concurrency_limit_per_connection=32
+   request_timeout="30s"
 
-   [[handlers]]
-   chain_name="test-sepolia"
-   chain_rpc_url="https://rpc.ankr.com/eth_sepolia"
-   cosmwasm_contract="axelar1r4rmvn83vrfj4evy5l8cv2nat2v0whm36ds3crn2mhlq8ufmhvts9467zz"
-   chain_finalization="RPCFinalizedBlock"
-   type="EvmMsgVerifier"
+   [grpc.blockchain_service]
+   chains=[]
 
+   # Flow
    [[handlers]]
-   chain_name="test-sepolia"
-   chain_rpc_url="https://rpc.ankr.com/eth_sepolia"
-   cosmwasm_contract="axelar1r4rmvn83vrfj4evy5l8cv2nat2v0whm36ds3crn2mhlq8ufmhvts9467zz"
-   chain_finalization="RPCFinalizedBlock"
-   type="EvmVerifierSetVerifier"
-
-   [[handlers]]
-   chain_name="test-sepolia"
-   type="MultisigSigner"
-   cosmwasm_contract="axelar14a4ar5jh7ue4wg28jwsspf23r8k68j7g5d6d3fsttrhp42ajn4xq6zayy5"
-
-   [[handlers]]
-   chain_name="test-avalanche"
-   chain_rpc_url="https://api.avax-test.network/ext/bc/C/rpc"
-   cosmwasm_contract="axelar1hupk5du59cgu4ps5s637rhakwsq0060ycdp57j2ccevna7wqqzrqnfrr0p"
-   chain_finalization="ConfirmationHeight"
-   type="EvmMsgVerifier"
-
-   [[handlers]]
-   chain_name="test-avalanche"
-   chain_rpc_url="https://api.avax-test.network/ext/bc/C/rpc"
-   cosmwasm_contract="axelar1hupk5du59cgu4ps5s637rhakwsq0060ycdp57j2ccevna7wqqzrqnfrr0p"
-   chain_finalization="ConfirmationHeight"
-   type="EvmVerifierSetVerifier"
-
-   [[handlers]]
-   chain_name="test-avalanche"
+   chain_name="flow"
    type="MultisigSigner"
    cosmwasm_contract="axelar14a4ar5jh7ue4wg28jwsspf23r8k68j7g5d6d3fsttrhp42ajn4xq6zayy5"
 
    [[handlers]]
    chain_name="flow"
-   chain_rpc_url="[flow gateway rpc url]"
+   chain_rpc_url="<your_rpc_url>"
    cosmwasm_contract="axelar1kkqdsqvwq9a7p9fj0w89wpx2m2t0vrxl782aslhq0kdw2xxd2aesv3un04"
    chain_finalization="RPCFinalizedBlock"
    type="EvmMsgVerifier"
-   
+
    [[handlers]]
    chain_name="flow"
-   chain_rpc_url="[flow gateway rpc url]"
+   chain_rpc_url="<your_rpc_url>"
    cosmwasm_contract="axelar1kkqdsqvwq9a7p9fj0w89wpx2m2t0vrxl782aslhq0kdw2xxd2aesv3un04"
    chain_finalization="RPCFinalizedBlock"
    type="EvmVerifierSetVerifier"
 
+   # Hedera
    [[handlers]]
-   chain_name="flow"
+   chain_name="hedera"
    type="MultisigSigner"
    cosmwasm_contract="axelar14a4ar5jh7ue4wg28jwsspf23r8k68j7g5d6d3fsttrhp42ajn4xq6zayy5"
 
+   [[handlers]]
+   chain_name="hedera"
+   chain_rpc_url="<your_rpc_url>"
+   cosmwasm_contract="axelar1ce9rcvw8htpwukc048z9kqmyk5zz52d5a7zqn9xlq2pg0mxul9mqxlx2cq"
+   chain_finalization="RPCFinalizedBlock"
+   type="EvmMsgVerifier"
 
-   # For each supported chain
-   #[[handlers]]
-   #chain_name="[chain name]"
-   #chain_rpc_url="[node rpc url]"
-   #cosmwasm_contract="[voting verifier address]"
-   #chain_finalization="[RPCFinalizedBlock or ConfirmationHeight]"
-   #type="EvmMsgVerifier"
+   [[handlers]]
+   chain_name="hedera"
+   chain_rpc_url="<your_rpc_url>"
+   cosmwasm_contract="axelar1ce9rcvw8htpwukc048z9kqmyk5zz52d5a7zqn9xlq2pg0mxul9mqxlx2cq"
+   chain_finalization="RPCFinalizedBlock"
+   type="EvmVerifierSetVerifier"
 
-   #[[handlers]]
-   #chain_name="[chain name]"
-   #chain_rpc_url="[node rpc url]"
-   #cosmwasm_contract="[voting verifier address]"
-   #chain_finalization=["RPCFinalizedBlock" or "ConfirmationHeight"]
-   #type="EvmVerifierSetVerifier"
+   # Sui
+   [[handlers]]
+   chain_name="sui"
+   type="MultisigSigner"
+   cosmwasm_contract="axelar14a4ar5jh7ue4wg28jwsspf23r8k68j7g5d6d3fsttrhp42ajn4xq6zayy5"
+
+   [[handlers]]
+   type="SuiMsgVerifier"
+   cosmwasm_contract="axelar1sykyha8kzf35kc5hplqk76kdufntjn6w45ntwlevwxp74dqr3rvsq7fazh"
+   rpc_url="<your_rpc_url>"
+
+   [[handlers]]
+   type="SuiVerifierSetVerifier"
+   cosmwasm_contract="axelar1sykyha8kzf35kc5hplqk76kdufntjn6w45ntwlevwxp74dqr3rvsq7fazh"
+   rpc_url="<your_rpc_url>"
+
+   # Stellar
+   [[handlers]]
+   chain_name="stellar-2025-q3"
+   type="MultisigSigner"
+   cosmwasm_contract="axelar14a4ar5jh7ue4wg28jwsspf23r8k68j7g5d6d3fsttrhp42ajn4xq6zayy5"
+
+   [[handlers]]
+   type="StellarMsgVerifier"
+   cosmwasm_contract="axelar18y8p7dxesmxttvdzp5sqjksqrnh9xg32gtfqnkkucvv9de38f69qfn6ph3"
+   rpc_url="<your_rpc_url>"
+
+   [[handlers]]
+   type="StellarVerifierSetVerifier"
+   cosmwasm_contract="axelar18y8p7dxesmxttvdzp5sqjksqrnh9xg32gtfqnkkucvv9de38f69qfn6ph3"
+   rpc_url="<your_rpc_url>"
+
+   # XRPL EVM
+   [[handlers]]
+   chain_name="xrpl-evm"
+   type="MultisigSigner"
+   cosmwasm_contract="axelar14a4ar5jh7ue4wg28jwsspf23r8k68j7g5d6d3fsttrhp42ajn4xq6zayy5"
+
+   [[handlers]]
+   chain_name="xrpl-evm"
+   chain_rpc_url="<your_rpc_url>"
+   cosmwasm_contract="axelar1q8kn9t39ddpce42atk0d6wpdudr6djqxmz689m3nxy92ck0nnftqxfsuyk"
+   chain_finalization="RPCFinalizedBlock"
+   type="EvmMsgVerifier"
+
+   [[handlers]]
+   chain_name="xrpl-evm"
+   chain_rpc_url="<your_rpc_url>"
+   cosmwasm_contract="axelar1q8kn9t39ddpce42atk0d6wpdudr6djqxmz689m3nxy92ck0nnftqxfsuyk"
+   chain_finalization="RPCFinalizedBlock"
+   type="EvmVerifierSetVerifier"
+
+   # XRPL
+   [[handlers]]
+   chain_name="xrpl"
+   chain_rpc_url="<your_rpc_url>"
+   cosmwasm_contract="axelar1pnynr6wnmchutkv6490mdqqxkz54fnrtmq8krqhvglhsqhmu7wzsnc86sy"
+   type="XRPLMsgVerifier"
+
+   [[handlers]]
+   chain_name="xrpl"
+   type="XRPLMultisigSigner"
+   cosmwasm_contract="axelar14a4ar5jh7ue4wg28jwsspf23r8k68j7g5d6d3fsttrhp42ajn4xq6zayy5"
+
+   # Plume
+   [[handlers]]
+   chain_name="plume"
+   type="MultisigSigner"
+   cosmwasm_contract="axelar14a4ar5jh7ue4wg28jwsspf23r8k68j7g5d6d3fsttrhp42ajn4xq6zayy5"
+
+   [[handlers]]
+   chain_name="plume"
+   chain_rpc_url="<your_rpc_url>"
+   cosmwasm_contract="axelar1nrdqke6tcxjuymg5gyd9x3yg35n3wrgarnj3sqskp98z2xnvlx9q82f63t"
+   chain_finalization="RPCFinalizedBlock"
+   type="EvmMsgVerifier"
+
+   [[handlers]]
+   chain_name="plume"
+   chain_rpc_url="<your_rpc_url>"
+   cosmwasm_contract="axelar1nrdqke6tcxjuymg5gyd9x3yg35n3wrgarnj3sqskp98z2xnvlx9q82f63t"
+   chain_finalization="RPCFinalizedBlock"
+   type="EvmVerifierSetVerifier"
+
+   # Monad
+   [[handlers]]
+   chain_name="monad"
+   type="MultisigSigner"
+   cosmwasm_contract="axelar14a4ar5jh7ue4wg28jwsspf23r8k68j7g5d6d3fsttrhp42ajn4xq6zayy5"
+
+   [[handlers]]
+   chain_name="monad"
+   chain_rpc_url="<your_rpc_url>"
+   cosmwasm_contract="axelar1u080xgqqu9zhl4e9hf2ktdny4pq6kc2pmh6u6mlv8nw5zjvcetvqqjzeu0"
+   chain_finalization="RPCFinalizedBlock"
+   type="EvmMsgVerifier"
+
+   [[handlers]]
+   chain_name="monad"
+   chain_rpc_url="<your_rpc_url>"
+   cosmwasm_contract="axelar1u080xgqqu9zhl4e9hf2ktdny4pq6kc2pmh6u6mlv8nw5zjvcetvqqjzeu0"
+   chain_finalization="RPCFinalizedBlock"
+   type="EvmVerifierSetVerifier"
+
+   # Berachain
+   [[handlers]]
+   chain_name="berachain"
+   type="MultisigSigner"
+   cosmwasm_contract="axelar14a4ar5jh7ue4wg28jwsspf23r8k68j7g5d6d3fsttrhp42ajn4xq6zayy5"
+
+   [[handlers]]
+   chain_name="berachain"
+   chain_rpc_url="<your_rpc_url>"
+   cosmwasm_contract="axelar1xx6xdw6mwmfl6u2jygq0zfx2q6uyc8emtt29j9wg78l2l4p739nqmwsgal"
+   chain_finalization="RPCFinalizedBlock"
+   type="EvmMsgVerifier"
+
+   [[handlers]]
+   chain_name="berachain"
+   chain_rpc_url="<your_rpc_url>"
+   cosmwasm_contract="axelar1xx6xdw6mwmfl6u2jygq0zfx2q6uyc8emtt29j9wg78l2l4p739nqmwsgal"
+   chain_finalization="RPCFinalizedBlock"
+   type="EvmVerifierSetVerifier"
+
+   # Hyperliquid
+   [[handlers]]
+   chain_name="hyperliquid"
+   type="MultisigSigner"
+   cosmwasm_contract="axelar14a4ar5jh7ue4wg28jwsspf23r8k68j7g5d6d3fsttrhp42ajn4xq6zayy5"
+
+   [[handlers]]
+   chain_name="hyperliquid"
+   chain_rpc_url="<your_rpc_url>"
+   cosmwasm_contract="axelar1n64vk7l3zagh2eadkuhl7602lxluu86dn9smfxyp7c2e4v8pqj5sv4ypjr"
+   chain_finalization="RPCFinalizedBlock"
+   type="EvmMsgVerifier"
+
+   [[handlers]]
+   chain_name="hyperliquid"
+   chain_rpc_url="<your_rpc_url>"
+   cosmwasm_contract="axelar1n64vk7l3zagh2eadkuhl7602lxluu86dn9smfxyp7c2e4v8pqj5sv4ypjr"
+   chain_finalization="RPCFinalizedBlock"
+   type="EvmVerifierSetVerifier"
+
+   # Celo Sepolia
+   [[handlers]]
+   chain_name="celo-sepolia"
+   type="MultisigSigner"
+   cosmwasm_contract="axelar14a4ar5jh7ue4wg28jwsspf23r8k68j7g5d6d3fsttrhp42ajn4xq6zayy5"
+
+   [[handlers]]
+   chain_name="celo-sepolia"
+   chain_rpc_url="<your_rpc_url>"
+   cosmwasm_contract="axelar1ccyfamfvzvheec5c4knvq0l5g42knemfrnaq6t6znuwskt963k5smr9aam"
+   chain_finalization="RPCFinalizedBlock"
+   type="EvmMsgVerifier"
+
+   [[handlers]]
+   chain_name="celo-sepolia"
+   chain_rpc_url="<your_rpc_url>"
+   cosmwasm_contract="axelar1ccyfamfvzvheec5c4knvq0l5g42knemfrnaq6t6znuwskt963k5smr9aam"
+   chain_finalization="RPCFinalizedBlock"
+   type="EvmVerifierSetVerifier"
+
+   # Continue adding for each supported chain
    ```
+   
 </tab-item>
 <tab-item title="mainnet">
    ```toml
    # replace with your Axelar mainnet node
    tm_jsonrpc="http://127.0.0.1:26657"
    tm_grpc="tcp://127.0.0.1:9090"
+   tm_grpc_timeout="5s"
    event_buffer_cap=100000
 
    [service_registry]
    cosmwasm_contract="axelar1rpj2jjrv3vpugx9ake9kgk3s2kgwt0y60wtkmcgfml5m3et0mrls6nct9m"
 
    [broadcast]
-   batch_gas_limit="20000000"
-   broadcast_interval="1s"
    chain_id="axelar-dojo-1"
-   gas_adjustment="2"
    gas_price="0.007uaxl"
-   queue_cap="1000"
    tx_fetch_interval="1000ms"
-   tx_fetch_max_retries="15"
+   tx_fetch_max_retries=15
+   batch_gas_limit="20000000"
+   tx_confirmation_buffer_size=10
+   tx_confirmation_queue_cap=1000
 
    [tofnd_config]
-   batch_gas_limit="10000000"
+   batch_gas_limit=10000000
    key_uid="axelar"
    party_uid="ampd"
    url="http://127.0.0.1:50051"
-
-   [tm_grpc_timeout]
-   nanos="0"
-   secs="5"
-
-   [tofnd_config.timeout]
-   nanos="0"
-   secs="3"
+   timeout="3s"
 
    [grpc]
-   ip_addr = '127.0.0.1'
-   port = 9090
-   global_concurrency_limit = 1024
-   concurrency_limit_per_connection = 32
-   request_timeout = '30s'
+   ip_addr="127.0.0.1"
+   port=9090
+   global_concurrency_limit=1024
+   concurrency_limit_per_connection=32
+   request_timeout="30s"
 
-   [[handlers]]
-   chain_name="flow"
-   chain_rpc_url="[flow gateway rpc url]"
-   cosmwasm_contract="axelar1kkqdsqvwq9a7p9fj0w89wpx2m2t0vrxl782aslhq0kdw2xxd2aesv3un04"
-   chain_finalization="RPCFinalizedBlock"
-   type="EvmMsgVerifier"
-   
-   [[handlers]]
-   chain_name="flow"
-   chain_rpc_url="[flow gateway rpc url]"
-   cosmwasm_contract="axelar1kkqdsqvwq9a7p9fj0w89wpx2m2t0vrxl782aslhq0kdw2xxd2aesv3un04"
-   chain_finalization="RPCFinalizedBlock"
-   type="EvmVerifierSetVerifier"
+   [grpc.blockchain_service]
+   chains=[]
 
+   # Flow
    [[handlers]]
    chain_name="flow"
    type="MultisigSigner"
    cosmwasm_contract="axelar14a4ar5jh7ue4wg28jwsspf23r8k68j7g5d6d3fsttrhp42ajn4xq6zayy5"
 
+   [[handlers]]
+   chain_name="flow"
+   chain_rpc_url="<your_rpc_url>"
+   cosmwasm_contract="axelar1kkqdsqvwq9a7p9fj0w89wpx2m2t0vrxl782aslhq0kdw2xxd2aesv3un04"
+   chain_finalization="RPCFinalizedBlock"
+   type="EvmMsgVerifier"
 
-   # For each supported chain
-   #[[handlers]]
-   #chain_name="[chain name]"
-   #chain_rpc_url="[node rpc url]"
-   #cosmwasm_contract="[voting verifier address]"
-   #chain_finalization="[RPCFinalizedBlock or ConfirmationHeight]"
-   #type="EvmMsgVerifier"
+   [[handlers]]
+   chain_name="flow"
+   chain_rpc_url="<your_rpc_url>"
+   cosmwasm_contract="axelar1kkqdsqvwq9a7p9fj0w89wpx2m2t0vrxl782aslhq0kdw2xxd2aesv3un04"
+   chain_finalization="RPCFinalizedBlock"
+   type="EvmVerifierSetVerifier"
 
-   #[[handlers]]
-   #chain_name="[chain name]"
-   #chain_rpc_url="[node rpc url]"
-   #cosmwasm_contract="[voting verifier address]"
-   #chain_finalization=["RPCFinalizedBlock" or "ConfirmationHeight"]
-   #type="EvmVerifierSetVerifier"
+   # Sui
+   [[handlers]]
+   chain_name="sui"
+   type="MultisigSigner"
+   cosmwasm_contract="axelar14a4ar5jh7ue4wg28jwsspf23r8k68j7g5d6d3fsttrhp42ajn4xq6zayy5"
+
+   [[handlers]]
+   type="SuiMsgVerifier"
+   cosmwasm_contract="axelar1sykyha8kzf35kc5hplqk76kdufntjn6w45ntwlevwxp74dqr3rvsq7fazh"
+   rpc_url="<your_rpc_url>"
+
+   [[handlers]]
+   type="SuiVerifierSetVerifier"
+   cosmwasm_contract="axelar1sykyha8kzf35kc5hplqk76kdufntjn6w45ntwlevwxp74dqr3rvsq7fazh"
+   rpc_url="<your_rpc_url>"
+
+   # Stellar
+   [[handlers]]
+   chain_name="stellar"
+   type="MultisigSigner"
+   cosmwasm_contract="axelar14a4ar5jh7ue4wg28jwsspf23r8k68j7g5d6d3fsttrhp42ajn4xq6zayy5"
+
+   [[handlers]]
+   type="StellarMsgVerifier"
+   cosmwasm_contract="axelar1dalnx2yvmu3g3aau8m7fj426fk9u8dnzlr5azvqmr4x82rtclats8lhjmu"
+   rpc_url="<your_rpc_url>"
+
+   [[handlers]]
+   type="StellarVerifierSetVerifier"
+   cosmwasm_contract="axelar1dalnx2yvmu3g3aau8m7fj426fk9u8dnzlr5azvqmr4x82rtclats8lhjmu"
+   rpc_url="<your_rpc_url>"
+
+   # XRPL
+   [[handlers]]
+   chain_name="xrpl"
+   type="XRPLMultisigSigner"
+   cosmwasm_contract="axelar14a4ar5jh7ue4wg28jwsspf23r8k68j7g5d6d3fsttrhp42ajn4xq6zayy5"
+
+   [[handlers]]
+   chain_name="xrpl"
+   chain_rpc_url="<your_rpc_url>"
+   cosmwasm_contract="axelar14rd4uyrqyl0tw75gjn8zqfppmy08t3x3wrsujeqp37l0hghduanscfvkz6"
+   type="XRPLMsgVerifier"
+
+   # XRPL EVM
+   [[handlers]]
+   chain_name="xrpl-evm"
+   type="MultisigSigner"
+   cosmwasm_contract="axelar14a4ar5jh7ue4wg28jwsspf23r8k68j7g5d6d3fsttrhp42ajn4xq6zayy5"
+
+   [[handlers]]
+   chain_name="xrpl-evm"
+   chain_rpc_url="<your_rpc_url>"
+   cosmwasm_contract="axelar1q8kn9t39ddpce42atk0d6wpdudr6djqxmz689m3nxy92ck0nnftqxfsuyk"
+   chain_finalization="RPCFinalizedBlock"
+   type="EvmMsgVerifier"
+
+   [[handlers]]
+   chain_name="xrpl-evm"
+   chain_rpc_url="<your_rpc_url>"
+   cosmwasm_contract="axelar1q8kn9t39ddpce42atk0d6wpdudr6djqxmz689m3nxy92ck0nnftqxfsuyk"
+   chain_finalization="RPCFinalizedBlock"
+   type="EvmVerifierSetVerifier"
+
+   # Plume
+   [[handlers]]
+   chain_name="plume"
+   type="MultisigSigner"
+   cosmwasm_contract="axelar14a4ar5jh7ue4wg28jwsspf23r8k68j7g5d6d3fsttrhp42ajn4xq6zayy5"
+
+   [[handlers]]
+   chain_name="plume"
+   chain_rpc_url="<your_rpc_url>"
+   cosmwasm_contract="axelar1nrdqke6tcxjuymg5gyd9x3yg35n3wrgarnj3sqskp98z2xnvlx9q82f63t"
+   chain_finalization="RPCFinalizedBlock"
+   type="EvmMsgVerifier"
+
+   [[handlers]]
+   chain_name="plume"
+   chain_rpc_url="<your_rpc_url>"
+   cosmwasm_contract="axelar1nrdqke6tcxjuymg5gyd9x3yg35n3wrgarnj3sqskp98z2xnvlx9q82f63t"
+   chain_finalization="RPCFinalizedBlock"
+   type="EvmVerifierSetVerifier"
+
+   # Hedera
+   [[handlers]]
+   chain_name="hedera"
+   type="MultisigSigner"
+   cosmwasm_contract="axelar14a4ar5jh7ue4wg28jwsspf23r8k68j7g5d6d3fsttrhp42ajn4xq6zayy5"
+
+   [[handlers]]
+   chain_name="hedera"
+   chain_rpc_url="<your_rpc_url>"
+   cosmwasm_contract="axelar1q8q8qq59yv9wmhcreu5ykt4azsk83ttve4e7jyavt32k6jq862xsqexnfh"
+   chain_finalization="RPCFinalizedBlock"
+   type="EvmMsgVerifier"
+
+   [[handlers]]
+   chain_name="hedera"
+   chain_rpc_url="<your_rpc_url>"
+   cosmwasm_contract="axelar1q8q8qq59yv9wmhcreu5ykt4azsk83ttve4e7jyavt32k6jq862xsqexnfh"
+   chain_finalization="RPCFinalizedBlock"
+   type="EvmVerifierSetVerifier"
+
+   # Berachain
+   [[handlers]]
+   chain_name="berachain"
+   type="MultisigSigner"
+   cosmwasm_contract="axelar14a4ar5jh7ue4wg28jwsspf23r8k68j7g5d6d3fsttrhp42ajn4xq6zayy5"
+
+   [[handlers]]
+   chain_name="berachain"
+   chain_rpc_url="<your_rpc_url>"
+   cosmwasm_contract="axelar1xx6xdw6mwmfl6u2jygq0zfx2q6uyc8emtt29j9wg78l2l4p739nqmwsgal"
+   chain_finalization="RPCFinalizedBlock"
+   type="EvmMsgVerifier"
+
+   [[handlers]]
+   chain_name="berachain"
+   chain_rpc_url="<your_rpc_url>"
+   cosmwasm_contract="axelar1xx6xdw6mwmfl6u2jygq0zfx2q6uyc8emtt29j9wg78l2l4p739nqmwsgal"
+   chain_finalization="RPCFinalizedBlock"
+   type="EvmVerifierSetVerifier"
+
+   # Hyperliquid
+   [[handlers]]
+   chain_name="hyperliquid"
+   type="MultisigSigner"
+   cosmwasm_contract="axelar14a4ar5jh7ue4wg28jwsspf23r8k68j7g5d6d3fsttrhp42ajn4xq6zayy5"
+
+   [[handlers]]
+   chain_name="hyperliquid"
+   chain_rpc_url="<your_rpc_url>"
+   cosmwasm_contract="axelar1n64vk7l3zagh2eadkuhl7602lxluu86dn9smfxyp7c2e4v8pqj5sv4ypjr"
+   chain_finalization="RPCFinalizedBlock"
+   type="EvmMsgVerifier"
+
+   [[handlers]]
+   chain_name="hyperliquid"
+   chain_rpc_url="<your_rpc_url>"
+   cosmwasm_contract="axelar1n64vk7l3zagh2eadkuhl7602lxluu86dn9smfxyp7c2e4v8pqj5sv4ypjr"
+   chain_finalization="RPCFinalizedBlock"
+   type="EvmVerifierSetVerifier"
+
+   # Monad
+   [[handlers]]
+   chain_name="monad"
+   type="MultisigSigner"
+   cosmwasm_contract="axelar14a4ar5jh7ue4wg28jwsspf23r8k68j7g5d6d3fsttrhp42ajn4xq6zayy5"
+
+   [[handlers]]
+   chain_name="monad"
+   chain_rpc_url="<your_rpc_url>"
+   cosmwasm_contract="axelar1u080xgqqu9zhl4e9hf2ktdny4pq6kc2pmh6u6mlv8nw5zjvcetvqqjzeu0"
+   chain_finalization="RPCFinalizedBlock"
+   type="EvmMsgVerifier"
+
+   [[handlers]]
+   chain_name="monad"
+   chain_rpc_url="<your_rpc_url>"
+   cosmwasm_contract="axelar1u080xgqqu9zhl4e9hf2ktdny4pq6kc2pmh6u6mlv8nw5zjvcetvqqjzeu0"
+   chain_finalization="RPCFinalizedBlock"
+   type="EvmVerifierSetVerifier"
+
+   # Continue adding for each supported chain
    ```
 </tab-item>
 </tabs>
