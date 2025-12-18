@@ -233,7 +233,7 @@ The following are an example `config.toml` files:
    ```toml
    tm_jsonrpc="http://devnet-amplifier.axelar.dev:26657"
    tm_grpc="tcp://devnet-amplifier.axelar.dev:9090"
-   event_buffer_cap=100000
+   event_buffer_cap="100000"
    tm_grpc_timeout="5s"
 
    [event_processor]
@@ -248,7 +248,7 @@ The following are an example `config.toml` files:
    poll_interval="1s"
    block_processing_buffer=10
    retry_delay="3s"
-   retry_max_attempts=3
+   retry_max_attempts="3"
 
    [service_registry]
    cosmwasm_contract="axelar1c9fkszt5lq34vvvlat3fxj6yv7ejtqapz04e97vtc9m5z9cwnamq8zjlhz"
@@ -257,24 +257,24 @@ The following are an example `config.toml` files:
    chain_id="devnet-amplifier"
    gas_price="0.007uaxl"
    tx_fetch_interval="1000ms"
-   tx_fetch_max_retries=15
+   tx_fetch_max_retries="15"
    batch_gas_limit="20000000"
-   tx_confirmation_buffer_size=10
-   tx_confirmation_queue_cap=1000
+   tx_confirmation_buffer_size="10"
+   tx_confirmation_queue_cap="1000"
 
    [tofnd_config]
-   batch_gas_limit="10000000"
+   batch_gas_limit=10000000
    key_uid="axelar"
    party_uid="ampd"
    url="http://127.0.0.1:50051"
    timeout="3s"
 
    [grpc]
-   ip_addr = '127.0.0.1'
+   ip_addr = "127.0.0.1"
    port = 9090
    global_concurrency_limit = 1024
    concurrency_limit_per_connection = 32
-   request_timeout = '30s'
+   request_timeout = "30s"
  
    [grpc.blockchain_service]
    chains=[]
@@ -321,8 +321,11 @@ The following are an example `config.toml` files:
    # replace with your Axelar testnet node
    tm_jsonrpc="http://127.0.0.1:26657"
    tm_grpc="tcp://127.0.0.1:9090"
-   event_buffer_cap=100000
+   event_buffer_cap="100000"
    tm_grpc_timeout="5s"
+
+   [service_registry]
+   cosmwasm_contract="axelar1rpj2jjrv3vpugx9ake9kgk3s2kgwt0y60wtkmcgfml5m3et0mrls6nct9m"
 
    [event_processor]
    retry_delay="1s"
@@ -336,19 +339,17 @@ The following are an example `config.toml` files:
    poll_interval="1s"
    block_processing_buffer=10
    retry_delay="3s"
-   retry_max_attempts=3
+   retry_max_attempts="3"
 
-   [service_registry]
-   cosmwasm_contract="axelar1rpj2jjrv3vpugx9ake9kgk3s2kgwt0y60wtkmcgfml5m3et0mrls6nct9m"
 
    [broadcast]
    chain_id="axelar-testnet-lisbon-3"
    gas_price="0.007uaxl"
    tx_fetch_interval="1000ms"
-   tx_fetch_max_retries=15
+   tx_fetch_max_retries="15"
    batch_gas_limit="20000000"
-   tx_confirmation_buffer_size=10
-   tx_confirmation_queue_cap=1000
+   tx_confirmation_buffer_size="10"
+   tx_confirmation_queue_cap="1000"
 
    [tofnd_config]
    batch_gas_limit=10000000
@@ -581,7 +582,7 @@ The following are an example `config.toml` files:
    tm_jsonrpc="http://127.0.0.1:26657"
    tm_grpc="tcp://127.0.0.1:9090"
    tm_grpc_timeout="5s"
-   event_buffer_cap=100000
+   event_buffer_cap="100000"
 
    [service_registry]
    cosmwasm_contract="axelar1rpj2jjrv3vpugx9ake9kgk3s2kgwt0y60wtkmcgfml5m3et0mrls6nct9m"
@@ -590,10 +591,10 @@ The following are an example `config.toml` files:
    chain_id="axelar-dojo-1"
    gas_price="0.007uaxl"
    tx_fetch_interval="1000ms"
-   tx_fetch_max_retries=15
+   tx_fetch_max_retries="15"
    batch_gas_limit="20000000"
-   tx_confirmation_buffer_size=10
-   tx_confirmation_queue_cap=1000
+   tx_confirmation_buffer_size="10"
+   tx_confirmation_queue_cap="1000"
 
    [tofnd_config]
    batch_gas_limit=10000000
