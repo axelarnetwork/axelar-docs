@@ -111,6 +111,16 @@
       "channel_id": "channel-138"
     },
     {
+      "from": "elys",
+      "to": "axelarnet",
+      "channel_id": "channel-3"
+    },
+    {
+      "from": "axelarnet",
+      "to": "elys",
+      "channel_id": "channel-163"
+    },
+    {
       "from": "evmos",
       "to": "axelarnet",
       "channel_id": "channel-21"
@@ -389,6 +399,16 @@
       "from": "axelarnet",
       "to": "xpla",
       "channel_id": "channel-49"
+    },
+    {
+      "from": "xion",
+      "to": "axelarnet",
+      "channel_id": "channel-3"
+    },
+    {
+      "from": "axelarnet",
+      "to": "xion",
+      "channel_id": "channel-161"
     },
     {
       "from": "mantra",
