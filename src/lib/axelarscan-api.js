@@ -1,9 +1,8 @@
-const BASE_URLS = {
-  mainnet: "https://api.axelarscan.io",
-  testnet: "https://testnet.api.axelarscan.io",
-};
-
-const AXELARSCAN_IMAGE_BASE = "https://axelarscan.io";
+import {
+  AXELARSCAN_API_URLS,
+  AXELARSCAN_IMAGE_BASE,
+  LCD_URLS,
+} from "../config/variables";
 
 export function resolveImageUrl(imagePath) {
   if (!imagePath) return null;
@@ -15,27 +14,22 @@ export function resolveImageUrl(imagePath) {
 }
 
 export async function fetchChains(environment = "mainnet") {
-  const res = await fetch(`${BASE_URLS[environment]}/api/getChains`);
+  const res = await fetch(`${AXELARSCAN_API_URLS[environment]}/api/getChains`);
   if (!res.ok) throw new Error(`Failed to fetch chains: ${res.status}`);
   return res.json();
 }
 
 export async function fetchContracts(environment = "mainnet") {
-  const res = await fetch(`${BASE_URLS[environment]}/gmp/getContracts`);
+  const res = await fetch(`${AXELARSCAN_API_URLS[environment]}/gmp/getContracts`);
   if (!res.ok) throw new Error(`Failed to fetch contracts: ${res.status}`);
   return res.json();
 }
 
 export async function fetchAssets(environment = "mainnet") {
-  const res = await fetch(`${BASE_URLS[environment]}/api/getAssets`);
+  const res = await fetch(`${AXELARSCAN_API_URLS[environment]}/api/getAssets`);
   if (!res.ok) throw new Error(`Failed to fetch assets: ${res.status}`);
   return res.json();
 }
-
-const LCD_URLS = {
-  mainnet: "https://lcd-axelar.imperator.co",
-  testnet: "https://axelar-testnet-lcd.qubelabs.io",
-};
 
 export async function fetchNodeInfo(environment = "mainnet") {
   const res = await fetch(
