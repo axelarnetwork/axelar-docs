@@ -1,0 +1,120 @@
+# Link Custom Coins
+
+import { Callout } from "../../../../../components/callout";
+
+Custom coins are independently deployed coins on Sui, as opposed to [InterchainCoins](https://github.com/axelarnetwork/axelar-cgp-sui/blob/main/move/interchain_token/sources/interchain_token.move) deployed via the Interchain Token Service (ITS). To link your coin on Sui to a token on another blockchain you will need to ensure that the coin is registered with [ITS Hub](https://docs.axelar.dev/dev/amplifier/its-hub/introduction/) and deploy a [token manager](/dev/send-tokens/sui/coin-management/) for that coin on Sui as well as the chains the coin is being linked with.
+
+Once a custom token has a Token Manager deployed on a given chain, it becomes bridgeable between blockchains that also have a token connected to a Token Manager sharing the same [`interchainTokenId`](/dev/send-tokens/interchain-tokens/intro/#interchain-token-id).
+
+## Build your custom coin on Sui
+
+On Sui your custom coin can be built with any features you choose. As long as your coin has the available `mint` and `burn` function that your Token Manager will require to trigger when it is moving the asset in/out of Sui.
+
+When your coin is being moved out of Sui your [Token Manager](https://github.com/axelarnetwork/axelar-cgp-sui/blob/main/move/interchain_token_service/sources/types/coin_management.move) will trigger the `take_token()` function, which among other things will eventually burn the coin by calling the following:
+
+```rust
+self.treasury_cap.borrow_mut().supply_mut().decrease_supply(balance);
+```
+
+When your coin is being moved back into Sui your [Token Manager](https://github.com/axelarnetwork/axelar-cgp-sui/blob/main/move/interchain_token_service/sources/types/coin_management.move)  will call `give_coin()` function, which among other things will eventually mint the coin to the final recipient as a distributor via the coin's treasury capability:
+
+```rust
+self.treasury_cap.borrow_mut().mint(amount, ctx)
+```
+
+ITS is intended to be flexible enough to support any different functionality a coin may have, as long as it has the `mint` and `burn`.
+
+## Integrate Custom Coin with ITS
+
+Once your coin is deployed on-chain, linking it to a token on another blockchain via ITS involves four steps:
+
+1. [Register coin metadata with the ITS Contract](/dev/send-tokens/sui/link-coin/#register-coin-metadata-with-the-its-contract)
+1. [Create a coin manager](/dev/send-tokens/sui/link-coin/#create-a-coin-manager)
+1. [Register custom coin](/dev/send-tokens/sui/link-coin/#register-custom-coin)
+1. [Link custom coin](/dev/send-tokens/sui/link-coin/#link-custom-coin)
+
+## Register coin metadata with the ITS contract
+
+When integrating your coin with ITS, you must also update the [ITS Hub](/dev/amplifier/its-hub/introduction/) contract, which is deployed on the Axelar network. This function is used to register metadata for your coin on ITS Hub to allow for ITS to handle cases where `decimals` between chains for example may be different. This function must be triggered from each chain that your custom coin will be linked on. Since this is a transaction to ITS Hub, the `register_coin_metadata()` function will be a cross-chain transaction. Once executed, the function will return a [MessageTicket](/dev/general-message-passing/sui/gmp-contracts/#message-ticket) for the cross-chain transaction.
+
+The function expects two parameters:
+
+1. `its`: The ITS object that will be updated once the coin's metadata is registered.
+1. `coin_metadata`: The metadata of the coin to be registered, passed in as a hexadecimal object ID (for example, `0x9c1ef3ed7231f1757397a0969811d9368f6a44d139c6260a94a92e2331d6bb45`).
+
+The function is defined as follows:
+
+```rust
+public fun register_coin_metadata<T>(self: &InterchainTokenService, coin_metadata: &CoinMetadata<T>): MessageTicket {}
+```
+
+## Create a coin manager
+
+Before you can register your coin, you must first create a [coin-manager](/dev/send-tokens/sui/coin-management/) (also referred to as a [token manager](/dev/send-tokens/interchain-tokens/token-manager/) for ITS EVM chains). When creating a manager you must consider what type of manager you want to integrate. You have the choice between a [capped manager](/dev/send-tokens/sui/coin-management/#capped-management) and a [locked manager](/dev/send-tokens/sui/coin-management/#locked-management)
+
+Once, registered you will need to use the `coin_management` object to [register your custom coin](/dev/send-tokens/sui/link-coin/#register-custom-coin).
+
+## Register custom coin
+
+Once your coin has had its metadata registered on each chain you can move on to the `register_custom_coin()` function call. Unlike `register_coin_metadata()`, this function only needs to be triggered from a single chain once, rather than on every chain where the coin will be linked to. The chain where this function is called from can be thought as a "home" chain for the integration. Not in terms of where its liquidity will be held but in terms of where future integrations will be based out of when linking the coin. 
+
+To register your coin, you will need to pass in the following parameters:
+
+1. `its`: The ITS object that will be updated once the coin is registered.
+1. `deployer`: A [channel](/dev/general-message-passing/sui/gmp-contracts/#channel) capability. Used to derive the custom [tokenId](/dev/send-tokens/sui/intro/#token-id) with the `salt` and `chain_name`, so only that channel’s holder can link that custom token.
+1. `salt`: A unique salt, used to derive a unique `interchainTokenId` for the coin.
+1. `coin_metadata`: The metadata of the coin to be registered, passed in as a hexadecimal object ID (for example, `0x9c1ef3ed7231f1757397a0969811d9368f6a44d139c6260a94a92e2331d6bb45`).
+1. `coin_management`: The type of [management](/dev/send-tokens/sui/coin-management/) the coin is registered with.
+1. `ctx`: The [transaction context](https://docs.sui.io/references/framework/sui/tx_context#sui_tx_context_TxContext) provides the necessary runtime environment for creating or modifying objects and state.
+
+The function is defined as follows:
+
+```rust
+public(package) fun register_custom_coin<T>(
+    self: &mut InterchainTokenService_v0,
+    deployer: &Channel,
+    salt: Bytes32,
+    coin_metadata: &CoinMetadata<T>,
+    coin_management: CoinManagement<T>,
+    ctx: &mut TxContext,
+): (TokenId, Option<TreasuryCapReclaimer<T>>) {}
+```
+
+Once executed, the function will return a unique [tokenId](/dev/send-tokens/sui/intro/#token-id) and an optional [treasury cap reclaimer](/dev/send-tokens/sui/intro/#treasury-cap-reclaimer). At this point your coin's metadata should be registered on Sui and the remote chain that you intend to connect your coin to. You should now also have a `tokenId` for your coin on Sui that stores that passed in `coin_management` object.
+
+
+
+## Link custom coin
+
+Once your coin is now setup on Sui and you have an additional token deployed on a separate chain, you can use the `link_coin()` function to connect the two assets with the end goal of sending `interchain_transfer()` calls between the two chains. The call to `link_coin()` takes seven parameters and returns a [MessageTicket](/dev/general-message-passing/sui/gmp-contracts/#message-ticket). 
+
+1. `its`: The ITS object that will be updated once the new token is linked.
+1. `deployer`: The deployer's [channel](/dev/general-message-passing/sui/gmp-contracts/#channel) capability. Used to derive the custom [tokenId](/dev/send-tokens/sui/intro/#token-id) with the `salt` and `chain_name`, so only that channel's holder can link that custom token.
+1. `salt`: A unique salt, used to derive a unique `interchainTokenId` for the coin.
+1. `destination_chain`: The name of the chain where the token is being linked to.
+1. `destination_token_address`: The address of the token the sui coin is being linked to.
+1. `token_manager_type`: The [type of manager](/dev/send-tokens/sui/coin-management/) to be deployed on the destination chain.
+1. `link_params`: An array of bytes representing an address to be used as the operator on the destination chain
+
+```rust
+public fun link_coin(
+    self: &InterchainTokenService,
+    deployer: &Channel,
+    salt: Bytes32,
+    destination_chain: String,
+    destination_token_address: vector<u8>,
+    token_manager_type: TokenManagerType,
+    link_params: vector<u8>,
+): MessageTicket {}
+```
+
+Once executed the `link_coin()` function will make a cross-chain gmp call to the ITS edge contract on the destination chain, which will then deploy a `token manager` for the asset that should already be deployed on the destination chain. You can confirm that the token linking was completed correctly by verifying that the `tokenId` on the destination chain you connected to matches your `tokenId` on Sui. The `link_coin()` workflow must be executed for each chain you want to connect to. If your coin was originally registered on Sui then the `link_coin()` must be initiated from Sui. 
+
+You can see an example of how to trigger the `link_coin()` function [here](https://github.com/axelarnetwork/axelar-contract-deployments/blob/main/sui/its.js#L466)
+
+
+
+
+## Example
+
+To see a step-by-step example of how to link a custom coin with ITS on Sui, you can follow the [link-coin example](https://github.com/axelarnetwork/axelar-contract-deployments/blob/main/sui/its.js#L466) in Axelar Deployments repository.

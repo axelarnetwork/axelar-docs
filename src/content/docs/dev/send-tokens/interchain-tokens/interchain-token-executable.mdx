@@ -6,14 +6,14 @@ You can use the [Axelar Interchain Token Service (ITS)](https://github.com/axela
 
 ## Setting Up an Executable Token
 
-If you want your token transfers to trigger custom logic on the destination chain, the destination contract must implement the [`InterchainTokenExecutable`](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/executable/InterchainTokenExecutable.sol) interface.
+If you want your token transfers to trigger custom logic on the destination chain, the destination contract must implement the [InterchainTokenExecutable](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/executable/InterchainTokenExecutable.sol) interface.
 
-Once your token has been deployed and [integrated with ITS](/dev/send-tokens/interchain-tokens/register-existing-token), you can use the executable functionality to send messages along with your cross-chain token transfer.
+Once your token has been integrated with ITS, you can use the executable functionality to send messages along with your cross-chain token transfer.
 
 ## Send Token + Message from Source Chain
 
-To send a token transfer with a custom message, use the [`interchainTransfer()`](https://axelarnetwork.github.io/interchain-token-service/InterchainTokenService.html#interchaintransfer) function from the Interchain Token Service contract.
-You should provide the `tokenId`, `destinationChain`, `destinationAddress`, `amount`, and `metadata` as parameters.
+To send a token transfer with a custom message, use the `callContractWithInterchainToken()` function from the Interchain Token Service contract.
+You should provide the `tokenId`, `destinationChain`, `destinationAddress`, `amount`, and `data` as parameters.
 
 ```solidity
 /**
@@ -22,21 +22,21 @@ You should provide the `tokenId`, `destinationChain`, `destinationAddress`, `amo
  * @param destinationChain The destination chain.
  * @param destinationAddress The destination address (bytes format).
  * @param amount The amount of tokens to transfer.
- * @param metadata Metadata for the interchain transfer. To execute a contract on the destination,
+ * @param data Metadata for the cross-chain transfer. To execute a contract on the destination,
  *      format as bytes.concat(bytes4(0), yourCustomPayload).
  */
-function interchainTransfer(
+function callContractWithInterchainToken(
     bytes32 tokenId,
     string calldata destinationChain,
     bytes calldata destinationAddress,
     uint256 amount,
-    bytes calldata metadata
-) external payable {}
+    bytes calldata data
+) external payable
 ```
 
 <Callout emoji="🚨">
   - The `destinationAddress` should be an address encoded as bytes. Use the
-  [`toBytes()`](https://github.com/axelarnetwork/axelar-gmp-sdk-solidity/blob/main/contracts/libs/AddressBytes.sol#L30)
+  [toBytes()](https://github.com/axelarnetwork/axelar-gmp-sdk-solidity/blob/main/contracts/libs/AddressBytes.sol#L30)
   method to accomplish this on-chain. 
   - To execute code on the destination
   chain, the `metadata` parameter should be formatted as:
@@ -124,4 +124,4 @@ contract MyDestinationContract is InterchainTokenExecutable {
 
 ## What’s next
 
-To find more examples of how to utilize the Interchain Token Service and test the Interchain Token Service Executable, please refer to the [`axelar-examples`](https://github.com/axelarnetwork/axelar-examples/blob/main/examples/evm/its-executable/README.md) repository on GitHub.
+To find more examples of how to utilize the Interchain Token Service and test the Interchain Token Service Executable, please refer to the [its executable example](https://github.com/axelarnetwork/axelar-examples/blob/main/examples/evm/its-executable/README.md) on GitHub.

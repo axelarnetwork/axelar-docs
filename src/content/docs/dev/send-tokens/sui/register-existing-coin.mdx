@@ -1,0 +1,72 @@
+# Register Coin 
+
+ITS allows you to make canonical registrations for existing coins on Sui. There are different ways to register the coin, depending on how the coin is being integrated. For canonical integrations where the coin on Sui will be connected to a wrapped interchain token on a remote chain you will register the coin on Sui via either [register_coin_from_info](#register-coin-from-info) or [register_coin_from_metadata](#register-coin-from-metadata). Once your coin is registered on Sui you can use [deploy remote interchain token](#deploy-remote-interchain-token) to deploy a wrapped version of the coin on a remote chain. For a detailed walkthrough on how to do this you can follow this [guide](/dev/send-tokens/sui/register-existing-coin-demo/).
+
+## Register Coin From Info
+
+If you want to register your coin by explicitly passing in its information you will need to register your coin via the `register_coin_from_info()` function. The function returns a new [TokenId](/dev/send-tokens/sui/intro/#token-id) and takes five parameters:
+
+1. `its`: The ITS object that will be updated once the new coin is registered.
+1. `name`: The name of the coin being registered.
+1. `symbol`: The symbol of the coin being registered.
+1. `decimals`: The amount of decimals the coin being registered has.
+1. `coin_management`: The type of [management](/dev/send-tokens/sui/coin-management/) the coin is registered with.
+
+The function is defined as follows:
+
+```rust
+public(package) fun register_coin_from_info<T>(
+    self: &mut InterchainTokenService,
+    name: std::string::String,
+    symbol: ascii::String,
+    decimals: u8,
+    coin_management: CoinManagement<T>,
+): TokenId {}
+```
+
+## Register Coin from Metadata
+
+If you do not want to explicitly pass in your coin's info, then you can register the coin via `register_coin_from_metadata()` function. Whereas the previous `register_coin_from_info()` may be simpler to use, this coin registration prevents against human error, for example, a typo in the symbol or name since the coin parameters are not validated in any way. The function returns a new [TokenId](/dev/send-tokens/sui/intro/#token-id) and takes three parameters:
+
+1. `its`: The ITS object that will be updated once the new coin is registered.
+1. `metadata`: A generic reference to the coin's metadata that contains the coins name, symbol, and decimals.
+1. `coin_management`: The type of [management](/dev/send-tokens/sui/coin-management/) the coin is registered with.
+
+```rust
+public(package) fun register_coin_from_metadata<T>(
+    self: &mut InterchainTokenService,
+    metadata: &CoinMetadata<T>,
+    coin_management: CoinManagement<T>,
+): TokenId {}
+```
+
+The coin management must be constructed beforehand, ITS will not construct this automatically for you.
+
+
+
+## Deploy Remote Interchain Token
+
+If you are starting from scratch and want to deploy a fresh new token with cross-chain functionality built into it, you can trigger the `deploy_remote_interchain_token()` function. This function will deploy a new _Interchain Token_ on a different blockchain via a cross-chain [GMP call](https://docs.axelar.dev/dev/general-message-passing/overview/#general-message-passing).
+
+The function takes three parameters:
+
+1. `its`: The ITS object that will be updated once the new token is registered.
+1. `token_id`: The [token id](/dev/send-tokens/sui/intro/#token-id) representing the token to be deployed on the destination chain.
+1. `destination_chain`: The name of the destination chain to deploy the token on.
+
+```rust
+public fun deploy_remote_interchain_token<T>(
+    self: &InterchainTokenService,
+    token_id: TokenId,
+    destination_chain: String,
+): MessageTicket {
+    let value = self.value!(b"deploy_remote_interchain_token");
+
+    value.deploy_remote_interchain_token<T>(token_id, destination_chain)
+}
+```
+
+Since this function makes a cross-chain call, it will return a [MessageTicket](/dev/general-message-passing/sui/gmp-contracts/#message-ticket) for the cross-chain transaction. The full implementation of the `deploy_remote_interchain_token()` can be found [here](https://github.com/axelarnetwork/axelar-cgp-sui/blob/v1.1.3/move/interchain_token_service/sources/versioned/interchain_token_service_v0.move#L178).
+
+See here for an [example](https://github.com/axelarnetwork/axelar-contract-deployments/blob/main/sui/its-example.js#L107) of how to run a cross-chain deployment for a new coin.
+

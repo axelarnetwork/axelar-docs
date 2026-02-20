@@ -135,6 +135,19 @@ export const getNavigation = (section) => {
               ],
             },
             {
+              title: "Solana",
+              children: [
+                {
+                  title: "Introduction",
+                  href: "/dev/general-message-passing/solana/intro/",
+                },
+                {
+                  title: "Send Messages",
+                  href: "/dev/general-message-passing/solana/gmp-contracts/",
+                },
+              ],
+            },
+            {
               title: "XRPL",
               href: "/dev/general-message-passing/xrpl/xrpl-gmp/",
             },
@@ -186,7 +199,7 @@ export const getNavigation = (section) => {
           children: [
             { title: "Introduction", href: "/dev/send-tokens/introduction/" },
             {
-              title: "Interchain Tokens",
+              title: "Interchain Token Service",
               children: [
                 {
                   title: "Overview",
@@ -225,6 +238,10 @@ export const getNavigation = (section) => {
                   href: "/dev/send-tokens/interchain-tokens/minter-operator-roles/",
                 },
                 {
+                  title: "Interchain Transfer",
+                  href: "/dev/send-tokens/interchain-tokens/interchain-transfer/",
+                },
+                {
                   title: "Developer Guides",
                   children: [
                     {
@@ -254,8 +271,20 @@ export const getNavigation = (section) => {
                       href: "/dev/send-tokens/sui/intro/",
                     },
                     {
-                      title: "Register an Existing Token",
-                      href: "/dev/send-tokens/sui/register-existing-sui-token/",
+                      title: "Coin Management",
+                      href: "/dev/send-tokens/sui/coin-management/",
+                    },
+                    {
+                      title: "Link Custom Coins",
+                      href: "/dev/send-tokens/sui/link-coin/",
+                    },
+                    {
+                      title: "Register an Existing Coin",
+                      href: "/dev/send-tokens/sui/register-existing-coin/",
+                    },
+                    {
+                      title: "Register Existing Coin Guide",
+                      href: "/dev/send-tokens/sui/register-existing-coin-guide/",
                     },
                   ],
                 },
@@ -267,12 +296,16 @@ export const getNavigation = (section) => {
                       href: "/dev/send-tokens/stellar/intro/",
                     },
                     {
-                      title: "Deploy a New Token",
+                      title: "Deploy a New Token Demo",
                       href: "/dev/send-tokens/stellar/deploy-new-token/",
                     },
                     {
-                      title: "Register an Existing Token",
+                      title: "Register an Existing Token Demo",
                       href: "/dev/send-tokens/stellar/register-existing-stellar-token/",
+                    },
+                    {
+                      title: "Link Custom Tokens",
+                      href: "https://github.com/axelarnetwork/axelar-contract-deployments/blob/main/stellar/docs/link-token.md",
                     },
                   ],
                 },
@@ -287,12 +320,12 @@ export const getNavigation = (section) => {
               href: "/dev/send-tokens/roadmap/",
             },
             {
-                title: "Glossary",
-                href: "/dev/send-tokens/glossary/",
+              title: "Glossary",
+              href: "/dev/send-tokens/glossary/",
             },
             {
-                title: "Deprecated",
-                children: [
+              title: "Deprecated",
+              children: [
                 {
                   title: "Send Tokens",
                   href: "/dev/send-tokens/deprecated/send-tokens/",
@@ -421,7 +454,7 @@ export const getNavigation = (section) => {
           children: [
             {
               title: "Mainnet Chain Names",
-              href: "/dev/reference/mainnet-chain-names/",
+              href: "https://axelarscan.io/resources/chains",
             },
             {
               title: "Mainnet Contract Addresses",
@@ -429,7 +462,7 @@ export const getNavigation = (section) => {
             },
             {
               title: "Testnet Chain Names",
-              href: "/dev/reference/testnet-chain-names/",
+              href: "https://testnet.axelarscan.io/resources/chains",
             },
             {
               title: "Testnet Contract Addresses",
@@ -648,9 +681,7 @@ export const getNavigation = (section) => {
       {
         title: "RPCs",
         children: [
-          { title: "RPC Endpoints", href: "/resources/rpc/resources/" },
-          { title: "Free Public RPC", href: "/resources/rpc/lava-iprpc/" },
-          { title: "REST Interface", href: "https://axelar.lava.build/" },
+          { title: "RPC Endpoints", href: "/resources/rpc/resources/" }
         ],
       },
       {
@@ -698,6 +729,10 @@ export const getNavigation = (section) => {
           {
             title: "Mainnet axelard",
             children: [
+              {
+                title: "v1.3",
+                href: "https://github.com/axelarnetwork/axelar-contract-deployments/blob/main/releases/axelard/2025-11-v1.3.2.md",
+              },
               {
                 title: "v1.2",
                 href: "/resources/mainnet/upgrades/v121/",
@@ -771,6 +806,10 @@ export const getNavigation = (section) => {
           {
             title: "Testnet axelard",
             children: [
+              {
+                title: "v1.3.1",
+                href: "/resources/testnet/upgrades/v131/",
+              },
               {
                 title: "v1.2",
                 href: "/resources/testnet/upgrades/v121/",

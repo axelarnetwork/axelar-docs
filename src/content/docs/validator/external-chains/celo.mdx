@@ -2,7 +2,7 @@
 
 import { Callout } from "/src/components/callout";
 
-Set up your CELO Mainnet or Alfajores Testnet RPC node
+Set up your CELO Mainnet or Celo Sepolia Testnet RPC node
 
 ## Prerequisites
 
@@ -33,14 +33,14 @@ cd celo-l2-node-docker-compose
 
 ### Configuring the node
 
-Example configs is provided for Alfajores, Baklava and Mainnet(will be available once the L2 version is launched).
+Example configs are provided for Celo Sepolia and Mainnet(will be available once the L2 version is launched).
 
 Copy the desired network environment file to .env (.env is used by docker-compose to load environment variables).
 
-E.g. To run a node on Alfajores:
+E.g. To run a node on Celo Sepolia:
 
 ```bash
-cp alfajores.env .env
+cp celo-sepolia.env .env
 ```
 
 Open ```.env``` and optionally configure any setting you may wish to change. For more details, refer to the documentation: [Celo L2 Node Configurations](https://github.com/celo-org/celo-l2-node-docker-compose?tab=readme-ov-file#node-configurations).

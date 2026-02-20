@@ -30,4 +30,44 @@ You can either create new [Interchain Tokens](https://github.com/axelarnetwork/i
 **Interchain Token Service:** [0xB5FB4BE02232B1bBA4dC8f81dc24C26980dE9e3C](https://etherscan.io/address/0xB5FB4BE02232B1bBA4dC8f81dc24C26980dE9e3C)  
 **Interchain Token Factory:** [0x83a93500d23Fbc3e82B410aD07A6a9F7A0670D66](https://etherscan.io/address/0x83a93500d23Fbc3e82B410aD07A6a9F7A0670D66)
 
+## Key Concepts
+
+### Interchain Token Service
+
+The edge contract deployed on external blockchains. This contract is responsible for facilitating interchain token transfers. It (mostly) does not handle tokens, but is responsible for the messaging that needs to occur for interchain transfers to happen. There are different variations depending on which blockchain is deployed on.
+
+- [Solidity Implementation](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/InterchainTokenService.sol)
+- [Move Implementation for Sui](https://github.com/axelarnetwork/axelar-cgp-sui/blob/main/move/interchain_token_service/sources/interchain_token_service.move)
+- [Rust Implementation for Stellar](https://github.com/axelarnetwork/axelar-amplifier-stellar/blob/main/contracts/stellar-interchain-token/src/contract.rs)
+
+### Interchain Token Service Factory 
+
+An additional [contract](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/InterchainTokenFactory.sol) deployed on each chain connected to ITS. This contract interact with the main Interchain Token Service contract. It is responsible for deploying new interchain tokens and managing their token managers. 
+
+### Interchain Token Service Hub
+
+ITS hub is a central routing contract on the Axelar network itself that coordinates token operations across chains. The hub allows for a simpler centralized state for interlinked tokens compared to purely pairwise connections between ITS edged contracts. Further reading can be done [here](https://docs.axelar.dev/dev/amplifier/its-hub/introduction/)
+
+### Interchain Token Service Portal
+
+A [no-code portal](https://interchain.axelar.dev/) to be able to quick deploy new tokens and register existing tokens to ITS
+
+### Token Handler
+
+A separate [contract](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/TokenHandler.sol) used by ITS to interact with tokens it is moving between chains. This will be the contract that is actually existing your token's `mint`, `burn` functions.
+
+### Token Manager
+
+A contract that facilitates integration between your token and ITS. Each token integration on a given chain will have its own unique token manager. It is responsible for managing tokens, such as setting locking token balances, or setting flow limits, for interchain transfers. Further reading can be done [here](https://docs.axelar.dev/dev/send-tokens/interchain-tokens/token-manager/)
+
+### Interchain Token ID
+
+An `interchainTokenId` is how ITS uniquely registers a given token integration between chains. The id must match across all chains so that when a token is moved out of one chain it is moved into the token with corresponding `interchainTokenId` on the destination chain. This id is calculated by running `keccak256(abi.encode(PREFIX_INTERCHAIN_TOKEN_ID, sender, salt))`. The unique sender address combined with salt ensures that the id is deterministic and collision resistant. 
+
+### Interchain Token
+
+A token deployed by ITS itself. Whereas a custom token deployed by an individual developer that gets integrated to ITS, an interchain token is pre-written [contract](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/interchain-token/InterchainToken.sol) that ITS deploys. This is the token that is deployed by the ITS portal.
+
+## Guides
+
 <InterchainTokenIntro />
