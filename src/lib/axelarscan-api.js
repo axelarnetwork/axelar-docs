@@ -1,6 +1,7 @@
 import {
   AXELARSCAN_API_URLS,
   AXELARSCAN_IMAGE_BASE,
+  GITHUB_API_BASE,
   LCD_URLS,
 } from "../config/variables";
 
@@ -28,6 +29,14 @@ export async function fetchContracts(environment = "mainnet") {
 export async function fetchAssets(environment = "mainnet") {
   const res = await fetch(`${AXELARSCAN_API_URLS[environment]}/api/getAssets`);
   if (!res.ok) throw new Error(`Failed to fetch assets: ${res.status}`);
+  return res.json();
+}
+
+export async function fetchLatestRelease(repo) {
+  const res = await fetch(
+    `${GITHUB_API_BASE}/repos/axelarnetwork/${repo}/releases/latest`,
+  );
+  if (!res.ok) throw new Error(`Failed to fetch ${repo} release: ${res.status}`);
   return res.json();
 }
 

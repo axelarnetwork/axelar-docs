@@ -128,9 +128,11 @@ export default ({ environment = "mainnet" }) => {
             {assets.map((a, i) => {
               const { id, address, symbol, image, chain } = { ...a };
               const chain_data = _evm_chains.find((c) => c?.id === chain);
-              const explorer_url =
+              const explorer_base =
                 chain_data?.explorer?.url ||
                 chain_data?.provider_params?.[0]?.blockExplorerUrls?.[0];
+              const address_path =
+                chain_data?.explorer?.address_path || "/address/{address}";
               return (
                 <tr key={i} className=" border-t border-t-border">
                   {COLUMNS.map((c, j) => (
@@ -198,7 +200,7 @@ export default ({ environment = "mainnet" }) => {
                         <div className="flex items-center text-base space-x-1.5">
                           {address ? (
                             <a
-                              href={`${explorer_url}/address/${address}`}
+                              href={`${explorer_base}${address_path.replace("{address}", address)}`}
                               target="_blank"
                               rel="noopener noreferrer"
                               className="no-underline text-primary hover:underline font-medium"

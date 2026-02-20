@@ -1,34 +1,43 @@
 import { useState, useEffect } from "react";
-import { fetchNodeInfo } from "../lib/axelarscan-api";
+import { fetchLatestRelease, fetchNodeInfo } from "../lib/axelarscan-api";
 
 const cache = {};
 
-export default ({ environment = "mainnet" }) => {
-  const [version, setVersion] = useState(() => cache[environment] || null);
+/**
+ * Displays a live version string.
+ *
+ * Usage:
+ *   <Version environment="mainnet" />           — fetches axelar-core version from LCD
+ *   <Version repo="tofnd" />                    — fetches latest GitHub release tag
+ */
+export default ({ environment = "mainnet", repo }) => {
+  const cacheKey = repo || environment;
+  const [version, setVersion] = useState(() => cache[cacheKey] || null);
 
   useEffect(() => {
-    if (cache[environment]) {
-      setVersion(cache[environment]);
+    if (cache[cacheKey]) {
+      setVersion(cache[cacheKey]);
       return;
     }
 
     let cancelled = false;
 
-    fetchNodeInfo(environment)
-      .then((nodeInfo) => {
-        if (cancelled) return;
-        const v = nodeInfo?.application_version?.version;
-        if (v) {
-          cache[environment] = v;
-          setVersion(v);
-        }
+    const promise = repo
+      ? fetchLatestRelease(repo).then((r) => r?.tag_name?.replace(/^v/, ""))
+      : fetchNodeInfo(environment).then((r) => r?.application_version?.version);
+
+    promise
+      .then((v) => {
+        if (cancelled || !v) return;
+        cache[cacheKey] = v;
+        setVersion(v);
       })
       .catch(() => {});
 
     return () => {
       cancelled = true;
     };
-  }, [environment]);
+  }, [cacheKey]);
 
   return <span>{version || "..."}</span>;
 };

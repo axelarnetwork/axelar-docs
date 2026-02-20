@@ -15,3 +15,5 @@ export const LCD_URLS = {
   mainnet: "https://lcd-axelar.imperator.co",
   testnet: "https://axelar-testnet-lcd.qubelabs.io",
 };
+
+export const GITHUB_API_BASE = "https://api.github.com";
