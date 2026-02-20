@@ -10,13 +10,63 @@ import gateways from "../data/gateways.json";
 import ibc_assets from "../data/ibc_assets.json";
 import { equals_ignore_case } from "../utils";
 
-const data = {
+const staticData = {
   evm_chains,
   cosmos_chains,
   evm_assets,
   ibc_assets,
   gateways,
 };
+
+/**
+ * Flatten asset objects so each contract becomes its own option row.
+ * When a specific chain is selected, only that chain's contract is kept.
+ * Otherwise, take just the first contract per asset to avoid duplicates.
+ */
+function flattenAssetContracts(assets, chain) {
+  return assets?.flatMap((asset) => {
+    const contracts = (asset?.contracts || [])
+      .filter((c) => !chain || equals_ignore_case(c?.chain, chain))
+      .filter((c, i) => chain || i < 1);
+
+    return contracts.map((c) => ({ ...asset, ...c, name: asset?.symbol }));
+  });
+}
+
+/** Resolve options when the parent passes data directly (live API path). */
+function resolveExternalOptions(externalData, dataName, chain) {
+  if (dataName === "evm_assets") {
+    return flattenAssetContracts(externalData, chain);
+  }
+  return Array.isArray(externalData)
+    ? externalData.filter((c) => !c?.is_staging)
+    : externalData;
+}
+
+/** Resolve options from bundled static JSON (fallback for fee calculator, etc.). */
+function resolveStaticOptions(dataName, environment, chain) {
+  switch (dataName) {
+    case "evm_chains":
+      return staticData.evm_chains?.[environment]?.filter((c) => !c?.is_staging);
+    case "evm_assets":
+      return flattenAssetContracts(staticData.evm_assets?.[environment], chain);
+    case "chains":
+      return _.concat(
+        staticData.evm_chains?.[environment]?.filter((c) => !c?.is_staging) || [],
+        staticData.cosmos_chains?.[environment] || [],
+      );
+    case "assets":
+      return _.uniqBy(
+        _.concat(
+          staticData.evm_assets?.[environment] || [],
+          staticData.ibc_assets?.[environment] || [],
+        ),
+        "id",
+      );
+    default:
+      return staticData[dataName];
+  }
+}
 
 export default ({
   environment,
@@ -35,77 +85,11 @@ export default ({
   const [selectedKey, setSelectedKey] = useState(null);
 
   useEffect(() => {
-    // If external data is provided by the parent, use it directly
-    if (externalData !== undefined) {
-      let _options;
-      if (dataName === "evm_assets") {
-        _options = externalData
-          ?.flatMap((o) => {
-            const contracts =
-              o?.contracts
-                ?.filter((c) => !chain || equals_ignore_case(c?.chain, chain))
-                .filter((c, i) => chain || i < 1) || [];
-            return contracts.map((c) => {
-              return { ...o, ...c };
-            });
-          })
-          .map((o) => ({ ...o, name: o?.symbol }));
-      } else {
-        _options = Array.isArray(externalData)
-          ? externalData.filter((c) => !c?.is_staging)
-          : externalData;
-      }
-      setOptions(_options || []);
-      return;
-    }
+    const options = externalData !== undefined
+      ? resolveExternalOptions(externalData, dataName, chain)
+      : resolveStaticOptions(dataName, environment, chain);
 
-    // Fallback to static data (used by transfer-fee calculator, etc.)
-    let _options;
-    switch (dataName) {
-      case "evm_chains":
-        _options = data[dataName]?.[environment].filter((c) => !c?.is_staging);
-        break;
-      case "evm_assets":
-        _options = data[dataName]?.[environment]
-          ?.flatMap((o) => {
-            const contracts =
-              o?.contracts
-                ?.filter((c) => !chain || equals_ignore_case(c?.chain, chain))
-                .filter((c, i) => chain || i < 1) || [];
-            return contracts.map((c) => {
-              return {
-                ...o,
-                ...c,
-              };
-            });
-          })
-          .map((o) => {
-            return {
-              ...o,
-              name: o?.symbol,
-            };
-          });
-        break;
-      case "chains":
-        _options = _.concat(
-          data.evm_chains?.[environment].filter((c) => !c?.is_staging) || [],
-          data.cosmos_chains?.[environment] || [],
-        );
-        break;
-      case "assets":
-        _options = _.uniqBy(
-          _.concat(
-            data.evm_assets?.[environment] || [],
-            data.ibc_assets?.[environment] || [],
-          ),
-          "id",
-        );
-        break;
-      default:
-        _options = data[dataName];
-        break;
-    }
-    setOptions(_options || []);
+    setOptions(options || []);
   }, [environment, chain, dataName, externalData]);
 
   useEffect(() => {
