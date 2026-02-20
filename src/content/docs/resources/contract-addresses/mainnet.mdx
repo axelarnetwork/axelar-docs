@@ -11,23 +11,23 @@ import IBCChannels from '/src/components/ibc/channels';
 import TransferFeeCalculator from '/src/components/transfer-fee/calculator';
 import EVMChains from '/src/components/evm/chains';
 import EVMAssets from '/src/components/evm/assets';
+import Version from '/src/components/version';
 import UpgradePath from '/src/upgrade-path.md';
-import { AXELARD, TOFND } from '/src/config/variables';
 
 | Variable              | Value           |
 | --------------------- | --------------- |
 | `chain-id`            | `axelar-dojo-1` |
-| `axelar-core` version | {AXELARD} |
-| `vald` version        | {AXELARD} |
-| `tofnd` version       | {TOFND} |
+| `axelar-core` version | <Version client:only environment="mainnet" /> |
+| `vald` version        | <Version client:only environment="mainnet" /> |
+| `tofnd` version       | 1.0.1 |
 
 ## Contract addresses
 
 <div className="flex flex-col gap-10 mt-4">
-  
+
 <EVMChains client:only/>
 <div>
- 
+
 `Create3 Address Deployer`: `0x6513Aedb4D1593BA12e50644401D976aebDc90d8`
 
 `Create2 Address Deployer`: `0x98b2920d53612483f91f12ed7754e51b4a77919e`

@@ -7,12 +7,15 @@ import { equals_ignore_case } from "../../utils";
 export default ({
   environment = "mainnet",
   chain,
+  chainData,
   symbol,
   image,
   address,
   decimals,
 }) => {
-  const _evm_chains = evm_chains?.[environment] || [];
+  const _evm_chains = chainData
+    ? [chainData]
+    : evm_chains?.[environment] || [];
 
   // const { _chain_id } = useSelector(state => ({ _chain_id: state.chain_id }), shallowEqual);
   // const { chain_id } = { ..._chain_id };

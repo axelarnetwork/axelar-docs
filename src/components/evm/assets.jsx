@@ -1,10 +1,10 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
-import evm_assets from "../../data/evm_assets.json";
-import evm_chains from "../../data/evm_chains.json";
+import { useChainData, useAssetData } from "../../hooks/useAxelarscanData";
 import { ellipse, equals_ignore_case } from "../../utils";
 import Copy from "../copy";
 import Dropdown from "../dropdown";
+import { AssetTableSkeleton, ErrorMessage } from "../loading-skeleton";
 import AddToken from "../web3";
 
 const COLUMNS = [
@@ -21,15 +21,36 @@ const COLUMNS = [
 ];
 
 export default ({ environment = "mainnet" }) => {
-  const _evm_chains = evm_chains?.[environment] || [];
-  const _evm_assets = evm_assets?.[environment] || [];
+  const {
+    chains: _evm_chains,
+    loading: chainsLoading,
+    error: chainsError,
+  } = useChainData(environment);
+  const {
+    evmAssets: _evm_assets,
+    loading: assetsLoading,
+    error: assetsError,
+  } = useAssetData(environment);
+
+  const loading = chainsLoading || assetsLoading;
+  const error = chainsError || assetsError;
 
   const [chainData, setChainData] = useState(null);
-  const [assetData, setAssetData] = useState(
-    _evm_assets.find(
-      (a) => a?.id === (environment === "testnet" ? "uausdc" : "uusdc"),
-    ),
-  );
+  const [assetData, setAssetData] = useState(null);
+
+  // Set default asset once data loads
+  useEffect(() => {
+    if (_evm_assets.length > 0 && assetData === null) {
+      setAssetData(
+        _evm_assets.find(
+          (a) => a?.id === (environment === "testnet" ? "uausdc" : "uusdc"),
+        ),
+      );
+    }
+  }, [_evm_assets]);
+
+  if (loading) return <AssetTableSkeleton />;
+  if (error) return <ErrorMessage message="Failed to load asset data." />;
 
   const assets = _evm_assets
     .filter((a) => !assetData || a?.id === assetData.id)
@@ -53,6 +74,7 @@ export default ({ environment = "mainnet" }) => {
         <Dropdown
           environment={environment}
           dataName="evm_chains"
+          externalData={_evm_chains}
           placeholder="Select Chain"
           hasAllOptions={true}
           allOptionsName="All Chains"
@@ -75,6 +97,7 @@ export default ({ environment = "mainnet" }) => {
           environment={environment}
           chain={chainData?.id}
           dataName="evm_assets"
+          externalData={_evm_assets}
           placeholder="Select Asset"
           hasAllOptions={true}
           allOptionsName="All Assets"
@@ -106,6 +129,7 @@ export default ({ environment = "mainnet" }) => {
               const { id, address, symbol, image, chain } = { ...a };
               const chain_data = _evm_chains.find((c) => c?.id === chain);
               const explorer_url =
+                chain_data?.explorer?.url ||
                 chain_data?.provider_params?.[0]?.blockExplorerUrls?.[0];
               return (
                 <tr key={i} className=" border-t border-t-border">

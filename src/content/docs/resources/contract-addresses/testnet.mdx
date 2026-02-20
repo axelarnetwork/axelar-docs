@@ -10,15 +10,15 @@ import IBCChannels from "/src/components/ibc/channels";
 import TransferFeeCalculator from "/src/components/transfer-fee/calculator";
 import EVMChains from "/src/components/evm/chains";
 import EVMAssets from "/src/components/evm/assets";
+import Version from "/src/components/version";
 import UpgradePathTestnet from "/src/upgrade-path-testnet.md";
-import { AXELARD_TESTNET, TOFND_TESTNET } from "/src/config/variables";
 
 | Variable              | Value                                                                                                                             |
 | --------------------- | --------------------------------------------------------------------------------------------------------------------------------- |
 | `chain-id`            | `axelar-testnet-lisbon-3`                                                                                                         |
-| `axelar-core` version | v{AXELARD_TESTNET}                                                                                                                |
-| `vald` version        | v{AXELARD_TESTNET}                                                                                                                |
-| `tofnd` version       | v{TOFND_TESTNET}                                                                                                                  |
+| `axelar-core` version | <Version client:only environment="testnet" />                                                                                     |
+| `vald` version        | <Version client:only environment="testnet" />                                                                                     |
+| `tofnd` version       | 1.0.1                                                                                                                             |
 | amplifier contracts   | see [testnet.json](https://github.com/axelarnetwork/axelar-contract-deployments/blob/main/axelar-chains-config/info/testnet.json) |
 
 ## Contract addresses

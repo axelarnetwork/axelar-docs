@@ -22,6 +22,7 @@ export default ({
   environment,
   chain,
   dataName,
+  externalData,
   placeholder,
   hasAllOptions,
   allOptionsName = "All",
@@ -34,6 +35,31 @@ export default ({
   const [selectedKey, setSelectedKey] = useState(null);
 
   useEffect(() => {
+    // If external data is provided by the parent, use it directly
+    if (externalData !== undefined) {
+      let _options;
+      if (dataName === "evm_assets") {
+        _options = externalData
+          ?.flatMap((o) => {
+            const contracts =
+              o?.contracts
+                ?.filter((c) => !chain || equals_ignore_case(c?.chain, chain))
+                .filter((c, i) => chain || i < 1) || [];
+            return contracts.map((c) => {
+              return { ...o, ...c };
+            });
+          })
+          .map((o) => ({ ...o, name: o?.symbol }));
+      } else {
+        _options = Array.isArray(externalData)
+          ? externalData.filter((c) => !c?.is_staging)
+          : externalData;
+      }
+      setOptions(_options || []);
+      return;
+    }
+
+    // Fallback to static data (used by transfer-fee calculator, etc.)
     let _options;
     switch (dataName) {
       case "evm_chains":
@@ -80,7 +106,7 @@ export default ({
         break;
     }
     setOptions(_options || []);
-  }, [environment, chain, dataName]);
+  }, [environment, chain, dataName, externalData]);
 
   useEffect(() => {
     setSelectedKey(defaultSelectedKey);
