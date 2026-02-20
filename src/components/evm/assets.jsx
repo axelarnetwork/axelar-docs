@@ -47,7 +47,7 @@ export default ({ environment = "mainnet" }) => {
         ),
       );
     }
-  }, [_evm_assets]);
+  }, [_evm_assets, environment]);
 
   if (loading) return <AssetTableSkeleton />;
   if (error) return <ErrorMessage message="Failed to load asset data." />;
@@ -198,7 +198,7 @@ export default ({ environment = "mainnet" }) => {
                         </div>
                       ) : c.id === "contract_address" ? (
                         <div className="flex items-center text-base space-x-1.5">
-                          {address ? (
+                          {address && explorer_base ? (
                             <a
                               href={`${explorer_base}${address_path.replace("{address}", address)}`}
                               target="_blank"
@@ -207,6 +207,10 @@ export default ({ environment = "mainnet" }) => {
                             >
                               {ellipse(address, 16)}
                             </a>
+                          ) : address ? (
+                            <span className="font-medium">
+                              {ellipse(address, 16)}
+                            </span>
                           ) : (
                             <span className="text-gray-400 dark:text-gray-600">
                               -

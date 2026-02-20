@@ -78,14 +78,20 @@ export default ({ environment = "mainnet" }) => {
                   </span>
                   <div className="flex items-center text-sm space-x-1">
                     {gateway_contract_address ? (
-                      <a
-                        href={explorerLink(gateway_contract_address)}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="no-underline text-primary font-clash font-semibold"
-                      >
-                        {ellipse(gateway_contract_address, 14)}
-                      </a>
+                      explorerLink(gateway_contract_address) ? (
+                        <a
+                          href={explorerLink(gateway_contract_address)}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="no-underline text-primary font-clash font-semibold"
+                        >
+                          {ellipse(gateway_contract_address, 14)}
+                        </a>
+                      ) : (
+                        <span className="font-clash font-semibold">
+                          {ellipse(gateway_contract_address, 14)}
+                        </span>
+                      )
                     ) : (
                       <span className="text-foreground font-semibold">-</span>
                     )}
@@ -104,14 +110,20 @@ export default ({ environment = "mainnet" }) => {
                   </span>
                   <div className="flex items-center text-sm space-x-1">
                     {gas_service_address ? (
-                      <a
-                        href={explorerLink(gas_service_address)}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="no-underline text-primary font-clash font-semibold"
-                      >
-                        {ellipse(gas_service_address, 14)}
-                      </a>
+                      explorerLink(gas_service_address) ? (
+                        <a
+                          href={explorerLink(gas_service_address)}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="no-underline text-primary font-clash font-semibold"
+                        >
+                          {ellipse(gas_service_address, 14)}
+                        </a>
+                      ) : (
+                        <span className="font-clash font-semibold">
+                          {ellipse(gas_service_address, 14)}
+                        </span>
+                      )
                     ) : (
                       <span className="text-gray-500 dark:text-white font-semibold">
                         -
