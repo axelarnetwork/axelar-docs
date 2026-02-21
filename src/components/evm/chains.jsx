@@ -36,10 +36,14 @@ export default ({ environment = "mainnet" }) => {
 
           const addressPath = c.explorer?.address_path || "/address/{address}";
 
-          const explorerLink = (addr) => {
+          const explorerLink = (addr, pathOverride) => {
             if (!explorer_url || !addr) return null;
-            return `${explorer_url}${addressPath.replace("{address}", addr)}`;
+            const path = pathOverride || addressPath;
+            return `${explorer_url}${path.replace("{address}", addr)}`;
           };
+
+          // Sui contracts are objects, not accounts — use /object/ path
+          const suiObjectPath = id === "sui" ? "/object/{address}" : null;
 
           return (
             <div key={i} className="bg-background-neutral-dark rounded-xl p-5">
@@ -84,9 +88,9 @@ export default ({ environment = "mainnet" }) => {
                   </span>
                   <div className="flex items-center text-sm space-x-1">
                     {gateway_contract_address ? (
-                      explorerLink(gateway_contract_address) ? (
+                      explorerLink(gateway_contract_address, suiObjectPath) ? (
                         <a
-                          href={explorerLink(gateway_contract_address)}
+                          href={explorerLink(gateway_contract_address, suiObjectPath)}
                           target="_blank"
                           rel="noopener noreferrer"
                           className="no-underline text-primary font-clash font-semibold"
@@ -116,9 +120,9 @@ export default ({ environment = "mainnet" }) => {
                       Gateway Object ID:
                     </span>
                     <div className="flex items-center text-sm space-x-1">
-                      {explorerLink(gateway_object_id) ? (
+                      {explorerLink(gateway_object_id, suiObjectPath) ? (
                         <a
-                          href={explorerLink(gateway_object_id)}
+                          href={explorerLink(gateway_object_id, suiObjectPath)}
                           target="_blank"
                           rel="noopener noreferrer"
                           className="no-underline text-primary font-clash font-semibold"
@@ -144,9 +148,9 @@ export default ({ environment = "mainnet" }) => {
                   </span>
                   <div className="flex items-center text-sm space-x-1">
                     {gas_service_address ? (
-                      explorerLink(gas_service_address) ? (
+                      explorerLink(gas_service_address, suiObjectPath) ? (
                         <a
-                          href={explorerLink(gas_service_address)}
+                          href={explorerLink(gas_service_address, suiObjectPath)}
                           target="_blank"
                           rel="noopener noreferrer"
                           className="no-underline text-primary font-clash font-semibold"
@@ -174,9 +178,9 @@ export default ({ environment = "mainnet" }) => {
                       Gas Service Object ID:
                     </span>
                     <div className="flex items-center text-sm space-x-1">
-                      {explorerLink(gas_service_object_id) ? (
+                      {explorerLink(gas_service_object_id, suiObjectPath) ? (
                         <a
-                          href={explorerLink(gas_service_object_id)}
+                          href={explorerLink(gas_service_object_id, suiObjectPath)}
                           target="_blank"
                           rel="noopener noreferrer"
                           className="no-underline text-primary font-clash font-semibold"

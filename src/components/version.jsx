@@ -1,7 +1,22 @@
 import { useState, useEffect } from "react";
 import { fetchLatestRelease, fetchNodeInfo } from "../lib/axelarscan-api";
 
+const CACHE_TTL_MS = 10 * 60 * 1000; // 10 minutes
 const cache = {};
+
+function getCached(key) {
+  const entry = cache[key];
+  if (!entry) return null;
+  if (Date.now() - entry.timestamp > CACHE_TTL_MS) {
+    delete cache[key];
+    return null;
+  }
+  return entry.value;
+}
+
+function setCache(key, value) {
+  cache[key] = { value, timestamp: Date.now() };
+}
 
 /**
  * Displays a live version string.
@@ -11,13 +26,15 @@ const cache = {};
  *   <Version repo="tofnd" />                    — fetches latest GitHub release tag
  */
 export default ({ environment = "mainnet", repo }) => {
-  const cacheKey = repo ? `${repo}:${environment}` : environment;
-  const [version, setVersion] = useState(() => cache[cacheKey] || null);
+  // repo-based fetches (e.g. tofnd) are environment-agnostic (single GitHub release),
+  // so we use just the repo name as cache key to avoid duplicate fetches.
+  const cacheKey = repo ? repo : environment;
+  const [version, setVersion] = useState(() => getCached(cacheKey));
   const [failed, setFailed] = useState(false);
 
   useEffect(() => {
-    if (cache[cacheKey]) {
-      setVersion(cache[cacheKey]);
+    if (getCached(cacheKey)) {
+      setVersion(getCached(cacheKey));
       return;
     }
 
@@ -29,8 +46,12 @@ export default ({ environment = "mainnet", repo }) => {
 
     promise
       .then((v) => {
-        if (cancelled || !v) return;
-        cache[cacheKey] = v;
+        if (cancelled) return;
+        if (!v) {
+          setFailed(true);
+          return;
+        }
+        setCache(cacheKey, v);
         setVersion(v);
       })
       .catch((err) => {

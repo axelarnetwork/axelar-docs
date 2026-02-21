@@ -8,7 +8,7 @@ import {
 export function resolveImageUrl(imagePath) {
   if (!imagePath) return null;
   if (imagePath.startsWith("http")) return imagePath;
-  if (imagePath.startsWith("/logos/")) {
+  if (imagePath.startsWith("/")) {
     return `${AXELARSCAN_IMAGE_BASE}${imagePath}`;
   }
   return imagePath;

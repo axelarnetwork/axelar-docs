@@ -47,11 +47,10 @@ export default ({ environment = "mainnet" }) => {
   // Set default asset once data loads
   useEffect(() => {
     if (_evm_assets.length > 0 && assetData === null) {
-      setAssetData(
-        _evm_assets.find(
-          (a) => a?.id === (environment === "testnet" ? "uausdc" : "uusdc"),
-        ),
+      const defaultAsset = _evm_assets.find(
+        (a) => a?.id === (environment === "testnet" ? "uausdc" : "uusdc"),
       );
+      setAssetData(defaultAsset || _evm_assets[0] || null);
     }
   }, [_evm_assets, assetData, environment]);
 
