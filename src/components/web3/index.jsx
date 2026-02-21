@@ -65,7 +65,9 @@ export default ({
                 symbol: contract.symbol,
                 decimals: contract.decimals,
                 image: contract.image
-                  ? `${window.location.origin}${contract.image}`
+                  ? contract.image.startsWith("http")
+                    ? contract.image
+                    : `${window.location.origin}${contract.image}`
                   : undefined,
               },
             },

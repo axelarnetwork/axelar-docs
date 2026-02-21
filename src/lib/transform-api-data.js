@@ -18,6 +18,7 @@ export function transformChains(apiChains) {
       provider_params: chain.provider_params || [],
       image: resolveImageUrl(chain.image),
       explorer: chain.explorer,
+      is_staging: chain.is_staging,
     }))
     .sort((a, b) => (a.name || "").localeCompare(b.name || ""));
 }

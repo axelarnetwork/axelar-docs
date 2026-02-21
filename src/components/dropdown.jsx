@@ -29,7 +29,10 @@ function flattenAssetContracts(assets, chain) {
       .filter((c) => !chain || equals_ignore_case(c?.chain, chain))
       .filter((c, i) => chain || i < 1);
 
-    return contracts.map((c) => ({ ...asset, ...c, name: asset?.symbol }));
+    return contracts.map((c) => {
+      const merged = { ...asset, ...c };
+      return { ...merged, name: merged.symbol };
+    });
   });
 }
 

@@ -11,8 +11,23 @@ import {
   transformEvmAssets,
 } from "../lib/transform-api-data";
 
-// In-memory cache to avoid refetching across components on the same page.
+// In-memory cache with TTL to avoid refetching across components on the same page.
+const CACHE_TTL_MS = 10 * 60 * 1000; // 10 minutes
 const cache = {};
+
+function getCached(key) {
+  const entry = cache[key];
+  if (!entry) return null;
+  if (Date.now() - entry.timestamp > CACHE_TTL_MS) {
+    delete cache[key];
+    return null;
+  }
+  return entry.data;
+}
+
+function setCache(key, data) {
+  cache[key] = { data, timestamp: Date.now() };
+}
 
 function getCacheKey(environment, dataType) {
   return `${environment}:${dataType}`;
@@ -24,13 +39,14 @@ function getCacheKey(environment, dataType) {
  */
 export function useChainData(environment = "mainnet") {
   const cacheKey = getCacheKey(environment, "chains");
-  const [data, setData] = useState(() => cache[cacheKey] || null);
-  const [loading, setLoading] = useState(!cache[cacheKey]);
+  const [data, setData] = useState(() => getCached(cacheKey));
+  const [loading, setLoading] = useState(!getCached(cacheKey));
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    if (cache[cacheKey]) {
-      setData(cache[cacheKey]);
+    const cached = getCached(cacheKey);
+    if (cached) {
+      setData(cached);
       setLoading(false);
       return;
     }
@@ -47,7 +63,7 @@ export function useChainData(environment = "mainnet") {
           gateways: transformGateways(chainsResponse),
           gasServices: transformGasServices(contractsResponse),
         };
-        cache[cacheKey] = result;
+        setCache(cacheKey, result);
         setData(result);
       })
       .catch((err) => {
@@ -79,13 +95,14 @@ export function useChainData(environment = "mainnet") {
  */
 export function useAssetData(environment = "mainnet") {
   const cacheKey = getCacheKey(environment, "assets");
-  const [data, setData] = useState(() => cache[cacheKey] || null);
-  const [loading, setLoading] = useState(!cache[cacheKey]);
+  const [data, setData] = useState(() => getCached(cacheKey));
+  const [loading, setLoading] = useState(!getCached(cacheKey));
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    if (cache[cacheKey]) {
-      setData(cache[cacheKey]);
+    const cached = getCached(cacheKey);
+    if (cached) {
+      setData(cached);
       setLoading(false);
       return;
     }
@@ -100,7 +117,7 @@ export function useAssetData(environment = "mainnet") {
         const result = {
           evmAssets: transformEvmAssets(assetsResponse),
         };
-        cache[cacheKey] = result;
+        setCache(cacheKey, result);
         setData(result);
       })
       .catch((err) => {

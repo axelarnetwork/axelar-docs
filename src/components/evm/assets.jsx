@@ -38,6 +38,12 @@ export default ({ environment = "mainnet" }) => {
   const [chainData, setChainData] = useState(null);
   const [assetData, setAssetData] = useState(null);
 
+  // Reset selections when environment changes
+  useEffect(() => {
+    setAssetData(null);
+    setChainData(null);
+  }, [environment]);
+
   // Set default asset once data loads
   useEffect(() => {
     if (_evm_assets.length > 0 && assetData === null) {
@@ -47,7 +53,7 @@ export default ({ environment = "mainnet" }) => {
         ),
       );
     }
-  }, [_evm_assets, environment]);
+  }, [_evm_assets, assetData, environment]);
 
   if (loading) return <AssetTableSkeleton />;
   if (error) return <ErrorMessage message="Failed to load asset data." />;

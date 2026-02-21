@@ -11,8 +11,9 @@ const cache = {};
  *   <Version repo="tofnd" />                    — fetches latest GitHub release tag
  */
 export default ({ environment = "mainnet", repo }) => {
-  const cacheKey = repo || environment;
+  const cacheKey = repo ? `${repo}:${environment}` : environment;
   const [version, setVersion] = useState(() => cache[cacheKey] || null);
+  const [failed, setFailed] = useState(false);
 
   useEffect(() => {
     if (cache[cacheKey]) {
@@ -32,12 +33,17 @@ export default ({ environment = "mainnet", repo }) => {
         cache[cacheKey] = v;
         setVersion(v);
       })
-      .catch(() => {});
+      .catch((err) => {
+        if (cancelled) return;
+        console.error(`Failed to fetch version (${cacheKey}):`, err);
+        setFailed(true);
+      });
 
     return () => {
       cancelled = true;
     };
   }, [cacheKey]);
 
+  if (failed) return <span>N/A</span>;
   return <span>{version || "..."}</span>;
 };
