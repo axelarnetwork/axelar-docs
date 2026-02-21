@@ -8,6 +8,7 @@ import { resolveImageUrl } from "./axelarscan-api";
  *   { id, name, chain_id, network_id, provider_params, image, explorer }
  */
 export function transformChains(apiChains) {
+  if (!Array.isArray(apiChains)) return [];
   return apiChains
     .filter((c) => c.chain_type === "evm" || c.chain_type === "vm")
     .map((chain) => ({
@@ -28,6 +29,7 @@ export function transformChains(apiChains) {
  * Output shape matches gateways.json: [{ id, address }]
  */
 export function transformGateways(apiChains) {
+  if (!Array.isArray(apiChains)) return [];
   return apiChains
     .filter((c) => c.gateway?.address)
     .map((chain) => ({
@@ -61,6 +63,7 @@ export function transformGasServices(contractsResponse) {
  *   { id, name, symbol, image, contracts: [{ chain, address, symbol, decimals }] }
  */
 export function transformEvmAssets(apiAssets) {
+  if (!Array.isArray(apiAssets)) return [];
   return apiAssets
     .map((asset) => ({
       id: asset.id || asset.denom,

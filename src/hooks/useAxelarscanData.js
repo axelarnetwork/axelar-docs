@@ -48,6 +48,7 @@ export function useChainData(environment = "mainnet") {
     if (cached) {
       setData(cached);
       setLoading(false);
+      setError(null);
       return;
     }
 
@@ -104,6 +105,7 @@ export function useAssetData(environment = "mainnet") {
     if (cached) {
       setData(cached);
       setLoading(false);
+      setError(null);
       return;
     }
 

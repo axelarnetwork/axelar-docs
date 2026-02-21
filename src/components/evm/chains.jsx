@@ -1,3 +1,5 @@
+import gateways_static from "../../data/gateways.json";
+import gas_services_static from "../../data/gas_services.json";
 import { useChainData } from "../../hooks/useAxelarscanData";
 import { ellipse } from "../../utils";
 import Copy from "../copy";
@@ -25,8 +27,12 @@ export default ({ environment = "mainnet" }) => {
             provider_params?.[0]?.blockExplorerUrls?.[0];
           const gateway_data = gateways.find((_c) => _c?.id === id);
           const gateway_contract_address = gateway_data?.address;
+          const gateway_static = (gateways_static?.[environment] || []).find((_c) => _c?.id === id);
+          const gateway_object_id = gateway_static?.objectId;
           const gas_service_data = gasServices.find((_c) => _c?.id === id);
           const gas_service_address = gas_service_data?.address;
+          const gas_service_static = (gas_services_static?.[environment] || []).find((_c) => _c?.id === id);
+          const gas_service_object_id = gas_service_static?.objectId;
 
           const addressPath = c.explorer?.address_path || "/address/{address}";
 
@@ -104,6 +110,34 @@ export default ({ environment = "mainnet" }) => {
                     )}
                   </div>
                 </div>
+                {id === "sui" && gateway_object_id && (
+                  <div className="flex flex-col flex-wrap justify-between">
+                    <span className="whitespace-nowrap text-sm text-foreground">
+                      Gateway Object ID:
+                    </span>
+                    <div className="flex items-center text-sm space-x-1">
+                      {explorerLink(gateway_object_id) ? (
+                        <a
+                          href={explorerLink(gateway_object_id)}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="no-underline text-primary font-clash font-semibold"
+                        >
+                          {ellipse(gateway_object_id, 14)}
+                        </a>
+                      ) : (
+                        <span className="font-clash font-semibold">
+                          {ellipse(gateway_object_id, 14)}
+                        </span>
+                      )}
+                      <Copy
+                        size={18}
+                        hide={true}
+                        value={gateway_object_id}
+                      />
+                    </div>
+                  </div>
+                )}
                 <div className="flex flex-col flex-wrap justify-between">
                   <span className="whitespace-nowrap text-sm text-foreground">
                     Gas Service Contract:
@@ -134,6 +168,34 @@ export default ({ environment = "mainnet" }) => {
                     )}
                   </div>
                 </div>
+                {id === "sui" && gas_service_object_id && (
+                  <div className="flex flex-col flex-wrap justify-between">
+                    <span className="whitespace-nowrap text-sm text-foreground">
+                      Gas Service Object ID:
+                    </span>
+                    <div className="flex items-center text-sm space-x-1">
+                      {explorerLink(gas_service_object_id) ? (
+                        <a
+                          href={explorerLink(gas_service_object_id)}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="no-underline text-primary font-clash font-semibold"
+                        >
+                          {ellipse(gas_service_object_id, 14)}
+                        </a>
+                      ) : (
+                        <span className="font-clash font-semibold">
+                          {ellipse(gas_service_object_id, 14)}
+                        </span>
+                      )}
+                      <Copy
+                        size={18}
+                        hide={true}
+                        value={gas_service_object_id}
+                      />
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
           );
