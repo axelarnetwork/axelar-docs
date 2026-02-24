@@ -6,8 +6,56 @@ import Copy from "../copy";
 import { ChainCardSkeleton, ErrorMessage } from "../loading-skeleton";
 import AddChain from "../web3";
 
+const CHAIN_TYPE_STYLES = {
+  evm: "bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-300",
+  amplifier: "bg-purple-100 text-purple-700 dark:bg-purple-900 dark:text-purple-300",
+  cosmos: "bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300",
+};
+
+const CHAIN_TYPE_DISPLAY = {
+  evm: "EVM",
+  amplifier: "Amplifier",
+  cosmos: "Cosmos",
+};
+
+// Non-EVM chains where MetaMask doesn't work.
+const HIDE_METAMASK_CHAINS = ["stellar", "sui", "xrpl"];
+
+// Non-EVM native chains where the EVM ITS contract address doesn't apply.
+const NON_EVM_ITS_CHAINS = ["stellar", "sui", "xrpl"];
+
+function AddressRow({ label, address, explorerLink, suiObjectPath }) {
+  const link = explorerLink?.(address, suiObjectPath);
+  return (
+    <div className="flex flex-col flex-wrap justify-between">
+      <span className="whitespace-nowrap text-sm text-foreground">{label}:</span>
+      <div className="flex items-center text-sm space-x-1">
+        {address ? (
+          link ? (
+            <a
+              href={link}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="no-underline text-primary font-clash font-semibold"
+            >
+              {ellipse(address, 14)}
+            </a>
+          ) : (
+            <span className="font-clash font-semibold">
+              {ellipse(address, 14)}
+            </span>
+          )
+        ) : (
+          <span className="text-foreground font-semibold">-</span>
+        )}
+        {address && <Copy size={18} hide={true} value={address} />}
+      </div>
+    </div>
+  );
+}
+
 export default ({ environment = "mainnet" }) => {
-  const { chains, gateways, gasServices, loading, error } =
+  const { chains, gateways, gasServices, itsAddress, loading, error } =
     useChainData(environment);
 
   if (loading) return <ChainCardSkeleton count={8} />;
@@ -16,9 +64,9 @@ export default ({ environment = "mainnet" }) => {
   return (
     <div className="grid lg:grid-cols-2 gap-5 not-prose">
       {chains
-        .filter((c) => !c?.is_staging)
+        .filter((c) => !c?.is_staging && !c?.deprecated)
         .map((c, i) => {
-          const { id, chain_id, network_id, name, provider_params, image } = {
+          const { id, chain_id, network_id, name, chain_type, provider_params, image } = {
             ...c,
           };
 
@@ -42,8 +90,11 @@ export default ({ environment = "mainnet" }) => {
             return `${explorer_url}${path.replace("{address}", addr)}`;
           };
 
-          // Sui contracts are objects, not accounts — use /object/ path
           const suiObjectPath = id === "sui" ? "/object/{address}" : null;
+          const showMetaMask = chain_type !== "cosmos" && !HIDE_METAMASK_CHAINS.includes(id);
+          const isCosmos = chain_type === "cosmos";
+          const prefix = c.prefix_address;
+          const lcdEndpoint = c.endpoints?.lcd?.[0];
 
           return (
             <div key={i} className="bg-background-neutral-dark rounded-xl p-5">
@@ -59,22 +110,35 @@ export default ({ environment = "mainnet" }) => {
                     />
                   )}
                   <div className="flex flex-col">
-                    <span className="text-base font-semibold font-clash">
-                      {name}
-                    </span>
-                    <span className="text-foreground text-sm font-medium">
-                      Chain ID: {chain_id}
-                    </span>
+                    <div className="flex items-center gap-2">
+                      <span className="text-base font-semibold font-clash">
+                        {name}
+                      </span>
+                      {chain_type && (
+                        <span className={`text-xs font-medium px-1.5 py-0.5 rounded uppercase ${
+                          CHAIN_TYPE_STYLES[chain_type] || ""
+                        }`}>
+                          {CHAIN_TYPE_DISPLAY[chain_type] || chain_type}
+                        </span>
+                      )}
+                    </div>
+                    {chain_id && (
+                      <span className="text-foreground text-sm font-medium">
+                        Chain ID: {chain_id}
+                      </span>
+                    )}
                   </div>
                 </div>
-                <AddChain
-                  environment={environment}
-                  chain={id}
-                  chainData={c}
-                />
+                {showMetaMask && (
+                  <AddChain
+                    environment={environment}
+                    chain={id}
+                    chainData={c}
+                  />
+                )}
               </div>
               <div className="flex flex-col gap-2.5">
-                <div className="flex flex-col pt-5  flex-wrap justify-between">
+                <div className="flex flex-col pt-5 flex-wrap justify-between">
                   <span className="whitespace-nowrap text-sm text-foreground">
                     Chain Name:
                   </span>
@@ -82,123 +146,76 @@ export default ({ environment = "mainnet" }) => {
                     <Copy size={18} title={network_id} value={network_id} />
                   </div>
                 </div>
-                <div className="flex flex-col flex-wrap justify-between">
-                  <span className="whitespace-nowrap text-sm text-foreground">
-                    Gateway Contract:
-                  </span>
-                  <div className="flex items-center text-sm space-x-1">
-                    {gateway_contract_address ? (
-                      explorerLink(gateway_contract_address, suiObjectPath) ? (
-                        <a
-                          href={explorerLink(gateway_contract_address, suiObjectPath)}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="no-underline text-primary font-clash font-semibold"
-                        >
-                          {ellipse(gateway_contract_address, 14)}
-                        </a>
-                      ) : (
-                        <span className="font-clash font-semibold">
-                          {ellipse(gateway_contract_address, 14)}
-                        </span>
-                      )
-                    ) : (
-                      <span className="text-foreground font-semibold">-</span>
-                    )}
-                    {gateway_contract_address && (
-                      <Copy
-                        size={18}
-                        hide={true}
-                        value={gateway_contract_address}
+                {!isCosmos && (
+                  <>
+                    <AddressRow
+                      label="Gateway Contract"
+                      address={gateway_contract_address}
+                      explorerLink={explorerLink}
+                      suiObjectPath={suiObjectPath}
+                    />
+                    {id === "sui" && gateway_object_id && (
+                      <AddressRow
+                        label="Gateway Object ID"
+                        address={gateway_object_id}
+                        explorerLink={explorerLink}
+                        suiObjectPath={suiObjectPath}
                       />
                     )}
-                  </div>
-                </div>
-                {id === "sui" && gateway_object_id && (
-                  <div className="flex flex-col flex-wrap justify-between">
-                    <span className="whitespace-nowrap text-sm text-foreground">
-                      Gateway Object ID:
-                    </span>
-                    <div className="flex items-center text-sm space-x-1">
-                      {explorerLink(gateway_object_id, suiObjectPath) ? (
-                        <a
-                          href={explorerLink(gateway_object_id, suiObjectPath)}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="no-underline text-primary font-clash font-semibold"
-                        >
-                          {ellipse(gateway_object_id, 14)}
-                        </a>
-                      ) : (
-                        <span className="font-clash font-semibold">
-                          {ellipse(gateway_object_id, 14)}
-                        </span>
-                      )}
-                      <Copy
-                        size={18}
-                        hide={true}
-                        value={gateway_object_id}
+                    <AddressRow
+                      label="Gas Service Contract"
+                      address={gas_service_address}
+                      explorerLink={explorerLink}
+                      suiObjectPath={suiObjectPath}
+                    />
+                    {id === "sui" && gas_service_object_id && (
+                      <AddressRow
+                        label="Gas Service Object ID"
+                        address={gas_service_object_id}
+                        explorerLink={explorerLink}
+                        suiObjectPath={suiObjectPath}
                       />
-                    </div>
-                  </div>
+                    )}
+                    {itsAddress && !NON_EVM_ITS_CHAINS.includes(id) && (
+                      <AddressRow
+                        label="ITS Contract"
+                        address={itsAddress}
+                        explorerLink={explorerLink}
+                      />
+                    )}
+                  </>
                 )}
-                <div className="flex flex-col flex-wrap justify-between">
-                  <span className="whitespace-nowrap text-sm text-foreground">
-                    Gas Service Contract:
-                  </span>
-                  <div className="flex items-center text-sm space-x-1">
-                    {gas_service_address ? (
-                      explorerLink(gas_service_address, suiObjectPath) ? (
-                        <a
-                          href={explorerLink(gas_service_address, suiObjectPath)}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="no-underline text-primary font-clash font-semibold"
-                        >
-                          {ellipse(gas_service_address, 14)}
-                        </a>
-                      ) : (
-                        <span className="font-clash font-semibold">
-                          {ellipse(gas_service_address, 14)}
+                {isCosmos && (
+                  <>
+                    {prefix && (
+                      <div className="flex flex-col flex-wrap justify-between">
+                        <span className="whitespace-nowrap text-sm text-foreground">
+                          Address Prefix:
                         </span>
-                      )
-                    ) : (
-                      <span className="text-gray-500 dark:text-white font-semibold">
-                        -
-                      </span>
+                        <div className="flex items-center text-sm space-x-1">
+                          <Copy size={18} title={prefix} value={prefix} />
+                        </div>
+                      </div>
                     )}
-                    {gas_service_address && (
-                      <Copy size={18} hide={true} value={gas_service_address} />
-                    )}
-                  </div>
-                </div>
-                {id === "sui" && gas_service_object_id && (
-                  <div className="flex flex-col flex-wrap justify-between">
-                    <span className="whitespace-nowrap text-sm text-foreground">
-                      Gas Service Object ID:
-                    </span>
-                    <div className="flex items-center text-sm space-x-1">
-                      {explorerLink(gas_service_object_id, suiObjectPath) ? (
-                        <a
-                          href={explorerLink(gas_service_object_id, suiObjectPath)}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="no-underline text-primary font-clash font-semibold"
-                        >
-                          {ellipse(gas_service_object_id, 14)}
-                        </a>
-                      ) : (
-                        <span className="font-clash font-semibold">
-                          {ellipse(gas_service_object_id, 14)}
+                    {lcdEndpoint && (
+                      <div className="flex flex-col flex-wrap justify-between">
+                        <span className="whitespace-nowrap text-sm text-foreground">
+                          LCD Endpoint:
                         </span>
-                      )}
-                      <Copy
-                        size={18}
-                        hide={true}
-                        value={gas_service_object_id}
-                      />
-                    </div>
-                  </div>
+                        <div className="flex items-center text-sm space-x-1">
+                          <a
+                            href={lcdEndpoint}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="no-underline text-primary font-clash font-semibold"
+                          >
+                            {ellipse(lcdEndpoint, 20)}
+                          </a>
+                          <Copy size={18} hide={true} value={lcdEndpoint} />
+                        </div>
+                      </div>
+                    )}
+                  </>
                 )}
               </div>
             </div>
