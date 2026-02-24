@@ -1,25 +1,30 @@
 import { resolveImageUrl } from "./axelarscan-api";
 
+const CHAIN_TYPE_LABELS = { evm: "evm", vm: "amplifier", cosmos: "cosmos" };
+
 /**
  * Transform getChains API response into the shape expected by evm/chains.jsx.
- * Filters to EVM and VM chains (includes amplifier chains like Hyperliquid).
- *
- * Output shape matches evm_chains.json:
- *   { id, name, chain_id, network_id, provider_params, image, explorer }
+ * Includes EVM, VM (Amplifier), and Cosmos chains.
  */
 export function transformChains(apiChains) {
   if (!Array.isArray(apiChains)) return [];
   return apiChains
-    .filter((c) => c.chain_type === "evm" || c.chain_type === "vm")
+    .filter((c) => c.chain_type === "evm" || c.chain_type === "vm" || c.chain_type === "cosmos")
+    .filter((c) => c.chain_type !== "vm" || c.voting_verifier?.address)
     .map((chain) => ({
       id: chain.id,
       name: chain.name,
       chain_id: chain.chain_id,
       network_id: chain.chain_name || chain.maintainer_id || chain.id,
+      chain_type: CHAIN_TYPE_LABELS[chain.chain_type] || chain.chain_type,
       provider_params: chain.provider_params || [],
       image: resolveImageUrl(chain.image),
       explorer: chain.explorer,
       is_staging: chain.is_staging,
+      prefix_address: chain.prefix_address,
+      endpoints: chain.endpoints,
+      no_inflation: chain.no_inflation,
+      deprecated: chain.deprecated,
     }))
     .sort((a, b) => (a.name || "").localeCompare(b.name || ""));
 }
