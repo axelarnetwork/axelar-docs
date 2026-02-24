@@ -56,6 +56,23 @@ export function transformGasServices(contractsResponse) {
 }
 
 /**
+ * Extract the Interchain Token Service (ITS) address from getContracts response.
+ * ITS is deployed via Create3 so the address is the same across all chains.
+ * Returns the primary ITS address string, or null.
+ */
+export function transformITSAddress(contractsResponse) {
+  if (!contractsResponse) return null;
+  const its = contractsResponse.interchain_token_service_contract;
+  if (!its?.addresses?.length) return null;
+  return its.addresses[0];
+}
+
+/**
+ * Chains that have been deprecated and should be excluded from asset listings.
+ */
+const DEPRECATED_ASSET_CHAINS = ["aurora"];
+
+/**
  * Transform getAssets API response into the shape expected by evm/assets.jsx.
  *
  * API shape:  { id, denom, name, symbol, decimals, image, addresses: { [chain]: { symbol, address } } }
@@ -73,7 +90,7 @@ export function transformEvmAssets(apiAssets) {
       symbol: asset.symbol || "",
       image: resolveImageUrl(asset.image),
       contracts: Object.entries(asset.addresses || {})
-        .filter(([_, addrData]) => addrData?.address)
+        .filter(([chainId, addrData]) => addrData?.address && !DEPRECATED_ASSET_CHAINS.includes(chainId))
         .map(([chainId, addrData]) => ({
           chain: chainId,
           address: addrData.address,

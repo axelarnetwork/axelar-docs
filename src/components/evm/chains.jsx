@@ -6,8 +6,12 @@ import Copy from "../copy";
 import { ChainCardSkeleton, ErrorMessage } from "../loading-skeleton";
 import AddChain from "../web3";
 
+// Chains where the MetaMask "Add Chain" button should be hidden
+// because MetaMask doesn't support them.
+const HIDE_METAMASK_CHAINS = ["hedera", "stellar", "sui", "xrpl", "xrpl-evm"];
+
 export default ({ environment = "mainnet" }) => {
-  const { chains, gateways, gasServices, loading, error } =
+  const { chains, gateways, gasServices, itsAddress, loading, error } =
     useChainData(environment);
 
   if (loading) return <ChainCardSkeleton count={8} />;
@@ -67,11 +71,13 @@ export default ({ environment = "mainnet" }) => {
                     </span>
                   </div>
                 </div>
-                <AddChain
-                  environment={environment}
-                  chain={id}
-                  chainData={c}
-                />
+                {!HIDE_METAMASK_CHAINS.includes(id) && (
+                  <AddChain
+                    environment={environment}
+                    chain={id}
+                    chainData={c}
+                  />
+                )}
               </div>
               <div className="flex flex-col gap-2.5">
                 <div className="flex flex-col pt-5  flex-wrap justify-between">
@@ -197,6 +203,30 @@ export default ({ environment = "mainnet" }) => {
                         hide={true}
                         value={gas_service_object_id}
                       />
+                    </div>
+                  </div>
+                )}
+                {itsAddress && (
+                  <div className="flex flex-col flex-wrap justify-between">
+                    <span className="whitespace-nowrap text-sm text-foreground">
+                      ITS Contract:
+                    </span>
+                    <div className="flex items-center text-sm space-x-1">
+                      {explorerLink(itsAddress, suiObjectPath) ? (
+                        <a
+                          href={explorerLink(itsAddress, suiObjectPath)}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="no-underline text-primary font-clash font-semibold"
+                        >
+                          {ellipse(itsAddress, 14)}
+                        </a>
+                      ) : (
+                        <span className="font-clash font-semibold">
+                          {ellipse(itsAddress, 14)}
+                        </span>
+                      )}
+                      <Copy size={18} hide={true} value={itsAddress} />
                     </div>
                   </div>
                 )}

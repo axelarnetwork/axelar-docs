@@ -239,6 +239,18 @@
       "name": "XPLA",
       "network_id": "xpla",
       "image": "/images/chains/xpla.svg"
+    },
+    {
+      "id": "mantra",
+      "name": "Mantra",
+      "network_id": "mantra",
+      "image": "/images/chains/mantra.svg"
+    },
+    {
+      "id": "babylon",
+      "name": "Babylon",
+      "network_id": "babylon",
+      "image": "/images/chains/babylon.svg"
     }
   ],
   "testnet": [

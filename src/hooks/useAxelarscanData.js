@@ -8,6 +8,7 @@ import {
   transformChains,
   transformGateways,
   transformGasServices,
+  transformITSAddress,
   transformEvmAssets,
 } from "../lib/transform-api-data";
 
@@ -63,6 +64,7 @@ export function useChainData(environment = "mainnet") {
           chains: transformChains(chainsResponse),
           gateways: transformGateways(chainsResponse),
           gasServices: transformGasServices(contractsResponse),
+          itsAddress: transformITSAddress(contractsResponse),
         };
         setCache(cacheKey, result);
         setData(result);
@@ -85,6 +87,7 @@ export function useChainData(environment = "mainnet") {
     chains: data?.chains || [],
     gateways: data?.gateways || [],
     gasServices: data?.gasServices || [],
+    itsAddress: data?.itsAddress || null,
     loading,
     error,
   };
