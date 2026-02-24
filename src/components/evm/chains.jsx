@@ -64,7 +64,7 @@ export default ({ environment = "mainnet" }) => {
   return (
     <div className="grid lg:grid-cols-2 gap-5 not-prose">
       {chains
-        .filter((c) => !c?.is_staging)
+        .filter((c) => !c?.is_staging && !c?.deprecated)
         .map((c, i) => {
           const { id, chain_id, network_id, name, chain_type, provider_params, image } = {
             ...c,
@@ -122,9 +122,11 @@ export default ({ environment = "mainnet" }) => {
                         </span>
                       )}
                     </div>
-                    <span className="text-foreground text-sm font-medium">
-                      Chain ID: {chain_id}
-                    </span>
+                    {chain_id && (
+                      <span className="text-foreground text-sm font-medium">
+                        Chain ID: {chain_id}
+                      </span>
+                    )}
                   </div>
                 </div>
                 {showMetaMask && (
