@@ -21,6 +21,9 @@ const CHAIN_TYPE_DISPLAY = {
 // Non-EVM chains where MetaMask doesn't work.
 const HIDE_METAMASK_CHAINS = ["hedera", "stellar", "sui", "xrpl"];
 
+// Non-EVM native chains where the EVM ITS contract address doesn't apply.
+const NON_EVM_ITS_CHAINS = ["stellar", "sui", "xrpl"];
+
 function AddressRow({ label, address, explorerLink, suiObjectPath }) {
   const link = explorerLink?.(address, suiObjectPath);
   return (
@@ -171,7 +174,7 @@ export default ({ environment = "mainnet" }) => {
                         suiObjectPath={suiObjectPath}
                       />
                     )}
-                    {chain_type === "evm" && itsAddress && (
+                    {itsAddress && !NON_EVM_ITS_CHAINS.includes(id) && (
                       <AddressRow
                         label="ITS Contract"
                         address={itsAddress}

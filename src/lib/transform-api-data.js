@@ -10,7 +10,7 @@ export function transformChains(apiChains) {
   if (!Array.isArray(apiChains)) return [];
   return apiChains
     .filter((c) => c.chain_type === "evm" || c.chain_type === "vm" || c.chain_type === "cosmos")
-    .filter((c) => c.chain_type !== "vm" || c.voting_verifier?.address)
+    .filter((c) => c.chain_type !== "vm" || c.voting_verifier?.address || c.gateway?.address)
     .map((chain) => ({
       id: chain.id,
       name: chain.name,
@@ -63,13 +63,22 @@ export function transformGasServices(contractsResponse) {
 /**
  * Extract the Interchain Token Service (ITS) address from getContracts response.
  * ITS is deployed via Create3 so the address is the same across all chains.
+ *
+ * The API shape is: { interchain_token_service_contract: { addresses: ["0x..."] } }
+ * We also handle a potential single `address` string for forward-compatibility.
  * Returns the primary ITS address string, or null.
  */
 export function transformITSAddress(contractsResponse) {
   if (!contractsResponse) return null;
   const its = contractsResponse.interchain_token_service_contract;
-  if (!its?.addresses?.length) return null;
-  return its.addresses[0];
+  if (!its) return null;
+  if (Array.isArray(its.addresses) && its.addresses.length > 0) {
+    return its.addresses[0];
+  }
+  if (typeof its.address === "string" && its.address) {
+    return its.address;
+  }
+  return null;
 }
 
 /**
