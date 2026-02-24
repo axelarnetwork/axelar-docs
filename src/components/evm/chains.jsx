@@ -19,7 +19,7 @@ const CHAIN_TYPE_DISPLAY = {
 };
 
 // Non-EVM chains where MetaMask doesn't work.
-const HIDE_METAMASK_CHAINS = ["hedera", "stellar", "sui", "xrpl"];
+const HIDE_METAMASK_CHAINS = ["stellar", "sui", "xrpl"];
 
 // Non-EVM native chains where the EVM ITS contract address doesn't apply.
 const NON_EVM_ITS_CHAINS = ["stellar", "sui", "xrpl"];
