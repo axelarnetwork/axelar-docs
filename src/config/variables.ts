@@ -12,7 +12,7 @@ export const AXELARSCAN_API_URLS = {
 export const AXELARSCAN_IMAGE_BASE = "https://axelarscan.io";
 
 export const LCD_URLS = {
-  mainnet: "https://lcd-axelar.imperator.co",
+  mainnet: "https://axelar-rest.publicnode.com",
   testnet: "https://axelar-testnet-lcd.qubelabs.io",
 };
 
