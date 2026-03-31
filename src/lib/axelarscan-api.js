@@ -41,9 +41,21 @@ export async function fetchLatestRelease(repo) {
 }
 
 export async function fetchNodeInfo(environment = "mainnet") {
-  const res = await fetch(
-    `${LCD_URLS[environment]}/cosmos/base/tendermint/v1beta1/node_info`,
+  const urls = LCD_URLS[environment];
+  for (const baseUrl of urls) {
+    try {
+      const res = await fetch(
+        `${baseUrl}/cosmos/base/tendermint/v1beta1/node_info`,
+        { signal: AbortSignal.timeout(2000) }
+      );
+      if (!res.ok) continue;
+      const data = await res.json();
+      if (data && Object.keys(data).length > 0) return data;
+    } catch {
+      // try next URL
+    }
+  }
+  throw new Error(
+    `Failed to fetch node info from all LCD endpoints for ${environment}`,
   );
-  if (!res.ok) throw new Error(`Failed to fetch node info: ${res.status}`);
-  return res.json();
 }
