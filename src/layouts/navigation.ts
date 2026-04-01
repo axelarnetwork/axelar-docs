@@ -142,7 +142,15 @@ export const getNavigation = (section) => {
                   href: "/dev/general-message-passing/solana/intro/",
                 },
                 {
-                  title: "Send Messages",
+                  title: "Send & Receive Messages",
+                  href: "/dev/general-message-passing/solana/gmp-messages/",
+                },
+                {
+                  title: "Interchain Token Transfers",
+                  href: "/dev/general-message-passing/solana/its/",
+                },
+                {
+                  title: "Contract Reference",
                   href: "/dev/general-message-passing/solana/gmp-contracts/",
                 },
               ],
