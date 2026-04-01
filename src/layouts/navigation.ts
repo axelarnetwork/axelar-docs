@@ -146,10 +146,6 @@ export const getNavigation = (section) => {
                   href: "/dev/general-message-passing/solana/gmp-messages/",
                 },
                 {
-                  title: "Interchain Token Transfers",
-                  href: "/dev/general-message-passing/solana/its/",
-                },
-                {
                   title: "Contract Reference",
                   href: "/dev/general-message-passing/solana/gmp-contracts/",
                 },
@@ -316,6 +312,10 @@ export const getNavigation = (section) => {
                       href: "https://github.com/axelarnetwork/axelar-contract-deployments/blob/main/stellar/docs/link-token.md",
                     },
                   ],
+                },
+                {
+                  title: "Solana",
+                  href: "/dev/send-tokens/solana/its/",
                 },
                 {
                   title: "XRPL",
