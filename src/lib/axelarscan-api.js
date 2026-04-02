@@ -40,10 +40,32 @@ export async function fetchLatestRelease(repo) {
   return res.json();
 }
 
-export async function fetchNodeInfo(environment = "mainnet") {
-  const res = await fetch(
-    `${LCD_URLS[environment]}/cosmos/base/tendermint/v1beta1/node_info`,
-  );
-  if (!res.ok) throw new Error(`Failed to fetch node info: ${res.status}`);
-  return res.json();
+const inflight = {};
+
+export function fetchNodeInfo(environment = "mainnet") {
+  if (inflight[environment]) return inflight[environment];
+
+  inflight[environment] = (async () => {
+    const urls = LCD_URLS[environment];
+    for (const baseUrl of urls) {
+      try {
+        const res = await fetch(
+          `${baseUrl}/cosmos/base/tendermint/v1beta1/node_info`,
+          { signal: AbortSignal.timeout(2000) }
+        );
+        if (!res.ok) continue;
+        const data = await res.json();
+        if (data && Object.keys(data).length > 0) return data;
+      } catch {
+        // try next URL
+      }
+    }
+    throw new Error(
+      `Failed to fetch node info from all LCD endpoints for ${environment}`,
+    );
+  })().finally(() => {
+    delete inflight[environment];
+  });
+
+  return inflight[environment];
 }
