@@ -160,6 +160,7 @@ docker run axelarnet/axelar-ampd:v1.14.2 verifier-address
 </tab-item>
 
 </tabs>
+
 <Callout>
 The address for your verifier node will also be the address that rewards are sent to (this will change in the future). You should make sure to claim and move any available rewards regularly to mitigate any associated risks.
 </Callout>
@@ -187,12 +188,11 @@ This will allow you to begin commands with `ampd`. If you set up `ampd` through 
 
 1. Run `ampd --version` to make sure that the right version of `ampd` is being used. It should be {AMPD}.
 
+   <Callout>
+   `ampd` releases can be found [here](https://github.com/axelarnetwork/axelar-amplifier/releases).
+   </Callout>
 
 </tab-item>
-
-<Callout>
-`ampd` releases can be found [here](https://github.com/axelarnetwork/axelar-amplifier/releases)
-</Callout>
 
 <tab-item title="<code>bash</code> alias">
    <Callout>
@@ -221,6 +221,7 @@ This will allow you to begin commands with `ampd`. If you set up `ampd` through 
    <Callout>
    Replace `ampd-darwin-arm64-v1.14.2` with the [`ampd` binary you downloaded](/validator/amplifier/verifier-onboarding#set-up-ampd).
    </Callout>
+
 1. Add an alias to `ampd` at the end of the `.zshrc` file on your machine:
 
     ```bash
@@ -600,23 +601,23 @@ Prior to running the `ampd` daemon, you will need to set up your wallet with fun
 
 1. Register support for desired chains, enabling `ampd` to participate in voting and signing for your supported chains.
 
-<tabs>
-<tab-item title="devnet">
-   ```bash
-   ampd register-chain-support validators ethereum-sepolia avalanche
-   ```
-</tab-item>
-<tab-item title="testnet">
-   ```bash
-   ampd register-chain-support amplifier flow sui stellar-2025-q4
-   ```
-</tab-item>
-<tab-item title="mainnet">
-   ```bash
-   ampd register-chain-support amplifier flow sui stellar
-   ```
-</tab-item>
-</tabs>
+   <tabs>
+   <tab-item title="devnet">
+      ```bash
+      ampd register-chain-support validators ethereum-sepolia avalanche
+      ```
+   </tab-item>
+   <tab-item title="testnet">
+      ```bash
+      ampd register-chain-support amplifier flow sui stellar-2025-q4
+      ```
+   </tab-item>
+   <tab-item title="mainnet">
+      ```bash
+      ampd register-chain-support amplifier flow sui stellar
+      ```
+   </tab-item>
+   </tabs>
 
    Multiple chain names can be passed, separated by a space (`ampd register-chain-support [service name] [chains]...`). Note that any chain you want to support here must have a corresponding `[[grpc.blockchain_service.chains]]` entry in your ampd `config.toml` and a running handler.
 
