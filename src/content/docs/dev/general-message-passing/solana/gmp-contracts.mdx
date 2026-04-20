@@ -1,6 +1,6 @@
 import { Callout } from "../../../../../components/callout";
 
-# Solana GMP Contracts
+# Solana Contract Reference
 
 ## Axelar Gateway
 
@@ -110,8 +110,10 @@ The instruction takes four parameters:
 The instruction requires the following [accounts](https://github.com/axelarnetwork/axelar-amplifier-solana/blob/main/programs/solana-axelar-gateway/src/instructions/call_contract.rs#L8):
 
 1. `caller`: The program or account initiating the call
-1. `signing_pda`: An optional `u8` PDA signer
+1. `signing_pda`: An optional PDA signer (required when caller is a program)
 1. `gateway_root_pda`: [Gateway configuration](/dev/general-message-passing/solana/gmp-contracts/#gateway-config) PDA
+1. `event_authority`: The Gateway's event authority account (for event emission)
+1. `program`: The Gateway program account
 
 The handler for this instruction is defined as follows:
 
@@ -134,6 +136,8 @@ let accounts = CallContract {
     caller: user_account.to_account_info(),    // The user's wallet account triggering the call
     signing_pda: None,                         // Not needed for an EOA signature
     gateway_root_pda: gateway_config.to_account_info(), // The on-chain gateway configuration account
+    event_authority: gateway_event_authority.to_account_info(),
+    program: gateway_program.to_account_info(),
 };
 ```
 
@@ -172,6 +176,8 @@ pub fn send_message(
         caller: ctx.program_id.to_account_info(),           // Your program's ID
         signing_pda: Some(signing_pda.to_account_info()),   // The derived PDA
         gateway_root_pda: gateway_config.to_account_info(), // Gateway PDA
+        event_authority: gateway_event_authority.to_account_info(),
+        program: gateway_program.to_account_info(),
     };
 
 
@@ -253,7 +259,7 @@ Once validated, the instruction marks the message as `executed`. This ensures th
 To ensure a secure execution of the arbitrary logic on the receiving destination program. The `validate_message` instruction should be called prior to executing the destination program's own logic.
 
 <Callout emoji="💡">
-    **Note:** Unlike the `approve_message` instruction which is called by Axelar's relayer, the `validate_message` instruction must be called by your destination program as part of its execute handler. This is typically done using the [executable_accounts](/dev/general-message-passing/solana/gmp-contracts/#executable-macro) macro and `validate_message` helper function provided by the Gateway SDK.
+    **Note:** Unlike the `approve_message` instruction which is called by Axelar's relayer, the `validate_message` instruction must be called by your destination program as part of its execute handler. This is typically done using the [executable_accounts](/dev/general-message-passing/solana/gmp-contracts/#executable-macro) macro and `validate_message` helper function provided by the Gateway SDK. See the [Send & Receive Messages](/dev/general-message-passing/solana/gmp-messages/) guide for a complete walkthrough.
 </Callout>
 
 The instruction takes one parameter:
@@ -280,33 +286,21 @@ Once executed successfully, the Gateway emits a [MessageExecutedEvent](/dev/gene
 
 ### Executable Macro
 
+The [executable_accounts!](https://github.com/axelarnetwork/axelar-amplifier-solana/blob/main/programs/solana-axelar-gateway/src/executable.rs) macro generates the account structure your destination program needs to receive and validate Axelar GMP messages. For a step-by-step guide on using this macro, see [Send & Receive Messages](/dev/general-message-passing/solana/gmp-messages/).
 
-The Executable Macro is used by your destination program (separate from the gateway) to receive Axelar GMP messages. It will interact with other instructions from the Gateway, such as the [Validate Message](/dev/general-message-passing/solana/gmp-contracts/#validate-message) instruction before executing your own logic. 
+<Callout emoji="💡">
+The `executable_accounts!` macro is a convenience helper. If you need more control, you can copy the macro's generated code from the [source](https://github.com/axelarnetwork/axelar-amplifier-solana/blob/main/programs/solana-axelar-gateway/src/executable.rs) and customize it directly.
+</Callout>
 
-The [executable_accounts!](https://github.com/axelarnetwork/axelar-amplifier-solana/blob/main/programs/solana-axelar-gateway/src/executable.rs#L106) macro generates the program's required account structure .  
+The macro generates an `AxelarExecuteAccounts` struct with the following accounts:
 
-```rust
-use anchor_lang::prelude::*; 
-use solana_axelar_gateway::{executable::*, executable_accounts};
+- `incoming_message_pda` — The approved message PDA (mutable, derived from command ID)
+- `signing_pda` — Validates the message signer (derived from command ID)
+- `gateway_root_pda` — Gateway configuration PDA
+- `event_authority` — Gateway event authority
+- `axelar_gateway_program` — Reference to the Gateway program
 
-
-// Generate the required account structure
-executable_accounts!(Execute);
-
-// NOTE: Do not add #[instruction(message: Message, payload: Vec<u8>)] 
-// to this struct due to an Anchor limitation
-#[derive(Accounts)]
-pub struct Execute<'info> {
-    // GMP Accounts - generated by the macro
-    pub executable: AxelarExecuteAccounts<'info>,
-    
-    // Your program accounts here
-    #[account(mut)]
-    pub my_account: Account<'info, MyAccount>,
-}
-```
-
-Create an execute instruction that validates and processes the message:
+The `validate_message` helper function performs a CPI to the Gateway to verify the message and mark it as executed:
 
 ```rust
 use solana_axelar_gateway::executable::{Message, ExecutablePayloadEncodingScheme, validate_message};
@@ -315,20 +309,20 @@ pub fn execute_handler(
     ctx: Context<Execute>,
     message: Message,
     payload: Vec<u8>,
-    encoding_scheme: solana_axelar_gateway::executable::ExecutablePayloadEncodingScheme,
+    encoding_scheme: ExecutablePayloadEncodingScheme,
 ) -> Result<()> {
-    // Validate the message - this performs CPI to gateway
+    // Validate the message — this performs CPI to the Gateway
     validate_message(
         ctx.accounts,
         message,
         &payload,
         encoding_scheme,
     )?;
-    
+
     // Process your payload
     let data = deserialize_payload(&payload)?;
     ctx.accounts.my_account.process(data)?;
-    
+
     Ok(())
 }
 ```
@@ -509,13 +503,29 @@ pub struct GasAddedEvent {
 }
 ```
 
-## Example
+## PDA Seed Reference
 
-A full example of the sending a GMP message can be found [here](https://github.com/axelarnetwork/axelar-amplifier-solana/blob/main/programs/solana-axelar-memo/src/instructions/send_memo.rs). The same program can be used for receiving a GMP message. The functionality for that can be found [here](https://github.com/axelarnetwork/axelar-amplifier-solana/blob/main/programs/solana-axelar-memo/src/instructions/execute.rs).
+### Gateway Seeds
+
+| Seed | Derived From | Purpose |
+|------|-------------|---------|
+| `b"gateway"` | Gateway program ID | Gateway configuration PDA |
+| `b"incoming message"` + command_id | Gateway program ID | Incoming message PDA tracking approval/execution status |
+| `b"gtw-validate-msg"` + command_id | Gateway program ID | Signing PDA for message validation CPI |
+| `b"gtw-call-contract"` | Your program ID | Signing PDA authorizing outbound `call_contract` calls |
+| `b"ver-set-tracker"` + verifier_set_hash | Gateway program ID | Tracks verifier set epochs |
+| `b"gtw-sig-verif"` + payload_merkle_root | Gateway program ID | Tracks signature verification progress |
+
+### ITS Seeds
+
+| Seed | Derived From | Purpose |
+|------|-------------|---------|
+| `b"axelar-its-token-authority"` | Your program ID | Authority for the ATA holding received interchain tokens. Sign with this to spend. |
+| `b"interchain-transfer-execute"` + destination_program_id | ITS program ID | Signer proving ITS invoked your program via CPI |
+| `b"interchain-token-service"` | ITS program ID | ITS root configuration PDA |
+| `b"token-manager"` + its_root_pda + token_id | ITS program ID | Token manager PDA for a given token |
 
 ## Support
 
-- For general questions please reach out at our [support channel](https://github.com/axelarnetwork/support/issues) on GitHub
-- For issues with any of the Solana programs please open an issue on the Axelar Solana Repository [here](https://github.com/axelarnetwork/axelar-amplifier-solana/issues)
-
-
+- For general questions, reach out at the [support channel](https://github.com/axelarnetwork/support/issues) on GitHub.
+- For issues with Solana programs, open an issue on the [axelar-amplifier-solana](https://github.com/axelarnetwork/axelar-amplifier-solana/issues) repository.

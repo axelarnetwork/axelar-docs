@@ -12,8 +12,13 @@ export const AXELARSCAN_API_URLS = {
 export const AXELARSCAN_IMAGE_BASE = "https://axelarscan.io";
 
 export const LCD_URLS = {
-  mainnet: "https://lcd-axelar.imperator.co",
-  testnet: "https://axelar-testnet-lcd.qubelabs.io",
+  mainnet: [
+    "https://lcd-axelar.imperator.co",
+    "https://axelar-lcd.qubelabs.io",
+  ],
+  testnet: [
+    "https://axelar-testnet-lcd.qubelabs.io"
+  ],
 };
 
 export const GITHUB_API_BASE = "https://api.github.com";
