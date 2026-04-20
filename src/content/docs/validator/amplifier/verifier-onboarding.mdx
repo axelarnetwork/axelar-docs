@@ -11,19 +11,49 @@ import { AMPD } from '/src/config/variables';
 
 By running a **verifier** for a chain integration with Axelar's Amplifier, you will be responsible for voting on the validity of transactions on the Axelar network and signing command batches for a given chain.
 
-## `tofnd` and `ampd`
+## Architecture
 
-A verifier uses `ampd`, an off-chain daemon responsible for voting and signing with the Amplifier protocol, and `tofnd`, a threshold cryptography library that `ampd` depends on.
+Running a verifier requires three components:
+
+1. **tofnd** - threshold signing service
+2. **ampd** - core daemon that subscribes to Axelar chain events and exposes a gRPC server
+3. **One handler binary per chain** you want to support (e.g. `evm-handler`, `solana-handler`)
+
+```
+                    ┌───────────────────────────────────┐
+                    │          Axelar Node              │
+                    │  (JSON-RPC :26657, gRPC :9090)    │
+                    └──────────────┬────────────────────┘
+                                   │
+                    ┌──────────────▼─────────────────────┐
+┌────────┐          │            ampd                    │
+│ tofnd  │◄─────────│  - subscribes to chain events      │
+│ :50051 │          │  - broadcasts transactions         │
+└────────┘          │  - gRPC server for handlers :9090  │
+                    └───────────────┬────────────────────┘
+                                    │ gRPC
+              ┌────────────┬────────┼───────┬────────────┐
+              │            │        │       │            │
+          ┌───▼───┐   ┌────▼───┐ ┌──▼────┐ ┌──▼────┐ ┌───▼───┐
+          │  evm  │   │ solana │ │  sui  │ │stellar│ │ xrpl  │
+          │handler│   │handler │ │handler│ │handler│ │handler│
+          └───────┘   └────────┘ └───────┘ └───────┘ └───────┘
+              │            │         │         │          │
+          EVM RPC       Solana   Sui RPC   Stellar   XRPL RPC
+                          RPC                RPC
+```
+
+Handlers are separate processes that connect to ampd's gRPC server. If a handler crashes, it does not affect ampd or other handlers.
 
 There are three ways to set up and run a verifier:
 
 - **Option 1: Source** -- Clone and build directly from the GitHub source code.
-- **Option 2: Binaries** -- This method requires you to install and run the `tofnd` and `ampd` binaries on your local machine.
-- **Option 3: Docker** -- Use [Docker](https://docs.docker.com/engine/install/) to set up `tofnd` and `ampd`.
+- **Option 2: Binaries** -- Download prebuilt binaries from the GitHub releases page.
+- **Option 3: Docker** -- Use [Docker](https://docs.docker.com/engine/install/) to run `tofnd`, `ampd`, and handlers.
 
 ## Set up `tofnd`
 
-`ampd` needs access to a locally running `tofnd` instance in order to onboard as a verifier or run the daemon. See the [tofnd repository](https://github.com/axelarnetwork/tofnd) for more information. 
+`ampd` needs access to a locally running `tofnd` instance in order to onboard as a verifier or run the daemon. See the [tofnd repository](https://github.com/axelarnetwork/tofnd) for more information.
 
 <tabs>
 
@@ -43,13 +73,6 @@ Create a default mnemonic and configuration in `~/.tofnd/`, then back it up and 
 ```bash
 tofnd -m create
 mv ~/.tofnd/export ~/.tofnd/export-new-location
-```
-
-Create an alias or symlink to the `tofnd` binary in your `.bashrc`. Be sure to specify the correct file name which may be a different architecture or later version than `v1.0.1`.
-
-```bash
-echo "alias tofnd=~/Downloads/tofnd-linux-amd64-v1.0.1" >> ~/.bashrc
-source ~/.bashrc
 ```
 
 Now run tofnd.
@@ -96,7 +119,7 @@ docker run -p 50051:50051 --env MNEMONIC_CMD=auto --env NOPASSWORD=true --env AD
 Leave this process running in the background, and perform additional commands in a new terminal window or shell.
 
 <Callout>
-Note: If you are running a validator as well, you should use a different node for your verifier (the Axelar node that ampd connects to) on both testnet and mainnet than the one being run for your validator node to prevent loss of rewards in case the verifier fails. This node can use the `everything` pruning config to reduce resource use. 
+Note: If you are running a validator as well, you should use a different node for your verifier (the Axelar node that ampd connects to) on both testnet and mainnet than the one being run for your validator node to prevent loss of rewards in case the verifier fails. This node can use the `everything` pruning config to reduce resource use.
 </Callout>
 
 <Callout>
@@ -110,33 +133,34 @@ Note: You also must run different `tofnd` instances for `vald` (for your validat
 <tab-item title="Source">
   Install `ampd` from source by cloning and building the [`axelar-amplifier`
   repository](https://github.com/axelarnetwork/axelar-amplifier).
+
+  ```bash
+  cargo build --release -p ampd
+  ```
 </tab-item>
 
 <tab-item title="Binary">
   Download the [`ampd`
-  binary](https://github.com/axelarnetwork/axelar-amplifier/releases/tag/ampd-v1.2.0)
+  binary](https://github.com/axelarnetwork/axelar-amplifier/releases/tag/ampd-v1.14.2)
   depending on the type of machine you have:
   - Linux:
-  [`ampd-linux-amd64-v1.2.0`](https://github.com/axelarnetwork/axelar-amplifier/releases/download/ampd-v1.2.0/ampd-linux-amd64-v1.2.0)
+  [`ampd-linux-amd64-v1.14.2`](https://github.com/axelarnetwork/axelar-amplifier/releases/download/ampd-v1.14.2/ampd-linux-amd64-v1.14.2)
   - Apple Silicon Mac:
-  [`ampd-darwin-arm64-v1.2.0`](https://github.com/axelarnetwork/axelar-amplifier/releases/download/ampd-v1.2.0/ampd-darwin-arm64-v1.2.0)
-  - Intel Mac:
-  [`ampd-darwin-amd64-v1.2.0`](https://github.com/axelarnetwork/axelar-amplifier/releases/download/ampd-v1.2.0/ampd-darwin-amd64-v1.2.0)
+  [`ampd-darwin-arm64-v1.14.2`](https://github.com/axelarnetwork/axelar-amplifier/releases/download/ampd-v1.14.2/ampd-darwin-arm64-v1.14.2)
 </tab-item>
 
 <tab-item title="Docker">
-From [Docker](https://hub.docker.com/r/axelarnet/axelar-ampd), pull and run the `1.2.0` version of `ampd`:
-
-
+From [Docker](https://hub.docker.com/r/axelarnet/axelar-ampd), pull and run the `1.14.2` version of `ampd`:
 
 ```bash
-docker pull axelarnet/axelar-ampd:v1.2.0
-docker run axelarnet/axelar-ampd:v1.2.0 verifier-address
+docker pull axelarnet/axelar-ampd:v1.14.2
+docker run axelarnet/axelar-ampd:v1.14.2 verifier-address
 ```
 
 </tab-item>
 
 </tabs>
+
 <Callout>
 The address for your verifier node will also be the address that rewards are sent to (this will change in the future). You should make sure to claim and move any available rewards regularly to mitigate any associated risks.
 </Callout>
@@ -148,10 +172,10 @@ This will allow you to begin commands with `ampd`. If you set up `ampd` through 
 <tabs>
 
 <tab-item title="Symbolic link">
-1. Add a symbolic link named `ampd` in your binaries folder.:
+1. Add a symbolic link named `ampd` in your binaries folder:
 
     ```bash
-    sudo ln -s ~/Downloads/ampd-*-v1.2.0 /usr/local/bin/ampd
+    sudo ln -s ~/Downloads/ampd-*-v1.14.2 /usr/local/bin/ampd
     ```
 
 1. Make the binary executable:
@@ -164,22 +188,21 @@ This will allow you to begin commands with `ampd`. If you set up `ampd` through 
 
 1. Run `ampd --version` to make sure that the right version of `ampd` is being used. It should be {AMPD}.
 
+   <Callout>
+   `ampd` releases can be found [here](https://github.com/axelarnetwork/axelar-amplifier/releases).
+   </Callout>
 
 </tab-item>
 
-<Callout>
-`ampd` releases can be found [here](https://github.com/axelarnetwork/axelar-amplifier/releases)
-</Callout>
-
 <tab-item title="<code>bash</code> alias">
    <Callout>
-   Replace `ampd-darwin-arm64-v1.2.0` with the [`ampd` binary you downloaded](/validator/amplifier/verifier-onboarding#set-up-ampd).
+   Replace `ampd-darwin-arm64-v1.14.2` with the [`ampd` binary you downloaded](/validator/amplifier/verifier-onboarding#set-up-ampd).
    </Callout>
 
 1. Add an alias to `ampd` at the end of the `.bashrc` file on your machine:
 
    ```bash
-   echo "alias ampd=~/Downloads/ampd-darwin-arm64-v1.2.0" >> ~/.bashrc
+   echo "alias ampd=~/Downloads/ampd-darwin-arm64-v1.14.2" >> ~/.bashrc
    ```
 
 1. Reload the file to apply all changes:
@@ -196,12 +219,13 @@ This will allow you to begin commands with `ampd`. If you set up `ampd` through 
 
 <tab-item title="<code>zsh</code> alias">
    <Callout>
-   Replace `ampd-darwin-arm64-v1.2.0` with the [`ampd` binary you downloaded](/validator/amplifier/verifier-onboarding#set-up-ampd).
+   Replace `ampd-darwin-arm64-v1.14.2` with the [`ampd` binary you downloaded](/validator/amplifier/verifier-onboarding#set-up-ampd).
    </Callout>
+
 1. Add an alias to `ampd` at the end of the `.zshrc` file on your machine:
 
     ```bash
-    echo "ampd=~/Downloads/ampd-darwin-arm64-v1.2.0" >> ~/.zshrc
+    echo "ampd=~/Downloads/ampd-darwin-arm64-v1.14.2" >> ~/.zshrc
     ```
 
 1. Save and close the file.
@@ -220,35 +244,17 @@ This will allow you to begin commands with `ampd`. If you set up `ampd` through 
 
 </tabs>
 
-## Configure the verifier
+## Configure `ampd`
 
 Create an `ampd` configuration file at `~/.ampd/config.toml`.
 
-This configuration file tells `ampd` how to connect to your local `tofnd`, how to talk to the devnet and the Amplifier smart contracts, and includes a default configuration for verifying transactions on the Avalanche testnet.
-
-The following are an example `config.toml` files:
+This configuration file tells `ampd` how to connect to your local `tofnd`, how to talk to the Axelar network, and which chains to support via the gRPC server that handlers connect to.
 
 <tabs>
 <tab-item title="devnet-amplifier">
    ```toml
    tm_jsonrpc="http://devnet-amplifier.axelar.dev:26657"
    tm_grpc="tcp://devnet-amplifier.axelar.dev:9090"
-   event_buffer_cap="100000"
-   tm_grpc_timeout="5s"
-
-   [event_processor]
-   retry_delay="1s"
-   retry_max_attempts=3
-   stream_timeout="15s"
-   stream_buffer_size=100000
-   delay="500ms"
-   tx_broadcast_buffer_size=10
-
-   [event_sub]
-   poll_interval="1s"
-   block_processing_buffer=10
-   retry_delay="3s"
-   retry_max_attempts="3"
 
    [service_registry]
    cosmwasm_contract="axelar1c9fkszt5lq34vvvlat3fxj6yv7ejtqapz04e97vtc9m5z9cwnamq8zjlhz"
@@ -263,96 +269,6 @@ The following are an example `config.toml` files:
    tx_confirmation_queue_cap="1000"
 
    [tofnd_config]
-   batch_gas_limit=10000000
-   key_uid="axelar"
-   party_uid="ampd"
-   url="http://127.0.0.1:50051"
-   timeout="3s"
-
-   [grpc]
-   ip_addr = "127.0.0.1"
-   port = 9090
-   global_concurrency_limit = 1024
-   concurrency_limit_per_connection = 32
-   request_timeout = "30s"
- 
-   [grpc.blockchain_service]
-   chains=[]
-
-   [[handlers]]
-   chain_name="ethereum-sepolia"
-   chain_rpc_url="https://rpc.ankr.com/eth_sepolia"
-   cosmwasm_contract="axelar1e6jnuljng6aljk0tjct6f0hl9tye6l0n9p067pwx2374h82dmr0s9qcqy9"
-   type="EvmMsgVerifier"
-   chain_finalization="RPCFinalizedBlock"
-
-   [[handlers]]
-   chain_name="ethereum-sepolia"
-   chain_rpc_url="https://rpc.ankr.com/eth_sepolia"
-   cosmwasm_contract="axelar1e6jnuljng6aljk0tjct6f0hl9tye6l0n9p067pwx2374h82dmr0s9qcqy9"
-   type="EvmVerifierSetVerifier"
-
-   [[handlers]]
-   chain_name="ethereum-sepolia"
-   type="MultisigSigner"
-   cosmwasm_contract="axelar19jxy26z0qnnspa45y5nru0l5rmy9d637z5km2ndjxthfxf5qaswst9290r"
-
-   [[handlers]]
-   chain_name="avalanche"
-   chain_rpc_url="https://avalanche-fuji-c-chain-rpc.publicnode.com"
-   cosmwasm_contract="axelar1ty7mx0cllgz8xuvhn2j7e3qy8999ssgmjtktyqetl335em0g88lq6rjhl2"
-   type="EvmMsgVerifier"
-   chain_finalization="RPCFinalizedBlock"
-
-   [[handlers]]
-   chain_name="avalanche"
-   chain_rpc_url="https://avalanche-fuji-c-chain-rpc.publicnode.com"
-   cosmwasm_contract="axelar1ty7mx0cllgz8xuvhn2j7e3qy8999ssgmjtktyqetl335em0g88lq6rjhl2"
-   type="EvmVerifierSetVerifier"
-
-   [[handlers]]
-   chain_name="avalanche"
-   type="MultisigSigner"
-   cosmwasm_contract="axelar19jxy26z0qnnspa45y5nru0l5rmy9d637z5km2ndjxthfxf5qaswst9290r"
-   ```
-</tab-item>
-<tab-item title="testnet">
-   ```toml
-   # replace with your Axelar testnet node
-   tm_jsonrpc="http://127.0.0.1:26657"
-   tm_grpc="tcp://127.0.0.1:9090"
-   event_buffer_cap="100000"
-   tm_grpc_timeout="5s"
-
-   [service_registry]
-   cosmwasm_contract="axelar1rpj2jjrv3vpugx9ake9kgk3s2kgwt0y60wtkmcgfml5m3et0mrls6nct9m"
-
-   [event_processor]
-   retry_delay="1s"
-   retry_max_attempts=3
-   stream_timeout="15s"
-   stream_buffer_size=100000
-   delay="500ms"
-   tx_broadcast_buffer_size=10
-
-   [event_sub]
-   poll_interval="1s"
-   block_processing_buffer=10
-   retry_delay="3s"
-   retry_max_attempts="3"
-
-
-   [broadcast]
-   chain_id="axelar-testnet-lisbon-3"
-   gas_price="0.007uaxl"
-   tx_fetch_interval="1000ms"
-   tx_fetch_max_retries="15"
-   batch_gas_limit="20000000"
-   tx_confirmation_buffer_size="10"
-   tx_confirmation_queue_cap="1000"
-
-   [tofnd_config]
-   batch_gas_limit=10000000
    key_uid="axelar"
    party_uid="ampd"
    url="http://127.0.0.1:50051"
@@ -365,224 +281,86 @@ The following are an example `config.toml` files:
    concurrency_limit_per_connection=32
    request_timeout="30s"
 
-   [grpc.blockchain_service]
-   chains=[]
+   # Add a [[grpc.blockchain_service.chains]] entry for each chain you support.
+   # Contract addresses for devnet can be found at:
+   # https://github.com/axelarnetwork/axelar-contract-deployments/blob/main/axelar-chains-config/info/devnet-amplifier.json
 
-   # Flow
-   [[handlers]]
-   chain_name="flow"
-   type="MultisigSigner"
-   cosmwasm_contract="axelar14a4ar5jh7ue4wg28jwsspf23r8k68j7g5d6d3fsttrhp42ajn4xq6zayy5"
+   [[grpc.blockchain_service.chains]]
+   chain_name="ethereum-sepolia"
+   voting_verifier="axelar1e6jnuljng6aljk0tjct6f0hl9tye6l0n9p067pwx2374h82dmr0s9qcqy9"
+   multisig_prover="axelar1g0ufaefvqkfvhxacsns63s3p8raf9a0k8agg3r4tfhx3k6gcz0dq0ynmcx"
+   multisig="axelar19jxy26z0qnnspa45y5nru0l5rmy9d637z5km2ndjxthfxf5qaswst9290r"
 
-   [[handlers]]
-   chain_name="flow"
-   chain_rpc_url="<your_rpc_url>"
-   cosmwasm_contract="axelar1kkqdsqvwq9a7p9fj0w89wpx2m2t0vrxl782aslhq0kdw2xxd2aesv3un04"
-   chain_finalization="RPCFinalizedBlock"
-   type="EvmMsgVerifier"
-
-   [[handlers]]
-   chain_name="flow"
-   chain_rpc_url="<your_rpc_url>"
-   cosmwasm_contract="axelar1kkqdsqvwq9a7p9fj0w89wpx2m2t0vrxl782aslhq0kdw2xxd2aesv3un04"
-   chain_finalization="RPCFinalizedBlock"
-   type="EvmVerifierSetVerifier"
-
-   # Hedera
-   [[handlers]]
-   chain_name="hedera"
-   type="MultisigSigner"
-   cosmwasm_contract="axelar14a4ar5jh7ue4wg28jwsspf23r8k68j7g5d6d3fsttrhp42ajn4xq6zayy5"
-
-   [[handlers]]
-   chain_name="hedera"
-   chain_rpc_url="<your_rpc_url>"
-   cosmwasm_contract="axelar1ce9rcvw8htpwukc048z9kqmyk5zz52d5a7zqn9xlq2pg0mxul9mqxlx2cq"
-   chain_finalization="RPCFinalizedBlock"
-   type="EvmMsgVerifier"
-
-   [[handlers]]
-   chain_name="hedera"
-   chain_rpc_url="<your_rpc_url>"
-   cosmwasm_contract="axelar1ce9rcvw8htpwukc048z9kqmyk5zz52d5a7zqn9xlq2pg0mxul9mqxlx2cq"
-   chain_finalization="RPCFinalizedBlock"
-   type="EvmVerifierSetVerifier"
-
-   # Sui
-   [[handlers]]
-   chain_name="sui"
-   type="MultisigSigner"
-   cosmwasm_contract="axelar14a4ar5jh7ue4wg28jwsspf23r8k68j7g5d6d3fsttrhp42ajn4xq6zayy5"
-
-   [[handlers]]
-   type="SuiMsgVerifier"
-   cosmwasm_contract="axelar1sykyha8kzf35kc5hplqk76kdufntjn6w45ntwlevwxp74dqr3rvsq7fazh"
-   rpc_url="<your_rpc_url>"
-
-   [[handlers]]
-   type="SuiVerifierSetVerifier"
-   cosmwasm_contract="axelar1sykyha8kzf35kc5hplqk76kdufntjn6w45ntwlevwxp74dqr3rvsq7fazh"
-   rpc_url="<your_rpc_url>"
-
-   # Stellar
-   [[handlers]]
-   chain_name="stellar-2025-q4"
-   type="MultisigSigner"
-   cosmwasm_contract="axelar14a4ar5jh7ue4wg28jwsspf23r8k68j7g5d6d3fsttrhp42ajn4xq6zayy5"
-
-   [[handlers]]
-   type="StellarMsgVerifier"
-   cosmwasm_contract="axelar18y8p7dxesmxttvdzp5sqjksqrnh9xg32gtfqnkkucvv9de38f69qfn6ph3"
-   rpc_url="<your_rpc_url>"
-
-   [[handlers]]
-   type="StellarVerifierSetVerifier"
-   cosmwasm_contract="axelar18y8p7dxesmxttvdzp5sqjksqrnh9xg32gtfqnkkucvv9de38f69qfn6ph3"
-   rpc_url="<your_rpc_url>"
-
-   # XRPL EVM
-   [[handlers]]
-   chain_name="xrpl-evm"
-   type="MultisigSigner"
-   cosmwasm_contract="axelar14a4ar5jh7ue4wg28jwsspf23r8k68j7g5d6d3fsttrhp42ajn4xq6zayy5"
-
-   [[handlers]]
-   chain_name="xrpl-evm"
-   chain_rpc_url="<your_rpc_url>"
-   cosmwasm_contract="axelar1q8kn9t39ddpce42atk0d6wpdudr6djqxmz689m3nxy92ck0nnftqxfsuyk"
-   chain_finalization="RPCFinalizedBlock"
-   type="EvmMsgVerifier"
-
-   [[handlers]]
-   chain_name="xrpl-evm"
-   chain_rpc_url="<your_rpc_url>"
-   cosmwasm_contract="axelar1q8kn9t39ddpce42atk0d6wpdudr6djqxmz689m3nxy92ck0nnftqxfsuyk"
-   chain_finalization="RPCFinalizedBlock"
-   type="EvmVerifierSetVerifier"
-
-   # XRPL
-   [[handlers]]
-   chain_name="xrpl"
-   chain_rpc_url="<your_rpc_url>"
-   cosmwasm_contract="axelar1pnynr6wnmchutkv6490mdqqxkz54fnrtmq8krqhvglhsqhmu7wzsnc86sy"
-   type="XRPLMsgVerifier"
-
-   [[handlers]]
-   chain_name="xrpl"
-   type="XRPLMultisigSigner"
-   cosmwasm_contract="axelar14a4ar5jh7ue4wg28jwsspf23r8k68j7g5d6d3fsttrhp42ajn4xq6zayy5"
-
-   # Plume
-   [[handlers]]
-   chain_name="plume"
-   type="MultisigSigner"
-   cosmwasm_contract="axelar14a4ar5jh7ue4wg28jwsspf23r8k68j7g5d6d3fsttrhp42ajn4xq6zayy5"
-
-   [[handlers]]
-   chain_name="plume"
-   chain_rpc_url="<your_rpc_url>"
-   cosmwasm_contract="axelar1nrdqke6tcxjuymg5gyd9x3yg35n3wrgarnj3sqskp98z2xnvlx9q82f63t"
-   chain_finalization="RPCFinalizedBlock"
-   type="EvmMsgVerifier"
-
-   [[handlers]]
-   chain_name="plume"
-   chain_rpc_url="<your_rpc_url>"
-   cosmwasm_contract="axelar1nrdqke6tcxjuymg5gyd9x3yg35n3wrgarnj3sqskp98z2xnvlx9q82f63t"
-   chain_finalization="RPCFinalizedBlock"
-   type="EvmVerifierSetVerifier"
-
-   # Monad
-   [[handlers]]
-   chain_name="monad"
-   type="MultisigSigner"
-   cosmwasm_contract="axelar14a4ar5jh7ue4wg28jwsspf23r8k68j7g5d6d3fsttrhp42ajn4xq6zayy5"
-
-   [[handlers]]
-   chain_name="monad"
-   chain_rpc_url="<your_rpc_url>"
-   cosmwasm_contract="axelar1u080xgqqu9zhl4e9hf2ktdny4pq6kc2pmh6u6mlv8nw5zjvcetvqqjzeu0"
-   chain_finalization="RPCFinalizedBlock"
-   type="EvmMsgVerifier"
-
-   [[handlers]]
-   chain_name="monad"
-   chain_rpc_url="<your_rpc_url>"
-   cosmwasm_contract="axelar1u080xgqqu9zhl4e9hf2ktdny4pq6kc2pmh6u6mlv8nw5zjvcetvqqjzeu0"
-   chain_finalization="RPCFinalizedBlock"
-   type="EvmVerifierSetVerifier"
-
-   # Berachain
-   [[handlers]]
-   chain_name="berachain"
-   type="MultisigSigner"
-   cosmwasm_contract="axelar14a4ar5jh7ue4wg28jwsspf23r8k68j7g5d6d3fsttrhp42ajn4xq6zayy5"
-
-   [[handlers]]
-   chain_name="berachain"
-   chain_rpc_url="<your_rpc_url>"
-   cosmwasm_contract="axelar1xx6xdw6mwmfl6u2jygq0zfx2q6uyc8emtt29j9wg78l2l4p739nqmwsgal"
-   chain_finalization="RPCFinalizedBlock"
-   type="EvmMsgVerifier"
-
-   [[handlers]]
-   chain_name="berachain"
-   chain_rpc_url="<your_rpc_url>"
-   cosmwasm_contract="axelar1xx6xdw6mwmfl6u2jygq0zfx2q6uyc8emtt29j9wg78l2l4p739nqmwsgal"
-   chain_finalization="RPCFinalizedBlock"
-   type="EvmVerifierSetVerifier"
-
-   # Hyperliquid
-   [[handlers]]
-   chain_name="hyperliquid"
-   type="MultisigSigner"
-   cosmwasm_contract="axelar14a4ar5jh7ue4wg28jwsspf23r8k68j7g5d6d3fsttrhp42ajn4xq6zayy5"
-
-   [[handlers]]
-   chain_name="hyperliquid"
-   chain_rpc_url="<your_rpc_url>"
-   cosmwasm_contract="axelar1n64vk7l3zagh2eadkuhl7602lxluu86dn9smfxyp7c2e4v8pqj5sv4ypjr"
-   chain_finalization="RPCFinalizedBlock"
-   type="EvmMsgVerifier"
-
-   [[handlers]]
-   chain_name="hyperliquid"
-   chain_rpc_url="<your_rpc_url>"
-   cosmwasm_contract="axelar1n64vk7l3zagh2eadkuhl7602lxluu86dn9smfxyp7c2e4v8pqj5sv4ypjr"
-   chain_finalization="RPCFinalizedBlock"
-   type="EvmVerifierSetVerifier"
-
-   # Celo Sepolia
-   [[handlers]]
-   chain_name="celo-sepolia"
-   type="MultisigSigner"
-   cosmwasm_contract="axelar14a4ar5jh7ue4wg28jwsspf23r8k68j7g5d6d3fsttrhp42ajn4xq6zayy5"
-
-   [[handlers]]
-   chain_name="celo-sepolia"
-   chain_rpc_url="<your_rpc_url>"
-   cosmwasm_contract="axelar1ccyfamfvzvheec5c4knvq0l5g42knemfrnaq6t6znuwskt963k5smr9aam"
-   chain_finalization="RPCFinalizedBlock"
-   type="EvmMsgVerifier"
-
-   [[handlers]]
-   chain_name="celo-sepolia"
-   chain_rpc_url="<your_rpc_url>"
-   cosmwasm_contract="axelar1ccyfamfvzvheec5c4knvq0l5g42knemfrnaq6t6znuwskt963k5smr9aam"
-   chain_finalization="RPCFinalizedBlock"
-   type="EvmVerifierSetVerifier"
-
-   # Continue adding for each supported chain
+   [[grpc.blockchain_service.chains]]
+   chain_name="avalanche"
+   voting_verifier="axelar1ty7mx0cllgz8xuvhn2j7e3qy8999ssgmjtktyqetl335em0g88lq6rjhl2"
+   multisig_prover="axelar1e3uxqmkxfxkk3qk2aqfnsc7uk2ld57r37t6p33v8xlzw7ptfz34s3xu7w6"
+   multisig="axelar19jxy26z0qnnspa45y5nru0l5rmy9d637z5km2ndjxthfxf5qaswst9290r"
    ```
-   
+</tab-item>
+<tab-item title="testnet">
+   ```toml
+   # replace with your Axelar testnet node
+   tm_jsonrpc="http://127.0.0.1:26657"
+   tm_grpc="tcp://127.0.0.1:9090"
+
+   [service_registry]
+   cosmwasm_contract="axelar1rpj2jjrv3vpugx9ake9kgk3s2kgwt0y60wtkmcgfml5m3et0mrls6nct9m"
+
+   [broadcast]
+   chain_id="axelar-testnet-lisbon-3"
+   gas_price="0.007uaxl"
+   tx_fetch_interval="1000ms"
+   tx_fetch_max_retries="15"
+   batch_gas_limit="20000000"
+   tx_confirmation_buffer_size="10"
+   tx_confirmation_queue_cap="1000"
+
+   [tofnd_config]
+   key_uid="axelar"
+   party_uid="ampd"
+   url="http://127.0.0.1:50051"
+   timeout="3s"
+
+   [grpc]
+   ip_addr="127.0.0.1"
+   port=9090
+   global_concurrency_limit=1024
+   concurrency_limit_per_connection=32
+   request_timeout="30s"
+
+   # Add a [[grpc.blockchain_service.chains]] entry for each chain you support.
+   # Contract addresses can be found at:
+   # https://github.com/axelarnetwork/axelar-contract-deployments/blob/main/axelar-chains-config/info/testnet.json
+
+   [[grpc.blockchain_service.chains]]
+   chain_name="flow"
+   voting_verifier="axelar1kkqdsqvwq9a7p9fj0w89wpx2m2t0vrxl782aslhq0kdw2xxd2aesv3un04"
+   multisig_prover="axelar1rsuejfntt4rs2y8dn4dd3acszs00zyg9wpnsc6fmhevcp6plu5qspzn7e0"
+   multisig="axelar14a4ar5jh7ue4wg28jwsspf23r8k68j7g5d6d3fsttrhp42ajn4xq6zayy5"
+
+   [[grpc.blockchain_service.chains]]
+   chain_name="sui"
+   voting_verifier="axelar1sykyha8kzf35kc5hplqk76kdufntjn6w45ntwlevwxp74dqr3rvsq7fazh"
+   multisig_prover="axelar1v8jrupu2rqpskwgtr69max0ajul92q8z5mdxd505m2hu3xc5jzcqm8zyc6"
+   multisig="axelar14a4ar5jh7ue4wg28jwsspf23r8k68j7g5d6d3fsttrhp42ajn4xq6zayy5"
+
+   [[grpc.blockchain_service.chains]]
+   chain_name="stellar-2025-q4"
+   voting_verifier="axelar18y8p7dxesmxttvdzp5sqjksqrnh9xg32gtfqnkkucvv9de38f69qfn6ph3"
+   multisig_prover="axelar1aux2l6er84m6gtayqdwqhz4rl0txqdlj3v7szr72j7etve3jmpks7x4euy"
+   multisig="axelar14a4ar5jh7ue4wg28jwsspf23r8k68j7g5d6d3fsttrhp42ajn4xq6zayy5"
+
+   # Continue adding for each supported chain.
+   # See the ampd v1.14.2 release guide for a full list of testnet chain entries:
+   # https://github.com/axelarnetwork/axelar-contract-deployments/blob/main/releases/ampd/2025-12-19-ampd-v1.14.2.md
+   ```
 </tab-item>
 <tab-item title="mainnet">
    ```toml
    # replace with your Axelar mainnet node
    tm_jsonrpc="http://127.0.0.1:26657"
    tm_grpc="tcp://127.0.0.1:9090"
-   tm_grpc_timeout="5s"
-   event_buffer_cap="100000"
 
    [service_registry]
    cosmwasm_contract="axelar1rpj2jjrv3vpugx9ake9kgk3s2kgwt0y60wtkmcgfml5m3et0mrls6nct9m"
@@ -597,7 +375,6 @@ The following are an example `config.toml` files:
    tx_confirmation_queue_cap="1000"
 
    [tofnd_config]
-   batch_gas_limit=10000000
    key_uid="axelar"
    party_uid="ampd"
    url="http://127.0.0.1:50051"
@@ -610,208 +387,167 @@ The following are an example `config.toml` files:
    concurrency_limit_per_connection=32
    request_timeout="30s"
 
-   [grpc.blockchain_service]
-   chains=[]
+   # Add a [[grpc.blockchain_service.chains]] entry for each chain you support.
+   # Contract addresses can be found at:
+   # https://github.com/axelarnetwork/axelar-contract-deployments/blob/main/axelar-chains-config/info/mainnet.json
 
-   # Flow
-   [[handlers]]
+   [[grpc.blockchain_service.chains]]
    chain_name="flow"
-   type="MultisigSigner"
-   cosmwasm_contract="axelar14a4ar5jh7ue4wg28jwsspf23r8k68j7g5d6d3fsttrhp42ajn4xq6zayy5"
+   voting_verifier="axelar1kkqdsqvwq9a7p9fj0w89wpx2m2t0vrxl782aslhq0kdw2xxd2aesv3un04"
+   multisig_prover="axelar1rsuejfntt4rs2y8dn4dd3acszs00zyg9wpnsc6fmhevcp6plu5qspzn7e0"
+   multisig="axelar14a4ar5jh7ue4wg28jwsspf23r8k68j7g5d6d3fsttrhp42ajn4xq6zayy5"
 
-   [[handlers]]
-   chain_name="flow"
-   chain_rpc_url="<your_rpc_url>"
-   cosmwasm_contract="axelar1kkqdsqvwq9a7p9fj0w89wpx2m2t0vrxl782aslhq0kdw2xxd2aesv3un04"
-   chain_finalization="RPCFinalizedBlock"
-   type="EvmMsgVerifier"
-
-   [[handlers]]
-   chain_name="flow"
-   chain_rpc_url="<your_rpc_url>"
-   cosmwasm_contract="axelar1kkqdsqvwq9a7p9fj0w89wpx2m2t0vrxl782aslhq0kdw2xxd2aesv3un04"
-   chain_finalization="RPCFinalizedBlock"
-   type="EvmVerifierSetVerifier"
-
-   # Sui
-   [[handlers]]
+   [[grpc.blockchain_service.chains]]
    chain_name="sui"
-   type="MultisigSigner"
-   cosmwasm_contract="axelar14a4ar5jh7ue4wg28jwsspf23r8k68j7g5d6d3fsttrhp42ajn4xq6zayy5"
+   voting_verifier="axelar1sykyha8kzf35kc5hplqk76kdufntjn6w45ntwlevwxp74dqr3rvsq7fazh"
+   multisig_prover="axelar1v8jrupu2rqpskwgtr69max0ajul92q8z5mdxd505m2hu3xc5jzcqm8zyc6"
+   multisig="axelar14a4ar5jh7ue4wg28jwsspf23r8k68j7g5d6d3fsttrhp42ajn4xq6zayy5"
 
-   [[handlers]]
-   type="SuiMsgVerifier"
-   cosmwasm_contract="axelar1sykyha8kzf35kc5hplqk76kdufntjn6w45ntwlevwxp74dqr3rvsq7fazh"
-   rpc_url="<your_rpc_url>"
-
-   [[handlers]]
-   type="SuiVerifierSetVerifier"
-   cosmwasm_contract="axelar1sykyha8kzf35kc5hplqk76kdufntjn6w45ntwlevwxp74dqr3rvsq7fazh"
-   rpc_url="<your_rpc_url>"
-
-   # Stellar
-   [[handlers]]
+   [[grpc.blockchain_service.chains]]
    chain_name="stellar"
-   type="MultisigSigner"
-   cosmwasm_contract="axelar14a4ar5jh7ue4wg28jwsspf23r8k68j7g5d6d3fsttrhp42ajn4xq6zayy5"
+   voting_verifier="axelar1dalnx2yvmu3g3aau8m7fj426fk9u8dnzlr5azvqmr4x82rtclats8lhjmu"
+   multisig_prover="axelar1wdgp5xyqjyv5zsq86n6pah2lsmd46mn0gt4055mvvk6mezn9skqs6p93dg"
+   multisig="axelar14a4ar5jh7ue4wg28jwsspf23r8k68j7g5d6d3fsttrhp42ajn4xq6zayy5"
 
-   [[handlers]]
-   type="StellarMsgVerifier"
-   cosmwasm_contract="axelar1dalnx2yvmu3g3aau8m7fj426fk9u8dnzlr5azvqmr4x82rtclats8lhjmu"
-   rpc_url="<your_rpc_url>"
-
-   [[handlers]]
-   type="StellarVerifierSetVerifier"
-   cosmwasm_contract="axelar1dalnx2yvmu3g3aau8m7fj426fk9u8dnzlr5azvqmr4x82rtclats8lhjmu"
-   rpc_url="<your_rpc_url>"
-
-   # XRPL
-   [[handlers]]
-   chain_name="xrpl"
-   type="XRPLMultisigSigner"
-   cosmwasm_contract="axelar14a4ar5jh7ue4wg28jwsspf23r8k68j7g5d6d3fsttrhp42ajn4xq6zayy5"
-
-   [[handlers]]
-   chain_name="xrpl"
-   chain_rpc_url="<your_rpc_url>"
-   cosmwasm_contract="axelar14rd4uyrqyl0tw75gjn8zqfppmy08t3x3wrsujeqp37l0hghduanscfvkz6"
-   type="XRPLMsgVerifier"
-
-   # XRPL EVM
-   [[handlers]]
-   chain_name="xrpl-evm"
-   type="MultisigSigner"
-   cosmwasm_contract="axelar14a4ar5jh7ue4wg28jwsspf23r8k68j7g5d6d3fsttrhp42ajn4xq6zayy5"
-
-   [[handlers]]
-   chain_name="xrpl-evm"
-   chain_rpc_url="<your_rpc_url>"
-   cosmwasm_contract="axelar1q8kn9t39ddpce42atk0d6wpdudr6djqxmz689m3nxy92ck0nnftqxfsuyk"
-   chain_finalization="RPCFinalizedBlock"
-   type="EvmMsgVerifier"
-
-   [[handlers]]
-   chain_name="xrpl-evm"
-   chain_rpc_url="<your_rpc_url>"
-   cosmwasm_contract="axelar1q8kn9t39ddpce42atk0d6wpdudr6djqxmz689m3nxy92ck0nnftqxfsuyk"
-   chain_finalization="RPCFinalizedBlock"
-   type="EvmVerifierSetVerifier"
-
-   # Plume
-   [[handlers]]
-   chain_name="plume"
-   type="MultisigSigner"
-   cosmwasm_contract="axelar14a4ar5jh7ue4wg28jwsspf23r8k68j7g5d6d3fsttrhp42ajn4xq6zayy5"
-
-   [[handlers]]
-   chain_name="plume"
-   chain_rpc_url="<your_rpc_url>"
-   cosmwasm_contract="axelar1nrdqke6tcxjuymg5gyd9x3yg35n3wrgarnj3sqskp98z2xnvlx9q82f63t"
-   chain_finalization="RPCFinalizedBlock"
-   type="EvmMsgVerifier"
-
-   [[handlers]]
-   chain_name="plume"
-   chain_rpc_url="<your_rpc_url>"
-   cosmwasm_contract="axelar1nrdqke6tcxjuymg5gyd9x3yg35n3wrgarnj3sqskp98z2xnvlx9q82f63t"
-   chain_finalization="RPCFinalizedBlock"
-   type="EvmVerifierSetVerifier"
-
-   # Hedera
-   [[handlers]]
-   chain_name="hedera"
-   type="MultisigSigner"
-   cosmwasm_contract="axelar14a4ar5jh7ue4wg28jwsspf23r8k68j7g5d6d3fsttrhp42ajn4xq6zayy5"
-
-   [[handlers]]
-   chain_name="hedera"
-   chain_rpc_url="<your_rpc_url>"
-   cosmwasm_contract="axelar1q8q8qq59yv9wmhcreu5ykt4azsk83ttve4e7jyavt32k6jq862xsqexnfh"
-   chain_finalization="RPCFinalizedBlock"
-   type="EvmMsgVerifier"
-
-   [[handlers]]
-   chain_name="hedera"
-   chain_rpc_url="<your_rpc_url>"
-   cosmwasm_contract="axelar1q8q8qq59yv9wmhcreu5ykt4azsk83ttve4e7jyavt32k6jq862xsqexnfh"
-   chain_finalization="RPCFinalizedBlock"
-   type="EvmVerifierSetVerifier"
-
-   # Berachain
-   [[handlers]]
-   chain_name="berachain"
-   type="MultisigSigner"
-   cosmwasm_contract="axelar14a4ar5jh7ue4wg28jwsspf23r8k68j7g5d6d3fsttrhp42ajn4xq6zayy5"
-
-   [[handlers]]
-   chain_name="berachain"
-   chain_rpc_url="<your_rpc_url>"
-   cosmwasm_contract="axelar1xx6xdw6mwmfl6u2jygq0zfx2q6uyc8emtt29j9wg78l2l4p739nqmwsgal"
-   chain_finalization="RPCFinalizedBlock"
-   type="EvmMsgVerifier"
-
-   [[handlers]]
-   chain_name="berachain"
-   chain_rpc_url="<your_rpc_url>"
-   cosmwasm_contract="axelar1xx6xdw6mwmfl6u2jygq0zfx2q6uyc8emtt29j9wg78l2l4p739nqmwsgal"
-   chain_finalization="RPCFinalizedBlock"
-   type="EvmVerifierSetVerifier"
-
-   # Hyperliquid
-   [[handlers]]
-   chain_name="hyperliquid"
-   type="MultisigSigner"
-   cosmwasm_contract="axelar14a4ar5jh7ue4wg28jwsspf23r8k68j7g5d6d3fsttrhp42ajn4xq6zayy5"
-
-   [[handlers]]
-   chain_name="hyperliquid"
-   chain_rpc_url="<your_rpc_url>"
-   cosmwasm_contract="axelar1n64vk7l3zagh2eadkuhl7602lxluu86dn9smfxyp7c2e4v8pqj5sv4ypjr"
-   chain_finalization="RPCFinalizedBlock"
-   type="EvmMsgVerifier"
-
-   [[handlers]]
-   chain_name="hyperliquid"
-   chain_rpc_url="<your_rpc_url>"
-   cosmwasm_contract="axelar1n64vk7l3zagh2eadkuhl7602lxluu86dn9smfxyp7c2e4v8pqj5sv4ypjr"
-   chain_finalization="RPCFinalizedBlock"
-   type="EvmVerifierSetVerifier"
-
-   # Monad
-   [[handlers]]
-   chain_name="monad"
-   type="MultisigSigner"
-   cosmwasm_contract="axelar14a4ar5jh7ue4wg28jwsspf23r8k68j7g5d6d3fsttrhp42ajn4xq6zayy5"
-
-   [[handlers]]
-   chain_name="monad"
-   chain_rpc_url="<your_rpc_url>"
-   cosmwasm_contract="axelar1u080xgqqu9zhl4e9hf2ktdny4pq6kc2pmh6u6mlv8nw5zjvcetvqqjzeu0"
-   chain_finalization="RPCFinalizedBlock"
-   type="EvmMsgVerifier"
-
-   [[handlers]]
-   chain_name="monad"
-   chain_rpc_url="<your_rpc_url>"
-   cosmwasm_contract="axelar1u080xgqqu9zhl4e9hf2ktdny4pq6kc2pmh6u6mlv8nw5zjvcetvqqjzeu0"
-   chain_finalization="RPCFinalizedBlock"
-   type="EvmVerifierSetVerifier"
-
-   # Continue adding for each supported chain
+   # Continue adding for each supported chain.
+   # See the ampd v1.14.2 release guide for a full list of mainnet chain entries:
+   # https://github.com/axelarnetwork/axelar-contract-deployments/blob/main/releases/ampd/2025-12-19-ampd-v1.14.2.md
    ```
 </tab-item>
 </tabs>
 
-See the [`ampd` README](https://github.com/axelarnetwork/axelar-amplifier/blob/main/ampd/README.md) on GitHub for instructions on formatting a `config` file for your own projects. For `chain_finalization`, if the chain supports the `finalized` tag via the RPC API, choose `RPCFinalizedBlock`, otherwise choose `ConfirmationHeight`.
+See the [`ampd` README](https://github.com/axelarnetwork/axelar-amplifier/blob/main/ampd/README.md) on GitHub for the full config reference. Contract addresses for all chains can be found in the [axelar-contract-deployments repository](https://github.com/axelarnetwork/axelar-contract-deployments/tree/main/axelar-chains-config/info).
 
 <Callout>
   If you get a transport error with an `ampd` command, make sure that you have
   `tofnd` running in the background.
 </Callout>
 
+## Set up handlers
+
+Handlers are separate binaries that connect to ampd's gRPC server. Each handler requires a config directory with two files:
+
+1. **Base config** (`config.toml`) - ampd connection and chain name
+2. **Chain-specific config** - RPC URL and chain-specific parameters
+
+| Binary | Chains | Docker Image |
+|--------|--------|-------|
+| `evm-handler` | Flow, Hedera, Berachain, Plume, Monad, Hyperliquid, etc. | `axelarnet/axelar-ampd-evm-handler` |
+| `solana-handler` | Solana | `axelarnet/axelar-ampd-solana-handler` |
+| `sui-handler` | Sui | `axelarnet/axelar-ampd-sui-handler` |
+| `stellar-handler` | Stellar | `axelarnet/axelar-ampd-stellar-handler` |
+| `xrpl-handler` | XRPL | `axelarnet/axelar-ampd-xrpl-handler` |
+
+Prebuilt binaries are available on the [GitHub Releases page](https://github.com/axelarnetwork/axelar-amplifier/releases). Handler releases are tagged as `<handler>-v*` (e.g. `evm-handler-v0.1.1`, `solana-handler-v0.1.6`).
+
+### Directory structure
+
+Create a config directory per chain handler:
+
+```
+~/.ampd/
+├── config.toml              # ampd config (see above)
+├── state.json               # ampd state (auto-created)
+├── flow/
+│   ├── config.toml                 # base handler config
+│   └── evm-handler-config.toml     # EVM-specific config
+├── sui/
+│   ├── config.toml                 # base handler config
+│   └── sui-handler-config.toml     # Sui-specific config
+├── stellar/
+│   ├── config.toml                 # base handler config
+│   └── stellar-handler-config.toml # Stellar-specific config
+└── xrpl/
+    ├── config.toml                 # base handler config
+    └── xrpl-handler-config.toml    # XRPL-specific config
+```
+
+### Base handler config
+
+Each handler's `config.toml` contains:
+
+```toml
+ampd_url = "http://127.0.0.1:9090"
+chain_name = "<chain_name>"  # must match a chain in ampd's grpc.blockchain_service.chains
+```
+
+### Chain-specific configs
+
+**EVM** (`evm-handler-config.toml`):
+```toml
+rpc_url = "<your_rpc_url>"
+finalization = "RPCFinalizedBlock"  # or "ConfirmationHeight"
+```
+
+**Sui** (`sui-handler-config.toml`):
+```toml
+rpc_url = "<your_rpc_url>"
+```
+
+**Stellar** (`stellar-handler-config.toml`):
+```toml
+rpc_url = "<your_rpc_url>"
+```
+
+**XRPL** (`xrpl-handler-config.toml`):
+```toml
+rpc_url = "<your_rpc_url>"
+```
+
+**Solana** (`solana-handler-config.toml`):
+```toml
+rpc_url = "<your_rpc_url>"
+domain_separator = "<domain_separator>"  # hex, 32 bytes, from MultisigProver config
+```
+
+### Run handlers
+
+<tabs>
+
+<tab-item title="Binary">
+Start each handler, pointing to its config directory:
+
+```bash
+evm-handler --config-dir ~/.ampd/flow/
+sui-handler --config-dir ~/.ampd/sui/
+stellar-handler --config-dir ~/.ampd/stellar/
+xrpl-handler --config-dir ~/.ampd/xrpl/
+```
+</tab-item>
+
+<tab-item title="Docker">
+For each handler, mount its config directory and run:
+
+```bash
+docker run -d \
+  --name flow-handler \
+  --restart unless-stopped \
+  -v ~/.ampd/flow:/config \
+  axelarnet/axelar-ampd-evm-handler:v0.1.1 \
+  --config-dir /config
+```
+
+```bash
+docker run -d \
+  --name sui-handler \
+  --restart unless-stopped \
+  -v ~/.ampd/sui:/config \
+  axelarnet/axelar-ampd-sui-handler:v0.1.1 \
+  --config-dir /config
+```
+
+Replace the image tag and handler type as needed. Ensure handlers can reach ampd's gRPC server. If running all containers on the same machine, use a shared Docker network or `--network host`.
+</tab-item>
+
+</tabs>
+
+<Callout>
+Handler processes should be configured with automatic restart policies. The daemon can run without handlers connected, but handlers will crash if they cannot reach ampd. Both ampd and each handler should be orchestrated as separate services with auto-restart (e.g. `Restart=always` with systemd).
+</Callout>
+
 ## Fund your wallet
 
-Prior to running the `ampd` daemon, you will need to set up your wallet with devnet funds.
+Prior to running the `ampd` daemon, you will need to set up your wallet with funds.
 
 1. Determine your verifier address:
 
@@ -824,7 +560,7 @@ Prior to running the `ampd` daemon, you will need to set up your wallet with dev
      Silicon Mac, you can disable the
      [gatekeeper](https://support.apple.com/guide/security/gatekeeper-and-runtime-protection-sec5599b66df/web)
      for a single binary with `sudo xattr -d com.apple.quarantine
-     ~/Downloads/ampd-darwin-arm64-v1.2.0` or disable gatekeeper globally with
+     ~/Downloads/ampd-darwin-arm64-v1.14.2` or disable gatekeeper globally with
      `sudo spctl --master-disable`.
    </Callout>
 
@@ -856,38 +592,34 @@ Prior to running the `ampd` daemon, you will need to set up your wallet with dev
 
    Bonded verifiers will stay bonded until they unbond or are removed by governance. The bond for testnet is 100000000000uamplifier (100k AXL). The bond for mainnet is 50000000000uamplifier (50k AXL).
 
-1. Register your public key with `ecdsa` and `ed25519`:
+1. Register your public keys. Register both `ecdsa` (for EVM/Sui/Stellar/XRPL chains) and `ed25519` (for Solana):
 
-<tabs>
-   <tab-item title="ecdsa">
-      ```bash
-      ampd register-public-key ecdsa
-      ```
-   </tab-item>
-   <tab-item title="ed25519">
-      ```bash
-      ampd register-public-key ed25519
-      ```
-   </tab-item>
-</tabs>
-   
+   ```bash
+   ampd register-public-key ecdsa
+   ampd register-public-key ed25519
+   ```
 
 1. Register support for desired chains, enabling `ampd` to participate in voting and signing for your supported chains.
 
-<tabs>
-<tab-item title="devnet">
-   ```bash
-   ampd register-chain-support validators flow
-   ```
-</tab-item>
-<tab-item title="testnet">
-   ```bash
-   ampd register-chain-support amplifier flow
-   ```
-</tab-item>
-</tabs>
+   <tabs>
+   <tab-item title="devnet">
+      ```bash
+      ampd register-chain-support validators ethereum-sepolia avalanche
+      ```
+   </tab-item>
+   <tab-item title="testnet">
+      ```bash
+      ampd register-chain-support amplifier flow sui stellar-2025-q4
+      ```
+   </tab-item>
+   <tab-item title="mainnet">
+      ```bash
+      ampd register-chain-support amplifier flow sui stellar
+      ```
+   </tab-item>
+   </tabs>
 
-   Multiple chain names can be passed, separated by a space (`ampd register-chain-support [service name] [chains]...`). Note that any chain you want to support here must be configured in your ampd `config.toml` file.
+   Multiple chain names can be passed, separated by a space (`ampd register-chain-support [service name] [chains]...`). Note that any chain you want to support here must have a corresponding `[[grpc.blockchain_service.chains]]` entry in your ampd `config.toml` and a running handler.
 
 1. Authorize your verifier.
 
@@ -895,7 +627,7 @@ Prior to running the `ampd` daemon, you will need to set up your wallet with dev
 
 1. Run the `ampd` daemon.
 
-   Running `ampd` without any command will run the daemon. 
+   Running `ampd` without any command will run the daemon. Then start your handler processes as described in [Set up handlers](#set-up-handlers).
 
 ## Productionizing
 
