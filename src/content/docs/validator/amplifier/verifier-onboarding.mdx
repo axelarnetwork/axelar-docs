@@ -45,6 +45,10 @@ Running a verifier requires three components:
 
 Handlers are separate processes that connect to ampd's gRPC server. If a handler crashes, it does not affect ampd or other handlers.
 
+<Callout type="warning">
+  Run `tofnd`, `ampd`, and ampd handlers on the same host, and keep ampd's gRPC server on `127.0.0.1` (the default in the config examples below). The gRPC API has no authentication — exposing it on `0.0.0.0` or a public interface would let anyone on the network trigger signing and broadcast transactions through your verifier.
+</Callout>
+
 There are three ways to set up and run a verifier:
 
 - **Option 1: Source** -- Clone and build directly from the GitHub source code.
