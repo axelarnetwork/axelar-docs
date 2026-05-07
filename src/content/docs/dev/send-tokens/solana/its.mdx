@@ -296,6 +296,34 @@ pub fn send_interchain_transfer_handler(
 The `caller_program_id` and `caller_pda_seeds` parameters allow ITS to verify that the CPI came from your program. The `data` parameter (last argument) lets you attach execution data that will be delivered to the destination program alongside the tokens.
 </Callout>
 
+## Transfer Size Limits
+
+Solana caps every transaction at **1232 bytes**. A plain token transfer always fits — the limit only matters when you attach execution `data` (the optional last argument to `interchain_transfer`).
+
+### Sending
+
+Calling `interchain_transfer` directly from a wallet allows up to **315 bytes** of `data`.
+
+When sending from your own program via CPI, `interchain_transfer` is invoked inside your instruction — your wrapping instruction's accounts and data share the same 1232-byte transaction budget with the `data` you attach.
+
+### Receiving (with `data`)
+
+When the destination program receives both tokens **and** `data`, the data and any accounts it references share a single transaction's budget. Each user account costs **35 bytes** — much more than a single byte of `data`, so if your protocol can express the same logic with fewer accounts and more data bytes, prefer that.
+
+**Examples:**
+
+| User accounts | Max `data` |
+|---:|---:|
+| 0 | 534 B |
+| 2 | 464 B |
+| 5 | 359 B |
+| 10 | 184 B |
+| 15 | 9 B |
+
+<Callout emoji="💡">
+**Technical detail:** transfers carrying small `data` (under 289 B with no user accounts, or down to 25 B with 4 user accounts) are delivered in a single inbound transaction. Larger transfers automatically use an additional Address Lookup Table created on the fly, which costs slightly more gas and adds a small amount of latency. You don't need to do anything — the system picks the right path.
+</Callout>
+
 ## PDA Seed Reference
 
 | Seed | Derived From | Purpose |
