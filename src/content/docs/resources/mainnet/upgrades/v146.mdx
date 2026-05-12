@@ -6,7 +6,7 @@ Instructions for the mainnet upgrade to axelar-core `v1.4.6`.
 
 The release for the upgrade can be found [here](https://github.com/axelarnetwork/axelar-core/releases/tag/v1.4.6).
 
-Upgrade height **TBD** — proposal **TBD** — see [countdown](https://www.mintscan.io/axelar/block/) once scheduled.
+Upgrade height: **TBD**. Proposal: **TBD**. See [countdown](https://www.mintscan.io/axelar/block/) once scheduled.
 
 ## Binary Types
 
@@ -17,7 +17,7 @@ The v1.4.6 release provides **two Linux binaries**:
   - **Does not require** installing or configuring `libwasmvm`
 
 - **[Dynamically](https://github.com/axelarnetwork/axelar-core/releases/download/v1.4.6/axelard-linux-amd64-v1.4.6) linked binary (`axelard-linux-amd64-v1.4.6`)**
-  - Requires `libwasmvm` **v2.2.4** (same version as v1.3.x — no change if you already run the v1.3.x dynamic binary)
+  - Requires `libwasmvm` **v2.2.4** (same version as v1.3.x, no change if you already run the v1.3.x dynamic binary)
   - Must have the library directory on `LD_LIBRARY_PATH`
 
 <Callout type="warning" emoji="⚠️">
@@ -95,7 +95,7 @@ For verifiers, refer to the matching `ampd` release notes under [`axelar-contrac
 
 ## Rollback
 
-This is a state-machine-breaking upgrade. **There is no in-place rollback** to v1.3.x once your node has executed the `v1.4` upgrade handler — the link-deposit removal and parameter changes are persisted to state. If rollback is required, restore from the pre-upgrade snapshot you took in step 3.
+This is a state-machine-breaking upgrade. **There is no in-place rollback** to v1.3.x once your node has executed the `v1.4` upgrade handler. The link-deposit removal and parameter changes are persisted to state. If rollback is required, restore from the pre-upgrade snapshot you took in step 3.
 
 ## Troubleshooting
 
