@@ -1,0 +1,113 @@
+# Testnet upgrade: v1.4.6
+
+import { Callout } from "/src/components/callout";
+
+Instructions for the testnet upgrade to axelar-core `v1.4.6`.
+
+The release for the upgrade can be found [here](https://github.com/axelarnetwork/axelar-core/releases/tag/v1.4.6).
+
+Upgrade height **TBD** — proposal **TBD** — see [countdown](https://www.mintscan.io/axelar-testnet/block/) once scheduled.
+
+## Binary Types
+
+The v1.4.6 release provides **two Linux binaries**:
+
+- **[Static](https://github.com/axelarnetwork/axelar-core/releases/download/v1.4.6/axelard-linux-amd64-v1.4.6-static) binary (`axelard-linux-amd64-v1.4.6-static`)**
+  - Contains a statically linked `libwasmvm`
+  - **Does not require** installing or configuring `libwasmvm`
+
+- **[Dynamically](https://github.com/axelarnetwork/axelar-core/releases/download/v1.4.6/axelard-linux-amd64-v1.4.6) linked binary (`axelard-linux-amd64-v1.4.6`)**
+  - Requires `libwasmvm` **v2.2.4** (same version as v1.3.x — no change if you already run the v1.3.x dynamic binary)
+  - Must have the library directory on `LD_LIBRARY_PATH`
+
+<Callout type="warning" emoji="⚠️">
+  `axelard` must be built with `go-1.25` for this release (same as v1.3.x).
+
+  If using the **static** binary, no `wasmvm` setup is required.
+
+  If using the **dynamic** binary, keep `libwasmvm v2.2.4`
+  ([libwasmvm.x86_64.so](https://github.com/CosmWasm/wasmvm/releases/tag/v2.2.4)) on `LD_LIBRARY_PATH`.
+</Callout>
+
+## About the v1.4 upgrade
+
+The `v1.4` upgrade is a consensus-breaking release. Highlights:
+
+- **Removes the link-deposit protocol.** The legacy non-GMP token-transfer paths (linked deposit addresses, direct token transfers) that were deprecated in v1.3.1 are now fully removed. Pending link-deposit state is cleaned up in the upgrade handler.
+- **Bumps CosmWasm `wasmd` to v0.54.7.**
+- **Reduces `maxBitmapSize` in nexus maintainer state** (32,768 → 1,024) to lower per-validator memory pressure.
+- **CometBFT v0.38.23**.
+- Vald correctness: reject votes on failed polls.
+
+No CosmWasm contract migrations are required for this upgrade. No `config.toml` / `app.toml` changes are required relative to a node already running v1.3.x with the post-v1.3.0 settings (`iavl-cache-size = 0`, `iavl-disable-fastnode = true`, `timeout_commit = 1s`).
+
+## Upgrade Instructions
+
+1. If you're a validator or have delegated to one, please vote for the upgrade proposal via:
+
+```bash
+axelard tx gov vote <PROPOSAL_ID> yes --from validator
+```
+
+2. Wait for the proposed upgrade block. Your node will panic at that block height with a log: `{"level":"error","module":"consensus","err":"UPGRADE \"v1.4\" NEEDED at height: <UPGRADE_HEIGHT>",`.
+
+Stop your node after chain halt:
+
+```bash
+pkill -f 'axelard start'
+# Validators also need to stop vald/tofnd
+pkill -f 'vald-start'
+pkill -f tofnd
+```
+
+3. Backup the state:
+
+```bash
+cp -r ~/.axelar_testnet/.core/data ~/.axelar-lisbon-3-upgrade-1.4.6/.core/data
+```
+
+<Callout type="warning" emoji="⚠️">
+  ⚠️ **Important:** If you backup the entire folder, `~/.axelar_testnet/.core`, that'll
+  also include your private keys (inside `config` and `keyring-file`
+  subfolders). That can be dangerous if anyone gets access to your backups. We
+  recommend backing up keys separately when you first create your node, and then
+  excluding them from any data backups.
+</Callout>
+
+4. Restart your `axelard` node with the new `v1.4.6` build.
+
+5. If you're a validator also restart `vald` with `v1.4.6` and `tofnd` with `v1.0.1` (unchanged from v1.3.x).
+
+### Example using join scripts (axelarate-community)
+
+```bash
+# in axelarate-community repo
+git checkout main
+git pull
+KEYRING_PASSWORD="pw-1" ./scripts/node.sh -n testnet -a v1.4.6
+# For validators, restart vald/tofnd
+KEYRING_PASSWORD="pw-1" TOFND_PASSWORD="pw-2" ./scripts/validator-tools-host.sh -n testnet -a v1.4.6 -q v1.0.1
+```
+
+## Ampd
+
+For verifiers, refer to the matching `ampd` release notes under [`axelar-contract-deployments/releases/ampd`](https://github.com/axelarnetwork/axelar-contract-deployments/tree/main/releases/ampd) for the version compatible with `axelard v1.4.6`. The `ampd` upgrade must be done **after** the `axelard` upgrade.
+
+## Rollback
+
+This is a state-machine-breaking upgrade. **There is no in-place rollback** to v1.3.x once your node has executed the `v1.4` upgrade handler — the link-deposit removal and parameter changes are persisted to state. If rollback is required, restore from the pre-upgrade snapshot you took in step 3.
+
+## Troubleshooting
+
+If you encounter a **hash error**, ensure you have `libwasmvm v2.2.4`:
+
+https://github.com/CosmWasm/wasmvm/releases/download/v2.2.4/libwasmvm.x86_64.so
+
+Before restarting your node:
+
+1. Make sure `LD_LIBRARY_PATH` includes the directory of `libwasmvm` (dynamic binary only).
+2. Docker users do **not** need to modify anything.
+
+If you see the error `undefined symbol: migrate_with_info`, switch to the statically linked binary (`axelard-linux-amd64-v1.4.6-static`).
+
+If you see the error `app hash` mismatch after the upgrade, verify all replicas in your fleet were swapped to v1.4.6 before the upgrade height. Mixed binaries across replicas after the upgrade height will fork.
