@@ -63,6 +63,9 @@
         },
         {
           "value": "https://axelar.rpc.stakin-nodes.com:443"
+        },
+        {
+          "value": "https://rpc.axelar.posthuman.digital:443"
         }
       ]
     },
@@ -80,6 +83,9 @@
         },
         {
           "value": "https://axelar.rest.stakin-nodes.com"
+        },
+        {
+          "value": "https://rest.axelar.posthuman.digital"
         }
       ]
     },
@@ -94,6 +100,9 @@
         },
         {
           "value": "axelar.grpc.stakin-nodes.com:443"
+        },
+        {
+          "value": "grpc.axelar.posthuman.digital:443"
         }
       ]
     },
