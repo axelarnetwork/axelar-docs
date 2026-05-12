@@ -739,7 +739,7 @@ export const getNavigation = (section) => {
             children: [
               {
                 title: "v1.3",
-                href: "https://github.com/axelarnetwork/axelar-contract-deployments/blob/main/releases/axelard/2025-11-v1.3.2.md",
+                href: "/resources/mainnet/upgrades/v132/",
               },
               {
                 title: "v1.2",
