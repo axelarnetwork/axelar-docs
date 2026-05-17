@@ -175,6 +175,16 @@ sed -i.bak 's/external_address = \"\"/external_address = \"'"$(curl -4 ifconfig.
 Pick a snapshot provider:
 
 <tabs>
+<tab-item title="Cosmostation">
+ ```bash
+axelard tendermint unsafe-reset-all
+cd $HOME/.axelar/
+LATEST_HEIGHT=\`curl -s https://snapshot.mainnet.cosmostation.io/axelar/latestheight\`
+wget -O - https://snapshot.mainnet.cosmostation.io/snapshot/axelar/snapshot_${LATEST_HEIGHT}.tar.zst | tar -I 'zstd -d' -xf -
+cd $HOME
+```
+
+</tab-item>
 <tab-item title="Posthuman">
  ```bash
 axelard tendermint unsafe-reset-all
