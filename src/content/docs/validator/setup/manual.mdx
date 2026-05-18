@@ -170,10 +170,23 @@ sed -i.bak 's/external_address = \"\"/external_address = \"'"$(curl -4 ifconfig.
 
 ## Sync From Snapshot
 
+### Mainnet
+
+Pick a snapshot provider:
+
 <tabs>
-<tab-item title="Mainnet">
+<tab-item title="Posthuman">
  ```bash
- axelard tendermint unsafe-reset-all
+axelard tendermint unsafe-reset-all
+cd $HOME/.axelar/
+wget -O - https://snapshots.axelar.posthuman.digital/data_latest.tar.lz4 | lz4 -d | tar -xvf -
+cd $HOME
+```
+
+</tab-item>
+<tab-item title="QuickSync">
+ ```bash
+axelard tendermint unsafe-reset-all
 URL=\`curl -L https://quicksync.io/axelar.json | jq -r '.[] |select(.file=="axelar-dojo-1-pruned")|.url'\`
 echo $URL
 cd $HOME/.axelar/
@@ -182,18 +195,18 @@ cd $HOME
 ```
 
 </tab-item>
-<tab-item title="Testnet">
- ```bash
+</tabs>
+
+### Testnet
+
+```bash
 axelard tendermint unsafe-reset-all
-URL=\`curl -L https://quicksync.io/axelar.json | jq -r '.[] |select(.file=="axelartestnet-lisbon-3-pruned")|.url'\`
+URL=`curl -L https://quicksync.io/axelar.json | jq -r '.[] |select(.file=="axelartestnet-lisbon-3-pruned")|.url'`
 echo $URL
 cd $HOME/.axelar/
 wget -O - $URL | lz4 -d | tar -xvf -
 cd $HOME
 ```
-
-</tab-item>
-</tabs>
 
 ## Create services
 
