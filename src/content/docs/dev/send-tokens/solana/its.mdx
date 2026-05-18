@@ -314,14 +314,14 @@ When the destination program receives both tokens **and** `data`, the data and a
 
 | User accounts | Max `data` |
 |---:|---:|
-| 0 | 534 B |
-| 2 | 464 B |
-| 5 | 359 B |
-| 10 | 184 B |
-| 15 | 9 B |
+| 0 | 515 B |
+| 2 | 445 B |
+| 5 | 340 B |
+| 10 | 165 B |
+| 14 | 25 B |
 
 <Callout emoji="💡">
-**Technical detail:** transfers carrying small `data` (under 289 B with no user accounts, or down to 25 B with 4 user accounts) are delivered in a single inbound transaction. Larger transfers automatically use an additional Address Lookup Table created on the fly, which costs slightly more gas and adds a small amount of latency. You don't need to do anything — the system picks the right path.
+**Technical detail:** transfers carrying small `data` (under 270 B with no user accounts, or down to 6 B with 4 user accounts) are delivered in a single inbound transaction. Larger transfers automatically use an additional Address Lookup Table created on the fly, which costs slightly more gas and adds a small amount of latency. You don't need to do anything — the system picks the right path.
 </Callout>
 
 ## PDA Seed Reference
