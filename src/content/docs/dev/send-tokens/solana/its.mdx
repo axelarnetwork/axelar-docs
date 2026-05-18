@@ -310,18 +310,18 @@ When sending from your own program via CPI, `interchain_transfer` is invoked ins
 
 When the destination program receives both tokens **and** `data`, the data and any accounts it references share a single transaction's budget. Each user account costs **35 bytes** — much more than a single byte of `data`, so if your protocol can express the same logic with fewer accounts and more data bytes, prefer that.
 
-**Examples:**
+**Examples** (numbers assume an Ethereum-origin transfer. Actual limits may differ depending on the source chain — longer source-chain identifiers or sender addresses reduce the budget by a few bytes):
 
 | User accounts | Max `data` |
 |---:|---:|
-| 0 | 515 B |
-| 2 | 445 B |
-| 5 | 340 B |
-| 10 | 165 B |
-| 14 | 25 B |
+| 0 | 526 B |
+| 2 | 456 B |
+| 5 | 351 B |
+| 10 | 176 B |
+| 14 | 36 B |
 
 <Callout emoji="💡">
-**Technical detail:** transfers carrying small `data` (under 270 B with no user accounts, or down to 6 B with 4 user accounts) are delivered in a single inbound transaction. Larger transfers automatically use an additional Address Lookup Table created on the fly, which costs slightly more gas and adds a small amount of latency. You don't need to do anything — the system picks the right path.
+**Technical detail:** transfers carrying small `data` (under 281 B with no user accounts, or down to 17 B with 4 user accounts) are delivered in a single inbound transaction. Larger transfers automatically use an additional Address Lookup Table created on the fly, which costs slightly more gas and adds a small amount of latency. You don't need to do anything — the system picks the right path.
 </Callout>
 
 ## PDA Seed Reference

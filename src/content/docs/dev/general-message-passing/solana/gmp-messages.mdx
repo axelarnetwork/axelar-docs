@@ -277,9 +277,7 @@ Solana caps every transaction at **1232 bytes**. After protocol overhead, your p
 
 **612 bytes** are available, shared between your payload bytes and the accounts your destination program needs. Each account costs **33 bytes**, so you trade one against the other. Anything above the 1232-byte transaction cap will fail to deliver — split the work into multiple messages or pass less data.
 
-The numbers below assume an EVM source contract (`0x` + 40 hex). Messages originating from chains with longer addresses (e.g. Cosmos bech32) reduce the budget by roughly the extra address bytes.
-
-**Examples:**
+**Examples** (numbers assume an EVM source contract — `0x` + 40 hex. Actual limits may differ depending on the source chain: messages from chains with longer addresses, like Cosmos bech32, reduce the budget by roughly the extra address bytes):
 
 | Accounts on the destination | Max payload |
 |---:|---:|
