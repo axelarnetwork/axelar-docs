@@ -66,6 +66,9 @@
         },
         {
           "value": "https://rpc.axelar.posthuman.digital:443"
+        },
+        {
+          "value": "https://axelar-rpc.contributiondao.com"
         }
       ]
     },
@@ -86,6 +89,9 @@
         },
         {
           "value": "https://rest.axelar.posthuman.digital"
+        },
+        {
+          "value": "https://axelar-api.contributiondao.com"
         }
       ]
     },
@@ -103,6 +109,9 @@
         },
         {
           "value": "grpc.axelar.posthuman.digital:443"
+        },
+        {
+          "value": "axelar-grpc.contributiondao.com:9090"
         }
       ]
     },
