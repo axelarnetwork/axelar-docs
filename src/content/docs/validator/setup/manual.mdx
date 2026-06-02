@@ -185,6 +185,16 @@ cd $HOME
 ```
 
 </tab-item>
+<tab-item title="IBS">
+ ```bash
+axelard tendermint unsafe-reset-all
+cd $HOME/.axelar/
+URL=\`curl -s https://snapshot.ibs.team/snapshots-index.json | jq -r '.chains[] | select(.id=="Axelar") | .backends.goleveldb.latest.url'\`
+wget -O - $URL | tar -I 'zstd -d' -xf -
+cd $HOME
+```
+
+</tab-item>
 <tab-item title="Posthuman">
  ```bash
 axelard tendermint unsafe-reset-all

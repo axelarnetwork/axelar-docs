@@ -69,6 +69,9 @@
         },
         {
           "value": "https://axelar-rpc.contributiondao.com"
+        },
+        {
+          "value": "https://axelar.ibs.team/rpc"
         }
       ]
     },
@@ -92,6 +95,9 @@
         },
         {
           "value": "https://axelar-api.contributiondao.com"
+        },
+        {
+          "value": "https://axelar.ibs.team/api"
         }
       ]
     },
