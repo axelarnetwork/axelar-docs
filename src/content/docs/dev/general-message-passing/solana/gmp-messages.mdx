@@ -269,6 +269,30 @@ The accounts specified in the payload become `remaining_accounts` in the destina
 **Coming soon:** Documentation for constructing Solana-compatible payloads from EVM source chains (ABI encoding format for account metadata).
 </Callout>
 
+## Transaction Size Limits
+
+Solana caps every transaction at **1232 bytes**. After protocol overhead, your payload and the Solana accounts that travel with it share a fixed budget.
+
+### Receiving
+
+**612 bytes** are available, shared between your payload bytes and the accounts your destination program needs. Each account costs **33 bytes**, so you trade one against the other. Anything above the 1232-byte transaction cap will fail to deliver — split the work into multiple messages or pass less data.
+
+**Examples** (numbers assume an EVM source contract — `0x` + 40 hex. Actual limits may differ depending on the source chain: messages from chains with longer addresses, like Cosmos bech32, reduce the budget by roughly the extra address bytes):
+
+| Accounts on the destination | Max payload |
+|---:|---:|
+| 0 | 612 B |
+| 3 | 514 B |
+| 5 | 448 B |
+| 10 | 283 B |
+| 15 | 118 B |
+
+### Sending
+
+Calling `call_contract` directly from a wallet allows up to **868 bytes** of payload.
+
+When sending from your own program via CPI, `call_contract` is invoked inside your instruction — your wrapping instruction's accounts and data share the same 1232-byte transaction budget with the payload.
+
 ## Complete Example
 
 For a working end-to-end implementation of both sending and receiving GMP messages, see the [Memo Program](https://github.com/axelarnetwork/axelar-amplifier-solana/tree/main/programs/solana-axelar-memo):
