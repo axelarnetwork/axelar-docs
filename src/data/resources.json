@@ -27,6 +27,10 @@
         {
           "title": "Ping.Pub",
           "value": "https://ping.pub/axelar"
+        },
+        {
+          "title": "Valopers",
+          "value": "https://axelar.valopers.com"
         }
       ]
     },
@@ -154,6 +158,10 @@
         {
           "title": "ScanRun",
           "value": "https://scanrun.io/axelar-testnet"
+        },
+        {
+          "title": "Valopers",
+          "value": "https://testnet.axelar.valopers.com"
         }
       ]
     },
