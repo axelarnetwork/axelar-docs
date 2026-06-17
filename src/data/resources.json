@@ -21,24 +21,12 @@
           "value": "https://www.mintscan.io/axelar"
         },
         {
-          "title": "Big Dipper",
-          "value": "https://axelar-mainnet.chainode.tech"
-        },
-        {
-          "title": "Metrika",
-          "value": "https://app.metrika.co/dashboard/axelar"
-        },
-        {
           "title": "Atomscan",
           "value": "https://atomscan.com/axelar"
         },
         {
           "title": "Ping.Pub",
           "value": "https://ping.pub/axelar"
-        },
-        {
-          "title": "ScanRun (beta)",
-          "value": "https://scanrun.io/axelar"
         }
       ]
     },
@@ -59,9 +47,6 @@
       "name": "RPC endpoints",
       "value": [
         {
-          "value": "https://rpc-axelar.imperator.co:443"
-        },
-        {
           "value": "https://axelar-rpc.pops.one:443"
         },
         {
@@ -75,15 +60,24 @@
         },
         {
           "value": "https://axelar.publicnode.com:443"
+        },
+        {
+          "value": "https://axelar.rpc.stakin-nodes.com:443"
+        },
+        {
+          "value": "https://rpc.axelar.posthuman.digital:443"
+        },
+        {
+          "value": "https://axelar-rpc.contributiondao.com"
+        },
+        {
+          "value": "https://axelar.ibs.team/rpc"
         }
       ]
     },
     {
       "name": "LCD endpoints",
       "value": [
-        {
-          "value": "https://lcd-axelar.imperator.co"
-        },
         {
           "value": "https://axelar-lcd.qubelabs.io"
         },
@@ -94,7 +88,16 @@
           "value": "https://api-axelar.validatrium.club"
         },
         {
-          "value": "https://axelar-archrest.chainode.tech"
+          "value": "https://axelar.rest.stakin-nodes.com"
+        },
+        {
+          "value": "https://rest.axelar.posthuman.digital"
+        },
+        {
+          "value": "https://axelar-api.contributiondao.com"
+        },
+        {
+          "value": "https://axelar.ibs.team/api"
         }
       ]
     },
@@ -102,36 +105,19 @@
       "name": "gRPC endpoints",
       "value": [
         {
-          "value": "grpc-axelar.imperator.co:443"
-        },
-        {
-          "value": "axelar-archgrpc.chainode.tech"
-        },
-        {
-          "value": "axelar-grpc.quickapi.com"
-        },
-        {
           "value": "axelar-grpc.polkachu.com:15190"
         },
         {
           "value": "axelar-grpc.qubelabs.io:9092"
-        }
-      ]
-    },
-    {
-      "name": "Archival endpoints",
-      "value": [
-        {
-          "value": "https://axelar-archrpc.chainode.tech"
         },
         {
-          "value": "https://axelar-archrest.chainode.tech"
+          "value": "axelar.grpc.stakin-nodes.com:443"
         },
         {
-          "value": "https://axelar-archgrpc.chainode.tech"
+          "value": "grpc.axelar.posthuman.digital:443"
         },
         {
-          "value": "https://axelar-archgrpcweb.chainode.tech"
+          "value": "axelar-grpc.contributiondao.com:9090"
         }
       ]
     },
@@ -139,7 +125,7 @@
       "name": "Websocket",
       "value": [
         {
-          "value": "wss://rpc-axelar.imperator.co/websocket"
+          "value": "wss://axelar-rpc.pops.one/websocket"
         }
       ]
     }
@@ -177,27 +163,6 @@
         {
           "title": "Discord faucet bot",
           "value": "https://discord.com/channels/770814806105128977/1002423218772136056"
-        },
-        {
-          "title": "Axelar faucet",
-          "value": "https://faucet.testnet.axelar.dev"
-        },
-        {
-          "title": "Faucet by All That Node",
-          "value": "https://www.allthatnode.com/faucet/axelar.dsrv"
-        }
-      ]
-    },
-    {
-      "name": "REST API docs",
-      "value": [
-        {
-          "title": "Swagger",
-          "value": "https://lcd-axelar-testnet.imperator.co/static/"
-        },
-        {
-          "title": "OpenAPI",
-          "value": "https://lcd-axelar-testnet.imperator.co/static/openapi/"
         }
       ]
     },
@@ -205,13 +170,13 @@
       "name": "RPC endpoints",
       "value": [
         {
-          "value": "https://rpc-axelar-testnet.imperator.co:443"
-        },
-        {
-          "value": "https://axelar-rpc-1.staketab.org:443"
-        },
-        {
           "value": "https://axelar-testnet-rpc.qubelabs.io:443"
+        },
+        {
+          "value": "https://axelar-testnet-rpc.polkachu.com:443"
+        },
+        {
+          "value": "https://tm.axelar-testnet.lava.build:443"
         }
       ]
     },
@@ -219,25 +184,13 @@
       "name": "LCD endpoints",
       "value": [
         {
-          "value": "https://lcd-axelar-testnet.imperator.co"
-        },
-        {
-          "value": "https://axelar-rest-1.staketab.org"
-        },
-        {
           "value": "https://axelar-testnet-lcd.qubelabs.io"
-        },
-        {
-          "value": "https://axelar-archrest.chainode.tech"
         }
       ]
     },
     {
       "name": "gRPC endpoints",
-      "value": [ 
-        {
-          "value": "axelar-archgrpc.chainode.tech:443"
-        },
+      "value": [
         {
           "value": "grpc.axelar-testnet.lava.build:443"
         }
@@ -248,9 +201,6 @@
       "value": [
         {
           "value": "wss://tm.axelar-testnet.lava.build/websocket"
-        },
-        {
-          "value": "wss://rpc-axelar-testnet.imperator.co/websocket"
         }
       ]
     }
