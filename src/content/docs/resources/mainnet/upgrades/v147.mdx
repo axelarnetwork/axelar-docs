@@ -36,12 +36,15 @@ The v1.4.7 release provides **two Linux binaries**:
 The `v1.4` upgrade is a consensus-breaking release for Axelar mainnet. Highlights:
 
 - **Removes the link-deposit protocol.** The legacy non-GMP token-transfer paths (linked deposit addresses, direct token transfers) that were deprecated in v1.3.1 are now fully removed. Pending link-deposit state is cleaned up in the upgrade handler.
-- **Bumps CosmWasm `wasmd` to v0.54.7.**
+- **Routes governance proposals targeting legacy EVM chains through the Amplifier GMP path** (axelarnet-gateway wasm contract → nexus → EVM module) instead of the old direct axelarnet route. The emitted `sourceChain` for these messages changes from `Axelarnet` to `axelar`.
 - **Reduces `maxBitmapSize` in nexus maintainer state** (32,768 → 1,024) to lower per-validator memory pressure.
-- **CometBFT v0.38.23**.
-- Vald correctness: reject votes on failed polls.
+- **Dependency bumps:** CometBFT v0.38.23, CosmWasm `wasmd` v0.54.7, `libwasmvm` v2.2.4 → v2.2.6, Cosmos SDK v0.50.15, ibc-go v8.8.0.
+- **Vald correctness:** reject votes on failed polls.
+- **`v1.4.7` patch (on top of `v1.4.6`):** restores the `InterfaceRegistry` registrations for tss `UpdateParams` and `HeartBeat`.
 
 No CosmWasm contract migrations are required for this upgrade. No `config.toml` / `app.toml` changes are required relative to a node already running v1.3.x with the post-v1.3.0 settings (`iavl-cache-size = 0`, `iavl-disable-fastnode = true`, `timeout_commit = 1s`).
+
+For the full list of changes, see the [v1.4.7 changelog](https://github.com/axelarnetwork/axelar-core/blob/v1.4.7/CHANGELOG.md).
 
 ## Upgrade Instructions
 
