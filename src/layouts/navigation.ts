@@ -739,7 +739,7 @@ export const getNavigation = (section) => {
             children: [
               {
                 title: "v1.4",
-                href: "/resources/mainnet/upgrades/v146/",
+                href: "/resources/mainnet/upgrades/v147/",
               },
               {
                 title: "v1.3",
@@ -820,7 +820,7 @@ export const getNavigation = (section) => {
             children: [
               {
                 title: "v1.4",
-                href: "/resources/testnet/upgrades/v146/",
+                href: "/resources/testnet/upgrades/v147/",
               },
               {
                 title: "v1.3.1",
