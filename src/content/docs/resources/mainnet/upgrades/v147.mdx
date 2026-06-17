@@ -17,7 +17,7 @@ The v1.4.7 release provides **two Linux binaries**:
   - **Does not require** installing or configuring `libwasmvm`
 
 - **[Dynamically](https://github.com/axelarnetwork/axelar-core/releases/download/v1.4.7/axelard-linux-amd64-v1.4.7) linked binary (`axelard-linux-amd64-v1.4.7`)**
-  - Requires `libwasmvm` **v2.2.4** (same version as v1.3.x, no change if you already run the v1.3.x dynamic binary)
+  - Requires `libwasmvm` **v2.2.6** (bumped from v2.2.4 in v1.3.x; replace the library when upgrading a v1.3.x dynamic-binary node)
   - Must have the library directory on `LD_LIBRARY_PATH`
 
 <Callout type="warning" emoji="⚠️">
@@ -25,8 +25,10 @@ The v1.4.7 release provides **two Linux binaries**:
 
   If using the **static** binary, no `wasmvm` setup is required.
 
-  If using the **dynamic** binary, keep `libwasmvm v2.2.4`
-  ([libwasmvm.x86_64.so](https://github.com/CosmWasm/wasmvm/releases/tag/v2.2.4)) on `LD_LIBRARY_PATH`.
+  If using the **dynamic** binary, `libwasmvm` is bumped from `v2.2.4` (v1.3.x) to `v2.2.6`
+  ([libwasmvm.x86_64.so](https://github.com/CosmWasm/wasmvm/releases/tag/v2.2.6)) in this
+  upgrade. Replace the library on every node and keep it on `LD_LIBRARY_PATH` before starting
+  the new binary, otherwise it refuses to launch with a wasmvm version-mismatch error.
 </Callout>
 
 ## About the v1.4 upgrade
@@ -99,9 +101,9 @@ This is a state-machine-breaking upgrade. **There is no in-place rollback** to v
 
 ## Troubleshooting
 
-If you encounter a **hash error**, ensure you have `libwasmvm v2.2.4`:
+If you encounter a **hash error**, ensure you have `libwasmvm v2.2.6`:
 
-https://github.com/CosmWasm/wasmvm/releases/download/v2.2.4/libwasmvm.x86_64.so
+https://github.com/CosmWasm/wasmvm/releases/download/v2.2.6/libwasmvm.x86_64.so
 
 Before restarting your node:
 
