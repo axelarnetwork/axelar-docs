@@ -1,0 +1,134 @@
+# Mainnet upgrade: v1.3
+
+import { Callout } from "/src/components/callout";
+
+Instructions for the `v1.3` mainnet upgrade to axelar-core `v1.3.2`.
+
+The release for the upgrade can be found [here](https://github.com/axelarnetwork/axelar-core/releases/tag/v1.3.2).
+
+Upgrade height `21163285` [countdown](https://www.mintscan.io/axelar/block/21163285)
+
+## Binary Types
+
+The v1.3.2 release provides **two Linux binaries**:
+
+- **[Static](https://github.com/axelarnetwork/axelar-core/releases/download/v1.3.2/axelard-linux-amd64-v1.3.2-static) binary (`axelard-linux-amd64-v1.3.2-static`)**
+  - Contains a statically linked `libwasmvm`
+  - **Does not require** installing or configuring `libwasmvm`
+
+- **[Dynamically](https://github.com/axelarnetwork/axelar-core/releases/download/v1.3.2/axelard-linux-amd64-v1.3.2) linked binary (`axelard-linux-amd64-v1.3.2`)**
+  - Requires upgrading `libwasmvm` to **v2.2.4**
+  - Must add the library directory to `LD_LIBRARY_PATH`
+
+<Callout type="warning" emoji="⚠️">
+  `axelard` must be built with `go-1.25` for this release.
+
+  If using the **dynamically linked** binary, update `wasmvm` from `v1.5.8` to `v2.2.4`
+  ([libwasmvm.x86_64.so](https://github.com/CosmWasm/wasmvm/releases/tag/v2.2.4))
+  and ensure the directory containing the library is added to `LD_LIBRARY_PATH`.
+
+  If using the **static** binary (`*-static`), **no wasmvm installation is required**.
+
+  If using the community node setup scripts, please update to the latest commit on `main` first.
+  The dynamic `wasmvm` library will be auto-downloaded to `$AXELARD_HOME/lib`,
+  but you'll still need to add it to `LD_LIBRARY_PATH` before running the script.
+
+  For verifiers, prepare to update [ampd](#ampd).
+</Callout>
+
+## About the v1.3 upgrade
+
+The `v1.3` upgrade is required to support the Axelar Network's migration to [Cosmos SDK v0.50](https://cosmos-docs.mintlify.app/sdk/v0.50/build). This upgrade reduces block times from **5s → 1s** and brings the latest SDK security features.
+
+This is a consensus-breaking release for Axelar mainnet.
+
+## Upgrade Instructions
+
+1. If you're a validator or have delegated to one, please vote for the upgrade proposal via:
+
+```bash
+axelard tx gov vote 421 yes --from validator
+```
+
+2. Wait for the proposed upgrade block, `21163285`. Your node will panic at that block height with a log: `{"level":"error","module":"consensus","err":"UPGRADE \"v1.3\" NEEDED at height: 21163285",`.
+
+Stop your node after chain halt:
+
+```bash
+pkill -f 'axelard start'
+# Validators also need to stop vald/tofnd
+pkill -f 'vald-start'
+pkill -f tofnd
+```
+
+3. Backup the state:
+
+```bash
+cp -r ~/.axelar/.core/data ~/.axelar-dojo-1-upgrade-1.3.2/.core/data
+```
+
+<Callout type="warning" emoji="⚠️">
+  ⚠️ **Important:** If you backup the entire folder, `~/.axelar/.core`, that'll
+  also include your private keys (inside `config` and `keyring-file`
+  subfolders). That can be dangerous if anyone gets access to your backups. We
+  recommend backing up keys separately when you first create your node, and then
+  excluding them from any data backups.
+</Callout>
+
+4. Update `app.toml`. Add the following parameters at the root level (required for optimal migration performance):
+
+```toml
+iavl-cache-size = 0
+iavl-disable-fastnode = true
+```
+
+5. Lower the `timeout_commit` config in `~/.axelar/config/config.toml` from `5s` to `1s`.
+
+6. Restart your `axelard` node with the new `v1.3.2` build as well as `ampd` with the new `v1.13.2` binaries.
+
+7. If you're a validator also restart `vald` with `v1.3.2` and `tofnd` with `v1.0.1`.
+
+### Migration expectations
+
+- **Archival nodes:** ~12.5 hours migration + catch-up time
+- **Validator / RPC nodes:** ~1 hour migration + catch-up time
+
+**Important:** Do not restart the node during migration, as any restart will cause the migration to begin again. Block production will resume once a quorum of validators by stake have completed the upgrade.
+
+### Example using join scripts (axelarate-community)
+
+```bash
+# in axelarate-community repo
+git checkout main
+git pull
+KEYRING_PASSWORD="pw-1" ./scripts/node.sh -n mainnet -a v1.3.2
+# For validators, restart vald/tofnd
+KEYRING_PASSWORD="pw-1" TOFND_PASSWORD="pw-2" ./scripts/validator-tools-host.sh -n mainnet -a v1.3.2 -q v1.0.1
+```
+
+## Ampd
+
+For verifiers, a new `ampd` [upgrade](https://github.com/axelarnetwork/axelar-contract-deployments/blob/main/releases/ampd/2025-11-17-ampd-v1.13.2.md) is required to support `axelard v1.3.2`. The `ampd` upgrade must be done **after** the `axelard` upgrade.
+
+### Instructions
+
+Restart `ampd` with the new binary after deploying axelard `v1.3.2`. The relevant `ampd` release is available [here](https://github.com/axelarnetwork/axelar-amplifier/releases/tag/ampd-v1.13.2).
+
+## Troubleshooting
+
+If you encounter a **hash error**, ensure you have `libwasmvm` v2.2.4:
+
+https://github.com/CosmWasm/wasmvm/releases/download/v2.2.4/libwasmvm.x86_64.so
+
+Before restarting your node:
+
+1. Make sure `LD_LIBRARY_PATH` includes the directory of `libwasmvm` (dynamic binary only).
+2. Docker users do **not** need to modify anything.
+
+If you see the error `undefined symbol: migrate_with_info`, switch to using the statically linked binary (`axelard-linux-amd64-v1.3.2-static`). If you need to use a dynamically linked binary, make sure you have the correct `libwasmvm` version (`2.2.4`).
+
+If you see the message `migrating module auth from version 2 to version 3`, the upgrade has started and is progressing normally.
+
+If you see the error `ERR failed to get consensus params err="collections: not found: key 'no_key' of type ...`, no action is necessary. This is expected during preblock so the upgrade plan can be executed and the consensus params set for the first time in the new format.
+
+Required RAM is **64 GB**. If your process runs out of memory during the upgrade you will have to increase your system RAM to at least 64 GB and the upgrade will restart from the beginning (progress is lost).
