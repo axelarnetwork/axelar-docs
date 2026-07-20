@@ -181,7 +181,16 @@ The example makes use of the [XRPL Client library](https://www.npmjs.com/package
 The key function in this example is `interchainTransfer()`:
 
 ```js
-async function interchainTransfer(_config, wallet, client, chain, options, args) {
+async function interchainTransfer(config, wallet, client, chain, options, args) {
+    // encodeITSDestination produces the canonical raw-bytes hex for the destination
+    // chain type; hex() then wraps it for XRPL memo transport.
+    const destinationAddress = encodeITSDestination(config.chains, args.destinationChain, args.destinationAddress);
+
+    // The gas fee is denominated in the same token as the transfer: parseTokenAmount
+    // yields a drops string for XRP, or a decimal value for IOUs.
+    const parsedGasFee = parseTokenAmount(args.token, options.gasFeeAmount);
+    const gasFeeAmount = typeof parsedGasFee === 'string' ? parsedGasFee : parsedGasFee.value;
+
     await client.sendPayment(
         wallet,
         {
@@ -189,9 +198,9 @@ async function interchainTransfer(_config, wallet, client, chain, options, args)
             amount: parseTokenAmount(args.token, args.amount), // token is either "XRP" or "<currency>.<issuer-address>"
             memos: [
                 { memoType: hex('type'), memoData: hex('interchain_transfer') },
-                { memoType: hex('destination_address'), memoData: hex(args.destinationAddress.replace('0x', '')) },
+                { memoType: hex('destination_address'), memoData: hex(destinationAddress.replace('0x', '')) },
                 { memoType: hex('destination_chain'), memoData: hex(args.destinationChain) },
-                { memoType: hex('gas_fee_amount'), memoData: hex(options.gasFeeAmount) },
+                { memoType: hex('gas_fee_amount'), memoData: hex(gasFeeAmount) },
                 ...(options.payload ? [{ memoType: hex('payload'), memoData: options.payload }] : []),
             ],
         },
@@ -200,17 +209,17 @@ async function interchainTransfer(_config, wallet, client, chain, options, args)
 }
 ```
 
-Note that `hex(options.gasFeeAmount)` performs no format validation. Make sure the string you pass matches the format required by the `Amount` type as set out in [Encoding `gas_fee_amount`](#encoding-gas_fee_amount).
+The script converts `--gasFeeAmount` into the format the memo requires (a `u64` drops string for XRP, a decimal string for IOUs), so you pass it in the same denomination as the transferred token. See [Encoding `gas_fee_amount`](#encoding-gas_fee_amount) for the underlying memo format.
 
 ### Sending XRP
 
 To send 1 XRP with 0.1 XRP allocated to gas:
 
 ```bash
-node xrpl/interchain-transfer.js -e testnet -n xrpl XRP 1 xrpl-evm 0x312dba807EAE77f01EF3dd21E885052f8F617c5B --gasFeeAmount 100000
+node xrpl/interchain-transfer.js -e testnet -n xrpl XRP 1 xrpl-evm 0x312dba807EAE77f01EF3dd21E885052f8F617c5B --gasFeeAmount 0.1
 ```
 
-`--gasFeeAmount` is an integer drops string (`100000` drops = 0.1 XRP).
+`--gasFeeAmount` is denominated in XRP (`0.1` = 0.1 XRP); the script converts it to the drops value carried in the memo.
 
 ### Sending an IOU
 
