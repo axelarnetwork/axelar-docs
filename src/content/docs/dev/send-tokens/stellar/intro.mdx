@@ -48,7 +48,7 @@ ITS enables several robust use cases on Stellar:
 ```rust
 fn deploy_interchain_token(
     env: &Env,
-    caller: Address,
+    deployer: Address,
     salt: BytesN<32>,
     token_metadata: TokenMetadata,
     initial_supply: i128,
@@ -61,7 +61,7 @@ fn deploy_interchain_token(
 ### Deploy an Interchain Token Remotely to Other Chains:
 
 ```rust
-fn deploy_remote_token(
+fn deploy_remote_interchain_token(
     env: &Env,
     caller: Address,
     salt: BytesN<32>,
@@ -109,7 +109,7 @@ fn interchain_transfer(
     destination_chain: String,
     destination_address: Bytes,
     amount: i128,
-    data: Option<Bytes>,
+    metadata: Option<Bytes>,
     gas_token: Option<Token>,
 ) -> Result<(), ContractError> {
      // Transfers tokens from Stellar to another blockchain
@@ -150,34 +150,34 @@ fn execute(
 The ITS implementation includes a [flow-limiting system](/dev/send-tokens/interchain-tokens/flow-limit/) to control how many tokens can move in a given period:
 
 ```rust
-#[only_operator]
 fn set_flow_limit(
     env: &Env,
+    caller: Address,
     token_id: BytesN<32>,
     flow_limit: Option<i128>,
 ) -> Result<(), ContractError> {}
 ```
 
-This function allows the [operator](/dev/send-tokens/interchain-tokens/minter-operator-roles/#operator-role) to limit how many tokens can flow in or out over time.
+This function allows the [operator](/dev/send-tokens/interchain-tokens/minter-operator-roles/#operator-role) or an approved flow limiter for the token to limit how many tokens can flow in or out over time.
 
 #### Setting Flow Limits
 
-Flow limits are configured per token and can only be set by authorized operators:
+Flow limits are configured per token and can be set by the contract operator or an approved flow limiter for the token:
 
 ```rust
 // Set a flow limit for a token
-client.set_flow_limit(&token_id, &Some(1000_000));
+client.set_flow_limit(&caller, &token_id, &Some(1000_000));
 
 // Remove flow limit (disable flow limiting)
-client.set_flow_limit(&token_id, &None);
+client.set_flow_limit(&caller, &token_id, &None);
 
 // Freeze token transfers (set limit to 0)
-client.set_flow_limit(&token_id, &Some(0));
+client.set_flow_limit(&caller, &token_id, &Some(0));
 ```
 
 #### Authorization
 
-- **Only Operators**: Flow limits can only be set by addresses with operator privileges
+- **Operator or Flow Limiter**: Flow limits can be set by the contract operator or by an approved flow limiter for the token
 - **Per-Token Configuration**: Each token can have its own independent flow limit
 - **Optional Feature**: Tokens without configured flow limits have no transfer restrictions
 
@@ -189,13 +189,13 @@ The ITS contract provides several functions to query flow limit status:
 
 ```rust
 // Get the configured flow limit for a token
-fn flow_limit(token_id: BytesN<32>) -> Option<i128>
+fn flow_limit(env: &Env, token_id: BytesN<32>) -> Option<i128>
 
 // Get current epoch's outflow amount
-fn flow_out_amount(token_id: BytesN<32>) -> i128
+fn flow_out_amount(env: &Env, token_id: BytesN<32>) -> i128
 
 // Get current epoch's inflow amount  
-fn flow_in_amount(token_id: BytesN<32>) -> i128
+fn flow_in_amount(env: &Env, token_id: BytesN<32>) -> i128
 ```
 
 #### Error Handling
