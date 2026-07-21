@@ -62,7 +62,7 @@ axelard q evm latest-batched-commands avalanche
 axelard q evm gateway-address avalanche
 ```
 
-Submitting this batched data is similar to the description in [Send AXL to an EVM chain](/pages/learn/cli/axl-to-evm).
+To submit the batched data, use a wallet such as MetaMask to send a transaction to the Axelar gateway contract address (shown above) on the EVM chain, with the `execute_data` hex pasted into the transaction's data field. Do not send any tokens with this transaction.
 
 - Note the `[EVM_TOKEN_TX_HASH]` for the transaction to the gateway contract.
 
