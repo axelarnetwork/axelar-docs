@@ -53,10 +53,7 @@ Transactions using Axelar often have costs associated with their source chain, t
 
 ### Transaction fees
 
-To simplify paying for transaction pricing through the pipeline, Axelar has two general solutions:
-
-- For General Message Passing (function calls to `callContract()` or `callContractWithToken()`), a chain-agnostic relaying service is implemented to accept gas payments from users on the source chain in its native currency.
-- For token transfers, a fixed “relayer fee” is deducted from the amount of assets being transferred cross-chain.
+To simplify paying for transaction pricing through the pipeline, Axelar implements a chain-agnostic relaying service for General Message Passing (function calls to `callContract()` or `callContractWithToken()`) that accepts gas payments from users on the source chain in its native currency.
 
 All costs can be seen on [Axelarscan](https://axelarscan.io/) by looking at a specific transaction — for example, [from Moonbeam to BNB Chain](https://axelarscan.io/gmp/0x598d35609919bc6c0737ae229af56b2135ccf5c1b031e1bd8d45f4ec4190e5a4:65).
 
