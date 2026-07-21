@@ -5,11 +5,16 @@ import { Callout } from "/src/components/callout";
 <Callout type="error" emoji="🔥">
   This CLI transfer flow is **disabled**. The legacy link-deposit protocol it relied on (`axelard tx axelarnet link` / `latest-deposit-address`) was removed in the [v1.4 network upgrade](/resources/mainnet/upgrades/v147/). Do not attempt it — tokens sent to a generated deposit address are not relayed and may be permanently lost.
 
-To move tokens across chains today, use the [Interchain Token Service](/dev/send-tokens/interchain-tokens/intro/).
-
 </Callout>
 
 This page is retained for historical reference only.
+
+## How to bridge tokens now
+
+The closest replacement is [`callContractWithToken()`](/dev/general-message-passing/gmp-tokens-with-messages/), which sends tokens together with a General Message Passing payload.
+It is not a drop-in replacement, however: the destination must be a smart contract that handles both the GMP payload and the accompanying token transfer (an `AxelarExecutableWithToken` implementation), so it cannot deliver tokens to a plain wallet.
+
+The [Interchain Token Service](/dev/send-tokens/interchain-tokens/intro/) supports both use cases — sending tokens to a regular account, and calling a contract with a token — and is the recommended path for most token transfers.
 
 This guide previously described how to transfer AXL tokens from Axelar to an EVM chain using the node CLI.
 The flow linked the destination EVM address to a temporary, one-time deposit address on Axelar, had the user send `uaxl` to that deposit address, and relied on Axelar's relayers (or a series of manual `axelard` commands) to confirm the deposit and release the wrapped AXL on the destination chain.
