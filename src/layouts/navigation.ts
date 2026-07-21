@@ -336,11 +336,11 @@ export const getNavigation = (section) => {
               children: [
                 {
                   title: "Send Tokens",
-                  href: "/dev/send-tokens/deprecated/send-tokens/",
+                  href: "/dev/send-tokens/disabled/send-tokens/",
                 },
                 {
                   title: "Deposit Address",
-                  href: "/dev/send-tokens/deprecated/deposit-address/",
+                  href: "/dev/send-tokens/disabled/deposit-address/",
                 },
               ]
             },
