@@ -970,14 +970,20 @@ export const getNavigation = (section) => {
         children: [
           { title: "Introduction", href: "/learn/cli/" },
           { title: "Reference", href: "/learn/cli/reference/" },
-          { title: "Send UST to an EVM chain", href: "/learn/cli/ust-to-evm/" },
           {
-            title: "Redeem UST from an EVM chain",
+            title: "Send UST to an EVM chain (Disabled)",
+            href: "/learn/cli/ust-to-evm/",
+          },
+          {
+            title: "Redeem UST from an EVM chain (Disabled)",
             href: "/learn/cli/ust-from-evm/",
           },
-          { title: "Send AXL to an EVM chain", href: "/learn/cli/axl-to-evm/" },
           {
-            title: "Redeem AXL from an EVM chain",
+            title: "Send AXL to an EVM chain (Disabled)",
+            href: "/learn/cli/axl-to-evm/",
+          },
+          {
+            title: "Redeem AXL from an EVM chain (Disabled)",
             href: "/learn/cli/axl-from-evm/",
           },
         ],

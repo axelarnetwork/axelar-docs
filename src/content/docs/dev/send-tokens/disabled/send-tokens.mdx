@@ -5,14 +5,17 @@ import { Callout } from "/src/components/callout";
 
 <Callout type="error" emoji="🔥">
   The `sendToken()` route is **disabled**. Do not attempt to bridge assets with this method — tokens sent this way are not relayed and may be permanently lost.
-
-For gateway tokens, use [`callContractWithToken()`](/dev/general-message-passing/gmp-tokens-with-messages/).
-For other tokens, use the [Interchain Token Service](/dev/send-tokens/interchain-tokens/intro/).
-
 </Callout>
 
 This page is retained for historical reference only.
 It describes, at a high level, how the now-disabled `sendToken()` route used to work.
+
+## How to bridge tokens now
+
+The closest replacement is [`callContractWithToken()`](/dev/general-message-passing/gmp-tokens-with-messages/), which sends tokens together with a General Message Passing payload.
+It is not a drop-in replacement, however: the destination must be a smart contract that handles both the GMP payload and the accompanying token transfer (an `AxelarExecutableWithToken` implementation), so it cannot deliver tokens to a plain wallet.
+
+The [Interchain Token Service](/dev/send-tokens/interchain-tokens/intro/) supports both use cases — sending tokens to a regular account, and calling a contract with a token — and is the recommended path for most token transfers.
 
 ## How it used to work
 
