@@ -332,7 +332,7 @@ export const getNavigation = (section) => {
               href: "/dev/send-tokens/glossary/",
             },
             {
-              title: "Deprecated",
+              title: "Disabled",
               children: [
                 {
                   title: "Send Tokens",
@@ -414,10 +414,6 @@ export const getNavigation = (section) => {
           title: "AxelarJS SDK",
           children: [
             { title: "Introduction", href: "/dev/axelarjs-sdk/intro/" },
-            {
-              title: "Token Transfer via Deposit Address",
-              href: "/dev/axelarjs-sdk/token-transfer-dep-addr/",
-            },
             {
               title: "GMP Transaction Status and Recovery",
               href: "/dev/axelarjs-sdk/tx-status-query-recovery/",

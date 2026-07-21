@@ -1,17 +1,20 @@
 import { Callout } from "/src/components/callout";
 
 
-# Transfer assets using a deposit address (Deprecated)
+# Transfer assets using a deposit address (Disabled)
 
-<Callout type="warning">
-  Note: Transfering assets via `deposit addresses` are deprecated. For gateway tokens it is recommended to use `callContractWithToken()` and for other tokens it is recommended to use the `Interchain Token Service`.
+<Callout type="error" emoji="🔥">
+  Transferring assets via **deposit addresses** is **disabled**. Do not send tokens to a generated deposit address — they are not relayed and may be permanently lost.
+
+For gateway tokens, use [`callContractWithToken()`](/dev/general-message-passing/gmp-tokens-with-messages/).
+For other tokens, use the [Interchain Token Service](/dev/send-tokens/interchain-tokens/intro/).
+
 </Callout>
 
-A [deposit address](/dev/axelarjs-sdk/token-transfer-dep-addr/) is a temporary one-time address created and monitored by Axelar’s Relayer Services. Deposit addresses generally function for up to 24 hours.
+This page is retained for historical reference only.
 
-Use a deposit address if:
+A deposit address was a temporary, one-time address created and monitored by Axelar's Relayer Services, similar to how a centralized exchange issues a monitored deposit address.
+A user generated the address on a source chain, sent supported tokens to it, and the relayers forwarded the funds to the destination chain.
+Deposit addresses generally functioned for up to 24 hours.
 
-- You need functionality not offered by the `sendToken()` method, such as Cosmos-to-X.
-- You want to allow token transfers from wallets that do not interact with Axelar, such as when withdrawing funds from a centralized exchange.
-
-To transfer assets using a deposit address, install the AxelarJS SDK and initiate an `AxelarAssetTransfer`.
+This route was primarily used to support transfers that `sendToken()` could not, such as Cosmos-to-X transfers, and to accept token transfers from wallets or services that did not interact with Axelar directly.
