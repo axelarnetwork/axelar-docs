@@ -42,8 +42,9 @@ The `estimateGasFee` method exposes two additional optional parameters to enhanc
 
 The remainder of any gas paid upfront for a transaction that is not used by our gas service is refunded to the specified refund address.
 
-`Refund = Gas deposit - Network Base Fee - Execution Fee - approximate gas to process the refund**.`
-\*\*Gas estimated to transfer the refund is usually a bit higher than the actual gas used.
+`Refund = Gas deposit - Network Base Fee - Execution Fee - approximate gas to process the refund`
+
+_Note: the gas estimated to transfer the refund is usually a bit higher than the actual gas used._
 
 #### RoundTrips Transactions (Two-way calls)
 
@@ -77,9 +78,9 @@ Fees for GMP express include all of the same fees as `callContractWithToken`, pl
 
 For GMP Express transactions, the total refund will then be:
 
-`Refund = Gas deposit - Express fee - Gas used to execute express method - Network Base Fee - Execution Fee - approximate gas to process the refund**.`
+`Refund = Gas deposit - Express fee - Gas used to execute express method - Network Base Fee - Execution Fee - approximate gas to process the refund`
 
-\*\*Gas estimated to transfer the refund is usually a bit higher than the actual gas used.
+_Note: the gas estimated to transfer the refund is usually a bit higher than the actual gas used._
 
 ## Interchain Tokens
 
