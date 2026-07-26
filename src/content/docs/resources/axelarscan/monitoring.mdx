@@ -37,3 +37,9 @@ import { Callout } from "/src/components/callout";
 ## 2. AxelarJS SDK
 
 See the SDK docs section, [Query transaction status by txHash](/dev/axelarjs-sdk/tx-status-query-recovery#query-transaction-status-by-txhash).
+
+## 3. Third-party monitoring
+
+Community-run monitors that consume the AxelarScan API and publish continuous latency measurements:
+
+- [OpenChainBench Axelar GMP Latency](https://openchainbench.com/benchmarks/axelar-gmp-latency) computes per-source-chain histograms from `time_spent.call_confirm` and `time_spent.total` on the public `searchGMP` endpoint, refreshed every 60 seconds. Covers Ethereum, Polygon, Base, Moonbeam, and Osmosis at launch. Source code: [ChainBench/OpenChainBench](https://github.com/ChainBench/OpenChainBench/tree/main/harnesses/axelar-gmp-latency).
