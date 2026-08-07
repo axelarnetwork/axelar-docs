@@ -72,6 +72,9 @@
         },
         {
           "value": "https://axelar.ibs.team/rpc"
+        },
+        {
+          "value": "https://rpc-1.axelar.bitszn.com"
         }
       ]
     },
@@ -98,6 +101,9 @@
         },
         {
           "value": "https://axelar.ibs.team/api"
+        },
+        {
+          "value": "https://api-1.axelar.bitszn.com"
         }
       ]
     },

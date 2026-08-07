@@ -1,0 +1,29 @@
+import { Callout } from "/src/components/callout";
+
+
+# Send Tokens Cross-Chain (Disabled)
+
+<Callout type="error" emoji="🔥">
+  The `sendToken()` route is **disabled**. Do not attempt to bridge assets with this method — tokens sent this way are not relayed and may be permanently lost.
+</Callout>
+
+This page is retained for historical reference only.
+It describes, at a high level, how the now-disabled `sendToken()` route used to work.
+
+## How to bridge tokens now
+
+The closest replacement is [`callContractWithToken()`](/dev/general-message-passing/gmp-tokens-with-messages/), which sends tokens together with a General Message Passing payload.
+It is not a drop-in replacement, however: the destination must be a smart contract that handles both the GMP payload and the accompanying token transfer (an `AxelarExecutableWithToken` implementation), so it cannot deliver tokens to a plain wallet.
+
+The [Interchain Token Service](/dev/send-tokens/interchain-tokens/intro/) supports both use cases — sending tokens to a regular account, and calling a contract with a token — and is the recommended path for most token transfers.
+
+## How it used to work
+
+`sendToken()` was an early method for moving a limited set of Axelar-supported "gateway" tokens across chains.
+
+On EVM source chains, `sendToken()` was a method exposed by the Axelar Gateway contract.
+After granting the Gateway an ERC-20 allowance, the caller invoked `sendToken()` with a destination chain, destination address, asset symbol, and amount, and the token was minted to the recipient on the destination chain.
+
+On Cosmos-based source chains, the equivalent action was an IBC transfer of the asset to Axelar's designated General Message Passing address, carrying a memo that identified it as a token transfer.
+
+The AxelarJS SDK wrapped both flows behind a single `sendToken()` call so that frontends could trigger a transfer without interacting with the Gateway directly.

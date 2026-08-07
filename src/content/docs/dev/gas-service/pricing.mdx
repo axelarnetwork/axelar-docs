@@ -7,20 +7,9 @@ Transactions using Axelar often have costs associated on their source chain, the
 1. Relaying to the gateway contract on the destination chain
 1. Executing the destination smart contract with the payload
 
-To simplify paying for transaction pricing through the pipeline, Axelar has two general solutions to this problem.
-
-- For token transfers, a fixed "relayer fee" is deducted from the amount of assets being transferred cross-chain.
-- For General Message Passing (`callContract` and `callContractWithToken`), a chain-agnostic gas relaying service is implemented to accept gas payments from users on the source chain in its native currency.
+To simplify paying for transaction pricing through the pipeline, Axelar implements a chain-agnostic gas relaying service for General Message Passing (`callContract` and `callContractWithToken`) that accepts gas payments from users on the source chain in its native currency.
 
 All costs can be seen on [Axelarscan](https://axelarscan.io) by looking at a specific transaction, [from Moonbeam to BNB Chain for example](https://axelarscan.io/gmp/0x598d35609919bc6c0737ae229af56b2135ccf5c1b031e1bd8d45f4ec4190e5a4:65).
-
-## Token transfers via `sendToken` or `getDepositAddress`
-
-Prices are fixed based on the source chain, destination chain, and asset. You can query these directly on the Axelar network or refer to the `Resources` tab under the `Cross-chain relayer gas fee` section.
-
-Whether you are transferring 10 axlUSDC or 10,000,000 axlUSDC, the cost is the same. The amount sent in a transaction must exceed the cost of the fee; it otherwise remains in the queue until the aggregate amount exceeds the fee.
-
-Asset transfers were designed this way to give users a `one click` experience. This simplified UX makes it so that users are not required to submit multiple blockchain transactions approving payments in addition to the transactions for sending the tokens.
 
 ## callContract (General Message Passing)
 
@@ -53,8 +42,9 @@ The `estimateGasFee` method exposes two additional optional parameters to enhanc
 
 The remainder of any gas paid upfront for a transaction that is not used by our gas service is refunded to the specified refund address.
 
-`Refund = Gas deposit - Network Base Fee - Execution Fee - approximate gas to process the refund**.`
-\*\*Gas estimated to transfer the refund is usually a bit higher than the actual gas used.
+`Refund = Gas deposit - Network Base Fee - Execution Fee - approximate gas to process the refund`
+
+_Note: the gas estimated to transfer the refund is usually a bit higher than the actual gas used._
 
 #### RoundTrips Transactions (Two-way calls)
 
@@ -88,9 +78,9 @@ Fees for GMP express include all of the same fees as `callContractWithToken`, pl
 
 For GMP Express transactions, the total refund will then be:
 
-`Refund = Gas deposit - Express fee - Gas used to execute express method - Network Base Fee - Execution Fee - approximate gas to process the refund**.`
+`Refund = Gas deposit - Express fee - Gas used to execute express method - Network Base Fee - Execution Fee - approximate gas to process the refund`
 
-\*\*Gas estimated to transfer the refund is usually a bit higher than the actual gas used.
+_Note: the gas estimated to transfer the refund is usually a bit higher than the actual gas used._
 
 ## Interchain Tokens
 

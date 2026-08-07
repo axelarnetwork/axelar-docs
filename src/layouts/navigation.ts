@@ -332,15 +332,15 @@ export const getNavigation = (section) => {
               href: "/dev/send-tokens/glossary/",
             },
             {
-              title: "Deprecated",
+              title: "Disabled",
               children: [
                 {
                   title: "Send Tokens",
-                  href: "/dev/send-tokens/deprecated/send-tokens/",
+                  href: "/dev/send-tokens/disabled/send-tokens/",
                 },
                 {
                   title: "Deposit Address",
-                  href: "/dev/send-tokens/deprecated/deposit-address/",
+                  href: "/dev/send-tokens/disabled/deposit-address/",
                 },
               ]
             },
@@ -414,10 +414,6 @@ export const getNavigation = (section) => {
           title: "AxelarJS SDK",
           children: [
             { title: "Introduction", href: "/dev/axelarjs-sdk/intro/" },
-            {
-              title: "Token Transfer via Deposit Address",
-              href: "/dev/axelarjs-sdk/token-transfer-dep-addr/",
-            },
             {
               title: "GMP Transaction Status and Recovery",
               href: "/dev/axelarjs-sdk/tx-status-query-recovery/",
@@ -974,14 +970,20 @@ export const getNavigation = (section) => {
         children: [
           { title: "Introduction", href: "/learn/cli/" },
           { title: "Reference", href: "/learn/cli/reference/" },
-          { title: "Send UST to an EVM chain", href: "/learn/cli/ust-to-evm/" },
           {
-            title: "Redeem UST from an EVM chain",
+            title: "Send UST to an EVM chain (Disabled)",
+            href: "/learn/cli/ust-to-evm/",
+          },
+          {
+            title: "Redeem UST from an EVM chain (Disabled)",
             href: "/learn/cli/ust-from-evm/",
           },
-          { title: "Send AXL to an EVM chain", href: "/learn/cli/axl-to-evm/" },
           {
-            title: "Redeem AXL from an EVM chain",
+            title: "Send AXL to an EVM chain (Disabled)",
+            href: "/learn/cli/axl-to-evm/",
+          },
+          {
+            title: "Redeem AXL from an EVM chain (Disabled)",
             href: "/learn/cli/axl-from-evm/",
           },
         ],
