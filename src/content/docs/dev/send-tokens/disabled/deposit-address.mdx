@@ -1,0 +1,23 @@
+import { Callout } from "/src/components/callout";
+
+
+# Transfer assets using a deposit address (Disabled)
+
+<Callout type="error" emoji="🔥">
+  Transferring assets via **deposit addresses** is **disabled**. Do not send tokens to a generated deposit address — they are not relayed and may be permanently lost.
+</Callout>
+
+This page is retained for historical reference only.
+
+## How to bridge tokens now
+
+The closest replacement is [`callContractWithToken()`](/dev/general-message-passing/gmp-tokens-with-messages/), which sends tokens together with a General Message Passing payload.
+It is not a drop-in replacement, however: the destination must be a smart contract that handles both the GMP payload and the accompanying token transfer (an `AxelarExecutableWithToken` implementation), so it cannot deliver tokens to a plain wallet.
+
+The [Interchain Token Service](/dev/send-tokens/interchain-tokens/intro/) supports both use cases — sending tokens to a regular account, and calling a contract with a token — and is the recommended path for most token transfers.
+
+A deposit address was a temporary, one-time address created and monitored by Axelar's Relayer Services, similar to how a centralized exchange issues a monitored deposit address.
+A user generated the address on a source chain, sent supported tokens to it, and the relayers forwarded the funds to the destination chain.
+Deposit addresses generally functioned for up to 24 hours.
+
+This route was primarily used to support transfers that `sendToken()` could not, such as Cosmos-to-X transfers, and to accept token transfers from wallets or services that did not interact with Axelar directly.

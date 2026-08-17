@@ -2,6 +2,21 @@
   "framework": null,
   "redirects": [
     {
+      "source": "/dev/send-tokens/deprecated/send-tokens(/)?",
+      "destination": "/dev/send-tokens/disabled/send-tokens/",
+      "permanent": true
+    },
+    {
+      "source": "/dev/send-tokens/deprecated/deposit-address(/)?",
+      "destination": "/dev/send-tokens/disabled/deposit-address/",
+      "permanent": true
+    },
+    {
+      "source": "/dev/axelarjs-sdk/token-transfer-dep-addr(/)?",
+      "destination": "/dev/send-tokens/disabled/deposit-address/",
+      "permanent": true
+    },
+    {
       "source": "/dev/amplifier/chain-integration/relay-messages(/)?",
       "destination": "/dev/amplifier/chain-integration/relay-messages/manual/",
       "permanent": true

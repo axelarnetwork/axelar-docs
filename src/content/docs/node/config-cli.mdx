@@ -2,16 +2,16 @@
 
 By default, many Axelar CLI commands contain boilerplate material that obfuscates the command and adds complexity to documentation. Here we describe documentation conventions and ways to configure your system so as to reduce this boilerplate.
 
-Example: As per [Send AXL to an EVM chain](/learn/cli/axl-to-evm/) you can use the CLI to get a deposit address for cross-chain transfer of AXL tokens via the command
+Example: you can use the CLI to send `uaxl` tokens to another account on Axelar via the command
 
 ```bash
-axelard tx axelarnet link {EVM_CHAIN} {EVM_DEST_ADDR} uaxl --from my_account
+axelard tx bank send my_account {DEST_ADDR} {AMOUNT}uaxl --from my_account
 ```
 
 The above command does not work on a system that has not yet been properly configured. On a fresh, unconfigured system you would instead need to type
 
 ```bash
-echo $KEYRING_PASSWORD | ~/.axelar_testnet/bin/axelard tx axelarnet link {EVM_CHAIN} {EVM_DEST_ADDR} uaxl --from validator --gas auto --gas-adjustment 1.5 --chain-id axelar-testnet-lisbon-3 --home ~/.axelar_testnet
+echo $KEYRING_PASSWORD | ~/.axelar_testnet/bin/axelard tx bank send validator {DEST_ADDR} {AMOUNT}uaxl --from validator --gas auto --gas-adjustment 1.5 --chain-id axelar-testnet-lisbon-3 --home ~/.axelar_testnet
 ```
 
 Let us explain the changes:
