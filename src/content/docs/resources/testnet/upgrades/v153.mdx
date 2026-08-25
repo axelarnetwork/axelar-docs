@@ -10,9 +10,9 @@ Upgrade height: **34883050**. Proposal: **[#636](https://testnet.axelarscan.io/p
   **On the `v1.5.x` line, deploy `v1.5.3` or higher.** `v1.5.0` is a pre-release, and `v1.5.1`
   and `v1.5.2` are superseded by `v1.5.3`.
 
-  Binaries are distributed from S3 and Docker Hub, not from a GitHub release page. The `v1.5.3`
-  changelog is published on the axelar-core repo after the mainnet upgrade; the changes are
-  summarized below.
+  Binaries are available from the
+  [v1.5.3 release page](https://github.com/axelarnetwork/axelar-core/releases/tag/v1.5.3), from
+  S3, and from Docker Hub. The changes are summarized below.
 </Callout>
 
 ## Binary Types
@@ -27,6 +27,8 @@ Manifest digest `sha256:b2779cf4a9ea2d9032f6265861ce490f7df47673f27552ee8ea20b01
 
 ### Direct download
 
+The same binaries are attached to the
+[v1.5.3 release page](https://github.com/axelarnetwork/axelar-core/releases/tag/v1.5.3).
 Verify the `sha256` of each zip before use, see [verifying binaries](/node/config-node#verifying-binaries).
 
 | Target | Download | SHA256 |
@@ -73,7 +75,9 @@ The `v1.5` upgrade is a consensus-breaking release for Axelar testnet. Highlight
 
 No CosmWasm contract migrations are required. No `config.toml` / `app.toml` changes are required relative to a node already running v1.4.x (`iavl-cache-size = 0`, `iavl-disable-fastnode = true`, `timeout_commit = 1s`).
 
-For the `v1.5` line notes, see the [v1.5.0 changelog](https://github.com/axelarnetwork/axelar-core/blob/v1.5.0/CHANGELOG.md).
+Releases: [v1.5.0](https://github.com/axelarnetwork/axelar-core/releases/tag/v1.5.0) (the `v1.5` line notes), [v1.5.3](https://github.com/axelarnetwork/axelar-core/releases/tag/v1.5.3) (the deployed version).
+
+Changelogs: [v1.5.0](https://github.com/axelarnetwork/axelar-core/blob/v1.5.0/CHANGELOG.md), [v1.5.3](https://github.com/axelarnetwork/axelar-core/blob/v1.5.3/CHANGELOG.md).
 
 ## Upgrade Instructions
 
