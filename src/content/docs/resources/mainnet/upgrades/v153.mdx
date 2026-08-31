@@ -1,0 +1,164 @@
+# Mainnet upgrade: v1.5.3
+
+import { Callout } from "/src/components/callout";
+
+Instructions for the mainnet upgrade to axelar-core `v1.5.3`.
+
+Upgrade height: **33625777**. Proposal: **[#495](https://axelarscan.io/proposals/495)**. Upgrade time: **~10:30 UTC, 2026-08-25**. See [countdown](https://www.mintscan.io/axelar/block/33625777).
+
+<Callout type="warning" emoji="⚠️">
+  **On the `v1.5.x` line, deploy `v1.5.3` or higher.** `v1.5.0` is a pre-release, and `v1.5.1`
+  and `v1.5.2` are superseded by `v1.5.3`.
+
+  Binaries are available from the
+  [v1.5.3 release page](https://github.com/axelarnetwork/axelar-core/releases/tag/v1.5.3) and from
+  Docker Hub. The changes are summarized below.
+</Callout>
+
+## Binary Types
+
+### Docker
+
+```bash
+docker pull axelarnet/axelar-core:v1.5.3
+```
+
+Manifest digest `sha256:b2779cf4a9ea2d9032f6265861ce490f7df47673f27552ee8ea20b0106e59a51`. This tag is published for **linux/amd64 only**.
+
+### Direct download
+
+The same binaries are attached to the
+[v1.5.3 release page](https://github.com/axelarnetwork/axelar-core/releases/tag/v1.5.3).
+Verify the `sha256` of each zip before use, see [verifying binaries](/node/config-node#verifying-binaries).
+
+| Target | Download | SHA256 |
+| ------ | -------- | ------ |
+| linux/amd64 | [axelard-linux-amd64-v1.5.3.zip](https://github.com/axelarnetwork/axelar-core/releases/download/v1.5.3/axelard-linux-amd64-v1.5.3.zip) | `4edb57597a09959cd7a4063253f1f738d0e4ab312bc7405a2b8c8b7b902e0ff7` |
+| linux/amd64 (static) | [axelard-linux-amd64-v1.5.3-static.zip](https://github.com/axelarnetwork/axelar-core/releases/download/v1.5.3/axelard-linux-amd64-v1.5.3-static.zip) | `a75b13df9689ed1d267937437f84c921a8908e82068591e91ce26044418125a3` |
+| darwin/amd64 | [axelard-darwin-amd64-v1.5.3.zip](https://github.com/axelarnetwork/axelar-core/releases/download/v1.5.3/axelard-darwin-amd64-v1.5.3.zip) | `410c566ff8d80d8c8006958c252fb90f184c0381cbb1c257e63ae756702d6169` |
+| darwin/arm64 | [axelard-darwin-arm64-v1.5.3.zip](https://github.com/axelarnetwork/axelar-core/releases/download/v1.5.3/axelard-darwin-arm64-v1.5.3.zip) | `cf3c85c0ab3d62c0529e79d9726aac7faf298b02eaa6d9d2d02f3d9b2a34e644` |
+
+The **statically linked** Linux binary bundles `libwasmvm` and runs on any distribution without it installed. The **dynamically linked** binary requires `libwasmvm` **v2.3.4** on `LD_LIBRARY_PATH`.
+
+<Callout type="warning" emoji="⚠️">
+  `axelard` must be built with `go-1.25` for this release (same as v1.4.x). Build with
+  `make build-static`.
+
+  If using the **Docker image** or the **static** binary, no `wasmvm` setup is required.
+
+  If using the **dynamic** binary or building from source, `libwasmvm` is bumped from `v2.2.6`
+  (v1.4.x) to **`v2.3.4`** ([wasmvm v2.3.4](https://github.com/CosmWasm/wasmvm/releases/tag/v2.3.4))
+  in this upgrade. Reinstall the library on every node and keep it on `LD_LIBRARY_PATH` before
+  starting the new binary, otherwise it refuses to launch with a wasmvm version-mismatch error.
+
+  | Library | SHA256 |
+  | ------- | ------ |
+  | `libwasmvm.x86_64.so` | `b1b298e3d1722c96c401bcdfc8508f9da8ae139f5b194a8af5aaa3818a0c57b1` |
+  | `libwasmvm.aarch64.so` | `3de57a9e90f8ce70875f11a79ccc361ce70a600cc41a98ed2e3784cd8d56cf84` |
+</Callout>
+
+## About the v1.5 upgrade
+
+The `v1.5` upgrade is a consensus-breaking release for Axelar mainnet. Highlights:
+
+- **Migrates the Cosmos stack to cosmos-sdk v0.53, ibc-go v10, wasmd v0.60.8 and wasmvm v2.3.4.** Removes the `x/crisis` and `x/capability` modules and their stores, and registers the 07-tendermint light client as a modular route. `x/tss` remains mounted for historical transaction decoding.
+- **Runs the ibc core (6 → 8) and ibc transfer (5 → 6, `DenomTrace` → `Denom`) state migrations at the upgrade height.** The ibc transfer REST/CLI query surface is renamed upstream: **`denom_traces` becomes `denoms`**. Update relayers, explorers, and scripts that query the old path.
+- **Adds the `x/authz` module,** enabling scoped, revocable, expiring authorization grants, for example a validator delegating governance voting to an operational key. `MsgExec` is restricted to flat messages.
+- **Adds the `x/feepolicy` module.** A transaction may pay fees in a single denomination only, taken from a governance-controlled allowlist. The upgrade handler seeds the allowed denoms from the staking bond denom.
+- **Moves the nexus EVM processing queue to insertion order (FIFO),** so messages are delivered in arrival order rather than by message ID.
+- **Voting correctness fixes:** the source chain for an EVM vote result and the chain of a completed poll are both resolved from poll metadata rather than the voter-supplied result, and an EVM poll that expires with zero votes no longer applies the missing-vote penalty to every maintainer.
+- **Wasm and payload guards:** raises the wasm static validation limits above the wasmvm v2.3.4 defaults so optimizer-built Amplifier contracts still store, and makes the tightened ABI inflation guard unconditional.
+- **Disables `axelard export`.** State export to genesis is not supported, since axelar-core upgrades via in-place store migrations.
+- The wasmd/wasmvm bump patches **CWA-2026-005**, a high-severity block-production delay via wasm execution.
+
+`ampd` is **not** bumped for this upgrade. Verifier handlers continue against the same `ampd` version.
+
+No CosmWasm contract migrations are required. No `config.toml` / `app.toml` changes are required relative to a node already running v1.4.x (`iavl-cache-size = 0`, `iavl-disable-fastnode = true`, `timeout_commit = 1s`), other than the Moonbeam removal in step 4 below.
+
+Releases: [v1.5.0](https://github.com/axelarnetwork/axelar-core/releases/tag/v1.5.0) (the `v1.5` line notes), [v1.5.3](https://github.com/axelarnetwork/axelar-core/releases/tag/v1.5.3) (the deployed version).
+
+Changelogs: [v1.5.0](https://github.com/axelarnetwork/axelar-core/blob/v1.5.0/CHANGELOG.md), [v1.5.3](https://github.com/axelarnetwork/axelar-core/blob/v1.5.3/CHANGELOG.md).
+
+## Upgrade Instructions
+
+1. If you're a validator or have delegated to one, please vote for the upgrade proposal via:
+
+```bash
+axelard tx gov vote 495 yes --from validator
+```
+
+2. Wait for the proposed upgrade block. **Do not replace your binary before the halt.** Your node must keep running v1.4.x all the way to height 33625777 and panic there on its own, with a log: `{"level":"error","module":"consensus","err":"UPGRADE \"v1.5\" NEEDED at height: 33625777",`.
+
+Stop your node after chain halt:
+
+```bash
+pkill -f 'axelard start'
+# Validators also need to stop vald/tofnd
+pkill -f 'vald-start'
+pkill -f tofnd
+```
+
+3. Backup the state:
+
+```bash
+cp -r ~/.axelar/.core/data ~/.axelar-dojo-1-upgrade-1.5.3/.core/data
+```
+
+<Callout type="warning" emoji="⚠️">
+  ⚠️ **Important:** If you backup the entire folder, `~/.axelar/.core`, that'll
+  also include your private keys (inside `config` and `keyring-file`
+  subfolders). That can be dangerous if anyone gets access to your backups. We
+  recommend backing up keys separately when you first create your node, and then
+  excluding them from any data backups.
+</Callout>
+
+4. **Remove Moonbeam from your vald configuration.** Delete the whole `[[axelar_bridge_evm]]` block whose `name = "Moonbeam"` from your `config.toml`:
+
+```toml
+[[axelar_bridge_evm]]
+name = "Moonbeam"
+rpc_addr = "..."
+start-with-bridge = true
+```
+
+5. If you are using the dynamic binary or building from source, reinstall `libwasmvm` **v2.3.4** and confirm `LD_LIBRARY_PATH` points at it.
+
+6. Restart your `axelard` node with the new `v1.5.3` build.
+
+7. If you're a validator also restart `vald` with `v1.5.3` and `tofnd` with `v1.0.1` (unchanged from v1.4.x).
+
+### Example using join scripts (axelarate-community)
+
+```bash
+# in axelarate-community repo
+git checkout main
+git pull
+KEYRING_PASSWORD="pw-1" ./scripts/node.sh -n mainnet -a v1.5.3
+# For validators, restart vald/tofnd
+KEYRING_PASSWORD="pw-1" TOFND_PASSWORD="pw-2" ./scripts/validator-tools-host.sh -n mainnet -a v1.5.3 -q v1.0.1
+```
+
+## Ampd
+
+`ampd` is **not** bumped for this upgrade. Verifier handlers continue against the same `ampd` version you are already running.
+
+## Rollback
+
+This is a state-machine-breaking upgrade. **There is no in-place rollback** to v1.4.x once your node has executed the `v1.5` upgrade handler. The cosmos-sdk, ibc, and nexus store migrations are persisted to state. If rollback is required, restore from the pre-upgrade snapshot you took in step 3.
+
+## Troubleshooting
+
+If you encounter an **app hash mismatch**, the most likely cause is a stale `libwasmvm`. Confirm the loaded library is v2.3.4:
+
+https://github.com/CosmWasm/wasmvm/releases/download/v2.3.4/libwasmvm.x86_64.so
+
+Before restarting your node:
+
+1. Make sure `LD_LIBRARY_PATH` includes the directory of `libwasmvm` (dynamic binary only).
+2. Docker users do **not** need to modify anything.
+
+If the app hash mismatch persists, verify all replicas in your fleet were swapped to v1.5.3 before the upgrade height. Mixed binaries across replicas after the upgrade height will fork.
+
+If **`vald` restarts a few times** right after the upgrade with `unable to start client: dial tcp 127.0.0.1:26657: connect: connection refused`, this is expected. `vald` requires the local `axelard` RPC at startup and exits if it is not reachable yet, so on nodes where `axelard` takes a while to open its store `vald` will restart until the RPC is serving.
+
+If **IBC queries return no results**, note the transfer query surface is renamed upstream in ibc-go v10: `denom_traces` becomes `denoms`.
