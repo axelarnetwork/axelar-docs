@@ -71,3 +71,7 @@ This data is available on the [Axelarscan block explorer under the heading **GMP
 | Celo | 12 seconds | 1 block
 | Arbitrum | 19:06 minutes | 1000000 blocks
 | Base | 24 minutes | 1000000 blocks
+
+### Live per-chain finality measurements
+
+For a live, continuously updated comparison of finality time across major L1 chains, see the [OpenChainBench L1 finality benchmark](https://openchainbench.com/benchmarks/l1-finality). It measures wall-clock seconds between latest and finalized blocks for 11 L1s (Ethereum, Solana, BNB, Avalanche, SUI, Stellar, TON, Bitcoin, Litecoin, TRON, Monero), refreshed every 10 seconds, under an open methodology ([source, MIT](https://github.com/ChainBench/OpenChainBench), data CC-BY-4.0). Values in the table above are typical observations from `axelarscan.io/interchain`; live measurements can drift with network conditions and are useful for integrators sanity-checking assumed finality windows against current chain state.
