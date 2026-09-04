@@ -1,25 +1,23 @@
-# Satellite
-
 import { Callout } from "/src/components/callout";
 
-## What is Satellite?
 
-Satellite is a web application built on top of the Axelar Network. It provides an easy to use interface which enables users to transfer their crypto assets from one chain to another.
+# Satellite (Retired)
 
-## Getting Started
-
-<Callout type="warning" emoji="⚠️">
-  Caution: Satellite is used to transfer real assets across main networks. When
-  using it for the first time, try transferring small amounts initially. If you
-  need assistance, use the `FAQ` and `Support` buttons in Satellite for help.
+<Callout type="error" emoji="🔥">
+  Satellite has been retired. Use Axelar's current interface at [app.axelar.network](https://app.axelar.network/) for supported transfers. Do not use satellite.money - that domain is no longer controlled by Axelar.
 </Callout>
 
-Satellite can be found at [https://satellite.money/](https://satellite.money/).
+This page is retained for historical reference only.
 
-For a step-by-step walkthrough on how to use Satellite, check out the following tutorials created by the Axelar Team.
+## How to transfer assets now
 
-- [Tutorial Video](https://www.youtube.com/watch?v=_bxEw9Otb20)
+Use [app.axelar.network](https://app.axelar.network/), Axelar's current interface for cross-chain transfers.
 
-- [Instructional Medium Post](https://medium.com/axelar/transfer-terra-assets-to-evm-chains-using-satellite-f6480c7ff20c)
+Developers integrating transfers into their own application should start at [Send Tokens](/dev/send-tokens/introduction/), which covers both Gateway tokens and the [Interchain Token Service](/dev/send-tokens/interchain-tokens/intro/).
 
-See [Mainnet Resources](/resources/contract-addresses/mainnet/) for a reference list of Axelar's cross chain contract addresses, minimum asset transfer amounts, and cross-chain transaction processing fees.
+## What Satellite was
+
+Satellite was a web application built on top of the Axelar Network.
+It provided an interface for users to transfer their crypto assets from one chain to another, and was the main way to mint Axelar-wrapped assets such as [axlUSDC](/learn/axlusdc/).
+
+It relied on [deposit addresses](/dev/send-tokens/disabled/deposit-address/), a transfer route that is now disabled.
