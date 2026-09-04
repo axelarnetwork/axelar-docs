@@ -722,7 +722,7 @@ export const getNavigation = (section) => {
       {
         title: "Misc",
         children: [
-          { title: "Satellite", href: "/resources/satellite/" },
+          { title: "Satellite (Retired)", href: "/resources/satellite/" },
           { title: "MetaMask", href: "/resources/metamask/" },
           { title: "Add Network to Keplr Wallet", href: "/resources/keplr/" },
         ],

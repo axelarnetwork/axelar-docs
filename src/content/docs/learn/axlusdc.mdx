@@ -1,5 +1,7 @@
 # What is axlUSDC
 
+import { Callout } from "/src/components/callout";
+
 - axlUSDC is a wrapped, multi-chain representation of USDC, a dollar stablecoin.
 
 - For each unit of axlUSDC, there is a unit of USDC locked in an Axelar Gateway on Ethereum.
@@ -10,7 +12,7 @@
 
   - Swap via liquid pairs on [any of the DEXs listed here](https://axelar.network/blog/liquidity-pools-for-bridged-assets-via-axelar).
   - Swap via [Squid](https://app.squidrouter.com/), a cross-chain liquidity router built on Axelar.
-  - Mint via [Satellite](https://satellite.money/), a cross-chain bridge built by Axelar
+  - Mint via [the Axelar app](https://app.axelar.network/), Axelar's cross-chain bridging interface
 
 ## USDC and axlUSDC
 
@@ -43,7 +45,11 @@ There are three ways to acquire axlUSDC:
 
 1. DEXs on many connected chains list pairs in axlUSDC, supported by liquidity pools. We maintain a [regularly updated list of liquid pools for axlUSDC](https://axelar.network/blog/liquidity-pools-for-bridged-assets-via-axelar) (and all Axelar-wrapped assets).
 1. Squid, built with Axelar's General Message Passing, provides liquid [cross-chain swaps](https://axelar.network/blog/what-is-a-cross-chain-swap) using axlUSDC as a routing asset. Using Squid, you can start from any connected chain and swap into axlUSDC on any other connected chain. Squid is the engine powering liquid cross-chain swaps on a growing list of DEXs, and you can always use their [cross-chain swap widget](https://app.squidrouter.com/) to handle any kind of cross-chain swap you like, without having to trust your funds to a centralized exchange.
-1. If you're holding USDC and want to take it cross-chain, you can bridge it via [satellite.money](https://satellite.money), Axelar's bridging app.
+1. If you're holding USDC and want to take it cross-chain, you can bridge it via [the Axelar app](https://app.axelar.network/).
+
+<Callout type="error" emoji="🔥">
+  Satellite has been retired. Use Axelar's current interface at [app.axelar.network](https://app.axelar.network/) for supported transfers. Do not use satellite.money - that domain is no longer controlled by Axelar.
+</Callout>
 
 For now, axlUSDC is widely used in the Cosmos ecosystem, where it is the canonical representation of USDC on [Osmosis](https://osmosis.zone/) and many other Cosmos chains.
 
