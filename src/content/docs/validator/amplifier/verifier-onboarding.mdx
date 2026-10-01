@@ -267,6 +267,9 @@ This configuration file tells `ampd` how to connect to your local `tofnd`, how t
    batch_gas_limit="20000000"
    tx_confirmation_buffer_size="10"
    tx_confirmation_queue_cap="1000"
+   gas_adjustment="2"
+   queue_cap="1000"
+   broadcast_interval="1s"
 
    [tofnd_config]
    key_uid="axelar"
@@ -315,6 +318,9 @@ This configuration file tells `ampd` how to connect to your local `tofnd`, how t
    batch_gas_limit="20000000"
    tx_confirmation_buffer_size="10"
    tx_confirmation_queue_cap="1000"
+   gas_adjustment="2"
+   queue_cap="1000"
+   broadcast_interval="1s"
 
    [tofnd_config]
    key_uid="axelar"
@@ -373,6 +379,9 @@ This configuration file tells `ampd` how to connect to your local `tofnd`, how t
    batch_gas_limit="20000000"
    tx_confirmation_buffer_size="10"
    tx_confirmation_queue_cap="1000"
+   gas_adjustment="2"
+   queue_cap="1000"
+   broadcast_interval="1s"
 
    [tofnd_config]
    key_uid="axelar"
@@ -590,14 +599,18 @@ Prior to running the `ampd` daemon, you will need to set up your wallet with fun
    </tab-item>
    </tabs>
 
-   Bonded verifiers will stay bonded until they unbond or are removed by governance. The bond for testnet is 100000000000uamplifier (100k AXL). The bond for mainnet is 50000000000uamplifier (50k AXL).
+   Bonded verifiers will stay bonded until they unbond or are removed by governance. The bond for testnet is 100000000000uaxl (100k AXL). The bond for mainnet is 50000000000uaxl (50k AXL).
 
-1. Register your public keys. Register both `ecdsa` (for EVM/Sui/Stellar/XRPL chains) and `ed25519` (for Solana):
+1. Register your public keys. Register both `ecdsa` (used by the EVM chains, Solana, Sui and XRPL) and `ed25519` (used by Stellar):
 
    ```bash
    ampd register-public-key ecdsa
    ampd register-public-key ed25519
    ```
+
+1. Authorize your verifier.
+
+   This is dependent on the environment, and can be done via governance, or by the network operators. Wait until your verifier is authorized before registering chain support: the service registry rejects `register-chain-support` with `Unauthorized` for verifiers that are not authorized yet (service-registry v1.2.2 and later).
 
 1. Register support for desired chains, enabling `ampd` to participate in voting and signing for your supported chains.
 
@@ -625,10 +638,6 @@ Prior to running the `ampd` daemon, you will need to set up your wallet with fun
    </tabs>
 
    The command takes a single chain (`ampd register-chain-support [service name] [chain]`), so run it once for each chain you want to support. Note that any chain you want to support here must have a corresponding `[[grpc.blockchain_service.chains]]` entry in your ampd `config.toml` and a running handler.
-
-1. Authorize your verifier.
-
-   This is dependent on the environment, and can be done via governance, or by the network operators.
 
 1. Run the `ampd` daemon.
 
