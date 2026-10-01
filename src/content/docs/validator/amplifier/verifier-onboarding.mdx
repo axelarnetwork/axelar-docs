@@ -604,22 +604,27 @@ Prior to running the `ampd` daemon, you will need to set up your wallet with fun
    <tabs>
    <tab-item title="devnet">
       ```bash
-      ampd register-chain-support validators ethereum-sepolia avalanche
+      ampd register-chain-support validators ethereum-sepolia
+      ampd register-chain-support validators avalanche
       ```
    </tab-item>
    <tab-item title="testnet">
       ```bash
-      ampd register-chain-support amplifier flow sui stellar-2025-q4
+      ampd register-chain-support amplifier flow
+      ampd register-chain-support amplifier sui
+      ampd register-chain-support amplifier stellar-2025-q4
       ```
    </tab-item>
    <tab-item title="mainnet">
       ```bash
-      ampd register-chain-support amplifier flow sui stellar
+      ampd register-chain-support amplifier flow
+      ampd register-chain-support amplifier sui
+      ampd register-chain-support amplifier stellar
       ```
    </tab-item>
    </tabs>
 
-   Multiple chain names can be passed, separated by a space (`ampd register-chain-support [service name] [chains]...`). Note that any chain you want to support here must have a corresponding `[[grpc.blockchain_service.chains]]` entry in your ampd `config.toml` and a running handler.
+   The command takes a single chain (`ampd register-chain-support [service name] [chain]`), so run it once for each chain you want to support. Note that any chain you want to support here must have a corresponding `[[grpc.blockchain_service.chains]]` entry in your ampd `config.toml` and a running handler.
 
 1. Authorize your verifier.
 
