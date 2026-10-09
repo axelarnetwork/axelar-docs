@@ -75,6 +75,9 @@
         },
         {
           "value": "https://rpc-1.axelar.bitszn.com"
+        },
+        {
+          "value": "https://axelar.nownodes.io"
         }
       ]
     },
@@ -124,6 +127,9 @@
         },
         {
           "value": "axelar-grpc.contributiondao.com:9090"
+        },
+        {
+          "value": "axelar-grpc.nownodes.io"
         }
       ]
     },
@@ -132,6 +138,9 @@
       "value": [
         {
           "value": "wss://axelar-rpc.pops.one/websocket"
+        },
+        {
+          "value": "wss://axelar.nownodes.io/wss/{{api_key}}"
         }
       ]
     }
