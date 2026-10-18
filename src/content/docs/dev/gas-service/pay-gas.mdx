@@ -18,7 +18,32 @@ Gas estimation is the process of estimating the gas required to execute a transa
 ### Off-chain gas estimation (recommended)
 
 The standard way of using the Axelar Gas Service is to create a new endpoint that queries for a gas estimate based on the transaction a user is attempting to make, and then using that gas
-estimate to actually create the on-chain transaction with the correct amount of native gas.
+estimate to actually create the on-chain transaction with the correct amount of native gas. This can be done with the [estimateGasFee()](https://github.com/axelarnetwork/axelarjs-sdk/blob/main/src/libs/AxelarQueryAPI.ts#L482) function, available on the AxelarJS SDK. 
+
+The gas estimator takes in eight params, but only the first three are required:
+
+1. `sourceChain`: The chain where the transaction is initiated.
+1. `destinationChain`: The chain where the transaction is executed.
+1. `gasLimit`:  An estimated gas amount required to execute the transaction at the destination chain. For destinations on OP Stack chains (Optimism, Base, Scroll, Fraxtal, Blast, etc.), set only the L2 gas limit. The endpoint will automatically handle L1 gas estimation and bundling.
+1. `gasMultiplier`: (optional) A multiplier used to create a buffer above the calculated gas fee, to account for potential slippage throughout tx execution, e.g. 1.1 = 10% buffer. supports up to 3 decimal places. *The default value is "auto", which uses the gas multiplier from the fee response*.
+1. `sourceChainTokenSymbol`: (optional) The gas token symbol on the source chain.
+1. `minGasPrice`: (optional) A minimum value, in `wei`, for the gas price on the destination chain that is used to override the estimated gas price if it falls below this specified value.
+1. `executeData`: (optional)  The data to be executed on the destination chain. It's recommended to specify it if the destination chain is an L2 chain to calculate more accurate gas fee.
+1. `gmpParams`: (optional) Additional parameters for GMP transactions, including the ability to see a detailed view of the fee response
+
+```javascript
+  public async estimateGasFee(
+    sourceChainId: EvmChain | string,
+    destinationChainId: EvmChain | string,
+    gasLimit: BigNumberish,
+    gasMultiplier: number | "auto" = "auto",
+    sourceChainTokenSymbol?: GasToken | string,
+    minGasPrice = "0",
+    executeData?: string,
+    gmpParams?: GMPParams
+  ): Promise<string | AxelarQueryAPIFeeResponse> {}
+```
+<br/>
 
 <iframe
   width="100%"
