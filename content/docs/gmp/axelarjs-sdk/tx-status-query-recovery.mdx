@@ -1,0 +1,239 @@
+---
+title: "Programmatically query and recover GMP transactions"
+---
+
+Transactions can occasionally get stuck in the pipeline from a source to destination chain, mostly for one of the two following reasons:
+
+- The transaction is not relayed from the source chain into the Axelar network for processing.
+- The transaction fails to get executed on the destination chain due to flawed contract logic. 
+
+The [`AxelarGMPRecoveryAPI`](https://github.com/axelarnetwork/axelarjs-sdk/blob/main/src/libs/TransactionRecoveryApi/AxelarGMPRecoveryAPI.ts) module in the AxelarJS SDK can be used to troubleshoot:
+
+- Query the status of any General Message Passing (GMP) transaction for either `callContract()` or `callContractWithToken()` on the gateway contract of a source chain.
+- Retry a stuck transaction at any step including the gas payment step, relaying, execution step. 
+- Add gas to an underfunded transaction.
+
+<Callout>
+Transaction recovery can also be invoked through the [Axelarscan UI](/gmp/evm/debug/transaction-recovery).
+</Callout>
+
+## Install the `AxelarGMPRecoveryAPI` module
+
+Install the AxelarJS SDK:
+
+```bash
+npm i @axelar-network/axelarjs-sdk
+```
+
+Instantiate the [`AxelarGMPRecoveryAPI`](https://github.com/axelarnetwork/axelarjs-sdk/blob/main/src/libs/TransactionRecoveryApi/AxelarGMPRecoveryAPI.ts) module:
+
+```ts
+import {
+  AxelarGMPRecoveryAPI,
+  Environment,
+} from "@axelar-network/axelarjs-sdk";
+
+const sdk = new AxelarGMPRecoveryAPI({
+  environment: Environment.TESTNET,
+});
+```
+
+## Query transaction status by `txHash`
+
+See the status of a transaction by passing its `txHash` into [`queryTransactionStatus()`](https://github.com/axelarnetwork/axelarjs-sdk/blob/main/src/libs/TransactionRecoveryApi/AxelarRecoveryApi.ts#L226):
+
+It takes two parameters
+1. `txHash`: The transaction hash you are querying
+1. `eventIndex`: This is an optional parameter, useful for separating multiple [internal transactions](https://docs.alchemy.com/docs/what-are-internal-transactions) from one another that may have the same transaction hash.
+
+```ts
+const txHash: string =
+  "0xfb6fb85f11496ef58b088116cb611497e87e9c72ff0c9333aa21491e4cdd397a";
+const eventIndex: number = 97
+const txStatus: GMPStatusResponse = await sdk.queryTransactionStatus(txHash, eventIndex);
+```
+
+The following are possible status responses:
+
+```ts
+interface GMPStatusResponse {
+  status: GMPStatus | string;
+  timeSpent?: Record<string, number>;
+  gasPaidInfo?: GasPaidInfo;
+  error?: GMPError;
+  callTx?: any;
+  executed?: any;
+  expressExecuted?: any;
+  approved?: any;
+  callback?: any;
+}
+
+enum GMPStatus {
+  SRC_GATEWAY_CALLED = "source_gateway_called",
+  DEST_GATEWAY_APPROVED = "destination_gateway_approved",
+  DEST_EXECUTED = "destination_executed",
+  EXPRESS_EXECUTED = "express_executed",
+  DEST_EXECUTE_ERROR = "error",
+  DEST_EXECUTING = "executing",
+  APPROVING = "approving",
+  FORECALLED = "forecalled",
+  FORECALLED_WITHOUT_GAS_PAID = "forecalled_without_gas_paid",
+  NOT_EXECUTED = "not_executed",
+  NOT_EXECUTED_WITHOUT_GAS_PAID = "not_executed_without_gas_paid",
+  INSUFFICIENT_FEE = "insufficient_fee",
+  UNKNOWN_ERROR = "unknown_error",
+  CANNOT_FETCH_STATUS = "cannot_fetch_status",
+  SRC_GATEWAY_CONFIRMED = "confirmed"
+}
+
+interface GasPaidInfo {
+  status: GasPaidStatus;
+  details?: any;
+}
+
+enum GasPaidStatus {
+  GAS_UNPAID = "gas_unpaid",
+  GAS_PAID = "gas_paid",
+  GAS_PAID_NOT_ENOUGH_GAS = "gas_paid_not_enough_gas",
+  GAS_PAID_ENOUGH_GAS = "gas_paid_enough_gas",
+}
+```
+
+## Manually relay the transaction through the Axelar network
+
+Use [`manualRelayToDestChain()`](https://github.com/axelarnetwork/axelarjs-sdk/blob/main/src/libs/TransactionRecoveryApi/AxelarGMPRecoveryAPI.ts#L453) to dislodge a transaction [stuck at the **Confirm** step](https://testnet.axelarscan.io/gmp/0x111ff754b85538afcfea5aa59d01f976eb9a7b7b45b483c3fb2c48833bf0780d-4). This function will manually relay a transaction to the destination chain through the Axelar network, query the current transaction status, and recover from source to destination if needed.
+
+  The only required parameter is:
+  1. `sourceTxHash`: The hash of the transaction that needs to be unblocked
+
+  Additional optional parameters are:
+  1. `txLogIndex`: Unique identifier for internal transactions.
+  1. `txEventIndex`: Used to confirm events on the network.
+  1. `evmWalletDetails`: Wallet that will sign the transaction.
+  1. `messageId`: Id used to recover transactions for GMP transactions from Cosmos source chains
+```ts
+const sourceTxHash = "0x..";
+const provider = new ethers.providers.JsonRpcProvider(
+  "https://sepolia.infura.io/v3/projectId"
+);
+
+// Optional
+// By default, The sdk uses `window.ethereum` wallet as a sender wallet e.g. MetaMask.
+// This option allows caller to pass `privateKey` or `provider` to the sdk directly
+const senderOptions = { privateKey: "0x", provider };
+
+
+const response = await sdk.manualRelayToDestChain(
+  sourceTxHash,
+  senderOptions, /* can be skipped */
+);
+```
+
+Possible response values are:
+
+```ts
+export interface GMPRecoveryResponse {
+  success: boolean;
+  error?: ApproveGatewayError | string;
+  confirmTx?: AxelarTxResponse;
+  signCommandTx?: AxelarTxResponse;
+  routeMessageTx?: AxelarTxResponse;
+  approveTx?: any;
+  infoLogs?: string[];
+}
+```
+
+If `success == false`, you can either execute the transaction manually or increase the gas payment.
+
+## Manually execute a transaction
+
+When invoking this method, you will manually execute and pay for the executable method on your specified contract on the destination chain of your cross-chain transaction.
+
+The only required parameter is
+  1. `sourceTxHash`: The hash of the transaction that needs to be unblocked
+
+Additional optional parameters are:
+  1. `srcTxLogIndex`: The log index of the transaction on the source chain.
+  1. `evmWalletDetails`: The wallet details to use for executing the transaction.
+
+
+```ts
+const sourceTxHash = "0x..";
+const provider = new ethers.providers.JsonRpcProvider(
+  "https://sepolia.infura.io/v3/projectId"
+);
+
+// Optional
+// By default, The sdk uses `window.ethereum` wallet as a sender wallet e.g. MetaMask.
+// This option allows caller to pass `privateKey` or `provider` to the sdk directly
+const senderOptions = { privateKey: "0x", provider };
+
+const response = await sdk.execute(
+  sourceTxHash,
+  senderOptions /* can be skipped */,
+);
+```
+
+Possible response values are:
+
+```ts
+{
+    success: "success" | "failed",
+    data: ethers.ContractReceipt | undefined,
+    error: string | undefined
+}
+```
+
+## Increase gas payment
+
+Call `addNativeGas()` to increase the gas payment using the source chain's native token. The amount to be added will be automatically calculated based on factors such as the token price of the source and destination chains and the current gas price at the destination chain. This can be overridden by specifying the amount in the `options`.
+
+The only required parameter is
+  1. `chain`: Source chain needing extra gas
+  1. `sourceTxHash`: The hash of the transaction that needs to be unblocked
+  1. `estimatedGasUsed`: Estimated gas used
+
+An additional optional parameter is:
+  1. `options`: Consists of [AddGasOptions](https://github.com/axelarnetwork/axelarjs-sdk/blob/main/src/libs/types/index.ts#L133) to specify additional options
+
+
+
+```ts
+import {
+  AxelarGMPRecoveryAPI,
+  Environment,
+  AddGasOptions,
+} from "@axelar-network/axelarjs-sdk";
+
+// Optional
+const options: AddGasOptions = {
+  amount: "10000000", // Amount of gas to be added. If not specified, the sdk will calculate the amount automatically.
+  refundAddress: "", // If not specified, the default value is the sender address.
+  estimatedGasUsed: 700000, // An amount of gas to execute `executeWithToken` or `execute` function of the custom destination contract. If not specified, the default value is 700000.
+  evmWalletDetails: { useWindowEthereum: true, privateKey: "0x" }, // A wallet to send an `addNativeGas` transaction. If not specified, the default value is { useWindowEthereum: true}.
+};
+
+const txHash: string = "0x...";
+const { success, transaction, error } = await api.addNativeGas(
+  EvmChain.AVALANCHE,
+  txHash,
+  estimatedGasUsed,
+  options
+);
+
+if (success) {
+  console.log("Added native gas tx:", transaction?.transactionHash);
+} else {
+  console.log("Cannot add native gas", error);
+}
+```
+
+Possible response values are:
+
+```ts
+{
+    success: "success" | "failed",
+    data: ethers.ContractReceipt | undefined,
+    error: string | undefined
+}
+```

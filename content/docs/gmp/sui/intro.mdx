@@ -1,0 +1,41 @@
+---
+title: "Sui Integration Introduction"
+---
+
+[Sui](https://sui.io/) is a blockchain that has been integrated with the Axelar Network via the [Interchain Amplifier](/infrastructure/chain-integration/introduction). This integration enables cross-chain communication between Sui and other blockchains in the Axelar ecosystem.
+
+## Overview
+
+Sending messages between Sui and other blockchains follows similar patterns as [GMP messages](/gmp/overview) on other chains, such as EVM chains. The core packages for Axelar's integration with Sui can be found in the [axelar-cgp-sui](https://github.com/axelarnetwork/axelar-cgp-sui) repository.
+
+The integration consists of two main components:
+
+1. **[Gateway Package](https://github.com/axelarnetwork/axelar-cgp-sui/tree/main/move/axelar_gateway)** - Facilitates the sending and receiving of cross-chain messages.
+1. **[Gas Service](https://github.com/axelarnetwork/axelar-cgp-sui/tree/main/move/gas_service)** - Handles cross-chain gas payment for GMP requests.
+
+## Key Concepts
+
+### Channels
+
+In Sui, there is no ability to check the immediate caller of a message (unlike `msg.sender` in EVM). The `Channel` object serves as an identifier for who is calling and receiving messages in the Sui ecosystem. A Channel is a Move object that acts as a [capability](https://move-book.com/programmability/capability/)-backed on-chain identity with its own address. You create it and keep it; functions that take `&Channel` require the caller to hold that capability.
+
+### Message Flow
+
+Sending a message from Sui involves these key steps:
+
+1. Prepare the message via the Gateway.
+1. Pay gas via the Gas Service.
+1. Send the message via the Gateway.
+
+Receiving a message involves:
+
+1. Register your transaction with the [relayer discovery service](https://github.com/axelarnetwork/axelar-cgp-sui/tree/main/move/relayer_discovery).
+1. Message approval by Axelar relayers.
+1. Message execution on your Sui contract.
+
+## Resources
+
+- For a complete Sui GMP implementation, check out this [example](https://github.com/axelarnetwork/axelar-cgp-sui/tree/main/move/example).
+- To interact with the example and send a GMP message, see this [script](https://github.com/axelarnetwork/axelar-contract-deployments/blob/main/sui/gmp.js).
+
+The following sections will provide more detailed information about the implementation and usage of the Sui integration with Axelar.

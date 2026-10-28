@@ -1,0 +1,87 @@
+---
+title: List Supported Chains
+description: All chains supported as a source or destination for quotes.
+---
+
+```
+GET /rfq/v1/chains
+```
+
+Returns all chains supported as a source or destination for quotes. Use the returned `chainId` values in [`POST /rfq/v1/quote`](/rfq/endpoints/quote) request fields (`fromChain`, `toChain`).
+
+## Request
+
+No parameters.
+
+```bash
+curl 'https://api.axelar.network/rfq/v1/chains'
+```
+
+## Response
+
+```json
+{
+  "chains": [
+    {
+      "chainId": "eip155:1",
+      "chainLabel": "Ethereum Mainnet",
+      "chainType": "evm",
+      "nativeToken": {
+        "symbol": "ETH",
+        "decimals": 18
+      }
+    },
+    {
+      "chainId": "eip155:42161",
+      "chainLabel": "Arbitrum One",
+      "chainType": "evm",
+      "nativeToken": {
+        "symbol": "ETH",
+        "decimals": 18
+      }
+    },
+    {
+      "chainId": "solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp",
+      "chainLabel": "Solana Mainnet",
+      "chainType": "solana",
+      "nativeToken": {
+        "symbol": "SOL",
+        "decimals": 9
+      }
+    },
+    {
+      "chainId": "stellar:pubnet",
+      "chainLabel": "Stellar Mainnet",
+      "chainType": "stellar",
+      "nativeToken": {
+        "symbol": "XLM",
+        "decimals": 7
+      }
+    }
+  ]
+}
+```
+
+### Chain Object
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `chainId` | string | CAIP-2 chain identifier. Use this value in quote requests. |
+| `chainLabel` | string | User-friendly display name, e.g. `"Ethereum Mainnet"`, `"Solana Mainnet"` |
+| `chainType` | string | Chain family: `evm`, `solana`, or `stellar`. Determines which [action payload types](/rfq/actions) quotes on this chain use. |
+| `nativeToken` | object | The chain's native token: `symbol` and `decimals`. Gas fees in quotes are denominated in this token. |
+
+`chainType` maps to action payloads as follows:
+
+| `chainType` | Payload types |
+|-------------|---------------|
+| `evm` | [`evm_transaction`](/rfq/actions#evm_transaction) |
+| `solana` | [`solana_instructions`](/rfq/actions#solana_instructions) |
+| `stellar` | [`deposit_address`](/rfq/actions#deposit_address) |
+
+## Errors
+
+| HTTP Status | Code | Meaning |
+|-------------|------|---------|
+| 429 | `RATE_LIMITED` | Too many requests |
+| 500 | `INTERNAL_ERROR` | Unexpected server error; safe to retry |

@@ -1,0 +1,203 @@
+---
+title: "Hyperliquid"
+---
+
+Set up your Hyperliquid Mainnet or Testnet node
+
+## Prerequisites
+
+- [Setup your Axelar validator](/infrastructure/validators/setup/overview)
+- [Minimum hardware requirements](https://github.com/hyperliquid-dex/node?tab=readme-ov-file#machine-specs):
+  - Memory: 32 GB RAM
+  - CPU: 4 CPU cores (64-bit)
+  - Disk: 200 GB of SSD storage
+- Only Ubuntu 24.04
+- For lowest latency, run the node in Tokyo, Japan.
+- [Official Documentation](https://github.com/hyperliquid-dex/node)
+
+## Clone the Repository and Import key
+
+```bash
+cd $HOME
+git clone https://github.com/hyperliquid-dex/node
+cd node
+gpg --import pub_key.asc
+```
+
+## Configuring the node
+
+<Tabs items={["Mainnet","Testnet"]}>
+  <Tab value="Mainnet">
+  ```bash
+  echo '{"chain": "Mainnet"}' > visor.json
+```
+  </Tab>
+  <Tab value="Testnet">
+  ```bash
+  echo '{"chain": "Testnet"}' > visor.json
+```
+  </Tab>
+</Tabs>
+
+## Download the Visor binary
+
+The visor binary spawns and manages the child node process.
+
+<Tabs items={["Mainnet","Testnet"]}>
+  <Tab value="Mainnet">
+  ```bash
+  curl https://binaries.hyperliquid.xyz/Mainnet/hl-visor > hl-visor && chmod a+x hl-visor
+```
+  </Tab>
+  <Tab value="Testnet">
+  ```bash
+  curl https://binaries.hyperliquid-testnet.xyz/Testnet/hl-visor > hl-visor && chmod a+x hl-visor
+```
+  </Tab>
+</Tabs>
+
+## Configure the node
+
+<Tabs items={["Mainnet","Testnet"]}>
+  <Tab value="Mainnet">
+  ```bash
+  echo '{ "root_node_ips": [{"Ip": "1.2.3.4"}], "try_new_peers": true, "chain": "Mainnet" }' > override_gossip_config.json
+```
+  </Tab>
+  <Tab value="Testnet">
+  ```bash
+  echo '{ "root_node_ips": [{"Ip": "1.2.3.4"}], "try_new_peers": true, "chain": "Testnet" }' > override_gossip_config.json
+```
+  </Tab>
+</Tabs>
+
+For faster bootstrapping, use a known reliable peer. Can be found [here](https://github.com/hyperliquid-dex/node?tab=readme-ov-file#mainnet-non-validator-seed-peers).
+
+**Note:** If you don't find peers for testnet, you can still start the node, but it may take some time to bootstrap.
+
+## Start the node
+
+```bash
+sudo tee <<EOF >/dev/null /etc/systemd/system/hyperliquid.service
+[Unit]
+Description=Hyperliquid Node
+After=network.target
+[Service]
+Type=simple
+User=$USER
+ExecStart=$HOME/hl-visor run-non-validator --serve-eth-rpc
+Restart=on-failure
+[Install]
+WantedBy=multi-user.target
+EOF
+```
+
+To enable and start the service:
+
+```bash
+sudo systemctl daemon-reload
+sudo systemctl start hyperliquid
+sudo systemctl enable hyperliquid
+```
+
+To check the status of the running service or to follow the logs, you can use:
+
+```bash
+sudo systemctl status hyperliquid
+sudo journalctl -u hyperliquid -f
+```
+
+After a few minutes, you should see lines that look like this. This means your node has started syncing with the network and is receiving blocks.
+
+```bash
+2025-05-26T06:59:33.774Z WARN >>> hl-node @@ applied block 607619100
+2025-05-26T06:59:35.240Z WARN >>> hl-node @@ applied block 607619200
+2025-05-26T06:59:36.233Z WARN >>> hl-node @@ applied block 607619300
+2025-05-26T06:59:38.395Z WARN >>> hl-node @@ applied block 607619400
+2025-05-26T06:59:39.407Z WARN >>> hl-node @@ applied block 607619500
+2025-05-26T06:59:40.688Z WARN >>> hl-node @@ applied block 607619600
+```
+
+> **Note:** The network can generate up to 100 GB of data per day, so it is strongly recommended to archive or delete old files regularly.  
+> For more details, refer to the [official documentation](https://github.com/hyperliquid-dex/node?tab=readme-ov-file#reading-l1-data).  
+
+To manage storage more efficiently, you can use the following flag: 
+
+```bash
+$HOME/hl-visor run-non-validator --serve-eth-rpc --replica-cmds-style recent-actions
+```
+
+This will automatically retain only the latest two height files, deleting older ones as new data is added. It’s a simple and effective way to reduce disk usage without manual intervention.
+
+## Check latest block height
+
+To retrieve the latest block height:
+
+```bash
+curl -X POST --header 'Content-Type: application/json' \
+  --data '{"jsonrpc":"2.0","method":"eth_getBlockByNumber","params":["latest",false],"id":1}' \
+  http://localhost:3001/evm
+```
+
+**Note:** Port `3001` may take few moments to become available after the service has started.
+
+## Ampd Configuration
+
+Once your node is up and running, you need to add the `Hyperliquid` chain to your [ampd daemon's](https://github.com/axelarnetwork/axelar-amplifier/tree/main/ampd) `config.toml`file. This can be done by adding in the following configuration:
+
+
+<Tabs items={["mainnet","testnet"]}>
+    <Tab value="mainnet">
+    ```toml
+    [[handlers]]
+    type="EvmMsgVerifier"
+    chain_name="hyperliquid"
+    chain_finalization="RPCFinalizedBlock"
+    chain_rpc_url="your_own_rpc"
+    cosmwasm_contract="axelar1n64vk7l3zagh2eadkuhl7602lxluu86dn9smfxyp7c2e4v8pqj5sv4ypjr"
+
+    [[handlers]]
+    type="EvmVerifierSetVerifier"
+    chain_name="hyperliquid"
+    chain_finalization="RPCFinalizedBlock"
+    chain_rpc_url="your_own_rpc"
+    cosmwasm_contract="axelar1n64vk7l3zagh2eadkuhl7602lxluu86dn9smfxyp7c2e4v8pqj5sv4ypjr"
+
+    [[handlers]]
+    type="MultisigSigner"
+    chain_name="hyperliquid"
+    cosmwasm_contract="axelar14a4ar5jh7ue4wg28jwsspf23r8k68j7g5d6d3fsttrhp42ajn4xq6zayy5"
+
+    ```
+    </Tab>
+    <Tab value="testnet">
+    ```toml
+    [[handlers]]
+    type="EvmMsgVerifier"
+    chain_name="hyperliquid"
+    chain_finalization="RPCFinalizedBlock"
+    chain_rpc_url="your_own_rpc"
+    cosmwasm_contract="axelar1n64vk7l3zagh2eadkuhl7602lxluu86dn9smfxyp7c2e4v8pqj5sv4ypjr"
+
+    [[handlers]]
+    type="EvmVerifierSetVerifier"
+    chain_name="hyperliquid"
+    chain_finalization="RPCFinalizedBlock"
+    chain_rpc_url="your_own_rpc"
+    cosmwasm_contract="axelar1n64vk7l3zagh2eadkuhl7602lxluu86dn9smfxyp7c2e4v8pqj5sv4ypjr"
+
+    [[handlers]]
+    type="MultisigSigner"
+    chain_name="hyperliquid"
+    cosmwasm_contract="axelar14a4ar5jh7ue4wg28jwsspf23r8k68j7g5d6d3fsttrhp42ajn4xq6zayy5"
+    ```
+    </Tab>
+</Tabs>
+
+## Chain Registration
+
+For your node to be recognized by the Axelar Network, you need to register your verifier's support for the chain with the `ampd` daemon. This can be done by running:  
+
+```bash
+ampd register-chain-support amplifier hyperliquid
+```

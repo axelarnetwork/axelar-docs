@@ -1,0 +1,8 @@
+{
+  "title": "Validator Status",
+  "pages": [
+    "register-external-chains",
+    "health-check",
+    "leave"
+  ]
+}

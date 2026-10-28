@@ -1,0 +1,10 @@
+{
+  "title": "RFQ API",
+  "description": "Cross-chain quotes",
+  "root": true,
+  "pages": [
+    "index",
+    "endpoints",
+    "actions"
+  ]
+}

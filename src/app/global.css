@@ -1,0 +1,33 @@
+@import 'tailwindcss';
+@import 'fumadocs-ui/css/neutral.css';
+@import 'fumadocs-ui/css/preset.css';
+
+/* Axelar brand accent */
+:root {
+  --color-fd-primary: #ef5d13;
+  --color-fd-primary-foreground: #ffffff;
+  /* Brand-colored `info` callouts (warn=amber, error=red stay semantic) */
+  --color-fd-info: #ef5d13;
+}
+
+.dark {
+  --color-fd-primary: #ef5d13;
+  --color-fd-primary-foreground: #ffffff;
+  --color-fd-info: #ef5d13;
+}
+
+html {
+  scrollbar-gutter: stable;
+}
+
+html > body[data-scroll-locked] {
+  margin-right: 0px !important;
+  --removed-body-scroll-bar-size: 0px !important;
+}
+
+/* Wider sidebar than the Fumadocs default (268px) */
+@media (min-width: 768px) {
+  #nd-docs-layout {
+    --fd-sidebar-width: 300px !important;
+  }
+}

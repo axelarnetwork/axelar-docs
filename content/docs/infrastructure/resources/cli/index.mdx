@@ -1,0 +1,31 @@
+---
+title: "Axelar command-line interface (CLI)"
+---
+
+Some CLI commands require access to a fully synced Axelar node. Learn how to [start your own Axelar node](/infrastructure/node/join).
+
+Some CLI commands require AXL tokens to pay for on-chain transaction fees. Get testnet AXL tokens from the Axelar faucets: [testnet](https://faucet.testnet.axelar.dev/).
+
+<Callout type="error" emoji="🔥">
+  The CLI-based cross-chain token transfer guides below are **disabled**. They relied on the link-deposit protocol, which was removed in the [v1.4 network upgrade](/infrastructure/resources/upgrades/mainnet/v147). They are retained for historical reference only — to transfer tokens across chains today, use the [Interchain Token Service](/its/overview).
+</Callout>
+
+The following guides describe the legacy CLI-based cross-chain token transfer flows (now disabled):
+
+- [Send UST to an EVM chain](/infrastructure/resources/cli/ust-to-evm)
+- [Redeem UST from an EVM chain](/infrastructure/resources/cli/ust-from-evm)
+- [Send AXL to an EVM chain](/infrastructure/resources/cli/axl-to-evm)
+- [Redeem AXL from an EVM chain](/infrastructure/resources/cli/axl-from-evm)
+
+In addition to the Axelar-specific CLI features mentioned above, Axelar also offers the same basic set of CLI commands as any other Cosmos SDK project.
+
+View the [full CLI documentation](https://github.com/axelarnetwork/axelar-core/blob/main/docs/cli/toc.md) for the latest node version, or choose a specific version:
+
+<Callout emoji="💡"  longConent>
+  Tip: If you submit a transaction and encounter an out of gas error, use the following flags to set the gas manually.
+<br/>
+```bash
+--gas=auto --gas-adjustment=1.5
+```
+
+</Callout>

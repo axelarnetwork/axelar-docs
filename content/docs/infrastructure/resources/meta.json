@@ -1,0 +1,20 @@
+{
+  "title": "Resources",
+  "pages": [
+    "rpc-endpoints",
+    "contract-addresses",
+    "live-addresses",
+    "static-configs",
+    "upgrades",
+    "stake-axl",
+    "keplr",
+    "axelarscan-label-address",
+    "community-pool-proposals",
+    "cli",
+    "security",
+    "evm-governance",
+    "bug-bounty",
+    "satellite",
+    "[Connected Chains](https://axelarscan.io/resources/chains)"
+  ]
+}

@@ -1,0 +1,88 @@
+---
+title: "Axelar Testnet Contract Addresses"
+description: "Official Axelar testnet contract addresses for gateways, tokens, and infrastructure. Ideal for testing cross-chain integrations before mainnet deployment."
+---
+
+| Variable              | Value                                                                                                                             |
+| --------------------- | --------------------------------------------------------------------------------------------------------------------------------- |
+| `chain-id`            | `axelar-testnet-lisbon-3`                                                                                                         |
+| `axelar-core` version | <Version environment="testnet" />                                                                                     |
+| `vald` version        | <Version environment="testnet" />                                                                                     |
+| `tofnd` version       | <Version repo="tofnd" environment="testnet" />                                                                        |
+| amplifier contracts   | see [testnet.json](https://github.com/axelarnetwork/axelar-contract-deployments/blob/main/axelar-chains-config/info/testnet.json) |
+
+## Contract addresses
+
+<div className="space-y-1 mt-4">
+  <EVMChains environment="testnet" />
+
+`Create3 Address Deployer`: `0x6513Aedb4D1593BA12e50644401D976aebDc90d8`
+
+`Create2 Address Deployer`: `0x98b2920d53612483f91f12ed7754e51b4a77919e`
+
+`Interchain Token Service`: [`0xB5FB4BE02232B1bBA4dC8f81dc24C26980dE9e3C`](https://sepolia.etherscan.io/address/0xB5FB4BE02232B1bBA4dC8f81dc24C26980dE9e3C)
+
+`Interchain Token Factory`: [`0x83a93500d23Fbc3e82B410aD07A6a9F7A0670D66`](https://sepolia.etherscan.io/address/0x83a93500d23Fbc3e82B410aD07A6a9F7A0670D66)
+
+</div>
+
+<div className="space-y-1 mt-4">
+  ## Faucets
+
+The following faucets can be used to obtain tokens for testing. Note that some of them may require an existing balance in your wallet.
+
+- [Polygon](https://faucet.quicknode.com/polygon/mumbai)
+- [Moonbeam](https://faucet.moonbeam.network/)
+- [Fantom](https://faucet.fantom.network/)
+- [Paradigm](https://faucet.paradigm.xyz/)
+- [Lotus](https://faucet.calibration.fildev.network/)
+- [Kava](https://faucet.kava.io/)
+- [Celo](https://faucet.celo.org/celo-sepolia)
+
+</div>
+
+<div className="space-y-1 mt-4">
+  ### Assets
+
+  Learn more about [wrapped assets like axlUSDC](/its/axlusdc).
+
+  <EVMAssets environment="testnet" />
+</div>
+
+<div className="space-y-1 mt-4">
+  ## IBC Channels
+  <IBCChannels environment="testnet" />
+</div>
+
+## Upgrade Path
+
+
+| Core Version                                | Start Height | Upgrade Height |
+| ------------------------------------------- | ------------ | -------------- |
+| v0.13.6                                     | 690489       | 897350         |
+| v0.14.1                                     | 897350       | 1105250        |
+| v0.15.0                                     | 1105250      | 1249660        |
+| v0.16.1                                     | 1249660      | 1619950        |
+| [v0.17.3](/infrastructure/resources/upgrades/testnet/v17) | 1619950      | 2183275        |
+| [v0.18.3](/infrastructure/resources/upgrades/testnet/v18) | 2183275      | 2257265        |
+| [v0.19.4](/infrastructure/resources/upgrades/testnet/v19) | 2257265      | 3356100        |
+| [v0.20.0](/infrastructure/resources/upgrades/testnet/v20) | 3356100      | 3429625        |
+| [v0.21.1](/infrastructure/resources/upgrades/testnet/v21) | 3429625      | 3445200        |
+| [v0.22.1](/infrastructure/resources/upgrades/testnet/v22) | 3445200      | 3536040        |
+| [v0.23.0](/infrastructure/resources/upgrades/testnet/v23) | 3536040      | 3620300        |
+| [v0.24.0](/infrastructure/resources/upgrades/testnet/v24) | 3620300      | 3827825        |
+| [v0.25.0](/infrastructure/resources/upgrades/testnet/v25) | 3827825      | 3842800        |
+| [v0.26.5](/infrastructure/resources/upgrades/testnet/v26) | 3842800      | 4868740        |
+| [v0.27.0](/infrastructure/resources/upgrades/testnet/v27) | 4868740      | 4874000        |
+| [v0.28.0](/infrastructure/resources/upgrades/testnet/v28) | 4874000      | 5093500        |
+| [v0.29.1](/infrastructure/resources/upgrades/testnet/v29) | 5093500      | 5895180        |
+| [v0.31.2](/infrastructure/resources/upgrades/testnet/v31) | 5895180      | 6315000        |
+| [v0.32.2](/infrastructure/resources/upgrades/testnet/v32) | 6315000      | 6939420        |
+| [v0.33.1](/infrastructure/resources/upgrades/testnet/v33) | 6939420      | 8528500        |
+| [v0.33.2](/infrastructure/resources/upgrades/testnet/v33) | 8528500      | 9462850        |
+| [v0.34.3](/infrastructure/resources/upgrades/testnet/v34) | 9462850      | 12017025       |
+| [v0.35.3](/infrastructure/resources/upgrades/testnet/v35) | 12017025     | 14625900       |
+| [v1.0.0](/infrastructure/resources/upgrades/testnet/v112)  | 14625900     | 16665600       |
+| [v1.1.2](/infrastructure/resources/upgrades/testnet/v112) | 16665600     | 17629900       |
+| [v1.2.1](/infrastructure/resources/upgrades/testnet/v121) | 17629900     | N/A            |
+

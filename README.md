@@ -1,48 +1,62 @@
 # Axelar Docs
 
-- [Axelar Docs](#axelar-docs)
-  - [Updating Navigation](#updating-navigation)
-  - [How to Contribute to the Docs](#how-to-contribute-to-the-docs)
-    - [Here's what you need to know to contribute to the Axelar documentation:](#heres-what-you-need-to-know-to-contribute-to-the-axelar-documentation)
-  - [Short links](#short-links)
-    - [ITS](#its)
+The official documentation website for [Axelar](https://github.com/axelarnetwork), built with
+[Fumadocs](https://fumadocs.dev) (Next.js, static export).
 
-The official documentation website for [Axelar](https://github.com/axelarnetwork).
+## Content
 
-The project uses [Astro](https://astro.build) and deploys via [Vercel](https://vercel.com). To develop it locally, clone this repository and run the following command to start the local dev server:
+Documentation lives in `content/docs` as MDX, split into four sections (sidebar tabs):
+
+- `infrastructure/` — nodes, validators, Amplifier verifiers, chain integration, network resources
+- `gmp/` — General Message Passing, gas service, per-chain guides, contract references
+- `its/` — Interchain Token Service and token transfers
+- `rfq/` — the RFQ API
+
+Each page sets its `title` (and optionally `description`) in frontmatter. Sidebar order and grouping are controlled by
+the `meta.json` file in each folder; pages not listed there are still built but hidden from the sidebar.
+
+Standalone pages outside the docs sections (currently the terms of use) live in `content/pages`.
+
+Shared MDX components (callouts, tabs, cards, and the live chain/asset widgets) are registered in
+`src/components/mdx.tsx` and can be used in any page without importing them.
+
+## Develop
+
+This repo pins Node via `.nvmrc` and pnpm via the `packageManager` field. With
+[nvm](https://github.com/nvm-sh/nvm) installed:
 
 ```bash
-npm install
-npm run dev
+nvm install       # installs the Node version in .nvmrc
+nvm use
+corepack enable   # activates the pnpm version pinned in package.json
 ```
 
-And visit `localhost:3000` to preview your changes.
+Then:
 
-## Updating Navigation
+```bash
+pnpm install
+pnpm dev          # http://localhost:3000
+```
 
-Site navigation is generated in TypeScript based on the section the user is currently browsing in. The navigation layout is managed in [`src/layouts/navigation.ts`](https://github.com/axelarnetwork/axelar-docs/blob/main/src/layouts/navigation.ts), with pages represented as a `title` and `href` in one of the `children` arrays. The site supports up to 3 levels of nested navigation, with the top level acting as navigation header. Each subsequent level is visually tabbed beneath its parent.
+## Build (static export)
 
-## How to Contribute to the Docs
+```bash
+pnpm build        # outputs a static site to ./out
+pnpm start        # serve ./out locally
+```
 
-### Here's what you need to know to contribute to the Axelar documentation:
+## Deploy (Vercel)
 
-- Content Folder: Contributions are made by adding files to this [folder](/src/content/docs/). This folder structure defines the organization and links within the documentation.
-- Creating a New Page: To add a new page, create a new Markdown file (.md or .mdx) inside the /docs/ folder. Use a descriptive filename that reflects the topic of your page (e.g., /src/content/docs/learn/security.mdx).
-- Updating Navigation: Once you've created a new page, you need to update the navigation bar to include it. Edit the file [`src/layouts/navigation.ts`](https://github.com/axelarnetwork/axelar-docs/blob/main/src/layouts/navigation.ts). This file controls the navigation links throughout the Axelar docs website. Locate the appropriate section and add an entry for your new page, ensuring consistency with the existing navigation style.
+Vercel auto-detects Next.js, runs `pnpm build`, and serves the static `out/` output. `vercel.json` holds redirects from
+the old site's URLs to their new locations.
 
-## Short links
+For a custom domain, set `NEXT_PUBLIC_SITE_URL` (e.g. `https://docs.axelar.dev`) in the project's environment variables
+so Open Graph and sitemap URLs resolve correctly.
 
-These links redirect to pages in the documentation whose slugs may otherwise be hard to remember.
+## LLM / AI support
 
-### ITS
+Fumadocs generates machine-readable docs automatically:
 
-- **Introduction:** https://docs.axelar.dev/its/intro
-- **No-Code ITS Setup:** https://docs.axelar.dev/dev/send-tokens/interchain-tokens/no-code/
-- **Create New Interchain Token:** https://docs.axelar.dev/dev/its/create-new-token/
-- **Upgrade Token:** https://docs.axelar.dev/its/upgrade-token
-- **Integrate Custom Token:** https://docs.axelar.dev/dev/its/custom-token/
-- **Interchain Token Executable:** https://docs.axelar.dev/its/token-executable
-- **Flow Limit:** https://docs.axelar.dev/its/flow-limit
-- **Programmatically Create a Token:** https://docs.axelar.dev/its/create-token-tutorial
-- **Programmatically Create a Canonical Token:** https://docs.axelar.dev/its/canonical-token-tutorial
-- **Link Custom Tokens into Interchain Tokens:** https://docs.axelar.dev/its/link-token-tutorial
+- `/llms.txt` — index of all pages for LLMs
+- `/llms-full.txt` — full docs content in one file
+- `/llms.mdx/<slug>/content.md` — raw markdown per page
