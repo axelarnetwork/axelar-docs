@@ -1,23 +1,23 @@
 ---
 title: Overview
-description: Who verifies cross-chain activity, on legacy and Amplifier chains.
+description: Who verifies cross-chain activity, on consensus and Amplifier chains.
 ---
 
 Before Axelar approves a cross-chain message, it checks that the message really happened on its source chain. Who does that checking depends on how the source chain is connected to Axelar.
 
-|                         | Legacy chains                                                 | Amplifier chains                                                  |
+|                         | Consensus chains                                                 | Amplifier chains                                                  |
 | ----------------------- | ------------------------------------------------------------- | ----------------------------------------------------------------- |
 | Verified by             | Axelar validators                                             | Amplifier verifiers                                               |
 | Must be an Axelar validator | Yes                                                       | No                                                                |
 | Software                | `vald` and `tofnd`, alongside your validator's `axelard`      | `ampd`, `tofnd` and a handler per chain                           |
 | How you join            | Register as a chain maintainer for each chain                 | Bond AXL, register chain support and get authorized               |
-| Guide                   | [Verify legacy chains](/infrastructure/verifiers/legacy-chains) | [Become an Amplifier verifier](/infrastructure/verifiers/amplifier/verifier-onboarding) |
+| Guide                   | [Verify consensus chains](/infrastructure/verifiers/consensus-chains) | [Become an Amplifier verifier](/infrastructure/verifiers/amplifier/verifier-onboarding) |
 
-## Legacy chains
+## Consensus chains
 
-Legacy chains are the EVM chains connected to Axelar before Amplifier. Axelar validators verify them as part of their validator duties: each validator chooses which chains to support, runs a node for each of them, and registers as a maintainer of those chains. Its `vald` process then votes on the chain's events.
+Consensus chains are the EVM chains connected to Axelar before Amplifier. Axelar validators verify them as part of their validator duties: each validator chooses which chains to support, runs a node for each of them, and registers as a maintainer of those chains. Its `vald` process then votes on the chain's events.
 
-To verify legacy chains, first [set up your Axelar validator](/infrastructure/validators), then follow [Verify legacy chains](/infrastructure/verifiers/legacy-chains).
+To verify consensus chains, first [set up your Axelar validator](/infrastructure/validators), then follow [Verify consensus chains](/infrastructure/verifiers/consensus-chains).
 
 ## Amplifier chains
 

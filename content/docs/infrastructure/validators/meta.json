@@ -1,5 +1,6 @@
 {
   "title": "Validators",
+  "icon": "ShieldCheck",
   "pages": [
     "index",
     "setup",

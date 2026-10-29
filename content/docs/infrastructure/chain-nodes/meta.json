@@ -1,8 +1,9 @@
 {
   "title": "External Chain Nodes",
+  "icon": "Boxes",
   "pages": [
     "index",
-    "---Legacy chains---",
+    "---Consensus chains---",
     "arbitrum",
     "avalanche",
     "base",
@@ -23,7 +24,6 @@
     "hedera",
     "hyperliquid",
     "solana",
-    "stacks",
     "stellar",
     "sui",
     "xrpl-evm",

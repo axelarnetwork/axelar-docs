@@ -1,5 +1,6 @@
 {
   "title": "Resources",
+  "icon": "Library",
   "pages": [
     "references",
     "security",

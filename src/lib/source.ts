@@ -1,5 +1,6 @@
 import { docs } from 'collections/server';
 import { loader } from 'fumadocs-core/source';
+import { lucideIconsPlugin } from 'fumadocs-core/source/plugins/lucide-icons';
 import type * as PageTree from 'fumadocs-core/page-tree';
 import { docsContentRoute, docsRoute } from './shared';
 
@@ -7,7 +8,7 @@ import { docsContentRoute, docsRoute } from './shared';
 export const source = loader({
   baseUrl: docsRoute,
   source: docs.toFumadocsSource(),
-  plugins: [],
+  plugins: [lucideIconsPlugin()],
 });
 
 export function getPageMarkdownUrl(page: (typeof source)['$inferPage']) {

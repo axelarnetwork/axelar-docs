@@ -1,13 +1,13 @@
 ---
-title: "Verify legacy chains"
-description: Support legacy chains as an Axelar validator, through vald.
+title: "Verify consensus chains"
+description: Support consensus chains as an Axelar validator, through vald.
 ---
 
-Legacy chains are the chains connected to Axelar before [Amplifier](/infrastructure/verifiers). They are verified by the Axelar validators themselves, so **you must be an Axelar validator** to verify them: [set up your validator](/infrastructure/validators) first.
+Consensus chains are the chains connected to Axelar before [Amplifier](/infrastructure/verifiers). They are verified by the Axelar validators themselves, so **you must be an Axelar validator** to verify them: [set up your validator](/infrastructure/validators) first.
 
-Your validator's `vald` process then votes on events on the legacy chains you choose to support. Specifically:
+Your validator's `vald` process then votes on events on the consensus chains you choose to support. Specifically:
 
-1. Select which legacy chains your validator will support. Set up and configure your own nodes for the chains you selected.
+1. Select which consensus chains your validator will support. Set up and configure your own nodes for the chains you selected.
 2. Provide RPC endpoints for these nodes to your validator and register as a maintainer for these chains on the Axelar network.
 
 <Callout type="warning" emoji="⚠️">
@@ -19,11 +19,11 @@ For item 2 above the following tasks should always be done together:
 
 Failure to do these tasks together could result in loss of transaction fees, loss of validator rewards, and poor validator performance.
 
-See below for details. Read this entire article before you begin supporting legacy chains.
+See below for details. Read this entire article before you begin supporting consensus chains.
 
 </Callout>
 
-## Legacy chains you can support
+## Consensus chains you can support
 
 - EVM-compatible chains (node setup guides)
   - [Arbitrum](/infrastructure/chain-nodes/arbitrum)
@@ -142,7 +142,7 @@ You should see something like:
 
 For each external chain C you selected earlier you must inform the Axelar network of your intent to maintain C. This is accomplished via the `register-chain-maintainer` command.
 
-A new legacy chain is only activated on the Axelar network once enough validators have registered as its maintainers. Not every validator has to support every chain, but each additional chain you maintain earns additional rewards.
+A new consensus chain is only activated on the Axelar network once enough validators have registered as its maintainers. Not every validator has to support every chain, but each additional chain you maintain earns additional rewards.
 Since `vald` uses the broadcaster account,
 it is recommended to be shut down when submitting this command to avoid
 running into sequence mismatch errors due to concurrent signing.

@@ -1,8 +1,9 @@
 {
   "title": "Verifiers",
+  "icon": "Telescope",
   "pages": [
     "index",
-    "legacy-chains",
+    "consensus-chains",
     "amplifier"
   ]
 }

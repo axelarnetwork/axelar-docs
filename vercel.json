@@ -67,7 +67,7 @@
     },
     {
       "source": "/validator/external-chains/overview(/)?",
-      "destination": "/infrastructure/verifiers/legacy-chains",
+      "destination": "/infrastructure/verifiers/consensus-chains",
       "permanent": true
     },
     {
@@ -193,11 +193,6 @@
     {
       "source": "/validator/external-chains/solana(/)?",
       "destination": "/infrastructure/chain-nodes/solana",
-      "permanent": true
-    },
-    {
-      "source": "/validator/external-chains/stacks(/)?",
-      "destination": "/infrastructure/chain-nodes/stacks",
       "permanent": true
     },
     {
@@ -1222,7 +1217,7 @@
     },
     {
       "source": "/validator/external-chains(/)?",
-      "destination": "/infrastructure/verifiers/legacy-chains",
+      "destination": "/infrastructure/verifiers/consensus-chains",
       "permanent": true
     },
     {
@@ -1611,11 +1606,6 @@
       "permanent": true
     },
     {
-      "source": "/infrastructure/validators/external-chains/stacks(/)?",
-      "destination": "/infrastructure/chain-nodes/stacks",
-      "permanent": true
-    },
-    {
       "source": "/infrastructure/validators/external-chains/stellar(/)?",
       "destination": "/infrastructure/chain-nodes/stellar",
       "permanent": true
@@ -1637,7 +1627,7 @@
     },
     {
       "source": "/infrastructure/validators/external-chains/overview(/)?",
-      "destination": "/infrastructure/verifiers/legacy-chains",
+      "destination": "/infrastructure/verifiers/consensus-chains",
       "permanent": true
     },
     {
@@ -1712,7 +1702,7 @@
     },
     {
       "source": "/infrastructure/verifiers/legacy/setup(/)?",
-      "destination": "/infrastructure/verifiers/legacy-chains",
+      "destination": "/infrastructure/verifiers/consensus-chains",
       "permanent": true
     },
     {
@@ -2023,6 +2013,11 @@
     {
       "source": "/infrastructure/resources/upgrades/testnet/v153(/)?",
       "destination": "https://github.com/axelarnetwork/axelar-core/releases/tag/v1.5.3",
+      "permanent": true
+    },
+    {
+      "source": "/infrastructure/verifiers/legacy-chains(/)?",
+      "destination": "/infrastructure/verifiers/consensus-chains",
       "permanent": true
     }
   ]
