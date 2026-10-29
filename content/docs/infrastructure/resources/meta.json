@@ -1,14 +1,8 @@
 {
   "title": "Resources",
   "pages": [
-    "contract-addresses",
-    "live-addresses",
-    "static-configs",
-    "upgrades",
+    "references",
     "security",
-    "evm-governance",
-    "bug-bounty",
-    "satellite",
-    "[Connected Chains](https://axelarscan.io/resources/chains)"
+    "satellite"
   ]
 }

@@ -1,6 +1,6 @@
 {
   "title": "Infrastructure",
-  "description": "Nodes and validators",
+  "description": "Chain, Validators & Verifiers",
   "root": true,
   "pages": [
     "index",

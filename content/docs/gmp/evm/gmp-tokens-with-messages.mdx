@@ -16,7 +16,7 @@ To call chain B from chain A and send some tokens supported by the gateway along
 - The destination chain, which must be an EVM chain from [Chain names](https://axelarscan.io/resources/chains).
 - The destination contract address, which must inherit from `AxelarExecutableWithToken` defined in [AxelarExecutableWithToken.sol](https://github.com/axelarnetwork/axelar-gmp-sdk-solidity/blob/main/contracts/executable/AxelarExecutableWithToken.sol).
 - The payload `bytes` to pass to the destination contract.
-- The symbol of the token to transfer, which must be a supported asset ([Mainnet](/infrastructure/resources/contract-addresses/mainnet) | [Testnet](/infrastructure/resources/contract-addresses/testnet)).
+- The symbol of the token to transfer, which must be a supported asset ([Mainnet](/infrastructure/network/chains-and-contracts) | [Testnet](/infrastructure/network/chains-and-contracts)).
 - The amount of the token to transfer.
 
 Gateway tokens, as the name implies, are tokens supported at the [Axelar core gateway](https://github.com/axelarnetwork/axelar-cgp-solidity/blob/main/contracts/AxelarGateway.sol) layer. You can find the list of tokens supported [here](https://axelarscan.io/resources/assets?type=gateway).

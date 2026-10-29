@@ -1,6 +1,6 @@
 {
   "title": "RFQ API",
-  "description": "Cross-chain quotes",
+  "description": "Request For Quote API for cross-chain swaps",
   "root": true,
   "pages": [
     "index",

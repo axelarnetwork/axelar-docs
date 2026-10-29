@@ -7,6 +7,14 @@ title: "Sui"
   [set up your ampd verifier](/infrastructure/verifiers/amplifier/verifier-onboarding).
 </Callout>
 
+<Callout type="warn" title="Check the official documentation">
+  The node setup steps below follow Sui's own documentation at the time of
+  writing and may be out of date. Check the [official
+  documentation](https://docs.sui.io/operators/full-node/sui-full-node) before you start. The Axelar-specific steps (connecting
+  the node to `vald` or `ampd`) are maintained here.
+</Callout>
+
+
 Instructions to set up your Sui node.
 
 ### Requirements
@@ -14,39 +22,43 @@ Instructions to set up your Sui node.
 - [Set up your Amplifier verifier](/infrastructure/verifiers/amplifier/verifier-onboarding)
 - Minimum hardware requirements: CPUs: 8 physical cores / 16 vCPUs RAM: 128 GB Storage (SSD): 4 TB NVMe drive
 - Ubuntu 22.04
-- [Official Documentation](https://docs.sui.io/guides/operator/sui-full-node)
+- [Official Documentation](https://docs.sui.io/operators/full-node/sui-full-node)
 
 ### Prerequisites
 
-```bash
-sudo apt-get install jq -y
-```
-
-With the remaining steps in the guide, we assume the user you are using has enough permissions as a `sudoer`.
+The steps below assume your user has `sudo` permissions. To verify the node at the end, install [grpcurl](https://github.com/fullstorydev/grpcurl).
 
 ### Install Sui
 
-Check the appropriate version for the network accordingly [in their docs](https://github.com/MystenLabs/sui/releases)
+Download the release archive for your network from the [Sui releases page](https://github.com/MystenLabs/sui/releases). The tags below are examples; use the latest `mainnet-*` or `testnet-*` release.
+
+<Tabs items={["Mainnet","Testnet"]}>
+  <Tab value="Mainnet">
+    ```bash
+    SUI_TAG=mainnet-v1.82.3
+    ```
+  </Tab>
+  <Tab value="Testnet">
+    ```bash
+    SUI_TAG=testnet-v1.83.0
+    ```
+  </Tab>
+</Tabs>
+
+The archive contains `sui-node`, `sui`, and `sui-tool` (needed for the snapshot step below):
 
 ```bash
-# This is an example - check their docs and release page to opt for the right version
-SUI_SHA=b8eb8920aeca592d0cf15fbddc7f64ed4aad7202 # ex: testnet-v1.37.3
-```
-
-```bash
-# verify correct version
-echo $SUI_SHA
-
-# create a temp dir for binaries
 cd $HOME
-mkdir binaries && cd binaries
+mkdir -p sui-binaries && cd sui-binaries
 
-# if you are on linux amd
-wget https://releases.sui.io/$SUI_SHA/sui-node https://releases.sui.io/$SUI_SHA/sui
-chmod +x *
-sudo mv * /usr/bin/
+# Linux x86_64 (use ubuntu-aarch64 for ARM)
+wget https://github.com/MystenLabs/sui/releases/download/$SUI_TAG/sui-$SUI_TAG-ubuntu-x86_64.tgz
+tar -xzf sui-$SUI_TAG-ubuntu-x86_64.tgz
+sudo install -m 755 $(find . -type f \( -name sui-node -o -name sui -o -name sui-tool \)) /usr/local/bin/
+
 # verify version
 sui-node --version
+sui-tool --version
 cd $HOME
 ```
 
@@ -55,22 +67,22 @@ cd $HOME
 <Tabs items={["Mainnet","Testnet"]}>
   <Tab value="Mainnet">
     ```bash
-    sudo mkdir -p /opt/sui/config/    
-    sudo chown -R $USER:$USER /opt/sui/config/
+    sudo mkdir -p /opt/sui/config/ /opt/sui/db/
+    sudo chown -R $USER:$USER /opt/sui/
     cd /opt/sui/config/
-    curl -fLJO https://github.com/MystenLabs/sui-genesis/raw/main/mainnet/genesis.blob 
+    curl -fLJO https://github.com/MystenLabs/sui-genesis/raw/main/mainnet/genesis.blob
     wget -O fullnode.yaml https://raw.githubusercontent.com/MystenLabs/sui/main/crates/sui-config/data/fullnode-template.yaml
-    ls 
+    ls
     ```
   </Tab>
   <Tab value="Testnet">
     ```bash
-    sudo mkdir -p /opt/sui/config/    
+    sudo mkdir -p /opt/sui/config/ /opt/sui/db/
     sudo chown -R $USER:$USER /opt/sui/
     cd /opt/sui/config/
     curl -fLJO https://github.com/MystenLabs/sui-genesis/raw/main/testnet/genesis.blob
     wget -O fullnode.yaml https://raw.githubusercontent.com/MystenLabs/sui/main/crates/sui-config/data/fullnode-template.yaml
-    ls 
+    ls
     ```
   </Tab>
 </Tabs>
@@ -105,7 +117,7 @@ Edit the `fullnode.yaml` file to include peer nodes for state synchronization. A
     ```
   </Tab>
   <Tab value="Testnet">
-    ```yaml 
+    ```yaml
     p2p-config:
       seed-peers:
         - address: /dns/yto-tnt-ssfn-01.testnet.sui.io/udp/8084
@@ -126,17 +138,51 @@ Edit the `fullnode.yaml` file to include peer nodes for state synchronization. A
   </Tab>
 </Tabs>
 
+In the same file, replace the `<mainnet|testnet>` placeholder in `state-archive-read-config.ingestion-url`:
+
+<Tabs items={["Mainnet","Testnet"]}>
+  <Tab value="Mainnet">
+    ```yaml
+    state-archive-read-config:
+      - ingestion-url: "https://checkpoints.mainnet.sui.io"
+        concurrency: 5
+    ```
+  </Tab>
+  <Tab value="Testnet">
+    ```yaml
+    state-archive-read-config:
+      - ingestion-url: "https://checkpoints.testnet.sui.io"
+        concurrency: 5
+    ```
+  </Tab>
+</Tabs>
+
+<Callout title="Ports">
+  The node serves its gRPC API on port `9000`, set by `json-rpc-address` in
+  `fullnode.yaml` (the key keeps its old name; JSON-RPC itself has been removed
+  from Sui full nodes). This is the endpoint the ampd `sui-handler` connects to.
+  Open UDP port `8084` for P2P state sync. The template binds metrics to
+  `0.0.0.0:9184`; consider changing `metrics-address` to `127.0.0.1:9184`.
+</Callout>
+
 Download the snapshot from the latest epoch.
 
-```bash
-sui-tool download-formal-snapshot --latest --genesis /opt/sui/config/genesis.blob       --network testnet      --path /opt/sui/db/  --num-parallel-downloads 50 --no-sign-request
-```
+<Tabs items={["Mainnet","Testnet"]}>
+  <Tab value="Mainnet">
+    ```bash
+    sui-tool download-formal-snapshot --latest --genesis /opt/sui/config/genesis.blob --network mainnet --path /opt/sui/db/ --num-parallel-downloads 50 --no-sign-request
+    ```
+  </Tab>
+  <Tab value="Testnet">
+    ```bash
+    sui-tool download-formal-snapshot --latest --genesis /opt/sui/config/genesis.blob --network testnet --path /opt/sui/db/ --num-parallel-downloads 50 --no-sign-request
+    ```
+  </Tab>
+</Tabs>
 
 If you encounter any failures, try lowering the `num-parallel-downloads` value.
 
-Don't forget also to set the value for `object-store-config.bucket` to the correct value as well in that file:
- - `testnet`: `bucket: "mysten-testnet-archives"`
- - `mainnet`: `bucket: "mysten-mainnet-archives"`
+Formal snapshots contain no transaction history from before the snapshot, so the node can't serve lookups of older transactions. See [Sui snapshots](https://docs.sui.io/guides/operator/snapshots) for details.
 
 ### Setup systemd
 
@@ -146,14 +192,15 @@ Create the systemd service file `/etc/systemd/system/suid.service`
 sudo tee /etc/systemd/system/suid.service &>/dev/null <<EOF
 [Unit]
 Description=Sui Node
+After=network-online.target
+Wants=network-online.target
 
 [Service]
 User=$USER
 WorkingDirectory=/opt/sui/
-Environment=RUST_BACKTRACE=1
-Environment=RUST_LOG=info,sui_core=debug,narwhal=debug,narwhal-primary::helper=info,LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libjemalloc.so,MALLOC_CONF=prof:true,prof_prefix:/opt/sui/jeprof/jeprof.out,lg_prof_interval:36
-ExecStart=/usr/bin/sui-node --config-path /opt/sui/config/fullnode.yaml
-Restart=always
+Environment=RUST_LOG=info,sui_core=debug,consensus=debug,jsonrpsee=error
+ExecStart=/usr/local/bin/sui-node --config-path /opt/sui/config/fullnode.yaml
+Restart=on-failure
 RestartSec=10
 
 [Install]
@@ -173,40 +220,22 @@ sudo systemctl restart suid
 
 ```bash
 # change log settings to persistent if not already
-sed -i 's/#Storage=auto/Storage=persistent/g' /etc/systemd/journald.conf
+sudo sed -i 's/#Storage=auto/Storage=persistent/g' /etc/systemd/journald.conf
 sudo systemctl restart systemd-journald
 journalctl -u suid.service -f -n 100 -o cat
 ```
 
-Logs should appear like this
-
-```bash
-2024-05-13T15:42:10.253723Z  INFO sui_core::authority::authority_store: Cur epoch: 0
-2024-05-13T15:42:11.339716Z  INFO AuthorityPerEpochStore::new{epoch=0}: sui_core::authority::authority_per_epoch_store: authenticator_state disabled
-2024-05-13T15:42:12.274692Z  WARN anemo::network: msg="expected socket send buffer size to be at least 20971520, got 425984"
-2024-05-13T15:42:12.274704Z  WARN anemo::network: msg="expected socket receive buffer size to be at least 20971520, got 425984"
-2024-05-13T15:42:12.274821Z  INFO sui_node: P2p network started on 0.0.0.0:8080 server_name="sui-35834a8a"
-2024-05-13T15:42:12.274857Z  INFO sui_network::discovery: Discovery started
-2024-05-13T15:42:12.274870Z  INFO connection-manager{peer=b99cd7fa}: anemo::network::connection_manager: ConnectionManager started
-2024-05-13T15:42:12.274871Z  INFO sui_network::state_sync: State-Synchronizer started
-2024-05-13T15:42:12.274899Z  INFO sui_core::authority: current protocol version is now ProtocolVersion(4)
-2024-05-13T15:42:12.274903Z  INFO sui_core::authority: supported versions are: SupportedProtocolVersions { min: ProtocolVersion(1), max: ProtocolVersion(44) }
-```
+On startup, the logs should show the P2P network, discovery, and state sync starting without errors.
 
 ## Verify RPC
 
-Once your `sui` node is fully synced, you can run a cURL request to see the latest epoch on your node:
+Once your `sui` node is fully synced, query its gRPC API with [grpcurl](https://github.com/fullstorydev/grpcurl):
 
 ```bash
-curl -H "Content-Type: application/json" -d '{
-  "jsonrpc": "2.0",
-  "id": 1,
-  "method": "suix_getLatestSuiSystemState",
-  "params": []
-}' localhost:9000 | jq .result.epoch
+grpcurl -plaintext localhost:9000 sui.rpc.v2.LedgerService/GetServiceInfo
 ```
 
-Compare the epoch number with [explorer](https://suiscan.xyz)
+The response includes the chain name, current epoch, and latest checkpoint height. Compare the epoch and checkpoint with the [explorer](https://suiscan.xyz).
 
 ## Configure ampd
 
@@ -247,7 +276,7 @@ chain_name = "sui"
 ```
 
 ```toml title="~/.ampd/sui/sui-handler-config.toml"
-rpc_url = "<your node's gRPC URL>"
+rpc_url = "http://<your-node-host>:9000" # your node's gRPC endpoint
 ```
 
 Start the handler:

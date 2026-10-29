@@ -1,9 +1,0 @@
-{
-  "title": "Live Addresses",
-  "pages": [
-    "[Mainnet](https://github.com/axelarnetwork/axelar-contract-deployments/blob/main/axelar-chains-config/info/mainnet.json)",
-    "[Testnet](https://github.com/axelarnetwork/axelar-contract-deployments/blob/main/axelar-chains-config/info/testnet.json)",
-    "[Stagenet](https://github.com/axelarnetwork/axelar-contract-deployments/blob/main/axelar-chains-config/info/stagenet.json)",
-    "[Devnet](https://github.com/axelarnetwork/axelar-contract-deployments/blob/main/axelar-chains-config/info/devnet-amplifier.json)"
-  ]
-}

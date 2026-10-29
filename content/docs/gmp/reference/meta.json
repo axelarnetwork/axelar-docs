@@ -1,9 +1,0 @@
-{
-  "title": "Chain and Contract Reference",
-  "pages": [
-    "[Mainnet Chain Names](https://axelarscan.io/resources/chains)",
-    "mainnet-contract-addresses",
-    "[Testnet Chain Names](https://testnet.axelarscan.io/resources/chains)",
-    "testnet-contract-addresses"
-  ]
-}

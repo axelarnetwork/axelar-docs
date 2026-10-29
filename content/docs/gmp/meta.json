@@ -21,7 +21,7 @@
     "axelar-commandid",
     "solidity-utilities",
     "metamask",
-    "reference",
+    "[Chains and Contracts](/infrastructure/network/chains-and-contracts)",
     "---Tutorials---",
     "[Deploy App with Same Address Cross-Chain](https://blog.axelar.dev/how-to-deploy-an-application-with-the-same-address-cross-chain/)",
     "[Cross-Chain Governance with OpenZeppelin](https://blog.axelar.dev/cross-chain-governance-with-openzeppelin-governor-and-axelar)",

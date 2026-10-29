@@ -7,6 +7,7 @@
     "build": "next build",
     "dev": "next dev",
     "start": "serve out",
+    "check:endpoints": "node scripts/check-endpoints.mjs",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "types:check": "fumadocs-mdx && next typegen && tsc --noEmit",

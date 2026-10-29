@@ -1,6 +1,6 @@
 {
   "title": "ITS",
-  "description": "Interchain tokens",
+  "description": "Interchain Token Service",
   "root": true,
   "pages": [
     "overview",

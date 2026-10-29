@@ -337,242 +337,237 @@
     },
     {
       "source": "/resources/rpc/resources(/)?",
-      "destination": "/infrastructure/network",
+      "destination": "/infrastructure/network/endpoints",
       "permanent": true
     },
     {
       "source": "/resources/contract-addresses/mainnet(/)?",
-      "destination": "/infrastructure/resources/contract-addresses/mainnet",
+      "destination": "/infrastructure/network/chains-and-contracts",
       "permanent": true
     },
     {
       "source": "/resources/contract-addresses/testnet(/)?",
-      "destination": "/infrastructure/resources/contract-addresses/testnet",
-      "permanent": true
-    },
-    {
-      "source": "/resources/static-configs/static-configs(/)?",
-      "destination": "/infrastructure/resources/static-configs",
+      "destination": "/infrastructure/network/chains-and-contracts",
       "permanent": true
     },
     {
       "source": "/resources/mainnet/upgrades/v153(/)?",
-      "destination": "/infrastructure/resources/upgrades/mainnet/v153",
+      "destination": "https://github.com/axelarnetwork/axelar-core/releases/tag/v1.5.3",
       "permanent": true
     },
     {
       "source": "/resources/mainnet/upgrades/v147(/)?",
-      "destination": "/infrastructure/resources/upgrades/mainnet/v147",
+      "destination": "https://github.com/axelarnetwork/axelar-core/releases/tag/v1.4.7",
       "permanent": true
     },
     {
       "source": "/resources/mainnet/upgrades/v132(/)?",
-      "destination": "/infrastructure/resources/upgrades/mainnet/v132",
+      "destination": "https://github.com/axelarnetwork/axelar-core/releases",
       "permanent": true
     },
     {
       "source": "/resources/mainnet/upgrades/v121(/)?",
-      "destination": "/infrastructure/resources/upgrades/mainnet/v121",
+      "destination": "https://github.com/axelarnetwork/axelar-core/releases/tag/v1.2.1",
       "permanent": true
     },
     {
       "source": "/resources/mainnet/upgrades/v112(/)?",
-      "destination": "/infrastructure/resources/upgrades/mainnet/v112",
+      "destination": "https://github.com/axelarnetwork/axelar-core/releases/tag/v1.1.2",
       "permanent": true
     },
     {
       "source": "/resources/mainnet/upgrades/v1(/)?",
-      "destination": "/infrastructure/resources/upgrades/mainnet/v1",
+      "destination": "https://github.com/axelarnetwork/axelar-core/releases/tag/v1.0.5",
       "permanent": true
     },
     {
       "source": "/resources/mainnet/upgrades/v35(/)?",
-      "destination": "/infrastructure/resources/upgrades/mainnet/v35",
+      "destination": "https://github.com/axelarnetwork/axelar-core/releases/tag/v0.35.5",
       "permanent": true
     },
     {
       "source": "/resources/mainnet/upgrades/v34(/)?",
-      "destination": "/infrastructure/resources/upgrades/mainnet/v34",
+      "destination": "https://github.com/axelarnetwork/axelar-core/releases/tag/v0.34.3",
       "permanent": true
     },
     {
       "source": "/resources/mainnet/upgrades/v33(/)?",
-      "destination": "/infrastructure/resources/upgrades/mainnet/v33",
+      "destination": "https://github.com/axelarnetwork/axelar-core/releases/tag/v0.33.2",
       "permanent": true
     },
     {
       "source": "/resources/mainnet/upgrades/v31(/)?",
-      "destination": "/infrastructure/resources/upgrades/mainnet/v31",
+      "destination": "https://github.com/axelarnetwork/axelar-core/releases/tag/v0.31.2",
       "permanent": true
     },
     {
       "source": "/resources/mainnet/upgrades/v29(/)?",
-      "destination": "/infrastructure/resources/upgrades/mainnet/v29",
+      "destination": "https://github.com/axelarnetwork/axelar-core/releases/tag/v0.29.1",
       "permanent": true
     },
     {
       "source": "/resources/mainnet/upgrades/v28(/)?",
-      "destination": "/infrastructure/resources/upgrades/mainnet/v28",
+      "destination": "https://github.com/axelarnetwork/axelar-core/releases/tag/v0.28.0",
       "permanent": true
     },
     {
       "source": "/resources/mainnet/upgrades/v26(/)?",
-      "destination": "/infrastructure/resources/upgrades/mainnet/v26",
+      "destination": "https://github.com/axelarnetwork/axelar-core/releases/tag/v0.26.5",
       "permanent": true
     },
     {
       "source": "/resources/mainnet/upgrades/v24(/)?",
-      "destination": "/infrastructure/resources/upgrades/mainnet/v24",
+      "destination": "https://github.com/axelarnetwork/axelar-core/releases/tag/v0.24.0",
       "permanent": true
     },
     {
       "source": "/resources/mainnet/upgrades/v21(/)?",
-      "destination": "/infrastructure/resources/upgrades/mainnet/v21",
+      "destination": "https://github.com/axelarnetwork/axelar-core/releases/tag/v0.21.1",
       "permanent": true
     },
     {
       "source": "/resources/mainnet/upgrades/v20(/)?",
-      "destination": "/infrastructure/resources/upgrades/mainnet/v20",
+      "destination": "https://github.com/axelarnetwork/axelar-core/releases/tag/v0.20.0",
       "permanent": true
     },
     {
       "source": "/resources/mainnet/upgrades/v19(/)?",
-      "destination": "/infrastructure/resources/upgrades/mainnet/v19",
+      "destination": "https://github.com/axelarnetwork/axelar-core/releases/tag/v0.19.4",
       "permanent": true
     },
     {
       "source": "/resources/mainnet/upgrades/v18(/)?",
-      "destination": "/infrastructure/resources/upgrades/mainnet/v18",
+      "destination": "https://github.com/axelarnetwork/axelar-core/releases/tag/v0.18.3",
       "permanent": true
     },
     {
       "source": "/resources/mainnet/upgrades/v17(/)?",
-      "destination": "/infrastructure/resources/upgrades/mainnet/v17",
+      "destination": "https://github.com/axelarnetwork/axelar-core/releases/tag/v0.17.3",
       "permanent": true
     },
     {
       "source": "/resources/mainnet/upgrades/v16(/)?",
-      "destination": "/infrastructure/resources/upgrades/mainnet/v16",
+      "destination": "https://github.com/axelarnetwork/axelar-core/releases/tag/v0.16.1",
       "permanent": true
     },
     {
       "source": "/resources/testnet/upgrades/v153(/)?",
-      "destination": "/infrastructure/resources/upgrades/testnet/v153",
+      "destination": "https://github.com/axelarnetwork/axelar-core/releases/tag/v1.5.3",
       "permanent": true
     },
     {
       "source": "/resources/testnet/upgrades/v147(/)?",
-      "destination": "/infrastructure/resources/upgrades/testnet/v147",
+      "destination": "https://github.com/axelarnetwork/axelar-core/releases/tag/v1.4.7",
       "permanent": true
     },
     {
       "source": "/resources/testnet/upgrades/v131(/)?",
-      "destination": "/infrastructure/resources/upgrades/testnet/v131",
+      "destination": "https://github.com/axelarnetwork/axelar-core/releases/tag/v1.3.1",
       "permanent": true
     },
     {
       "source": "/resources/testnet/upgrades/v121(/)?",
-      "destination": "/infrastructure/resources/upgrades/testnet/v121",
+      "destination": "https://github.com/axelarnetwork/axelar-core/releases/tag/v1.2.1",
       "permanent": true
     },
     {
       "source": "/resources/testnet/upgrades/v112(/)?",
-      "destination": "/infrastructure/resources/upgrades/testnet/v112",
+      "destination": "https://github.com/axelarnetwork/axelar-core/releases/tag/v1.1.2",
       "permanent": true
     },
     {
       "source": "/resources/testnet/upgrades/v1(/)?",
-      "destination": "/infrastructure/resources/upgrades/testnet/v1",
+      "destination": "https://github.com/axelarnetwork/axelar-core/releases/tag/v1.0.0",
       "permanent": true
     },
     {
       "source": "/resources/testnet/upgrades/v35(/)?",
-      "destination": "/infrastructure/resources/upgrades/testnet/v35",
+      "destination": "https://github.com/axelarnetwork/axelar-core/releases/tag/v0.35.3",
       "permanent": true
     },
     {
       "source": "/resources/testnet/upgrades/v34(/)?",
-      "destination": "/infrastructure/resources/upgrades/testnet/v34",
+      "destination": "https://github.com/axelarnetwork/axelar-core/releases/tag/v0.34.3",
       "permanent": true
     },
     {
       "source": "/resources/testnet/upgrades/v33(/)?",
-      "destination": "/infrastructure/resources/upgrades/testnet/v33",
+      "destination": "https://github.com/axelarnetwork/axelar-core/releases/tag/v0.33.1",
       "permanent": true
     },
     {
       "source": "/resources/testnet/upgrades/v32(/)?",
-      "destination": "/infrastructure/resources/upgrades/testnet/v32",
+      "destination": "https://github.com/axelarnetwork/axelar-core/releases/tag/v0.32.2",
       "permanent": true
     },
     {
       "source": "/resources/testnet/upgrades/v31(/)?",
-      "destination": "/infrastructure/resources/upgrades/testnet/v31",
+      "destination": "https://github.com/axelarnetwork/axelar-core/releases/tag/v0.31.2",
       "permanent": true
     },
     {
       "source": "/resources/testnet/upgrades/v29(/)?",
-      "destination": "/infrastructure/resources/upgrades/testnet/v29",
+      "destination": "https://github.com/axelarnetwork/axelar-core/releases/tag/v0.29.1",
       "permanent": true
     },
     {
       "source": "/resources/testnet/upgrades/v28(/)?",
-      "destination": "/infrastructure/resources/upgrades/testnet/v28",
+      "destination": "https://github.com/axelarnetwork/axelar-core/releases/tag/v0.28.0",
       "permanent": true
     },
     {
       "source": "/resources/testnet/upgrades/v27(/)?",
-      "destination": "/infrastructure/resources/upgrades/testnet/v27",
+      "destination": "https://github.com/axelarnetwork/axelar-core/releases/tag/v0.27.0",
       "permanent": true
     },
     {
       "source": "/resources/testnet/upgrades/v26(/)?",
-      "destination": "/infrastructure/resources/upgrades/testnet/v26",
+      "destination": "https://github.com/axelarnetwork/axelar-core/releases/tag/v0.26.5",
       "permanent": true
     },
     {
       "source": "/resources/testnet/upgrades/v25(/)?",
-      "destination": "/infrastructure/resources/upgrades/testnet/v25",
+      "destination": "https://github.com/axelarnetwork/axelar-core/releases/tag/v0.25.0",
       "permanent": true
     },
     {
       "source": "/resources/testnet/upgrades/v24(/)?",
-      "destination": "/infrastructure/resources/upgrades/testnet/v24",
+      "destination": "https://github.com/axelarnetwork/axelar-core/releases/tag/v0.24.0",
       "permanent": true
     },
     {
       "source": "/resources/testnet/upgrades/v23(/)?",
-      "destination": "/infrastructure/resources/upgrades/testnet/v23",
+      "destination": "https://github.com/axelarnetwork/axelar-core/releases/tag/v0.23.0",
       "permanent": true
     },
     {
       "source": "/resources/testnet/upgrades/v22(/)?",
-      "destination": "/infrastructure/resources/upgrades/testnet/v22",
+      "destination": "https://github.com/axelarnetwork/axelar-core/releases/tag/v0.22.1",
       "permanent": true
     },
     {
       "source": "/resources/testnet/upgrades/v21(/)?",
-      "destination": "/infrastructure/resources/upgrades/testnet/v21",
+      "destination": "https://github.com/axelarnetwork/axelar-core/releases/tag/v0.21.1",
       "permanent": true
     },
     {
       "source": "/resources/testnet/upgrades/v20(/)?",
-      "destination": "/infrastructure/resources/upgrades/testnet/v20",
+      "destination": "https://github.com/axelarnetwork/axelar-core/releases/tag/v0.20.0",
       "permanent": true
     },
     {
       "source": "/resources/testnet/upgrades/v19(/)?",
-      "destination": "/infrastructure/resources/upgrades/testnet/v19",
+      "destination": "https://github.com/axelarnetwork/axelar-core/releases/tag/v0.19.4",
       "permanent": true
     },
     {
       "source": "/resources/testnet/upgrades/v18(/)?",
-      "destination": "/infrastructure/resources/upgrades/testnet/v18",
+      "destination": "https://github.com/axelarnetwork/axelar-core/releases/tag/v0.18.3",
       "permanent": true
     },
     {
       "source": "/resources/testnet/upgrades/v17(/)?",
-      "destination": "/infrastructure/resources/upgrades/testnet/v17",
+      "destination": "https://github.com/axelarnetwork/axelar-core/releases/tag/v0.17.3",
       "permanent": true
     },
     {
@@ -617,12 +612,12 @@
     },
     {
       "source": "/learn/evm-governance(/)?",
-      "destination": "/infrastructure/resources/evm-governance",
+      "destination": "/infrastructure/network/governance#interchain-governance",
       "permanent": true
     },
     {
       "source": "/resources/bug-bounty(/)?",
-      "destination": "/infrastructure/resources/bug-bounty",
+      "destination": "/infrastructure/resources/security#bug-bounty",
       "permanent": true
     },
     {
@@ -842,12 +837,12 @@
     },
     {
       "source": "/dev/reference/mainnet-contract-addresses(/)?",
-      "destination": "/gmp/reference/mainnet-contract-addresses",
+      "destination": "/infrastructure/network/chains-and-contracts",
       "permanent": true
     },
     {
       "source": "/dev/reference/testnet-contract-addresses(/)?",
-      "destination": "/gmp/reference/testnet-contract-addresses",
+      "destination": "/infrastructure/network/chains-and-contracts",
       "permanent": true
     },
     {
@@ -1067,12 +1062,12 @@
     },
     {
       "source": "/resources/community/bug-bounty(/)?",
-      "destination": "/infrastructure/resources/bug-bounty",
+      "destination": "/infrastructure/resources/security#bug-bounty",
       "permanent": true
     },
     {
       "source": "/bug-bounty(/)?",
-      "destination": "/infrastructure/resources/bug-bounty",
+      "destination": "/infrastructure/resources/security#bug-bounty",
       "permanent": true
     },
     {
@@ -1127,12 +1122,12 @@
     },
     {
       "source": "/resources/mainnet(/)?",
-      "destination": "/infrastructure/resources/contract-addresses/mainnet",
+      "destination": "/infrastructure/network/chains-and-contracts",
       "permanent": true
     },
     {
       "source": "/resources/testnet(/)?",
-      "destination": "/infrastructure/resources/contract-addresses/testnet",
+      "destination": "/infrastructure/network/chains-and-contracts",
       "permanent": true
     },
     {
@@ -1142,7 +1137,7 @@
     },
     {
       "source": "/resources(/)?",
-      "destination": "/infrastructure/network",
+      "destination": "/infrastructure/network/endpoints",
       "permanent": true
     },
     {
@@ -1237,12 +1232,12 @@
     },
     {
       "source": "/resources/mainnet-releases(/)?",
-      "destination": "/infrastructure/resources/contract-addresses/mainnet",
+      "destination": "/infrastructure/network/chains-and-contracts",
       "permanent": true
     },
     {
       "source": "/resources/testnet-releases(/)?",
-      "destination": "/infrastructure/resources/contract-addresses/testnet",
+      "destination": "/infrastructure/network/chains-and-contracts",
       "permanent": true
     },
     {
@@ -1272,12 +1267,12 @@
     },
     {
       "source": "/dev/build/contract-addresses/mainnet(/)?",
-      "destination": "/gmp/reference/mainnet-contract-addresses",
+      "destination": "/infrastructure/network/chains-and-contracts",
       "permanent": true
     },
     {
       "source": "/dev/build/contract-addresses/testnet(/)?",
-      "destination": "/gmp/reference/testnet-contract-addresses",
+      "destination": "/infrastructure/network/chains-and-contracts",
       "permanent": true
     },
     {
@@ -1312,22 +1307,22 @@
     },
     {
       "source": "/dev/general-message-passing/build/contract-addresses/mainnet(/)?",
-      "destination": "/gmp/reference/mainnet-contract-addresses",
+      "destination": "/infrastructure/network/chains-and-contracts",
       "permanent": true
     },
     {
       "source": "/dev/general-message-passing/build/contract-addresses/testnet(/)?",
-      "destination": "/gmp/reference/testnet-contract-addresses",
+      "destination": "/infrastructure/network/chains-and-contracts",
       "permanent": true
     },
     {
       "source": "/dev/general-message-passing/contract-addresses/mainnet(/)?",
-      "destination": "/gmp/reference/mainnet-contract-addresses",
+      "destination": "/infrastructure/network/chains-and-contracts",
       "permanent": true
     },
     {
       "source": "/dev/general-message-passing/contract-addresses/testnet(/)?",
-      "destination": "/gmp/reference/testnet-contract-addresses",
+      "destination": "/infrastructure/network/chains-and-contracts",
       "permanent": true
     },
     {
@@ -1442,7 +1437,7 @@
     },
     {
       "source": "/resources/testnet/upgrades/v11(/)?",
-      "destination": "/infrastructure/resources/upgrades/testnet/v112",
+      "destination": "https://github.com/axelarnetwork/axelar-core/releases/tag/v1.1.2",
       "permanent": true
     },
     {
@@ -1722,7 +1717,7 @@
     },
     {
       "source": "/infrastructure/resources/rpc-endpoints(/)?",
-      "destination": "/infrastructure/network",
+      "destination": "/infrastructure/network/endpoints",
       "permanent": true
     },
     {
@@ -1773,6 +1768,261 @@
     {
       "source": "/infrastructure/validators/troubleshoot/unjail(/)?",
       "destination": "/infrastructure/validators/troubleshooting#jailed-validator",
+      "permanent": true
+    },
+    {
+      "source": "/infrastructure/network(/)?",
+      "destination": "/infrastructure/network/endpoints",
+      "permanent": true
+    },
+    {
+      "source": "/infrastructure/resources/contract-addresses/mainnet(/)?",
+      "destination": "/infrastructure/network/chains-and-contracts",
+      "permanent": true
+    },
+    {
+      "source": "/infrastructure/resources/contract-addresses/testnet(/)?",
+      "destination": "/infrastructure/network/chains-and-contracts",
+      "permanent": true
+    },
+    {
+      "source": "/infrastructure/resources/evm-governance(/)?",
+      "destination": "/infrastructure/network/governance#interchain-governance",
+      "permanent": true
+    },
+    {
+      "source": "/gmp/reference/mainnet-contract-addresses(/)?",
+      "destination": "/infrastructure/network/chains-and-contracts",
+      "permanent": true
+    },
+    {
+      "source": "/gmp/reference/testnet-contract-addresses(/)?",
+      "destination": "/infrastructure/network/chains-and-contracts",
+      "permanent": true
+    },
+    {
+      "source": "/infrastructure/resources/bug-bounty(/)?",
+      "destination": "/infrastructure/resources/security#bug-bounty",
+      "permanent": true
+    },
+    {
+      "source": "/infrastructure/resources/upgrades/mainnet/v16(/)?",
+      "destination": "https://github.com/axelarnetwork/axelar-core/releases/tag/v0.16.1",
+      "permanent": true
+    },
+    {
+      "source": "/infrastructure/resources/upgrades/mainnet/v17(/)?",
+      "destination": "https://github.com/axelarnetwork/axelar-core/releases/tag/v0.17.3",
+      "permanent": true
+    },
+    {
+      "source": "/infrastructure/resources/upgrades/mainnet/v18(/)?",
+      "destination": "https://github.com/axelarnetwork/axelar-core/releases/tag/v0.18.3",
+      "permanent": true
+    },
+    {
+      "source": "/infrastructure/resources/upgrades/mainnet/v19(/)?",
+      "destination": "https://github.com/axelarnetwork/axelar-core/releases/tag/v0.19.4",
+      "permanent": true
+    },
+    {
+      "source": "/infrastructure/resources/upgrades/mainnet/v20(/)?",
+      "destination": "https://github.com/axelarnetwork/axelar-core/releases/tag/v0.20.0",
+      "permanent": true
+    },
+    {
+      "source": "/infrastructure/resources/upgrades/mainnet/v21(/)?",
+      "destination": "https://github.com/axelarnetwork/axelar-core/releases/tag/v0.21.1",
+      "permanent": true
+    },
+    {
+      "source": "/infrastructure/resources/upgrades/mainnet/v24(/)?",
+      "destination": "https://github.com/axelarnetwork/axelar-core/releases/tag/v0.24.0",
+      "permanent": true
+    },
+    {
+      "source": "/infrastructure/resources/upgrades/mainnet/v26(/)?",
+      "destination": "https://github.com/axelarnetwork/axelar-core/releases/tag/v0.26.5",
+      "permanent": true
+    },
+    {
+      "source": "/infrastructure/resources/upgrades/mainnet/v28(/)?",
+      "destination": "https://github.com/axelarnetwork/axelar-core/releases/tag/v0.28.0",
+      "permanent": true
+    },
+    {
+      "source": "/infrastructure/resources/upgrades/mainnet/v29(/)?",
+      "destination": "https://github.com/axelarnetwork/axelar-core/releases/tag/v0.29.1",
+      "permanent": true
+    },
+    {
+      "source": "/infrastructure/resources/upgrades/mainnet/v31(/)?",
+      "destination": "https://github.com/axelarnetwork/axelar-core/releases/tag/v0.31.2",
+      "permanent": true
+    },
+    {
+      "source": "/infrastructure/resources/upgrades/mainnet/v33(/)?",
+      "destination": "https://github.com/axelarnetwork/axelar-core/releases/tag/v0.33.2",
+      "permanent": true
+    },
+    {
+      "source": "/infrastructure/resources/upgrades/mainnet/v34(/)?",
+      "destination": "https://github.com/axelarnetwork/axelar-core/releases/tag/v0.34.3",
+      "permanent": true
+    },
+    {
+      "source": "/infrastructure/resources/upgrades/mainnet/v35(/)?",
+      "destination": "https://github.com/axelarnetwork/axelar-core/releases/tag/v0.35.5",
+      "permanent": true
+    },
+    {
+      "source": "/infrastructure/resources/upgrades/mainnet/v1(/)?",
+      "destination": "https://github.com/axelarnetwork/axelar-core/releases/tag/v1.0.5",
+      "permanent": true
+    },
+    {
+      "source": "/infrastructure/resources/upgrades/mainnet/v112(/)?",
+      "destination": "https://github.com/axelarnetwork/axelar-core/releases/tag/v1.1.2",
+      "permanent": true
+    },
+    {
+      "source": "/infrastructure/resources/upgrades/mainnet/v121(/)?",
+      "destination": "https://github.com/axelarnetwork/axelar-core/releases/tag/v1.2.1",
+      "permanent": true
+    },
+    {
+      "source": "/infrastructure/resources/upgrades/testnet/v17(/)?",
+      "destination": "https://github.com/axelarnetwork/axelar-core/releases/tag/v0.17.3",
+      "permanent": true
+    },
+    {
+      "source": "/infrastructure/resources/upgrades/testnet/v18(/)?",
+      "destination": "https://github.com/axelarnetwork/axelar-core/releases/tag/v0.18.3",
+      "permanent": true
+    },
+    {
+      "source": "/infrastructure/resources/upgrades/testnet/v19(/)?",
+      "destination": "https://github.com/axelarnetwork/axelar-core/releases/tag/v0.19.4",
+      "permanent": true
+    },
+    {
+      "source": "/infrastructure/resources/upgrades/testnet/v20(/)?",
+      "destination": "https://github.com/axelarnetwork/axelar-core/releases/tag/v0.20.0",
+      "permanent": true
+    },
+    {
+      "source": "/infrastructure/resources/upgrades/testnet/v21(/)?",
+      "destination": "https://github.com/axelarnetwork/axelar-core/releases/tag/v0.21.1",
+      "permanent": true
+    },
+    {
+      "source": "/infrastructure/resources/upgrades/testnet/v22(/)?",
+      "destination": "https://github.com/axelarnetwork/axelar-core/releases/tag/v0.22.1",
+      "permanent": true
+    },
+    {
+      "source": "/infrastructure/resources/upgrades/testnet/v23(/)?",
+      "destination": "https://github.com/axelarnetwork/axelar-core/releases/tag/v0.23.0",
+      "permanent": true
+    },
+    {
+      "source": "/infrastructure/resources/upgrades/testnet/v24(/)?",
+      "destination": "https://github.com/axelarnetwork/axelar-core/releases/tag/v0.24.0",
+      "permanent": true
+    },
+    {
+      "source": "/infrastructure/resources/upgrades/testnet/v25(/)?",
+      "destination": "https://github.com/axelarnetwork/axelar-core/releases/tag/v0.25.0",
+      "permanent": true
+    },
+    {
+      "source": "/infrastructure/resources/upgrades/testnet/v26(/)?",
+      "destination": "https://github.com/axelarnetwork/axelar-core/releases/tag/v0.26.5",
+      "permanent": true
+    },
+    {
+      "source": "/infrastructure/resources/upgrades/testnet/v27(/)?",
+      "destination": "https://github.com/axelarnetwork/axelar-core/releases/tag/v0.27.0",
+      "permanent": true
+    },
+    {
+      "source": "/infrastructure/resources/upgrades/testnet/v28(/)?",
+      "destination": "https://github.com/axelarnetwork/axelar-core/releases/tag/v0.28.0",
+      "permanent": true
+    },
+    {
+      "source": "/infrastructure/resources/upgrades/testnet/v29(/)?",
+      "destination": "https://github.com/axelarnetwork/axelar-core/releases/tag/v0.29.1",
+      "permanent": true
+    },
+    {
+      "source": "/infrastructure/resources/upgrades/testnet/v31(/)?",
+      "destination": "https://github.com/axelarnetwork/axelar-core/releases/tag/v0.31.2",
+      "permanent": true
+    },
+    {
+      "source": "/infrastructure/resources/upgrades/testnet/v32(/)?",
+      "destination": "https://github.com/axelarnetwork/axelar-core/releases/tag/v0.32.2",
+      "permanent": true
+    },
+    {
+      "source": "/infrastructure/resources/upgrades/testnet/v33(/)?",
+      "destination": "https://github.com/axelarnetwork/axelar-core/releases/tag/v0.33.1",
+      "permanent": true
+    },
+    {
+      "source": "/infrastructure/resources/upgrades/testnet/v34(/)?",
+      "destination": "https://github.com/axelarnetwork/axelar-core/releases/tag/v0.34.3",
+      "permanent": true
+    },
+    {
+      "source": "/infrastructure/resources/upgrades/testnet/v35(/)?",
+      "destination": "https://github.com/axelarnetwork/axelar-core/releases/tag/v0.35.3",
+      "permanent": true
+    },
+    {
+      "source": "/infrastructure/resources/upgrades/testnet/v1(/)?",
+      "destination": "https://github.com/axelarnetwork/axelar-core/releases/tag/v1.0.0",
+      "permanent": true
+    },
+    {
+      "source": "/infrastructure/resources/upgrades/testnet/v112(/)?",
+      "destination": "https://github.com/axelarnetwork/axelar-core/releases/tag/v1.1.2",
+      "permanent": true
+    },
+    {
+      "source": "/infrastructure/resources/upgrades/testnet/v121(/)?",
+      "destination": "https://github.com/axelarnetwork/axelar-core/releases/tag/v1.2.1",
+      "permanent": true
+    },
+    {
+      "source": "/infrastructure/resources/upgrades/mainnet/v132(/)?",
+      "destination": "https://github.com/axelarnetwork/axelar-core/releases",
+      "permanent": true
+    },
+    {
+      "source": "/infrastructure/resources/upgrades/mainnet/v147(/)?",
+      "destination": "https://github.com/axelarnetwork/axelar-core/releases/tag/v1.4.7",
+      "permanent": true
+    },
+    {
+      "source": "/infrastructure/resources/upgrades/mainnet/v153(/)?",
+      "destination": "https://github.com/axelarnetwork/axelar-core/releases/tag/v1.5.3",
+      "permanent": true
+    },
+    {
+      "source": "/infrastructure/resources/upgrades/testnet/v131(/)?",
+      "destination": "https://github.com/axelarnetwork/axelar-core/releases/tag/v1.3.1",
+      "permanent": true
+    },
+    {
+      "source": "/infrastructure/resources/upgrades/testnet/v147(/)?",
+      "destination": "https://github.com/axelarnetwork/axelar-core/releases/tag/v1.4.7",
+      "permanent": true
+    },
+    {
+      "source": "/infrastructure/resources/upgrades/testnet/v153(/)?",
+      "destination": "https://github.com/axelarnetwork/axelar-core/releases/tag/v1.5.3",
       "permanent": true
     }
   ]

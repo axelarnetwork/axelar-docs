@@ -1,4 +1,5 @@
 import { Card, Cards } from 'fumadocs-ui/components/card';
+import type * as PageTree from 'fumadocs-core/page-tree';
 import type { LayoutTab } from 'fumadocs-ui/layouts/shared';
 import {
   ArrowLeftRight,
@@ -35,13 +36,29 @@ function getSections() {
   });
 }
 
+// Page URLs that belong to a section. Sidebar links into other sections (e.g. GMP linking to
+// Infrastructure's contract addresses) are left out, so those pages keep their own tab selected.
+function sectionUrls(
+  node: PageTree.Folder,
+  prefix: string,
+  urls = new Set<string>(),
+) {
+  if (node.index) urls.add(node.index.url);
+  for (const child of node.children) {
+    if (child.type === 'page' && child.url.startsWith(prefix))
+      urls.add(child.url);
+    if (child.type === 'folder') sectionUrls(child, prefix, urls);
+  }
+  return urls;
+}
+
 // Section tabs for the sidebar dropdown, with each section's icon and spacing.
 export function getSectionTabs(): LayoutTab[] {
   return getSections().map(({ node, url, icon }) => ({
     title: node.name,
     description: node.description,
     url,
-    $folder: node,
+    urls: sectionUrls(node, `/${url.split('/')[1]}`),
     icon,
     props: tabProps,
   }));
