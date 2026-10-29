@@ -4,10 +4,11 @@
   "root": true,
   "pages": [
     "index",
+    "network",
     "node",
     "validators",
     "verifiers",
-    "chain-integration",
+    "chain-nodes",
     "resources"
   ]
 }

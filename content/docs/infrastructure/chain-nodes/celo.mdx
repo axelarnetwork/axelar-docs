@@ -1,0 +1,110 @@
+---
+title: "Celo"
+---
+
+<Callout title="Legacy chain on mainnet, Amplifier chain on testnet">
+  Celo mainnet is verified by Axelar validators: [set up your Axelar
+  validator](/infrastructure/validators) first, then connect
+  this node to `vald` as described in [Verify legacy
+  chains](/infrastructure/verifiers/legacy-chains). Celo Sepolia (testnet) is an
+  Amplifier chain: [set up your ampd
+  verifier](/infrastructure/verifiers/amplifier/verifier-onboarding) instead.
+</Callout>
+
+Set up your CELO Mainnet or Celo Sepolia Testnet RPC node
+
+## Prerequisites
+
+- [Setup your Axelar validator](/infrastructure/validators)
+- [Minimum hardware requirements](https://docs.celo.org/validator/run/mainnet#hardware-requirements):
+  - Memory: 16 GB RAM
+  - CPU: Quad core 3GHz (64-bit)
+  - Disk: 512 GB of SSD storage, plus a secondary HDD desirable
+  - Network: At least 1 GB input/output Ethernet with a fiber Internet connection, ideally redundant connections and HA switches
+- MacOS or Ubuntu 18.04+
+- [Official Documentation](https://docs.celo.org/cel2/operators/run-node)
+- [Install Docker and docker-compose](https://docs.docker.com/engine/install/)
+
+## Steps
+
+1. Clone the Repository
+2. Configuring the node
+3. Start the node
+4. Estimate remaining sync time
+5. Configure vald
+
+### Clone the Repository
+
+```bash
+git clone https://github.com/celo-org/celo-l2-node-docker-compose.git
+cd celo-l2-node-docker-compose
+```
+
+### Configuring the node
+
+Example configs are provided for Celo Sepolia and Mainnet(will be available once the L2 version is launched).
+
+Copy the desired network environment file to .env (.env is used by docker-compose to load environment variables).
+
+E.g. To run a node on Celo Sepolia:
+
+```bash
+cp celo-sepolia.env .env
+```
+
+Open ```.env``` and optionally configure any setting you may wish to change. For more details, refer to the documentation: [Celo L2 Node Configurations](https://github.com/celo-org/celo-l2-node-docker-compose?tab=readme-ov-file#node-configurations).
+
+### Start the node
+
+```bash
+docker compose up -d --build
+```
+
+To see logs after starting the container, do the following.
+
+```bash
+docker compose logs -f --tail 10
+```
+
+You'll start seeing some output. After a few minutes, you should see lines that look like this. This means your node has started syncing with the network and is receiving blocks.
+
+```bash
+op-node-1              | t=2025-03-10T13:10:05+0000 lvl=info msg="successfully processed payload" ref=0xf4f3329a393c63a3049dd6ccf373b84a8010575959a9b08b5322816c277185dc:40656885 txs=1
+op-node-1              | t=2025-03-10T13:10:06+0000 lvl=info msg="Received signed execution payload from p2p" id=0xaed84ef24c4accfac8597083e86b2187b10594ef4d8cf6a1de8794d8d2eb6f54:40656886 peer=16Uiu2HAmGJAiUX6HLSo4nLh8T984qxzokwL23cVsYuNZy2SrK7C6 txs=1
+op-node-1              | t=2025-03-10T13:10:06+0000 lvl=info msg="Optimistically queueing unsafe L2 execution payload" id=0xaed84ef24c4accfac8597083e86b2187b10594ef4d8cf6a1de8794d8d2eb6f54:40656886
+op-geth-1              | INFO [03-10|13:10:06.890] Imported new potential chain segment     number=40,656,886 hash=aed84e..eb6f54 blocks=1 txs=1 mgas=0.044 elapsed=15.280ms    mgasps=2.865  snapdiffs=1.07MiB    triediffs=1.68MiB triedirty=170.80KiB
+op-geth-1              | INFO [03-10|13:10:06.892] Chain head was updated                   number=40,656,886 hash=aed84e..eb6f54 root=d8d7a6..3d26d7 elapsed="149.411µs"
+op-node-1              | t=2025-03-10T13:10:06+0000 lvl=info msg="Inserted new L2 unsafe block (synchronous)" hash=0xaed84ef24c4accfac8597083e86b2187b10594ef4d8cf6a1de8794d8d2eb6f54 number=40656886 newpayload_time=19.937ms fcu2_time=2.276ms total_time=22.216ms mgas=0.043782 mgasps=1.9707239775153276
+op-node-1              | t=2025-03-10T13:10:06+0000 lvl=info msg="Sync progress" reason="new chain head block" l2_finalized=0x1d307d6750afe9164b8b5ce86a76afd94331db3e88aed28be17da33f0ce5f05f:40652313 l2_safe=0xf9186d586e797b9cdb5b08de180c27f2e58c04de15fdb28eb6afb2b5a4e1d55a:40656494 l2_pending_safe=0xf9186d586e797b9cdb5b08de180c27f2e58c04de15fdb28eb6afb2b5a4e1d55a:40656494 l2_unsafe=0xaed84ef24c4accfac8597083e86b2187b10594ef4d8cf6a1de8794d8d2eb6f54:40656886 l2_backup_unsafe=0x0000000000000000000000000000000000000000000000000000000000000000:0 l2_time=1741612206
+op-node-1              | t=2025-03-10T13:10:06+0000 lvl=info msg="successfully processed payload" ref=0xaed84ef24c4accfac8597083e86b2187b10594ef4d8cf6a1de8794d8d2eb6f54:40656886 txs=1
+op-node-1              | t=2025-03-10T13:10:07+0000 lvl=info msg="Received signed execution payload from p2p" id=0xb6911f4eff94a958702fba8def55dbb552323054c3aaeaa82f8a4866e685dee8:40656887 peer=16Uiu2HAm1SZBDSugT5MMu7vBY8auDgfZFNhoDeXPLc9Me5FsAxwT txs=2
+```
+
+### Estimate remaining sync time
+
+[Install foundry](https://book.getfoundry.sh/getting-started/installation) and then run progress.sh to estimate remaining sync time and speed.
+
+```bash
+./progress.sh
+```
+
+This will show the sync speed in blocks per minute and the time until sync is completed.
+
+```bash
+Chain ID: 44787
+Sampling, please wait
+Blocks per minute: ...
+Hours until sync completed: ...
+```
+
+### Configure vald
+
+In order for `vald` to connect to your Ethereum node, your `rpc_addr` should be exposed in
+vald's `config.toml`
+
+```bash
+[[axelar_bridge_evm]]
+name = "celo"
+rpc_addr = "<node-rpc-addr>"
+start-with-bridge = true
+```

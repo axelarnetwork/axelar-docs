@@ -1,0 +1,194 @@
+---
+title: "Sync a node"
+description: Download the Axelar blockchain, from a snapshot or from genesis.
+---
+
+There are two ways to sync your node:
+
+- **[From a snapshot](#sync-from-a-snapshot)** (recommended): download a recent snapshot of the blockchain and let your node catch up from there. This is the fastest way.
+- **[From genesis](#sync-from-genesis)**: download the whole blockchain from the Axelar peer-to-peer network, switching `axelard` versions at each upgrade height.
+
+## Prerequisites
+
+- Set up your node as per [Node setup](/infrastructure/node/setup).
+- Ensure the `AXELARD_HOME` variable is set in your current session. See [Home directory](/infrastructure/node/setup#home-directory) (e.g. `AXELARD_HOME="$HOME/.axelar"`).
+
+## Sync from a snapshot
+
+### Download the latest Axelar blockchain snapshot
+
+Download the latest Axelar blockchain snapshot for your chosen network (testnet or mainnet) from a provider:
+
+- [quicksync.io](https://quicksync.io/networks/axelar.html)
+
+<Callout emoji="💡">
+  Axelar does not support state sync, so a snapshot should be more than 100GB in
+  size.
+</Callout>
+
+The following instructions assume you downloaded the `pruned` snapshot from `quicksync.io`.
+
+Let `SNAPSHOT_FILE` denote the file name of the snapshot you downloaded. Example file names:
+
+- **Mainnet:** `axelar-dojo-1-pruned.xyz.tar.lz4`
+- **Testnet:** `axelartestnet-lisbon-3-pruned.xyz.tar.lz4`
+
+Install `lz4`: [MacOS](https://formulae.brew.sh/formula/lz4) | [Ubuntu](https://snapcraft.io/install/lz4/ubuntu)
+
+Decompress the downloaded snapshot into your `${AXELARD_HOME}/data` directory.
+
+```bash
+# Ensure AXELARD_HOME env var is set or substitute it below
+
+# Remove any existing data if it exists
+rm -r ${AXELARD_HOME}/data
+
+lz4 -dc --no-sparse [SNAPSHOT_FILE] | tar xfC - ${AXELARD_HOME}
+
+# Verify that snapshot data was uncompressed
+ls $AXELARD_HOME/data
+```
+
+### Start your node
+
+```bash
+$AXELARD_HOME/bin/axelard start [moniker] --home $AXELARD_HOME >> $AXELARD_HOME/logs/axelard.log 2>&1 &
+```
+
+Your Axelar node will launch and begin downloading the rest of the blockchain after the snapshot.
+
+### View your logs in real time
+
+```bash
+tail -f $AXELARD_HOME/logs/axelard.log
+```
+
+You should see the height (representing the downloaded blockchain) increasing in the logs.
+
+```
+... executed block height=690578 ...
+... executed block height=690579 ...
+```
+
+## Sync from genesis
+
+### Follow the upgrade path
+
+Configure your system as per [Node setup](/infrastructure/node/setup) except specify the correct version of `axelard` according to your network and position in the upgrade path:
+
+<Tabs items={["Mainnet","Testnet"]}>
+<Tab value="Mainnet">
+
+ 
+| Core Version                                | Start Height | Upgrade Height |
+| ------------------------------------------- | ------------ | -------------- |
+| v0.10.7                                     | 0            | 384000         |
+| v0.13.6                                     | 384001       | 1060850        |
+| v0.14.1                                     | 1060851      | 1263450        |
+| v0.15.0                                     | 1105250      | 1336350        |
+| [v0.16.1](/infrastructure/resources/upgrades/mainnet/v16) | 1336350      | 1889000        |
+| [v0.17.3](/infrastructure/resources/upgrades/mainnet/v17) | 1889000      | 2471750        |
+| [v0.18.3](/infrastructure/resources/upgrades/mainnet/v18) | 2471750      | 2472290        |
+| [v0.19.4](/infrastructure/resources/upgrades/mainnet/v19) | 2472290      | 3331350        |
+| [v0.20.0](/infrastructure/resources/upgrades/mainnet/v20) | 3331350      | 3643500        |
+| [v0.21.1](/infrastructure/resources/upgrades/mainnet/v21) | 3643500      | 3644000        |
+| [v0.24.0](/infrastructure/resources/upgrades/mainnet/v24) | 3644000      | 3852250        |
+| [v0.26.5](/infrastructure/resources/upgrades/mainnet/v26) | 3852250      | 4984950        |
+| [v0.28.0](/infrastructure/resources/upgrades/mainnet/v28) | 4984950      | 5030000        |
+| [v0.29.1](/infrastructure/resources/upgrades/mainnet/v29) | 5030000      | 5853000        |
+| [v0.31.2](/infrastructure/resources/upgrades/mainnet/v31) | 5853000      | 6895400        |
+| [v0.33.2](/infrastructure/resources/upgrades/mainnet/v33) | 6895400      | 9151750        |
+| [v0.34.3](/infrastructure/resources/upgrades/mainnet/v34) | 9151750      | 11795700       |
+| [v0.35.5](/infrastructure/resources/upgrades/mainnet/v35) | 11795700     | 14231100       |
+| [v1.0.5](/infrastructure/resources/upgrades/mainnet/v1)   | 14231100     | 15890800       |
+| [v1.1.2](/infrastructure/resources/upgrades/mainnet/v112) | 15890800     | 16837700       |
+| [v1.2.1](/infrastructure/resources/upgrades/mainnet/v121) | 16837700     | N/A            |
+
+
+</Tab>
+<Tab value="Testnet">
+
+ 
+| Core Version                                | Start Height | Upgrade Height |
+| ------------------------------------------- | ------------ | -------------- |
+| v0.13.6                                     | 690489       | 897350         |
+| v0.14.1                                     | 897350       | 1105250        |
+| v0.15.0                                     | 1105250      | 1249660        |
+| v0.16.1                                     | 1249660      | 1619950        |
+| [v0.17.3](/infrastructure/resources/upgrades/testnet/v17) | 1619950      | 2183275        |
+| [v0.18.3](/infrastructure/resources/upgrades/testnet/v18) | 2183275      | 2257265        |
+| [v0.19.4](/infrastructure/resources/upgrades/testnet/v19) | 2257265      | 3356100        |
+| [v0.20.0](/infrastructure/resources/upgrades/testnet/v20) | 3356100      | 3429625        |
+| [v0.21.1](/infrastructure/resources/upgrades/testnet/v21) | 3429625      | 3445200        |
+| [v0.22.1](/infrastructure/resources/upgrades/testnet/v22) | 3445200      | 3536040        |
+| [v0.23.0](/infrastructure/resources/upgrades/testnet/v23) | 3536040      | 3620300        |
+| [v0.24.0](/infrastructure/resources/upgrades/testnet/v24) | 3620300      | 3827825        |
+| [v0.25.0](/infrastructure/resources/upgrades/testnet/v25) | 3827825      | 3842800        |
+| [v0.26.5](/infrastructure/resources/upgrades/testnet/v26) | 3842800      | 4868740        |
+| [v0.27.0](/infrastructure/resources/upgrades/testnet/v27) | 4868740      | 4874000        |
+| [v0.28.0](/infrastructure/resources/upgrades/testnet/v28) | 4874000      | 5093500        |
+| [v0.29.1](/infrastructure/resources/upgrades/testnet/v29) | 5093500      | 5895180        |
+| [v0.31.2](/infrastructure/resources/upgrades/testnet/v31) | 5895180      | 6315000        |
+| [v0.32.2](/infrastructure/resources/upgrades/testnet/v32) | 6315000      | 6939420        |
+| [v0.33.1](/infrastructure/resources/upgrades/testnet/v33) | 6939420      | 8528500        |
+| [v0.33.2](/infrastructure/resources/upgrades/testnet/v33) | 8528500      | 9462850        |
+| [v0.34.3](/infrastructure/resources/upgrades/testnet/v34) | 9462850      | 12017025       |
+| [v0.35.3](/infrastructure/resources/upgrades/testnet/v35) | 12017025     | 14625900       |
+| [v1.0.0](/infrastructure/resources/upgrades/testnet/v1)    | 14625900     | 16665600       |
+| [v1.1.2](/infrastructure/resources/upgrades/testnet/v112) | 16665600     | 17629900       |
+| [v1.2.1](/infrastructure/resources/upgrades/testnet/v121) | 17629900     | N/A            |
+
+ 
+</Tab>
+</Tabs>
+
+First, you have to change directory to "axelarate-community" repository.
+
+```bash
+cd axelarate-community
+```
+
+To run setup-node.sh you have to specify the network (mainnet, testnet) and the axelard core version you want to use.
+You must follow the upgrade path as specified in the table above (it is different for each network).
+setup-node.sh will download axelard binary version you specified in "$AXELARD_HOME/bin" folder and create a symbolic link.
+
+```bash
+-rwxr-xr-x  1 kalid  staff  70832530 Jul  6 11:04 axelard-v0.13.6
+lrwxr-xr-x  1 kalid  staff        48 Jul  6 11:04 axelard -> /Users/kalid/.axelar_testnet/bin/axelard-v0.13.6
+```
+<br/>
+<Tabs items={["Mainnet","Testnet"]}>
+<Tab value="Mainnet">
+```bash
+./scripts/setup-node.sh -n mainnet -a v0.10.7
+```
+</Tab>
+<Tab value="Testnet">
+```bash
+./scripts/setup-node.sh -n testnet -a v0.13.6
+```
+</Tab>
+
+</Tabs>
+
+Start your node with the newly configured `axelard` version:
+
+```bash
+$AXELARD_HOME/bin/axelard start --home $AXELARD_HOME >> $AXELARD_HOME/logs/axelard.log 2>&1 &
+```
+
+Your Axelar node will resume downloading the blockchain.
+
+View your logs in real time:
+
+```bash
+tail -f $AXELARD_HOME/logs/axelard.log
+```
+
+After your blockchain has reached `UPGRADE_HEIGHT` you will see a panic in the logs like
+
+```
+panic: UPGRADE {NAME} NEEDED at height: {UPGRADE_HEIGHT}:
+```
+
+Repeat this process for each entry in the upgrade path when the "panic" message appears in the logs.

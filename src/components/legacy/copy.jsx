@@ -1,7 +1,7 @@
 'use client';
 import { useState, useEffect } from 'react';
 
-export default ({ value, title, onCopy }) => {
+export default ({ value, title = undefined, onCopy = undefined }) => {
   const [copied, setCopied] = useState(false);
 
   useEffect(() => {

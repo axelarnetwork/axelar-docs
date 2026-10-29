@@ -1,11 +1,8 @@
 {
   "title": "Setup",
   "pages": [
-    "overview",
-    "config",
-    "backup",
     "vald-tofnd",
-    "register-broadcaster",
+    "register-and-stake",
     "manual"
   ]
 }

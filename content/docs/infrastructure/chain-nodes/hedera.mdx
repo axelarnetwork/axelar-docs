@@ -1,0 +1,237 @@
+---
+title: "Hedera"
+---
+
+<Callout title="Amplifier chain">
+  This chain is verified by Amplifier verifiers. Before setting up this node,
+  [set up your ampd verifier](/infrastructure/verifiers/amplifier/verifier-onboarding).
+</Callout>
+
+Instructions to set up your Hedera mirror node and RPC-relay.
+
+### Requirements
+
+- [Setup your Axelar verifier](/infrastructure/verifiers/amplifier/verifier-onboarding)
+- Minimum hardware requirements: CPUs: 4 cores RAM: 16 GB Storage (SSD): 500 GB
+- Ubuntu 20.04 LTS or later
+- NPM (installing via [`nvm`](https://github.com/nvm-sh/nvm) is recommended)
+- Redis (used for caching)
+- [Docker](https://docs.docker.com/engine/install/) (>= v20.10.x) installed on your machine. 
+- An Amazon Web Services account/Google Cloud Platform account.
+
+### Prerequisites
+
+```bash
+sudo apt update
+sudo apt install build-essential gcc g++ redis
+```
+
+### Clone Hedera Mirror Node Repository
+
+- [Official Documentation](https://docs.hedera.com/hedera/core-concepts/mirror-nodes/run-your-own-beta-mirror-node)
+
+Open your terminal and run the following commands
+
+```bash
+git clone https://github.com/hiero-ledger/hiero-mirror-node
+cd hiero-mirror-node
+```
+
+### Configure Mirror Node
+
+The `application.yml` file is the main configuration file for the Hedera Mirror Node. We'll update that file with GCP/AWS Secret and Access keys and the type of Hedera Network we want to mirror.
+
+For more information about the configuration for the Cloud related credentials, please refer to this documentation for [AWS](https://docs.hedera.com/hedera/core-concepts/mirror-nodes/run-your-own-beta-mirror-node/run-your-own-mirror-node-s3) and for [GCS](https://docs.hedera.com/hedera/core-concepts/mirror-nodes/run-your-own-beta-mirror-node/run-your-own-mirror-node-gcs).
+
+```text.toml
+hedera:
+  mirror:
+    importer:
+      downloader:
+        accessKey: Enter access key from your GCP/AWS account
+        cloudProvider: "GCP/s3" #Choose GCP for google or s3 for AWS
+        secretKey: Enter secret key from your GCP/AWS account
+        gcpProjectId: ENTER GCP PROJECT ID HERE / N/A for AWS
+      network: PREVIEWNET/TESTNET/MAINNET #Pick one network
+```
+
+### Run Your Mirror Node
+
+```bash
+docker compose up -d
+```
+
+### Check Logs
+
+Logs should appear like this
+
+```bash
+importer-1  | 2024-09-05T14:10:43.832Z  INFO pool-8-thread-2 c.h.m.i.p.b.BatchInserter Copied 1 rows to transaction table in 388.7 μs
+importer-1  | 2024-09-05T14:10:43.833Z  INFO pool-8-thread-2 c.h.m.i.p.r.e.s.SqlEntityListener Completed batch inserts in 11.59 ms
+importer-1  | 2024-09-05T14:10:43.833Z  INFO pool-8-thread-2 c.h.m.i.p.r.RecordFileParser Successfully processed 1 items from 2019-10-11T16_39_21.323930Z.rcd in 11.69 ms
+importer-1  | 2024-09-05T14:10:43.948Z  INFO pool-8-thread-2 c.h.m.i.p.b.BatchInserter Copied 7 rows to crypto_transfer table in 664.4 μs
+importer-1  | 2024-09-05T14:10:43.957Z  INFO pool-8-thread-2 c.h.m.i.p.b.BatchInserter Copied 3 rows to entity_temp table in 8.886 ms
+importer-1  | 2024-09-05T14:10:43.958Z  INFO pool-8-thread-2 c.h.m.i.p.b.BatchInserter Copied 1 rows to record_file table in 483.7 μs
+importer-1  | 2024-09-05T14:10:43.958Z  INFO pool-8-thread-2 c.h.m.i.p.b.TransactionHashBatchInserter Copied 1 rows from 1 shards to transaction_hash table in 653.0 μs
+importer-1  | 2024-09-05T14:10:43.959Z  INFO pool-8-thread-2 c.h.m.i.p.b.BatchInserter Copied 1 rows to transaction table in 486.9 μs
+importer-1  | 2024-09-05T14:10:43.959Z  INFO pool-8-thread-2 c.h.m.i.p.r.e.s.SqlEntityListener Completed batch inserts in 11.39 ms
+importer-1  | 2024-09-05T14:10:43.959Z  INFO pool-8-thread-2 c.h.m.i.p.r.RecordFileParser Successfully processed 1 items from 2019-10-11T16_39_31.290027001Z.rcd in 11.50 ms
+importer-1  | 2024-09-05T14:10:44.539Z  INFO scheduling-4 c.h.m.i.d.r.RecordFileDownloader No new signature files to download after file: 2019-10-11T16_39_31.290027001Z.rcd. Retrying in 0.5 s
+```
+
+### Verify RPC
+
+```bash
+ curl http://localhost:5551/api/v1/transactions?limit=1
+```
+
+## Setup a Hedera JSON-RPC Relayer
+You'll need to setup a JSON-RPC relay to let `ampd` intract with your Hedera node. Follow the setup instructions:
+
+### Clone Hedera JSON-RPC Relayer Repository
+
+* [Official Docs](https://docs.hedera.com/hedera/tutorials/more-tutorials/json-rpc-connections/hedera-json-rpc-relay)
+
+Open your terminal and run the following commands
+
+```bash
+git clone https://github.com/hiero-ledger/hiero-json-rpc-relay.git
+cd hiero-json-rpc-relay
+git checkout tags/v0.68.0 # Or any other specific tag
+```
+
+### Install dependencies and Build the project
+
+```bash
+npm install
+npm run build
+```
+
+### Create a file named .env in the root directory of the project.
+
+```bash
+CHAIN_ID= The network chain id. Local and previewnet envs should use 0x12a (298). Previewnet, Testnet and Mainnet should use 0x129 (297), 0x128 (296) and 0x127 (295) respectively
+
+MIRROR_NODE_URL=<The Mirror Node API endpoint. Official endpoints are Previewnet (https://previewnet.mirrornode.hedera.com), Testnet (https://testnet.mirrornode.hedera.com), Mainnet (https://mainnet-public.mirrornode.hedera.com).>
+
+HEDERA_NETWORK=<Which network to connect to. Can be MAINNET, PREVIEWNET, TESTNET or OTHER>
+
+OPERATOR_KEY_FORMAT=<The key format of OPERATOR_KEY_MAIN, for example Metamask wallet key format is `HEX_ECDSA`>
+
+OPERATOR_ID_MAIN=<AccountID e.g. 0.1.2, can be obtained from portal.hedera.com, wallet or exchange of choice>
+
+OPERATOR_KEY_MAIN=<DER Encoded Private Key, can be obtained from portal.hedera.com, wallet or exchange of choice>
+```
+
+### Start the RPC relay server as systemd service
+
+```bash
+sudo nano /etc/systemd/system/hiero-json-rpc.service
+```
+
+```bash 
+[Unit]
+Description=Hiero JSON-RPC Relayer
+After=network.target
+
+[Service]
+Type=simple
+
+# Change with the correct user
+User=ubuntu
+
+# Change with the correct working directory
+WorkingDirectory=/home/ubuntu/hiero-json-rpc-relay
+
+# Update NVM_DIR with the correct value
+Environment=NODE_ENV=production NVM_DIR=/home/ubuntu/.nvm
+ExecStart=/bin/bash -c 'source $NVM_DIR/nvm.sh && npm run start'
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
+```
+
+```bash
+sudo systemctl enable hiero-json-rpc
+sudo systemctl start hiero-json-rpc
+```
+
+### Check Logs
+
+Logs should appear like this
+
+```bash
+[2024-10-03 16:49:33.460 +0000] INFO (relay/145017 on xxxxx): Configurations successfully loaded
+[2024-10-03 16:49:33.461 +0000] TRACE (hbar-rate-limit/145017 on xxxxx): remainingBudget=11000000000 tℏ, resetTimestamp=1727974253461
+[2024-10-03 16:49:33.508 +0000] INFO (relay/145017 on xxxxx): SDK client successfully configured to "testnet" for account 0.0.12345 with request timeout value: 10000
+[2024-10-03 16:49:33.511 +0000] INFO (mirror-node/145017 on xxxxx): Mirror Node client successfully configured to REST url: https://testnet.mirrornode.hedera.com/api/v1/ and Web3 url: https://testnet.mirrornode.hedera.com/api/v1/ 
+[2024-10-03 16:49:33.512 +0000] INFO (relay/145017 on xxxxx): Relay running with chainId=0x128
+```
+
+You can also testout the endpoint with sending a `curl`:
+
+```bash
+curl -X POST -H 'Content-Type: application/json' -d '{"jsonrpc":"2.0","id":"2","method":"eth_blockNumber","params":[null]}' http://127.0.0.1:7546
+
+> {"result":"0x7c568e","jsonrpc":"2.0","id":"2"}
+```
+
+## Configure ampd
+
+This assumes you have set up `ampd` as per [Become an Amplifier verifier](/infrastructure/verifiers/amplifier/verifier-onboarding).
+
+Add the chain to your `ampd` config (`~/.ampd/config.toml`):
+
+<Tabs items={["Mainnet","Testnet"]}>
+<Tab value="Mainnet">
+
+```toml
+[[grpc.blockchain_service.chains]]
+chain_name="hedera"
+voting_verifier="axelar1q8q8qq59yv9wmhcreu5ykt4azsk83ttve4e7jyavt32k6jq862xsqexnfh"
+multisig_prover="axelar1e7z2faehrvpwl3apq3srr8djp386urvm2fgw3yafmju6slphhe8skecrwk"
+multisig="axelar14a4ar5jh7ue4wg28jwsspf23r8k68j7g5d6d3fsttrhp42ajn4xq6zayy5"
+```
+
+</Tab>
+<Tab value="Testnet">
+
+```toml
+[[grpc.blockchain_service.chains]]
+chain_name="hedera"
+voting_verifier="axelar1ce9rcvw8htpwukc048z9kqmyk5zz52d5a7zqn9xlq2pg0mxul9mqxlx2cq"
+multisig_prover="axelar1kleasry5ed73a8u4q6tdeu80hquy4nplfnrntx3n6agm2tcx40fssjk7gj"
+multisig="axelar14a4ar5jh7ue4wg28jwsspf23r8k68j7g5d6d3fsttrhp42ajn4xq6zayy5"
+```
+
+</Tab>
+</Tabs>
+
+Create a config directory for the `evm-handler`, pointing it at your node:
+
+```toml title="~/.ampd/hedera/config.toml"
+ampd_url = "http://127.0.0.1:9090"
+chain_name = "hedera"
+```
+
+```toml title="~/.ampd/hedera/evm-handler-config.toml"
+rpc_url = "<your node's RPC URL>"
+finalization = "RPCFinalizedBlock"
+```
+
+Start the handler:
+
+```bash
+evm-handler --config-dir ~/.ampd/hedera/
+```
+
+See [Set up handlers](/infrastructure/verifiers/amplifier/verifier-onboarding#set-up-handlers) for running handlers with Docker or as services.
+
+## Register chain support
+
+Once the handler is running, register your verifier's support for the chain:
+
+```bash
+ampd register-chain-support amplifier hedera
+```

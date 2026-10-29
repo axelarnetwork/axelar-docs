@@ -1,0 +1,32 @@
+{
+  "title": "External Chain Nodes",
+  "pages": [
+    "index",
+    "---Legacy chains---",
+    "arbitrum",
+    "avalanche",
+    "base",
+    "binance",
+    "celo",
+    "ethereum",
+    "fantom",
+    "filecoin",
+    "fraxtal",
+    "immutable",
+    "kava",
+    "linea",
+    "mantle",
+    "optimism",
+    "polygon",
+    "scroll",
+    "---Amplifier chains---",
+    "hedera",
+    "hyperliquid",
+    "solana",
+    "stacks",
+    "stellar",
+    "sui",
+    "xrpl-evm",
+    "xrpl"
+  ]
+}

@@ -1,11 +1,8 @@
 {
-  "title": "Verifiers (Amplifier)",
+  "title": "Verifiers",
   "pages": [
-    "verifier-onboarding",
-    "verifier-security-expectations",
-    "governance-proposals",
-    "verifier-rewards",
-    "verifier-rotations",
-    "error-messages"
+    "index",
+    "legacy-chains",
+    "amplifier"
   ]
 }

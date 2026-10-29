@@ -9,7 +9,7 @@ Axelar is an interoperability network: it connects blockchains so that applicati
 
 The Axelar network is its own proof-of-stake blockchain, built with the Cosmos SDK. Validators run `axelard`, produce blocks and secure the chain with staked AXL, and anyone can run a node, query it over RPC or follow it in an explorer. Like any L1 it goes through network upgrades and governance proposals.
 
-Everything needed to run and use the chain itself (nodes, validators, verifiers, RPC endpoints, upgrades) is in this section.
+Public RPC, LCD and gRPC endpoints, block explorers and faucets for mainnet and testnet are listed on [Network](/infrastructure/network). Everything else needed to run and use the chain itself (nodes, validators, verifiers, upgrades) is in this section.
 
 ## A cross-chain protocol: Amplifier
 
@@ -19,7 +19,7 @@ On top of that chain runs the protocol that carries messages between connected c
 - On Axelar, a **verifier contract** for each chain checks that a message really happened on its source chain, a **router** forwards it to the destination chain, and a **prover** produces the proof the destination gateway needs to accept it.
 - **Verifiers** run `ampd` to vote on source-chain events and sign outgoing messages for the chains they support.
 
-Chains connected before Amplifier are verified directly by the Axelar validators; new chains connect through Amplifier. To connect a chain yourself, see [Chain Integration](/infrastructure/chain-integration/introduction).
+Chains connected before Amplifier are verified directly by the Axelar validators; new chains connect through Amplifier.
 
 Amplifier is what the products are built on:
 

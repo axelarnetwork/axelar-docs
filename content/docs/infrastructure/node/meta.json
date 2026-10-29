@@ -1,11 +1,9 @@
 {
   "title": "Node Operators",
   "pages": [
-    "config-node",
-    "join",
-    "join-genesis",
+    "setup",
+    "sync",
     "basic",
-    "config-cli",
     "keyring"
   ]
 }

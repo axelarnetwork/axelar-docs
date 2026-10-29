@@ -31,3 +31,28 @@ html > body[data-scroll-locked] {
     --fd-sidebar-width: 300px !important;
   }
 }
+
+/* Content (page + table of contents) sits in a rounded panel next to the sidebar */
+@media (min-width: 768px) {
+  #nd-docs-layout {
+    isolation: isolate;
+    background-color: var(--color-fd-card);
+  }
+
+  /* The panel's own border separates it from the sidebar */
+  #nd-sidebar {
+    border-inline-end-width: 0;
+  }
+
+  #nd-docs-layout::before {
+    content: '';
+    grid-row: 1 / -1;
+    grid-column: 3 / -1;
+    margin: 0.5rem 0.5rem 0;
+    border: 1px solid var(--color-fd-border);
+    border-bottom: 0;
+    border-radius: 0.75rem 0.75rem 0 0;
+    background-color: var(--color-fd-background);
+    z-index: -1;
+  }
+}

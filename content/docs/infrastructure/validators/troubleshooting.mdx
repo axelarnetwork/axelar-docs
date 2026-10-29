@@ -1,0 +1,106 @@
+---
+title: "Troubleshooting"
+description: Fix start-up issues, missed blocks and a jailed validator.
+---
+
+## Start-up issues
+
+If the process was missing, check if `tofnd` is running. Install the `nmap` command if you do not have it, and check the tofnd port
+
+```bash
+nmap -p 50051 localhost
+```
+
+Look for the `STATE` of the port, which should be `open` or `closed`. If the port is `closed`, restart your node and ensure tofnd is running. If the port is `open`, then there is a connection issue between vald and tofnd.
+
+To fix the connectivity issue, find the `tofnd` container address manually and provide it to `vald`.
+Find the `tofnd` address.
+
+```bash
+docker inspect tofnd
+```
+
+Near the bottom of the JSON output, look for `Networks`, then `bridge`, `IPAddress`, and copy the address listed.
+Next, ping the IP Address from inside `Axelar Core` to see if it works. Install the `ping` command if it does not exist already.
+
+```bash
+docker exec axelar-core ping {your tofnd IP Address}
+```
+
+eg:
+
+```bash
+docker exec axelar-core ping 172.17.0.2
+```
+
+You should see entries starting to appear one by one if the connection succeeded. Stop the ping with `Control + C`.
+Save this IP address.
+
+Next, query your validator address with
+
+```bash
+docker exec axelar-core axelard keys show validator --bech val -a
+```
+
+<Callout emoji="📝">
+  Note: Verify that the returned validator address starts with `axelarvaloper`
+</Callout>
+
+Now, start `vald`, providing the IP address and validator address:
+
+```bash
+docker exec axelar-core axelard vald-start --tofnd-host {your tofnd IP Address} --validator-addr {your validator address} --node {your axelar-core IP address}
+```
+
+eg:
+
+```bash
+docker exec axelar-core axelard vald-start --tofnd-host 172.17.0.2 --validator-addr axelarvaloper1y4vplrpdaqplje8q4p4j32t3cqqmea9830umwl
+```
+
+Your vald should be connected properly. Confirm this by running the following and looking for an `vald-start` entry.
+
+```bash
+docker exec axelar-core ps
+```
+
+## Missed too many blocks
+
+If your validator misses 6 or more of the last 100 blocks then your Axelar status becomes `missed_too_many_blocks` and your [health check](/infrastructure/validators/operations/health-check) prints something like:
+
+```yaml
+tofnd check: passed
+broadcaster check: passed
+operator check: failed (health check to operator MY_VALIDATOR_ADDRESS failed due to the following issues: {"missed_too_many_blocks":true})
+```
+
+You can restore your validator to healthy status simply by waiting --- `missed_too_many_blocks` is dropped automatically as soon as 100 blocks have passed in which you've missed 5 or fewer blocks.
+
+<Callout emoji="💡">
+  Tip: If you missed 50 or more of the last 100 blocks then your validator
+  status becomes `jailed`. In this case, see
+  [Jailed validator](#jailed-validator) for instructions on how to restore
+  your validator to healthy status.
+</Callout>
+
+## Jailed validator
+
+**"Jail"** is a Tendermint/Cosmos concept --- it is not specific to Axelar. If your validator misses 50 or more of the last 100 blocks then your tendermint status becomes `jailed`. You can see your 'jailed' status via the Cosmos command `axelard q staking validators`.
+
+> Axelar-core currently uses the word "jail" to describe a different Axelar-specific status in the context of eligibility to participate in keygen/sign protocols. This terminology can be confusing and we intend to change it in future versions of axelar-core. To see whether your validator's has this Axelar-specific jail status use `axelard q snapshot validators`.
+
+The minimum duration for `jail` status is 10 minutes. After this period you can restore your validator to healthy status by posting a transaction to the Axelar blockchain as follows.
+
+### Docker
+
+In the `axelar-core` container:
+
+```bash
+axelard tx slashing unjail --from validator
+```
+
+### Binaries
+
+```bash
+~/.axelar_testnet/bin/axelard tx slashing unjail --from validator --home ~/.axelar_testnet/.core --chain-id axelar-testnet-lisbon-3
+```

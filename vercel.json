@@ -7,17 +7,17 @@
     },
     {
       "source": "/node/config-node(/)?",
-      "destination": "/infrastructure/node/config-node",
+      "destination": "/infrastructure/node/setup",
       "permanent": true
     },
     {
       "source": "/node/join(/)?",
-      "destination": "/infrastructure/node/join",
+      "destination": "/infrastructure/node/sync",
       "permanent": true
     },
     {
       "source": "/node/join-genesis(/)?",
-      "destination": "/infrastructure/node/join-genesis",
+      "destination": "/infrastructure/node/sync#sync-from-genesis",
       "permanent": true
     },
     {
@@ -27,7 +27,7 @@
     },
     {
       "source": "/node/config-cli(/)?",
-      "destination": "/infrastructure/node/config-cli",
+      "destination": "/infrastructure/node/setup#cli-configuration",
       "permanent": true
     },
     {
@@ -37,17 +37,17 @@
     },
     {
       "source": "/validator/setup/overview(/)?",
-      "destination": "/infrastructure/validators/setup/overview",
+      "destination": "/infrastructure/validators",
       "permanent": true
     },
     {
       "source": "/validator/setup/config(/)?",
-      "destination": "/infrastructure/validators/setup/config",
+      "destination": "/infrastructure/validators/setup/vald-tofnd#install-vald-and-tofnd",
       "permanent": true
     },
     {
       "source": "/validator/setup/backup(/)?",
-      "destination": "/infrastructure/validators/setup/backup",
+      "destination": "/infrastructure/validators/setup/vald-tofnd#create-and-back-up-accounts-and-keys",
       "permanent": true
     },
     {
@@ -57,7 +57,7 @@
     },
     {
       "source": "/validator/setup/register-broadcaster(/)?",
-      "destination": "/infrastructure/validators/setup/register-broadcaster",
+      "destination": "/infrastructure/validators/setup/register-and-stake",
       "permanent": true
     },
     {
@@ -67,157 +67,157 @@
     },
     {
       "source": "/validator/external-chains/overview(/)?",
-      "destination": "/infrastructure/validators/external-chains/overview",
+      "destination": "/infrastructure/verifiers/legacy-chains",
       "permanent": true
     },
     {
       "source": "/validator/external-chains/arbitrum(/)?",
-      "destination": "/infrastructure/validators/external-chains/arbitrum",
+      "destination": "/infrastructure/chain-nodes/arbitrum",
       "permanent": true
     },
     {
       "source": "/validator/external-chains/avalanche(/)?",
-      "destination": "/infrastructure/validators/external-chains/avalanche",
+      "destination": "/infrastructure/chain-nodes/avalanche",
       "permanent": true
     },
     {
       "source": "/validator/external-chains/base(/)?",
-      "destination": "/infrastructure/validators/external-chains/base",
+      "destination": "/infrastructure/chain-nodes/base",
       "permanent": true
     },
     {
       "source": "/validator/external-chains/berachain(/)?",
-      "destination": "/infrastructure/validators/external-chains/berachain",
+      "destination": "/infrastructure/verifiers",
       "permanent": true
     },
     {
       "source": "/validator/external-chains/binance(/)?",
-      "destination": "/infrastructure/validators/external-chains/binance",
+      "destination": "/infrastructure/chain-nodes/binance",
       "permanent": true
     },
     {
       "source": "/validator/external-chains/blast(/)?",
-      "destination": "/infrastructure/validators/external-chains/blast",
+      "destination": "/infrastructure/verifiers",
       "permanent": true
     },
     {
       "source": "/validator/external-chains/celo(/)?",
-      "destination": "/infrastructure/validators/external-chains/celo",
+      "destination": "/infrastructure/chain-nodes/celo",
       "permanent": true
     },
     {
       "source": "/validator/external-chains/centrifuge(/)?",
-      "destination": "/infrastructure/validators/external-chains/centrifuge",
+      "destination": "/infrastructure/verifiers",
       "permanent": true
     },
     {
       "source": "/validator/external-chains/ethereum(/)?",
-      "destination": "/infrastructure/validators/external-chains/ethereum",
+      "destination": "/infrastructure/chain-nodes/ethereum",
       "permanent": true
     },
     {
       "source": "/validator/external-chains/fantom(/)?",
-      "destination": "/infrastructure/validators/external-chains/fantom",
+      "destination": "/infrastructure/chain-nodes/fantom",
       "permanent": true
     },
     {
       "source": "/validator/external-chains/filecoin(/)?",
-      "destination": "/infrastructure/validators/external-chains/filecoin",
+      "destination": "/infrastructure/chain-nodes/filecoin",
       "permanent": true
     },
     {
       "source": "/validator/external-chains/flow(/)?",
-      "destination": "/infrastructure/validators/external-chains/flow",
+      "destination": "/infrastructure/verifiers",
       "permanent": true
     },
     {
       "source": "/validator/external-chains/fraxtal(/)?",
-      "destination": "/infrastructure/validators/external-chains/fraxtal",
+      "destination": "/infrastructure/chain-nodes/fraxtal",
       "permanent": true
     },
     {
       "source": "/validator/external-chains/hedera(/)?",
-      "destination": "/infrastructure/validators/external-chains/hedera",
+      "destination": "/infrastructure/chain-nodes/hedera",
       "permanent": true
     },
     {
       "source": "/validator/external-chains/hyperliquid(/)?",
-      "destination": "/infrastructure/validators/external-chains/hyperliquid",
+      "destination": "/infrastructure/chain-nodes/hyperliquid",
       "permanent": true
     },
     {
       "source": "/validator/external-chains/immutable(/)?",
-      "destination": "/infrastructure/validators/external-chains/immutable",
+      "destination": "/infrastructure/chain-nodes/immutable",
       "permanent": true
     },
     {
       "source": "/validator/external-chains/kava(/)?",
-      "destination": "/infrastructure/validators/external-chains/kava",
+      "destination": "/infrastructure/chain-nodes/kava",
       "permanent": true
     },
     {
       "source": "/validator/external-chains/linea(/)?",
-      "destination": "/infrastructure/validators/external-chains/linea",
+      "destination": "/infrastructure/chain-nodes/linea",
       "permanent": true
     },
     {
       "source": "/validator/external-chains/mantle(/)?",
-      "destination": "/infrastructure/validators/external-chains/mantle",
+      "destination": "/infrastructure/chain-nodes/mantle",
       "permanent": true
     },
     {
       "source": "/validator/external-chains/moonbeam(/)?",
-      "destination": "/infrastructure/validators/external-chains/moonbeam",
+      "destination": "/infrastructure/verifiers",
       "permanent": true
     },
     {
       "source": "/validator/external-chains/optimism(/)?",
-      "destination": "/infrastructure/validators/external-chains/optimism",
+      "destination": "/infrastructure/chain-nodes/optimism",
       "permanent": true
     },
     {
       "source": "/validator/external-chains/plume(/)?",
-      "destination": "/infrastructure/validators/external-chains/plume",
+      "destination": "/infrastructure/verifiers",
       "permanent": true
     },
     {
       "source": "/validator/external-chains/polygon(/)?",
-      "destination": "/infrastructure/validators/external-chains/polygon",
+      "destination": "/infrastructure/chain-nodes/polygon",
       "permanent": true
     },
     {
       "source": "/validator/external-chains/scroll(/)?",
-      "destination": "/infrastructure/validators/external-chains/scroll",
+      "destination": "/infrastructure/chain-nodes/scroll",
       "permanent": true
     },
     {
       "source": "/validator/external-chains/solana(/)?",
-      "destination": "/infrastructure/validators/external-chains/solana",
+      "destination": "/infrastructure/chain-nodes/solana",
       "permanent": true
     },
     {
       "source": "/validator/external-chains/stacks(/)?",
-      "destination": "/infrastructure/validators/external-chains/stacks",
+      "destination": "/infrastructure/chain-nodes/stacks",
       "permanent": true
     },
     {
       "source": "/validator/external-chains/stellar(/)?",
-      "destination": "/infrastructure/validators/external-chains/stellar",
+      "destination": "/infrastructure/chain-nodes/stellar",
       "permanent": true
     },
     {
       "source": "/validator/external-chains/sui(/)?",
-      "destination": "/infrastructure/validators/external-chains/sui",
+      "destination": "/infrastructure/chain-nodes/sui",
       "permanent": true
     },
     {
       "source": "/validator/external-chains/xrpl-evm(/)?",
-      "destination": "/infrastructure/validators/external-chains/xrpl-evm",
+      "destination": "/infrastructure/chain-nodes/xrpl-evm",
       "permanent": true
     },
     {
       "source": "/validator/external-chains/xrpl(/)?",
-      "destination": "/infrastructure/validators/external-chains/xrpl",
+      "destination": "/infrastructure/chain-nodes/xrpl",
       "permanent": true
     },
     {
@@ -232,112 +232,112 @@
     },
     {
       "source": "/validator/troubleshoot/startup(/)?",
-      "destination": "/infrastructure/validators/troubleshoot/startup",
+      "destination": "/infrastructure/validators/troubleshooting#start-up-issues",
       "permanent": true
     },
     {
       "source": "/validator/troubleshoot/missed-too-many-blocks(/)?",
-      "destination": "/infrastructure/validators/troubleshoot/missed-too-many-blocks",
+      "destination": "/infrastructure/validators/troubleshooting#missed-too-many-blocks",
       "permanent": true
     },
     {
       "source": "/validator/troubleshoot/unjail(/)?",
-      "destination": "/infrastructure/validators/troubleshoot/unjail",
+      "destination": "/infrastructure/validators/troubleshooting#jailed-validator",
       "permanent": true
     },
     {
       "source": "/validator/status/register-external-chains(/)?",
-      "destination": "/infrastructure/validators/status/register-external-chains",
+      "destination": "/infrastructure/chain-nodes",
       "permanent": true
     },
     {
       "source": "/validator/status/health-check(/)?",
-      "destination": "/infrastructure/validators/status/health-check",
+      "destination": "/infrastructure/validators/operations/health-check",
       "permanent": true
     },
     {
       "source": "/validator/status/leave(/)?",
-      "destination": "/infrastructure/validators/status/leave",
+      "destination": "/infrastructure/validators/operations/leave",
       "permanent": true
     },
     {
       "source": "/validator/amplifier/verifier-onboarding(/)?",
-      "destination": "/infrastructure/verifiers/verifier-onboarding",
+      "destination": "/infrastructure/verifiers/amplifier/verifier-onboarding",
       "permanent": true
     },
     {
       "source": "/validator/amplifier/verifier-security-expectations(/)?",
-      "destination": "/infrastructure/verifiers/verifier-security-expectations",
+      "destination": "/infrastructure/verifiers/amplifier/verifier-security-expectations",
       "permanent": true
     },
     {
       "source": "/validator/amplifier/governance-proposals(/)?",
-      "destination": "/infrastructure/verifiers/governance-proposals",
+      "destination": "/infrastructure/verifiers/amplifier/governance-proposals",
       "permanent": true
     },
     {
       "source": "/validator/amplifier/verifier-rewards(/)?",
-      "destination": "/infrastructure/verifiers/verifier-rewards",
+      "destination": "/infrastructure/verifiers/amplifier/verifier-rewards",
       "permanent": true
     },
     {
       "source": "/validator/amplifier/verifier-rotations(/)?",
-      "destination": "/infrastructure/verifiers/verifier-rotations",
+      "destination": "/infrastructure/verifiers/amplifier/verifier-rotations",
       "permanent": true
     },
     {
       "source": "/validator/amplifier/error-messages(/)?",
-      "destination": "/infrastructure/verifiers/error-messages",
+      "destination": "/infrastructure/verifiers/amplifier/error-messages",
       "permanent": true
     },
     {
       "source": "/dev/amplifier/introduction(/)?",
-      "destination": "/infrastructure/chain-integration/introduction",
+      "destination": "/infrastructure",
       "permanent": true
     },
     {
       "source": "/dev/amplifier/chain-integration/integrate-a-chain(/)?",
-      "destination": "/infrastructure/chain-integration/integrate-a-chain",
+      "destination": "/infrastructure",
       "permanent": true
     },
     {
       "source": "/dev/amplifier/chain-integration/governance-proposals(/)?",
-      "destination": "/infrastructure/chain-integration/governance-proposals",
+      "destination": "/infrastructure",
       "permanent": true
     },
     {
       "source": "/dev/amplifier/chain-integration/relay-messages/manual(/)?",
-      "destination": "/infrastructure/chain-integration/relay-messages/manual",
+      "destination": "/infrastructure",
       "permanent": true
     },
     {
       "source": "/dev/amplifier/add-rewards(/)?",
-      "destination": "/infrastructure/chain-integration/add-rewards",
+      "destination": "/infrastructure",
       "permanent": true
     },
     {
       "source": "/dev/amplifier/gmp-example(/)?",
-      "destination": "/infrastructure/chain-integration/gmp-example",
+      "destination": "/infrastructure",
       "permanent": true
     },
     {
       "source": "/dev/amplifier/chain-integration/error-messages(/)?",
-      "destination": "/infrastructure/chain-integration/error-messages",
+      "destination": "/infrastructure",
       "permanent": true
     },
     {
       "source": "/dev/amplifier/roadmap(/)?",
-      "destination": "/infrastructure/chain-integration/roadmap",
+      "destination": "/infrastructure",
       "permanent": true
     },
     {
       "source": "/dev/ibc-chain-onboarding(/)?",
-      "destination": "/infrastructure/chain-integration/ibc-chain-onboarding",
+      "destination": "/infrastructure",
       "permanent": true
     },
     {
       "source": "/resources/rpc/resources(/)?",
-      "destination": "/infrastructure/resources/rpc-endpoints",
+      "destination": "/infrastructure/network",
       "permanent": true
     },
     {
@@ -577,52 +577,37 @@
     },
     {
       "source": "/resources/tokens/stake-axl(/)?",
-      "destination": "/infrastructure/resources/stake-axl",
-      "permanent": true
-    },
-    {
-      "source": "/resources/keplr(/)?",
-      "destination": "/infrastructure/resources/keplr",
-      "permanent": true
-    },
-    {
-      "source": "/resources/axelarscan/axelarscan-add(/)?",
-      "destination": "/infrastructure/resources/axelarscan-label-address",
-      "permanent": true
-    },
-    {
-      "source": "/resources/community/community-pool-proposals(/)?",
-      "destination": "/infrastructure/resources/community-pool-proposals",
+      "destination": "/infrastructure/validators/setup/register-and-stake#stake-axl",
       "permanent": true
     },
     {
       "source": "/learn/cli(/)?",
-      "destination": "/infrastructure/resources/cli",
+      "destination": "/infrastructure/node/setup",
       "permanent": true
     },
     {
       "source": "/learn/cli/reference(/)?",
-      "destination": "/infrastructure/resources/cli/reference",
+      "destination": "/infrastructure/node/setup",
       "permanent": true
     },
     {
       "source": "/learn/cli/ust-to-evm(/)?",
-      "destination": "/infrastructure/resources/cli/ust-to-evm",
+      "destination": "/infrastructure/node/setup",
       "permanent": true
     },
     {
       "source": "/learn/cli/ust-from-evm(/)?",
-      "destination": "/infrastructure/resources/cli/ust-from-evm",
+      "destination": "/infrastructure/node/setup",
       "permanent": true
     },
     {
       "source": "/learn/cli/axl-to-evm(/)?",
-      "destination": "/infrastructure/resources/cli/axl-to-evm",
+      "destination": "/infrastructure/node/setup",
       "permanent": true
     },
     {
       "source": "/learn/cli/axl-from-evm(/)?",
-      "destination": "/infrastructure/resources/cli/axl-from-evm",
+      "destination": "/infrastructure/node/setup",
       "permanent": true
     },
     {
@@ -1042,7 +1027,7 @@
     },
     {
       "source": "/dev/amplifier/chain-integration/relay-messages(/)?",
-      "destination": "/infrastructure/chain-integration/relay-messages/manual",
+      "destination": "/infrastructure",
       "permanent": true
     },
     {
@@ -1072,7 +1057,7 @@
     },
     {
       "source": "/dev/amplifier/chain-integration(/)?",
-      "destination": "/infrastructure/chain-integration/introduction",
+      "destination": "/infrastructure",
       "permanent": true
     },
     {
@@ -1151,23 +1136,13 @@
       "permanent": true
     },
     {
-      "source": "/resources/governance/community-pool-proposals(/)?",
-      "destination": "/infrastructure/resources/community-pool-proposals",
-      "permanent": true
-    },
-    {
-      "source": "/resources/axelarscan-add(/)?",
-      "destination": "/infrastructure/resources/axelarscan-label-address",
-      "permanent": true
-    },
-    {
       "source": "/resources/wrapped-tokens(/)?",
       "destination": "/its/wrapped-tokens",
       "permanent": true
     },
     {
       "source": "/resources(/)?",
-      "destination": "/infrastructure/resources/rpc-endpoints",
+      "destination": "/infrastructure/network",
       "permanent": true
     },
     {
@@ -1217,47 +1192,47 @@
     },
     {
       "source": "/learn/validators(/)?",
-      "destination": "/infrastructure/validators/status/register-external-chains",
+      "destination": "/infrastructure/chain-nodes",
       "permanent": true
     },
     {
       "source": "/validator/setup/health-check(/)?",
-      "destination": "/infrastructure/validators/status/health-check",
+      "destination": "/infrastructure/validators/operations/health-check",
       "permanent": true
     },
     {
       "source": "/validator/setup/stake-axl(/)?",
-      "destination": "/infrastructure/resources/stake-axl",
+      "destination": "/infrastructure/validators/setup/register-and-stake#stake-axl",
       "permanent": true
     },
     {
       "source": "/validator/troubleshoot/leave(/)?",
-      "destination": "/infrastructure/validators/status/leave",
+      "destination": "/infrastructure/validators/operations/leave",
       "permanent": true
     },
     {
       "source": "/node(/)?",
-      "destination": "/infrastructure/node/config-node",
+      "destination": "/infrastructure/node/setup",
       "permanent": true
     },
     {
       "source": "/validator(/)?",
-      "destination": "/infrastructure/validators/setup/overview",
+      "destination": "/infrastructure/validators",
       "permanent": true
     },
     {
       "source": "/validator/setup(/)?",
-      "destination": "/infrastructure/validators/setup/overview",
+      "destination": "/infrastructure/validators",
       "permanent": true
     },
     {
       "source": "/validator/external-chains(/)?",
-      "destination": "/infrastructure/validators/external-chains/overview",
+      "destination": "/infrastructure/verifiers/legacy-chains",
       "permanent": true
     },
     {
       "source": "/validator/troubleshoot(/)?",
-      "destination": "/infrastructure/validators/troubleshoot/startup",
+      "destination": "/infrastructure/validators/troubleshooting#start-up-issues",
       "permanent": true
     },
     {
@@ -1282,7 +1257,7 @@
     },
     {
       "source": "/dev/cli(/)?",
-      "destination": "/infrastructure/resources/cli",
+      "destination": "/infrastructure/node/setup",
       "permanent": true
     },
     {
@@ -1437,12 +1412,12 @@
     },
     {
       "source": "/dev/amplifier/chain-integration/introduction(/)?",
-      "destination": "/infrastructure/chain-integration/introduction",
+      "destination": "/infrastructure",
       "permanent": true
     },
     {
       "source": "/resources/ibc-chain-onboarding(/)?",
-      "destination": "/infrastructure/chain-integration/ibc-chain-onboarding",
+      "destination": "/infrastructure",
       "permanent": true
     },
     {
@@ -1502,12 +1477,12 @@
     },
     {
       "source": "/validator/amplifier/change-verifier-address(/)?",
-      "destination": "/infrastructure/verifiers/verifier-onboarding",
+      "destination": "/infrastructure/verifiers/amplifier/verifier-onboarding",
       "permanent": true
     },
     {
       "source": "/node/join-old(/)?",
-      "destination": "/infrastructure/node/join",
+      "destination": "/infrastructure/node/sync",
       "permanent": true
     },
     {
@@ -1523,6 +1498,281 @@
     {
       "source": "/gmp/what-is-mobius-development-stack(/)?",
       "destination": "/infrastructure",
+      "permanent": true
+    },
+    {
+      "source": "/infrastructure/node/config-node(/)?",
+      "destination": "/infrastructure/node/setup",
+      "permanent": true
+    },
+    {
+      "source": "/infrastructure/node/config-cli(/)?",
+      "destination": "/infrastructure/node/setup#cli-configuration",
+      "permanent": true
+    },
+    {
+      "source": "/infrastructure/node/join-genesis(/)?",
+      "destination": "/infrastructure/node/sync#sync-from-genesis",
+      "permanent": true
+    },
+    {
+      "source": "/infrastructure/node/join(/)?",
+      "destination": "/infrastructure/node/sync",
+      "permanent": true
+    },
+    {
+      "source": "/infrastructure/validators/external-chains/arbitrum(/)?",
+      "destination": "/infrastructure/chain-nodes/arbitrum",
+      "permanent": true
+    },
+    {
+      "source": "/infrastructure/validators/external-chains/avalanche(/)?",
+      "destination": "/infrastructure/chain-nodes/avalanche",
+      "permanent": true
+    },
+    {
+      "source": "/infrastructure/validators/external-chains/base(/)?",
+      "destination": "/infrastructure/chain-nodes/base",
+      "permanent": true
+    },
+    {
+      "source": "/infrastructure/validators/external-chains/binance(/)?",
+      "destination": "/infrastructure/chain-nodes/binance",
+      "permanent": true
+    },
+    {
+      "source": "/infrastructure/validators/external-chains/celo(/)?",
+      "destination": "/infrastructure/chain-nodes/celo",
+      "permanent": true
+    },
+    {
+      "source": "/infrastructure/validators/external-chains/ethereum(/)?",
+      "destination": "/infrastructure/chain-nodes/ethereum",
+      "permanent": true
+    },
+    {
+      "source": "/infrastructure/validators/external-chains/fantom(/)?",
+      "destination": "/infrastructure/chain-nodes/fantom",
+      "permanent": true
+    },
+    {
+      "source": "/infrastructure/validators/external-chains/filecoin(/)?",
+      "destination": "/infrastructure/chain-nodes/filecoin",
+      "permanent": true
+    },
+    {
+      "source": "/infrastructure/validators/external-chains/fraxtal(/)?",
+      "destination": "/infrastructure/chain-nodes/fraxtal",
+      "permanent": true
+    },
+    {
+      "source": "/infrastructure/validators/external-chains/immutable(/)?",
+      "destination": "/infrastructure/chain-nodes/immutable",
+      "permanent": true
+    },
+    {
+      "source": "/infrastructure/validators/external-chains/kava(/)?",
+      "destination": "/infrastructure/chain-nodes/kava",
+      "permanent": true
+    },
+    {
+      "source": "/infrastructure/validators/external-chains/linea(/)?",
+      "destination": "/infrastructure/chain-nodes/linea",
+      "permanent": true
+    },
+    {
+      "source": "/infrastructure/validators/external-chains/mantle(/)?",
+      "destination": "/infrastructure/chain-nodes/mantle",
+      "permanent": true
+    },
+    {
+      "source": "/infrastructure/validators/external-chains/optimism(/)?",
+      "destination": "/infrastructure/chain-nodes/optimism",
+      "permanent": true
+    },
+    {
+      "source": "/infrastructure/validators/external-chains/polygon(/)?",
+      "destination": "/infrastructure/chain-nodes/polygon",
+      "permanent": true
+    },
+    {
+      "source": "/infrastructure/validators/external-chains/scroll(/)?",
+      "destination": "/infrastructure/chain-nodes/scroll",
+      "permanent": true
+    },
+    {
+      "source": "/infrastructure/validators/external-chains/hedera(/)?",
+      "destination": "/infrastructure/chain-nodes/hedera",
+      "permanent": true
+    },
+    {
+      "source": "/infrastructure/validators/external-chains/hyperliquid(/)?",
+      "destination": "/infrastructure/chain-nodes/hyperliquid",
+      "permanent": true
+    },
+    {
+      "source": "/infrastructure/validators/external-chains/solana(/)?",
+      "destination": "/infrastructure/chain-nodes/solana",
+      "permanent": true
+    },
+    {
+      "source": "/infrastructure/validators/external-chains/stacks(/)?",
+      "destination": "/infrastructure/chain-nodes/stacks",
+      "permanent": true
+    },
+    {
+      "source": "/infrastructure/validators/external-chains/stellar(/)?",
+      "destination": "/infrastructure/chain-nodes/stellar",
+      "permanent": true
+    },
+    {
+      "source": "/infrastructure/validators/external-chains/sui(/)?",
+      "destination": "/infrastructure/chain-nodes/sui",
+      "permanent": true
+    },
+    {
+      "source": "/infrastructure/validators/external-chains/xrpl-evm(/)?",
+      "destination": "/infrastructure/chain-nodes/xrpl-evm",
+      "permanent": true
+    },
+    {
+      "source": "/infrastructure/validators/external-chains/xrpl(/)?",
+      "destination": "/infrastructure/chain-nodes/xrpl",
+      "permanent": true
+    },
+    {
+      "source": "/infrastructure/validators/external-chains/overview(/)?",
+      "destination": "/infrastructure/verifiers/legacy-chains",
+      "permanent": true
+    },
+    {
+      "source": "/infrastructure/validators/external-chains/berachain(/)?",
+      "destination": "/infrastructure/verifiers",
+      "permanent": true
+    },
+    {
+      "source": "/infrastructure/validators/external-chains/blast(/)?",
+      "destination": "/infrastructure/verifiers",
+      "permanent": true
+    },
+    {
+      "source": "/infrastructure/validators/external-chains/centrifuge(/)?",
+      "destination": "/infrastructure/verifiers",
+      "permanent": true
+    },
+    {
+      "source": "/infrastructure/validators/external-chains/flow(/)?",
+      "destination": "/infrastructure/verifiers",
+      "permanent": true
+    },
+    {
+      "source": "/infrastructure/validators/external-chains/moonbeam(/)?",
+      "destination": "/infrastructure/verifiers",
+      "permanent": true
+    },
+    {
+      "source": "/infrastructure/validators/external-chains/plume(/)?",
+      "destination": "/infrastructure/verifiers",
+      "permanent": true
+    },
+    {
+      "source": "/infrastructure/validators/status/register-external-chains(/)?",
+      "destination": "/infrastructure/chain-nodes",
+      "permanent": true
+    },
+    {
+      "source": "/infrastructure/verifiers/verifier-onboarding(/)?",
+      "destination": "/infrastructure/verifiers/amplifier/verifier-onboarding",
+      "permanent": true
+    },
+    {
+      "source": "/infrastructure/verifiers/verifier-security-expectations(/)?",
+      "destination": "/infrastructure/verifiers/amplifier/verifier-security-expectations",
+      "permanent": true
+    },
+    {
+      "source": "/infrastructure/verifiers/governance-proposals(/)?",
+      "destination": "/infrastructure/verifiers/amplifier/governance-proposals",
+      "permanent": true
+    },
+    {
+      "source": "/infrastructure/verifiers/verifier-rewards(/)?",
+      "destination": "/infrastructure/verifiers/amplifier/verifier-rewards",
+      "permanent": true
+    },
+    {
+      "source": "/infrastructure/verifiers/verifier-rotations(/)?",
+      "destination": "/infrastructure/verifiers/amplifier/verifier-rotations",
+      "permanent": true
+    },
+    {
+      "source": "/infrastructure/verifiers/error-messages(/)?",
+      "destination": "/infrastructure/verifiers/amplifier/error-messages",
+      "permanent": true
+    },
+    {
+      "source": "/infrastructure/verifiers/legacy/onboarding(/)?",
+      "destination": "/infrastructure/chain-nodes",
+      "permanent": true
+    },
+    {
+      "source": "/infrastructure/verifiers/legacy/setup(/)?",
+      "destination": "/infrastructure/verifiers/legacy-chains",
+      "permanent": true
+    },
+    {
+      "source": "/infrastructure/resources/rpc-endpoints(/)?",
+      "destination": "/infrastructure/network",
+      "permanent": true
+    },
+    {
+      "source": "/infrastructure/validators/setup/overview(/)?",
+      "destination": "/infrastructure/validators",
+      "permanent": true
+    },
+    {
+      "source": "/infrastructure/validators/setup/config(/)?",
+      "destination": "/infrastructure/validators/setup/vald-tofnd#install-vald-and-tofnd",
+      "permanent": true
+    },
+    {
+      "source": "/infrastructure/validators/setup/backup(/)?",
+      "destination": "/infrastructure/validators/setup/vald-tofnd#create-and-back-up-accounts-and-keys",
+      "permanent": true
+    },
+    {
+      "source": "/infrastructure/validators/setup/register-broadcaster(/)?",
+      "destination": "/infrastructure/validators/setup/register-and-stake",
+      "permanent": true
+    },
+    {
+      "source": "/infrastructure/resources/stake-axl(/)?",
+      "destination": "/infrastructure/validators/setup/register-and-stake#stake-axl",
+      "permanent": true
+    },
+    {
+      "source": "/infrastructure/validators/status/health-check(/)?",
+      "destination": "/infrastructure/validators/operations/health-check",
+      "permanent": true
+    },
+    {
+      "source": "/infrastructure/validators/status/leave(/)?",
+      "destination": "/infrastructure/validators/operations/leave",
+      "permanent": true
+    },
+    {
+      "source": "/infrastructure/validators/troubleshoot/startup(/)?",
+      "destination": "/infrastructure/validators/troubleshooting#start-up-issues",
+      "permanent": true
+    },
+    {
+      "source": "/infrastructure/validators/troubleshoot/missed-too-many-blocks(/)?",
+      "destination": "/infrastructure/validators/troubleshooting#missed-too-many-blocks",
+      "permanent": true
+    },
+    {
+      "source": "/infrastructure/validators/troubleshoot/unjail(/)?",
+      "destination": "/infrastructure/validators/troubleshooting#jailed-validator",
       "permanent": true
     }
   ]

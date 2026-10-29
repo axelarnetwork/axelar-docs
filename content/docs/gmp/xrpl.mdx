@@ -6,7 +6,7 @@ The XRPL Blockchain is unique compared to other blockchains integrated with Axel
 
 ## XRPL Gateway
 
-The integration leverages the [XRPL Multisig Signing](https://xrpl.org/docs/concepts/accounts/multi-signing) and proof of stake security via the [Amplifier Protocol](/infrastructure/chain-integration/introduction#what-is-the-interchain-amplifier) to facilitate GMP. The gateway is controlled by the [Axelar Verifier set](https://axelarscan.io/verifiers).  
+The integration leverages the [XRPL Multisig Signing](https://xrpl.org/docs/concepts/accounts/multi-signing) and proof of stake security via the [Amplifier Protocol](/infrastructure#a-cross-chain-protocol-amplifier) to facilitate GMP. The gateway is controlled by the [Axelar Verifier set](https://axelarscan.io/verifiers).  
 
 The testnet address for the XRPL Gateway is: [rNrjh1KGZk2jBR3wPfAQnoidtFFYQKbQn2](https://testnet.xrpl.org/accounts/rNrjh1KGZk2jBR3wPfAQnoidtFFYQKbQn2).
 
@@ -16,7 +16,7 @@ The mainnet address for the XRPL Gateway is: [rfmS3zqrQrka8wVyhXifEeyTwe8AMz2Yhw
 
 ### Overview
 
-The flow for sending a GMP message from XRPL involves sending a [payment transaction](https://xrpl.org/docs/references/protocol/transactions/types/payment) from your XRPL account to the XRPL Gateway with a specified [memo](https://xrpl.org/docs/references/protocol/transactions/common-fields#memos-field) field. Once the transaction is confirmed, Axelar's relayer will pickup any transaction sent to the Gateway with the `call_contract` message type specified at which the point the [Amplifier GMP flow](/infrastructure/chain-integration/introduction#general-message-passing-with-amplifier) will commence. 
+The flow for sending a GMP message from XRPL involves sending a [payment transaction](https://xrpl.org/docs/references/protocol/transactions/types/payment) from your XRPL account to the XRPL Gateway with a specified [memo](https://xrpl.org/docs/references/protocol/transactions/common-fields#memos-field) field. Once the transaction is confirmed, Axelar's relayer will pickup any transaction sent to the Gateway with the `call_contract` message type specified at which the point the Amplifier GMP flow will commence. 
 
 ### Payment Transaction
 

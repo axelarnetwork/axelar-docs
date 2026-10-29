@@ -1,10 +1,9 @@
 {
   "title": "Validators",
   "pages": [
+    "index",
     "setup",
-    "external-chains",
     "operations",
-    "troubleshoot",
-    "status"
+    "troubleshooting"
   ]
 }

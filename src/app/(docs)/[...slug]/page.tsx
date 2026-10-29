@@ -46,6 +46,9 @@ export default async function Page(props: PageProps<'/[...slug]'>) {
   );
 }
 
+// Static export: only pre-rendered paths exist, so anything else is a 404 (not a dev-server error).
+export const dynamicParams = false;
+
 export async function generateStaticParams() {
   return source.generateParams();
 }

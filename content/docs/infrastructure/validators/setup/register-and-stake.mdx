@@ -1,0 +1,82 @@
+---
+title: "Register and stake"
+description: Register your broadcaster account and stake AXL to become a validator.
+---
+
+## Register your broadcaster
+
+Axelar validators exchange messages with one another via the Axelar blockchain. Each validator sends these messages from a separate `broadcaster` account.
+
+<Callout type="warning" emoji="⚠️">
+  Caution: A validator can only register one `broadcaster` address throughout
+  its lifetime. This `broadcaster` address cannot be changed after it has been
+  registered. If you need to register a different proxy address then you must
+  also create an entirely new validator.
+</Callout>
+
+### Learn your broadcaster account address
+
+```bash
+$AXELARD_HOME/bin/axelard keys show broadcaster -a --home $AXELARD_HOME
+```
+
+Let `{BROADCASTER_ADDR}` denote your `broadcaster` address
+
+### Fund your validator and broadcaster accounts
+
+**Testnets:**
+Go to the Axelar testnet faucet and send some free AXL testnet tokens to both `{BROADCASTER_ADDR}` and `{VALIDATOR_ADDR}`:
+
+- [Testnet Faucet](https://faucet.testnet.axelar.dev/).
+
+### Register your broadcaster account
+
+```bash
+$AXELARD_HOME/bin/axelard tx snapshot register-proxy {BROADCASTER_ADDR} --from validator --chain-id $AXELARD_CHAIN_ID --home $AXELARD_HOME --gas auto --gas-adjustment 1.4
+```
+
+### Optional: check your broadcaster registration
+
+```bash
+$AXELARD_HOME/bin/axelard q snapshot proxy {VALOPER_ADDR}
+```
+
+## Stake AXL
+
+Choose an amount `{STAKE_AMOUNT}` of AXL tokens you wish to stake. `{STAKE_AMOUNT}` is denominated in `uaxl` where `1 AXL = 1000000 uaxl`.
+
+- You need at least 1 AXL to participate in consensus on the Axelar network
+- You need enough stake to get into the "active set" (75 validators as of August 2023): if the validators in the active set have more stake than you, then you cannot participate in consensus.
+- Optional: you need at least 2% of total bonded stake to participate in multi-party cryptography protocols with other validators.
+
+Choose a moniker `{MY_MONIKER}` for your validator. There are many other parameters you may choose for your validator. For simplicity these instructions specify default values for all other parameters.
+
+Make your `validator` account into an Axelar validator by staking AXL tokens:
+
+```bash
+$AXELARD_HOME/bin/axelard tx staking create-validator --amount {STAKE_AMOUNT}uaxl --moniker "{MY_MONIKER}" --commission-rate="0.10" --commission-max-rate="0.20" --commission-max-change-rate="0.01" --min-self-delegation="1" --pubkey="$(axelard tendermint show-validator)" --from validator
+```
+
+### Optional: Learn your valoper address
+
+Learn the `{VALOPER_ADDR}` address associated with your `validator` account
+
+```bash
+$AXELARD_HOME/bin/axelard keys show validator -a --bech val --home $AXELARD_HOME
+```
+
+### Optional: check the stake amount delegated to your validator
+
+```bash
+$AXELARD_HOME/bin/axelard q staking validator {VALOPER_ADDR} | grep tokens
+```
+
+### Optional: delegate additional stake to your validator
+
+```bash
+$AXELARD_HOME/bin/axelard tx staking delegate {VALOPER_ADDR} {STAKE_AMOUNT}uaxl --from validator
+```
+
+## Check your validator
+
+Run a [health check](/infrastructure/validators/operations/health-check) to confirm that `tofnd`, your broadcaster and your validator are all in good standing.
