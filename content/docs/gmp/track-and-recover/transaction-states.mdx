@@ -1,0 +1,109 @@
+---
+title: "Transaction states"
+description: "Follow a GMP message through each stage, and spot where it got stuck."
+---
+
+Every GMP message passes through the same stages, from the call on the source chain to execution on the destination chain. You can follow them on Axelarscan, or query them with the [AxelarJS SDK](/gmp/track-and-recover/recover-transactions#with-the-axelarjs-sdk).
+
+## On Axelarscan
+
+Anyone can view General Message Passing calls in realtime on Axelarscan: [Mainnet](https://axelarscan.io/gmp) | [Testnet](https://testnet.axelarscan.io/gmp).
+
+![gmp-tracker.png](/images/gmp-tracker.png)
+
+You can also search for a particular transfer by a transaction hash or a sender address via the search bar.
+![gmp-searchbar.png](/images/gmp-searchbar.png)
+
+Each GMP call comprises five statuses, as described below.
+![gmp-detailed-page .png](/images/gmp-detailed-page.png)
+
+- **CONTRACT CALL** provides the contract call (`callContract` or `callContractWithToken`) information, including the transaction hash, the block height on the source chain, the gateway address, etc.
+- **GAS PAID** displays the information of gas prepaid to Axelar Gas Receiver contract.
+- **CALL APPROVED** displays the information of the call approval. This section will be updated once the GMP call is approved by the Axelar network.
+- **EXECUTED** informs the executed result whether it is successful or not. If you see an error message in this section, we suggest following this [guide](/gmp/track-and-recover/debug-failed-execution) to find the root cause and recover the transfer.
+- **GAS REFUNDED** provides the refund information (if any), including the amount of gas paid, the amount of gas used, the refund amount, etc.
+
+
+<Callout emoji="ℹ️">
+  If the `Insufficient Fee` tag appears, it means that the prepaid gas is not
+  enough to relay the transaction. Please follow the [Increase gas payment to
+  the gas receiver on the source
+  chain](/gmp/track-and-recover/recover-transactions#increase-gas-payment-to-the-gas-receiver-on-the-source-chain)
+  section to recover the transfer.
+  ![error-msg-insufficient-fee.png](/images/error-msg-insufficient-fee.png)
+</Callout>
+
+## Tracking transaction status
+
+When you initiate a transaction across chains, monitoring its progress is important to ensure successful completion. A typical transaction will pass through several stages:
+
+1. **Sent** — The transaction has been initiated and relayed to the Axelar network.
+1. **Gas Paid** — Gas fees have been paid on the source chain for the transaction to proceed.
+1. **Confirmed** — The transaction has been finalised on the source chain and awaits approval in the Axelar network.
+1. **Approved** — The transaction has been approved by the Axelar network and is ready to be executed on the destination chain.
+1. **Executed** — The transaction has been successfully executed on the destination chain.
+1. **Excess Gas Refunded** — Any excess gas not used during the transaction is refunded to the sender.
+
+## Common failure states
+
+Despite following the standard flow, transactions can fail at various points due to network issues or insufficient gas fees. Here are common failure states and how to handle them:
+
+1. **Failure to relay from source chain (unapproved status)**
+   - **Issue**: The transaction fails to relay from the source chain into the Axelar network, remaining unapproved.
+   - **Solution**:
+     - **Axelarscan UI**: If the transaction is unapproved, Axelarscan will show an option to "APPROVE.” Click this to resubmit the request to the network manually. Once approved, the transaction can proceed.
+     - **AxelarJS SDK**: Use the SDK's `manualRelayToDestChain` method to programmatically resubmit and approve the transaction.
+1. **[Failure to execute on destination chain](https://axelarscan.io/gmp/0xa5a79876ff08b9e8638778cbe25774f57385f3894d86e81b5511004bc33a8b71-14)**
+   - **Issue**: The transaction fails during execution on the destination chain, which may be due to network congestion, insufficient gas, or other issues.
+   - **Solutions**:
+     - **Manually execute transfer**
+       - **Axelarscan UI**: Click the ‘Connect’ button under the ‘Execute at destination chain’ label and then the ‘Execute’ button to trigger the execution using newly paid gas. If the manual execution fails, debug the contract and retry.
+       - **AxelarJS SDK**: Use the SDK's `execute` method to manually execute the transaction programmatically on the destination chain.
+     - **Increase gas payment**
+       - **Axelarscan UI**: Connect your MetaMask wallet, switch to the source chain, and add more gas by clicking the ‘Add gas at source chain’ button. This will relay the transaction with increased gas.
+       - **AxelarJS SDK**: Depending on whether native tokens or ERC-20 tokens are used, use the `addNativeGas` or `addGas` method to increase gas payment.
+1. **[Insufficient fee](https://axelarscan.io/gmp/0x8fcfbed2e5cb17a3c3f128fc3ed5ce0a6deb2e4494bb587dd95021039bd39322-8) or [not enough gas](https://axelarscan.io/gmp/0x46d2b6c442fe11c2751ac4c4507779368ff92c20a06f4108af165a83c3fdca03-4)**
+   - **Issue**: The transaction fails due to an insufficient fee or not enough gas paid to cover the execution on the destination chain.
+   - **Solution**: Increase the gas payment as described above and resubmit the transaction.
+1. [**Error execution**](https://axelarscan.io/gmp/0xd1ebf1217c37c6d510c421b28d2dfdefd596c68abca3d0bfa2efa8b8291a579d-3)
+   - **Issue**: An error occurs during execution, potentially due to issues with the smart contract or external factors like network congestion.
+   - **Solution**: Debug the contract according to the error message and retry the transaction using either the Axelarscan UI or the SDK.
+
+
+To fix any of these, see [Recover transactions](/gmp/track-and-recover/recover-transactions).
+
+## Example transaction states
+
+The following is an example of a successful transaction and two different failed states to illustrate how to handle each situation.
+
+### Successful transaction
+
+```
+- Method: InterchainTransfer
+- Status: Executed
+- Source Chain: Polygon
+- Destination Chain: Base
+- Gas Paid: Confirmed
+- Approved: Yes
+- Executed: Yes
+- Excess Gas Refunded: Yes
+
+```
+
+### Failed state 1
+
+```
+- Method: callContract
+- Status: Error
+- Issue: Failed to execute on the destination chain.
+- Recovery Options: Execute manually or increase gas.
+```
+
+### Failed state 2
+
+```
+- Method: InterchainTransfer
+- Status: Not Approved
+- Issue: Failed to relay from the source chain.
+- Recovery Options: Manually approve the transaction.
+```

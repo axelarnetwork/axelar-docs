@@ -632,202 +632,202 @@
     },
     {
       "source": "/dev/intro(/)?",
-      "destination": "/gmp/products-overview",
+      "destination": "/gmp/overview",
       "permanent": true
     },
     {
       "source": "/learn/network/flow(/)?",
-      "destination": "/gmp/message-flow",
+      "destination": "/gmp/how-it-works/message-flow",
       "permanent": true
     },
     {
       "source": "/learn/txduration(/)?",
-      "destination": "/gmp/transaction-duration",
+      "destination": "/gmp/how-it-works/finality-and-timing",
       "permanent": true
     },
     {
       "source": "/dev/general-message-passing/gmp-messages(/)?",
-      "destination": "/gmp/evm/gmp-messages",
+      "destination": "/gmp/integrations/evm/send-messages",
       "permanent": true
     },
     {
       "source": "/dev/general-message-passing/gmp-tokens-with-messages(/)?",
-      "destination": "/gmp/evm/gmp-tokens-with-messages",
+      "destination": "/gmp/integrations/evm/send-tokens-with-messages",
       "permanent": true
     },
     {
       "source": "/dev/general-message-passing/executable(/)?",
-      "destination": "/gmp/evm/executable",
+      "destination": "/gmp/integrations/evm/receive-messages",
       "permanent": true
     },
     {
       "source": "/dev/general-message-passing/debug/error-debugging(/)?",
-      "destination": "/gmp/evm/debug/error-debugging",
+      "destination": "/gmp/track-and-recover/debug-failed-execution",
       "permanent": true
     },
     {
       "source": "/dev/general-message-passing/debug/debugging-your-smart-contract(/)?",
-      "destination": "/gmp/evm/debug/debugging-your-smart-contract",
+      "destination": "/gmp/track-and-recover/debug-failed-execution#debug-your-contract",
       "permanent": true
     },
     {
       "source": "/dev/general-message-passing/debug/fork-mainnet(/)?",
-      "destination": "/gmp/evm/debug/fork-mainnet",
+      "destination": "/gmp/track-and-recover/fork-mainnet",
       "permanent": true
     },
     {
       "source": "/dev/general-message-passing/debug/transaction-recovery(/)?",
-      "destination": "/gmp/evm/debug/transaction-recovery",
+      "destination": "/gmp/track-and-recover/recover-transactions",
       "permanent": true
     },
     {
       "source": "/dev/evm-relayer(/)?",
-      "destination": "/gmp/evm/evm-relayer",
+      "destination": "/gmp/track-and-recover/recover-transactions",
       "permanent": true
     },
     {
       "source": "/dev/general-message-passing/examples(/)?",
-      "destination": "/gmp/evm/examples",
+      "destination": "https://github.com/axelarnetwork/axelar-examples",
       "permanent": true
     },
     {
       "source": "/dev/general-message-passing/cosmos-gmp/overview(/)?",
-      "destination": "/gmp/cosmos/overview",
+      "destination": "/gmp/integrations/cosmos/overview",
       "permanent": true
     },
     {
       "source": "/dev/general-message-passing/cosmos-gmp/cosmos-2way-manual-relay(/)?",
-      "destination": "/gmp/cosmos/cosmos-2way-manual-relay",
+      "destination": "/gmp/integrations/cosmos/cosmos-2way-manual-relay",
       "permanent": true
     },
     {
       "source": "/dev/general-message-passing/cosmos-gmp/developer-guides/cross-chain-messaging-evm-to-cosmos(/)?",
-      "destination": "/gmp/cosmos/cross-chain-messaging-evm-to-cosmos",
+      "destination": "/gmp/integrations/cosmos/cross-chain-messaging-evm-to-cosmos",
       "permanent": true
     },
     {
       "source": "/dev/general-message-passing/sui/intro(/)?",
-      "destination": "/gmp/sui/intro",
+      "destination": "/gmp/integrations/sui/intro",
       "permanent": true
     },
     {
       "source": "/dev/general-message-passing/sui/gmp-contracts(/)?",
-      "destination": "/gmp/sui/gmp-contracts",
+      "destination": "/gmp/integrations/sui/gmp-contracts",
       "permanent": true
     },
     {
       "source": "/dev/general-message-passing/sui/gmp-tutorial(/)?",
-      "destination": "/gmp/sui/gmp-tutorial",
+      "destination": "/gmp/integrations/sui/gmp-tutorial",
       "permanent": true
     },
     {
       "source": "/dev/general-message-passing/stellar-gmp/intro(/)?",
-      "destination": "/gmp/stellar/intro",
+      "destination": "/gmp/integrations/stellar/intro",
       "permanent": true
     },
     {
       "source": "/dev/general-message-passing/stellar-gmp/gmp-example(/)?",
-      "destination": "/gmp/stellar/gmp-example",
+      "destination": "/gmp/integrations/stellar/gmp-example",
       "permanent": true
     },
     {
       "source": "/dev/general-message-passing/solana/intro(/)?",
-      "destination": "/gmp/solana/intro",
+      "destination": "/gmp/integrations/solana/intro",
       "permanent": true
     },
     {
       "source": "/dev/general-message-passing/solana/gmp-messages(/)?",
-      "destination": "/gmp/solana/gmp-messages",
+      "destination": "/gmp/integrations/solana/gmp-messages",
       "permanent": true
     },
     {
       "source": "/dev/general-message-passing/solana/gmp-contracts(/)?",
-      "destination": "/gmp/solana/gmp-contracts",
+      "destination": "/gmp/integrations/solana/gmp-contracts",
       "permanent": true
     },
     {
       "source": "/dev/general-message-passing/xrpl/xrpl-gmp(/)?",
-      "destination": "/gmp/xrpl",
+      "destination": "/gmp/integrations/xrpl",
       "permanent": true
     },
     {
       "source": "/dev/gas-service/intro(/)?",
-      "destination": "/gmp/gas-service/intro",
+      "destination": "/gmp/gas/gas-service",
       "permanent": true
     },
     {
       "source": "/dev/gas-service/pay-gas(/)?",
-      "destination": "/gmp/gas-service/pay-gas",
+      "destination": "/gmp/gas/estimate-and-pay",
       "permanent": true
     },
     {
       "source": "/dev/gas-service/increase-gas(/)?",
-      "destination": "/gmp/gas-service/increase-gas",
+      "destination": "/gmp/gas/add-gas-and-refunds#add-gas",
       "permanent": true
     },
     {
       "source": "/dev/gas-service/refund(/)?",
-      "destination": "/gmp/gas-service/refund",
+      "destination": "/gmp/gas/add-gas-and-refunds#refunds",
       "permanent": true
     },
     {
       "source": "/dev/gas-service/transaction-state(/)?",
-      "destination": "/gmp/gas-service/transaction-state",
+      "destination": "/gmp/track-and-recover/transaction-states",
       "permanent": true
     },
     {
       "source": "/dev/gas-service/pricing(/)?",
-      "destination": "/gmp/gas-service/pricing",
+      "destination": "/gmp/gas/pricing",
       "permanent": true
     },
     {
       "source": "/dev/gas-service/on-chain-estimation(/)?",
-      "destination": "/gmp/gas-service/on-chain-estimation",
+      "destination": "/gmp/gas/on-chain-estimation",
       "permanent": true
     },
     {
       "source": "/dev/general-message-passing/verify-gmp-tx(/)?",
-      "destination": "/gmp/verify-gmp-tx",
+      "destination": "/gmp/how-it-works/message-verification",
       "permanent": true
     },
     {
       "source": "/dev/general-message-passing/express(/)?",
-      "destination": "/gmp/express",
+      "destination": "/gmp/integrations/evm/express",
       "permanent": true
     },
     {
       "source": "/dev/axelarjs-sdk/intro(/)?",
-      "destination": "/gmp/axelarjs-sdk/intro",
+      "destination": "/gmp/axelarjs-sdk",
       "permanent": true
     },
     {
       "source": "/dev/axelarjs-sdk/tx-status-query-recovery(/)?",
-      "destination": "/gmp/axelarjs-sdk/tx-status-query-recovery",
+      "destination": "/gmp/track-and-recover/recover-transactions#with-the-axelarjs-sdk",
       "permanent": true
     },
     {
       "source": "/dev/axelarjs-sdk/axelar-query-api(/)?",
-      "destination": "/gmp/axelarjs-sdk/axelar-query-api",
+      "destination": "/gmp/axelarjs-sdk#query-api",
       "permanent": true
     },
     {
       "source": "/resources/axelarscan/monitoring(/)?",
-      "destination": "/gmp/monitor-transactions",
+      "destination": "/gmp/track-and-recover/transaction-states",
       "permanent": true
     },
     {
       "source": "/resources/axelar-commandid(/)?",
-      "destination": "/gmp/axelar-commandid",
+      "destination": "/gmp/how-it-works/message-verification#the-commandid",
       "permanent": true
     },
     {
       "source": "/dev/solidity-utilities(/)?",
-      "destination": "/gmp/solidity-utilities",
+      "destination": "/gmp/integrations/evm/solidity-utilities",
       "permanent": true
     },
     {
       "source": "/resources/metamask(/)?",
-      "destination": "/gmp/metamask",
+      "destination": "/gmp/overview",
       "permanent": true
     },
     {
@@ -1042,7 +1042,7 @@
     },
     {
       "source": "/dev/gas-service/on-chain(/)?",
-      "destination": "/gmp/gas-service/on-chain-estimation",
+      "destination": "/gmp/gas/on-chain-estimation",
       "permanent": true
     },
     {
@@ -1137,47 +1137,47 @@
     },
     {
       "source": "/dev/general-message-passing/gas-services/intro(/)?",
-      "destination": "/gmp/gas-service/intro",
+      "destination": "/gmp/gas/gas-service",
       "permanent": true
     },
     {
       "source": "/dev/general-message-passing/gas-services/pay-gas(/)?",
-      "destination": "/gmp/gas-service/pay-gas",
+      "destination": "/gmp/gas/estimate-and-pay",
       "permanent": true
     },
     {
       "source": "/dev/general-message-passing/gas-services/increase-gas(/)?",
-      "destination": "/gmp/gas-service/increase-gas",
+      "destination": "/gmp/gas/add-gas-and-refunds#add-gas",
       "permanent": true
     },
     {
       "source": "/dev/general-message-passing/gas-services/refund(/)?",
-      "destination": "/gmp/gas-service/refund",
+      "destination": "/gmp/gas/add-gas-and-refunds#refunds",
       "permanent": true
     },
     {
       "source": "/dev/general-message-passing/gas-services/pricing(/)?",
-      "destination": "/gmp/gas-service/pricing",
+      "destination": "/gmp/gas/pricing",
       "permanent": true
     },
     {
       "source": "/dev/general-message-passing/solidity-utilities(/)?",
-      "destination": "/gmp/solidity-utilities",
+      "destination": "/gmp/integrations/evm/solidity-utilities",
       "permanent": true
     },
     {
       "source": "/dev/general-message-passing/local-dev(/)?",
-      "destination": "/gmp/evm/gmp-messages",
+      "destination": "/gmp/integrations/evm/send-messages",
       "permanent": true
     },
     {
       "source": "/dev/general-message-passing/recovery(/)?",
-      "destination": "/gmp/evm/debug/transaction-recovery",
+      "destination": "/gmp/track-and-recover/recover-transactions",
       "permanent": true
     },
     {
       "source": "/dev/reference/pricing(/)?",
-      "destination": "/gmp/gas-service/pricing",
+      "destination": "/gmp/gas/pricing",
       "permanent": true
     },
     {
@@ -1237,7 +1237,7 @@
     },
     {
       "source": "/dev(/)?",
-      "destination": "/gmp/products-overview",
+      "destination": "/gmp/overview",
       "permanent": true
     },
     {
@@ -1257,7 +1257,7 @@
     },
     {
       "source": "/dev/gmp/examples(/)?",
-      "destination": "/gmp/evm/examples",
+      "destination": "https://github.com/axelarnetwork/axelar-examples",
       "permanent": true
     },
     {
@@ -1282,12 +1282,12 @@
     },
     {
       "source": "/dev/build/5-min-starter-examples(/)?",
-      "destination": "/gmp/evm/examples",
+      "destination": "https://github.com/axelarnetwork/axelar-examples",
       "permanent": true
     },
     {
       "source": "/dev/hello-world(/)?",
-      "destination": "/gmp/evm/gmp-messages",
+      "destination": "/gmp/integrations/evm/send-messages",
       "permanent": true
     },
     {
@@ -1322,17 +1322,17 @@
     },
     {
       "source": "/dev/general-message-passing/getting-started(/)?",
-      "destination": "/gmp/products-overview",
+      "destination": "/gmp/overview",
       "permanent": true
     },
     {
       "source": "/dev/general-message-passing/monitor-recover/monitoring(/)?",
-      "destination": "/gmp/monitor-transactions",
+      "destination": "/gmp/track-and-recover/transaction-states",
       "permanent": true
     },
     {
       "source": "/dev/general-message-passing/monitor-recover/recovery(/)?",
-      "destination": "/gmp/evm/debug/transaction-recovery",
+      "destination": "/gmp/track-and-recover/recover-transactions",
       "permanent": true
     },
     {
@@ -1342,12 +1342,12 @@
     },
     {
       "source": "/dev/monitor-recover/monitoring(/)?",
-      "destination": "/gmp/monitor-transactions",
+      "destination": "/gmp/track-and-recover/transaction-states",
       "permanent": true
     },
     {
       "source": "/dev/monitor-recover/recovery(/)?",
-      "destination": "/gmp/evm/debug/transaction-recovery",
+      "destination": "/gmp/track-and-recover/recover-transactions",
       "permanent": true
     },
     {
@@ -1392,12 +1392,12 @@
     },
     {
       "source": "/dev/general-message-passing/sui/sui-programs(/)?",
-      "destination": "/gmp/sui/intro",
+      "destination": "/gmp/integrations/sui/intro",
       "permanent": true
     },
     {
       "source": "/dev/general-message-passing/stellar-gmp/stellar-contracts(/)?",
-      "destination": "/gmp/stellar/intro",
+      "destination": "/gmp/integrations/stellar/intro",
       "permanent": true
     },
     {
@@ -1412,22 +1412,22 @@
     },
     {
       "source": "/dev/general-message-passing/monitoring(/)?",
-      "destination": "/gmp/monitor-transactions",
+      "destination": "/gmp/track-and-recover/transaction-states",
       "permanent": true
     },
     {
       "source": "/dev/general-message-passing/axelar-commandid(/)?",
-      "destination": "/gmp/axelar-commandid",
+      "destination": "/gmp/how-it-works/message-verification#the-commandid",
       "permanent": true
     },
     {
       "source": "/dev/cosmos-gmp/cosmos-2way-manual-relay(/)?",
-      "destination": "/gmp/cosmos/cosmos-2way-manual-relay",
+      "destination": "/gmp/integrations/cosmos/cosmos-2way-manual-relay",
       "permanent": true
     },
     {
       "source": "/dev/cosmos-gmp/overview(/)?",
-      "destination": "/gmp/cosmos/overview",
+      "destination": "/gmp/integrations/cosmos/overview",
       "permanent": true
     },
     {
@@ -1437,7 +1437,7 @@
     },
     {
       "source": "/dev/general-message-passing/sui/gmp-example(/)?",
-      "destination": "/gmp/sui/gmp-tutorial",
+      "destination": "/gmp/integrations/sui/gmp-tutorial",
       "permanent": true
     },
     {
@@ -1457,7 +1457,7 @@
     },
     {
       "source": "/dev/general-message-passing/developer-guides/example-gmp(/)?",
-      "destination": "/gmp/evm/gmp-messages",
+      "destination": "/gmp/integrations/evm/send-messages",
       "permanent": true
     },
     {
@@ -2018,6 +2018,206 @@
     {
       "source": "/infrastructure/verifiers/legacy-chains(/)?",
       "destination": "/infrastructure/verifiers/consensus-chains",
+      "permanent": true
+    },
+    {
+      "source": "/gmp/products-overview(/)?",
+      "destination": "/gmp/overview",
+      "permanent": true
+    },
+    {
+      "source": "/gmp/message-flow(/)?",
+      "destination": "/gmp/how-it-works/message-flow",
+      "permanent": true
+    },
+    {
+      "source": "/gmp/transaction-duration(/)?",
+      "destination": "/gmp/how-it-works/finality-and-timing",
+      "permanent": true
+    },
+    {
+      "source": "/gmp/verify-gmp-tx(/)?",
+      "destination": "/gmp/how-it-works/message-verification",
+      "permanent": true
+    },
+    {
+      "source": "/gmp/axelar-commandid(/)?",
+      "destination": "/gmp/how-it-works/message-verification#the-commandid",
+      "permanent": true
+    },
+    {
+      "source": "/gmp/evm/gmp-messages(/)?",
+      "destination": "/gmp/integrations/evm/send-messages",
+      "permanent": true
+    },
+    {
+      "source": "/gmp/evm/executable(/)?",
+      "destination": "/gmp/integrations/evm/receive-messages",
+      "permanent": true
+    },
+    {
+      "source": "/gmp/evm/gmp-tokens-with-messages(/)?",
+      "destination": "/gmp/integrations/evm/send-tokens-with-messages",
+      "permanent": true
+    },
+    {
+      "source": "/gmp/express(/)?",
+      "destination": "/gmp/integrations/evm/express",
+      "permanent": true
+    },
+    {
+      "source": "/gmp/solidity-utilities(/)?",
+      "destination": "/gmp/integrations/evm/solidity-utilities",
+      "permanent": true
+    },
+    {
+      "source": "/gmp/evm/debug/error-debugging(/)?",
+      "destination": "/gmp/track-and-recover/debug-failed-execution",
+      "permanent": true
+    },
+    {
+      "source": "/gmp/evm/debug/debugging-your-smart-contract(/)?",
+      "destination": "/gmp/track-and-recover/debug-failed-execution#debug-your-contract",
+      "permanent": true
+    },
+    {
+      "source": "/gmp/evm/debug/fork-mainnet(/)?",
+      "destination": "/gmp/track-and-recover/fork-mainnet",
+      "permanent": true
+    },
+    {
+      "source": "/gmp/evm/debug/transaction-recovery(/)?",
+      "destination": "/gmp/track-and-recover/recover-transactions",
+      "permanent": true
+    },
+    {
+      "source": "/gmp/evm/evm-relayer(/)?",
+      "destination": "/gmp/track-and-recover/recover-transactions",
+      "permanent": true
+    },
+    {
+      "source": "/gmp/evm/examples(/)?",
+      "destination": "https://github.com/axelarnetwork/axelar-examples",
+      "permanent": true
+    },
+    {
+      "source": "/gmp/gas-service/intro(/)?",
+      "destination": "/gmp/gas/gas-service",
+      "permanent": true
+    },
+    {
+      "source": "/gmp/gas-service/pay-gas(/)?",
+      "destination": "/gmp/gas/estimate-and-pay",
+      "permanent": true
+    },
+    {
+      "source": "/gmp/gas-service/pricing(/)?",
+      "destination": "/gmp/gas/pricing",
+      "permanent": true
+    },
+    {
+      "source": "/gmp/gas-service/on-chain-estimation(/)?",
+      "destination": "/gmp/gas/on-chain-estimation",
+      "permanent": true
+    },
+    {
+      "source": "/gmp/gas-service/increase-gas(/)?",
+      "destination": "/gmp/gas/add-gas-and-refunds#add-gas",
+      "permanent": true
+    },
+    {
+      "source": "/gmp/gas-service/refund(/)?",
+      "destination": "/gmp/gas/add-gas-and-refunds#refunds",
+      "permanent": true
+    },
+    {
+      "source": "/gmp/gas-service/transaction-state(/)?",
+      "destination": "/gmp/track-and-recover/transaction-states",
+      "permanent": true
+    },
+    {
+      "source": "/gmp/monitor-transactions(/)?",
+      "destination": "/gmp/track-and-recover/transaction-states",
+      "permanent": true
+    },
+    {
+      "source": "/gmp/axelarjs-sdk/intro(/)?",
+      "destination": "/gmp/axelarjs-sdk",
+      "permanent": true
+    },
+    {
+      "source": "/gmp/axelarjs-sdk/axelar-query-api(/)?",
+      "destination": "/gmp/axelarjs-sdk#query-api",
+      "permanent": true
+    },
+    {
+      "source": "/gmp/axelarjs-sdk/tx-status-query-recovery(/)?",
+      "destination": "/gmp/track-and-recover/recover-transactions#with-the-axelarjs-sdk",
+      "permanent": true
+    },
+    {
+      "source": "/gmp/metamask(/)?",
+      "destination": "/gmp/overview",
+      "permanent": true
+    },
+    {
+      "source": "/gmp/xrpl(/)?",
+      "destination": "/gmp/integrations/xrpl",
+      "permanent": true
+    },
+    {
+      "source": "/gmp/cosmos/cross-chain-messaging-evm-to-cosmos(/)?",
+      "destination": "/gmp/integrations/cosmos/cross-chain-messaging-evm-to-cosmos",
+      "permanent": true
+    },
+    {
+      "source": "/gmp/cosmos/overview(/)?",
+      "destination": "/gmp/integrations/cosmos/overview",
+      "permanent": true
+    },
+    {
+      "source": "/gmp/cosmos/cosmos-2way-manual-relay(/)?",
+      "destination": "/gmp/integrations/cosmos/cosmos-2way-manual-relay",
+      "permanent": true
+    },
+    {
+      "source": "/gmp/sui/intro(/)?",
+      "destination": "/gmp/integrations/sui/intro",
+      "permanent": true
+    },
+    {
+      "source": "/gmp/sui/gmp-tutorial(/)?",
+      "destination": "/gmp/integrations/sui/gmp-tutorial",
+      "permanent": true
+    },
+    {
+      "source": "/gmp/sui/gmp-contracts(/)?",
+      "destination": "/gmp/integrations/sui/gmp-contracts",
+      "permanent": true
+    },
+    {
+      "source": "/gmp/stellar/intro(/)?",
+      "destination": "/gmp/integrations/stellar/intro",
+      "permanent": true
+    },
+    {
+      "source": "/gmp/stellar/gmp-example(/)?",
+      "destination": "/gmp/integrations/stellar/gmp-example",
+      "permanent": true
+    },
+    {
+      "source": "/gmp/solana/intro(/)?",
+      "destination": "/gmp/integrations/solana/intro",
+      "permanent": true
+    },
+    {
+      "source": "/gmp/solana/gmp-messages(/)?",
+      "destination": "/gmp/integrations/solana/gmp-messages",
+      "permanent": true
+    },
+    {
+      "source": "/gmp/solana/gmp-contracts(/)?",
+      "destination": "/gmp/integrations/solana/gmp-contracts",
       "permanent": true
     }
   ]

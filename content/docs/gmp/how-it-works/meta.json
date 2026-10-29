@@ -1,0 +1,9 @@
+{
+  "title": "How it works",
+  "icon": "Lightbulb",
+  "pages": [
+    "message-flow",
+    "message-verification",
+    "finality-and-timing"
+  ]
+}

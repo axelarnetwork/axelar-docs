@@ -16,7 +16,7 @@ Axelar's integration to XRPL allows for the cross-chain transfer of both the XRP
 
 ## Transfer Token
 
-The interchain transfer flow is similar to that of the regular [GMP flow](/gmp/xrpl). As with the regular GMP flow, you send a [payment transaction](https://xrpl.org/docs/references/protocol/transactions/types/payment) to the Gateway account, but with `interchain_transfer` as the `type` memo rather than `call_contract`.
+The interchain transfer flow is similar to that of the regular [GMP flow](/gmp/integrations/xrpl). As with the regular GMP flow, you send a [payment transaction](https://xrpl.org/docs/references/protocol/transactions/types/payment) to the Gateway account, but with `interchain_transfer` as the `type` memo rather than `call_contract`.
 
 The Gateway becomes the custodian of your token on XRPL while the transfer is routed via the [ITS Hub](/its/its-hub/introduction) to the destination chain (and back, when bridged back).
 
@@ -27,7 +27,7 @@ You attach the following memos to the payment. Each field name goes into `MemoTy
 1. `type`: always `interchain_transfer` for ITS transfers.
 1. `destination_address`: the recipient address on the destination chain, hex-encoded **without** any `0x` prefix.
 1. `destination_chain`: the [Axelar chain name](https://axelarscan.io/resources/chains) of the destination chain (for example `xrpl-evm`, `ethereum`, `hedera`).
-1. `gas_fee_amount`: the portion of `Amount` set aside to pay [cross-chain transaction fees](/gmp/gas-service/intro). See [Encoding `gas_fee_amount`](#encoding-gas_fee_amount) for the required format.
+1. `gas_fee_amount`: the portion of `Amount` set aside to pay [cross-chain transaction fees](/gmp/gas/gas-service). See [Encoding `gas_fee_amount`](#encoding-gas_fee_amount) for the required format.
 1. `payload`: ABI-encoded calldata for the destination Executable. Include this memo **only** when the destination address is a smart contract that you want to invoke. When the destination is an externally-owned account (EOA) or any address that is not an executing contract, omit the `payload` memo entirely; an empty or zero-length payload is still treated as a GMP call and will fail.
 
 ### How `gas_fee_amount` relates to `Amount`
@@ -235,6 +235,6 @@ Once the command is run, you can track the cross-chain transaction on the [Axela
 
 ## Insufficient gas
 
-If `gas_fee_amount` is well-formed but not enough to cover the actual Axelar-side relaying costs, the message is indexed on the GMP API as `INSUFFICIENT_GAS` and you can unblock it by topping up via [Add Gas](/gmp/xrpl#add-gas).
+If `gas_fee_amount` is well-formed but not enough to cover the actual Axelar-side relaying costs, the message is indexed on the GMP API as `INSUFFICIENT_GAS` and you can unblock it by topping up via [Add Gas](/gmp/integrations/xrpl#add-gas).
 
 This recovery path only works for messages that Axelar verifiers were able to verify in the first place. Payments whose `gas_fee_amount` is malformed or not strictly less than `Amount` are never indexed on Axelarscan and cannot be recovered through Add Gas; validate the memo format on the source side to avoid that case.

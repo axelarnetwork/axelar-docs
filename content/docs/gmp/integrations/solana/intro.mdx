@@ -1,0 +1,99 @@
+---
+title: "Solana Integration"
+---
+
+[Solana](https://solana.com/) is integrated with the Axelar Network via the [Amplifier](/infrastructure#a-cross-chain-protocol-amplifier). This enables cross-chain communication between Solana and [other blockchains](https://axelarscan.io/resources/chains) in the Axelar ecosystem.
+
+Axelar provides two cross-chain protocols on Solana:
+
+1. **[General Message Passing (GMP)](/gmp/integrations/solana/gmp-messages)** — Send and receive arbitrary cross-chain messages between Solana programs and contracts on other chains.
+2. **[Interchain Token Service (ITS)](/its/solana)** — Send and receive cross-chain token transfers, optionally with execution data attached. ITS also supports [deploying interchain tokens](/its/overview), registering canonical tokens, and linking existing tokens across chains.
+
+The core packages are in the [axelar-amplifier-solana](https://github.com/axelarnetwork/axelar-amplifier-solana) repository.
+
+## Architecture Overview
+
+### Outbound GMP Flow
+
+```
+Your Program → Gas Service (pay gas) → Gateway (call_contract) → Axelar Network → Destination Chain
+```
+
+1. Your program pays for cross-chain gas via CPI to the Gas Service.
+2. Your program sends the message via CPI to the Gateway's `call_contract` instruction.
+3. Axelar's relayer picks up the message and routes it to the destination chain.
+
+### Inbound GMP Flow
+
+```
+Source Chain → Axelar Network → Gateway (approve_message) → Your Program (execute)
+```
+
+1. Axelar's relayer submits the message to the Gateway, which approves it.
+2. The relayer calls your program's `execute` instruction.
+3. Your program validates the message via CPI to the Gateway and processes the payload.
+
+### Outbound ITS Flow
+
+```
+Your Program → ITS (interchain_transfer) → Gateway → Axelar Network → Destination Chain
+```
+
+1. Your program calls the ITS program's `interchain_transfer` instruction via CPI.
+2. ITS locks/burns the tokens and sends the message through the Gateway.
+
+### Inbound ITS Flow
+
+```
+Source Chain → Axelar Network → Gateway → ITS → Your Program (execute_with_interchain_token)
+```
+
+1. The Gateway approves the message. ITS receives it, decodes the transfer, and mints/unlocks tokens.
+2. Tokens are deposited into an Associated Token Account (ATA) whose authority is the `destination_token_authority` PDA — derived from seeds `[b"axelar-its-token-authority"]` and your program's ID.
+3. ITS calls your program's `execute_with_interchain_token` instruction via CPI.
+4. Your program receives the tokens and can spend them by signing as the `destination_token_authority` PDA.
+
+## Prerequisites and Setup
+
+This guide assumes you are using the [Anchor framework](https://www.anchor-lang.com/). The macros provided by the Gateway and ITS SDKs are Anchor-specific convenience helpers, but the underlying account structures and CPI calls can be implemented without Anchor if your project requires a different approach.
+
+Add the following dependencies to your `Cargo.toml`:
+
+```toml
+[dependencies]
+anchor-lang = "1.0.2"
+
+# For GMP (sending and receiving cross-chain messages)
+solana-axelar-gateway = { version = "1.1.1", features = ["cpi"] }
+
+# For ITS (sending and receiving cross-chain token transfers)
+solana-axelar-its = { version = "1.1.1", features = ["cpi"] }
+anchor-spl = "1.0.2"
+```
+
+<Callout emoji="💡">
+The `cpi` feature is required so your program can make Cross-Program Invocations to the Gateway and ITS programs.
+</Callout>
+
+For deployed program addresses (Gateway, ITS, Gas Service), see the [contract addresses](/infrastructure/network/chains-and-contracts) page.
+
+## Solana-Specific Concepts
+
+If you're new to Solana development, here are the key concepts used throughout these docs:
+
+- **[Program Derived Addresses (PDAs)](https://solana.com/docs/core/pda)**: Solana programs use PDAs instead of private keys for signing. Your program will derive PDAs to authorize calls to the Gateway and ITS programs.
+- **[Cross-Program Invocations (CPIs)](https://solana.com/docs/core/cpi)**: Interaction with the Gateway, Gas Service, and ITS happens via CPIs — one program calling another on-chain.
+- **[Account Model](https://solana.com/docs/core/accounts)**: Unlike EVM's storage model, Solana uses an account-based architecture where state is stored in separate accounts that are passed to instructions.
+- **[Anchor Framework](https://www.anchor-lang.com/)**: Provides helpful abstractions for account validation, serialization, and CPI generation.
+
+## Next Steps
+
+- **[Send & Receive GMP Messages](/gmp/integrations/solana/gmp-messages)** — Build a program that sends and receives arbitrary cross-chain messages.
+- **[Interchain Token Transfers](/its/solana)** — Build a program that sends and receives cross-chain token transfers.
+- **[Contract Reference](/gmp/integrations/solana/gmp-contracts)** — Detailed reference for Gateway accounts, Gas Service, and events.
+
+## Resources
+
+- [axelar-amplifier-solana](https://github.com/axelarnetwork/axelar-amplifier-solana) — Source code for all Axelar Solana programs.
+- [Memo Program](https://github.com/axelarnetwork/axelar-amplifier-solana/tree/main/programs/solana-axelar-memo) — Reference implementation demonstrating both GMP and ITS integration.
+- [Solana Documentation](https://solana.com/docs) — Official Solana developer docs.

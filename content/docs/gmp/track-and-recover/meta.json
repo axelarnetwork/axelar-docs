@@ -1,0 +1,10 @@
+{
+  "title": "Track and recover",
+  "icon": "LifeBuoy",
+  "pages": [
+    "transaction-states",
+    "recover-transactions",
+    "debug-failed-execution",
+    "fork-mainnet"
+  ]
+}

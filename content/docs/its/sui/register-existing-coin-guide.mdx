@@ -676,14 +676,14 @@ const deployRemoteTokenTicket = deployRemoteToken.moveCall({
 })
 ``` 
 
-With the `deploy_remote_interchain_token()` function called, you must now call the standard [General Message Passing (GMP)](/gmp/sui/gmp-contracts#general-message-passing-gmp-sui-contracts) functions in order to send the cross-chain transaction. 
+With the `deploy_remote_interchain_token()` function called, you must now call the standard [General Message Passing (GMP)](/gmp/integrations/sui/gmp-contracts) functions in order to send the cross-chain transaction. 
 
 <Callout>
-Unlike in EVM chains where you can make a cross-chain call simply by calling `interchainTransfer()`, Sui requires a two step process due to the nature of how upgradable contracts work in Sui. Any function from the Move package that returns a ticket, (such as `deploy_remote_interchain_token()`) must explicitly be broadcasted in a cross-chain call with `pay_gas()` and `send_message()`. More info on why the 2step call is necessary can be found [here](/gmp/sui/gmp-contracts#send-message). 
+Unlike in EVM chains where you can make a cross-chain call simply by calling `interchainTransfer()`, Sui requires a two step process due to the nature of how upgradable contracts work in Sui. Any function from the Move package that returns a ticket, (such as `deploy_remote_interchain_token()`) must explicitly be broadcasted in a cross-chain call with `pay_gas()` and `send_message()`. More info on why the 2step call is necessary can be found [here](/gmp/integrations/sui/gmp-contracts#send-message). 
 </Callout>
 
 
-The first of these functions is the [pay_gas()](/gmp/sui/gmp-contracts#paygas) function, defined on the [Sui Gas Service](https://github.com/axelarnetwork/axelar-cgp-sui/blob/main/move/gas_service/sources/gas_service.move). It will be used to pay the cost of the cross-chain transaction. Further details on gas payment (including the parameters it expects) can be found in the [Sui GMP](/gmp/sui/gmp-tutorial#send-message-1) tutorial. The gas payment can be written as follows:
+The first of these functions is the [pay_gas()](/gmp/integrations/sui/gmp-contracts#paygas) function, defined on the [Sui Gas Service](https://github.com/axelarnetwork/axelar-cgp-sui/blob/main/move/gas_service/sources/gas_service.move). It will be used to pay the cost of the cross-chain transaction. Further details on gas payment (including the parameters it expects) can be found in the [Sui GMP](/gmp/integrations/sui/gmp-tutorial#send-message-1) tutorial. The gas payment can be written as follows:
 
 ```javascript
 // In the run() function
@@ -708,7 +708,7 @@ deployRemoteToken.moveCall({
 
 Note: The gas payment passes in the `generic` `SUI_TYPE_ARG` as the type argument, as the gas payment is done in Sui via the native Sui coin, so a different type is passed in to handle the `generic`. 
 
-With the gas payment now made, the final step is to trigger the `send_message()` function defined on the [Sui Gateway](https://github.com/axelarnetwork/axelar-cgp-sui/blob/main/move/axelar_gateway/sources/gateway.move). As with the `pay_gas()` further reading on this topic can be found in the [GMP demo](/gmp/sui/gmp-tutorial#send-message)
+With the gas payment now made, the final step is to trigger the `send_message()` function defined on the [Sui Gateway](https://github.com/axelarnetwork/axelar-cgp-sui/blob/main/move/axelar_gateway/sources/gateway.move). As with the `pay_gas()` further reading on this topic can be found in the [GMP demo](/gmp/integrations/sui/gmp-tutorial#send-message)
 
 The call to `send_message()` can be made as follows:
 
@@ -861,7 +861,7 @@ const tokenIdObj = interchainTransferTx.moveCall({
 })
 ```
 
-Next, you need to fetch the `source_channel`. The [channel](/gmp/sui/intro#channels) that is generated will be used as the `sourceAddress` when the transaction arrives on the destination chain. You can obtain your `Move` formatted channel as follows.
+Next, you need to fetch the `source_channel`. The [channel](/gmp/integrations/sui/intro#channels) that is generated will be used as the `sourceAddress` when the transaction arrives on the destination chain. You can obtain your `Move` formatted channel as follows.
 
 ```javascript
 // In the run() function

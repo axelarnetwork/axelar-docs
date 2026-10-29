@@ -1,0 +1,12 @@
+{
+  "title": "Integrations",
+  "icon": "Plug",
+  "pages": [
+    "evm",
+    "solana",
+    "sui",
+    "stellar",
+    "xrpl",
+    "cosmos"
+  ]
+}
