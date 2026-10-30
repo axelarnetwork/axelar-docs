@@ -3,118 +3,147 @@ title: "Express"
 description: "Execute GMP messages on the destination chain before the source chain transaction is final."
 ---
 
-Express lets [GMP](/gmp/overview) messages execute much faster than regular GMP messages.
+A message is normally executed only after its source chain transaction is final, which on some chains takes minutes or hours (see [transaction time](/gmp/how-it-works/finality-and-timing)). Express skips the wait: an Express relayer executes the message on the destination chain right away, fronting what the message is worth with its own funds, and is repaid when the message arrives through Axelar.
 
-Axelar requires a GMP transaction to be finalized on the source chain before it can be executed on the destination chain. Some source chains have a long [transaction time](/gmp/how-it-works/finality-and-timing), taking up to 80 minutes to achieve finality.
+Express works for plain messages and for messages with [gateway tokens](/gmp/integrations/evm/send-tokens-with-messages). Before you enable it, read [What Express changes for your contract](#what-express-changes-for-your-contract): it changes what your contract can trust.
 
-Express bypasses this wait by executing the message on the destination chain before the source chain transaction is final. The following are two example transactions that took place between the Linea and Polygon chains:
+## How it works
 
-- [Express transaction](https://axelarscan.io/gmp/0x4dbf091ebf31157bf73995c0fb473f115888bd1f11793359807d543ada03f021:11): **18 seconds** transaction time
-- [Non-Express transaction](https://axelarscan.io/gmp/0xc3653cda8535c59e0418b57250c504528a493dd5556fc4cb71b80f8c0a867e62:2): **28 minutes** transaction time
+1. A user sends a message from the source chain, and pays gas including the Express fee.
+1. The Express relayer sees it and calls `expressExecute` (or `expressExecuteWithToken`) on your destination contract. It transfers what the message is worth to your contract, which then runs `_execute` (or `_executeWithToken`).
+1. When the source transaction is final, Axelar approves the message as usual, and a relayer calls `execute`. Your contract finds that the message was already express-executed, and instead of running your code again, it repays the Express relayer.
 
-Think of it as a loan: funds on the destination chain are "loaned out" to the app while the transaction is still being finalized on the source chain. Once the transaction is finalized on the source chain and goes through the Axelar network, the funds that are sent through the Axelar network are used to pay back the Express Relayer on the destination chain which loaned out the funds.
+## Choose an executable
 
-<object
-  type="image/svg+xml"
-  data="/images/assets/express.svg"
-  className="hidden dark:block w-full max-w-[40rem] mx-auto py-6"
->
-  Your browser does not support SVG
-</object>
-<object
-  type="image/svg+xml"
-  data="/images/assets/express-light.svg"
-  className=" dark:hidden w-full max-w-[40rem] mx-auto py-6"
->
-  Your browser does not support SVG
-</object>
+| Your messages                                              | Inherit                                                                                                                                                                         | The Express relayer fronts                         |
+| ---------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------- |
+| Plain messages that are worth something                    | [`AxelarValuedExpressExecutable`](https://github.com/axelarnetwork/axelar-gmp-sdk-solidity/blob/main/contracts/express/AxelarValuedExpressExecutable.sol)                       | The token and amount `contractCallValue` returns   |
+| Messages with gateway tokens that are worth more than their tokens | [`AxelarValuedExpressExecutableWithToken`](https://github.com/axelarnetwork/axelar-gmp-sdk-solidity/blob/main/contracts/express/AxelarValuedExpressExecutableWithToken.sol)     | The message's tokens, plus what `contractCallWithTokenValue` returns |
+| Messages with gateway tokens                               | [`AxelarExpressExecutableWithToken`](https://github.com/axelarnetwork/axelar-gmp-sdk-solidity/blob/main/contracts/express/AxelarExpressExecutableWithToken.sol)                 | The message's tokens                               |
 
-## Integrate your app with the Express
+Your contract must either make the Express relayer pay for what it executes, or trust it:
 
-**Your application must be onboarded by the Common Prefix team to integrate with Express.** Simply extending the `AxelarExpressExecutable` or `AxelarValuedExpressExecutable` contracts is not enough.
+- **The valued executables make it pay.** You implement `contractCallValue(sourceChain, sourceAddress, payload)` (and `contractCallWithTokenValue` for messages with tokens), a view function that returns the token and amount a message is worth, e.g. the tokens your `_execute` will release. The relayer must transfer that to your contract to express-execute, and gets it back when the message arrives. Return at least the value your code gives away for that payload.
+- **`AxelarExpressExecutableWithToken` makes it pay only for messages with tokens.** Its plain `expressExecute` requires nothing from the caller. Use it only if you trust whoever calls it: override it to revert, as in the [example](#example-messages-with-tokens), or to accept only your Express relayer's address.
 
-To onboard your app to the Express:
+## Enable Express for your contract
 
-1. Provide [liquidity](#funding) as insurance, ensuring that the executor can execute messages early.
-2. Have your app contract [inherit](#axelar-executable-vs-axelar-valued-express-executable) from either the [`AxelarExpressExecutable`](https://github.com/axelarnetwork/axelar-gmp-sdk-solidity/blob/main/contracts/express/AxelarExpressExecutable.sol) or the [`AxelarValuedExpressExecutable`](https://github.com/axelarnetwork/axelar-gmp-sdk-solidity/blob/main/contracts/express/AxelarValuedExpressExecutable.sol) contracts.
-3. Fill out and submit the [required onboarding information](#required-onboarding-information) through the [Axelar Express Integration Form](https://docs.google.com/forms/d/e/1FAIpQLSeIpbcdEzQQY0k00leK2jrOnR0KUUJlKc2SzeNzENyLWs80jA/viewform).
+Express is enabled per contract. Inheriting an Express executable isn't enough: an Express relayer must also be configured for your contract.
 
-### Required onboarding information
+1. Inherit one of the executables above, and implement `_execute`, `_executeWithToken` and the value functions it requires.
+1. Reach out through the [Axelar Express Integration Form](https://docs.google.com/forms/d/e/1FAIpQLSeIpbcdEzQQY0k00leK2jrOnR0KUUJlKc2SzeNzENyLWs80jA/viewform), with:
+   - the address of your contract on each chain;
+   - the tokens it receives or releases, and the largest amount per message to express-execute;
+   - the source and destination chains.
 
-The following information is required to configure an Express relayer to act as an executor for your app's messages:
+## What Express changes for your contract
 
-1. The address of the contract integrating with Express
-2. The assets (tokens) to be sent in Express transactions from that contract
-   - The maximum value to be Expressed in a single GMP call
-   - The maximum value to be Expressed in a 30-minute window
-3. The EVM chains to be enabled for Express transactions
+<Callout emoji="⚠️" title="Express calls are not verified">
+  `expressExecute` and `expressExecuteWithToken` can be called by anyone, and
+  don't validate anything with the gateway. On the express path, your
+  `_execute` and `_executeWithToken` run with a source chain, source address
+  and payload chosen by the caller. A [sender
+  check](/gmp/integrations/evm/gmp-messages#check-the-sender) doesn't protect
+  you there.
+</Callout>
 
-Please provide this information via the [Axelar Express Integration Form](https://docs.google.com/forms/d/e/1FAIpQLSeIpbcdEzQQY0k00leK2jrOnR0KUUJlKc2SzeNzENyLWs80jA/viewform).
+What this means for your contract:
 
-## Axelar Executable vs. Axelar Valued Express Executable
+- **Only the fronted value is real.** On the express path, the caller has transferred the message's value to your contract; everything else (`sourceChain`, `sourceAddress`, `payload`) is unverified. Make your contract express only if your code is safe with any inputs, as long as the value was paid, e.g. it gives away at most that value. Don't use the source or the payload to grant permissions, change settings or release anything the value doesn't cover.
+- **The same message can execute twice.** A message is matched to its express execution by command ID, source chain, source address and payload (and token and amount). If someone express-executes with a command ID and different values, the real message isn't matched when it arrives, and your code runs again with the real values. Don't assume one execution per command ID.
+- **Express can't be undone.** If the source transaction is dropped or the message is never approved, the express execution stays. The Express relayer isn't repaid; that's the risk the Express fee covers.
 
-Regular Express messages carry tokens with them, which makes early execution straightforward. However, with the Valued Express Executable, the executor dynamically evaluates the value of a GMP message, even when the message does not transfer tokens directly.
+Contracts that don't inherit an Express executable can't be express-executed: they have no `expressExecute` functions, and every call goes through the gateway.
 
-If your app requires Express support for arbitrary GMP messages, where the value of the payload can alter the state of the contract, you can use the Valued Express Executable. Call either the `contractCallWithTokenValue()` or `callContractValue()` function to trigger your interchain transaction. These functions return the value of the message.
+## Example: plain messages
 
-If the `tokenAddress` is `0`, then the value will be set in terms of the native token. Otherwise, it will be set in terms of the token address.
+This contract releases tokens it holds, as instructed by messages from its copies on other chains. Each message is worth the tokens it releases, so a caller can only express-execute a message by paying for it first:
 
-Under the hood, the executor dynamically queries the value of the message from the contract itself, in terms of how much amount and in what token it will need to loan if allowlisted.
+```solidity
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
 
-Protocols that integrate with the Valued Express Executable must keep the following in mind:
+import { AxelarValuedExpressExecutable } from '@axelar-network/axelar-gmp-sdk-solidity/contracts/express/AxelarValuedExpressExecutable.sol';
+import { IERC20 } from '@axelar-network/axelar-gmp-sdk-solidity/contracts/interfaces/IERC20.sol';
+import { SafeTokenTransfer } from '@axelar-network/axelar-gmp-sdk-solidity/contracts/libs/SafeTransfer.sol';
 
-1. They must be whitelisted, since the relayer cannot trust arbitrary contracts.
-2. The value of the payload in terms of a token is not state or time dependent, so the value cannot change between the message's origin on the source chain and when it is executed on the destination chain. This restriction can be removed, but since it will require the relayer to assume more risk, there will be an [additional fee](#fees) involved.
+// Releases tokens this contract holds, as instructed by messages from its copies on other chains
+contract Releaser is AxelarValuedExpressExecutable {
+    using SafeTokenTransfer for IERC20;
 
-## Express ITS tokens
+    constructor(address gateway_) AxelarValuedExpressExecutable(gateway_) {}
 
-Interchain Tokens that were deployed via the [Interchain Token Service](https://axelar.network/its) can also be integrated with the Express. After integration, an ITS token will use `AxelarValuedExpressExecutable` instead of `AxelarValuedExecutable`, as the value in an ITS transaction is in the payload.
+    // What a message is worth: the Express relayer must transfer this to the contract to express-execute it
+    function contractCallValue(
+        string calldata, /* sourceChain */
+        string calldata, /* sourceAddress */
+        bytes calldata payload
+    ) public pure override returns (address tokenAddress, uint256 value) {
+        (address token, , uint256 amount) = abi.decode(payload, (address, address, uint256));
+        return (token, amount);
+    }
+
+    function _execute(
+        bytes32, /* commandId */
+        string calldata, /* sourceChain */
+        string calldata, /* sourceAddress */
+        bytes calldata payload
+    ) internal override {
+        // Check the sender here, as for any message (omitted for brevity)
+        (address token, address recipient, uint256 amount) = abi.decode(payload, (address, address, uint256));
+        IERC20(token).safeTransfer(recipient, amount);
+    }
+}
+```
+
+## Example: messages with tokens
+
+This contract forwards the tokens of each message to a recipient in the payload, so it only moves the tokens the caller brought. It turns off `expressExecute`, which would run `_execute` without any payment:
+
+```solidity
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
+
+import { AxelarExpressExecutableWithToken } from '@axelar-network/axelar-gmp-sdk-solidity/contracts/express/AxelarExpressExecutableWithToken.sol';
+import { IERC20 } from '@axelar-network/axelar-gmp-sdk-solidity/contracts/interfaces/IERC20.sol';
+import { SafeTokenTransfer } from '@axelar-network/axelar-gmp-sdk-solidity/contracts/libs/SafeTransfer.sol';
+
+contract ExpressDistributor is AxelarExpressExecutableWithToken {
+    using SafeTokenTransfer for IERC20;
+
+    error ExpressWithoutTokenNotSupported();
+
+    constructor(address gateway_) AxelarExpressExecutableWithToken(gateway_) {}
+
+    // Anyone can call expressExecute, without fronting anything.
+    // This contract only handles messages with tokens, so turn it off.
+    function expressExecute(bytes32, string calldata, string calldata, bytes calldata) external payable override {
+        revert ExpressWithoutTokenNotSupported();
+    }
+
+    function _execute(bytes32, string calldata, string calldata, bytes calldata) internal pure override {
+        revert('Tokens required');
+    }
+
+    // Runs with verified inputs on the normal path, and with inputs chosen by the
+    // caller on the express path. Either way, the tokens it sends are the ones
+    // that came with this call, so it's safe with any inputs.
+    function _executeWithToken(
+        bytes32,
+        string calldata,
+        string calldata,
+        bytes calldata payload,
+        string calldata tokenSymbol,
+        uint256 amount
+    ) internal override {
+        address recipient = abi.decode(payload, (address));
+        IERC20(gatewayWithToken().tokenAddresses(tokenSymbol)).safeTransfer(recipient, amount);
+    }
+}
+```
 
 ## Fees
 
-Express transactions require an [additional fee](/gmp/gas/gas-service#what-the-fee-covers) of **$1 USD per call** alongside existing GMP fees. This extra fee acts as insurance for the Express relayer for assuming the risk of an Express transaction. If the fee is not paid, the transaction will revert to a regular non-Express GMP transaction.
+The Express fee is part of the gas paid on the source chain. The fee estimate's `isExpressSupported` says whether Express is available for the route, and `expressFee` is its fee. The Axelarscan API's `totalFee` already includes it; with the SDK, request detailed fees and add `expressFee` to the total. Pay with `payNativeGasForExpressCall` (or `payNativeGasForExpressCallWithToken`), and add gas with `addNativeExpressGas`. See [Estimate and pay](/gmp/gas/estimate-and-pay) and [Add gas and refunds](/gmp/gas/add-gas-and-refunds).
 
-### Estimate gas costs for an Express transaction
-
-The [`estimateGasFee()`](/gmp/resources/axelarjs-sdk#query-api) function provides the estimated cost when estimating gas for an interchain transaction. This same function can be used to estimate gas costs for an Express transaction. You'll just need to provide some more information to help it specify an accurate gas estimation.
-
-For example, in an Express transaction from Polygon to Avalanche:
-
-```javascript
-await api.estimateGasFee(
-    "Polygon",
-    "Avalanche",
-    "MATIC",
-    500000,
-    1.1,
-    "0",
-    {
-      showDetailedFees: true,
-      transferAmount: inputTokenAmount, // In terms of symbol, not unit denom, e.g. use 1 for 1 axlUSDC, not 1000000
-      sourceContractAddress: sourceChainAddress,
-      destinationContractAddress: destinationChainAddress
-      tokenSymbol: "axlUSDC", //aUSDC for testnet
-    }
-)
-```
-
-## Risks
-
-Using Express comes with risks, mostly from executing messages before the source chain transaction is final.
-
-### Funding
-
-Since Express executes the message on the destination chain right away, any changes on the source chain between the time the transaction is sent and the time it is finalized (for example, due to a [block reorg](https://cointelegraph.com/explained/what-is-chain-reorganization-in-blockchain-technology)) could lead to funds being lost.
-
-These funds would be lost because the transaction will have been instantly executed on the destination chain on the assumption of logic that never took place on the source chain.
-
-To mitigate this risk, liquidity must be provided to the Express relayers for all Express transactions. This liquidity will act as insurance against the risk the relayer takes when loaning out funds on the destination chain. The amount of funds should match the value of the transaction itself, and will be returned when the transaction has finalized on the source chain.
-
-### Payload validity during execution
-
-In a non-Express transaction, an Axelar relayer triggers a transaction with either the `execute()` or `executeWithToken()` function. The GMP payload can be assumed to be true as it passes through the [validation process](https://github.com/axelarnetwork/axelar-cgp-solidity/blob/4d01eb6ea1b5413520d9ecab804f815103021148/contracts/AxelarGateway.sol#L233) on the Axelar Gateway. However, in an Express call, the execution on the destination chain occurs before the source chain finalizes. Thus, you cannot rely on the validation process.
-Instead, use the [`commandID`](https://github.com/axelarnetwork/axelar-core/blob/main/docs/cli/axelard_query_evm_command.md), the transaction’s unique identifier on the destination chain, to reconstruct the message that was passed in.
-
-## Sample contract using Express
-
-The [Call Contract with Token (Express) sample contract](https://github.com/axelarnetwork/axelar-examples/tree/main/examples/evm/call-contract-with-token-express) is an example of a contract that executes with the Express. The implementation is an Axelar GMP integration that inherits from `AxelarExpressExecutable` rather than `AxelarExecutable`.
+If the gas paid doesn't cover the Express fee, the message isn't express-executed, and is executed as a normal message.

@@ -1,5 +1,6 @@
 ---
 title: "Send & Receive GMP Messages"
+description: "Build a Solana program that sends and receives GMP messages."
 ---
 
 This guide walks through building a Solana program that can send and receive cross-chain messages via Axelar's General Message Passing (GMP) protocol.
@@ -171,7 +172,7 @@ pub struct SendMessage<'info> {
 
 ### Handler
 
-The handler pays gas first, then sends the message — both via CPI in a single instruction:
+The handler pays gas first, then sends the message — both via CPI in a single instruction. `gas_amount` is in lamports; get it from an [off-chain estimate](/gmp/gas/estimate-and-pay#estimate-the-fee) with `solana` as the source chain. Without gas, the message is verified but never executed.
 
 ```rust
 pub fn send_message_handler(

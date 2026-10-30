@@ -1,0 +1,173 @@
+---
+title: "Deployers and libraries"
+description: "Deploy a contract to the same address on every chain, and helper libraries for GMP contracts."
+---
+
+## Deploy to the same address on every chain
+
+Cross-chain apps are easier to configure when their contract has the same address on every chain: each copy can trust the others by address. Axelar deploys two deployer contracts for this, from [axelar-gmp-sdk-solidity](https://github.com/axelarnetwork/axelar-gmp-sdk-solidity/tree/main/contracts/deploy):
+
+| Deployer                                                                                                                       | The deployed address depends on   | Address on most chains                       |
+| ------------------------------------------------------------------------------------------------------------------------------ | --------------------------------- | -------------------------------------------- |
+| [`Create3Deployer`](https://github.com/axelarnetwork/axelar-gmp-sdk-solidity/blob/main/contracts/deploy/Create3Deployer.sol)   | Your address and a salt           | `0x6513Aedb4D1593BA12e50644401D976aebDc90d8` |
+| [`Create2Deployer`](https://github.com/axelarnetwork/axelar-gmp-sdk-solidity/blob/main/contracts/deploy/Create2Deployer.sol)   | Your address, a salt and bytecode | `0x98b2920d53612483f91f12ed7754e51b4a77919e` |
+
+The Create2 deployer is deployed under its older name, `ConstAddressDeployer`. A few chains have the deployers at other addresses: mainnet `arc`, and testnet `arc-8`, `monad-3`, `robinhood` and `memento-demo`. Every chain's addresses are in the deployment configs, under `Create3Deployer` and `ConstAddressDeployer`: [mainnet](https://github.com/axelarnetwork/axelar-contract-deployments/blob/main/axelar-chains-config/info/mainnet.json) | [testnet](https://github.com/axelarnetwork/axelar-contract-deployments/blob/main/axelar-chains-config/info/testnet.json).
+
+Prefer `Create3Deployer`: the address doesn't depend on the bytecode, so it stays the same even if the compiled bytecode or constructor arguments differ between chains.
+
+Both deployers have the same interface ([`IDeployer`](https://github.com/axelarnetwork/axelar-gmp-sdk-solidity/blob/main/contracts/interfaces/IDeployer.sol)):
+
+```solidity
+// Deploys `bytecode` (creation code with constructor arguments appended)
+function deploy(bytes memory bytecode, bytes32 salt) external payable returns (address deployedAddress_);
+
+// Deploys, then calls the new contract with `init`
+function deployAndInit(bytes memory bytecode, bytes32 salt, bytes calldata init) external payable returns (address deployedAddress_);
+
+// The address `sender` would get for `salt` (Create3Deployer ignores `bytecode`)
+function deployedAddress(bytes memory bytecode, address sender, bytes32 salt) external view returns (address);
+```
+
+The deployer combines your salt with `msg.sender`, so the same salt from different accounts gives different addresses. To get the same address on every chain, deploy from the same account with the same salt.
+
+<Callout emoji="⚠️" title="msg.sender in the constructor">
+  Your contract is created by the deployer, not by your account: with
+  `Create2Deployer`, `msg.sender` in the constructor is the deployer contract,
+  and with `Create3Deployer` it's an intermediate contract. Pass the owner as a
+  constructor argument instead of using `msg.sender`.
+</Callout>
+
+### With Foundry
+
+```bash
+DEPLOYER=0x6513Aedb4D1593BA12e50644401D976aebDc90d8
+SALT=$(cast keccak "my-app-v1")
+BYTECODE=$(cast concat-hex $(forge inspect MyContract bytecode) $(cast abi-encode "constructor(address,address)" $GATEWAY $GAS_SERVICE))
+
+# The address it will get
+cast call $DEPLOYER "deployedAddress(bytes,address,bytes32)(address)" 0x $MY_ADDRESS $SALT --rpc-url $RPC
+
+# Deploy
+cast send $DEPLOYER "deploy(bytes,bytes32)" $BYTECODE $SALT --rpc-url $RPC --private-key $PRIVATE_KEY
+```
+
+The gateway and gas service addresses are the same on most chains, but check them for each chain on [Chains and contracts](/infrastructure/network/chains-and-contracts): with Create3, different constructor arguments still give the same address.
+
+### With JavaScript
+
+The SDK package includes helpers for ethers v5:
+
+```js
+const { create3DeployContract, getCreate3Address } = require('@axelar-network/axelar-gmp-sdk-solidity');
+
+// `key` is any string; the salt is derived from it
+const address = await getCreate3Address(deployerAddress, wallet, 'my-app-v1');
+const contract = await create3DeployContract(deployerAddress, wallet, MyContractJson, 'my-app-v1', [gateway, gasService]);
+```
+
+`create3DeployAndInitContract` also calls `init(...initArgs)` after deploying. The Create2 equivalents are `create2DeployContract`, `create2DeployAndInitContract` and `getCreate2Address`.
+
+## Libraries
+
+### InterchainAddressTracker
+
+Most cross-chain apps deploy one copy of their contract on each chain, and the copies only talk to each other. [`InterchainAddressTracker`](https://github.com/axelarnetwork/axelar-gmp-sdk-solidity/blob/main/contracts/utils/InterchainAddressTracker.sol) is a base contract that keeps that list:
+
+- `chainName()`: the Axelar name of the chain this copy is on.
+- `trustedAddress(chain)`: the address of your copy on another chain, as a string. Use it as the destination when you send.
+- `isTrustedAddress(chain, address)`: whether a message's source is one of your copies. Use it in `_execute` to [check the sender](/gmp/integrations/evm/gmp-messages#check-the-sender).
+
+Your contract sets the entries with the internal `_setChainName` and `_setTrustedAddress`, and decides who may call them. The data is kept in fixed storage slots, so the tracker is safe to add to upgradeable contracts. The Interchain Token Service inherits it.
+
+```solidity
+import { AxelarExecutable } from '@axelar-network/axelar-gmp-sdk-solidity/contracts/executable/AxelarExecutable.sol';
+import { IAxelarGasService } from '@axelar-network/axelar-gmp-sdk-solidity/contracts/interfaces/IAxelarGasService.sol';
+import { InterchainAddressTracker } from '@axelar-network/axelar-gmp-sdk-solidity/contracts/utils/InterchainAddressTracker.sol';
+import { Ownable } from '@axelar-network/axelar-gmp-sdk-solidity/contracts/utils/Ownable.sol';
+
+contract MyApp is AxelarExecutable, InterchainAddressTracker, Ownable {
+    IAxelarGasService public immutable gasService;
+
+    error UnknownChain(string chain);
+    error UntrustedSender(string sourceChain, string sourceAddress);
+
+    constructor(
+        address gateway_,
+        address gasService_,
+        string memory chainName_,
+        address owner_
+    ) AxelarExecutable(gateway_) Ownable(owner_) {
+        gasService = IAxelarGasService(gasService_);
+        _setChainName(chainName_); // this chain's Axelar name
+    }
+
+    // Register this app's copy on another chain, e.g. ("Ethereum", "0xAbC…")
+    function setTrustedAddress(string calldata chain, string calldata address_) external onlyOwner {
+        _setTrustedAddress(chain, address_);
+    }
+
+    function sendMessage(string calldata destinationChain, bytes calldata payload) external payable {
+        // Send to this app's copy on the destination chain
+        string memory destinationAddress = trustedAddress(destinationChain);
+        if (bytes(destinationAddress).length == 0) revert UnknownChain(destinationChain);
+
+        gasService.payNativeGasForContractCall{ value: msg.value }(
+            address(this),
+            destinationChain,
+            destinationAddress,
+            payload,
+            msg.sender
+        );
+        gateway().callContract(destinationChain, destinationAddress, payload);
+    }
+
+    function _execute(
+        bytes32,
+        string calldata sourceChain,
+        string calldata sourceAddress,
+        bytes calldata payload
+    ) internal override {
+        // Accept messages only from this app's copies
+        if (!isTrustedAddress(sourceChain, sourceAddress)) revert UntrustedSender(sourceChain, sourceAddress);
+        // ...
+    }
+}
+```
+
+`isTrustedAddress` compares strings exactly, so store the chain name and address exactly as Axelar delivers them: chain names as registered (e.g. `Ethereum`), and EVM addresses [EIP-55](https://eips.ethereum.org/EIPS/eip-55) checksummed. It also works for copies on non-EVM chains, whose addresses aren't EVM addresses.
+
+### Address conversions
+
+Gateways pass addresses as strings, and some chains use addresses as bytes:
+
+```solidity
+import { AddressToString, StringToAddress } from '@axelar-network/axelar-gmp-sdk-solidity/contracts/libs/AddressString.sol';
+import { AddressBytes } from '@axelar-network/axelar-gmp-sdk-solidity/contracts/libs/AddressBytes.sol';
+
+using AddressToString for address;
+using StringToAddress for string;
+using AddressBytes for address;
+using AddressBytes for bytes;
+
+string memory s = a.toString(); // "0xab12…", lowercase
+address b = s.toAddress(); // accepts lowercase or checksummed
+bytes memory c = a.toBytes(); // 20 bytes
+address d = c.toAddress();
+```
+
+`toString()` returns lowercase, while EVM source addresses arrive checksummed, so compare parsed addresses (`sourceAddress.toAddress() == expected`), not strings.
+
+### Safe token transfers
+
+[`SafeTokenTransfer` and `SafeTokenTransferFrom`](https://github.com/axelarnetwork/axelar-gmp-sdk-solidity/blob/main/contracts/libs/SafeTransfer.sol) revert when an ERC-20 transfer fails or returns `false`, including for tokens that don't return a value:
+
+```solidity
+using SafeTokenTransfer for IERC20;
+using SafeTokenTransferFrom for IERC20;
+
+token.safeTransfer(to, amount);
+token.safeTransferFrom(from, to, amount);
+```
+
+The SDK also has helpers for [upgradeable contracts](https://github.com/axelarnetwork/axelar-gmp-sdk-solidity/tree/main/contracts/upgradable) (`Upgradable`, `Proxy`), [roles and ownership](https://github.com/axelarnetwork/axelar-gmp-sdk-solidity/tree/main/contracts/utils) (`Ownable`, `Operators`, `Pausable`) and [more](https://github.com/axelarnetwork/axelar-gmp-sdk-solidity/tree/main/contracts/libs).

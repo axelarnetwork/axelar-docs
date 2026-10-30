@@ -1,10 +1,11 @@
 {
   "title": "EVM",
   "pages": [
-    "send-messages",
-    "receive-messages",
+    "intro",
+    "gmp-messages",
     "send-tokens-with-messages",
     "express",
-    "solidity-utilities"
+    "gmp-contracts",
+    "deployers-and-libraries"
   ]
 }

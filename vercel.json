@@ -647,7 +647,7 @@
     },
     {
       "source": "/dev/general-message-passing/gmp-messages(/)?",
-      "destination": "/gmp/integrations/evm/send-messages",
+      "destination": "/gmp/integrations/evm/gmp-messages",
       "permanent": true
     },
     {
@@ -657,7 +657,7 @@
     },
     {
       "source": "/dev/general-message-passing/executable(/)?",
-      "destination": "/gmp/integrations/evm/receive-messages",
+      "destination": "/gmp/integrations/evm/gmp-messages#receive-a-message",
       "permanent": true
     },
     {
@@ -697,12 +697,12 @@
     },
     {
       "source": "/dev/general-message-passing/cosmos-gmp/cosmos-2way-manual-relay(/)?",
-      "destination": "/gmp/integrations/cosmos/cosmos-2way-manual-relay",
+      "destination": "/gmp/track-and-recover/manual-relay#cosmos-chains",
       "permanent": true
     },
     {
       "source": "/dev/general-message-passing/cosmos-gmp/developer-guides/cross-chain-messaging-evm-to-cosmos(/)?",
-      "destination": "/gmp/integrations/cosmos/cross-chain-messaging-evm-to-cosmos",
+      "destination": "/gmp/integrations/cosmos/send-and-receive",
       "permanent": true
     },
     {
@@ -727,7 +727,7 @@
     },
     {
       "source": "/dev/general-message-passing/stellar-gmp/gmp-example(/)?",
-      "destination": "/gmp/integrations/stellar/gmp-example",
+      "destination": "/gmp/integrations/stellar/gmp-messages",
       "permanent": true
     },
     {
@@ -822,7 +822,7 @@
     },
     {
       "source": "/dev/solidity-utilities(/)?",
-      "destination": "/gmp/integrations/evm/solidity-utilities",
+      "destination": "/gmp/integrations/evm/deployers-and-libraries",
       "permanent": true
     },
     {
@@ -1162,12 +1162,12 @@
     },
     {
       "source": "/dev/general-message-passing/solidity-utilities(/)?",
-      "destination": "/gmp/integrations/evm/solidity-utilities",
+      "destination": "/gmp/integrations/evm/deployers-and-libraries",
       "permanent": true
     },
     {
       "source": "/dev/general-message-passing/local-dev(/)?",
-      "destination": "/gmp/integrations/evm/send-messages",
+      "destination": "/gmp/integrations/evm/gmp-messages",
       "permanent": true
     },
     {
@@ -1287,7 +1287,7 @@
     },
     {
       "source": "/dev/hello-world(/)?",
-      "destination": "/gmp/integrations/evm/send-messages",
+      "destination": "/gmp/integrations/evm/gmp-messages",
       "permanent": true
     },
     {
@@ -1422,7 +1422,7 @@
     },
     {
       "source": "/dev/cosmos-gmp/cosmos-2way-manual-relay(/)?",
-      "destination": "/gmp/integrations/cosmos/cosmos-2way-manual-relay",
+      "destination": "/gmp/track-and-recover/manual-relay#cosmos-chains",
       "permanent": true
     },
     {
@@ -1457,7 +1457,7 @@
     },
     {
       "source": "/dev/general-message-passing/developer-guides/example-gmp(/)?",
-      "destination": "/gmp/integrations/evm/send-messages",
+      "destination": "/gmp/integrations/evm/gmp-messages",
       "permanent": true
     },
     {
@@ -2047,12 +2047,12 @@
     },
     {
       "source": "/gmp/evm/gmp-messages(/)?",
-      "destination": "/gmp/integrations/evm/send-messages",
+      "destination": "/gmp/integrations/evm/gmp-messages",
       "permanent": true
     },
     {
       "source": "/gmp/evm/executable(/)?",
-      "destination": "/gmp/integrations/evm/receive-messages",
+      "destination": "/gmp/integrations/evm/gmp-messages#receive-a-message",
       "permanent": true
     },
     {
@@ -2067,7 +2067,7 @@
     },
     {
       "source": "/gmp/solidity-utilities(/)?",
-      "destination": "/gmp/integrations/evm/solidity-utilities",
+      "destination": "/gmp/integrations/evm/deployers-and-libraries",
       "permanent": true
     },
     {
@@ -2167,7 +2167,7 @@
     },
     {
       "source": "/gmp/cosmos/cross-chain-messaging-evm-to-cosmos(/)?",
-      "destination": "/gmp/integrations/cosmos/cross-chain-messaging-evm-to-cosmos",
+      "destination": "/gmp/integrations/cosmos/send-and-receive",
       "permanent": true
     },
     {
@@ -2177,7 +2177,7 @@
     },
     {
       "source": "/gmp/cosmos/cosmos-2way-manual-relay(/)?",
-      "destination": "/gmp/integrations/cosmos/cosmos-2way-manual-relay",
+      "destination": "/gmp/track-and-recover/manual-relay#cosmos-chains",
       "permanent": true
     },
     {
@@ -2202,7 +2202,7 @@
     },
     {
       "source": "/gmp/stellar/gmp-example(/)?",
-      "destination": "/gmp/integrations/stellar/gmp-example",
+      "destination": "/gmp/integrations/stellar/gmp-messages",
       "permanent": true
     },
     {
@@ -2223,6 +2223,36 @@
     {
       "source": "/gmp/axelarjs-sdk(/)?",
       "destination": "/gmp/resources/axelarjs-sdk",
+      "permanent": true
+    },
+    {
+      "source": "/gmp/integrations/evm/send-messages(/)?",
+      "destination": "/gmp/integrations/evm/gmp-messages",
+      "permanent": true
+    },
+    {
+      "source": "/gmp/integrations/evm/receive-messages(/)?",
+      "destination": "/gmp/integrations/evm/gmp-messages#receive-a-message",
+      "permanent": true
+    },
+    {
+      "source": "/gmp/integrations/evm/solidity-utilities(/)?",
+      "destination": "/gmp/integrations/evm/deployers-and-libraries",
+      "permanent": true
+    },
+    {
+      "source": "/gmp/integrations/stellar/gmp-example(/)?",
+      "destination": "/gmp/integrations/stellar/gmp-messages",
+      "permanent": true
+    },
+    {
+      "source": "/gmp/integrations/cosmos/cosmos-2way-manual-relay(/)?",
+      "destination": "/gmp/track-and-recover/manual-relay#cosmos-chains",
+      "permanent": true
+    },
+    {
+      "source": "/gmp/integrations/cosmos/cross-chain-messaging-evm-to-cosmos(/)?",
+      "destination": "/gmp/integrations/cosmos/send-and-receive",
       "permanent": true
     }
   ],

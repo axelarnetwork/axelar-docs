@@ -1,0 +1,110 @@
+---
+title: "Contract reference"
+description: "Stellar gateway, gas service and executable: functions and events."
+---
+
+Addresses are on the [Stellar overview](/gmp/integrations/stellar/intro#addresses). The full API is in the [crate documentation](https://axelarnetwork.github.io/axelar-amplifier-stellar/).
+
+## Gateway
+
+[`stellar-axelar-gateway`](https://github.com/axelarnetwork/axelar-amplifier-stellar/tree/main/contracts/stellar-axelar-gateway). Call it from your contract with `AxelarGatewayMessagingClient`.
+
+```rust
+// Sends a message. `caller` must authorize: your contract, or an account.
+fn call_contract(
+    env: Env,
+    caller: Address,
+    destination_chain: String,
+    destination_address: String,
+    payload: Bytes,
+);
+
+// Checks that the message was approved for `caller`, and marks it executed.
+// Returns false if it wasn't approved, or was already executed. `caller` must authorize.
+fn validate_message(
+    env: Env,
+    caller: Address,
+    source_chain: String,
+    message_id: String,
+    source_address: String,
+    payload_hash: BytesN<32>,
+) -> bool;
+
+fn is_message_approved(
+    env: Env,
+    source_chain: String,
+    message_id: String,
+    source_address: String,
+    contract_address: Address,
+    payload_hash: BytesN<32>,
+) -> bool;
+
+fn is_message_executed(env: Env, source_chain: String, message_id: String) -> bool;
+```
+
+Events:
+
+| Event              | Fields                                                                                      |
+| ------------------ | ------------------------------------------------------------------------------------------- |
+| `contract_called`  | `caller`, `destination_chain`, `destination_address`, `payload_hash`; `payload` in the data |
+| `message_approved` | `message`: `source_chain`, `message_id`, `source_address`, `contract_address`, `payload_hash` |
+| `message_executed` | `message`, as above                                                                         |
+
+The ID of a message sent from Stellar is `0x<transaction hash>-<event index>`, as shown on Axelarscan.
+
+## Gas service
+
+[`stellar-axelar-gas-service`](https://github.com/axelarnetwork/axelar-amplifier-stellar/tree/main/contracts/stellar-axelar-gas-service). Call it from your contract with `AxelarGasServiceClient`.
+
+```rust
+// Pays gas for a message, before `call_contract`. `spender` must authorize
+// the payment, and receives any refund.
+fn pay_gas(
+    env: Env,
+    sender: Address, // the address that calls the gateway
+    destination_chain: String,
+    destination_address: String,
+    payload: Bytes,
+    spender: Address,
+    token: Token, // { address, amount }; amount must be positive
+    metadata: Bytes, // pass empty bytes
+) -> Result<(), ContractError>;
+
+// Adds gas to a message that was already sent. `spender` must authorize.
+fn add_gas(
+    env: Env,
+    sender: Address,
+    message_id: String,
+    spender: Address,
+    token: Token,
+) -> Result<(), ContractError>;
+```
+
+Pay gas in XLM, through its token contract (see [Addresses](/gmp/integrations/stellar/intro#addresses)). The SDK can also [add gas](/gmp/track-and-recover/recover-transactions#add-gas) for you.
+
+Events: `gas_paid` (`sender`, `destination_chain`, `destination_address`, `payload_hash`, `spender`, `token`, `metadata`), `gas_added` (`sender`, `message_id`, `spender`, `token`) and `gas_refunded` (`message_id`, `receiver`, `token`).
+
+## Executable
+
+[`stellar_axelar_gateway::executable`](https://github.com/axelarnetwork/axelar-amplifier-stellar/blob/main/contracts/stellar-axelar-gateway/src/executable.rs). Implement `CustomAxelarExecutable` and derive `AxelarExecutable`:
+
+```rust
+pub trait CustomAxelarExecutable {
+    // Must have a `NotApproved` variant
+    type Error: Into<stellar_axelar_std::Error>;
+
+    // Returns the gateway address
+    fn __gateway(env: &Env) -> Address;
+
+    // Your logic, called after the message is validated
+    fn __execute(
+        env: &Env,
+        source_chain: String,
+        message_id: String,
+        source_address: String,
+        payload: Bytes,
+    ) -> Result<(), Self::Error>;
+}
+```
+
+The derive generates the contract functions `gateway()` and `execute(source_chain, message_id, source_address, payload)`. `execute` calls `validate_message` on the gateway with `keccak256(payload)`, returns `NotApproved` if it fails, and otherwise calls `__execute`.

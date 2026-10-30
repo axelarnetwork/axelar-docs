@@ -242,7 +242,7 @@ public fun pay_gas<T>(
 
 ## Relayer Discovery
 
-In Sui, there is no arbitrary execution like in EVM chains; therefore, unlike in other ecosystems, there is no [Executable](/gmp/integrations/evm/receive-messages) Package to inherit from. To resolve this issue, the [Relayer Discovery](https://github.com/axelarnetwork/axelar-cgp-sui/tree/main/move/relayer_discovery) Package is deployed to serve as a registry of Packages that can be invoked given a message.
+In Sui, there is no arbitrary execution like in EVM chains; therefore, unlike in other ecosystems, there is no [Executable](/gmp/integrations/evm/gmp-messages#receive-a-message) Package to inherit from. To resolve this issue, the [Relayer Discovery](https://github.com/axelarnetwork/axelar-cgp-sui/tree/main/move/relayer_discovery) Package is deployed to serve as a registry of Packages that can be invoked given a message.
 
 To be added to this registry, a deployed application on Sui will need to trigger the `register_transaction()` function on the Discovery Package.
 

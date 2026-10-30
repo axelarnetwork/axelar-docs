@@ -8,9 +8,10 @@ Relayers normally move a message through Axelar and approve it on the destinatio
 How you relay depends on whether the source and destination are [consensus or Amplifier chains](/infrastructure#a-cross-chain-protocol-amplifier):
 
 - **Consensus chains**: Axelarscan or the AxelarJS SDK do it in one call.
+- **Cosmos chains**: the SDK does it too, or you route the message with `axelard`.
 - **Amplifier chains**: you call Axelar's Amplifier contracts, then submit the proof to the destination gateway.
 
-Messages between a consensus chain and an Amplifier chain aren't covered here.
+Messages between a consensus or Cosmos chain and an Amplifier chain aren't covered here.
 
 Once the message is approved, [execute it](/gmp/track-and-recover/recover-transactions#execute) if no relayer does.
 
@@ -45,6 +46,28 @@ const { success, error } = await sdk.manualRelayToDestChain(
 ```
 
 This confirms the source transaction on Axelar, signs the approval and sends it to the destination gateway, skipping the steps that are already done.
+
+## Cosmos chains
+
+For messages between a consensus EVM chain and a Cosmos chain, or between two Cosmos chains, `manualRelayToDestChain` above handles the route. For a message from a Cosmos chain, pass the message ID in the options, as `messageId`.
+
+Without the SDK, use `axelard`, with the flags from [Amplifier chains](#amplifier-chains) below:
+
+1. **From an EVM chain only:** confirm the source transaction on Axelar.
+
+   ```bash
+   axelard tx evm confirm-gateway-txs <source chain> <source tx hash> $AXELARD_FLAGS
+   ```
+
+1. Route the message to the destination chain, with its message ID and its exact original payload, in hex:
+
+   ```bash
+   axelard tx axelarnet route-message <message ID> <payload hex> $AXELARD_FLAGS
+   ```
+
+   The payload must hash to the one in the message, including the 4-byte version prefix for messages to Cosmos chains. Routing a message without tokens costs 1 uaxl, taken from your account.
+
+`route-message` also sends a message to a Cosmos chain again after a failed delivery, e.g. a transfer that timed out.
 
 ## Amplifier chains
 

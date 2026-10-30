@@ -6,7 +6,7 @@ The XRPL Blockchain is unique in comparison to other blockchains integrated with
 
 ## XRPL Gateway
 
-The integration leverages the [XRPL Multisig Signing](https://xrpl.org/docs/concepts/accounts/multi-signing) account type to facilitate token transfers. The [gateway](https://github.com/commonprefix/axelar-amplifier/blob/xrpl/contracts/xrpl-multisig-prover/src/xrpl_multisig.rs) is controlled by the [Axelar Verifier set](https://axelarscan.io/verifiers).
+The integration leverages the [XRPL Multisig Signing](https://xrpl.org/docs/concepts/accounts/multi-signing) account type to facilitate token transfers. The [gateway](https://github.com/axelarnetwork/axelar-amplifier-xrpl/tree/xrpl/contracts) is controlled by the [Axelar Verifier set](https://axelarscan.io/verifiers).
 
 The testnet address for the XRPL Gateway is: [rNrjh1KGZk2jBR3wPfAQnoidtFFYQKbQn2](https://testnet.xrpl.org/accounts/rNrjh1KGZk2jBR3wPfAQnoidtFFYQKbQn2).
 
@@ -22,7 +22,7 @@ The Gateway becomes the custodian of your token on XRPL while the transfer is ro
 
 ### Required memos
 
-You attach the following memos to the payment. Each field name goes into `MemoType` and the value into `MemoData`, both hex-encoded ASCII.
+You attach the following memos to the payment. Each field name goes into `MemoType` and the value into `MemoData`, both as the hex of a UTF-8 string, except `payload`, whose `MemoData` is the payload bytes themselves in hex. See [Memos](/gmp/integrations/xrpl#memos) for the rules that apply to every XRPL payment.
 
 1. `type`: always `interchain_transfer` for ITS transfers.
 1. `destination_address`: the recipient address on the destination chain, hex-encoded **without** any `0x` prefix.

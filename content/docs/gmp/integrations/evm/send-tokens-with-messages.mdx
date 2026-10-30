@@ -1,117 +1,107 @@
 ---
-title: "Send tokens with messages"
+title: "Messages with tokens"
+description: "Send gateway tokens with a GMP message between consensus chains."
 ---
 
-<Callout title="Consensus EVM chains only">
-  `callContractWithToken` sends a gateway token (such as axlUSDC) with a
-  message. It is only available through the gateway on consensus EVM chains,
-  not on Amplifier chains. To send any other token with a message, use the
-  [Interchain Token Service](/its/overview).
+<Callout emoji="⚠️" title="Consensus chains only">
+  `callContractWithToken` sends gateway tokens, such as axlUSDC, and exists only
+  on the gateway of [consensus chains](/gmp/integrations/evm/intro#consensus-and-amplifier-chains).
+  The gateway of Amplifier chains doesn't support it. To send tokens with a
+  message to or from any chain, use the [Interchain Token
+  Service](/its/interchain-token-executable).
 </Callout>
 
-<iframe
-  width="100%"
-  className="aspect-video"
-  src="https://www.youtube.com/embed/VkdRSrf4cmY"
-  title="YouTube video player"
-  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-  allowFullScreen
-></iframe>
+`callContractWithToken` sends a message and an amount of a gateway token in one call. On the destination chain, the gateway sends the tokens to your contract before calling it. Gateway tokens are listed under [Assets](/infrastructure/network/chains-and-contracts#assets).
 
-To call chain B from chain A and send some tokens supported by the gateway along the way, the user needs to call `callContractWithToken` on the gateway of chain A, specifying:
+## Example
 
-- The destination chain, which must be an EVM chain from [Chain names](https://axelarscan.io/resources/chains).
-- The destination contract address, which must inherit from `AxelarExecutableWithToken` defined in [AxelarExecutableWithToken.sol](https://github.com/axelarnetwork/axelar-gmp-sdk-solidity/blob/main/contracts/executable/AxelarExecutableWithToken.sol).
-- The payload `bytes` to pass to the destination contract.
-- The symbol of the token to transfer, which must be a supported asset ([Mainnet](/infrastructure/network/chains-and-contracts) | [Testnet](/infrastructure/network/chains-and-contracts)).
-- The amount of the token to transfer.
-
-Gateway tokens, as the name implies, are tokens supported at the [Axelar core gateway](https://github.com/axelarnetwork/axelar-cgp-solidity/blob/main/contracts/AxelarGateway.sol) layer. You can find the list of tokens supported [here](https://axelarscan.io/resources/assets?type=gateway).
-
-<Callout emoji="🚨">
-  **NOTE:** The security of your contracts, and the tokens passed between them,
-  is limited to the security of the chains they integrate with. Since
-  blockchains can have different security practices, we recommend doing due
-  diligence on all chains your contract will be deployed to.
-</Callout>
-
-As per the snippet below:
+This contract takes tokens from the caller and sends them to its copy on another chain, which splits them between a list of recipients:
 
 ```solidity
-function callContractWithToken(
-    string memory destinationChain,
-    string memory contractAddress,
-    bytes memory payload,
-    string memory symbol,
-    uint256 amount
-) external;
-```
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
 
-The `AxelarExecutableWithToken` has an `executeWithToken` function that will be triggered by the Axelar network on the destination chain after the `callContractWithToken` function has been executed on the source chain. This will validate the contract call and then invoke _your_ `_executeWithToken` method, where you should write any custom logic.
+import { AxelarExecutableWithToken } from '@axelar-network/axelar-gmp-sdk-solidity/contracts/executable/AxelarExecutableWithToken.sol';
+import { IAxelarGasService } from '@axelar-network/axelar-gmp-sdk-solidity/contracts/interfaces/IAxelarGasService.sol';
+import { IERC20 } from '@axelar-network/axelar-gmp-sdk-solidity/contracts/interfaces/IERC20.sol';
+import { SafeTokenTransfer, SafeTokenTransferFrom } from '@axelar-network/axelar-gmp-sdk-solidity/contracts/libs/SafeTransfer.sol';
 
-The destination contract will be authorized to transfer the ERC-20 identified by the `tokenSymbol`.
+contract Distributor is AxelarExecutableWithToken {
+    using SafeTokenTransfer for IERC20;
+    using SafeTokenTransferFrom for IERC20;
 
-```solidity
-function _executeWithToken(
-    bytes32 commandId,
-    string memory sourceChain,
-    string memory sourceAddress,
-    bytes calldata payload,
-    string memory tokenSymbol,
-    uint256 amount
-) internal virtual {}
-```
+    IAxelarGasService public immutable gasService;
 
-### Example Payload
+    constructor(address gateway_, address gasService_) AxelarExecutableWithToken(gateway_) {
+        gasService = IAxelarGasService(gasService_);
+    }
 
-Suppose our destination contract wants to forward the token it received to a recipient provided in the payload. It could be done this way.
+    function sendToMany(
+        string calldata destinationChain,
+        string calldata destinationAddress,
+        address[] calldata recipients,
+        string calldata symbol,
+        uint256 amount
+    ) external payable {
+        IERC20 token = IERC20(gatewayWithToken().tokenAddresses(symbol));
 
-```solidity
-function _executeWithToken(
-    bytes32 commandId,
-    string memory sourceChain,
-    string memory sourceAddress,
-    bytes calldata payload,
-    string memory tokenSymbol,
-    uint256 amount
-) internal virtual {
-    // decode recipient
-    address recipient = abi.decode(payload, (address));
-    // get ERC-20 address from gateway
-    address tokenAddress = gateway.tokenAddresses(tokenSymbol);
+        // Take the tokens from the caller, who approved this contract first
+        token.safeTransferFrom(msg.sender, address(this), amount);
+        // Let the gateway take them from this contract
+        token.approve(address(gateway()), amount);
 
-    // transfer received tokens to the recipient
-    IERC20(tokenAddress).transfer(recipient, amount);
+        bytes memory payload = abi.encode(recipients);
+
+        gasService.payNativeGasForContractCallWithToken{ value: msg.value }(
+            address(this),
+            destinationChain,
+            destinationAddress,
+            payload,
+            symbol,
+            amount,
+            msg.sender // refund address
+        );
+
+        gatewayWithToken().callContractWithToken(destinationChain, destinationAddress, payload, symbol, amount);
+    }
+
+    function _execute(bytes32, string calldata, string calldata, bytes calldata) internal pure override {
+        revert('Tokens required');
+    }
+
+    function _executeWithToken(
+        bytes32 /* commandId */,
+        string calldata /* sourceChain */,
+        string calldata /* sourceAddress */,
+        bytes calldata payload,
+        string calldata tokenSymbol,
+        uint256 amount
+    ) internal override {
+        // The gateway has already sent `amount` of the token to this contract
+        address[] memory recipients = abi.decode(payload, (address[]));
+        IERC20 token = IERC20(gatewayWithToken().tokenAddresses(tokenSymbol));
+
+        uint256 share = amount / recipients.length;
+        for (uint256 i = 0; i < recipients.length; i++) {
+            token.safeTransfer(recipients[i], share);
+        }
+    }
 }
 ```
 
-<Callout emoji="ℹ️">Ensure the payload is encoded `bytes`!</Callout>
+## Send
 
-The `payload` passed to `callContract` (and ultimately to the `_execute` and `_executeWithToken`) has type `bytes`. Use the ABI encoder/decoder convert your data to `bytes`.
+Before calling the gateway, your contract must hold the tokens and approve the gateway to take them: the gateway burns or locks them from `msg.sender`. Then:
 
-### Example of payload encoding in JavaScript (using ethers.js):
+1. Pay gas with `payNativeGasForContractCallWithToken`, with the same values as the call. See [Estimate and pay](/gmp/gas/estimate-and-pay).
+1. Call `callContractWithToken(destinationChain, destinationAddress, payload, symbol, amount)`.
 
-```jsx
-const { ethers } = require("ethers");
+`symbol` is the token's symbol on the source chain, and `tokenAddresses(symbol)` returns its address there. The call reverts if the symbol isn't a gateway token on that chain, if `amount` is 0, or if the gateway isn't approved for the amount.
 
-// encoding a string
-const payload = ethers.utils.defaultAbiCoder.encode(
-  ["string"],
-  ["Hello from contract A"],
-);
-```
+## Receive
 
-### Example of payload decoding in Solidity:
+Inherit `AxelarExecutableWithToken` and implement both `_executeWithToken` and `_execute`, which it also requires. A relayer calls `executeWithToken`, which validates the message and the token amount with the gateway. The gateway mints or releases the tokens to your contract, then your `_executeWithToken` runs with `tokenSymbol` (the symbol on this chain) and `amount`.
 
-```solidity
-function _execute(
-    bytes32 commandId,
-    string memory sourceChain,
-    string memory sourceAddress,
-    bytes calldata payload
-) internal override {
-    // decoding a string
-    string memory _message = abi.decode(payload, (string));
-}
-```
+The same rules apply as for [plain messages](/gmp/integrations/evm/gmp-messages#receive-a-message): check the sender if your logic depends on it, and remember that a revert leaves the message approved for a retry. In the example, anyone may send tokens to be split, so it doesn't check the sender.
 
+Each gateway token can have a limit on how much the gateway mints on a chain in each 6-hour window. If a message would go over it, execution reverts, and the message can be [executed again](/gmp/track-and-recover/recover-transactions#execute) in a later window.

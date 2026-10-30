@@ -2,7 +2,7 @@ import { docs } from 'collections/server';
 import { loader } from 'fumadocs-core/source';
 import { lucideIconsPlugin } from 'fumadocs-core/source/plugins/lucide-icons';
 import type * as PageTree from 'fumadocs-core/page-tree';
-import { docsContentRoute, docsRoute } from './shared';
+import { docsContentRoute, docsRoute, siteUrl } from './shared';
 
 // See https://fumadocs.dev/docs/headless/source-api for more info
 export const source = loader({
@@ -23,9 +23,26 @@ export function getPageMarkdownUrl(page: (typeof source)['$inferPage']) {
 export async function getLLMText(page: (typeof source)['$inferPage']) {
   const processed = await page.data.getText('processed');
 
-  return `# ${page.data.title} (${page.url})
+  return `# ${page.data.title} (${siteUrl}${page.url})
 
-${processed}`;
+${absoluteDocsLinks(processed)}
+
+---
+
+All pages of these docs, as Markdown: ${siteUrl}/llms.txt`;
+}
+
+// Points links to other docs pages at the absolute URL of their Markdown version,
+// so an agent reading a copied page can follow them.
+function absoluteDocsLinks(markdown: string): string {
+  return markdown.replace(
+    /\]\((\/[^)\s#]*)(#[^)\s]*)?\)/g,
+    (match, path: string, hash = '') => {
+      const page = source.getPage(path.split('/').filter(Boolean));
+      if (!page) return match;
+      return `](${siteUrl}${getPageMarkdownUrl(page).url}${hash})`;
+    },
+  );
 }
 
 // First page of a page-tree node: the folder's index, else its first page at any depth.

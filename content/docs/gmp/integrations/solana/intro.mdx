@@ -1,5 +1,6 @@
 ---
 title: "Solana Integration"
+description: "Send and receive GMP messages and interchain tokens from Solana programs."
 ---
 
 [Solana](https://solana.com/) is integrated with the Axelar Network via the [Amplifier](/infrastructure#a-cross-chain-protocol-amplifier). This enables cross-chain communication between Solana and [other blockchains](https://axelarscan.io/resources/chains) in the Axelar ecosystem.
@@ -10,6 +11,14 @@ Axelar provides two cross-chain protocols on Solana:
 2. **[Interchain Token Service (ITS)](/its/solana)** — Send and receive cross-chain token transfers, optionally with execution data attached. ITS also supports [deploying interchain tokens](/its/overview), registering canonical tokens, and linking existing tokens across chains.
 
 The core packages are in the [axelar-amplifier-solana](https://github.com/axelarnetwork/axelar-amplifier-solana) repository.
+
+<Callout title="Using an AI agent?">
+  Copy this page with **Copy Markdown** at the top and give it to your agent,
+  with what you want to build or the program you want to make cross-chain. The
+  copied page links to the Markdown of the other pages it refers to, so the
+  agent can read them too. Review what it writes, and test on testnet before
+  mainnet.
+</Callout>
 
 ## Architecture Overview
 
@@ -61,14 +70,14 @@ Add the following dependencies to your `Cargo.toml`:
 
 ```toml
 [dependencies]
-anchor-lang = "1.0.2"
+anchor-lang = "1.2.0"
 
 # For GMP (sending and receiving cross-chain messages)
-solana-axelar-gateway = { version = "1.1.1", features = ["cpi"] }
+solana-axelar-gateway = { version = "1.1.2", features = ["cpi"] }
 
 # For ITS (sending and receiving cross-chain token transfers)
-solana-axelar-its = { version = "1.1.1", features = ["cpi"] }
-anchor-spl = "1.0.2"
+solana-axelar-its = { version = "1.1.2", features = ["cpi"] }
+anchor-spl = "1.2.0"
 ```
 
 <Callout emoji="💡">

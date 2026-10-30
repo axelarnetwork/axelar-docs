@@ -43,7 +43,7 @@ const { success, transaction, error } = await sdk.addNativeGas(
 
 `addGas(chain, txHash, gasTokenAddress, estimatedGasUsed, options)` pays in an ERC-20 token instead.
 
-Other source chains have their own functions. Each returns a transaction for you to sign and send:
+Other source chains have their own functions. Except for Cosmos, each returns a transaction for you to sign and send:
 
 | Source chain | Function |
 | --- | --- |
@@ -51,6 +51,7 @@ Other source chains have their own functions. Each returns a transaction for you
 | Sui | `addGasToSuiChain({ messageId, gasParams, refundAddress, amount })` |
 | Stellar | `addGasToStellarChain({ messageId, senderAddress, spender, amount })` |
 | XRPL | `addGasToXrplChain({ messageId, senderAddress, amount })` |
+| Cosmos | `addGasToCosmosChain({ txHash, chain, token, gasLimit, sendOptions })`; sends the gas over IBC, and signs with `sendOptions.offlineSigner` |
 
 To add gas without the SDK, call the gas service directly. See [Add gas and refunds](/gmp/gas/add-gas-and-refunds#add-gas).
 

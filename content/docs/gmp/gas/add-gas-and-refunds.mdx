@@ -28,7 +28,7 @@ The ERC-20 variants take a `gasToken` and `gasFeeAmount`, and need an approval f
 
 ## Refunds
 
-Gas left after execution is refunded on the source chain to the refund address you set when paying gas ([how refunds are calculated](/gmp/gas/gas-service#refunds)). Refunds are sent in the token you paid with.
+Gas left after execution is refunded on the source chain to the refund address you set when paying gas ([how refunds are calculated](/gmp/gas/gas-service#refunds)). Refunds are sent in the token you paid with, except on [XRPL](/gmp/integrations/xrpl#refunds), where they're in XRP.
 
 The refund address is the last argument of every payment function:
 

@@ -1,8 +1,4 @@
 {
   "title": "Cosmos",
-  "pages": [
-    "overview",
-    "cosmos-2way-manual-relay",
-    "cross-chain-messaging-evm-to-cosmos"
-  ]
+  "pages": ["overview", "send-and-receive"]
 }
