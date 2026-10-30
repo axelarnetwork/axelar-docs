@@ -1,16 +1,7 @@
 ---
 title: "Interchain Token Service"
+icon: BookOpen
 ---
-
-<Callout type="warning" emoji="⭐" render="md">
-
-The [Token Whitelisting for Squid Router form](https://github.com/axelarnetwork/axelar-configs/blob/main/cli/wizard/commands/list-squid-token/README.md) is now live! Download the [axelar-configs](https://github.com/axelarnetwork/axelar-configs) repo, install dependencies, and `npm run wizard` on the command line to access
-the interactive form through the wizard.
-
-</Callout>
-
-<br />
-
 
 Web3 has gone cross-chain, with assets bridging between blockchains and
 developers deploying applications on multiple chains. However, connecting tokens
@@ -45,7 +36,7 @@ An additional [contract](https://github.com/axelarnetwork/interchain-token-servi
 
 ### Interchain Token Service Hub
 
-ITS hub is a central routing contract on the Axelar network itself that coordinates token operations across chains. The hub allows for a simpler centralized state for interlinked tokens compared to purely pairwise connections between ITS edged contracts. Further reading can be done [here](/its/its-hub/introduction)
+ITS hub is a central routing contract on the Axelar network itself that coordinates token operations across chains. The hub allows for a simpler centralized state for interlinked tokens compared to purely pairwise connections between ITS edged contracts. Further reading can be done [here](/its/how-it-works/its-hub/introduction)
 
 ### Interchain Token Service Portal
 
@@ -57,7 +48,7 @@ A separate [contract](https://github.com/axelarnetwork/interchain-token-service/
 
 ### Token Manager
 
-A contract that facilitates integration between your token and ITS. Each token integration on a given chain will have its own unique token manager. It is responsible for managing tokens, such as setting locking token balances, or setting flow limits, for interchain transfers. Further reading can be done [here](/its/token-manager)
+A contract that facilitates integration between your token and ITS. Each token integration on a given chain will have its own unique token manager. It is responsible for managing tokens, such as setting locking token balances, or setting flow limits, for interchain transfers. Further reading can be done [here](/its/how-it-works/token-manager)
 
 ### Interchain Token ID
 
@@ -70,13 +61,13 @@ A token deployed by ITS itself. Whereas a custom token deployed by an individual
 ## Guides
 
 <Cards>
-  <Card title="Create a new Interchain Token" href="/its/no-code">
+  <Card title="Create a new Interchain Token" href="/its/portal">
     Register and create new Interchain Token(s) using the Interchain Token Portal, or create custom Interchain Tokens.
   </Card>
-  <Card title="Programmatically create a new Interchain Token" href="/its/create-new-interchain-token">
+  <Card title="Programmatically create a new Interchain Token" href="/its/integrations/evm/create-new-interchain-token">
     Create new Interchain Tokens using code.
   </Card>
-  <Card title="Make an existing ERC-20 token an Interchain Token" href="/its/register-existing-token">
+  <Card title="Make an existing ERC-20 token an Interchain Token" href="/its/integrations/evm/register-existing-token">
     Upgrade existing tokens to canonical tokens, or link tokens deployed on multiple chains into Interchain Tokens.
   </Card>
   <Card title="Check out the Interchain Portal" href="http://interchain.axelar.dev/">

@@ -2,7 +2,7 @@
 title: "Coin Management"
 ---
 
-A centerpiece of the ITS design is the [Coin Management](https://github.com/axelarnetwork/axelar-cgp-sui/blob/main/move/interchain_token_service/sources/types/coin_management.move) module (akin to the [token manager](/its/token-manager) contract for EVM chains). The `Coin Management` module facilitates integrating the `coin` and `ITS`. It is created before registering a coin. It encapsulates key functionalities such as minting, burning, managing balances, and enforcing [flow limits](#flow-limit) for cross‐chain operations. 
+A centerpiece of the ITS design is the [Coin Management](https://github.com/axelarnetwork/axelar-cgp-sui/blob/main/move/interchain_token_service/sources/types/coin_management.move) module (akin to the [token manager](/its/how-it-works/token-manager) contract for EVM chains). The `Coin Management` module facilitates integrating the `coin` and `ITS`. It is created before registering a coin. It encapsulates key functionalities such as minting, burning, managing balances, and enforcing [flow limits](#flow-limit) for cross‐chain operations. 
 
 Coin managers can be initialized as either a [capped](#capped-management) manager or [locked](#locked-management). The module stores the following fields:
 
@@ -104,7 +104,7 @@ The function takes four parameters:
 
 1. `self`: The module that will be updated once the `flow_limit` is set.
 1. `channel`: A reference to the `Channel` object to derive the caller's address. The address is checked to ensure that only the authorized operator can change the `flow_limit`.
-1. `token_id`: The [token id](/its/sui/intro#token-id) representing the token to be set.
+1. `token_id`: The [token id](/its/integrations/sui/intro#token-id) representing the token to be set.
 1. `limit`: An optional unsigned 64-bit integer representing the new flow limit.
 
 ```rust
@@ -209,7 +209,7 @@ public fun transfer_operatorship<T>(
 
 ## Flow Limit
 
-A [Flow Limit](/its/flow-limit) represents the volume of a coin that can be transferred in/out of Sui via ITS. This limit plays a critical role in maintaining network integrity and security. When coins are sent out of Sui. The flow limit logic can be found in its own [Flow Limit Module](https://github.com/axelarnetwork/axelar-cgp-sui/blob/main/move/interchain_token_service/sources/types/flow_limit.move). The duration of a `flow_limit` is set to an `epoch`. An `epoch` lasts for six hours. It is calculated as follows:
+A [Flow Limit](/its/how-it-works/flow-limit) represents the volume of a coin that can be transferred in/out of Sui via ITS. This limit plays a critical role in maintaining network integrity and security. When coins are sent out of Sui. The flow limit logic can be found in its own [Flow Limit Module](https://github.com/axelarnetwork/axelar-cgp-sui/blob/main/move/interchain_token_service/sources/types/flow_limit.move). The duration of a `flow_limit` is set to an `epoch`. An `epoch` lasts for six hours. It is calculated as follows:
 
 ```rust
 const EPOCH_TIME: u64 = 6 * 60 * 60 * 1000;

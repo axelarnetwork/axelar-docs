@@ -18,7 +18,7 @@ Each of these types correspond to an `enum` value. When integrating with ITS, de
 
 ### Native Interchain Token
 
-For tokens that are deployed [directly from ITS itself](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/InterchainTokenFactory.sol#L133) they use a native interchain token manager. Tokens that are deployed via the [frontend portal](/its/no-code) also use this type of manager.
+For tokens that are deployed [directly from ITS itself](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/InterchainTokenFactory.sol#L133) they use a native interchain token manager. Tokens that are deployed via the [frontend portal](/its/portal) also use this type of manager.
 
 For more details checkout this [native interchain token example](https://github.com/axelarnetwork/axelar-examples/tree/main/examples/evm/its-interchain-token).
 
@@ -57,4 +57,4 @@ Token Managers handle the flow limits for a token's ITS integration. A `flowLimi
 For each cross-chain transaction that goes through ITS the `flowIn` & `flowAmount` amount are increased to track the [inflow](https://github.com/axelarnetwork/interchain-token-service/blob/0dad750abe866ec8e77ea43a2d1563335d14bd32/contracts/TokenHandler.sol#L33) and [outflow](https://github.com/axelarnetwork/interchain-token-service/blob/0dad750abe866ec8e77ea43a2d1563335d14bd32/contracts/TokenHandler.sol#L67) of tokens. To [set](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/token-manager/TokenManager.sol#L167) the `flowLimit` of a given token the caller must be a registered [flowLimiter](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/utils/RolesConstants.sol#L13).
 
 For more information on `flowLimit`, see [Flow Limit in Interchain Token Service
-](/its/flow-limit).
+](/its/how-it-works/flow-limit).

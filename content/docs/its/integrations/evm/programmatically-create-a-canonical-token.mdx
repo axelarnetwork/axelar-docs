@@ -4,7 +4,7 @@ title: "Programmatically Create a Canonical Interchain Token Using the Interchai
 
 If you have an [ERC-20](https://docs.openzeppelin.com/contracts/4.x/erc20) token on one or more blockchains and you want to make the token interoperable across chains, the [Interchain Token Service](/its/overview) provides a solution. You can transform an ERC-20 token into an Interchain Token by deploying a [token manager](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/token-manager/TokenManager.sol).
 
-If you would like to create a wrapped, bridgeable version of your ERC-20 token on other chains, you can register it as a [Canonical Interchain Token](/its/register-existing-token) using the [`InterchainTokenFactory`](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/InterchainTokenFactory.sol) [contract](https://etherscan.io/address/0x83a93500d23Fbc3e82B410aD07A6a9F7A0670D66).
+If you would like to create a wrapped, bridgeable version of your ERC-20 token on other chains, you can register it as a [Canonical Interchain Token](/its/integrations/evm/register-existing-token) using the [`InterchainTokenFactory`](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/InterchainTokenFactory.sol) [contract](https://etherscan.io/address/0x83a93500d23Fbc3e82B410aD07A6a9F7A0670D66).
 
 **Each token can only be registered once as a Canonical Interchain Token.** This ensures unique and streamlined token management across different blockchains. Though you can register your Canonical Interchain Token directly through the [Interchain Token Portal](https://testnet.interchain.axelar.dev/), there are times where you may want to do so programmatically, such as when you have already deployed a token on one chain and wish to deploy a wrapped version of that token on another chain.
 
@@ -368,7 +368,7 @@ Check the [Axelarscan testnet scanner](https://testnet.axelarscan.io/) to see if
 
 ## Transfer your token between chains
 
-Now that you have registered and deployed a Canonical Interchain Token, both locally to BSC and remotely to Avalanche Fuji, you can transfer between those two chains via the [`interchainTransfer()`](/its/interchain-transfer) method.
+Now that you have registered and deployed a Canonical Interchain Token, both locally to BSC and remotely to Avalanche Fuji, you can transfer between those two chains via the [`interchainTransfer()`](/its/integrations/evm/interchain-transfer) method.
 
 ### Initiate a remote token transfer
 

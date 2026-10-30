@@ -1,0 +1,5 @@
+{
+  "title": "How it works",
+  "icon": "Lightbulb",
+  "pages": ["glossary", "token-manager", "its-hub", "minter-operator-roles", "flow-limit"]
+}

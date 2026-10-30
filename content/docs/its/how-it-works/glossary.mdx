@@ -4,7 +4,7 @@ title: "Interchain Token Glossary"
 
 ## Interchain Token
 
-An Interchain Token is an ERC-20 token that can be transferred between blockchains, preserving native token qualities. At the core, an Interchain Token is an ERC-20 contract on a public blockchain secured by a dynamic validator set. If this contract implements the [`IInterchainToken`](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/interfaces/IInterchainToken.sol) interface, it will have knowledge of its own [Token Manager](/its/glossary#token-manager) and will contain all of the Token Manager’s transfer methods. If it does not implement this interface, token transfers must be done through explicit function calls on the Token Manager.
+An Interchain Token is an ERC-20 token that can be transferred between blockchains, preserving native token qualities. At the core, an Interchain Token is an ERC-20 contract on a public blockchain secured by a dynamic validator set. If this contract implements the [`IInterchainToken`](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/interfaces/IInterchainToken.sol) interface, it will have knowledge of its own [Token Manager](/its/how-it-works/glossary#token-manager) and will contain all of the Token Manager’s transfer methods. If it does not implement this interface, token transfers must be done through explicit function calls on the Token Manager.
 
 ## Interchain Token Service
 
@@ -14,11 +14,11 @@ The Interchain Token Service is a [smart contract](https://github.com/axelarnetw
 
 A canonical Interchain Token is a token originally deployed on one chain that now has interchain capabilities through ITS. The Interchain Token Service wraps the token on the original chain to give it these capabilities, then duplicates the wrapped original on all other chains. This standardization ensures consistent behavior and enables interoperability between blockchains, allowing cross-chain transactions and interactions within blockchain networks that support various chains.
 
-Every ERC-20 token can only have one canonical chain. It will be deployed to all other chains as a [standardized token](/its/glossary#standardized-token).
+Every ERC-20 token can only have one canonical chain. It will be deployed to all other chains as a [standardized token](/its/how-it-works/glossary#standardized-token).
 
 ## Custom Token
 
-A custom token is an ERC-20 token that is designed to serve specific use cases within the blockchain ecosystem. Unlike [standardized tokens](/its/glossary#standardized-token), custom tokens are highly customizable, allowing their creators to define unique features, functionalities, and rules. For example, a standardized token will have the same name and symbol on all chains, but a custom token can have a different name and symbol on each chain. Custom tokens can optionally implement the [`IInterchainToken`](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/interfaces/IInterchainToken.sol) interface for transfer methods directly on the ERC-20 contract.
+A custom token is an ERC-20 token that is designed to serve specific use cases within the blockchain ecosystem. Unlike [standardized tokens](/its/how-it-works/glossary#standardized-token), custom tokens are highly customizable, allowing their creators to define unique features, functionalities, and rules. For example, a standardized token will have the same name and symbol on all chains, but a custom token can have a different name and symbol on each chain. Custom tokens can optionally implement the [`IInterchainToken`](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/interfaces/IInterchainToken.sol) interface for transfer methods directly on the ERC-20 contract.
 
 ## Standardized Token
 
@@ -32,8 +32,8 @@ A token ID is a token’s unique identifier within a blockchain network. It rema
 
 A [`TokenManager`](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/token-manager/TokenManager.sol) is a contract that is responsible for managing interchain tokens. There are two types of token managers:
 
-- [Lock/Unlock](/its/glossary#lockunlock) — can lock and release token supply
-- [Mint/Burn](/its/glossary#mintburn) — can mint or burn tokens
+- [Lock/Unlock](/its/how-it-works/glossary#lockunlock) — can lock and release token supply
+- [Mint/Burn](/its/how-it-works/glossary#mintburn) — can mint or burn tokens
 
 Token Managers must be designated either Lock/Unlock or Mint/Burn.
 

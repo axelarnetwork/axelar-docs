@@ -2,17 +2,17 @@
 title: "Register Coin"
 ---
 
-ITS allows you to make canonical registrations for existing coins on Sui. There are different ways to register the coin, depending on how the coin is being integrated. For canonical integrations where the coin on Sui will be connected to a wrapped interchain token on a remote chain you will register the coin on Sui via either [register_coin_from_info](#register-coin-from-info) or [register_coin_from_metadata](#register-coin-from-metadata). Once your coin is registered on Sui you can use [deploy remote interchain token](#deploy-remote-interchain-token) to deploy a wrapped version of the coin on a remote chain. For a detailed walkthrough on how to do this you can follow this [guide](/its/sui/register-existing-coin-guide).
+ITS allows you to make canonical registrations for existing coins on Sui. There are different ways to register the coin, depending on how the coin is being integrated. For canonical integrations where the coin on Sui will be connected to a wrapped interchain token on a remote chain you will register the coin on Sui via either [register_coin_from_info](#register-coin-from-info) or [register_coin_from_metadata](#register-coin-from-metadata). Once your coin is registered on Sui you can use [deploy remote interchain token](#deploy-remote-interchain-token) to deploy a wrapped version of the coin on a remote chain. For a detailed walkthrough on how to do this you can follow this [guide](/its/integrations/sui/register-existing-coin-guide).
 
 ## Register Coin From Info
 
-If you want to register your coin by explicitly passing in its information you will need to register your coin via the `register_coin_from_info()` function. The function returns a new [TokenId](/its/sui/intro#token-id) and takes five parameters:
+If you want to register your coin by explicitly passing in its information you will need to register your coin via the `register_coin_from_info()` function. The function returns a new [TokenId](/its/integrations/sui/intro#token-id) and takes five parameters:
 
 1. `its`: The ITS object that will be updated once the new coin is registered.
 1. `name`: The name of the coin being registered.
 1. `symbol`: The symbol of the coin being registered.
 1. `decimals`: The amount of decimals the coin being registered has.
-1. `coin_management`: The type of [management](/its/sui/coin-management) the coin is registered with.
+1. `coin_management`: The type of [management](/its/integrations/sui/coin-management) the coin is registered with.
 
 The function is defined as follows:
 
@@ -28,11 +28,11 @@ public(package) fun register_coin_from_info<T>(
 
 ## Register Coin from Metadata
 
-If you do not want to explicitly pass in your coin's info, then you can register the coin via `register_coin_from_metadata()` function. Whereas the previous `register_coin_from_info()` may be simpler to use, this coin registration prevents against human error, for example, a typo in the symbol or name since the coin parameters are not validated in any way. The function returns a new [TokenId](/its/sui/intro#token-id) and takes three parameters:
+If you do not want to explicitly pass in your coin's info, then you can register the coin via `register_coin_from_metadata()` function. Whereas the previous `register_coin_from_info()` may be simpler to use, this coin registration prevents against human error, for example, a typo in the symbol or name since the coin parameters are not validated in any way. The function returns a new [TokenId](/its/integrations/sui/intro#token-id) and takes three parameters:
 
 1. `its`: The ITS object that will be updated once the new coin is registered.
 1. `metadata`: A generic reference to the coin's metadata that contains the coins name, symbol, and decimals.
-1. `coin_management`: The type of [management](/its/sui/coin-management) the coin is registered with.
+1. `coin_management`: The type of [management](/its/integrations/sui/coin-management) the coin is registered with.
 
 ```rust
 public(package) fun register_coin_from_metadata<T>(
@@ -53,7 +53,7 @@ If you are starting from scratch and want to deploy a fresh new token with cross
 The function takes three parameters:
 
 1. `its`: The ITS object that will be updated once the new token is registered.
-1. `token_id`: The [token id](/its/sui/intro#token-id) representing the token to be deployed on the destination chain.
+1. `token_id`: The [token id](/its/integrations/sui/intro#token-id) representing the token to be deployed on the destination chain.
 1. `destination_chain`: The name of the destination chain to deploy the token on.
 
 ```rust

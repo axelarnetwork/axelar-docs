@@ -4,6 +4,7 @@
   "pages": [
     "examples-and-tutorials",
     "axelarjs-sdk",
+    "axlusdc",
     "references"
   ]
 }
