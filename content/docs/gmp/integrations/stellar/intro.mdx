@@ -52,7 +52,7 @@ The `pay_gas()` takes seven parameters.
 1. `token`: The token being used for payment
    {/* 1. `metadata`: Data sent along with the cross-chain tx <<<<<< CONFIRM */}
 
-Note: The expected [token](https://github.com/axelarnetwork/axelar-cgp-stellar/blob/main/packages/axelar-stellar-std/src/types.rs#L5) is a struct type that requires an `address` and `amount`.
+Note: The expected [token](https://github.com/axelarnetwork/axelar-amplifier-stellar/blob/main/packages/stellar-axelar-std/src/types.rs#L6) is a struct type that requires an `address` and `amount`.
 
 ```rust
 fn pay_gas(
@@ -69,7 +69,7 @@ fn pay_gas(
 
 ## Stellar Executable
 
-The [Executable](https://github.com/axelarnetwork/axelar-cgp-stellar/blob/main/contracts/axelar-gateway/src/executable.rs#L9) is a Rust Trait (not an individual contract) that will be used to execute a cross-chain call on a Stellar dapp when Stellar is the receiving chain of a cross-chain message.
+The [Executable](https://github.com/axelarnetwork/axelar-amplifier-stellar/blob/main/contracts/stellar-axelar-gateway/src/executable.rs#L11) is a Rust Trait (not an individual contract) that will be used to execute a cross-chain call on a Stellar dapp when Stellar is the receiving chain of a cross-chain message.
 
 ### Execute
 
@@ -95,7 +95,7 @@ fn execute(
 
 ### Validate & Validate Message
 
-The `validate()` function on the `Executable` will trigger `validate_message()` that is [defined](https://github.com/axelarnetwork/axelar-cgp-stellar/blob/main/contracts/axelar-gateway/src/contract.rs#L128) on the `Gateway`.
+The `validate()` function on the `Executable` will trigger `validate_message()` that is [defined](https://github.com/axelarnetwork/axelar-amplifier-stellar/blob/main/contracts/stellar-axelar-gateway/src/contract.rs#L98) on the `Gateway`.
 
 The `validate()` function takes five parameters.
 
