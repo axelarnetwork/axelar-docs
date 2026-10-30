@@ -1,11 +1,5 @@
 {
   "title": "Gas",
   "icon": "Fuel",
-  "pages": [
-    "gas-service",
-    "estimate-and-pay",
-    "pricing",
-    "on-chain-estimation",
-    "add-gas-and-refunds"
-  ]
+  "pages": ["gas-service", "estimate-and-pay", "add-gas-and-refunds"]
 }

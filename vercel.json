@@ -777,12 +777,12 @@
     },
     {
       "source": "/dev/gas-service/pricing(/)?",
-      "destination": "/gmp/gas/pricing",
+      "destination": "/gmp/gas/gas-service#what-the-fee-covers",
       "permanent": true
     },
     {
       "source": "/dev/gas-service/on-chain-estimation(/)?",
-      "destination": "/gmp/gas/on-chain-estimation",
+      "destination": "/gmp/gas/estimate-and-pay#on-chain-estimation",
       "permanent": true
     },
     {
@@ -1042,7 +1042,7 @@
     },
     {
       "source": "/dev/gas-service/on-chain(/)?",
-      "destination": "/gmp/gas/on-chain-estimation",
+      "destination": "/gmp/gas/estimate-and-pay#on-chain-estimation",
       "permanent": true
     },
     {
@@ -1157,7 +1157,7 @@
     },
     {
       "source": "/dev/general-message-passing/gas-services/pricing(/)?",
-      "destination": "/gmp/gas/pricing",
+      "destination": "/gmp/gas/gas-service#what-the-fee-covers",
       "permanent": true
     },
     {
@@ -1177,7 +1177,7 @@
     },
     {
       "source": "/dev/reference/pricing(/)?",
-      "destination": "/gmp/gas/pricing",
+      "destination": "/gmp/gas/gas-service#what-the-fee-covers",
       "permanent": true
     },
     {
@@ -2112,12 +2112,12 @@
     },
     {
       "source": "/gmp/gas-service/pricing(/)?",
-      "destination": "/gmp/gas/pricing",
+      "destination": "/gmp/gas/gas-service#what-the-fee-covers",
       "permanent": true
     },
     {
       "source": "/gmp/gas-service/on-chain-estimation(/)?",
-      "destination": "/gmp/gas/on-chain-estimation",
+      "destination": "/gmp/gas/estimate-and-pay#on-chain-estimation",
       "permanent": true
     },
     {

@@ -197,7 +197,7 @@ let message_ticket = gateway::prepare_message(
 
 The ticket will contain all the relevant parameters needed when triggering a cross-chain message.
 
-Next, you can interact with the `GasService` to pay for the entirety of the cross chain call from the source chain. This can be done by triggering the `pay_gas()` function. The gas payment will be picked up by an Axelar relayer and eventually used to pay for the [execution fee](/gmp/gas/estimate-and-pay#execution-fee) on the destination chain. 
+Next, you can interact with the `GasService` to pay for the entirety of the cross chain call from the source chain. This can be done by triggering the `pay_gas()` function. The gas payment will be picked up by an Axelar relayer and eventually used to pay for the [execution fee](/gmp/gas/gas-service#what-the-fee-covers) on the destination chain. 
 
 ```rust
 gas_service.pay_gas(
