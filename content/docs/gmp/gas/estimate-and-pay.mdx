@@ -1,18 +1,18 @@
 ---
 title: "Estimate and pay gas"
-description: "Get a gas estimate off-chain or on-chain, and pay it to the gas service."
+description: "Estimate the gas fee for a message and pay it to the gas service."
 ---
 
 Paying gas takes two steps:
 
-1. Estimate the fee for the message, either [off-chain](#off-chain-estimation) or [on-chain](#on-chain-estimation).
+1. [Estimate the fee](#estimate-the-fee) for the message, with the AxelarJS SDK or the Axelarscan API.
 1. Pay it to the gas service on the source chain, in the same transaction and before calling the gateway ([pay gas](#pay-gas)).
 
 Both need the execution gas limit: the gas your destination contract's `_execute` uses. Measure it on a testnet or a [fork](/gmp/track-and-recover/fork-mainnet), and add some margin.
 
-## Off-chain estimation
+## Estimate the fee
 
-Use off-chain estimation when your app has a frontend or backend that can query an API before sending the transaction. It is more accurate than the on-chain estimate.
+Estimate the fee off-chain, right before sending the transaction, since gas prices change.
 
 ### With the AxelarJS SDK
 
@@ -52,45 +52,6 @@ curl -X POST https://api.axelarscan.io/gmp/estimateGasFee \
 It returns the total fee in wei. Add `"showDetailedFees": true` for the breakdown, and `"gasMultiplier"` or `"minGasPrice"` as with the SDK. For testnet, use `https://testnet.api.axelarscan.io`.
 
 The detailed response includes `totalFee`, its parts (`baseFee`, `executionFeeWithMultiplier`, `expressFee`) and `isExpressSupported`, which tells you whether Express is available between the two chains. For rollup destinations, `gasLimitWithL1Fee` is the gas limit with the L1 data fee included.
-
-## On-chain estimation
-
-Use on-chain estimation when nothing off-chain is involved, e.g. a contract or a bot that sends messages on its own. The gas service stores gas prices for each destination chain, updated by Axelar, and estimates from them.
-
-The on-chain estimate includes a large buffer and is usually well above the off-chain one. The unused part is [refunded](/gmp/gas/gas-service#refunds).
-
-Call `estimateGasFee` on the gas service ([`IInterchainGasEstimation`](https://github.com/axelarnetwork/axelar-gmp-sdk-solidity/blob/main/contracts/interfaces/IInterchainGasEstimation.sol)):
-
-```solidity
-function estimateGasFee(
-    string calldata destinationChain,
-    string calldata destinationAddress,
-    bytes calldata payload,
-    uint256 executionGasLimit,
-    bytes calldata params // pass empty bytes
-) external view returns (uint256 gasEstimate);
-```
-
-The result is in the source chain's native token. It includes the L1 data fee for rollup destinations, but not the Express fee.
-
-Then pay with `payGas`, which takes the gas limit. With `estimateOnChain` set to `true`, it reverts with `InsufficientGasPayment` if `msg.value` is below the estimate:
-
-```solidity
-function payGas(
-    address sender,
-    string calldata destinationChain,
-    string calldata destinationAddress,
-    bytes calldata payload,
-    uint256 executionGasLimit,
-    bool estimateOnChain,
-    address refundAddress,
-    bytes calldata params // pass empty bytes
-) external payable;
-```
-
-`getGasInfo(chain)` returns the stored gas prices for a destination chain.
-
-The [call-contract-gas-estimation](https://github.com/axelarnetwork/axelar-examples/tree/main/examples/evm/call-contract-gas-estimation) example puts this together.
 
 ## Pay gas
 
@@ -143,7 +104,6 @@ All are on [`IAxelarGasService`](https://github.com/axelarnetwork/axelar-gmp-sdk
 | Message | Native token | ERC-20 |
 | --- | --- | --- |
 | `callContract` | `payNativeGasForContractCall` | `payGasForContractCall` |
-| `callContract` with on-chain estimation | `payGas` | |
 | `callContractWithToken` (consensus chains only) | `payNativeGasForContractCallWithToken` | `payGasForContractCallWithToken` |
 | [Express](/gmp/integrations/evm/express) | `payNativeGasForExpressCall` | `payGasForExpressCall` |
 | Express with token | `payNativeGasForExpressCallWithToken` | `payGasForExpressCallWithToken` |
