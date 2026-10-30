@@ -1,8 +1,4 @@
 {
   "title": "Sui",
-  "pages": [
-    "intro",
-    "gmp-contracts",
-    "gmp-tutorial"
-  ]
+  "pages": ["intro", "gmp-messages", "gmp-contracts"]
 }

@@ -77,6 +77,27 @@ The `validate_message` function:
 2. Verifies the payload hash matches the approved message.
 3. Calls the Gateway's `validate_message` instruction via CPI, which marks the message as `executed`.
 
+### Check the sender
+
+<Callout emoji="⚠️" title="Validation doesn't check who sent the message">
+  The Gateway proves that a message came through Axelar. It doesn't prove that
+  it came from your contract on the other chain: anyone can send a message to
+  your program. Unless your program accepts messages from anyone, check the
+  message's source chain and source address.
+</Callout>
+
+The source chain is `message.cc_id.chain` and the source address is `message.source_address`, a string in the source chain's format: EVM addresses arrive [EIP-55](https://eips.ethereum.org/EIPS/eip-55) checksummed. Compare them with values your program stores, e.g. before calling `validate_message`, which takes the message:
+
+```rust
+require!(
+    message.cc_id.chain == ctx.accounts.my_state.trusted_chain
+        && message.source_address == ctx.accounts.my_state.trusted_address,
+    MyError::UntrustedSender
+);
+```
+
+If your handler fails, the whole transaction reverts, including the validation, so the message stays approved and can be executed again.
+
 ### Step 3: Register the Instruction
 
 The Axelar relayer looks for a specific instruction discriminator when calling your program. You must either name the instruction exactly `execute` (so Anchor generates the matching discriminator), or use the `EXECUTE_IX_DISC` constant to override the discriminator on a differently-named instruction.

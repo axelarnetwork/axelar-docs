@@ -697,7 +697,7 @@
     },
     {
       "source": "/dev/general-message-passing/cosmos-gmp/cosmos-2way-manual-relay(/)?",
-      "destination": "/gmp/track-and-recover/manual-relay#cosmos-chains",
+      "destination": "/gmp/track-and-recover/manual-relay#2-route",
       "permanent": true
     },
     {
@@ -717,7 +717,7 @@
     },
     {
       "source": "/dev/general-message-passing/sui/gmp-tutorial(/)?",
-      "destination": "/gmp/integrations/sui/gmp-tutorial",
+      "destination": "/gmp/integrations/sui/gmp-messages",
       "permanent": true
     },
     {
@@ -817,7 +817,7 @@
     },
     {
       "source": "/resources/axelar-commandid(/)?",
-      "destination": "/gmp/how-it-works/message-verification#the-commandid",
+      "destination": "/gmp/how-it-works/message-verification#command-id",
       "permanent": true
     },
     {
@@ -1417,12 +1417,12 @@
     },
     {
       "source": "/dev/general-message-passing/axelar-commandid(/)?",
-      "destination": "/gmp/how-it-works/message-verification#the-commandid",
+      "destination": "/gmp/how-it-works/message-verification#command-id",
       "permanent": true
     },
     {
       "source": "/dev/cosmos-gmp/cosmos-2way-manual-relay(/)?",
-      "destination": "/gmp/track-and-recover/manual-relay#cosmos-chains",
+      "destination": "/gmp/track-and-recover/manual-relay#2-route",
       "permanent": true
     },
     {
@@ -1437,7 +1437,7 @@
     },
     {
       "source": "/dev/general-message-passing/sui/gmp-example(/)?",
-      "destination": "/gmp/integrations/sui/gmp-tutorial",
+      "destination": "/gmp/integrations/sui/gmp-messages",
       "permanent": true
     },
     {
@@ -2042,7 +2042,7 @@
     },
     {
       "source": "/gmp/axelar-commandid(/)?",
-      "destination": "/gmp/how-it-works/message-verification#the-commandid",
+      "destination": "/gmp/how-it-works/message-verification#command-id",
       "permanent": true
     },
     {
@@ -2177,7 +2177,7 @@
     },
     {
       "source": "/gmp/cosmos/cosmos-2way-manual-relay(/)?",
-      "destination": "/gmp/track-and-recover/manual-relay#cosmos-chains",
+      "destination": "/gmp/track-and-recover/manual-relay#2-route",
       "permanent": true
     },
     {
@@ -2187,7 +2187,7 @@
     },
     {
       "source": "/gmp/sui/gmp-tutorial(/)?",
-      "destination": "/gmp/integrations/sui/gmp-tutorial",
+      "destination": "/gmp/integrations/sui/gmp-messages",
       "permanent": true
     },
     {
@@ -2247,12 +2247,17 @@
     },
     {
       "source": "/gmp/integrations/cosmos/cosmos-2way-manual-relay(/)?",
-      "destination": "/gmp/track-and-recover/manual-relay#cosmos-chains",
+      "destination": "/gmp/track-and-recover/manual-relay#2-route",
       "permanent": true
     },
     {
       "source": "/gmp/integrations/cosmos/cross-chain-messaging-evm-to-cosmos(/)?",
       "destination": "/gmp/integrations/cosmos/send-and-receive",
+      "permanent": true
+    },
+    {
+      "source": "/gmp/integrations/sui/gmp-tutorial(/)?",
+      "destination": "/gmp/integrations/sui/gmp-messages",
       "permanent": true
     }
   ],

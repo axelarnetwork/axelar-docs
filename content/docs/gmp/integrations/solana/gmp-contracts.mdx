@@ -45,7 +45,7 @@ pub struct GatewayConfig {
 
 #### Incoming Message
 
-The [Incoming Message](https://github.com/axelarnetwork/axelar-amplifier-solana/blob/main/programs/solana-axelar-gateway/src/state/incoming_message.rs) account is used for tracking individual message state. This PDA is [derived](https://github.com/axelarnetwork/axelar-amplifier-solana/blob/main/programs/solana-axelar-gateway/src/state/incoming_message.rs#L19) via the [command_id](/gmp/how-it-works/message-verification#the-commandid) of the message. This PDA is used to track the status of the message (status of `approved` or `executed`) and the hash of the message and payload.
+The [Incoming Message](https://github.com/axelarnetwork/axelar-amplifier-solana/blob/main/programs/solana-axelar-gateway/src/state/incoming_message.rs) account is used for tracking individual message state. This PDA is [derived](https://github.com/axelarnetwork/axelar-amplifier-solana/blob/main/programs/solana-axelar-gateway/src/state/incoming_message.rs#L19) via the [command_id](/gmp/how-it-works/message-verification#command-id) of the message. This PDA is used to track the status of the message (status of `approved` or `executed`) and the hash of the message and payload.
 
 ```rust
 pub struct IncomingMessage {
