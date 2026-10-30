@@ -1,0 +1,153 @@
+---
+title: "Relay manually"
+description: "Verify, route and approve a GMP message yourself when no relayer picks it up."
+---
+
+Relayers normally move a message through Axelar and approve it on the destination chain. If a message stays at **Confirm** or **Approve** on Axelarscan, or shows **Failed to Confirm**, you can do those steps yourself. Every step is permissionless: you only pay the transaction fees.
+
+How you relay depends on whether the source and destination are [consensus or Amplifier chains](/infrastructure#a-cross-chain-protocol-amplifier):
+
+- **Consensus chains**: Axelarscan or the AxelarJS SDK do it in one call.
+- **Amplifier chains**: you call Axelar's Amplifier contracts, then submit the proof to the destination gateway.
+
+Messages between a consensus chain and an Amplifier chain aren't covered here.
+
+Once the message is approved, [execute it](/gmp/track-and-recover/recover-transactions#execute) if no relayer does.
+
+<Callout title="Using an AI agent?">
+  Copy this page with **Copy Markdown** at the top, and give it to your agent
+  with the transaction hash or message ID. It can look up the message through
+  the Axelarscan API and run these steps for you. Review every transaction before it's signed, and
+  don't paste private keys into a chat: let the agent use a wallet or keystore
+  you control.
+</Callout>
+
+## Consensus chains
+
+**On Axelarscan:** open the message, and click **Approve**.
+
+**With the SDK:**
+
+```ts
+import { AxelarGMPRecoveryAPI, Environment } from '@axelar-network/axelarjs-sdk';
+
+const sdk = new AxelarGMPRecoveryAPI({ environment: Environment.MAINNET });
+
+const { success, error } = await sdk.manualRelayToDestChain(
+  txHash, // source transaction
+  undefined, // log index, if the transaction sent several messages
+  undefined, // event index
+  {
+    escapeAfterConfirm: false, // continue past confirmation to approval
+    evmWalletDetails: { privateKey: '0x...' }, // pays for the approval; defaults to the browser wallet
+  },
+);
+```
+
+This confirms the source transaction on Axelar, signs the approval and sends it to the destination gateway, skipping the steps that are already done.
+
+## Amplifier chains
+
+You need `axelard` ([install it](/infrastructure/node/setup)), an Axelar account with some AXL for fees, and the addresses of the Amplifier contracts for the source and destination chains. The addresses are in [`mainnet.json`](https://github.com/axelarnetwork/axelar-contract-deployments/blob/main/axelar-chains-config/info/mainnet.json) ([`testnet.json`](https://github.com/axelarnetwork/axelar-contract-deployments/blob/main/axelar-chains-config/info/testnet.json)), under `axelar.contracts`:
+
+| Contract | Key | Used in |
+| --- | --- | --- |
+| Source chain's gateway | `Gateway.<source chain>.address` | Steps 1 and 3 |
+| Source chain's voting verifier | `VotingVerifier.<source chain>.address` | Step 2 |
+| Destination chain's multisig prover | `MultisigProver.<destination chain>.address` | Step 4 |
+
+XRPL uses different contracts (`XrplGateway`, `XrplVotingVerifier`, `XrplMultisigProver`) and isn't covered here.
+
+Set up the common flags:
+
+```bash
+AXELARD_FLAGS="--from <key> --node https://axelar-rpc.polkachu.com:443 --chain-id axelar-dojo-1 --gas auto --gas-adjustment 1.5 --gas-prices 0.007uaxl"
+```
+
+See [Endpoints](/infrastructure/network/endpoints) for other RPCs.
+
+### Build the message
+
+Take the values from the message on Axelarscan, or from the [API](/gmp/track-and-recover/transaction-states#axelarscan-api):
+
+```bash
+MSG='{
+  "cc_id": { "source_chain": "<call.chain>", "message_id": "<message_id>" },
+  "source_address": "<call.returnValues.sender>",
+  "destination_chain": "<call.returnValues.destinationChain>",
+  "destination_address": "<call.returnValues.destinationContractAddress>",
+  "payload_hash": "<call.returnValues.payloadHash, without 0x>"
+}'
+```
+
+### 1. Verify
+
+Ask verifiers to check the message on the source chain:
+
+```bash
+axelard tx wasm execute <source gateway> "{\"verify_messages\":[$MSG]}" $AXELARD_FLAGS
+```
+
+This starts a poll. Copy `poll_id` from the `wasm-messages_poll_started` event in the transaction.
+
+### 2. End the poll
+
+Verifiers vote within the poll's voting period, a few minutes. Then end it:
+
+```bash
+axelard tx wasm execute <source voting verifier> '{"end_poll":{"poll_id":"<poll_id>"}}' $AXELARD_FLAGS
+```
+
+Check that the message was verified. The status must be `succeeded_on_source_chain`:
+
+```bash
+axelard q wasm contract-state smart <source voting verifier> "{\"messages_status\":[$MSG]}" --node <rpc>
+```
+
+### 3. Route
+
+Send the verified message to the destination chain:
+
+```bash
+axelard tx wasm execute <source gateway> "{\"route_messages\":[$MSG]}" $AXELARD_FLAGS
+```
+
+### 4. Construct the proof
+
+Ask the destination chain's verifiers to sign the message:
+
+```bash
+axelard tx wasm execute <destination multisig prover> \
+  '{"construct_proof":[{"source_chain":"<source chain>","message_id":"<message_id>"}]}' $AXELARD_FLAGS
+```
+
+Copy `multisig_session_id` from the `wasm-proof_under_construction` event. Then query the proof until its status is `completed`:
+
+```bash
+axelard q wasm contract-state smart <destination multisig prover> \
+  '{"proof":{"multisig_session_id":"<multisig_session_id>"}}' --node <rpc>
+```
+
+### 5. Submit the proof
+
+The completed proof contains `execute_data`, the transaction data that approves the message on the destination gateway.
+
+On an **EVM** destination, send it to the gateway as calldata:
+
+```bash
+cast send <destination gateway> 0x<execute_data> --rpc-url <destination RPC> --private-key <key>
+```
+
+For other destinations, use the scripts in [axelar-contract-deployments](https://github.com/axelarnetwork/axelar-contract-deployments), with the multisig session ID:
+
+| Destination | Command |
+| --- | --- |
+| EVM | `ts-node evm/gateway.js -n <chain> --action submitProof --multisigSessionId <id>` |
+| Sui | `ts-node sui/gateway.js submitProof <id>` |
+| Stellar | `ts-node stellar/gateway.js submit-proof <id>` |
+
+The message is now approved. On EVM gateways, its command ID is `keccak256("<source chain>_<message_id>")`, which you need to [execute it](/gmp/track-and-recover/recover-transactions#execute) from the command line:
+
+```bash
+cast keccak "<source chain>_<message_id>"
+```

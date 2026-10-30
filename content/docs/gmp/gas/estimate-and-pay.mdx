@@ -8,7 +8,7 @@ Paying gas takes two steps:
 1. [Estimate the fee](#estimate-the-fee) for the message, with the AxelarJS SDK or the Axelarscan API.
 1. Pay it to the gas service on the source chain, in the same transaction and before calling the gateway ([pay gas](#pay-gas)).
 
-Both need the execution gas limit: the gas your destination contract's `_execute` uses. Measure it on a testnet or a [fork](/gmp/track-and-recover/fork-mainnet), and add some margin.
+Both need the execution gas limit: the gas your destination contract's `_execute` uses. Measure it on a testnet or a [fork](/gmp/track-and-recover/debug-failed-execution#test-a-fix-locally), and add some margin.
 
 ## Estimate the fee
 
@@ -37,7 +37,7 @@ Optional parameters help messages that can't afford to get stuck:
 - `executeData` is the destination transaction's calldata. For rollup destinations it makes the L1 data fee more accurate; without it, a placeholder is used.
 - `gmpParams.showDetailedFees: true` returns the breakdown instead of a total.
 
-See [AxelarJS SDK](/gmp/axelarjs-sdk#estimategasfee) for every parameter.
+See [AxelarJS SDK](/gmp/resources/axelarjs-sdk#estimategasfee) for every parameter.
 
 ### With the Axelarscan API
 

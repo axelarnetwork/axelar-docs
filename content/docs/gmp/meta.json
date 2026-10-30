@@ -8,7 +8,6 @@
     "integrations",
     "gas",
     "track-and-recover",
-    "axelarjs-sdk",
     "resources"
   ]
 }

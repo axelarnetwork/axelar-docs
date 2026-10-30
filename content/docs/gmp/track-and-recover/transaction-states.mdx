@@ -1,109 +1,73 @@
 ---
-title: "Transaction states"
-description: "Follow a GMP message through each stage, and spot where it got stuck."
+title: "Track a message"
+description: "Follow a GMP message through each step, and find out why it stopped."
 ---
 
-Every GMP message passes through the same stages, from the call on the source chain to execution on the destination chain. You can follow them on Axelarscan, or query them with the [AxelarJS SDK](/gmp/track-and-recover/recover-transactions#with-the-axelarjs-sdk).
+Every GMP message goes through the same steps, from the call on the source chain to execution on the destination chain. Axelarscan shows where a message is, and which step it's waiting on.
+
+<Callout title="Using an AI agent?">
+  Copy this page with **Copy Markdown** at the top, and give it to your agent
+  with the transaction hash or message ID. It can look up the message through
+  the Axelarscan API and tell you where it's stuck and what to do. Review every transaction before it's signed, and
+  don't paste private keys into a chat: let the agent use a wallet or keystore
+  you control.
+</Callout>
 
 ## On Axelarscan
 
-Anyone can view General Message Passing calls in realtime on Axelarscan: [Mainnet](https://axelarscan.io/gmp) | [Testnet](https://testnet.axelarscan.io/gmp).
+Search for the source transaction hash or the message ID on [Axelarscan](https://axelarscan.io/gmp/search) ([testnet](https://testnet.axelarscan.io/gmp/search)), or open `https://axelarscan.io/gmp/<tx hash or message ID>` directly.
 
-![gmp-tracker.png](/images/gmp-tracker.png)
+A message page shows these steps:
 
-You can also search for a particular transfer by a transaction hash or a sender address via the search bar.
-![gmp-searchbar.png](/images/gmp-searchbar.png)
+| Step | What happened |
+| --- | --- |
+| **Sent** | The source contract called the gateway. |
+| **Gas Paid** | Gas was paid to the gas service. Shows **Pay Gas** if no payment was found. |
+| **Confirmed** | Axelar verified the call on the source chain, after it reached finality. |
+| **Approved** | The message was approved on the destination chain's gateway. |
+| **Executed** | The destination contract's `execute` ran. |
 
-Each GMP call comprises five statuses, as described below.
-![gmp-detailed-page .png](/images/gmp-detailed-page.png)
+Messages that use [Express](/gmp/integrations/evm/express) also show **Express Executed**, and after execution the page shows the gas used and any refund.
 
-- **CONTRACT CALL** provides the contract call (`callContract` or `callContractWithToken`) information, including the transaction hash, the block height on the source chain, the gateway address, etc.
-- **GAS PAID** displays the information of gas prepaid to Axelar Gas Receiver contract.
-- **CALL APPROVED** displays the information of the call approval. This section will be updated once the GMP call is approved by the Axelar network.
-- **EXECUTED** informs the executed result whether it is successful or not. If you see an error message in this section, we suggest following this [guide](/gmp/track-and-recover/debug-failed-execution) to find the root cause and recover the transfer.
-- **GAS REFUNDED** provides the refund information (if any), including the amount of gas paid, the amount of gas used, the refund amount, etc.
+## When a message stops
 
+| Axelarscan shows | Meaning | What to do |
+| --- | --- | --- |
+| **Pay Gas** | No gas was paid, so nobody executes it. | [Add gas](/gmp/track-and-recover/recover-transactions#add-gas), or [execute it yourself](/gmp/track-and-recover/recover-transactions#execute) once approved. |
+| **Insufficient Fee** | The gas paid doesn't cover verification and approval. | [Add gas](/gmp/track-and-recover/recover-transactions#add-gas). |
+| **Waiting for Finality** | The source transaction isn't final yet. | Wait. See [transaction time](/gmp/how-it-works/finality-and-timing). |
+| **Confirm** or **Approve**, for a long time | The relayer didn't pick it up. | [Relay it manually](/gmp/track-and-recover/manual-relay). |
+| **Failed to Confirm** | Verification failed: the poll found no matching event, or failed. | [Relay it manually](/gmp/track-and-recover/manual-relay), which verifies it again. |
+| **Invalid Call** | The source transaction reverted, or the call has an invalid field, e.g. an unknown destination chain. | Nothing; send a new message. |
+| **Not Enough Gas** | The gas left doesn't cover execution. | [Add gas](/gmp/track-and-recover/recover-transactions#add-gas). |
+| **Error** | `execute` reverted on the destination chain. | [Debug the destination contract](/gmp/track-and-recover/debug-failed-execution), then [execute it again](/gmp/track-and-recover/recover-transactions#execute). |
 
-<Callout emoji="ℹ️">
-  If the `Insufficient Fee` tag appears, it means that the prepaid gas is not
-  enough to relay the transaction. Please follow the [Increase gas payment to
-  the gas receiver on the source
-  chain](/gmp/track-and-recover/recover-transactions#increase-gas-payment-to-the-gas-receiver-on-the-source-chain)
-  section to recover the transfer.
-  ![error-msg-insufficient-fee.png](/images/error-msg-insufficient-fee.png)
-</Callout>
+## From code
 
-## Tracking transaction status
+### Axelarscan API
 
-When you initiate a transaction across chains, monitoring its progress is important to ensure successful completion. A typical transaction will pass through several stages:
-
-1. **Sent** — The transaction has been initiated and relayed to the Axelar network.
-1. **Gas Paid** — Gas fees have been paid on the source chain for the transaction to proceed.
-1. **Confirmed** — The transaction has been finalised on the source chain and awaits approval in the Axelar network.
-1. **Approved** — The transaction has been approved by the Axelar network and is ready to be executed on the destination chain.
-1. **Executed** — The transaction has been successfully executed on the destination chain.
-1. **Excess Gas Refunded** — Any excess gas not used during the transaction is refunded to the sender.
-
-## Common failure states
-
-Despite following the standard flow, transactions can fail at various points due to network issues or insufficient gas fees. Here are common failure states and how to handle them:
-
-1. **Failure to relay from source chain (unapproved status)**
-   - **Issue**: The transaction fails to relay from the source chain into the Axelar network, remaining unapproved.
-   - **Solution**:
-     - **Axelarscan UI**: If the transaction is unapproved, Axelarscan will show an option to "APPROVE.” Click this to resubmit the request to the network manually. Once approved, the transaction can proceed.
-     - **AxelarJS SDK**: Use the SDK's `manualRelayToDestChain` method to programmatically resubmit and approve the transaction.
-1. **[Failure to execute on destination chain](https://axelarscan.io/gmp/0xa5a79876ff08b9e8638778cbe25774f57385f3894d86e81b5511004bc33a8b71-14)**
-   - **Issue**: The transaction fails during execution on the destination chain, which may be due to network congestion, insufficient gas, or other issues.
-   - **Solutions**:
-     - **Manually execute transfer**
-       - **Axelarscan UI**: Click the ‘Connect’ button under the ‘Execute at destination chain’ label and then the ‘Execute’ button to trigger the execution using newly paid gas. If the manual execution fails, debug the contract and retry.
-       - **AxelarJS SDK**: Use the SDK's `execute` method to manually execute the transaction programmatically on the destination chain.
-     - **Increase gas payment**
-       - **Axelarscan UI**: Connect your MetaMask wallet, switch to the source chain, and add more gas by clicking the ‘Add gas at source chain’ button. This will relay the transaction with increased gas.
-       - **AxelarJS SDK**: Depending on whether native tokens or ERC-20 tokens are used, use the `addNativeGas` or `addGas` method to increase gas payment.
-1. **[Insufficient fee](https://axelarscan.io/gmp/0x8fcfbed2e5cb17a3c3f128fc3ed5ce0a6deb2e4494bb587dd95021039bd39322-8) or [not enough gas](https://axelarscan.io/gmp/0x46d2b6c442fe11c2751ac4c4507779368ff92c20a06f4108af165a83c3fdca03-4)**
-   - **Issue**: The transaction fails due to an insufficient fee or not enough gas paid to cover the execution on the destination chain.
-   - **Solution**: Increase the gas payment as described above and resubmit the transaction.
-1. [**Error execution**](https://axelarscan.io/gmp/0xd1ebf1217c37c6d510c421b28d2dfdefd596c68abca3d0bfa2efa8b8291a579d-3)
-   - **Issue**: An error occurs during execution, potentially due to issues with the smart contract or external factors like network congestion.
-   - **Solution**: Debug the contract according to the error message and retry the transaction using either the Axelarscan UI or the SDK.
-
-
-To fix any of these, see [Recover transactions](/gmp/track-and-recover/recover-transactions).
-
-## Example transaction states
-
-The following is an example of a successful transaction and two different failed states to illustrate how to handle each situation.
-
-### Successful transaction
-
-```
-- Method: InterchainTransfer
-- Status: Executed
-- Source Chain: Polygon
-- Destination Chain: Base
-- Gas Paid: Confirmed
-- Approved: Yes
-- Executed: Yes
-- Excess Gas Refunded: Yes
-
+```bash
+curl -X POST https://api.axelarscan.io/gmp/searchGMP \
+  -H 'content-type: application/json' \
+  -d '{"txHash":"0x..."}'
 ```
 
-### Failed state 1
+Use `"messageId"` instead of `"txHash"` to look up one message from a transaction that sent several. For testnet, use `https://testnet.api.axelarscan.io`.
 
-```
-- Method: callContract
-- Status: Error
-- Issue: Failed to execute on the destination chain.
-- Recovery Options: Execute manually or increase gas.
+Each result in `data` has the overall `status` (e.g. `executed`, `error`, `approved`), a `simplified_status` (`sent`, `approved`, `received` or `failed`) and the details of each step (`call`, `gas_paid`, `confirm`, `approved`, `executed`, `error`, `refunded`).
+
+### AxelarJS SDK
+
+`queryTransactionStatus` returns the same information:
+
+```ts
+import { AxelarGMPRecoveryAPI, Environment } from '@axelar-network/axelarjs-sdk';
+
+const sdk = new AxelarGMPRecoveryAPI({ environment: Environment.MAINNET });
+
+const { status, gasPaidInfo, error } = await sdk.queryTransactionStatus(txHash);
 ```
 
-### Failed state 2
+`status` is a `GMPStatus`, such as `source_gateway_called`, `confirmed`, `destination_gateway_approved`, `destination_executed`, `express_executed`, `error` or `insufficient_fee`. `gasPaidInfo.status` is a `GasPaidStatus`: `gas_unpaid`, `gas_paid`, `gas_paid_not_enough_gas` or `gas_paid_enough_gas`.
 
-```
-- Method: InterchainTransfer
-- Status: Not Approved
-- Issue: Failed to relay from the source chain.
-- Recovery Options: Manually approve the transaction.
-```
+If the transaction sent more than one message, pass the log index of the call as the second argument.

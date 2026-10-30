@@ -7,7 +7,7 @@ description: "Top up an underpaid message, and choose where unused gas is refund
 
 If the gas you paid isn't enough, for example because the destination gas price rose, the message waits on Axelarscan with an **Insufficient fee** status. Add gas to it on the source chain, and it continues.
 
-The easiest way is the **Add gas** button on the message's Axelarscan page. See [Recover transactions](/gmp/track-and-recover/recover-transactions#increase-gas-payment-to-the-gas-receiver-on-the-source-chain); the AxelarJS SDK can do the same ([Increase gas payment](/gmp/track-and-recover/recover-transactions#increase-gas-payment)).
+The easiest way is the **Add gas** button on the message's Axelarscan page, or the AxelarJS SDK. See [Recover a message](/gmp/track-and-recover/recover-transactions#add-gas).
 
 To do it from a contract or script, call the gas service on the source chain. The message is identified by the hash of the transaction that sent it and the index of its `ContractCall` event log in that transaction:
 

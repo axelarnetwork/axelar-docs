@@ -667,12 +667,12 @@
     },
     {
       "source": "/dev/general-message-passing/debug/debugging-your-smart-contract(/)?",
-      "destination": "/gmp/track-and-recover/debug-failed-execution#debug-your-contract",
+      "destination": "/gmp/track-and-recover/debug-failed-execution#find-the-revert",
       "permanent": true
     },
     {
       "source": "/dev/general-message-passing/debug/fork-mainnet(/)?",
-      "destination": "/gmp/track-and-recover/fork-mainnet",
+      "destination": "/gmp/track-and-recover/debug-failed-execution#test-a-fix-locally",
       "permanent": true
     },
     {
@@ -797,17 +797,17 @@
     },
     {
       "source": "/dev/axelarjs-sdk/intro(/)?",
-      "destination": "/gmp/axelarjs-sdk",
+      "destination": "/gmp/resources/axelarjs-sdk",
       "permanent": true
     },
     {
       "source": "/dev/axelarjs-sdk/tx-status-query-recovery(/)?",
-      "destination": "/gmp/track-and-recover/recover-transactions#with-the-axelarjs-sdk",
+      "destination": "/gmp/track-and-recover/recover-transactions",
       "permanent": true
     },
     {
       "source": "/dev/axelarjs-sdk/axelar-query-api(/)?",
-      "destination": "/gmp/axelarjs-sdk#query-api",
+      "destination": "/gmp/resources/axelarjs-sdk#query-api",
       "permanent": true
     },
     {
@@ -2077,12 +2077,12 @@
     },
     {
       "source": "/gmp/evm/debug/debugging-your-smart-contract(/)?",
-      "destination": "/gmp/track-and-recover/debug-failed-execution#debug-your-contract",
+      "destination": "/gmp/track-and-recover/debug-failed-execution#find-the-revert",
       "permanent": true
     },
     {
       "source": "/gmp/evm/debug/fork-mainnet(/)?",
-      "destination": "/gmp/track-and-recover/fork-mainnet",
+      "destination": "/gmp/track-and-recover/debug-failed-execution#test-a-fix-locally",
       "permanent": true
     },
     {
@@ -2142,17 +2142,17 @@
     },
     {
       "source": "/gmp/axelarjs-sdk/intro(/)?",
-      "destination": "/gmp/axelarjs-sdk",
+      "destination": "/gmp/resources/axelarjs-sdk",
       "permanent": true
     },
     {
       "source": "/gmp/axelarjs-sdk/axelar-query-api(/)?",
-      "destination": "/gmp/axelarjs-sdk#query-api",
+      "destination": "/gmp/resources/axelarjs-sdk#query-api",
       "permanent": true
     },
     {
       "source": "/gmp/axelarjs-sdk/tx-status-query-recovery(/)?",
-      "destination": "/gmp/track-and-recover/recover-transactions#with-the-axelarjs-sdk",
+      "destination": "/gmp/track-and-recover/recover-transactions",
       "permanent": true
     },
     {
@@ -2219,6 +2219,17 @@
       "source": "/gmp/solana/gmp-contracts(/)?",
       "destination": "/gmp/integrations/solana/gmp-contracts",
       "permanent": true
+    },
+    {
+      "source": "/gmp/axelarjs-sdk(/)?",
+      "destination": "/gmp/resources/axelarjs-sdk",
+      "permanent": true
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/:path*.md",
+      "destination": "/llms.mdx/:path*/content.md"
     }
   ]
 }

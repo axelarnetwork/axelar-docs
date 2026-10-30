@@ -3,6 +3,7 @@
   "icon": "Library",
   "pages": [
     "examples-and-tutorials",
+    "axelarjs-sdk",
     "references"
   ]
 }
