@@ -4,6 +4,7 @@
   "root": true,
   "pages": [
     "overview",
+    "external:[ArrowRightLeft][Swap on Axelar App](https://app.axelar.network/)",
     "how-it-works",
     "integrations",
     "resources"
