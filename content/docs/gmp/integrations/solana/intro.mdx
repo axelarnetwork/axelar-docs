@@ -1,5 +1,5 @@
 ---
-title: "Solana Integration"
+title: "Overview"
 description: "Send and receive GMP messages and interchain tokens from Solana programs."
 ---
 
@@ -8,7 +8,7 @@ description: "Send and receive GMP messages and interchain tokens from Solana pr
 Axelar provides two cross-chain protocols on Solana:
 
 1. **[General Message Passing (GMP)](/gmp/integrations/solana/gmp-messages)** — Send and receive arbitrary cross-chain messages between Solana programs and contracts on other chains.
-2. **[Interchain Token Service (ITS)](/its/integrations/solana)** — Send and receive cross-chain token transfers, optionally with execution data attached. ITS also supports [deploying interchain tokens](/its/overview), registering canonical tokens, and linking existing tokens across chains.
+2. **[Interchain Token Service (ITS)](/its/integrations/solana/intro)** — Send and receive cross-chain token transfers, optionally with execution data attached. ITS also supports [deploying interchain tokens](/its/overview), registering canonical tokens, and linking existing tokens across chains.
 
 The core packages are in the [axelar-amplifier-solana](https://github.com/axelarnetwork/axelar-amplifier-solana) repository.
 
@@ -59,7 +59,7 @@ Source Chain → Axelar Network → Gateway → ITS → Your Program (execute_wi
 
 1. The Gateway approves the message. ITS receives it, decodes the transfer, and mints/unlocks tokens.
 2. Tokens are deposited into an Associated Token Account (ATA) whose authority is the `destination_token_authority` PDA — derived from seeds `[b"axelar-its-token-authority"]` and your program's ID.
-3. ITS calls your program's `execute_with_interchain_token` instruction via CPI.
+3. If the transfer carries data, ITS calls your program's `execute_with_interchain_token` instruction via CPI. Without data, your program isn't called.
 4. Your program receives the tokens and can spend them by signing as the `destination_token_authority` PDA.
 
 ## Prerequisites and Setup
@@ -73,15 +73,18 @@ Add the following dependencies to your `Cargo.toml`:
 anchor-lang = "1.2.0"
 
 # For GMP (sending and receiving cross-chain messages)
-solana-axelar-gateway = { version = "1.1.2", features = ["cpi"] }
+solana-axelar-gateway = { version = "1.1.2", default-features = false, features = ["cpi", "mainnet"] }
+solana-axelar-gas-service = { version = "1.1.2", default-features = false, features = ["cpi", "mainnet"] }
 
 # For ITS (sending and receiving cross-chain token transfers)
-solana-axelar-its = { version = "1.1.2", features = ["cpi"] }
+solana-axelar-its = { version = "1.1.2", default-features = false, features = ["cpi", "mainnet"] }
 anchor-spl = "1.2.0"
 ```
 
 <Callout emoji="💡">
-The `cpi` feature is required so your program can make Cross-Program Invocations to the Gateway and ITS programs.
+The `cpi` feature is required so your program can make Cross-Program Invocations to the Gateway, Gas Service and ITS programs.
+
+The network feature (`mainnet` or `testnet`) sets the program IDs your program checks against. The crates default to `devnet-amplifier`, so without `default-features = false` and a network feature, your program accepts calls only from the devnet programs. Use the same network feature on every Axelar crate.
 </Callout>
 
 For deployed program addresses (Gateway, ITS, Gas Service), see the [contract addresses](/infrastructure/network/chains-and-contracts) page.
@@ -98,7 +101,7 @@ If you're new to Solana development, here are the key concepts used throughout t
 ## Next Steps
 
 - **[Send & Receive GMP Messages](/gmp/integrations/solana/gmp-messages)** — Build a program that sends and receives arbitrary cross-chain messages.
-- **[Interchain Token Transfers](/its/integrations/solana)** — Build a program that sends and receives cross-chain token transfers.
+- **[Interchain Token Transfers](/its/integrations/solana/interchain-transfers)** — Build a program that sends and receives cross-chain token transfers.
 - **[Contract Reference](/gmp/integrations/solana/gmp-contracts)** — Detailed reference for Gateway accounts, Gas Service, and events.
 
 ## Resources

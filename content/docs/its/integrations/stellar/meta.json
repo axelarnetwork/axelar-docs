@@ -1,9 +1,4 @@
 {
   "title": "Stellar",
-  "pages": [
-    "intro",
-    "deploy-new-token",
-    "register-existing-stellar-token",
-    "[Link Custom Tokens](https://github.com/axelarnetwork/axelar-contract-deployments/blob/main/stellar/docs/link-token.md)"
-  ]
+  "pages": ["intro", "its-tokens", "link-custom-tokens", "its-contracts"]
 }

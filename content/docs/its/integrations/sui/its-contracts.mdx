@@ -1,0 +1,449 @@
+---
+title: "Contract reference"
+description: "Sui ITS functions, coin management, roles, flow limits and events, and how to receive coins with data."
+---
+
+Package and object IDs are on the [Sui ITS overview](/its/integrations/sui/intro#addresses). Call functions on the latest ITS package. The full API is in the [generated docs](https://axelarnetwork.github.io/axelar-cgp-sui/). In the signatures below, `String` is `std::ascii::String`, and a coin's `name` is a `std::string::String`.
+
+## Interchain Token Service
+
+[`interchain_token_service::interchain_token_service`](https://github.com/axelarnetwork/axelar-cgp-sui/blob/v1.2.0/move/interchain_token_service/sources/interchain_token_service.move). The `InterchainTokenService` is a shared object. Each function that sends a message returns a `MessageTicket`: pay gas for it and send it, as in [Send a message](/gmp/integrations/sui/gmp-messages#send-a-message).
+
+### Register coins
+
+```move
+// Canonical coins: register a coin whose home chain is Sui.
+public fun register_coin_from_metadata<T>(
+    self: &mut InterchainTokenService,
+    metadata: &CoinMetadata<T>,
+    coin_management: CoinManagement<T>,
+): TokenId;
+
+// Same, with values you supply. ITS doesn't check them against the coin.
+public fun register_coin_from_info<T>(
+    self: &mut InterchainTokenService,
+    name: std::string::String,
+    symbol: String,
+    decimals: u8,
+    coin_management: CoinManagement<T>,
+): TokenId;
+
+// Deploys an interchain token, with no minter, for a canonical coin. Aborts for custom coins.
+public fun deploy_remote_interchain_token<T>(
+    self: &InterchainTokenService,
+    token_id: TokenId,
+    destination_chain: String,
+): MessageTicket;
+```
+
+`register_coin` is deprecated, and aborts.
+
+### Link custom coins
+
+```move
+// Sends the coin's type and decimals to the ITS Hub.
+public fun register_coin_metadata<T>(self: &InterchainTokenService, coin_metadata: &CoinMetadata<T>): MessageTicket;
+
+// Registers a custom coin under a token ID derived from `deployer` and `salt`.
+// Returns a reclaimer if `coin_management` has the TreasuryCap.
+public fun register_custom_coin<T>(
+    self: &mut InterchainTokenService,
+    deployer: &Channel,
+    salt: Bytes32,
+    coin_metadata: &CoinMetadata<T>,
+    coin_management: CoinManagement<T>,
+    ctx: &mut TxContext,
+): (TokenId, Option<TreasuryCapReclaimer<T>>);
+
+// Links the custom coin registered by `deployer` with `salt` to a token on `destination_chain`.
+public fun link_coin(
+    self: &InterchainTokenService,
+    deployer: &Channel,
+    salt: Bytes32,
+    destination_chain: String,
+    destination_token_address: vector<u8>,
+    token_manager_type: TokenManagerType, // token_manager_type::lock_unlock() or mint_burn()
+    link_params: vector<u8>, // the destination operator, or empty
+): MessageTicket;
+
+// Holds a coin for a link from another chain, under that chain's token ID.
+// With a TreasuryCap, returns a reclaimer and a distributor channel.
+public fun give_unlinked_coin<T>(
+    self: &mut InterchainTokenService,
+    token_id: TokenId,
+    coin_metadata: &CoinMetadata<T>,
+    treasury_cap: Option<TreasuryCap<T>>,
+    ctx: &mut TxContext,
+): (Option<TreasuryCapReclaimer<T>>, Option<Channel>);
+
+// Returns the TreasuryCap of a coin given with give_unlinked_coin that was never linked.
+public fun remove_unlinked_coin<T>(
+    self: &mut InterchainTokenService,
+    treasury_cap_reclaimer: TreasuryCapReclaimer<T>,
+): TreasuryCap<T>;
+```
+
+See [Link custom coins](/its/integrations/sui/link-coin).
+
+### Send and receive
+
+```move
+// Puts the whole coin in a ticket. `source_channel` is the sender.
+public fun prepare_interchain_transfer<T>(
+    token_id: TokenId,
+    coin: Coin<T>,
+    destination_chain: String,
+    destination_address: vector<u8>,
+    metadata: vector<u8>,
+    source_channel: &Channel,
+): InterchainTransferTicket<T>;
+
+// Locks or burns the coins, and applies the flow limit.
+public fun send_interchain_transfer<T>(
+    self: &mut InterchainTokenService,
+    ticket: InterchainTransferTicket<T>,
+    clock: &Clock,
+): MessageTicket;
+
+// Called by relayers: unlocks or mints the coins, and sends them to the destination address.
+public fun receive_interchain_transfer<T>(
+    self: &mut InterchainTokenService,
+    approved_message: ApprovedMessage,
+    clock: &Clock,
+    ctx: &mut TxContext,
+);
+
+// For transfers with data: called by the package that holds `channel`, the destination.
+// Returns (source_chain, source_address, data, coins).
+public fun receive_interchain_transfer_with_data<T>(
+    self: &mut InterchainTokenService,
+    approved_message: ApprovedMessage,
+    channel: &Channel,
+    clock: &Clock,
+    ctx: &mut TxContext,
+): (String, vector<u8>, vector<u8>, Coin<T>);
+```
+
+### Interchain transfer ticket
+
+```move
+// No abilities: send it in the transaction that prepares it
+public struct InterchainTransferTicket<phantom T> {
+    token_id: TokenId,
+    balance: Balance<T>,
+    source_address: address, // the source channel's ID
+    destination_chain: String,
+    destination_address: vector<u8>, // e.g. an EVM address's 20 bytes, or a Sui address's 32
+    metadata: vector<u8>,
+    version: u64,
+}
+```
+
+`metadata` is empty for a plain transfer. To send data, prefix it with a 4-byte version, `0`: `metadata` is `0x00000000` followed by the data. Metadata shorter than 4 bytes counts as no data.
+
+### Getters
+
+```move
+public fun registered_coin_type(self: &InterchainTokenService, token_id: TokenId): &TypeName;
+public fun registered_coin_data<T>(self: &InterchainTokenService, token_id: TokenId): &CoinData<T>;
+public fun channel_address(self: &InterchainTokenService): address; // ITS's own channel
+```
+
+## Coin management
+
+[`interchain_token_service::coin_management`](https://github.com/axelarnetwork/axelar-cgp-sui/blob/v1.2.0/move/interchain_token_service/sources/types/coin_management.move). A `CoinManagement` is a coin's token manager on Sui. You create it, configure it, and pass it to ITS when registering the coin; ITS keeps it.
+
+```move
+// Mint and burn: ITS holds the TreasuryCap.
+public fun new_with_cap<T>(treasury_cap: TreasuryCap<T>): CoinManagement<T>;
+
+// Lock and unlock: ITS holds the locked coins.
+public fun new_locked<T>(): CoinManagement<T>;
+
+// Before registering only. Aborts without a TreasuryCap.
+public fun add_distributor<T>(self: &mut CoinManagement<T>, distributor: address);
+
+// Before registering only.
+public fun add_operator<T>(self: &mut CoinManagement<T>, operator: address);
+```
+
+Pass channel IDs to `add_distributor` and `add_operator`: the role's functions check the caller's channel.
+
+## Token IDs
+
+[`interchain_token_service::token_id`](https://github.com/axelarnetwork/axelar-cgp-sui/blob/v1.2.0/move/interchain_token_service/sources/types/token_id.move). A `TokenId` wraps a 32-byte ID. Build one from its hex form with `token_id::from_address(id)`, or from a number with `from_u256(id)`.
+
+Sui derives the IDs of the tokens registered on it as keccak256 hashes of:
+
+- **Canonical coins:** a prefix, the hash of Sui's chain name, the coin type, its name, symbol and decimals, whether it was registered from metadata, and whether the `CoinManagement` has the `TreasuryCap`. So `register_coin_from_metadata` and `register_coin_from_info` give different IDs, and so do the two management types.
+- **Custom coins:** a prefix, the hash of Sui's chain name, the deployer channel's ID and the salt. Only the holder of that channel can link the coin.
+
+A token registered on another chain keeps that chain's token ID on Sui.
+
+## Receive coins with data
+
+A transfer with data goes to a Move package, which gets the coins and the data. Its destination address is a channel that the package holds, and the package registers a call with the [relayer discovery](/gmp/integrations/sui/gmp-contracts#relayer-discovery) for that channel, as for a [GMP message](/gmp/integrations/sui/gmp-messages#receive-a-message).
+
+The relayer can't know the coin type in advance, so the registered call is a simulation that returns the call to run: the package reads the token ID from the payload, and looks up its coin type in ITS.
+
+`sources/receiver.move`:
+
+```move
+module its_receiver::receiver;
+
+use axelar_gateway::channel::{Self, ApprovedMessage, Channel};
+use interchain_token_service::discovery as its_discovery;
+use interchain_token_service::interchain_token_service::InterchainTokenService;
+use relayer_discovery::discovery::RelayerDiscovery;
+use relayer_discovery::transaction::{Self, Transaction};
+use std::ascii::{Self, String};
+use sui::clock::Clock;
+use sui::table::{Self, Table};
+
+#[error]
+const EUntrustedSender: vector<u8> = b"the sender is not trusted";
+
+public struct Receiver has key {
+    id: UID,
+    channel: Channel,
+    // Source chain name -> sender address on that chain, as bytes
+    trusted_senders: Table<String, vector<u8>>,
+}
+
+public struct OwnerCap has key, store {
+    id: UID,
+}
+
+fun init(ctx: &mut TxContext) {
+    transfer::share_object(Receiver {
+        id: object::new(ctx),
+        channel: channel::new(ctx),
+        trusted_senders: table::new(ctx),
+    });
+    transfer::transfer(OwnerCap { id: object::new(ctx) }, ctx.sender());
+}
+
+public fun set_trusted_sender(
+    self: &mut Receiver,
+    _: &OwnerCap,
+    source_chain: String,
+    source_address: vector<u8>,
+) {
+    if (self.trusted_senders.contains(source_chain)) {
+        self.trusted_senders.remove(source_chain);
+    };
+    self.trusted_senders.add(source_chain, source_address);
+}
+
+// Tells relayers to call `get_final_transaction` with the message payload.
+public fun register_transaction(
+    self: &Receiver,
+    _: &OwnerCap,
+    discovery: &mut RelayerDiscovery,
+    its: &InterchainTokenService,
+) {
+    let arguments = vector[object_arg(object::id_address(self)), object_arg(object::id_address(its)), vector[3]];
+    let tx = transaction::new_transaction(
+        false,
+        vector[
+            transaction::new_move_call(
+                transaction::new_function(
+                    transaction::package_id<Receiver>(),
+                    ascii::string(b"receiver"),
+                    ascii::string(b"get_final_transaction"),
+                ),
+                arguments,
+                vector[],
+            ),
+        ],
+    );
+    discovery.register_transaction(&self.channel, tx);
+}
+
+// Relayers simulate this to learn the coin type, then call `receive<T>`.
+public fun get_final_transaction(self: &Receiver, its: &InterchainTokenService, payload: vector<u8>): Transaction {
+    let (token_id, _, _, _) = its_discovery::interchain_transfer_info(payload);
+    let coin_type = (*its.registered_coin_type(token_id)).into_string();
+    let arguments = vector[
+        vector[2],
+        object_arg(object::id_address(self)),
+        object_arg(object::id_address(its)),
+        object_arg(@0x6),
+    ];
+    transaction::new_transaction(
+        true,
+        vector[
+            transaction::new_move_call(
+                transaction::new_function(
+                    transaction::package_id<Receiver>(),
+                    ascii::string(b"receiver"),
+                    ascii::string(b"receive"),
+                ),
+                arguments,
+                vector[coin_type],
+            ),
+        ],
+    )
+}
+
+public fun receive<T>(
+    approved_message: ApprovedMessage,
+    self: &Receiver,
+    its: &mut InterchainTokenService,
+    clock: &Clock,
+    ctx: &mut TxContext,
+) {
+    let (source_chain, source_address, data, coin) = its.receive_interchain_transfer_with_data<T>(
+        approved_message,
+        &self.channel,
+        clock,
+        ctx,
+    );
+    assert!(
+        self.trusted_senders.contains(source_chain) && self.trusted_senders[source_chain] == source_address,
+        EUntrustedSender,
+    );
+
+    // Your logic. Here, `data` is the Sui address to send the coins to.
+    transfer::public_transfer(coin, sui::address::from_bytes(data));
+}
+
+public fun channel_address(self: &Receiver): address {
+    self.channel.to_address()
+}
+
+fun object_arg(id: address): vector<u8> {
+    let mut arg = vector[0];
+    arg.append(id.to_bytes());
+    arg
+}
+```
+
+The package needs ITS as a dependency; see [Depend on ITS](#depend-on-its). After publishing it, call `register_transaction` once with your `OwnerCap`, the `RelayerDiscovery` object (on the [GMP Sui overview](/gmp/integrations/sui/intro#addresses)) and the ITS object, and `set_trusted_sender` for each sender. Senders on other chains send to `channel_address()`, with `sui` as the destination chain and their data as the transfer's data, e.g. from an EVM chain as in [Transfers with data](/its/integrations/evm/transfers-with-data#send).
+
+### Check the sender
+
+<Callout emoji="⚠️" title="Receiving coins doesn't check who sent them">
+  ITS proves that the transfer came through the ITS Hub, and
+  `receive_interchain_transfer_with_data` checks that it's addressed to your
+  channel. Neither proves that it came from your contract on the other chain:
+  anyone can send a transfer with data to your channel. Unless your package
+  accepts transfers from anyone, check `source_chain` and `source_address`
+  after receiving the coins.
+</Callout>
+
+`source_address` is the sender's address in bytes: 20 bytes for an EVM address. `source_chain` is the chain's name on the ITS Hub, and some are capitalized (`Ethereum`, `Avalanche`).
+
+If `receive` aborts, the whole transaction reverts, including the relayer's call. The message stays approved and can be executed again, e.g. after you trust the sender; see [Debug failed execution](/gmp/track-and-recover/debug-failed-execution).
+
+## Roles
+
+Each role is held by a channel, per coin. The role's functions take the channel and check its ID.
+
+| Role                       | Set by                                                                                                                         | Can                                                                                                     |
+| -------------------------- | ------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------- |
+| Distributor                | `add_distributor` before registering; `give_unlinked_coin` with a `TreasuryCap`; the minter of an interchain token deployed to Sui | Mint and burn the coin through ITS. Needs ITS to hold the coin's `TreasuryCap`                           |
+| Operator                   | `add_operator` before registering; the link params of a link to Sui                                                            | Set the coin's flow limit                                                                               |
+| ITS operator (`OperatorCap`) | Held by Axelar                                                                                                                 | Set any coin's flow limit, for emergencies. A coin's operator can't remove this                          |
+
+```move
+public fun mint_as_distributor<T>(self: &mut InterchainTokenService, channel: &Channel, token_id: TokenId, amount: u64, ctx: &mut TxContext): Coin<T>;
+public fun mint_to_as_distributor<T>(self: &mut InterchainTokenService, channel: &Channel, token_id: TokenId, to: address, amount: u64, ctx: &mut TxContext);
+public fun burn_as_distributor<T>(self: &mut InterchainTokenService, channel: &Channel, token_id: TokenId, coin: Coin<T>);
+
+public fun set_flow_limit_as_token_operator<T>(self: &mut InterchainTokenService, channel: &Channel, token_id: TokenId, limit: Option<u64>);
+
+// Pass the role on. `option::none()` removes it for good.
+public fun transfer_distributorship<T>(self: &mut InterchainTokenService, channel: &Channel, token_id: TokenId, new_distributor: Option<address>);
+public fun transfer_operatorship<T>(self: &mut InterchainTokenService, channel: &Channel, token_id: TokenId, new_operator: Option<address>);
+```
+
+Compared with [roles on EVM chains](/its/how-it-works/roles), the distributor plays the minter's part, and there are no flow limiters: the operator sets the limit itself.
+
+## Flow limits
+
+A [flow limit](/its/how-it-works/flow-limits) caps the net amount of a coin that can move into or out of Sui in each 6-hour window. Sui ITS applies it when coins are sent and received, with some differences from EVM chains:
+
+- **The limit is an `Option<u64>`.** `option::none()`, the default, means no limit. `option::some(0)` blocks every transfer.
+- **The check is strict.** A transfer fails if the net flow in the window would reach the limit, not only exceed it: with a limit of 1,000, a transfer of 999 passes and one of 1,000 fails. There's no separate check of a single transfer against the limit.
+- **Amounts** are in the coin's smallest unit on Sui.
+
+An outgoing transfer over the limit aborts on Sui. An incoming one aborts when it's executed: the message stays approved, and can be executed again in a later window.
+
+The coin's operator sets the limit with its channel, `OPERATOR_CHANNEL`, e.g. to 1,000,000:
+
+```bash
+sui client ptb \
+  --move-call $ITS_PKG::token_id::from_address @$TOKEN_ID --assign token_id \
+  --move-call 0x1::option::some "<u64>" 1000000 --assign limit \
+  --move-call $ITS_PKG::interchain_token_service::set_flow_limit_as_token_operator "<$COIN>" \
+    @$ITS @$OPERATOR_CHANNEL token_id limit
+```
+
+To remove the limit, create it with `--move-call 0x1::option::none "<u64>" --assign limit` instead. Axelar can also set it, with ITS's `OperatorCap` (`set_flow_limit`).
+
+## Treasury cap reclaimer
+
+For a mint and burn coin, `register_custom_coin` and `give_unlinked_coin` return a `TreasuryCapReclaimer<T>`, an object that lets you take the coin's `TreasuryCap` back from ITS:
+
+```move
+// Returns the TreasuryCap. ITS can then no longer send or receive the coin.
+public fun remove_treasury_cap<T>(self: &mut InterchainTokenService, treasury_cap_reclaimer: TreasuryCapReclaimer<T>): TreasuryCap<T>;
+
+// Gives the TreasuryCap back to ITS, and returns a new reclaimer.
+public fun restore_treasury_cap<T>(self: &mut InterchainTokenService, treasury_cap: TreasuryCap<T>, token_id: TokenId, ctx: &mut TxContext): TreasuryCapReclaimer<T>;
+```
+
+For a coin given with `give_unlinked_coin` and never linked, use `remove_unlinked_coin` instead.
+
+## Events
+
+In `interchain_token_service::events`, generic over the coin type unless noted. `TrustedChainAdded` and `TrustedChainRemoved` are for Axelar's configuration.
+
+| Event                              | Fields                                                                                                              |
+| ---------------------------------- | ------------------------------------------------------------------------------------------------------------------- |
+| `CoinRegistered`                   | `token_id`                                                                                                          |
+| `InterchainTokenIdClaimed`         | `token_id`, `deployer` (the channel), `salt`                                                                        |
+| `InterchainTokenDeploymentStarted` | `token_id`, `name`, `symbol`, `decimals`, `destination_chain`                                                       |
+| `CoinMetadataRegistered`           | `decimals`                                                                                                          |
+| `LinkTokenStarted` (not generic)   | `token_id`, `destination_chain`, `source_token_address`, `destination_token_address`, `token_manager_type`, `link_params` |
+| `LinkTokenReceived`                | `token_id`, `source_chain`, `source_token_address`, `token_manager_type`, `link_params`                             |
+| `UnlinkedCoinReceived`             | `unlinked_token_id`, `token_id`, `token_manager_type`                                                               |
+| `UnlinkedCoinRemoved`              | `unlinked_token_id`, `token_id`, `token_manager_type`                                                               |
+| `UnregisteredCoinReceived`         | `token_id`, `symbol`, `decimals`                                                                                    |
+| `InterchainTransfer`               | `token_id`, `source_address`, `destination_chain`, `destination_address`, `amount`, `data_hash`                     |
+| `InterchainTransferReceived`       | `message_id`, `token_id`, `source_chain`, `source_address`, `destination_address`, `amount`, `data_hash`            |
+| `FlowLimitSet`                     | `token_id`, `flow_limit`                                                                                            |
+| `DistributorshipTransfered`        | `token_id`, `new_distributor`                                                                                       |
+| `OperatorshipTransfered`           | `token_id`, `new_operator`                                                                                          |
+
+## Depend on ITS
+
+To call ITS from your own Move package, add it as a dependency that points at the deployed packages. Axelar's manifests don't record their published IDs, and the deployed ITS 1.2.0 doesn't compile with the current Sui framework, so copy the packages and pin the framework:
+
+1. Copy `move/abi`, `move/axelar_gateway`, `move/interchain_token_service`, `move/relayer_discovery`, `move/utils` and `move/version_control` from the [v1.2.0 tag](https://github.com/axelarnetwork/axelar-cgp-sui/tree/v1.2.0/move) into your repository, e.g. under `axelar/`.
+1. In each copy's `Move.toml`:
+   - Under `[package]`, add `published-at = "<ID>"` with the package's ID from the table below.
+   - In `[addresses]`, set the package's own address to its original ID. For all but ITS, that's the same ID.
+   - Under `[dependencies]`, add `Sui = { git = "https://github.com/MystenLabs/sui.git", subdir = "crates/sui-framework/packages/sui-framework", rev = "mainnet-v1.55.0" }`.
+1. Depend on the copies, with the same `Sui` line:
+
+   ```toml
+   [dependencies]
+   Sui = { git = "https://github.com/MystenLabs/sui.git", subdir = "crates/sui-framework/packages/sui-framework", rev = "mainnet-v1.55.0" }
+   AxelarGateway = { local = "axelar/axelar_gateway" }
+   RelayerDiscovery = { local = "axelar/relayer_discovery" }
+   InterchainTokenService = { local = "axelar/interchain_token_service" }
+   ```
+
+| Package             | Mainnet                                                              | Testnet                                                              |
+| ------------------- | -------------------------------------------------------------------- | -------------------------------------------------------------------- |
+| `abi`               | `0x53106e8a23ea2b83b0f1cc18861d287e08757525e0e47d3712130080af8cf49a` | `0xe154e89d5c53fbc19080c121add1cccfd14f9d5f8a07a28ad1878f8b17db101b` |
+| `axelar_gateway`    | `0xeb055ffc3237c24e305a2bb760fe6551f6ff7c5fdb68735169c0f528fccab373` | `0x6ddfcdd14a1019d13485a724db892fa0defe580f19c991eaabd690140abb21e4` |
+| `relayer_discovery` | `0x2b839b25c7133e5e0f8f585cb2e89bf430a6585a88c4a0343ae3b246372d431c` | `0x2f871726329f555bc3fa6eec129f259a8bce3cb3989b39dd75a627a1a0961bc2` |
+| `utils`             | `0x5920750d9804267493c958bffb7fcc1aa534705fffefbeaab0314418d631550c` | `0x9d817589ae367cc3f3bc9ca40394be79e5853bfca98014f27acfd4da9db78421` |
+| `version_control`   | `0x647a3b34b3a16f5f00443bdafd13d281983b2280703ab4f416cf706e6d739087` | `0x6e8ebd241a5b89499e0cd104540f8025af111dcd42644bb732dbc170e395ce0c` |
+| `interchain_token_service`, `published-at` | `0xbaec6524bedbc95fa4c3314271ecf5d2ce7d8a602c8413c03a5264c949c7263d` | `0x0f9fb8246525699ac7e0a9742094f3491e20b0f3b2a5faf503f139df383390f0` |
+| `interchain_token_service`, address        | `0xc3c0222e59c9d3b34ab804840e271ef9a0e6f0adcc280133c9db9b9e060887ca` | `0xe7818984af6b3e322a6d999ca291a125fc3f82e13e5e6d9affc3a712f96bc7ce` |
+
+Your package then links to the deployed packages when you publish it. `sui move build` prints a note that the explicit `Sui` dependency turns off the automatic system dependencies; that's expected.

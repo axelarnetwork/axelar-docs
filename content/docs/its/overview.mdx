@@ -19,9 +19,9 @@ ITS runs on Axelar's EVM chains, Solana, Sui, Stellar and XRPL. It's permissionl
 
 | You want to                                             | Use                                                                                       | Result                                                                                                       |
 | ------------------------------------------------------- | ----------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------ |
-| Launch a new token on several chains                    | [Create a new token](/its/integrations/evm/create-new-interchain-token)                   | An interchain token, deployed by ITS, with the same address on most EVM chains                                |
-| Bring an existing token, deployed on one chain, to more | [Register an existing token](/its/integrations/evm/register-existing-token)               | Your token is locked on its home chain, and ITS deploys an interchain token on the others                    |
-| Connect your own token contracts on several chains      | [Link custom tokens](/its/integrations/evm/integrate-custom-token)                        | Your contracts stay as they are, and ITS mints and burns, or locks and unlocks, them                          |
+| Launch a new token on several chains                    | [Create a new token](/its/integrations/evm/interchain-tokens)                   | An interchain token, deployed by ITS, with the same address on most EVM chains                                |
+| Bring an existing token, deployed on one chain, to more | [Register an existing token](/its/integrations/evm/canonical-tokens)               | Your token is locked on its home chain, and ITS deploys an interchain token on the others                    |
+| Connect your own token contracts on several chains      | [Link custom tokens](/its/integrations/evm/custom-tokens)                        | Your contracts stay as they are, and ITS mints and burns, or locks and unlocks, them                          |
 
 [Concepts](/its/how-it-works/concepts) explains token IDs, the kinds of token and the token managers that connect them to ITS.
 
@@ -30,9 +30,9 @@ ITS runs on Axelar's EVM chains, Solana, Sui, Stellar and XRPL. It's permissionl
 1. A user calls `interchainTransfer` on the token, or on ITS, on the source chain.
 1. The token's token manager burns or locks the tokens, and ITS sends a [GMP](/gmp/overview) message to the [ITS Hub](/its/how-it-works/its-hub) on Axelar.
 1. The ITS Hub checks the transfer and forwards it to ITS on the destination chain.
-1. ITS mints or unlocks the tokens for the recipient. If the transfer carries data, it then calls the recipient contract with it ([executable](/its/integrations/evm/interchain-token-executable)).
+1. ITS mints or unlocks the tokens for the recipient. If the transfer carries data, it then calls the recipient contract with it ([executable](/its/integrations/evm/transfers-with-data)).
 
-Each transfer is a GMP message, and so is each deployment to another chain: pay gas for it on the source chain, and follow it on Axelarscan like any message. See [Gas](/gmp/gas/gas-service) and [Track and recover](/gmp/track-and-recover/transaction-states). [Express](/gmp/integrations/evm/express) currently doesn't work for ITS transfers.
+Each transfer is a GMP message, and so is each deployment to another chain: pay gas for it on the source chain, and follow it on Axelarscan like any message. See [Estimate ITS fees](/gmp/gas/estimate-and-pay#estimate-its-fees) and [Track and recover](/gmp/track-and-recover/transaction-states). [Express](/gmp/integrations/evm/express) currently doesn't work for ITS transfers.
 
 ## Addresses
 
@@ -45,5 +45,5 @@ Users can bridge interchain tokens in the [Axelar App](https://app.axelar.networ
 ## Next steps
 
 - [How it works](/its/how-it-works/concepts): token IDs, token managers, the ITS Hub, roles and flow limits.
-- Integrations: [EVM](/its/integrations/evm/create-new-interchain-token), [Solana](/its/integrations/solana), [Sui](/its/integrations/sui/intro), [Stellar](/its/integrations/stellar/intro), [XRPL](/its/integrations/xrpl).
+- Integrations: [EVM](/its/integrations/evm/intro), [Solana](/its/integrations/solana/intro), [Sui](/its/integrations/sui/intro), [Stellar](/its/integrations/stellar/intro), [XRPL](/its/integrations/xrpl).
 - [axlUSDC](/gmp/resources/axlusdc), Axelar's wrapped USDC.

@@ -3,7 +3,7 @@ title: "Roles"
 description: "Who can mint an interchain token, configure its token managers and set its flow limits."
 ---
 
-ITS has three roles. Each is held per token, and per chain:
+On EVM chains, ITS has three roles. Each is held per token, and per chain. Solana uses the same three roles. Sui and Stellar differ; see [On other chains](#on-other-chains).
 
 | Role         | Held on                    | Can                                                                     |
 | ------------ | -------------------------- | ----------------------------------------------------------------------- |
@@ -34,7 +34,7 @@ ITS is also an operator of every token manager.
 
 ## Flow limiter
 
-A flow limiter calls `setFlowLimit` on a token manager. The token manager's operator is a flow limiter, and so is ITS. ITS's own operator, an account Axelar controls, can set flow limits through ITS for every token manager where ITS still has the role; see [Who manages it](/its/how-it-works/flow-limits#who-manages-it). To set flow limits only yourself, call `removeFlowLimiter` with ITS's address as the operator.
+A flow limiter calls `setFlowLimit` on a token manager. The token manager's operator is a flow limiter, and so is ITS. ITS's own operator, an account Axelar controls, can set flow limits through ITS for every token manager where ITS still has the role; see [On EVM chains](/its/how-it-works/flow-limits#on-evm-chains). To set flow limits only yourself, call `removeFlowLimiter` with ITS's address as the operator.
 
 ## Passing on a role
 
@@ -46,3 +46,11 @@ The minter and operator roles can be passed on in one step, or in two, where the
 | Operator | `transferOperatorship(newOperator)` | `proposeOperatorship(newOperator)`, then `acceptOperatorship(oldOperator)` by the new operator |
 
 Two steps protect against a typo in the address. Passing a role to `address(0)` gives it up for good.
+
+## On other chains
+
+- **Solana.** The same three roles, kept per token as a bitmask in a roles account for each holder. A minter can mint, but not burn other accounts' tokens. Roles are passed on in one step only. ITS's operator, Axelar, can always set a token's flow limit.
+- **Sui.** The minter is called the _distributor_, and the token's _operator_ sets its flow limit directly; there's no flow limiter role. Axelar's `OperatorCap` can always set a token's flow limit.
+- **Stellar.** A token's minter can't be passed on. There's no per-token operator: ITS's operator, Axelar, sets flow limits, and can approve flow limiters for a token.
+
+See [Who manages it](/its/how-it-works/flow-limits#who-manages-it) for flow limits on each chain.

@@ -1,0 +1,68 @@
+---
+title: "Canonical tokens"
+description: "Register an existing ERC-20 with ITS, and deploy interchain tokens for it on other chains."
+---
+
+A [canonical token](/its/how-it-works/concepts#kinds-of-token) is an existing ERC-20 on one chain, its home chain, registered with ITS. The token stays as it is: ITS locks it when it leaves the home chain and unlocks it when it comes back. On every other chain, ITS deploys an interchain token for it, with no minter.
+
+For setup and the variables used below, see the [EVM overview](/its/integrations/evm/intro).
+
+## Register the token
+
+On the home chain:
+
+```solidity
+function registerCanonicalInterchainToken(address tokenAddress) external payable returns (bytes32 tokenId);
+```
+
+The call deploys a `LOCK_UNLOCK` [token manager](/its/how-it-works/concepts#token-managers) for the token, with no operator. It sends no message, so send no value with it. The token must have `name()`, `symbol()` and `decimals()`, or the call reverts.
+
+```bash
+TOKEN=<your token address>
+
+cast send $FACTORY "registerCanonicalInterchainToken(address)" $TOKEN \
+  --rpc-url $RPC --private-key $PK
+
+TOKEN_ID=$(cast call $FACTORY "canonicalInterchainTokenId(address)(bytes32)" $TOKEN --rpc-url $RPC)
+```
+
+A token can be registered once, and anyone can register any token. Its token ID depends only on the token's address and the home chain.
+
+For a token that takes a fee on transfer, register it as a [custom token](/its/integrations/evm/custom-tokens) with a `LOCK_UNLOCK_FEE` token manager instead: canonical registration always uses `LOCK_UNLOCK`.
+
+## Deploy it to other chains
+
+On the home chain:
+
+```solidity
+function deployRemoteCanonicalInterchainToken(
+    address originalTokenAddress,
+    string calldata destinationChain,
+    uint256 gasValue
+) external payable returns (bytes32 tokenId);
+```
+
+```bash
+cast send $FACTORY "deployRemoteCanonicalInterchainToken(address,string,uint256)" \
+  $TOKEN binance $FEE --value $FEE \
+  --rpc-url $RPC --private-key $PK
+```
+
+The call sends a message, so pay its [gas](/its/integrations/evm/intro#gas). Anyone can call it, for any registered token. It deploys an interchain token with the token's name, symbol and decimals, and no minter, on the destination chain. The [ITS Hub](/its/how-it-works/its-hub#what-the-hub-does) can lower the decimals on chains with a smaller maximum amount. Here's [a remote deployment on Axelarscan](https://testnet.axelarscan.io/gmp/0x3c36b04418aca90393435dbe9c2b65d26acc6e9f86aba1f34db27b41d82fda13).
+
+## Send it
+
+To send the token out of its home chain, approve ITS first: ITS moves the tokens to the token manager with `transferFrom`.
+
+```bash
+cast send $TOKEN "approve(address,uint256)" $ITS 25000000000000000000 \
+  --rpc-url $RPC --private-key $PK
+```
+
+Then call `interchainTransfer` on ITS; see [Transfers](/its/integrations/evm/transfers). On other chains, the token is an interchain token, and needs no approval.
+
+## Next steps
+
+- [Transfers](/its/integrations/evm/transfers): send the token between chains.
+- [Flow limits](/its/how-it-works/flow-limits): a canonical token has no operator, so only ITS can set its flow limits.
+- [its-canonical-token](https://github.com/axelarnetwork/axelar-examples/tree/main/examples/evm/its-canonical-token): an example that registers a canonical token and sends it between EVM chains.

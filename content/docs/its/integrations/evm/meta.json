@@ -1,13 +1,11 @@
 {
   "title": "EVM",
   "pages": [
-    "create-new-interchain-token",
-    "register-existing-token",
-    "integrate-custom-token",
-    "interchain-transfer",
-    "interchain-token-executable",
-    "programmatically-create-a-token",
-    "programmatically-create-a-canonical-token",
-    "link-custom-tokens-deployed-across-multiple-chains-into-interchain-tokens"
+    "intro",
+    "interchain-tokens",
+    "canonical-tokens",
+    "custom-tokens",
+    "transfers",
+    "transfers-with-data"
   ]
 }

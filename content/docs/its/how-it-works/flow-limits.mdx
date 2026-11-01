@@ -5,18 +5,39 @@ description: "Cap how much of a token can move into or out of a chain in each 6-
 
 A flow limit caps the net amount of a token that can move into or out of a chain in each 6-hour window. It limits the damage if a chain, or the token's contract on it, is compromised: an attacker can move at most one limit's worth before someone reacts.
 
-Each token has its own flow limit on each chain, held by its [token manager](/its/how-it-works/concepts#token-managers) there ([`FlowLimit`](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/utils/FlowLimit.sol)).
+Each token has its own flow limit on each chain, kept by ITS on that chain: on EVM chains and Solana in the token's [token manager](/its/how-it-works/concepts#token-managers) ([`FlowLimit`](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/utils/FlowLimit.sol) on EVM), on Sui and Stellar in ITS itself.
 
 ## How it's applied
 
-- **Windows.** Time is split into fixed 6-hour windows (`block.timestamp / 6 hours`). Amounts reset at the start of each window.
-- **Net flow.** The token manager adds up the amounts sent out of the chain and received into it in the current window. A transfer fails if the difference between the two would exceed the limit, or if the transfer alone exceeds it. Transfers in opposite directions cancel out.
-- **Where it fails.** An outgoing transfer over the limit reverts on the source chain. An incoming one fails when it's executed on the destination chain: the message stays approved, and can be [executed again](/gmp/track-and-recover/recover-transactions#execute) in a later window.
-- **No limit.** A flow limit of `0`, the default, means no limit.
+- **Windows.** Time is split into fixed 6-hour windows of the chain's clock. Amounts reset at the start of each window.
+- **Net flow.** ITS adds up the amounts sent out of the chain and received into it in the current window. A transfer fails if the difference between the two would exceed the limit. Transfers in opposite directions cancel out.
+- **Where it fails.** An outgoing transfer over the limit fails on the source chain. An incoming one fails when it's executed on the destination chain: the message stays approved, and can be [executed again](/gmp/track-and-recover/recover-transactions#execute) in a later window.
 
-Amounts are in the token's smallest unit on that chain.
+Amounts are in the token's smallest unit on that chain. By default, a token has no flow limit. How "no limit" is written differs by chain:
 
-## Set a flow limit
+| Chain   | No limit         | A limit of `0`         |
+| ------- | ---------------- | ---------------------- |
+| EVM     | `0`, the default | Means no limit         |
+| Solana  | `None`, the default | Blocks every transfer |
+| Sui     | `none`, the default | Blocks every transfer |
+| Stellar | `None`, the default | Blocks every transfer |
+
+## Who manages it
+
+On every chain, ITS's operator, an account Axelar controls, can set the flow limit of a token. Axelar's operations tooling uses this for emergencies: it freezes a token on a chain by setting a limit that blocks its transfers, and lifts the limit afterwards.
+
+Who else can set it depends on the chain:
+
+| Chain   | Also set by                                                                        | Can Axelar's operator be removed? |
+| ------- | ---------------------------------------------------------------------------------- | --------------------------------- |
+| EVM     | The token manager's operator and the flow limiters it adds                         | Yes, see below                    |
+| Solana  | The token manager's operator and its flow limiters                                 | No                                |
+| Sui     | The token's operator                                                               | No                                |
+| Stellar | Flow limiters that ITS's operator approves for the token                           | No                                |
+
+The integration pages show the calls on each chain. The [ITS Hub](/its/how-it-works/its-hub) has no flow limits of its own.
+
+## On EVM chains
 
 A [flow limiter](/its/how-it-works/roles#flow-limiter) of the token manager calls:
 
@@ -32,16 +53,11 @@ function flowOutAmount() external view returns (uint256); // sent out in the cur
 function flowInAmount() external view returns (uint256); // received in the current window
 ```
 
-The token manager's address is `deployedTokenManager(tokenId)` on ITS.
+The token manager's address is `deployedTokenManager(tokenId)` on ITS. A single transfer larger than the limit also fails.
 
-## Who manages it
+ITS is a flow limiter of every token manager when it's deployed, and ITS's operator sets limits through it with `setFlowLimits` on ITS. Axelar freezes a token by setting the limit to `1`, and lifts the freeze by setting it back to `0`.
 
-By default, a token has no flow limit. Two parties can set one:
-
-- **ITS, operated by Axelar.** ITS is a flow limiter of every token manager when it's deployed. ITS's operator, an account Axelar controls, can call `setFlowLimits` on ITS to set the flow limit of any token whose token manager still has ITS as a flow limiter. Axelar's operations tooling uses this for emergencies: it freezes a token on a chain by setting the limit to `1`, which blocks transfers of more than one unit, and sets it back to `0` to lift the freeze.
-- **The token manager's operator,** and any flow limiters it adds. For an interchain token, the operator is the minter you deployed it with; for a custom token, the operator you passed when linking it. A canonical token has no operator, so only ITS can set its limits.
-
-The operator decides who keeps the role:
+The token manager's operator is also a flow limiter. For an interchain token, the operator is the minter you deployed it with; for a custom token, the operator you passed when linking it. A canonical token has no operator, so only ITS can set its limits. The operator decides who keeps the role:
 
 | You want                                                  | Do                                                                                                                                                  |
 | --------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -51,5 +67,3 @@ The operator decides who keeps the role:
 | No one to be able to change them                          | Remove ITS as above, remove yourself with `removeFlowLimiter`, then give up the operator role with `transferOperatorship(address(0))`                |
 
 Set the limit you want before removing yourself: without a flow limiter, it can't be changed. Removing ITS also means Axelar can't freeze the token on that chain in an emergency.
-
-The [ITS Hub](/its/how-it-works/its-hub) has no flow limits of its own.

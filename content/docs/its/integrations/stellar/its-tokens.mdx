@@ -1,0 +1,464 @@
+---
+title: "Deploy and send tokens"
+description: "A Soroban contract that deploys, registers, sends and receives interchain tokens, with tests."
+---
+
+This page builds a contract that deploys interchain tokens, registers existing ones, sends them to other chains and receives them with data. For setup, addresses and what's different on Stellar, see the [Stellar overview](/its/integrations/stellar/intro).
+
+## The contract
+
+`src/lib.rs`:
+
+```rust
+#![no_std]
+
+use soroban_token_sdk::metadata::TokenMetadata;
+use stellar_axelar_std::types::Token;
+use stellar_axelar_std::{
+    contract, contracterror, contractimpl, contracttype, soroban_sdk, Address, Bytes, BytesN, Env,
+    InterchainTokenExecutable, String,
+};
+use stellar_interchain_token_service::executable::CustomInterchainTokenExecutable;
+use stellar_interchain_token_service::InterchainTokenServiceClient;
+
+#[contracttype]
+enum DataKey {
+    Owner,
+    Its,
+    // The sender this contract accepts tokens with data from, per source chain
+    TrustedSender(String),
+    LastPayload,
+}
+
+#[contracterror]
+#[derive(Copy, Clone, Debug, Eq, PartialEq)]
+#[repr(u32)]
+pub enum TokenAppError {
+    UntrustedSender = 1,
+}
+
+#[contract]
+#[derive(InterchainTokenExecutable)]
+pub struct TokenApp;
+
+impl CustomInterchainTokenExecutable for TokenApp {
+    type Error = TokenAppError;
+
+    fn __interchain_token_service(env: &Env) -> Address {
+        env.storage().instance().get(&DataKey::Its).unwrap()
+    }
+
+    // Runs after ITS has given the tokens to this contract
+    fn __authorized_execute_with_token(
+        env: &Env,
+        source_chain: String,
+        _message_id: String,
+        source_address: Bytes,
+        payload: Bytes,
+        _token_id: BytesN<32>,
+        _token_address: Address,
+        _amount: i128,
+    ) -> Result<(), Self::Error> {
+        // ITS has checked that the message came through Axelar.
+        // Check that it comes from a sender you trust.
+        let trusted: Option<Bytes> = env
+            .storage()
+            .instance()
+            .get(&DataKey::TrustedSender(source_chain));
+        if trusted != Some(source_address) {
+            return Err(TokenAppError::UntrustedSender);
+        }
+
+        env.storage()
+            .instance()
+            .set(&DataKey::LastPayload, &payload);
+
+        Ok(())
+    }
+}
+
+#[contractimpl]
+impl TokenApp {
+    pub fn __constructor(env: &Env, owner: Address, its: Address) {
+        env.storage().instance().set(&DataKey::Owner, &owner);
+        env.storage().instance().set(&DataKey::Its, &its);
+    }
+
+    pub fn set_trusted_sender(env: &Env, chain: String, sender: Bytes) {
+        let owner: Address = env.storage().instance().get(&DataKey::Owner).unwrap();
+        owner.require_auth();
+
+        env.storage()
+            .instance()
+            .set(&DataKey::TrustedSender(chain), &sender);
+    }
+
+    // Deploys a new interchain token on Stellar. `caller` is its deployer and gets the initial supply.
+    pub fn deploy_token(
+        env: &Env,
+        caller: Address,
+        salt: BytesN<32>,
+        name: String,
+        symbol: String,
+        decimals: u32,
+        initial_supply: i128,
+    ) -> BytesN<32> {
+        caller.require_auth();
+
+        let metadata = TokenMetadata {
+            name,
+            symbol,
+            decimal: decimals,
+        };
+        Self::its(env).deploy_interchain_token(&caller, &salt, &metadata, &initial_supply, &None)
+    }
+
+    // Deploys the token on another chain. Same `caller` and `salt` as `deploy_token`.
+    pub fn deploy_remote_token(
+        env: &Env,
+        caller: Address,
+        salt: BytesN<32>,
+        destination_chain: String,
+        gas_token: Token,
+    ) -> BytesN<32> {
+        caller.require_auth();
+
+        Self::its(env).deploy_remote_interchain_token(
+            &caller,
+            &salt,
+            &destination_chain,
+            &Some(gas_token),
+        )
+    }
+
+    // Registers an existing Stellar token. Anyone can register any token, once.
+    pub fn register_canonical_token(env: &Env, token_address: Address) -> BytesN<32> {
+        Self::its(env).register_canonical_token(&token_address)
+    }
+
+    // Deploys a registered canonical token on another chain. `caller` pays the gas.
+    pub fn deploy_remote_canonical_token(
+        env: &Env,
+        caller: Address,
+        token_address: Address,
+        destination_chain: String,
+        gas_token: Token,
+    ) -> BytesN<32> {
+        caller.require_auth();
+
+        Self::its(env).deploy_remote_canonical_token(
+            &token_address,
+            &destination_chain,
+            &caller,
+            &Some(gas_token),
+        )
+    }
+
+    // Sends `caller`'s tokens to another chain, with optional data for a contract recipient.
+    pub fn send(
+        env: &Env,
+        caller: Address,
+        token_id: BytesN<32>,
+        destination_chain: String,
+        destination_address: Bytes,
+        amount: i128,
+        data: Option<Bytes>,
+        gas_token: Token,
+    ) {
+        caller.require_auth();
+
+        Self::its(env).interchain_transfer(
+            &caller,
+            &token_id,
+            &destination_chain,
+            &destination_address,
+            &amount,
+            &data,
+            &Some(gas_token),
+        );
+    }
+
+    pub fn last_payload(env: &Env) -> Option<Bytes> {
+        env.storage().instance().get(&DataKey::LastPayload)
+    }
+}
+
+impl TokenApp {
+    fn its(env: &Env) -> InterchainTokenServiceClient<'_> {
+        InterchainTokenServiceClient::new(env, &Self::interchain_token_service(env))
+    }
+}
+
+#[cfg(test)]
+mod test;
+```
+
+Each function that acts for `caller` calls `caller.require_auth()` before calling ITS. ITS checks the same authorization, and the user signs one authorization for the whole call.
+
+## Deploy a new token
+
+`deploy_token` calls `deploy_interchain_token` on ITS, which deploys a token contract and its token manager on Stellar, and mints `initial_supply` to `caller`.
+
+- The [token ID](/its/integrations/stellar/intro#token-ids) is derived from `caller` and `salt`. Any 32 bytes work as a salt; the same caller can't use a salt twice.
+- The name and symbol must be 1 to 32 ASCII characters, and the decimals at most 255.
+- This contract sets no [minter](/its/integrations/stellar/intro#minters), so only ITS can mint the token, and `initial_supply` must be more than 0. To set a minter, pass `Some(minter)` instead of `None`.
+
+`deploy_remote_token` calls `deploy_remote_interchain_token`, which deploys the token on another chain with the same name, symbol and decimals, and no minter. Call it once per chain, with the same `caller` and `salt`. On an EVM chain, the token's address is `interchainTokenAddress(tokenId)` on ITS there.
+
+## Register an existing token
+
+`register_canonical_token` registers an existing Stellar token, such as a classic asset's [Stellar Asset Contract](/its/integrations/stellar/intro#classic-assets), as a [canonical token](/its/how-it-works/concepts#kinds-of-token). ITS deploys a `LockUnlock` token manager for it: tokens sent to other chains are locked in it, and unlocked when they come back. The token ID comes from the token's address; anyone can register a token, and only once.
+
+`deploy_remote_canonical_token` then deploys an interchain token for it on another chain, with no minter.
+
+## Send tokens
+
+`send` calls `interchain_transfer` on ITS, which burns or locks `amount` of `caller`'s tokens, and sends them to `destination_address` on the destination chain. On an EVM chain, the address is 20 bytes; see [Addresses in messages](/its/integrations/stellar/intro#addresses-in-messages).
+
+With `data`, ITS on the destination chain gives the tokens to the destination contract, then calls it with the data. On an EVM chain, see [Interchain token executable](/its/integrations/evm/transfers-with-data).
+
+`gas_token` pays for the message; see [Gas](/its/integrations/stellar/intro#gas).
+
+## Receive tokens
+
+Tokens sent to a Stellar address arrive with no code on your side: ITS mints or unlocks them to the recipient. An account receiving a classic asset needs a trustline for it.
+
+To receive tokens with data, a contract implements `CustomInterchainTokenExecutable` and adds `#[derive(InterchainTokenExecutable)]`. The derive generates two contract functions:
+
+- `interchain_token_service()`, which returns the address from your `__interchain_token_service`.
+- `execute_with_interchain_token(source_chain, message_id, source_address, payload, token_id, token_address, amount)`, which ITS calls after giving the tokens to your contract. It checks that ITS is the caller, then calls your `__authorized_execute_with_token`.
+
+Don't implement `InterchainTokenExecutableInterface` yourself, and don't put `#[contractimpl]` on your `CustomInterchainTokenExecutable` implementation.
+
+### Check the sender
+
+<Callout emoji="⚠️" title="ITS doesn't check who sent the tokens">
+  The derive proves that ITS called your contract, so the transfer came through
+  Axelar. It doesn't prove that it came from your contract on the other chain:
+  anyone can send tokens with data to your contract. Unless your contract
+  accepts data from anyone, check `source_chain` and `source_address` in
+  `__authorized_execute_with_token`.
+</Callout>
+
+`source_address` is bytes in the source chain's format: an EVM sender is its 20 bytes, as in the test below. `source_chain` is the chain's registered name, such as `Avalanche`.
+
+### When your code fails
+
+If `__authorized_execute_with_token` returns an error, the whole transfer fails on Stellar, and your contract doesn't get the tokens. The message stays approved and can be executed again, e.g. after you trust the sender. Axelarscan shows it as **Error**; see [Debug failed execution](/gmp/track-and-recover/debug-failed-execution).
+
+## Test
+
+The ITS crate has a test helper that runs ITS locally, with a local gateway and gas service. Add the dev-dependencies:
+
+```toml
+[dev-dependencies]
+stellar-axelar-std = { version = "2.0.1", features = ["derive", "testutils"] }
+stellar-axelar-gateway = { version = "2.0.1", features = ["library", "testutils"] }
+stellar-axelar-gas-service = { version = "2.0.1", features = ["library", "testutils"] }
+stellar-interchain-token-service = { version = "2.1.1", features = ["library", "testutils"] }
+```
+
+`src/test.rs`, which deploys a token, sends it, receives it with data through the ITS Hub, and registers an existing token:
+
+```rust
+extern crate std;
+
+use stellar_axelar_gas_service::testutils::{setup_gas_service, setup_gas_token};
+use stellar_axelar_gateway::testutils::{approve_gateway_messages, setup_gateway};
+use stellar_axelar_gateway::types::Message as GatewayMessage;
+use stellar_axelar_std::address::AddressExt;
+use stellar_axelar_std::testutils::Address as _;
+use stellar_axelar_std::token::TokenClient;
+use stellar_axelar_std::{vec, Address, Bytes, BytesN, Env, String};
+use stellar_interchain_token_service::testutils::setup_its;
+use stellar_interchain_token_service::types::{
+    HubMessage, InterchainTransfer, Message, TokenManagerType,
+};
+
+use crate::{TokenApp, TokenAppClient};
+
+#[test]
+fn deploy_send_and_receive() {
+    let env = Env::default();
+    env.mock_all_auths();
+
+    // A local gateway, gas service and ITS
+    let (signers, gateway) = setup_gateway(&env, 0, 5);
+    let gas_service = setup_gas_service(&env);
+    let its = setup_its(&env, &gateway, &gas_service, None);
+    let chain = String::from_str(&env, "Avalanche");
+    its.set_trusted_chain(&chain);
+
+    let owner = Address::generate(&env);
+    let id = env.register(TokenApp, (&owner, &its.address));
+    let app = TokenAppClient::new(&env, &id);
+
+    // Deploy a token with 7 decimals and a supply of 1,000, then deploy it on Avalanche
+    let user = Address::generate(&env);
+    let salt = BytesN::from_array(&env, &[1; 32]);
+    let name = String::from_str(&env, "My Token");
+    let symbol = String::from_str(&env, "MYT");
+    let token_id = app.deploy_token(&user, &salt, &name, &symbol, &7, &1_000_0000000);
+    assert_eq!(token_id, its.interchain_token_id(&user, &salt));
+    app.deploy_remote_token(&user, &salt, &chain, &setup_gas_token(&env, &user));
+
+    // Send 10 tokens to an EVM address
+    let token = TokenClient::new(&env, &its.registered_token_address(&token_id));
+    let recipient = Bytes::from_array(&env, &[0xab; 20]);
+    let gas_token = setup_gas_token(&env, &user);
+    app.send(
+        &user,
+        &token_id,
+        &chain,
+        &recipient,
+        &10_0000000,
+        &None,
+        &gas_token,
+    );
+    assert_eq!(token.balance(&user), 990_0000000);
+
+    // Receive 5 tokens with data from a contract on Avalanche, through the ITS Hub
+    let sender = Bytes::from_array(
+        &env,
+        &[
+            0x34, 0xe9, 0x04, 0x23, 0x73, 0x41, 0xc3, 0xde, 0x02, 0xd4, 0x44, 0x7c, 0x3f, 0xf0,
+            0xca, 0x88, 0x80, 0xca, 0x64, 0x84,
+        ],
+    );
+    let data = Bytes::from_slice(&env, b"hello");
+    let payload = HubMessage::ReceiveFromHub {
+        source_chain: chain.clone(),
+        message: Message::InterchainTransfer(InterchainTransfer {
+            token_id: token_id.clone(),
+            source_address: sender.clone(),
+            destination_address: id.to_string_bytes(),
+            amount: 5_0000000,
+            data: Some(data.clone()),
+        }),
+    }
+    .abi_encode(&env)
+    .unwrap();
+
+    let hub_chain = its.its_hub_chain_name();
+    let hub_address = its.its_hub_address();
+    let message_id = String::from_str(&env, "0xabc-1");
+    let payload_hash: BytesN<32> = env.crypto().keccak256(&payload).into();
+    let message = GatewayMessage {
+        source_chain: hub_chain.clone(),
+        message_id: message_id.clone(),
+        source_address: hub_address.clone(),
+        contract_address: its.address.clone(),
+        payload_hash: payload_hash.clone(),
+    };
+    approve_gateway_messages(&env, &gateway, signers, vec![&env, message]);
+
+    // Rejected until the sender is trusted: no tokens are given, and the message stays approved
+    assert!(its
+        .try_execute(&hub_chain, &message_id, &hub_address, &payload)
+        .is_err());
+    assert_eq!(token.balance(&id), 0);
+    assert!(gateway.is_message_approved(
+        &hub_chain,
+        &message_id,
+        &hub_address,
+        &its.address,
+        &payload_hash
+    ));
+
+    app.set_trusted_sender(&chain, &sender);
+    its.execute(&hub_chain, &message_id, &hub_address, &payload);
+    assert_eq!(token.balance(&id), 5_0000000);
+    assert_eq!(app.last_payload(), Some(data));
+}
+
+#[test]
+fn register_canonical_token() {
+    let env = Env::default();
+    env.mock_all_auths();
+
+    let (_, gateway) = setup_gateway(&env, 0, 5);
+    let gas_service = setup_gas_service(&env);
+    let its = setup_its(&env, &gateway, &gas_service, None);
+    let chain = String::from_str(&env, "Avalanche");
+    its.set_trusted_chain(&chain);
+
+    let owner = Address::generate(&env);
+    let id = env.register(TokenApp, (&owner, &its.address));
+    let app = TokenAppClient::new(&env, &id);
+
+    // An existing Stellar asset
+    let asset = env.register_stellar_asset_contract_v2(Address::generate(&env));
+
+    let token_id = app.register_canonical_token(&asset.address());
+    assert_eq!(
+        token_id,
+        its.canonical_interchain_token_id(&asset.address())
+    );
+    assert_eq!(
+        its.token_manager_type(&token_id),
+        TokenManagerType::LockUnlock
+    );
+
+    let user = Address::generate(&env);
+    let gas_token = setup_gas_token(&env, &user);
+    app.deploy_remote_canonical_token(&user, &asset.address(), &chain, &gas_token);
+}
+```
+
+Run it with `cargo test`.
+
+## Build and deploy
+
+```bash
+stellar contract build
+
+stellar contract deploy \
+  --wasm target/wasm32v1-none/release/token_app.wasm \
+  --source alice --network testnet \
+  -- \
+  --owner alice \
+  --its CC7LAC4S7KAPIM26WKWFSOXWLNLSG7EXTC2EVY2H2UPKSTX3Z2A7M5YP
+```
+
+The wasm file is named after your package. The build may warn that `ContractError` is defined more than once: the gateway, gas service and ITS clients each bring one into your contract's interface, which the Stellar CLI accepts.
+
+Deploy a token with a supply of 1,000, with any 32-byte hex salt:
+
+```bash
+stellar contract invoke --id <your contract> --source alice --network testnet \
+  -- deploy_token \
+  --caller alice \
+  --salt <32-byte hex> \
+  --name "My Token" \
+  --symbol MYT \
+  --decimals 7 \
+  --initial_supply 10000000000
+```
+
+It returns the token ID. The `interchain_token_deployed` event in the output has the token's address on Stellar.
+
+Deploy it on Avalanche, with the gas amount in stroops (1 XLM = `10000000`):
+
+```bash
+stellar contract invoke --id <your contract> --source alice --network testnet \
+  -- deploy_remote_token \
+  --caller alice \
+  --salt <same salt> \
+  --destination_chain Avalanche \
+  --gas_token '{"address":"CDLZFC3SYJYDZT7K67VZ75HPJVIEUVNIXF47ZG2FB2RMQQVU2HHGCYSC","amount":"<gas amount>"}'
+```
+
+When the deployment has arrived, send 10 tokens to an EVM address, written as hex without `0x`:
+
+```bash
+stellar contract invoke --id <your contract> --source alice --network testnet \
+  -- send \
+  --caller alice \
+  --token_id <token ID> \
+  --destination_chain Avalanche \
+  --destination_address <EVM address> \
+  --amount 100000000 \
+  --gas_token '{"address":"CDLZFC3SYJYDZT7K67VZ75HPJVIEUVNIXF47ZG2FB2RMQQVU2HHGCYSC","amount":"<gas amount>"}'
+```
+
+To attach data, add `--data <hex>`. Follow each message on [Axelarscan](https://testnet.axelarscan.io/gmp/search) by the transaction hash. It shows as two messages, through the [ITS Hub](/its/how-it-works/its-hub).

@@ -3,6 +3,9 @@
   "icon": "Library",
   "pages": [
     "references",
-    "[axlUSDC](/gmp/resources/axlusdc)"
+    "[axlUSDC](/gmp/resources/axlusdc)",
+    "external:[Transfers on Axelarscan](https://axelarscan.io/gmp/search?assetType=its)",
+    "external:[Interchain statistics](https://axelarscan.io/interchain)",
+    "[Security & Bug Bounty](/infrastructure/resources/security)"
   ]
 }

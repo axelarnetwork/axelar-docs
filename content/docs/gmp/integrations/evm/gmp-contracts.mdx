@@ -78,7 +78,7 @@ The token version on consensus chains, `validateContractCallAndMint(commandId, s
 | Command ID          | Assigned by Axelar                                                                                | `keccak256(bytes(string.concat(sourceChain, "_", messageId)))`, from `messageToCommandId` |
 | Approval event      | `ContractCallApproved(commandId, sourceChain, sourceAddress, contractAddress, payloadHash, sourceTxHash, sourceEventIndex)` | `MessageApproved(commandId, sourceChain, messageId, sourceAddress, contractAddress, payloadHash)` |
 | Execution event     | `ContractCallExecuted(commandId)`                                                                 | `MessageExecuted(commandId)`                                                         |
-| Tokens              | `callContractWithToken`, `validateContractCallAndMint`                                            | Not supported; use [ITS](/its/integrations/evm/interchain-token-executable)                           |
+| Tokens              | `callContractWithToken`, `validateContractCallAndMint`                                            | Not supported; use [ITS](/its/integrations/evm/transfers-with-data)                           |
 
 Amplifier gateways also identify messages by source chain and message ID ([`IBaseAmplifierGateway`](https://github.com/axelarnetwork/axelar-gmp-sdk-solidity/blob/main/contracts/interfaces/IBaseAmplifierGateway.sol)):
 

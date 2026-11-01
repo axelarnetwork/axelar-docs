@@ -1,10 +1,4 @@
 {
   "title": "Sui",
-  "pages": [
-    "intro",
-    "coin-management",
-    "link-coin",
-    "register-existing-coin",
-    "register-existing-coin-guide"
-  ]
+  "pages": ["intro", "register-coin", "link-coin", "its-contracts"]
 }

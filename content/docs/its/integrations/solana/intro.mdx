@@ -1,0 +1,70 @@
+---
+title: "Overview"
+description: "Send interchain tokens to and from Solana programs, and deploy, register and link tokens on Solana."
+---
+
+On Solana, ITS is the [`solana-axelar-its`](https://github.com/axelarnetwork/axelar-amplifier-solana/tree/main/programs/solana-axelar-its) program. It connects SPL Token and Token-2022 mints to ITS, sends and receives their transfers through the [ITS Hub](/its/how-it-works/its-hub), and calls Solana programs that receive tokens with data. [Concepts](/its/how-it-works/concepts) explains token IDs, the kinds of token and token managers, which work the same way on Solana.
+
+<Callout title="Using an AI agent?">
+  Copy this page with **Copy Markdown** at the top and give it to your agent,
+  with the token you want to make interchain. The copied page links to the
+  Markdown of the other pages it refers to, so the agent can read them too.
+  Review what it writes, and test on testnet before mainnet.
+</Callout>
+
+## Guides
+
+- **[Send & receive interchain transfers](/its/integrations/solana/interchain-transfers)**: send tokens from your program, and receive tokens with data in it.
+- **[Deploy and register tokens](/its/integrations/solana/tokens)**: deploy an interchain token, register a canonical token, link a custom token, and manage roles and flow limits.
+- **[ITS program reference](/its/integrations/solana/its-contracts)**: accounts, PDAs, instructions and events.
+
+## How a transfer works on Solana
+
+### From Solana
+
+```
+Your program or wallet → ITS (interchain_transfer) → Gateway → ITS Hub on Axelar → Destination chain
+```
+
+1. ITS takes the tokens from the sender: it burns them, or locks them in the token manager's token account, depending on the [token manager type](/its/how-it-works/concepts#token-managers).
+2. ITS pays the gas from the `payer` account to the Gas Service, and sends the transfer to the ITS Hub through the Gateway.
+
+### To Solana
+
+```
+Source chain → ITS Hub on Axelar → Gateway (approve_message) → ITS (execute) → Your program (execute_with_interchain_token)
+```
+
+1. Axelar's relayer approves the message on the Gateway, then calls ITS, which checks that the message comes from the ITS Hub and from a trusted source chain.
+2. ITS mints or unlocks the tokens into the recipient's associated token account, and creates the account if it doesn't exist. If the recipient is a program, the account belongs to a PDA of that program, so the program can spend the tokens.
+3. If the transfer carries data, ITS then calls the recipient program with it.
+
+## Setup
+
+Add the ITS crate to your program, with the feature for the network you deploy to:
+
+```toml
+[dependencies]
+anchor-lang = "1.2.0"
+anchor-spl = "1.2.0"
+solana-axelar-its = { version = "1.1.2", default-features = false, features = ["cpi", "mainnet"] }
+```
+
+<Callout emoji="💡">
+  The network feature (`mainnet` or `testnet`) sets the program IDs your program
+  checks against. The crates default to `devnet-amplifier`, so without
+  `default-features = false` and a network feature, your program accepts calls
+  only from the devnet programs. Use the same network feature on every Axelar
+  crate. See the [GMP
+  setup](/gmp/integrations/solana/intro#prerequisites-and-setup) for the Gateway
+  and Gas Service crates.
+</Callout>
+
+ITS on Axelar's testnet runs on Solana's devnet cluster. For the program addresses, see [Chains and contracts](/infrastructure/network/chains-and-contracts).
+
+## Things to know
+
+- **Amounts are `u64`.** When a token is deployed to Solana from a chain with larger integers, such as an EVM chain, the ITS Hub gives it at most 6 decimals on Solana, and converts the amounts of transfers between the two chains. See [ITS Hub](/its/how-it-works/its-hub#what-the-hub-does).
+- **Interchain tokens are Token-2022 mints.** Those that ITS deploys on Solana have Metaplex metadata, with the name and symbol, that can't be changed later.
+- **Gas is paid in lamports.** Pass the fee as `gas_value` to the ITS instruction: ITS pays the Gas Service itself. Estimate it as in [Estimate ITS fees](/gmp/gas/estimate-and-pay#estimate-its-fees), with `solana` as the source chain.
+- **[Express](/gmp/integrations/evm/express) currently doesn't work for ITS transfers.**

@@ -14,7 +14,7 @@ description: "Token IDs, the kinds of interchain token, and the token managers t
 
 Every token connected to ITS has a token ID, a `bytes32` that's the same on every chain. A transfer of a token ID on one chain arrives as the token with the same ID on the destination chain.
 
-ITS derives the ID from the deployer's address and a salt: `keccak256(abi.encode(keccak256('its-interchain-token-id'), deployer, salt))`. The factory computes the IDs of the tokens it deploys or registers:
+The ID is fixed when the token is first registered, on its origin chain. On EVM, the Interchain Token Factory derives it from the origin chain's name, the deployer's address and a salt (or, for a canonical token, the token's address). The same deployer and salt give a different ID on another chain. The factory computes the IDs of the tokens it deploys or registers on its chain:
 
 | Token                                                        | Factory function                               |
 | ------------------------------------------------------------ | ---------------------------------------------- |
@@ -22,7 +22,7 @@ ITS derives the ID from the deployer's address and a salt: `keccak256(abi.encode
 | A canonical token, from its address on its home chain        | `canonicalInterchainTokenId(tokenAddress)`     |
 | A custom token you registered and linked with a salt         | `linkedTokenId(deployer, salt)`                |
 
-The ID depends on the deployer and salt, not on the chains, so you can compute it before deploying.
+Call them on the origin chain to get the ID before you deploy. Other chains derive IDs their own way.
 
 ## Kinds of token
 
@@ -32,7 +32,7 @@ The ID depends on the deployer and salt, not on the chains, so you can compute i
 
 ## Token managers
 
-A token manager connects one token to ITS on one chain: ITS calls it to take the tokens of an outgoing transfer, and to give out the tokens of an incoming one. It also holds the token's [flow limit](/its/how-it-works/flow-limits) on that chain, and its [operator and flow limiters](/its/how-it-works/roles).
+A token manager connects one token to ITS on one chain: ITS calls it to take the tokens of an outgoing transfer, and to give out the tokens of an incoming one. On EVM chains and Solana, it also holds the token's [flow limit](/its/how-it-works/flow-limits) on that chain, and its [operator and flow limiters](/its/how-it-works/roles); on Sui and Stellar, ITS keeps them.
 
 Its type sets how it handles the token ([`ITokenManagerType`](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/interfaces/ITokenManagerType.sol)):
 
@@ -43,6 +43,8 @@ Its type sets how it handles the token ([`ITokenManagerType`](https://github.com
 | `LOCK_UNLOCK`             | `2`   | Lock       | Unlock   | Nothing; the token manager holds the locked tokens. The sender approves ITS to transfer them             |
 | `LOCK_UNLOCK_FEE`         | `3`   | Lock       | Unlock   | Same as `LOCK_UNLOCK`, for tokens that take a fee on transfer. ITS accounts for the amount actually received |
 | `MINT_BURN`               | `4`   | Burn       | Mint     | Let the token manager mint and burn                                                                      |
+
+Other chains support some of these types: Stellar has all but `LOCK_UNLOCK_FEE`, and on Sui you can link a coin as `LOCK_UNLOCK` or `MINT_BURN`. See each chain's integration pages.
 
 Use lock and unlock on at most one chain, the token's home chain, where its supply lives. On other chains, use a mint and burn type, so tokens are created as they arrive and destroyed as they leave.
 
