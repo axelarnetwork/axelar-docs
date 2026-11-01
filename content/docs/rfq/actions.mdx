@@ -1,6 +1,7 @@
 ---
 title: User Actions
 description: The action envelope and chain-specific payload formats returned by POST /rfq/v1/quote.
+icon: ListOrdered
 ---
 
 Every quote returned by [`POST /rfq/v1/quote`](/rfq/endpoints/quote) contains an `actions` array: the ordered list of steps the user must execute, in sequence, to start the transfer. Each action is a chain-agnostic envelope with a chain-specific payload, discriminated by `payload.type`.
