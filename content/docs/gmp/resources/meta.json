@@ -4,6 +4,9 @@
   "pages": [
     "examples-and-tutorials",
     "axelarjs-sdk",
-    "references"
+    "axlusdc",
+    "references",
+    "external:[Messages on Axelarscan](https://axelarscan.io/gmp/search)",
+    "[Security & Bug Bounty](/infrastructure/resources/security)"
   ]
 }

@@ -53,6 +53,31 @@ It returns the total fee in wei. Add `"showDetailedFees": true` for the breakdow
 
 The detailed response includes `totalFee`, its parts (`baseFee`, `executionFeeWithMultiplier`, `expressFee`) and `isExpressSupported`, which tells you whether Express is available between the two chains. For rollup destinations, `gasLimitWithL1Fee` is the gas limit with the L1 data fee included.
 
+### Estimate ITS fees
+
+An [Interchain Token Service](/its/overview) message travels in two hops, from the source chain to the [ITS Hub](/its/how-it-works/its-hub) on Axelar, then to the destination chain, and one payment on the source chain covers both. Estimate it with `estimateITSFee`, which returns the fee for both hops, in the source chain's smallest unit:
+
+```bash
+curl -X POST https://api.axelarscan.io/gmp/estimateITSFee \
+  -H 'content-type: application/json' \
+  -d '{"sourceChain":"ethereum","destinationChain":"Avalanche","event":"InterchainTransfer"}'
+```
+
+Set `event` to the kind of message you're sending; it defaults to a transfer:
+
+| Message                                                   | `event`                      | `destinationChain`  |
+| --------------------------------------------------------- | ---------------------------- | ------------------- |
+| A transfer                                                | `InterchainTransfer`         | The destination     |
+| Deploying an interchain or canonical token to another chain | `InterchainTokenDeployment` | The destination     |
+| Linking a custom token                                    | `LinkToken`                  | The destination     |
+| Registering token metadata with the ITS Hub               | `TokenMetadataRegistered`    | `axelar`            |
+
+`showDetailedFees`, `gasMultiplier` and `minGasPrice` work as for `estimateGasFee`; the detailed response lists each hop under `details`. `gasLimit` sets the gas limit of the execution on the destination chain, in place of the default for the event: set it for a transfer that calls a contract with data, after measuring what that call uses.
+
+For testnet, use `https://testnet.api.axelarscan.io`. The AxelarJS SDK has the same estimate, `estimateITSFee` on `AxelarQueryAPI`, without `gasLimit`. Its type for `event` doesn't include `InterchainTokenDeployment` or `TokenMetadataRegistered` yet, so estimate those with the API.
+
+Pay the fee to ITS, not to the gas service: ITS pays the gas service itself. Each chain's [ITS integration](/its/overview#next-steps) shows how.
+
 ## Pay gas
 
 Call the gas service, then the gateway, in the same transaction. The payment is matched to the message by sender, destination chain, destination address and payload, so pass the same values to both:

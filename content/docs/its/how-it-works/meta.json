@@ -1,0 +1,5 @@
+{
+  "title": "How it works",
+  "icon": "Lightbulb",
+  "pages": ["concepts", "its-hub", "roles", "flow-limits"]
+}

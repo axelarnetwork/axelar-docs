@@ -1,0 +1,151 @@
+---
+title: "Register an existing coin"
+description: "Register a Sui coin with ITS, deploy it to another chain and send it there."
+---
+
+This guide registers a coin on Sui as a [canonical token](/its/how-it-works/concepts#kinds-of-token): Sui is its home chain, and ITS deploys an interchain token for it on other chains, with no minter. Coins sent out of Sui are locked in ITS, and unlocked when they come back.
+
+To connect a coin to token contracts you already have on other chains, [link it](/its/integrations/sui/link-coin) instead.
+
+The commands use testnet; see [Addresses](/its/integrations/sui/intro#addresses) for mainnet. Set these first:
+
+```bash
+ITS_PKG=0x0f9fb8246525699ac7e0a9742094f3491e20b0f3b2a5faf503f139df383390f0
+ITS=0x55fcd94e5293ff04c512a23c835d79b75e52611f66496e2d02cca439b84fa73c
+GATEWAY_PKG=0x6ddfcdd14a1019d13485a724db892fa0defe580f19c991eaabd690140abb21e4
+GATEWAY=0x6fc18d39a9d7bf46c438bdb66ac9e90e902abffca15b846b32570538982fb3db
+GAS_SERVICE_PKG=0xddf711b99aec5c72594e5cf2da4014b2d30909850a759d2e8090add1088dbbc9
+GAS_SERVICE=0xac1a4ad12d781c2f31edc2aa398154d53dbda0d50cb39a4319093e3b357bc27d
+```
+
+## Create a coin
+
+Skip this if you already have a coin. ITS needs its type and its `CoinMetadata` object.
+
+Create a package with `sui move new my_coin`, and replace `sources/my_coin.move` with:
+
+```move
+module my_coin::my_coin;
+
+use sui::coin;
+
+public struct MY_COIN has drop {}
+
+#[allow(deprecated_usage)]
+fun init(witness: MY_COIN, ctx: &mut TxContext) {
+    let (treasury_cap, metadata) = coin::create_currency(
+        witness,
+        6, // decimals
+        b"MYC",
+        b"My Coin",
+        b"",
+        option::none(),
+        ctx,
+    );
+    transfer::public_freeze_object(metadata);
+    transfer::public_transfer(treasury_cap, ctx.sender());
+}
+```
+
+`create_currency` creates the `CoinMetadata` object that ITS reads. Recent Sui versions deprecate it in favor of the coin registry, hence the `#[allow]`.
+
+Publish it:
+
+```bash
+sui client switch --env testnet
+sui client publish
+```
+
+From the output, note the package ID and the IDs of the `CoinMetadata` and `TreasuryCap` objects, and mint some coins:
+
+```bash
+COIN=<package ID>::my_coin::MY_COIN
+METADATA=<CoinMetadata object ID>
+TREASURY_CAP=<TreasuryCap object ID>
+
+sui client ptb \
+  --move-call 0x2::coin::mint_and_transfer "<$COIN>" @$TREASURY_CAP 1000000000 @$(sui client active-address)
+```
+
+That mints 1,000 coins: amounts are in the coin's smallest unit, and it has 6 decimals.
+
+## Register the coin
+
+Create a lock and unlock `CoinManagement` for the coin, and register it:
+
+```bash
+sui client ptb \
+  --move-call $ITS_PKG::coin_management::new_locked "<$COIN>" --assign coin_management \
+  --move-call $ITS_PKG::interchain_token_service::register_coin_from_metadata "<$COIN>" \
+    @$ITS @$METADATA coin_management
+```
+
+The `CoinRegistered` event in the output has the coin's token ID, in `token_id`:
+
+```bash
+TOKEN_ID=<token ID>
+```
+
+You keep the `TreasuryCap`. Some options:
+
+- **Mint and burn instead.** Pass the `TreasuryCap` to ITS with `new_with_cap "<$COIN>" @$TREASURY_CAP` instead of `new_locked`. ITS then burns the coins sent out and mints those that come back, and you mint through a [distributor](/its/integrations/sui/its-contracts#roles).
+- **Flow limits.** To be able to set the coin's [flow limit](/its/integrations/sui/its-contracts#flow-limits), add an operator to the `CoinManagement` before registering it. Axelar can set it either way.
+- **Name, symbol and decimals.** `register_coin_from_info` takes them as arguments instead of reading the `CoinMetadata`. ITS doesn't check them against the coin, and the token ID differs from the one `register_coin_from_metadata` gives.
+
+## Deploy it to another chain
+
+Deploy an interchain token for the coin on Ethereum Sepolia:
+
+```bash
+GAS=<fee in MIST>
+
+sui client ptb \
+  --move-call $ITS_PKG::token_id::from_address @$TOKEN_ID --assign token_id \
+  --move-call $ITS_PKG::interchain_token_service::deploy_remote_interchain_token "<$COIN>" \
+    @$ITS token_id '"ethereum-sepolia"' --assign ticket \
+  --split-coins gas "[$GAS]" --assign gas_coins \
+  --move-call $GAS_SERVICE_PKG::gas_service::pay_gas "<0x2::sui::SUI>" \
+    @$GAS_SERVICE ticket gas_coins.0 @$(sui client active-address) "vector[]" \
+  --move-call $GATEWAY_PKG::gateway::send_message @$GATEWAY ticket
+```
+
+Get the fee from an [ITS fee estimate](/gmp/gas/estimate-and-pay#estimate-its-fees) with the `InterchainTokenDeployment` event. Any refund goes to your address.
+
+Follow the deployment on [Axelarscan](https://testnet.axelarscan.io/gmp/search) by the transaction digest: it's a message to the ITS Hub, then one from it to Ethereum Sepolia. Once it's executed, the token has the coin's name, symbol and decimals, and the same token ID. Its address is `interchainTokenAddress(tokenId)` on ITS on Ethereum Sepolia.
+
+Repeat for each chain. Chain names are as registered with the ITS Hub: on mainnet, some are capitalized, e.g. `Ethereum` and `Avalanche`. `deploy_remote_interchain_token` works only for coins registered with `register_coin_from_metadata` or `register_coin_from_info`.
+
+## Send coins to the other chain
+
+Send 1 coin to an address on Ethereum Sepolia:
+
+```bash
+COIN_OBJECT=<ID of a Coin<$COIN> object you own>  # sui client balance --with-coins
+DESTINATION=$(echo <EVM address> | sed 's/^0x//; s/../0x&u8,/g; s/,$//')
+
+sui client ptb \
+  --move-call $ITS_PKG::token_id::from_address @$TOKEN_ID --assign token_id \
+  --split-coins @$COIN_OBJECT "[1000000]" --assign coins \
+  --move-call $GATEWAY_PKG::channel::new --assign channel \
+  --move-call $ITS_PKG::interchain_token_service::prepare_interchain_transfer "<$COIN>" \
+    token_id coins.0 '"ethereum-sepolia"' "vector[$DESTINATION]" "vector[]" channel \
+    --assign transfer_ticket \
+  --move-call $ITS_PKG::interchain_token_service::send_interchain_transfer "<$COIN>" \
+    @$ITS transfer_ticket @0x6 --assign ticket \
+  --split-coins gas "[$GAS]" --assign gas_coins \
+  --move-call $GAS_SERVICE_PKG::gas_service::pay_gas "<0x2::sui::SUI>" \
+    @$GAS_SERVICE ticket gas_coins.0 @$(sui client active-address) "vector[]" \
+  --move-call $GATEWAY_PKG::gateway::send_message @$GATEWAY ticket \
+  --move-call $GATEWAY_PKG::channel::destroy channel
+```
+
+- `prepare_interchain_transfer` sends the whole coin it gets, so split off the amount first.
+- The destination address is bytes: an EVM address is its 20 bytes, which the `sed` turns into a `vector<u8>`.
+- The empty `vector[]` after it is the metadata: no data. See [Interchain transfer ticket](/its/integrations/sui/its-contracts#interchain-transfer-ticket) to send data.
+- The sender is a channel. Here it's a new one, created and destroyed in the transaction, so the recipient sees a random sender address. Keep a channel to send from a fixed one.
+- `send_interchain_transfer` locks the coins, and `@0x6` is the `Clock`, for [flow limits](/its/integrations/sui/its-contracts#flow-limits).
+- Estimate the fee with the `InterchainTransfer` event.
+
+## Send coins back to Sui
+
+On Ethereum Sepolia, call `interchainTransfer` with the token ID, `sui` as the destination chain and a Sui address, as 32 bytes, as the destination address. See [Transfers](/its/integrations/evm/transfers#from-its). On Sui, ITS unlocks the coins and sends them to that address.

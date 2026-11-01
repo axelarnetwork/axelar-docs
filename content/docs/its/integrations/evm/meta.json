@@ -1,0 +1,11 @@
+{
+  "title": "EVM",
+  "pages": [
+    "intro",
+    "interchain-tokens",
+    "canonical-tokens",
+    "custom-tokens",
+    "transfers",
+    "transfers-with-data"
+  ]
+}

@@ -1,0 +1,148 @@
+---
+title: "Custom tokens"
+description: "Link your own token contracts on several chains into one interchain token."
+---
+
+A [custom token](/its/how-it-works/concepts#kinds-of-token) is your own token contract on several chains, linked under one token ID. Each contract keeps its own code. On each chain, you choose how ITS handles it by its [token manager](/its/how-it-works/concepts#token-managers) type.
+
+For setup and the variables used below, see the [EVM overview](/its/integrations/evm/intro).
+
+## Steps
+
+1. [Deploy your token](#the-token-contract) on each chain. The addresses can differ.
+1. [Register its metadata](#register-the-metadata) on each chain.
+1. [Register the token](#register-the-token) on one chain.
+1. [Link it](#link-it-to-other-chains) to each other chain, from that chain.
+1. [Give the token managers](#give-the-token-managers-access) what their type needs.
+
+## The token contract
+
+What your token needs depends on its token manager type:
+
+| Type              | Value | ITS calls on the token                                                       | Before sending, the sender approves ITS |
+| ----------------- | ----- | ---------------------------------------------------------------------------- | --------------------------------------- |
+| `MINT_BURN`       | `4`   | `mint(to, amount)` and `burn(from, amount)`, from the token manager          | No                                      |
+| `MINT_BURN_FROM`  | `1`   | `mint(to, amount)` from the token manager, `burnFrom(from, amount)` from ITS | Yes                                     |
+| `LOCK_UNLOCK`     | `2`   | `transferFrom`, from ITS, to lock and unlock                                 | Yes                                     |
+| `LOCK_UNLOCK_FEE` | `3`   | The same, for tokens that take a fee on transfer                             | Yes                                     |
+
+Type `0` is reserved for interchain tokens, and reverts with `CannotDeploy`. Use a lock and unlock type on at most one chain, where the token's supply lives; see [Token managers](/its/how-it-works/concepts#token-managers).
+
+A token for `MINT_BURN`, with a role for the token manager:
+
+```solidity
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.20;
+
+import { ERC20 } from '@openzeppelin/contracts/token/ERC20/ERC20.sol';
+import { AccessControl } from '@openzeppelin/contracts/access/AccessControl.sol';
+
+contract MyToken is ERC20, AccessControl {
+    bytes32 public constant MINTER_ROLE = keccak256('MINTER_ROLE');
+
+    constructor(address admin, uint256 initialSupply) ERC20('My Token', 'MTK') {
+        _grantRole(DEFAULT_ADMIN_ROLE, admin);
+        _mint(admin, initialSupply);
+    }
+
+    // The token manager mints tokens that arrive on this chain
+    function mint(address to, uint256 amount) external onlyRole(MINTER_ROLE) {
+        _mint(to, amount);
+    }
+
+    // and burns tokens that leave it
+    function burn(address from, uint256 amount) external onlyRole(MINTER_ROLE) {
+        _burn(from, amount);
+    }
+}
+```
+
+Anyone else who can mint the token controls its supply on every chain it's linked to, so keep that role to accounts your users trust.
+
+To let users send the token directly from the token contract, it can also inherit [`InterchainTokenStandard`](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/interchain-token/InterchainTokenStandard.sol), which adds `interchainTransfer`; see [Transfers](/its/integrations/evm/transfers#from-the-token).
+
+## Register the metadata
+
+On each chain the token is on, register its decimals with the [ITS Hub](/its/how-it-works/its-hub). The hub uses them to convert amounts between chains, so your token can have different decimals on each.
+
+```solidity
+function registerTokenMetadata(address tokenAddress, uint256 gasValue) external payable; // on ITS
+```
+
+```bash
+cast send $ITS "registerTokenMetadata(address,uint256)" $TOKEN $FEE --value $FEE \
+  --rpc-url $RPC --private-key $PK
+```
+
+The call sends a message to the hub, so pay its [gas](/its/integrations/evm/intro#gas). Anyone can call it, and calling it again is harmless. Wait until the message is executed on Axelarscan before linking: the hub rejects a link to a token whose metadata it doesn't have. Here's [a registration on Axelarscan](https://testnet.axelarscan.io/gmp/0xf860bd8802d046fb0c752c355bc73c87e69f701348420c6cbdf82534b87c4822).
+
+## Register the token
+
+On one chain, register the token with the factory:
+
+```solidity
+function registerCustomToken(
+    bytes32 salt,
+    address tokenAddress,
+    TokenManagerType tokenManagerType,
+    address operator // the token manager's operator, or address(0) for none
+) external payable returns (bytes32 tokenId);
+```
+
+```bash
+SALT=$(cast keccak "my-custom-token")
+
+cast send $FACTORY "registerCustomToken(bytes32,address,uint8,address)" \
+  $SALT $TOKEN 4 $ME \
+  --rpc-url $RPC --private-key $PK
+
+TOKEN_ID=$(cast call $FACTORY "linkedTokenId(address,bytes32)(bytes32)" $ME $SALT --rpc-url $RPC)
+```
+
+The call deploys the token's token manager on this chain. It sends no message, so send no value with it. The token ID depends on your address, the salt and this chain. The [operator](/its/how-it-works/roles#operator) manages the token manager's flow limiters.
+
+## Link it to other chains
+
+From the same chain and the same account, with the same salt, link the token to its contract on each other chain:
+
+```solidity
+function linkToken(
+    bytes32 salt,
+    string calldata destinationChain,
+    bytes calldata destinationTokenAddress,
+    TokenManagerType tokenManagerType, // the type on the destination chain
+    bytes calldata linkParams, // on EVM chains: the operator's address, or empty for none
+    uint256 gasValue
+) external payable returns (bytes32 tokenId);
+```
+
+```bash
+REMOTE_TOKEN=<your token's address on the destination chain>
+
+cast send $FACTORY "linkToken(bytes32,string,bytes,uint8,bytes,uint256)" \
+  $SALT binance $REMOTE_TOKEN 4 $ME $FEE --value $FEE \
+  --rpc-url $RPC --private-key $PK
+```
+
+The call sends a message, so pay its [gas](/its/integrations/evm/intro#gas). It deploys a token manager for your token on the destination chain. If the hub doesn't have the metadata of both tokens, the call succeeds on this chain but the message fails at the hub. Here's [a link on Axelarscan](https://testnet.axelarscan.io/gmp/0x11c2a212180d7ea2babe7aceb66c32c1e235cc159bceeb4dd6d04411f4a9669f).
+
+To link to a non-EVM chain, see that chain's ITS page.
+
+## Give the token managers access
+
+On each chain with a mint and burn type, let the token manager mint and burn. Its address is the same on every chain where ITS has the same address:
+
+```bash
+TM=$(cast call $ITS "tokenManagerAddress(bytes32)(address)" $TOKEN_ID --rpc-url $RPC)
+
+cast send $TOKEN "grantRole(bytes32,address)" $(cast keccak MINTER_ROLE) $TM \
+  --rpc-url $RPC --private-key $PK
+```
+
+Without it, transfers out of the chain fail, and transfers into it fail on arrival.
+
+## Next steps
+
+- [Transfers](/its/integrations/evm/transfers): send the token between chains.
+- [Flow limits](/its/how-it-works/flow-limits): cap how much of the token can move in and out of each chain.
+- [its-custom-token](https://github.com/axelarnetwork/axelar-examples/tree/main/examples/evm/its-custom-token) and [its-mint-burn-from](https://github.com/axelarnetwork/axelar-examples/tree/main/examples/evm/its-mint-burn-from): examples with custom tokens.

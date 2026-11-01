@@ -1,0 +1,84 @@
+---
+title: "Overview"
+description: "Connect Sui coins to the Interchain Token Service, and send them to and from other chains."
+---
+
+The [Interchain Token Service](/its/overview) (ITS) runs on [Sui](https://sui.io/) as the Move package [`interchain_token_service`](https://github.com/axelarnetwork/axelar-cgp-sui/tree/v1.2.0/move/interchain_token_service), version 1.2.0 on mainnet and testnet. It sends and receives everything through the [ITS Hub](/its/how-it-works/its-hub), as [GMP messages](/gmp/integrations/sui/intro).
+
+<Callout title="Using an AI agent?">
+  Copy this page with **Copy Markdown** at the top and give it to your agent,
+  with the coin you want to make interchain. The copied page links to the
+  Markdown of the other pages it refers to, so the agent can read them too.
+  Review what it writes, and test on testnet before mainnet.
+</Callout>
+
+## What you can do
+
+| You want to                                                                 | See                                                       |
+| --------------------------------------------------------------------------- | --------------------------------------------------------- |
+| Bring a coin from Sui to other chains, as interchain tokens that ITS deploys | [Register an existing coin](/its/integrations/sui/register-coin) |
+| Connect your coin on Sui to your own token contracts on other chains, either way | [Link custom coins](/its/integrations/sui/link-coin)       |
+| Call ITS from your own Move package, e.g. to receive coins with data        | [Contract reference](/its/integrations/sui/its-contracts)  |
+
+## How a transfer works
+
+Sending, in one transaction:
+
+1. `prepare_interchain_transfer` puts the coins, the destination and an optional payload in an `InterchainTransferTicket`, with your [channel](/gmp/integrations/sui/gmp-contracts#channel) as the sender.
+1. `send_interchain_transfer` takes the coins (locks them, or burns them with the coin's `TreasuryCap`) and returns a `MessageTicket` for the ITS Hub.
+1. The transaction pays gas for the ticket (`pay_gas`) and sends it (`send_message`), as for any [GMP message](/gmp/integrations/sui/gmp-messages#send-a-message).
+
+Receiving: the ITS Hub forwards the transfer, and Axelar's relayer calls `receive_interchain_transfer` on Sui ITS, which unlocks or mints the coins and sends them to the destination address. A transfer with data goes to a Move package instead; see [Receive coins with data](/its/integrations/sui/its-contracts#receive-coins-with-data).
+
+Every call that goes to another chain (a transfer, a remote deployment, a link, a metadata registration) returns a `MessageTicket` that you pay gas for and send in the same way. Estimate the fee as described in [Estimate ITS fees](/gmp/gas/estimate-and-pay#estimate-its-fees). [Express](/gmp/integrations/evm/express) currently doesn't work for ITS transfers.
+
+## Addresses
+
+|                                     | Mainnet                                                              | Testnet                                                              |
+| ----------------------------------- | -------------------------------------------------------------------- | -------------------------------------------------------------------- |
+| Chain name                          | `sui`                                                                | `sui`                                                                |
+| ITS package, to call                | `0xbaec6524bedbc95fa4c3314271ecf5d2ce7d8a602c8413c03a5264c949c7263d` | `0x0f9fb8246525699ac7e0a9742094f3491e20b0f3b2a5faf503f139df383390f0` |
+| ITS original package, in type names | `0xc3c0222e59c9d3b34ab804840e271ef9a0e6f0adcc280133c9db9b9e060887ca` | `0xe7818984af6b3e322a6d999ca291a125fc3f82e13e5e6d9affc3a712f96bc7ce` |
+| `InterchainTokenService` object     | `0xef0d515e2f6be9199150e63758035bca7b1e016dcc1a93cec123abb35880b379` | `0x55fcd94e5293ff04c512a23c835d79b75e52611f66496e2d02cca439b84fa73c` |
+| ITS channel (its address on Axelar) | `0x43f65158c85e1bc1e27a4a1ecc49a0089283051c04b4bb21a69bbbe06078c2f8` | `0xae0eaa7d1f1ddfba704f87391380b932b0e8a1e778bc70355dba7d3b1add0119` |
+
+The gateway and gas service are on the [GMP Sui overview](/gmp/integrations/sui/intro#addresses). The current IDs are always in the deployment configs, under `chains.sui.contracts.InterchainTokenService`: [mainnet](https://github.com/axelarnetwork/axelar-contract-deployments/blob/main/axelar-chains-config/info/mainnet.json) | [testnet](https://github.com/axelarnetwork/axelar-contract-deployments/blob/main/axelar-chains-config/info/testnet.json).
+
+<Callout emoji="⚠️" title="Call the latest package">
+  ITS was upgraded in place, so it has two packages. Call functions on the
+  latest one, e.g. `<ITS package>::interchain_token_service::link_coin`: the
+  original package's functions are disabled, and calls to them abort. A type
+  keeps the ID of the package that first defined it: most have the original
+  package's, e.g. `<ITS original package>::token_id::TokenId`, and those added
+  in the upgrade, such as `TreasuryCapReclaimer` and `TokenManagerType`, have
+  the latest one.
+</Callout>
+
+## Setup
+
+You need:
+
+- The [Sui CLI](https://docs.sui.io/guides/developer/getting-started/sui-install). The commands on these pages were tested with version 1.83.
+- A testnet address with SUI: `sui client faucet`, or see [Get SUI tokens](https://docs.sui.io/guides/developer/getting-started/get-coins).
+
+The guides call ITS with [programmable transactions](https://docs.sui.io/concepts/transactions/prog-txn-blocks) (`sui client ptb`), so they don't need a Move dependency on ITS. To call ITS from your own package, see [Depend on ITS](/its/integrations/sui/its-contracts#depend-on-its).
+
+## Sui specifics
+
+- **Coin management.** On Sui, ITS keeps each coin's token manager inside its own object, as a `CoinManagement`. You create it before registering the coin: with the coin's `TreasuryCap` for mint and burn (`new_with_cap`), or without for lock and unlock (`new_locked`). See [Token managers](/its/how-it-works/concepts#token-managers).
+- **Token IDs.** Sui derives token IDs differently from EVM chains: from the coin's type and details for a canonical coin, and from a channel and a salt for a custom coin. They're the same on every chain once registered. See [Token IDs](/its/integrations/sui/its-contracts#token-ids).
+- **Channels as identity.** Sui has no `msg.sender`. The sender of a transfer, the deployer of a custom coin and the holders of roles are [channels](/gmp/integrations/sui/gmp-contracts#channel), identified by their object IDs.
+- **Decimals and amounts.** Sui amounts are `u64`. When an interchain token is deployed to Sui from a chain with larger amounts, such as an EVM chain, the ITS Hub gives it at most 6 decimals on Sui, and scales amounts between the chains, rounding down. A transfer whose amount would round to zero, or not fit in a `u64`, fails at the hub.
+- **Flow limits and roles** work differently from EVM chains: see [Roles](/its/integrations/sui/its-contracts#roles) and [Flow limits](/its/integrations/sui/its-contracts#flow-limits).
+
+## Next steps
+
+- [Register an existing coin](/its/integrations/sui/register-coin) and send it to another chain.
+- [Link custom coins](/its/integrations/sui/link-coin) between Sui and other chains.
+- [Contract reference](/its/integrations/sui/its-contracts): functions, roles, flow limits, events.
+
+## Resources
+
+- [axelar-cgp-sui](https://github.com/axelarnetwork/axelar-cgp-sui): source code of Axelar's Sui packages, with [generated docs](https://axelarnetwork.github.io/axelar-cgp-sui/).
+- [`sui/its.js`](https://github.com/axelarnetwork/axelar-contract-deployments/blob/main/sui/its.js): the script Axelar uses to register, link and transfer coins on Sui.
+- [GMP on Sui](/gmp/integrations/sui/intro): gateway, gas service, channels and relayer discovery.

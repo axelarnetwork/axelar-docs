@@ -1,0 +1,151 @@
+---
+title: "Link custom coins"
+description: "Connect a coin on Sui to your own token contracts on other chains, under one token ID."
+---
+
+A [custom token](/its/how-it-works/concepts#kinds-of-token) is your own token on several chains, linked under one token ID. Each keeps its own contract, and ITS mints and burns, or locks and unlocks, it on each chain. On Sui, the token is a coin you published, and ITS handles it with:
+
+- **Mint and burn**, if you give ITS the coin's `TreasuryCap`. ITS burns coins sent out and mints coins that come in.
+- **Lock and unlock**, if you don't. ITS locks coins sent out and unlocks them when they come back, so it can only release coins that it holds. Use it on at most one chain, the token's home chain.
+
+You register the token on one chain, its source, under a token ID derived from you and a salt on that chain, then link it to the token on each other chain from there. Sui can be either side.
+
+The commands use testnet; see [Addresses](/its/integrations/sui/intro#addresses) for mainnet. Set the variables from [Register an existing coin](/its/integrations/sui/register-coin), with your coin's type and `CoinMetadata` object ID in `COIN` and `METADATA` (and `TREASURY_CAP` for mint and burn). Each command that pays gas needs `GAS`, a fee in MIST from an [ITS fee estimate](/gmp/gas/estimate-and-pay#estimate-its-fees).
+
+## Register the coin's metadata
+
+The [ITS Hub](/its/how-it-works/its-hub) needs every linked token's decimals, to scale amounts between them. Register them on each chain, for that chain's token, before linking.
+
+On Sui, `register_coin_metadata` sends the coin's type and decimals to the hub:
+
+```bash
+sui client ptb \
+  --move-call $ITS_PKG::interchain_token_service::register_coin_metadata "<$COIN>" \
+    @$ITS @$METADATA --assign ticket \
+  --split-coins gas "[$GAS]" --assign gas_coins \
+  --move-call $GAS_SERVICE_PKG::gas_service::pay_gas "<0x2::sui::SUI>" \
+    @$GAS_SERVICE ticket gas_coins.0 @$(sui client active-address) "vector[]" \
+  --move-call $GATEWAY_PKG::gateway::send_message @$GATEWAY ticket
+```
+
+Estimate the fee with the `TokenMetadataRegistered` event and `axelar` as the destination chain. On an EVM chain, call `registerTokenMetadata` on ITS; see [Register the metadata](/its/integrations/evm/custom-tokens#register-the-metadata).
+
+## Link from Sui
+
+Sui is the source: you register the coin on Sui, and link it to tokens on other chains from there.
+
+### Register the coin
+
+`register_custom_coin` registers the coin under a token ID derived from Sui's chain name, a channel you create and a salt. The channel is the deployer: keep it, as only its holder can link the token. Pick any 32-byte salt.
+
+Lock and unlock:
+
+```bash
+SALT=<32-byte hex, e.g. 0x0000000000000000000000000000000000000000000000000000000000000001>
+
+sui client ptb \
+  --move-call $ITS_PKG::coin_management::new_locked "<$COIN>" --assign coin_management \
+  --move-call $GATEWAY_PKG::channel::new --assign channel \
+  --move-call $GATEWAY_PKG::bytes32::new @$SALT --assign salt \
+  --move-call $ITS_PKG::interchain_token_service::register_custom_coin "<$COIN>" \
+    @$ITS channel salt @$METADATA coin_management --assign result \
+  --move-call 0x1::option::destroy_none \
+    "<$ITS_PKG::treasury_cap_reclaimer::TreasuryCapReclaimer<$COIN>>" result.1 \
+  --transfer-objects "[channel]" @$(sui client active-address)
+```
+
+Mint and burn: create the `CoinManagement` with the `TreasuryCap`, and keep the `TreasuryCapReclaimer` that ITS returns, which lets you [take the `TreasuryCap` back](/its/integrations/sui/its-contracts#treasury-cap-reclaimer):
+
+```bash
+sui client ptb \
+  --move-call $ITS_PKG::coin_management::new_with_cap "<$COIN>" @$TREASURY_CAP --assign coin_management \
+  --move-call $GATEWAY_PKG::channel::new --assign channel \
+  --move-call $GATEWAY_PKG::bytes32::new @$SALT --assign salt \
+  --move-call $ITS_PKG::interchain_token_service::register_custom_coin "<$COIN>" \
+    @$ITS channel salt @$METADATA coin_management --assign result \
+  --move-call 0x1::option::destroy_some \
+    "<$ITS_PKG::treasury_cap_reclaimer::TreasuryCapReclaimer<$COIN>>" result.1 --assign reclaimer \
+  --transfer-objects "[channel, reclaimer]" @$(sui client active-address)
+```
+
+From the output, note the token ID (in the `CoinRegistered` event) and the ID of the `Channel` object:
+
+```bash
+TOKEN_ID=<token ID>
+CHANNEL=<Channel object ID>
+```
+
+To set the coin's flow limits or mint it yourself later, add an operator or a distributor to the `CoinManagement` before registering it; see [Roles](/its/integrations/sui/its-contracts#roles).
+
+### Link it
+
+Deploy a token manager for the token on Ethereum Sepolia, here mint and burn:
+
+```bash
+DESTINATION_TOKEN=$(echo <EVM token address> | sed 's/^0x//; s/../0x&u8,/g; s/,$//')
+
+sui client ptb \
+  --move-call $GATEWAY_PKG::bytes32::new @$SALT --assign salt \
+  --move-call $ITS_PKG::token_manager_type::mint_burn --assign token_manager_type \
+  --move-call $ITS_PKG::interchain_token_service::link_coin \
+    @$ITS @$CHANNEL salt '"ethereum-sepolia"' "vector[$DESTINATION_TOKEN]" token_manager_type "vector[]" \
+    --assign ticket \
+  --split-coins gas "[$GAS]" --assign gas_coins \
+  --move-call $GAS_SERVICE_PKG::gas_service::pay_gas "<0x2::sui::SUI>" \
+    @$GAS_SERVICE ticket gas_coins.0 @$(sui client active-address) "vector[]" \
+  --move-call $GATEWAY_PKG::gateway::send_message @$GATEWAY ticket
+```
+
+- The token manager type is for the destination: `token_manager_type::mint_burn()` (`MINT_BURN`) or `lock_unlock()` (`LOCK_UNLOCK`). Other types can't be chosen from Sui.
+- The last argument, `link_params`, is the token manager's [operator](/its/how-it-works/roles#operator) on the destination, as bytes (e.g. an EVM address's 20 bytes), or empty for none.
+- Estimate the fee with the `LinkToken` event.
+
+Once the link is executed, ITS on Ethereum Sepolia has a token manager for the token ID. For a mint and burn token manager, give it the right to mint and burn your token; its address is `tokenManagerAddress(tokenId)` on ITS. See [Give the token managers access](/its/integrations/evm/custom-tokens#give-the-token-managers-access).
+
+Repeat the link for each chain. Transfers then work as for any token: see [Send coins](/its/integrations/sui/register-coin#send-coins-to-the-other-chain).
+
+## Link to Sui
+
+The source is another chain: you register the token there, and link it to your coin on Sui from there. The token ID is the one the source chain gives.
+
+1. **Register the token on the source chain**, e.g. `registerCustomToken` on an EVM chain, and note the token ID. See [Register the token](/its/integrations/evm/custom-tokens#register-the-token).
+
+1. **Give the coin to ITS on Sui**, before the link arrives. `give_unlinked_coin` stores the coin's `CoinManagement` under the token ID until the link message comes.
+
+   Lock and unlock:
+
+   ```bash
+   TOKEN_ID=<token ID from the source chain>
+
+   sui client ptb \
+     --move-call $ITS_PKG::token_id::from_address @$TOKEN_ID --assign token_id \
+     --move-call 0x1::option::none "<0x2::coin::TreasuryCap<$COIN>>" --assign no_cap \
+     --move-call $ITS_PKG::interchain_token_service::give_unlinked_coin "<$COIN>" \
+       @$ITS token_id @$METADATA no_cap --assign result \
+     --move-call 0x1::option::destroy_none \
+       "<$ITS_PKG::treasury_cap_reclaimer::TreasuryCapReclaimer<$COIN>>" result.0 \
+     --move-call 0x1::option::destroy_none "<$GATEWAY_PKG::channel::Channel>" result.1
+   ```
+
+   Mint and burn: pass the `TreasuryCap`. ITS returns a `TreasuryCapReclaimer` and a `Channel` that is the coin's [distributor](/its/integrations/sui/its-contracts#roles); keep both:
+
+   ```bash
+   sui client ptb \
+     --move-call $ITS_PKG::token_id::from_address @$TOKEN_ID --assign token_id \
+     --move-call 0x1::option::some "<0x2::coin::TreasuryCap<$COIN>>" @$TREASURY_CAP --assign cap \
+     --move-call $ITS_PKG::interchain_token_service::give_unlinked_coin "<$COIN>" \
+       @$ITS token_id @$METADATA cap --assign result \
+     --move-call 0x1::option::destroy_some \
+       "<$ITS_PKG::treasury_cap_reclaimer::TreasuryCapReclaimer<$COIN>>" result.0 --assign reclaimer \
+     --move-call 0x1::option::destroy_some "<$GATEWAY_PKG::channel::Channel>" result.1 --assign distributor \
+     --transfer-objects "[reclaimer, distributor]" @$(sui client active-address)
+   ```
+
+   If you gave the `TreasuryCap` and the link never comes, take it back with `remove_unlinked_coin` and the reclaimer.
+
+1. **Link from the source chain** with `sui` as the destination chain, e.g. `linkToken` on an EVM chain:
+   - **Destination token address:** the coin type, without `0x`, as ASCII bytes. The address in it is the package's original ID, in 64 lowercase hex characters: e.g. `cast from-utf8 "${COIN#0x}"` with [Foundry](https://getfoundry.sh/).
+   - **Token manager type:** `MINT_BURN` (`4`) if you gave the `TreasuryCap`, `LOCK_UNLOCK` (`2`) if you didn't. Any other type fails on Sui.
+   - **Link params:** the coin's [operator](/its/integrations/sui/its-contracts#roles) on Sui, as the 32 bytes of a channel ID, or empty for none.
+
+   When the link arrives, ITS on Sui registers the coin under the token ID.

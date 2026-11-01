@@ -1,0 +1,31 @@
+---
+title: "References"
+description: "Contract addresses and the source code behind the Interchain Token Service."
+---
+
+## Addresses
+
+Interchain Token Service and factory addresses for every connected chain are on [Chains and contracts](/infrastructure/network/chains-and-contracts).
+
+## Contracts
+
+| Contract                                                                                                                                       | Description                                                       |
+| ---------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------- |
+| [InterchainTokenService](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/InterchainTokenService.sol)              | Registers tokens and sends interchain transfers on EVM chains     |
+| [InterchainTokenFactory](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/InterchainTokenFactory.sol)              | Deploys interchain tokens and registers canonical tokens          |
+| [TokenManager](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/token-manager/TokenManager.sol)                    | Connects a token to ITS on one chain                              |
+| [ITS Hub](https://github.com/axelarnetwork/axelar-amplifier/tree/main/contracts/interchain-token-service)                                       | Routes interchain transfers between chains, on the Axelar network |
+
+## Repositories
+
+| Repository                                                                                    | Description                         |
+| --------------------------------------------------------------------------------------------- | ----------------------------------- |
+| [interchain-token-service](https://github.com/axelarnetwork/interchain-token-service)         | ITS contracts for EVM chains        |
+| [axelar-amplifier](https://github.com/axelarnetwork/axelar-amplifier)                         | ITS Hub, on the Axelar network      |
+| [axelar-amplifier-solana](https://github.com/axelarnetwork/axelar-amplifier-solana)           | ITS program for Solana              |
+| [axelar-cgp-sui](https://github.com/axelarnetwork/axelar-cgp-sui)                             | ITS package for Sui                 |
+| [axelar-amplifier-stellar](https://github.com/axelarnetwork/axelar-amplifier-stellar)         | ITS contract for Stellar            |
+| [axelar-amplifier-xrpl](https://github.com/axelarnetwork/axelar-amplifier-xrpl)               | XRPL integration                    |
+| [axelar-contract-deployments](https://github.com/axelarnetwork/axelar-contract-deployments) | Addresses and versions per chain, and the scripts Axelar uses to operate ITS |
+
+For every Axelar repository, see [Infrastructure › References](/infrastructure/resources/references).

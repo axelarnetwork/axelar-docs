@@ -1,0 +1,270 @@
+---
+title: "Link custom tokens"
+description: "Connect your own Stellar token to your tokens on other chains, under one token ID."
+---
+
+Linking connects tokens you already have on several chains as one [custom token](/its/how-it-works/concepts#kinds-of-token). Each keeps its own contract, and ITS deploys a [token manager](/its/how-it-works/concepts#token-managers) for it on each chain, of the type you choose. This page links a Stellar token to a token on an EVM chain, starting from Stellar. It adds functions to the contract from [Deploy and send tokens](/its/integrations/stellar/its-tokens).
+
+The steps:
+
+1. Register the metadata of both tokens with the ITS Hub.
+1. Register your Stellar token with ITS.
+1. Link the token on the other chain to it.
+1. Let the token managers mint, where their type needs it.
+
+## Choose a token manager type
+
+On Stellar, a custom token can use one of three types:
+
+| Type                | Value | For                                                                            | Before transfers arrive                    |
+| ------------------- | ----- | ------------------------------------------------------------------------------ | ------------------------------------------ |
+| `LockUnlock`        | `2`   | Any token, on its home chain                                                   | Nothing                                    |
+| `MintBurn`          | `4`   | A token whose `mint(to, amount)` the token manager can call, like a classic asset | Make the token manager the token's admin   |
+| `MintBurnFrom`      | `1`   | A token with `mint_from(minter, to, amount)`, like ITS's interchain token      | Add the token manager as a minter          |
+
+Outgoing transfers burn with the token's `burn(from, amount)`, or lock for `LockUnlock`. Use lock and unlock on at most one chain; see [Token managers](/its/how-it-works/concepts#token-managers). The tokens can have different decimals on each chain: the ITS Hub converts the amounts.
+
+## Add the functions
+
+Add the token manager type to the imports in `src/lib.rs`:
+
+```rust
+use stellar_interchain_token_service::types::TokenManagerType;
+```
+
+and a second `impl` block:
+
+```rust
+#[contractimpl]
+impl TokenApp {
+    // Sends the token's address and decimals to the ITS Hub. `caller` pays the gas.
+    pub fn register_token_metadata(
+        env: &Env,
+        caller: Address,
+        token_address: Address,
+        gas_token: Token,
+    ) {
+        caller.require_auth();
+
+        Self::its(env).register_token_metadata(&token_address, &caller, &Some(gas_token));
+    }
+
+    // Registers your token on Stellar, under the token ID of `caller` and `salt`.
+    pub fn register_custom_token(
+        env: &Env,
+        caller: Address,
+        salt: BytesN<32>,
+        token_address: Address,
+        token_manager_type: TokenManagerType,
+    ) -> BytesN<32> {
+        caller.require_auth();
+
+        Self::its(env).register_custom_token(&caller, &salt, &token_address, &token_manager_type)
+    }
+
+    // Links your token on another chain to the same token ID. `caller` pays the gas.
+    pub fn link_token(
+        env: &Env,
+        caller: Address,
+        salt: BytesN<32>,
+        destination_chain: String,
+        destination_token_address: Bytes,
+        token_manager_type: TokenManagerType,
+        link_params: Option<Bytes>,
+        gas_token: Token,
+    ) -> BytesN<32> {
+        caller.require_auth();
+
+        Self::its(env).link_token(
+            &caller,
+            &salt,
+            &destination_chain,
+            &destination_token_address,
+            &token_manager_type,
+            &link_params,
+            &Some(gas_token),
+        )
+    }
+}
+```
+
+## 1. Register the metadata
+
+The ITS Hub needs the address and decimals of both tokens before it accepts the link. Register the Stellar token with `register_token_metadata`, and the EVM token with `registerTokenMetadata(tokenAddress, gasValue)` on ITS on its chain. Both are messages to the hub: wait until they've arrived, on Axelarscan, before you link.
+
+```bash
+stellar contract invoke --id <your contract> --source alice --network testnet \
+  -- register_token_metadata \
+  --caller alice \
+  --token_address <your token> \
+  --gas_token '{"address":"CDLZFC3SYJYDZT7K67VZ75HPJVIEUVNIXF47ZG2FB2RMQQVU2HHGCYSC","amount":"<gas amount>"}'
+```
+
+## 2. Register your token
+
+`register_custom_token` deploys a token manager of the type you choose for your token on Stellar. It returns the token ID, derived from `caller` and `salt` (`linked_token_id` on ITS).
+
+```bash
+stellar contract invoke --id <your contract> --source alice --network testnet \
+  -- register_custom_token \
+  --caller alice \
+  --salt <32-byte hex> \
+  --token_address <your token> \
+  --token_manager_type 4
+```
+
+The `token_manager_deployed` event in the output has the token manager's address.
+
+## 3. Link the other token
+
+`link_token` sends a message that deploys a token manager for the token on the destination chain, under the same token ID. Use the same `caller` and `salt` as in step 2. For an EVM chain:
+
+- `destination_token_address` is the token's 20-byte address, as hex without `0x`.
+- `token_manager_type` is the type of the token manager there; the values are in [Token managers](/its/how-it-works/concepts#token-managers).
+- `link_params` is the 20-byte address of the token manager's [operator](/its/how-it-works/roles#operator) there. Leave it out for no operator.
+
+```bash
+stellar contract invoke --id <your contract> --source alice --network testnet \
+  -- link_token \
+  --caller alice \
+  --salt <same salt> \
+  --destination_chain Avalanche \
+  --destination_token_address <EVM token> \
+  --token_manager_type 2 \
+  --gas_token '{"address":"CDLZFC3SYJYDZT7K67VZ75HPJVIEUVNIXF47ZG2FB2RMQQVU2HHGCYSC","amount":"<gas amount>"}'
+```
+
+To link more chains, call `link_token` again for each.
+
+## 4. Let the token managers mint
+
+For a `MintBurn` token manager on Stellar, make it the token's admin. For a classic asset, its issuer calls `set_admin` on the asset's contract:
+
+```bash
+stellar contract invoke --id <your token> --source <issuer> --network testnet \
+  -- set_admin \
+  --new_admin <token manager>
+```
+
+For a `MintBurnFrom` token manager, add it as a minter, with your token's own function for that. For `LockUnlock`, there's nothing to do.
+
+<Callout emoji="⚠️" title="You can't take the admin role back">
+  Once the token manager is your asset's admin, only ITS's owner, an account
+  Axelar controls, can give the role back, with `transfer_token_admin`. Until
+  then, you can't use the asset contract's admin functions yourself.
+</Callout>
+
+On the other chain, give its token manager the rights its type needs too. For EVM chains, see [Link custom tokens on EVM](/its/integrations/evm/custom-tokens).
+
+## Linking from another chain
+
+To start from the other chain instead, register both tokens' metadata, register the token there, and link it to Stellar. The Stellar token's address is the UTF-8 bytes of its `C…` address. ITS on Stellar deploys a token manager of the type the link asks for, and ignores `link_params`. Then let the token manager on Stellar mint, as in step 4.
+
+## Test
+
+`src/test_link.rs`, with the dev-dependencies from [Deploy and send tokens](/its/integrations/stellar/its-tokens#test), which links a classic asset as `MintBurn` and receives a transfer. Add `#[cfg(test)] mod test_link;` to `src/lib.rs`.
+
+```rust
+extern crate std;
+
+use stellar_axelar_gas_service::testutils::{setup_gas_service, setup_gas_token};
+use stellar_axelar_gateway::testutils::{approve_gateway_messages, setup_gateway};
+use stellar_axelar_gateway::types::Message as GatewayMessage;
+use stellar_axelar_std::address::AddressExt;
+use stellar_axelar_std::testutils::Address as _;
+use stellar_axelar_std::token::{StellarAssetClient, TokenClient};
+use stellar_axelar_std::{vec, Address, Bytes, BytesN, Env, String};
+use stellar_interchain_token_service::testutils::setup_its;
+use stellar_interchain_token_service::types::{
+    HubMessage, InterchainTransfer, Message, TokenManagerType,
+};
+
+use crate::{TokenApp, TokenAppClient};
+
+#[test]
+fn link_custom_token() {
+    let env = Env::default();
+    env.mock_all_auths();
+
+    let (signers, gateway) = setup_gateway(&env, 0, 5);
+    let gas_service = setup_gas_service(&env);
+    let its = setup_its(&env, &gateway, &gas_service, None);
+    let chain = String::from_str(&env, "Avalanche");
+    its.set_trusted_chain(&chain);
+
+    let owner = Address::generate(&env);
+    let id = env.register(TokenApp, (&owner, &its.address));
+    let app = TokenAppClient::new(&env, &id);
+
+    // Your Stellar asset, and its issuer
+    let issuer = Address::generate(&env);
+    let asset = env.register_stellar_asset_contract_v2(issuer.clone());
+    let token = asset.address();
+
+    let user = Address::generate(&env);
+    let salt = BytesN::from_array(&env, &[2; 32]);
+    app.register_token_metadata(&user, &token, &setup_gas_token(&env, &user));
+    let token_id = app.register_custom_token(&user, &salt, &token, &TokenManagerType::MintBurn);
+    assert_eq!(token_id, its.linked_token_id(&user, &salt));
+
+    let evm_token = Bytes::from_array(&env, &[0x12; 20]);
+    let linked = app.link_token(
+        &user,
+        &salt,
+        &chain,
+        &evm_token,
+        &TokenManagerType::LockUnlock,
+        &None,
+        &setup_gas_token(&env, &user),
+    );
+    assert_eq!(linked, token_id);
+
+    // An incoming transfer of 5 tokens
+    let recipient = Address::generate(&env);
+    let payload = HubMessage::ReceiveFromHub {
+        source_chain: chain.clone(),
+        message: Message::InterchainTransfer(InterchainTransfer {
+            token_id: token_id.clone(),
+            source_address: Bytes::from_array(&env, &[0x34; 20]),
+            destination_address: recipient.to_string_bytes(),
+            amount: 5_0000000,
+            data: None,
+        }),
+    }
+    .abi_encode(&env)
+    .unwrap();
+    let hub_chain = its.its_hub_chain_name();
+    let hub_address = its.its_hub_address();
+    let message_id = String::from_str(&env, "0xabc-1");
+    let message = GatewayMessage {
+        source_chain: hub_chain.clone(),
+        message_id: message_id.clone(),
+        source_address: hub_address.clone(),
+        contract_address: its.address.clone(),
+        payload_hash: env.crypto().keccak256(&payload).into(),
+    };
+    approve_gateway_messages(&env, &gateway, signers, vec![&env, message]);
+
+    // Without real authorization: the token manager can't mint until it's the asset's admin
+    env.set_auths(&[]);
+    assert!(its
+        .try_execute(&hub_chain, &message_id, &hub_address, &payload)
+        .is_err());
+
+    env.mock_all_auths();
+    let token_manager = its.deployed_token_manager(&token_id);
+    StellarAssetClient::new(&env, &token).set_admin(&token_manager);
+
+    env.set_auths(&[]);
+    its.execute(&hub_chain, &message_id, &hub_address, &payload);
+    assert_eq!(
+        TokenClient::new(&env, &token).balance(&recipient),
+        5_0000000
+    );
+
+    // Only the ITS owner can give the admin role back
+    env.mock_all_auths();
+    its.transfer_token_admin(&token_id, &issuer);
+    assert_eq!(StellarAssetClient::new(&env, &token).admin(), issuer);
+}
+```

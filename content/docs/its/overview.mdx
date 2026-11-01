@@ -1,85 +1,49 @@
 ---
 title: "Interchain Token Service"
+description: "Make a token available on every chain connected to Axelar."
+icon: BookOpen
 ---
 
-<Callout type="warning" emoji="⭐" render="md">
+The Interchain Token Service (ITS) makes a token available on many chains, as one token. Each copy of the token is connected to ITS on its chain, and all copies share the same [token ID](/its/how-it-works/concepts#token-id). Transfers between chains burn or lock the token on the source chain and mint or unlock it on the destination chain, so the total supply stays the same.
 
-The [Token Whitelisting for Squid Router form](https://github.com/axelarnetwork/axelar-configs/blob/main/cli/wizard/commands/list-squid-token/README.md) is now live! Download the [axelar-configs](https://github.com/axelarnetwork/axelar-configs) repo, install dependencies, and `npm run wizard` on the command line to access
-the interactive form through the wizard.
+ITS runs on Axelar's EVM chains, Solana, Sui, Stellar and XRPL. It's permissionless: anyone can deploy a token or connect an existing one, and it stays under their control.
 
+<Callout title="Using an AI agent?">
+  Copy this page with **Copy Markdown** at the top and give it to your agent,
+  with the token you want to make interchain. The copied page links to the
+  Markdown of the other pages it refers to, so the agent can read them too.
+  Review what it writes, and test on testnet before mainnet.
 </Callout>
 
-<br />
+## Three ways to use ITS
 
+| You want to                                             | Use                                                                                       | Result                                                                                                       |
+| ------------------------------------------------------- | ----------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------ |
+| Launch a new token on several chains                    | [Create a new token](/its/integrations/evm/interchain-tokens)                   | An interchain token, deployed by ITS, with the same address on most EVM chains                                |
+| Bring an existing token, deployed on one chain, to more | [Register an existing token](/its/integrations/evm/canonical-tokens)               | Your token is locked on its home chain, and ITS deploys an interchain token on the others                    |
+| Connect your own token contracts on several chains      | [Link custom tokens](/its/integrations/evm/custom-tokens)                        | Your contracts stay as they are, and ITS mints and burns, or locks and unlocks, them                          |
 
-Web3 has gone cross-chain, with assets bridging between blockchains and
-developers deploying applications on multiple chains. However, connecting tokens
-that are deployed on multiple chains has always been a cumbersome process.
+[Concepts](/its/how-it-works/concepts) explains token IDs, the kinds of token and the token managers that connect them to ITS.
 
-Interchain Tokens go beyond legacy bridges. The [Interchain Token Service (ITS)](https://axelar.network/its) allows ERC-20 tokens to be available on multiple blockchains. It preserves native
-token qualities while allowing you to easily manage token features and token supply.
-Interchain Tokens run on [open-source code](https://github.com/axelarnetwork/interchain-token-service/tree/main) via smart contracts on a public blockchain secured by a dynamic validator set.
-With ITS, you can have multiple blockchains with canonical versions of your token
-that all share a single EVM address.
+## How a transfer works
 
-You can either create new [Interchain Tokens](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/interchain-token/InterchainToken.sol#L19) from scratch or update tokens that already exist on a [supported blockchain](/infrastructure/network/chains-and-contracts).
+1. A user calls `interchainTransfer` on the token, or on ITS, on the source chain.
+1. The token's token manager burns or locks the tokens, and ITS sends a [GMP](/gmp/overview) message to the [ITS Hub](/its/how-it-works/its-hub) on Axelar.
+1. The ITS Hub checks the transfer and forwards it to ITS on the destination chain.
+1. ITS mints or unlocks the tokens for the recipient. If the transfer carries data, it then calls the recipient contract with it ([executable](/its/integrations/evm/transfers-with-data)).
 
-### Key ITS Contract addresses
+Each transfer is a GMP message, and so is each deployment to another chain: pay gas for it on the source chain, and follow it on Axelarscan like any message. See [Estimate ITS fees](/gmp/gas/estimate-and-pay#estimate-its-fees) and [Track and recover](/gmp/track-and-recover/transaction-states). [Express](/gmp/integrations/evm/express) currently doesn't work for ITS transfers.
 
-**Interchain Token Service:** [0xB5FB4BE02232B1bBA4dC8f81dc24C26980dE9e3C](https://etherscan.io/address/0xB5FB4BE02232B1bBA4dC8f81dc24C26980dE9e3C)  
-**Interchain Token Factory:** [0x83a93500d23Fbc3e82B410aD07A6a9F7A0670D66](https://etherscan.io/address/0x83a93500d23Fbc3e82B410aD07A6a9F7A0670D66)
+## Addresses
 
-## Key Concepts
+On EVM chains, ITS is at `0xB5FB4BE02232B1bBA4dC8f81dc24C26980dE9e3C` and the Interchain Token Factory at `0x83a93500d23Fbc3e82B410aD07A6a9F7A0670D66`, on most chains, mainnet and testnet. The exceptions, and the addresses on other chains, are on [Chains and contracts](/infrastructure/network/chains-and-contracts).
 
-### Interchain Token Service
+## Make your token available to users
 
-The edge contract deployed on external blockchains. This contract is responsible for facilitating interchain token transfers. It (mostly) does not handle tokens, but is responsible for the messaging that needs to occur for interchain transfers to happen. There are different variations depending on which blockchain is deployed on.
+Users can bridge interchain tokens in the [Axelar App](https://app.axelar.network/), Axelar's app for moving tokens between chains.
 
-- [Solidity Implementation](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/InterchainTokenService.sol)
-- [Move Implementation for Sui](https://github.com/axelarnetwork/axelar-cgp-sui/blob/main/move/interchain_token_service/sources/interchain_token_service.move)
-- [Rust Implementation for Stellar](https://github.com/axelarnetwork/axelar-amplifier-stellar/blob/main/contracts/stellar-interchain-token/src/contract.rs)
+## Next steps
 
-### Interchain Token Service Factory 
-
-An additional [contract](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/InterchainTokenFactory.sol) deployed on each chain connected to ITS. This contract interact with the main Interchain Token Service contract. It is responsible for deploying new interchain tokens and managing their token managers. 
-
-### Interchain Token Service Hub
-
-ITS hub is a central routing contract on the Axelar network itself that coordinates token operations across chains. The hub allows for a simpler centralized state for interlinked tokens compared to purely pairwise connections between ITS edged contracts. Further reading can be done [here](/its/its-hub/introduction)
-
-### Interchain Token Service Portal
-
-A [no-code portal](https://interchain.axelar.dev/) to be able to quick deploy new tokens and register existing tokens to ITS
-
-### Token Handler
-
-A separate [contract](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/TokenHandler.sol) used by ITS to interact with tokens it is moving between chains. This will be the contract that is actually existing your token's `mint`, `burn` functions.
-
-### Token Manager
-
-A contract that facilitates integration between your token and ITS. Each token integration on a given chain will have its own unique token manager. It is responsible for managing tokens, such as setting locking token balances, or setting flow limits, for interchain transfers. Further reading can be done [here](/its/token-manager)
-
-### Interchain Token ID
-
-An `interchainTokenId` is how ITS uniquely registers a given token integration between chains. The id must match across all chains so that when a token is moved out of one chain it is moved into the token with corresponding `interchainTokenId` on the destination chain. This id is calculated by running `keccak256(abi.encode(PREFIX_INTERCHAIN_TOKEN_ID, sender, salt))`. The unique sender address combined with salt ensures that the id is deterministic and collision resistant. 
-
-### Interchain Token
-
-A token deployed by ITS itself. Whereas a custom token deployed by an individual developer that gets integrated to ITS, an interchain token is pre-written [contract](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/interchain-token/InterchainToken.sol) that ITS deploys. This is the token that is deployed by the ITS portal.
-
-## Guides
-
-<Cards>
-  <Card title="Create a new Interchain Token" href="/its/no-code">
-    Register and create new Interchain Token(s) using the Interchain Token Portal, or create custom Interchain Tokens.
-  </Card>
-  <Card title="Programmatically create a new Interchain Token" href="/its/create-new-interchain-token">
-    Create new Interchain Tokens using code.
-  </Card>
-  <Card title="Make an existing ERC-20 token an Interchain Token" href="/its/register-existing-token">
-    Upgrade existing tokens to canonical tokens, or link tokens deployed on multiple chains into Interchain Tokens.
-  </Card>
-  <Card title="Check out the Interchain Portal" href="http://interchain.axelar.dev/">
-    Create your own Interchain Token with one click on the Interchain Portal.
-  </Card>
-</Cards>
+- [How it works](/its/how-it-works/concepts): token IDs, token managers, the ITS Hub, roles and flow limits.
+- Integrations: [EVM](/its/integrations/evm/intro), [Solana](/its/integrations/solana/intro), [Sui](/its/integrations/sui/intro), [Stellar](/its/integrations/stellar/intro), [XRPL](/its/integrations/xrpl).
+- [axlUSDC](/gmp/resources/axlusdc), Axelar's wrapped USDC.

@@ -1,0 +1,20 @@
+---
+title: "axlUSDC"
+description: "What axlUSDC is, how it's backed, and how to get it."
+---
+
+axlUSDC is Axelar's wrapped [USDC](https://www.circle.com/en/usdc). Each axlUSDC is backed by one USDC locked in the [Axelar gateway on Ethereum](https://etherscan.io/address/0x4F4495243837681061C4743b74B3eEdf548D56A5#tokentxns).
+
+- **Minting.** Depositing USDC at the Ethereum gateway mints the same amount of axlUSDC on the destination chain, minus fees. Sending it back burns it and releases the USDC.
+- **Moving between chains.** Once minted, axlUSDC moves from chain to chain directly, without going back through Ethereum.
+- **Security.** axlUSDC is a [gateway token](/gmp/integrations/evm/send-tokens-with-messages) on consensus-connected chains: the gateways that mint and release it only accept approvals signed by Axelar's validators, weighted by stake. See [Security & Bug Bounty](/infrastructure/resources/security).
+
+axlUSDC is widely used in the Cosmos ecosystem, including as the main USDC on [Osmosis](https://osmosis.zone/). Its token address on each chain is under [Assets](/infrastructure/network/chains-and-contracts#assets).
+
+## Get axlUSDC
+
+- **The [Axelar App](https://app.axelar.network/):** bridge USDC from Ethereum, or move axlUSDC between chains.
+- **[Squid](https://app.squidrouter.com/):** swap any token on a connected chain into axlUSDC on another.
+- **DEXs:** trade it in liquidity pools on many connected chains; see this [list of pools](https://axelar.network/blog/liquidity-pools-for-bridged-assets-via-axelar).
+
+To send axlUSDC with a message from a contract, use [Messages with tokens](/gmp/integrations/evm/send-tokens-with-messages).
