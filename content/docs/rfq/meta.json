@@ -1,0 +1,10 @@
+{
+  "title": "RFQ API",
+  "description": "Request For Quote API for cross-chain swaps",
+  "root": true,
+  "pages": [
+    "index",
+    "endpoints",
+    "actions"
+  ]
+}

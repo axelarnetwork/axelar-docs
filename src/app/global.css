@@ -1,0 +1,58 @@
+@import 'tailwindcss';
+@import 'fumadocs-ui/css/neutral.css';
+@import 'fumadocs-ui/css/preset.css';
+
+/* Axelar brand accent */
+:root {
+  --color-fd-primary: #ef5d13;
+  --color-fd-primary-foreground: #ffffff;
+  /* Brand-colored `info` callouts (warn=amber, error=red stay semantic) */
+  --color-fd-info: #ef5d13;
+}
+
+.dark {
+  --color-fd-primary: #ef5d13;
+  --color-fd-primary-foreground: #ffffff;
+  --color-fd-info: #ef5d13;
+}
+
+html {
+  scrollbar-gutter: stable;
+}
+
+html > body[data-scroll-locked] {
+  margin-right: 0px !important;
+  --removed-body-scroll-bar-size: 0px !important;
+}
+
+/* Wider sidebar than the Fumadocs default (268px) */
+@media (min-width: 768px) {
+  #nd-docs-layout {
+    --fd-sidebar-width: 300px !important;
+  }
+}
+
+/* Content (page + table of contents) sits in a rounded panel next to the sidebar */
+@media (min-width: 768px) {
+  #nd-docs-layout {
+    isolation: isolate;
+    background-color: var(--color-fd-card);
+  }
+
+  /* The panel's own border separates it from the sidebar */
+  #nd-sidebar {
+    border-inline-end-width: 0;
+  }
+
+  #nd-docs-layout::before {
+    content: '';
+    grid-row: 1 / -1;
+    grid-column: 3 / -1;
+    margin: 0.5rem 0.5rem 0;
+    border: 1px solid var(--color-fd-border);
+    border-bottom: 0;
+    border-radius: 0.75rem 0.75rem 0 0;
+    background-color: var(--color-fd-background);
+    z-index: -1;
+  }
+}

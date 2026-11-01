@@ -1,0 +1,76 @@
+---
+title: "Chains and contracts"
+description: "Chains connected to Axelar and the addresses of Axelar's contracts on mainnet and testnet."
+---
+
+## Axelar chain
+
+<Tabs groupId="network" persist items={["Mainnet", "Testnet"]}>
+<Tab value="Mainnet">
+
+| Variable              | Value                                          |
+| --------------------- | ---------------------------------------------- |
+| `chain-id`            | `axelar-dojo-1`                                |
+| `axelar-core` version | <Version environment="mainnet" />              |
+| `vald` version        | <Version environment="mainnet" />              |
+| `tofnd` version       | <Version repo="tofnd" environment="mainnet" /> |
+
+</Tab>
+<Tab value="Testnet">
+
+| Variable              | Value                                          |
+| --------------------- | ---------------------------------------------- |
+| `chain-id`            | `axelar-testnet-lisbon-3`                      |
+| `axelar-core` version | <Version environment="testnet" />              |
+| `vald` version        | <Version environment="testnet" />              |
+| `tofnd` version       | <Version repo="tofnd" environment="testnet" /> |
+
+</Tab>
+</Tabs>
+
+## Connected chains
+
+Every chain connected to Axelar, including Cosmos and Amplifier chains, is listed on Axelarscan: [mainnet](https://axelarscan.io/resources/chains) | [testnet](https://testnet.axelarscan.io/resources/chains). Below are the gateway, gas service and Interchain Token Service addresses for each chain.
+
+<Tabs groupId="network" persist items={["Mainnet", "Testnet"]}>
+<Tab value="Mainnet">
+  <EVMChains environment="mainnet" />
+</Tab>
+<Tab value="Testnet">
+  <EVMChains environment="testnet" />
+</Tab>
+</Tabs>
+
+### Common EVM contracts
+
+These contracts have the same addresses on mainnet and testnet:
+
+| Contract                 | Address                                      |
+| ------------------------ | -------------------------------------------- |
+| Interchain Token Service | `0xB5FB4BE02232B1bBA4dC8f81dc24C26980dE9e3C` |
+| Interchain Token Factory | `0x83a93500d23Fbc3e82B410aD07A6a9F7A0670D66` |
+| Create3 Address Deployer | `0x6513Aedb4D1593BA12e50644401D976aebDc90d8` |
+| Create2 Address Deployer | `0x98b2920d53612483f91f12ed7754e51b4a77919e` |
+
+### Amplifier contracts
+
+Addresses of the Amplifier contracts on the Axelar chain (router, verifiers, provers, ITS Hub, and so on) are in the deployment configs: [mainnet](https://github.com/axelarnetwork/axelar-contract-deployments/blob/main/axelar-chains-config/info/mainnet.json) | [testnet](https://github.com/axelarnetwork/axelar-contract-deployments/blob/main/axelar-chains-config/info/testnet.json).
+
+## Assets
+
+Learn more about [wrapped assets like axlUSDC](/its/axlusdc).
+
+<Tabs groupId="network" persist items={["Mainnet", "Testnet"]}>
+<Tab value="Mainnet">
+  <EVMAssets environment="mainnet" />
+</Tab>
+<Tab value="Testnet">
+  <EVMAssets environment="testnet" />
+</Tab>
+</Tabs>
+
+## IBC channels
+
+Mainnet only.
+
+<IBCChannels environment="mainnet" />

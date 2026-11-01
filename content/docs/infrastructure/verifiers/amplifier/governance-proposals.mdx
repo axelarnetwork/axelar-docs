@@ -1,0 +1,62 @@
+---
+title: "Verifier Governance Proposals"
+---
+
+Changes are made to existing Amplifier settings through community governance. You will need to submit a governance proposal to modify these settings.
+
+## Prerequisites
+
+- Access to the Axelar command-line interface, `axelard` (see [Node setup](/infrastructure/node/setup))
+- 2,000 AXL for each proposal, either from your [own wallet](/infrastructure/node/basic#create-an-account) or through a community member who can fund the proposal within one hour of posting
+- A running [RPC endpoint](/infrastructure/network/endpoints) or [Axelar node](/infrastructure/node/setup)
+
+## Community Forum introduction
+
+You will need to introduce your verifier to the community in order for Axelar token holders to vote for your proposals. This should be done on the governance section of the [Axelar Community Forum](https://community.axelar.network/c/governance2/33). Make a community introduction post that precedes and can be referenced by any on-chain proposals. It should include the following information:
+
+- Team information
+- Team background
+- Relevant experience
+
+All of your on-chain proposals will refer back to this post, so make sure to be thorough. You should stay present and engage with any questions or comments during the seven-day feedback period, which can include public comments as well as a security council review. When the feedback period is over, submit your on-chain governance proposal to finish the approval as a verifier.
+
+## Authorize verifiers with the service registry
+
+Once the 7 day feedback period has passed, submit the proposal on-chain via the command line:
+
+<Tabs items={["testnet"]}>
+  <Tab value="testnet">
+    ```bash export
+    SERVICE_REGISTRY_ADDRESS="axelar1rpj2jjrv3vpugx9ake9kgk3s2kgwt0y60wtkmcgfml5m3et0mrls6nct9m"
+    export
+    VERIFIER_AXELAR_ADDRESS="axelar16dxsfhyegy40e4eqfxee5jw5gyy2xxtcw4t2na"
+    export NETWORK_GOV_ADDRESS="axelar10d07y265gmmuvt4z0w9aw880jnsr700j7v9daj"
+    export RPC="https://axelar-testnet-rpc.qubelabs.io:443" export
+    SERVICE_NAME="amplifier" export GAS_PRICE="0.007uaxl" export NAME="My
+    Verifier Name" # Your verifier name export
+    PROPOSAL_URL="https://community.axelar.network/..." # Your proposal URL 
+```
+
+</Tab>
+</Tabs>
+
+```bash
+axelard tx gov submit-proposal execute-contract $SERVICE_REGISTRY_ADDRESS \
+    '{
+        "authorize_verifiers":{
+            "verifiers":[
+                "'"$VERIFIER_AXELAR_ADDRESS"'"
+            ],
+            "service_name":"'"$SERVICE_NAME"'"
+        }
+    }' \
+
+    --title="Add $NAME to approved verifier set" \
+    --description="Add $NAME to approved verifier set. Proposal Link: $PROPOSAL_URL" \
+    --run-as $NETWORK_GOV_ADDRESS \
+    --deposit=100000000uverifiers \
+    --keyring-backend test \
+    --from wallet \
+    --gas auto --gas-adjustment 1.5 --gas-prices $GAS_PRICE \
+    --node $RPC
+```

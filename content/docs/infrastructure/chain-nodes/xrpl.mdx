@@ -1,0 +1,247 @@
+---
+title: "XRPL"
+---
+
+<Callout title="Amplifier chain">
+  This chain is verified by Amplifier verifiers. Before setting up this node,
+  [set up your ampd verifier](/infrastructure/verifiers/amplifier/verifier-onboarding).
+</Callout>
+
+<Callout type="warn" title="Check the official documentation">
+  The node setup steps below follow XRPL's own documentation at the time of
+  writing and may be out of date. Check the [official
+  documentation](https://xrpl.org/docs/infrastructure/installation) before you start. The Axelar-specific steps (connecting
+  the node to `vald` or `ampd`) are maintained here.
+</Callout>
+
+
+Node setup guide for your XRP Ledger Testnet or Mainnet validator.
+
+## Requirements
+
+- [Set up your Amplifier verifier node](/infrastructure/verifiers/amplifier/verifier-onboarding)
+- Recommended hardware requirements:
+    * CPU: 3+ GHz 64-bit x86_64 processor with 8+ cores
+    * Memory: 64 GB RAM
+    * Disk: 1.5 TB SSD/NVMe
+- Ubuntu Linux 18.04+ (tested on 22.04) or Debian 10+
+- [Official Documentation](https://xrpl.org/docs/infrastructure/installation)
+
+## Install on Ubuntu or Debian Linux
+
+1. Update repositories:
+
+```bash
+sudo apt -y update
+sudo apt -y install apt-transport-https ca-certificates wget gnupg
+```
+
+2. Add Ripple's package-signing GPG key to your list of trusted keys:
+
+```bash
+sudo install -m 0755 -d /etc/apt/keyrings && \
+    wget -qO- https://repos.ripple.com/repos/api/gpg/key/public | \
+    sudo gpg --dearmor -o /etc/apt/keyrings/ripple.gpg
+```
+
+3. Check the fingerprint of the newly-added key:
+
+```bash
+gpg --show-keys /etc/apt/keyrings/ripple.gpg
+```
+
+The output should include an entry for Ripple such as the following:
+
+```
+pub   rsa3072 2019-02-14 [SC] [expires: 2026-02-17]
+    C0010EC205B35A3310DC90DE395F97FFCCAFD9A2
+uid           TechOps Team at Ripple <techops+rippled@ripple.com>
+sub   rsa3072 2019-02-14 [E] [expires: 2026-02-17]
+```
+
+4. Add the appropriate Ripple repository for your operating system version. Replace `$OS` with:
+- `buster` for Debian 10 Buster
+- `bullseye` for Debian 11 Bullseye
+- `bookworm` for Debian 12 Bookworm
+- `bionic` for Ubuntu 18.04 Bionic Beaver
+- `jammy` for Ubuntu 22.04 Jammy Jellyfish
+- `noble` for Ubuntu 24.04 Noble Numbat
+
+```bash
+echo "deb [signed-by=/etc/apt/keyrings/ripple.gpg] https://repos.ripple.com/repos/rippled-deb $OS stable" | \
+    sudo tee -a /etc/apt/sources.list.d/ripple.list
+```
+
+5. Update the package index to include Ripple's repo and install `rippled`.
+
+```bash
+sudo apt -y update && sudo apt -y install rippled
+```
+
+6. Configure your node to store at least a month of ledger history. Edit your `rippled.cfg` file located at `/etc/opt/ripple/rippled.cfg`:
+- Under the `[node_db]` stanza, update `online_delete` and make sure `advisory_delete=0` (keep the rest of the parameters as is):
+```
+[node_db]
+online_delete=750000
+advisory_delete=0
+```
+- Uncomment and set the `[ledger_history]` stanza:
+```
+[ledger_history]
+none
+```
+
+7. Configure the `[server]` stanza in `rippled.cfg` securely according to your needs.
+
+<Callout emoji="💡">
+  Note: The default `[server]` parameters may allow for unauthorized administrative access to your node.
+</Callout>
+
+8. Restart the `rippled` service:
+
+```bash
+sudo systemctl restart rippled.service
+```
+
+9. Check the status of the `rippled` service:
+
+```bash
+sudo systemctl status rippled.service
+```
+
+If you're configuring a Mainnet `rippled` node, you can skip the next section.
+
+## Just for Testnet
+
+If you are setting up a Testnet `rippled` node, first complete the above proccess, and then follow these next steps:
+
+### 1. Hub configuration
+
+Edit your `rippled.cfg` file located under `/etc/opt/ripple/rippled.cfg`.
+
+1. Set an `[ips]` stanza with the Testnet hub:
+
+```
+[ips]
+s.altnet.rippletest.net 51235
+```
+
+2. Comment out the previous `[ips]` stanza, if there is one.
+
+3. Add a `[network_id]` stanza with the appropriate value:
+
+```
+[network_id]
+testnet
+```
+
+### 2. Trusted validator configuration
+
+Edit your `validators.txt` file located under `/etc/opt/ripple/validators.txt`.
+
+1. Uncomment or add the Testnet `[validator_list_sites]` and `[validator_list_keys]` stanzas:
+
+```
+[validator_list_sites]
+https://vl.altnet.rippletest.net
+
+[validator_list_keys]
+ED264807102805220DA0F312E71FC2C69E1552C9C5790F6C25E3729DEB573D5860
+```
+
+2. Comment out any previous `[validator_list_sites]`, `[validator_list_keys]`, or `[validators]` stanzas.
+
+### 3. Restart the server
+
+```bash
+sudo systemctl restart rippled
+```
+
+You can find more information on connecting to parallel networks [here](https://xrpl.org/docs/infrastructure/configuration/connect-your-rippled-to-the-xrp-test-net).
+
+## Final checks
+
+Use the `rippled` commandline interface to see if your server is synced with the network:
+
+```bash
+rippled server_info
+```
+
+It can take several minutes to sync. When the `server_state` in the response is `full`, then your server is fully synced with the network.
+
+You can query the node with:
+
+```bash
+curl -H 'Content-Type: application/json' -d '{"method":"server_info","params":[{}]}' http://localhost:5005
+```
+
+## Axelar Node Configuration
+
+Due to a bug in the Cosmos SDK that appears when the database is being read from under heavy load, when `ampd` is trying to broadcast transactions, your Axelar node may run into issues when running (such as an `AppHash` error). An example of such an error may appear as follows:
+
+`ERR CONSENSUS FAILURE!!! err="precommit step; +2/3 prevoted for an invalid block: wrong Block.Header.AppHash`
+
+Your node orchestration needs to be updated to perform a `rollback` when a node crashes. The rollback command must be executed **before restarting the Axelar node** to auto-recover from such errors. The rollback can be performed by running:
+
+```bash
+axelard rollback
+```
+
+
+### Configure ampd
+
+This assumes you have set up `ampd` as per [Become an Amplifier verifier](/infrastructure/verifiers/amplifier/verifier-onboarding).
+
+Add the chain to your `ampd` config (`~/.ampd/config.toml`):
+
+<Tabs items={["Mainnet","Testnet"]}>
+<Tab value="Mainnet">
+
+```toml
+[[grpc.blockchain_service.chains]]
+chain_name="xrpl"
+voting_verifier="axelar14rd4uyrqyl0tw75gjn8zqfppmy08t3x3wrsujeqp37l0hghduanscfvkz6"
+multisig_prover="axelar15mhhuf887t6nfx2t0vuc6kx9w2uk65h939awmz6n7r6ggzyf659st25hff"
+multisig="axelar14a4ar5jh7ue4wg28jwsspf23r8k68j7g5d6d3fsttrhp42ajn4xq6zayy5"
+```
+
+</Tab>
+<Tab value="Testnet">
+
+```toml
+[[grpc.blockchain_service.chains]]
+chain_name="xrpl"
+voting_verifier="axelar1pnynr6wnmchutkv6490mdqqxkz54fnrtmq8krqhvglhsqhmu7wzsnc86sy"
+multisig_prover="axelar1k82qfzu3l6rvc7twlp9lpwsnav507czl6xyrk0xv287t4439ymvsl6n470"
+multisig="axelar14a4ar5jh7ue4wg28jwsspf23r8k68j7g5d6d3fsttrhp42ajn4xq6zayy5"
+```
+
+</Tab>
+</Tabs>
+
+Create a config directory for the `xrpl-handler`, pointing it at your node:
+
+```toml title="~/.ampd/xrpl/config.toml"
+ampd_url = "http://127.0.0.1:9090"
+chain_name = "xrpl"
+```
+
+```toml title="~/.ampd/xrpl/xrpl-handler-config.toml"
+rpc_url = "<your node's RPC URL>"
+```
+
+Start the handler:
+
+```bash
+xrpl-handler --config-dir ~/.ampd/xrpl/
+```
+
+See [Set up handlers](/infrastructure/verifiers/amplifier/verifier-onboarding#set-up-handlers) for running handlers with Docker or as services.
+
+### Register chain support
+
+Once the handler is running, register your verifier's support for the chain:
+
+```bash
+ampd register-chain-support amplifier xrpl
+```

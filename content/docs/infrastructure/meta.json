@@ -1,0 +1,14 @@
+{
+  "title": "Infrastructure",
+  "description": "Chain, Validators & Verifiers",
+  "root": true,
+  "pages": [
+    "index",
+    "network",
+    "node",
+    "validators",
+    "verifiers",
+    "chain-nodes",
+    "resources"
+  ]
+}

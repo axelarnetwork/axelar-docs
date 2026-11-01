@@ -1,0 +1,407 @@
+---
+title: Get a Quote
+description: Request executable cross-chain quotes for a source/destination asset pair.
+---
+
+```
+POST /rfq/v1/quote
+```
+
+Returns executable cross-chain quotes for transferring value from a source asset to a destination asset. Each quote contains the full economics of the transfer (input, output, fees, estimated time, expiry) and the ordered list of on-chain actions the user must execute.
+
+The response may contain multiple quotes, sorted by API preference. **The quote at index `0` is the recommended quote.**
+
+## Request
+
+```json
+{
+  "fromChain": "eip155:42161",
+  "fromToken": "0xaf88d065e77c8cC2239327C5EDb3A432268e5831",
+  "toChain": "eip155:8453",
+  "toToken": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+  "amount": "1000000",
+  "orderType": "EXACT_INPUT",
+  "sender": "0x...",
+  "recipient": "0x...",
+  "slippageTolerance": 100
+}
+```
+
+### Request Fields
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `fromChain` | string | Yes | Source chain, CAIP-2 identifier |
+| `fromToken` | string | Yes | Source token address on `fromChain` |
+| `toChain` | string | Yes | Destination chain, CAIP-2 identifier |
+| `toToken` | string | Yes | Destination token address on `toChain` |
+| `amount` | string | Yes | Amount in base units. Interpreted according to `orderType` |
+| `orderType` | string | Yes | `EXACT_INPUT` or `EXACT_OUTPUT`. See [Order Types](#order-types). |
+| `sender` | string | Yes | Address that will execute the actions and provide the input funds |
+| `recipient` | string | Yes | Address that receives the output on `toChain` |
+| `slippageTolerance` | number | No | Maximum acceptable output slippage, in basis points (e.g. `100` = 1%). See [Slippage](#slippage). |
+| `options` | object | No | Per-request preferences that shape the returned quote without changing its economics. See [Options](#options). |
+
+### Options
+
+`options` carries optional preferences about how the quote is built. Omitting the object, or any field inside it, applies the defaults below. Unknown fields are rejected with `INVALID_REQUEST`.
+
+```json
+{
+  "options": {
+    "approvalMode": "MAX"
+  }
+}
+```
+
+| Field | Type | Default | Description |
+|-------|------|---------|-------------|
+| `approvalMode` | string | `EXACT` | How much allowance the generated [`approval` action](/rfq/actions#action-types) requests. |
+
+**`approvalMode` values**
+
+| Value | Meaning |
+|-------|---------|
+| `EXACT` | The approval action requests exactly the quote's `input.amount`, leaving no residual allowance after the transfer |
+| `MAX` | The approval action requests an unlimited allowance, which remains standing after the transfer |
+
+`approvalMode` only affects the `approval` action in the returned `actions` array. It has no effect on quotes that carry no approval action — native-token inputs, or a `sender` that already holds a sufficient allowance.
+
+### Order Types
+
+**`EXACT_INPUT`** — `amount` is the exact source amount the user will send. The API returns the destination amount the user should receive.
+
+**`EXACT_OUTPUT`** — `amount` is the exact destination amount the user wants to receive. The API returns the exact source amount the user must deposit (`input.amount` in each quote).
+
+### Slippage
+
+`slippageTolerance` bounds how far the delivered output may fall below the quoted estimate, in basis points. It is only meaningful for quotes whose output is determined at execution time — for example, a route that swaps into `toToken` on a destination-chain DEX. For such quotes the API sets `output.minimumAmount = output.amount × (1 − slippageTolerance / 10_000)` (since `slippageTolerance` is in basis points), and the transfer reverts (and refunds) rather than delivering less than `output.minimumAmount`.
+
+For quotes with a guaranteed output — where the backend commits to the amount — there is no execution-time variance, so `slippageTolerance` has **no effect**: `output.minimumAmount` equals `output.amount`. The field is always accepted and never causes an error; it simply does nothing when the route has no output variance to bound.
+
+If omitted, a default tolerance is applied to quotes that require it. To tell whether a given quote's output is firm or subject to slippage, compare `output.amount` and `output.minimumAmount` (see [Input and Output](#input-and-output)).
+
+## Response
+
+```json
+{
+  "quotes": [ ... ]
+}
+```
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `quotes` | array | Quote objects, sorted by API preference. Index `0` is the recommended quote. Empty if the route is supported but no pricing is currently available. |
+
+### Quote Object
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `quoteId` | string | Unique identifier for this quote. Used for execution tracking and status lookups. |
+| `selectionReason` | string | Why this quote is ranked where it is, e.g. `highest_output`. |
+| `backend` | object | The execution route serving this quote ([Backend](#backend)) |
+| `estimatedTimeSeconds` | number | Estimated end-to-end fulfillment time, in seconds |
+| `validity` | object | Quote expiry and deadline semantics ([Validity](#validity)) |
+| `input` | object | What the user deposits ([Input and Output](#input-and-output)) |
+| `output` | object | What the recipient receives ([Input and Output](#input-and-output)) |
+| `fees` | object | Aggregate fee breakdown ([Fees](#fees)) |
+| `actions` | array | Ordered on-chain actions to execute the quote ([Actions](#actions)) |
+
+### Backend
+
+Identifies the execution route serving the quote, with route-specific tracking fields.
+
+```json
+{
+  "backend": {
+    "type": "intent",
+    "name": "Axelar Intents",
+    "tracking": {
+      "swapId": "0x..."
+    },
+    "metadata": {}
+  }
+}
+```
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `type` | string | Route type: `intent`, `its`, `gateway`, or `gateway-express` |
+| `name` | string | Human-readable route name |
+| `tracking` | object | Route-specific identifiers for tracking fulfillment (e.g. `swapId` for intent routes) |
+| `metadata` | object | Additional route-specific data |
+
+### Validity
+
+Quotes expire. The `validity` object describes when the quote must be acted on.
+
+```json
+{
+  "validity": {
+    "type": "expires_at",
+    "quoteExpiresAt": "2026-06-09T12:34:56Z",
+    "fulfillmentDeadline": "2026-06-09T12:39:56Z"
+  }
+}
+```
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `type` | string | Validity scheme. Currently `expires_at`. |
+| `quoteExpiresAt` | string | The user must submit the first action before this timestamp. After it, request a fresh quote. |
+| `fulfillmentDeadline` | string | Latest time the transfer will be fulfilled on the destination chain. Only present when the route provides this guarantee. |
+
+### Input and Output
+
+For executable quotes, `input.amount` is always the **exact amount the user must deposit** — including for `EXACT_OUTPUT` requests, where it is the computed source amount.
+
+```json
+{
+  "input": {
+    "chain": "eip155:42161",
+    "token": "0xaf88d065e77c8cC2239327C5EDb3A432268e5831",
+    "amount": "1000000",
+    "amountUsdApprox": "1.00"
+  },
+  "output": {
+    "chain": "eip155:8453",
+    "token": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+    "amount": "995000",
+    "minimumAmount": "995000",
+    "amountUsdApprox": "0.995"
+  }
+}
+```
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `chain` | string | CAIP-2 chain identifier |
+| `token` | string | Token address |
+| `amount` | string | Amount in base units. On `input`: exact deposit required. On `output`: expected amount received. |
+| `minimumAmount` | string | (`output` only) Guaranteed minimum the recipient receives. Always present. See note below. |
+| `amountUsdApprox` | string | Approximate USD value. Informational only; may be omitted. |
+
+`output.minimumAmount` is always populated and is the **guaranteed worst-case output** — it is the value enforced on-chain as the minimum the recipient will accept. Use it (not `output.amount`) when wiring an on-chain minimum-received check.
+
+- **Firm output** (the backend commits to the amount, or a same-token transfer with no swap): `minimumAmount == amount`. There is no execution-time variance; the recipient receives `amount`.
+- **Floating output** (route includes a swap priced at execution time): `minimumAmount < amount`. The recipient receives somewhere in `[minimumAmount, amount]` (and `minimumAmount` is governed by [`slippageTolerance`](#slippage)). If the route cannot deliver at least `minimumAmount`, the transfer reverts and the user is refunded rather than receiving less. Which case applies is decided **per quote** by how the route is fulfilled.
+
+### Fees
+
+Fees are reported as quote-level aggregates.
+
+```json
+{
+  "fees": {
+    "gas": {
+      "amount": "1200000000000000",
+      "amountUsdApprox": "4.20",
+      "token": {
+        "chain": "eip155:42161",
+        "symbol": "ETH",
+        "type": "native"
+      },
+      "paymentMethod": "wallet_native",
+      "quoteTreatment": "outside_quote"
+    },
+    "user": {
+      "amount": "2500000",
+      "amountUsdApprox": "2.50",
+      "token": {
+        "chain": "eip155:42161",
+        "symbol": "USDC",
+        "address": "0xaf88d065e77c8cC2239327C5EDb3A432268e5831"
+      },
+      "paymentMethod": "input_token",
+      "quoteTreatment": "included_in_quote"
+    },
+    "integrator": null
+  }
+}
+```
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `gas` | object | Estimated total native gas for **all** user-executed on-chain actions in the quote. If a quote has an approval and a transfer, this is the aggregate of both. |
+| `user` | object | Fee charged to the user by the execution route |
+| `integrator` | object \| null | Integrator-configured fee, if any. Includes `bps` and `recipient` in addition to the standard fee fields. |
+
+Each fee entry contains:
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `amount` | string | Fee amount in base units of `token` |
+| `amountUsdApprox` | string | Approximate USD value. Informational only. |
+| `token` | object | The fee token: `chain`, `symbol`, and either `address` or `type: "native"` |
+| `paymentMethod` | string | How the fee is paid (see below) |
+| `quoteTreatment` | string | Whether the fee is already reflected in quote amounts (see below) |
+
+**`paymentMethod` values**
+
+| Value | Meaning |
+|-------|---------|
+| `wallet_native` | User pays chain gas from their wallet balance |
+| `tx_value` | User sends native value in the executable transaction |
+| `input_token` | Charged from or embedded in the input token |
+| `output_token` | Deducted from the output token |
+| `sponsored` | Not paid by the user |
+| `offchain` | Tracked or settled outside execution |
+
+**`quoteTreatment` values**
+
+| Value | Meaning |
+|-------|---------|
+| `outside_quote` | Not included in input/output economics — the user pays this on top |
+| `included_in_quote` | Already reflected in the quoted input/output amounts |
+| `informational` | Shown for transparency but not charged by this quote |
+
+### Actions
+
+The ordered list of on-chain actions the user must execute, in sequence, to start the transfer. Each action is a chain-agnostic envelope (`id`, `label`, `type`, `chain`) with a chain-specific payload, discriminated by `payload.type` (e.g. [`evm_transaction`](/rfq/actions#evm_transaction), [`solana_instructions`](/rfq/actions#solana_instructions), [`deposit_address`](/rfq/actions#deposit_address)).
+
+The action envelope and all payload formats are documented in [User Actions](/rfq/actions). See the [full example](#full-example) below for a typical approve-and-transfer action sequence.
+
+## Errors
+
+Invalid requests return an HTTP error status with a structured error body:
+
+```json
+{
+  "error": {
+    "code": "UNSUPPORTED_ROUTE",
+    "message": "No backend supports the requested route.",
+    "details": {
+      "fromChain": "eip155:1",
+      "toChain": "solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp"
+    }
+  }
+}
+```
+
+| HTTP Status | Code | Meaning |
+|-------------|------|---------|
+| 400 | `INVALID_REQUEST` | Malformed body, missing required field, or invalid field value |
+| 422 | `UNSUPPORTED_CHAIN` | `fromChain` or `toChain` is not supported |
+| 422 | `UNSUPPORTED_TOKEN` | `fromToken` or `toToken` is not supported on the given chain |
+| 422 | `UNSUPPORTED_ROUTE` | Both assets are supported but no backend serves this pair |
+| 422 | `AMOUNT_OUT_OF_RANGE` | `amount` is below the route minimum or above the route maximum |
+| 429 | `RATE_LIMITED` | Too many requests |
+| 500 | `INTERNAL_ERROR` | Unexpected server error; safe to retry |
+
+<Callout type="info">
+  A supported route with no currently available pricing is not an error. The API returns `200` with `"quotes": []` — request a quote again later or try a different amount.
+</Callout>
+
+## Full Example
+
+### Request
+
+```bash
+curl -X POST 'https://api.axelar.network/rfq/v1/quote' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "fromChain": "eip155:42161",
+    "fromToken": "0xaf88d065e77c8cC2239327C5EDb3A432268e5831",
+    "toChain": "eip155:8453",
+    "toToken": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+    "amount": "1000000",
+    "orderType": "EXACT_INPUT",
+    "sender": "0x...",
+    "recipient": "0x..."
+  }'
+```
+
+### Response
+
+```json
+{
+  "quotes": [
+    {
+      "quoteId": "quote_123",
+      "selectionReason": "highest_output",
+      "backend": {
+        "type": "intent",
+        "name": "Axelar Intents",
+        "tracking": {
+          "swapId": "0x..."
+        },
+        "metadata": {}
+      },
+      "estimatedTimeSeconds": 45,
+      "validity": {
+        "type": "expires_at",
+        "quoteExpiresAt": "2026-06-09T12:34:56Z",
+        "fulfillmentDeadline": "2026-06-09T12:39:56Z"
+      },
+      "input": {
+        "chain": "eip155:42161",
+        "token": "0xaf88d065e77c8cC2239327C5EDb3A432268e5831",
+        "amount": "1000000",
+        "amountUsdApprox": "1.00"
+      },
+      "output": {
+        "chain": "eip155:8453",
+        "token": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+        "amount": "995000",
+        "minimumAmount": "995000",
+        "amountUsdApprox": "0.995"
+      },
+      "fees": {
+        "gas": {
+          "amount": "1200000000000000",
+          "amountUsdApprox": "4.20",
+          "token": {
+            "chain": "eip155:42161",
+            "symbol": "ETH",
+            "type": "native"
+          },
+          "paymentMethod": "wallet_native",
+          "quoteTreatment": "outside_quote"
+        },
+        "user": {
+          "amount": "2500000",
+          "amountUsdApprox": "2.50",
+          "token": {
+            "chain": "eip155:42161",
+            "symbol": "USDC",
+            "address": "0xaf88d065e77c8cC2239327C5EDb3A432268e5831"
+          },
+          "paymentMethod": "input_token",
+          "quoteTreatment": "included_in_quote"
+        },
+        "integrator": null
+      },
+      "actions": [
+        {
+          "id": "approve",
+          "label": "Approve token",
+          "type": "approval",
+          "chain": "eip155:42161",
+          "payload": {
+            "type": "evm_transaction",
+            "from": "0x...",
+            "to": "0x...",
+            "data": "0x...",
+            "value": "0",
+            "gasLimit": "60000"
+          }
+        },
+        {
+          "id": "transfer",
+          "label": "Start transfer",
+          "type": "transaction",
+          "chain": "eip155:42161",
+          "payload": {
+            "type": "evm_transaction",
+            "from": "0x...",
+            "to": "0x...",
+            "data": "0x...",
+            "value": "0",
+            "gasLimit": "180000"
+          }
+        }
+      ]
+    }
+  ]
+}
+```

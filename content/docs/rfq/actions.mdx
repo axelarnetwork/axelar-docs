@@ -1,0 +1,100 @@
+---
+title: User Actions
+description: The action envelope and chain-specific payload formats returned by POST /rfq/v1/quote.
+---
+
+Every quote returned by [`POST /rfq/v1/quote`](/rfq/endpoints/quote) contains an `actions` array: the ordered list of steps the user must execute, in sequence, to start the transfer. Each action is a chain-agnostic envelope with a chain-specific payload, discriminated by `payload.type`.
+
+<Callout type="info">
+  This page will expand as additional action and payload types are introduced.
+</Callout>
+
+## Action Envelope
+
+```json
+{
+  "id": "approve",
+  "label": "Approve token",
+  "type": "approval",
+  "chain": "eip155:42161",
+  "payload": {
+    "type": "evm_transaction",
+    "to": "0x...",
+    "data": "0x...",
+    "value": "0",
+    "gasLimit": "60000"
+  }
+}
+```
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `id` | string | Stable identifier for the action within the quote (e.g. `approve`, `transfer`) |
+| `label` | string | Human-readable label suitable for display |
+| `type` | string | Action type. See [Action Types](#action-types) |
+| `chain` | string | CAIP-2 chain the action is executed on |
+| `payload` | object | Chain-specific execution payload, discriminated by `payload.type` |
+
+### Action Types
+
+| `type` | Meaning |
+|--------|---------|
+| `approval` | Token allowance transaction required before the transfer can be started |
+| `transaction` | The transaction that starts the transfer |
+| `deposit_address` | Send funds to a deposit address; no contract interaction required |
+
+## Payload Types
+
+### `evm_transaction`
+
+A ready-to-sign EVM transaction.
+
+```json
+{
+  "type": "evm_transaction",
+  "from": "0x...",
+  "to": "0x...",
+  "data": "0x...",
+  "value": "0",
+  "gasLimit": "180000",
+  "maxFeePerGas": "12205661344",
+  "maxPriorityFeePerGas": "2037863396"
+}
+```
+
+<Callout type="warn">
+  `from`, `to`, `data`, and `value` encode the route and must be submitted exactly as returned. The remaining fields — `gasLimit`, `maxFeePerGas`, `maxPriorityFeePerGas` — are **suggestions, not authoritative values**: they are estimated at quote time and wallets are expected to re-estimate or override them at submission. They may be omitted from some quotes.
+</Callout>
+
+### `solana_instructions`
+
+Instructions to assemble into a Solana transaction.
+
+```json
+{
+  "type": "solana_instructions",
+  "instructions": [
+    {
+      "programId": "...",
+      "keys": [
+        { "pubkey": "...", "isSigner": true, "isWritable": true }
+      ],
+      "data": "..."
+    }
+  ],
+  "addressLookupTableAddresses": []
+}
+```
+
+### `deposit_address`
+
+Send the specified amount to the deposit address.
+
+```json
+{
+  "type": "deposit_address",
+  "address": "...",
+  "amount": "1000000",
+  "token": "..."
+}
+```

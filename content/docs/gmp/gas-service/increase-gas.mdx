@@ -1,0 +1,32 @@
+---
+title: "Increase Gas"
+---
+
+On occasion the prepaid gas to the Gas Receiver contract could be insufficient, such as when the destination chain is congested with transfers. When this happens, the application can resubmit a new amount of gas to pay for the transaction through [Axelarscan](http://axelarscan.io), the [AxelarJS SDK](/gmp/axelarjs-sdk/intro), or via a direct invocation of the [`AxelarGasService` contract](https://github.com/axelarnetwork/axelar-gmp-sdk-solidity/blob/ad37802dc6d62fff3ab589f2605f7a3e566977dd/contracts/interfaces/IAxelarGasService.sol).
+
+## Add gas via the `AxelarGasService` contract
+
+To add gas to an existing GMP transaction through the `AxelarGasService` contract:
+
+### `addNativeGas()`
+
+Call `addNativeGas()` to add additional gas payment using native currency after initiating a cross-chan call. This function can be called on the transaction’s source chain after calling the gateway to execute a remote contract.
+
+In Solidity, `addNativeGas()` takes the following parameters:
+
+- `txHash` — The transaction hash of the cross-chain call
+- `logIndex` — The log index for the cross-chain call
+- `refundAddress` — The address where refunds, if any, should be sent
+
+```solidity
+function addNativeGas(
+    bytes32 txHash,
+    uint256 logIndex,
+    address refundAddress
+) external payable override;
+```
+
+In JavaScript or TypeScript, the SDK [abstracts a method that can be invoked directly in a web application](/gmp/axelarjs-sdk/tx-status-query-recovery#22-erc-20-gas-payment). It is similar to a native gas payment, except with Axelar-supported ERC-20 tokens instead of native tokens. Make sure that the ERC-20 tokens you use are supported by Axelar.
+
+- [Supported mainnet chains](/infrastructure/network/chains-and-contracts)
+- [Supported testnet chains](/infrastructure/network/chains-and-contracts)

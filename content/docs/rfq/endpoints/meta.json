@@ -1,0 +1,4 @@
+{
+  "title": "Endpoints",
+  "pages": ["quote", "chains", "tokens", "status"]
+}

@@ -1,0 +1,10 @@
+{
+  "title": "Validators",
+  "icon": "ShieldCheck",
+  "pages": [
+    "index",
+    "setup",
+    "operations",
+    "troubleshooting"
+  ]
+}

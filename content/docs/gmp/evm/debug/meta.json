@@ -1,0 +1,9 @@
+{
+  "title": "Debug",
+  "pages": [
+    "error-debugging",
+    "debugging-your-smart-contract",
+    "fork-mainnet",
+    "transaction-recovery"
+  ]
+}

@@ -1,0 +1,21 @@
+---
+title: Overview
+description: Why validators and verifiers run their own node for every chain they support.
+---
+
+To verify a cross-chain message, Axelar doesn't take the message's word for it: every validator or verifier supporting the source chain checks the transaction against that chain, and votes on whether it happened. That check is only as good as the node it queries. Each chain you support therefore needs a node you run yourself, with a secure, private RPC endpoint that only your `vald` or `ampd` connects to.
+
+## Why run your own node
+
+- **Your vote is only as trustworthy as your node.** If you query a public or third-party RPC endpoint, whoever runs it decides what your validator or verifier sees, and the network's security reduces to theirs. Independent nodes are what make the vote decentralized; maintaining them is one of the [verifier security expectations](/infrastructure/verifiers/amplifier/verifier-security-expectations).
+- **Missed and wrong votes cost you.** A node that is down, rate-limited or behind makes you miss polls or vote against the majority. On consensus chains, missing at least 20% of polls or voting incorrectly in at least 5% of them gets you [automatically deregistered](/infrastructure/verifiers/consensus-chains#automatic-deregistration) as a chain maintainer. On Amplifier chains, `ampd` can only vote and sign while it can reach your nodes.
+- **Each chain you support earns rewards.** Not every validator or verifier needs to support every chain, but supporting more chains, reliably, earns more.
+
+## Before you set up a node
+
+Each guide in this section starts by saying which setup to complete first:
+
+- **Consensus chains** are verified by Axelar validators through `vald`. [Set up your Axelar validator](/infrastructure/validators), then connect the node as described in [Verify consensus chains](/infrastructure/verifiers/consensus-chains).
+- **Amplifier chains** are verified by Amplifier verifiers through `ampd`. [Set up your ampd verifier](/infrastructure/verifiers/amplifier/verifier-onboarding) first.
+
+See the [Verifiers overview](/infrastructure/verifiers) for how the two differ.
