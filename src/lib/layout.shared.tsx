@@ -1,5 +1,6 @@
 import type { BaseLayoutProps } from 'fumadocs-ui/layouts/shared';
 import { Wordmark } from '@/components/wordmark';
+import { gitConfig } from '@/lib/shared';
 
 export function baseOptions(): BaseLayoutProps {
   return {
@@ -11,5 +12,6 @@ export function baseOptions(): BaseLayoutProps {
         </span>
       ),
     },
+    githubUrl: `https://github.com/${gitConfig.user}/${gitConfig.repo}`,
   };
 }
