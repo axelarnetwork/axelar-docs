@@ -1,0 +1,135 @@
+---
+title: "Send and receive messages"
+description: "A contract that sends and receives GMP messages, and the checks it must make."
+---
+
+This page builds a contract that sends a string to another chain and receives strings back. For setup and addresses, see the [EVM overview](/gmp/integrations/evm/intro).
+
+## The contract
+
+```solidity
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
+
+import { AxelarExecutable } from '@axelar-network/axelar-gmp-sdk-solidity/contracts/executable/AxelarExecutable.sol';
+import { IAxelarGasService } from '@axelar-network/axelar-gmp-sdk-solidity/contracts/interfaces/IAxelarGasService.sol';
+import { StringToAddress } from '@axelar-network/axelar-gmp-sdk-solidity/contracts/libs/AddressString.sol';
+
+contract Messenger is AxelarExecutable {
+    using StringToAddress for string;
+
+    IAxelarGasService public immutable gasService;
+    address public immutable owner;
+
+    // The sender this contract accepts messages from, per source chain
+    mapping(bytes32 => address) public trustedSenders;
+
+    string public lastMessage;
+
+    error NotOwner();
+    error UntrustedSender(string sourceChain, string sourceAddress);
+
+    event MessageReceived(string sourceChain, string sourceAddress, string message);
+
+    constructor(address gateway_, address gasService_) AxelarExecutable(gateway_) {
+        gasService = IAxelarGasService(gasService_);
+        owner = msg.sender;
+    }
+
+    function setTrustedSender(string calldata chain, address sender) external {
+        if (msg.sender != owner) revert NotOwner();
+        trustedSenders[keccak256(bytes(chain))] = sender;
+    }
+
+    function sendMessage(
+        string calldata destinationChain,
+        string calldata destinationAddress,
+        string calldata message
+    ) external payable {
+        bytes memory payload = abi.encode(message);
+
+        // Pay gas first, in the same transaction, with the same values as the call
+        gasService.payNativeGasForContractCall{ value: msg.value }(
+            address(this),
+            destinationChain,
+            destinationAddress,
+            payload,
+            msg.sender // refund address
+        );
+
+        gateway().callContract(destinationChain, destinationAddress, payload);
+    }
+
+    function _execute(
+        bytes32 /* commandId */,
+        string calldata sourceChain,
+        string calldata sourceAddress,
+        bytes calldata payload
+    ) internal override {
+        // The gateway has checked that Axelar approved this message.
+        // Check that it comes from a sender you trust.
+        address trusted = trustedSenders[keccak256(bytes(sourceChain))];
+        if (trusted == address(0) || sourceAddress.toAddress() != trusted) {
+            revert UntrustedSender(sourceChain, sourceAddress);
+        }
+
+        string memory message = abi.decode(payload, (string));
+        lastMessage = message;
+
+        emit MessageReceived(sourceChain, sourceAddress, message);
+    }
+}
+```
+
+Deploy it on two chains with each chain's gateway and gas service, then call `setTrustedSender` on each with the other chain's name and deployment.
+
+## Send a message
+
+`sendMessage` does two things, in one transaction:
+
+1. **Pays gas** to the gas service. Without gas, the message is verified but never executed. Get the amount from an [off-chain estimate](/gmp/gas/estimate-and-pay#estimate-the-fee) and send it as the transaction value. The payment must use the same destination chain, destination address and payload as the call that follows.
+1. **Calls the gateway**: `callContract(destinationChain, destinationAddress, payload)`. `destinationAddress` is a string, so it can be an address on any chain: a `0x` address on EVM chains, a program ID on Solana, and so on.
+
+The payload is arbitrary bytes. Here it's an ABI-encoded string; the receiver decodes it with the same types.
+
+To send to a non-EVM chain, encode the payload the way the destination expects. See [Solana](/gmp/integrations/solana/gmp-messages#payload-encoding), [Sui](/gmp/integrations/sui/gmp-messages#send-a-message) and [Stellar](/gmp/integrations/stellar/gmp-messages#send-a-message).
+
+## Receive a message
+
+Inherit `AxelarExecutable`, pass the gateway address to its constructor, and implement `_execute`. A relayer calls the public `execute` function, which:
+
+1. Calls `validateContractCall` on the gateway. The gateway checks that Axelar approved a message with this command ID, source chain, source address and payload for your contract, and marks it executed so it can't be executed twice.
+1. Calls your `_execute`, if validation succeeds. Otherwise it reverts with `NotApprovedByGateway`.
+
+### Check the sender
+
+<Callout emoji="⚠️" title="Validation doesn't check who sent the message">
+  The gateway proves that a message came through Axelar. It doesn't prove that
+  it came from your contract: anyone can call `callContract` on any chain, with
+  your contract as the destination. Unless your contract accepts messages from
+  anyone, check `sourceChain` and `sourceAddress` in `_execute`.
+</Callout>
+
+When you compare them:
+
+- **`sourceAddress`** is a string. EVM addresses arrive [EIP-55](https://eips.ethereum.org/EIPS/eip-55) checksummed, in mixed case. Parse it with `StringToAddress.toAddress()` and compare addresses, as the example does, rather than comparing strings. For senders on other chains, compare the string in that chain's format.
+- **`sourceChain`** is the chain's registered name, and some are capitalized (`Ethereum`, `Avalanche`). See [chain names](/gmp/integrations/evm/intro#chain-names).
+
+For contracts that trust one address per chain, [`InterchainAddressTracker`](/gmp/integrations/evm/deployers-and-libraries#interchainaddresstracker) stores and checks them.
+
+### When `_execute` reverts
+
+If `_execute` reverts, the whole transaction reverts, including the gateway's validation. The message stays approved and can be executed again, e.g. after you fix your contract's state. Axelarscan shows it as **Error**; see [Debug failed execution](/gmp/track-and-recover/debug-failed-execution).
+
+Validate anything that could make `_execute` revert permanently, such as payloads that don't decode, before you rely on a retry.
+
+### Upgradeable contracts
+
+`AxelarExecutable` stores the gateway address as an `immutable`, set in the constructor. That works behind a proxy: the value is part of the implementation's bytecode, and the [Interchain Token Service](https://github.com/axelarnetwork/interchain-token-service) is deployed this way. If your tooling doesn't allow immutables, implement `IAxelarExecutable` yourself: store the gateway, and in `execute` call `validateContractCall` before running your logic.
+
+## Test
+
+- **Locally:** [axelar-local-dev](https://github.com/axelarnetwork/axelar-local-dev) runs local chains with a simulated gateway and relayer.
+- **On testnet:** deploy to two testnets and follow the message on [Axelarscan](https://testnet.axelarscan.io/gmp/search). Addresses are on [Chains and contracts](/infrastructure/network/chains-and-contracts).
+
+If a message gets stuck, see [Track and recover](/gmp/track-and-recover/transaction-states).

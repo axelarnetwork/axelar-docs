@@ -1,0 +1,104 @@
+---
+title: "Sui"
+description: "Send and receive GMP messages from Move packages on Sui."
+---
+
+[Sui](https://sui.io/) is connected to Axelar through [Amplifier](/infrastructure#a-cross-chain-protocol-amplifier). Move packages on Sui can exchange messages with every connected chain, and send tokens with the [Interchain Token Service](/its/sui/intro).
+
+The packages are in [axelar-cgp-sui](https://github.com/axelarnetwork/axelar-cgp-sui).
+
+<Callout title="Using an AI agent?">
+  Copy this page with **Copy Markdown** at the top and give it to your agent,
+  with what you want to build or the package you want to make cross-chain. The
+  copied page links to the Markdown of the other pages it refers to, so the
+  agent can read them too. Review what it writes, and test on testnet before
+  mainnet.
+</Callout>
+
+## Message flow
+
+Sending, in one transaction:
+
+1. Your package calls `prepare_message` on the gateway with its channel, which returns a `MessageTicket`.
+1. The transaction pays gas for the ticket to the gas service (`pay_gas`).
+1. The transaction passes the ticket to `send_message` on the gateway, which emits a `ContractCall` event.
+1. Axelar verifies the event and routes the message to the destination chain.
+
+Receiving:
+
+1. Once, before the first message, you register the call that delivers messages to your package with the relayer discovery (`register_transaction`).
+1. Axelar approves the message on the Sui gateway.
+1. A relayer takes the message from the gateway as an `ApprovedMessage` (`take_approved_message`) and calls your registered function with it, in the same transaction.
+1. Your function consumes the `ApprovedMessage` with your channel (`consume_approved_message`), then runs your code.
+
+## Addresses
+
+|                           | Mainnet                                                              | Testnet                                                              |
+| ------------------------- | -------------------------------------------------------------------- | -------------------------------------------------------------------- |
+| Chain name                | `sui`                                                                | `sui`                                                                |
+| Gateway package           | `0xeb055ffc3237c24e305a2bb760fe6551f6ff7c5fdb68735169c0f528fccab373` | `0x6ddfcdd14a1019d13485a724db892fa0defe580f19c991eaabd690140abb21e4` |
+| `Gateway` object          | `0xde761b85a85477bba0ca6b4a09bcde7da33db2f64c392f806f24f433971514f5` | `0x6fc18d39a9d7bf46c438bdb66ac9e90e902abffca15b846b32570538982fb3db` |
+| Gas service package       | `0x695f612a1ee9268d25ca5c03e705819a285ff0c5b4f7720fc75a00cb8c6f3b63` | `0xddf711b99aec5c72594e5cf2da4014b2d30909850a759d2e8090add1088dbbc9` |
+| `GasService` object       | `0x0a3a8e08d156595e5a097964d5d294fcfc9ff75f736b55f44470a93e48bdeb8f` | `0xac1a4ad12d781c2f31edc2aa398154d53dbda0d50cb39a4319093e3b357bc27d` |
+| Relayer discovery package | `0x2b839b25c7133e5e0f8f585cb2e89bf430a6585a88c4a0343ae3b246372d431c` | `0x2f871726329f555bc3fa6eec129f259a8bce3cb3989b39dd75a627a1a0961bc2` |
+| `RelayerDiscovery` object | `0x310144e74e9a73d750ff17e62ed597681f519d799fea491d61740f6dd1e8c656` | `0xac080ff19b7d44c9362b83628253a4b55747779096034a72ca62ce89a188305e` |
+| Explorer                  | [Suiscan](https://suiscan.xyz/mainnet)                               | [Suiscan](https://suiscan.xyz/testnet)                               |
+
+Call functions on the package, e.g. `<gateway package>::gateway::send_message`, and pass the objects as arguments. The current IDs are always in the deployment configs, under `chains.sui.contracts`: [mainnet](https://github.com/axelarnetwork/axelar-contract-deployments/blob/main/axelar-chains-config/info/mainnet.json) | [testnet](https://github.com/axelarnetwork/axelar-contract-deployments/blob/main/axelar-chains-config/info/testnet.json).
+
+## Setup
+
+You need:
+
+- The [Sui CLI](https://docs.sui.io/guides/developer/getting-started/sui-install). This page was tested with version 1.83.
+- A testnet address with SUI: `sui client faucet`, or see [Get SUI tokens](https://docs.sui.io/guides/developer/getting-started/get-coins).
+
+Add the Axelar packages to your package's `Move.toml`:
+
+```toml
+[dependencies]
+axelar_gateway = { git = "https://github.com/axelarnetwork/axelar-cgp-sui.git", subdir = "move/axelar_gateway", rev = "b35227a82f7ca6f941a7e729e1a3b3d48a64b982" }
+relayer_discovery = { git = "https://github.com/axelarnetwork/axelar-cgp-sui.git", subdir = "move/relayer_discovery", rev = "b35227a82f7ca6f941a7e729e1a3b3d48a64b982" }
+```
+
+If your package pays gas itself, add `gas_service` the same way, with `subdir = "move/gas_service"`. The Sui framework is included automatically.
+
+The manifests at [this commit](https://github.com/axelarnetwork/axelar-cgp-sui/commit/b35227a82f7ca6f941a7e729e1a3b3d48a64b982) record the testnet IDs of the Axelar packages, so your package links to the deployed packages when you publish it. Don't depend on `main`: its manifests have placeholder addresses (`0xa1`, …), and publishing fails.
+
+<Callout emoji="⚠️" title="Mainnet">
+  The commit above records only the testnet IDs. For mainnet, copy
+  `move/axelar_gateway`, `move/relayer_discovery`, `move/utils` and
+  `move/version_control` from the [v1.2.0
+  tag](https://github.com/axelarnetwork/axelar-cgp-sui/tree/v1.2.0/move) into
+  your repository, and depend on them with `{ local = "<path>" }`. In each
+  copy's `Move.toml`, add `published-at = "<mainnet ID>"` under `[package]`,
+  and set the package's own address in `[addresses]` to the same ID. The
+  gateway and relayer discovery IDs are in the table above; `utils` is
+  `0x5920750d9804267493c958bffb7fcc1aa534705fffefbeaab0314418d631550c` and
+  `version_control` is
+  `0x647a3b34b3a16f5f00443bdafd13d281983b2280703ab4f416cf706e6d739087`.
+</Callout>
+
+From TypeScript, use [`@mysten/sui`](https://sdk.mystenlabs.com/) v2 with its gRPC or GraphQL client: public fullnodes [no longer serve JSON-RPC](https://docs.sui.io/develop/accessing-data/json-rpc-migration).
+
+## Sui concepts
+
+- **Packages and objects.** A package holds code and no state. State lives in objects, which callers pass into each call. An app that sends and receives messages is a package plus a shared object that holds its state.
+- **Channels.** Packages have no `msg.sender`. Your app creates a `Channel` object and keeps it, usually inside its shared object. The channel's ID is your app's address: the source address of the messages it sends, and the destination address of the messages it receives. Only code that holds the channel can send or consume messages as that address.
+- **Relayer discovery.** A relayer can't know which of your functions to call, or with which objects. You register that call for your channel in the relayer discovery.
+- **Hot potatoes.** `MessageTicket` and `ApprovedMessage` can't be stored or dropped, so the transaction that creates one must consume it.
+- **Programmable transaction blocks.** A [transaction](https://docs.sui.io/concepts/transactions/prog-txn-blocks) can chain calls to several packages and pass results between them. Sending a message is one: your package returns the ticket, and the next calls pay gas for it and send it.
+- **Addresses and amounts.** Sui addresses and object IDs are `0x` followed by 64 lowercase hex characters. SUI has 9 decimals, and amounts are in MIST: 1 SUI is `1000000000`.
+
+## Next steps
+
+- [Send and receive messages](/gmp/integrations/sui/gmp-messages): a complete package, with tests.
+- [Contract reference](/gmp/integrations/sui/gmp-contracts): gateway, channel, gas service and relayer discovery.
+- [Interchain Token Service on Sui](/its/sui/intro).
+
+## Resources
+
+- [axelar-cgp-sui](https://github.com/axelarnetwork/axelar-cgp-sui): source code of Axelar's Sui packages, with [generated docs](https://axelarnetwork.github.io/axelar-cgp-sui/) and [design notes](https://github.com/axelarnetwork/axelar-cgp-sui/blob/main/INTEGRATION.md).
+- [gmp.move](https://github.com/axelarnetwork/axelar-cgp-sui/blob/main/move/example/sources/gmp/gmp.move): Axelar's example GMP module, deployed on mainnet and testnet. It doesn't check senders.
+- [Sui deployment scripts](https://github.com/axelarnetwork/axelar-contract-deployments/tree/main/sui): the scripts Axelar uses to deploy and test its Sui packages.
+- [Sui developer docs](https://docs.sui.io/) and [The Move Book](https://move-book.com/).

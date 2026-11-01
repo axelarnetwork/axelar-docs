@@ -7,6 +7,7 @@ import Copy from '../copy';
 import { ChainCardSkeleton, ErrorMessage } from '../loading-skeleton';
 import AddChain from '../web3';
 
+// `chain_type` after transform-api-data: `evm` is a consensus EVM chain.
 const CHAIN_TYPE_STYLES = {
   evm: 'bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-300',
   amplifier:
@@ -15,7 +16,7 @@ const CHAIN_TYPE_STYLES = {
 };
 
 const CHAIN_TYPE_DISPLAY = {
-  evm: 'EVM',
+  evm: 'Consensus',
   amplifier: 'Amplifier',
   cosmos: 'Cosmos',
 };

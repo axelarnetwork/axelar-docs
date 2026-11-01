@@ -63,6 +63,10 @@ export async function generateMetadata(
   return {
     title: page.data.title,
     description: page.data.description,
+    // Points agents at the Markdown version of the page.
+    alternates: {
+      types: { 'text/markdown': getPageMarkdownUrl(page).url },
+    },
     // Redeclaring `openGraph` overwrites (not deep-merges) the root layout's, so
     // the shared site-level fields (including the image) are repeated here.
     openGraph: {

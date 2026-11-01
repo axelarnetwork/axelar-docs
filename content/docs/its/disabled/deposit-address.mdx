@@ -10,7 +10,7 @@ This page is retained for historical reference only.
 
 ## How to bridge tokens now
 
-The closest replacement is [`callContractWithToken()`](/gmp/evm/gmp-tokens-with-messages), which sends tokens together with a General Message Passing payload.
+The closest replacement is [`callContractWithToken()`](/gmp/integrations/evm/send-tokens-with-messages), which sends tokens together with a General Message Passing payload.
 It is not a drop-in replacement, however: the destination must be a smart contract that handles both the GMP payload and the accompanying token transfer (an `AxelarExecutableWithToken` implementation), so it cannot deliver tokens to a plain wallet.
 
 The [Interchain Token Service](/its/overview) supports both use cases — sending tokens to a regular account, and calling a contract with a token — and is the recommended path for most token transfers.

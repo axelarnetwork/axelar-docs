@@ -1,0 +1,73 @@
+---
+title: "Track a message"
+description: "Follow a GMP message through each step, and find out why it stopped."
+---
+
+Every GMP message goes through the same steps, from the call on the source chain to execution on the destination chain. Axelarscan shows where a message is, and which step it's waiting on.
+
+<Callout title="Using an AI agent?">
+  Copy this page with **Copy Markdown** at the top, and give it to your agent
+  with the transaction hash or message ID. It can look up the message through
+  the Axelarscan API and tell you where it's stuck and what to do. Review every transaction before it's signed, and
+  don't paste private keys into a chat: let the agent use a wallet or keystore
+  you control.
+</Callout>
+
+## On Axelarscan
+
+Search for the source transaction hash or the message ID on [Axelarscan](https://axelarscan.io/gmp/search) ([testnet](https://testnet.axelarscan.io/gmp/search)), or open `https://axelarscan.io/gmp/<tx hash or message ID>` directly.
+
+A message page shows these steps:
+
+| Step | What happened |
+| --- | --- |
+| **Sent** | The source contract called the gateway. |
+| **Gas Paid** | Gas was paid to the gas service. Shows **Pay Gas** if no payment was found. |
+| **Confirmed** | Axelar verified the call on the source chain, after it reached finality. |
+| **Approved** | The message was approved on the destination chain's gateway. |
+| **Executed** | The destination contract's `execute` ran. |
+
+Messages that use [Express](/gmp/integrations/evm/express) also show **Express Executed**, and after execution the page shows the gas used and any refund.
+
+## When a message stops
+
+| Axelarscan shows | Meaning | What to do |
+| --- | --- | --- |
+| **Pay Gas** | No gas was paid, so nobody executes it. | [Add gas](/gmp/track-and-recover/recover-transactions#add-gas), or [execute it yourself](/gmp/track-and-recover/recover-transactions#execute) once approved. |
+| **Insufficient Fee** | The gas paid doesn't cover verification and approval. | [Add gas](/gmp/track-and-recover/recover-transactions#add-gas). |
+| **Waiting for Finality** | The source transaction isn't final yet. | Wait. See [transaction time](/gmp/how-it-works/finality-and-timing). |
+| **Confirm** or **Approve**, for a long time | The relayer didn't pick it up. | [Relay it manually](/gmp/track-and-recover/manual-relay). |
+| **Failed to Confirm** | Verification failed: the poll found no matching event, or failed. | [Relay it manually](/gmp/track-and-recover/manual-relay), which verifies it again. |
+| **Invalid Call** | The source transaction reverted, or the call has an invalid field, e.g. an unknown destination chain. | Nothing; send a new message. |
+| **Not Enough Gas** | The gas left doesn't cover execution. | [Add gas](/gmp/track-and-recover/recover-transactions#add-gas). |
+| **Error** | `execute` reverted on the destination chain. | [Debug the destination contract](/gmp/track-and-recover/debug-failed-execution), then [execute it again](/gmp/track-and-recover/recover-transactions#execute). |
+
+## From code
+
+### Axelarscan API
+
+```bash
+curl -X POST https://api.axelarscan.io/gmp/searchGMP \
+  -H 'content-type: application/json' \
+  -d '{"txHash":"0x..."}'
+```
+
+Use `"messageId"` instead of `"txHash"` to look up one message from a transaction that sent several. For testnet, use `https://testnet.api.axelarscan.io`.
+
+Each result in `data` has the overall `status` (e.g. `executed`, `error`, `approved`), a `simplified_status` (`sent`, `approved`, `received` or `failed`) and the details of each step (`call`, `gas_paid`, `confirm`, `approved`, `executed`, `error`, `refunded`).
+
+### AxelarJS SDK
+
+`queryTransactionStatus` returns the same information:
+
+```ts
+import { AxelarGMPRecoveryAPI, Environment } from '@axelar-network/axelarjs-sdk';
+
+const sdk = new AxelarGMPRecoveryAPI({ environment: Environment.MAINNET });
+
+const { status, gasPaidInfo, error } = await sdk.queryTransactionStatus(txHash);
+```
+
+`status` is a `GMPStatus`, such as `source_gateway_called`, `confirmed`, `destination_gateway_approved`, `destination_executed`, `express_executed`, `error` or `insufficient_fee`. `gasPaidInfo.status` is a `GasPaidStatus`: `gas_unpaid`, `gas_paid`, `gas_paid_not_enough_gas` or `gas_paid_enough_gas`.
+
+If the transaction sent more than one message, pass the log index of the call as the second argument.

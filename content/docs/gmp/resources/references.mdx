@@ -1,0 +1,33 @@
+---
+title: "References"
+description: "Contract addresses and the source code behind GMP."
+---
+
+## Addresses
+
+Gateway, gas service and ITS addresses for every connected chain are on [Chains and contracts](/infrastructure/network/chains-and-contracts).
+
+## Contracts
+
+| Contract | Description |
+| --- | --- |
+| [AxelarGateway](https://github.com/axelarnetwork/axelar-cgp-solidity/blob/main/contracts/AxelarGateway.sol) | Gateway on consensus EVM chains: `callContract`, `callContractWithToken` and message approval |
+| [AxelarAmplifierGateway](https://github.com/axelarnetwork/axelar-gmp-sdk-solidity/blob/main/contracts/gateway/AxelarAmplifierGateway.sol) | Gateway on Amplifier EVM chains |
+| [AxelarGasService](https://github.com/axelarnetwork/axelar-cgp-solidity/blob/main/contracts/gas-service/AxelarGasService.sol) | Gas payments, gas top-ups and refunds |
+| [AxelarExecutable](https://github.com/axelarnetwork/axelar-gmp-sdk-solidity/blob/main/contracts/executable/AxelarExecutable.sol) | Base contract for receiving messages |
+| [AxelarExpressExecutableWithToken](https://github.com/axelarnetwork/axelar-gmp-sdk-solidity/blob/main/contracts/express/AxelarExpressExecutableWithToken.sol) | Base contract for receiving messages with [Express](/gmp/integrations/evm/express) |
+| [AxelarValuedExpressExecutable](https://github.com/axelarnetwork/axelar-gmp-sdk-solidity/blob/main/contracts/express/AxelarValuedExpressExecutable.sol) | Express for messages whose value is computed by the contract |
+
+## Repositories
+
+| Repository | Description |
+| --- | --- |
+| [axelar-gmp-sdk-solidity](https://github.com/axelarnetwork/axelar-gmp-sdk-solidity) | Solidity libraries for GMP: executables, Amplifier gateway, governance, deployers |
+| [axelar-cgp-solidity](https://github.com/axelarnetwork/axelar-cgp-solidity) | Gateway and gas service contracts for consensus EVM chains |
+| [axelar-amplifier-solana](https://github.com/axelarnetwork/axelar-amplifier-solana) | Gateway, gas service and ITS programs for Solana |
+| [axelar-cgp-sui](https://github.com/axelarnetwork/axelar-cgp-sui) | Gateway, gas service and ITS packages for Sui |
+| [axelar-amplifier-stellar](https://github.com/axelarnetwork/axelar-amplifier-stellar) | Gateway, gas service and ITS contracts for Stellar |
+| [axelar-amplifier-xrpl](https://github.com/axelarnetwork/axelar-amplifier-xrpl) | XRPL integration |
+| [cgp-spec](https://github.com/axelarnetwork/cgp-spec) | Cross-Chain Gateway Protocol specification |
+
+For every Axelar repository, see [Infrastructure › References](/infrastructure/resources/references).

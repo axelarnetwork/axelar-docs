@@ -1,0 +1,373 @@
+---
+title: "Send and receive messages"
+description: "A Sui Move package that sends and receives GMP messages, with tests."
+---
+
+This page builds a package that sends bytes to another chain and stores the bytes it receives. For setup and addresses, see the [Sui overview](/gmp/integrations/sui/intro).
+
+## The package
+
+`Move.toml` (for mainnet, see [Setup](/gmp/integrations/sui/intro#setup)):
+
+```toml
+[package]
+name = "messenger"
+edition = "2024"
+
+[dependencies]
+axelar_gateway = { git = "https://github.com/axelarnetwork/axelar-cgp-sui.git", subdir = "move/axelar_gateway", rev = "b35227a82f7ca6f941a7e729e1a3b3d48a64b982" }
+relayer_discovery = { git = "https://github.com/axelarnetwork/axelar-cgp-sui.git", subdir = "move/relayer_discovery", rev = "b35227a82f7ca6f941a7e729e1a3b3d48a64b982" }
+```
+
+`sources/messenger.move`:
+
+```move
+module messenger::messenger;
+
+use axelar_gateway::channel::{Self, Channel, ApprovedMessage};
+use axelar_gateway::gateway;
+use axelar_gateway::message_ticket::MessageTicket;
+use relayer_discovery::discovery::RelayerDiscovery;
+use relayer_discovery::transaction;
+use std::ascii::{Self, String};
+use sui::event;
+use sui::table::{Self, Table};
+
+#[error]
+const EUntrustedSender: vector<u8> = b"message isn't from a trusted sender";
+
+/// Shared object that holds the app's channel and state.
+public struct Messenger has key {
+    id: UID,
+    // The channel's ID is this app's address on other chains.
+    channel: Channel,
+    // The sender this app accepts messages from, per source chain.
+    trusted_senders: Table<String, String>,
+    last_message: vector<u8>,
+}
+
+/// Lets its holder configure the Messenger.
+public struct OwnerCap has key, store {
+    id: UID,
+}
+
+public struct MessageReceived has copy, drop {
+    source_chain: String,
+    message_id: String,
+    source_address: String,
+    payload: vector<u8>,
+}
+
+fun init(ctx: &mut TxContext) {
+    transfer::share_object(Messenger {
+        id: object::new(ctx),
+        channel: channel::new(ctx),
+        trusted_senders: table::new(ctx),
+        last_message: vector[],
+    });
+    transfer::transfer(OwnerCap { id: object::new(ctx) }, ctx.sender());
+}
+
+/// Tells relayers how to deliver messages to this app:
+/// call `messenger::execute(<approved message>, <this Messenger>)`.
+public fun register_transaction(self: &Messenger, _: &OwnerCap, discovery: &mut RelayerDiscovery) {
+    let mut messenger_arg = vector[0u8]; // 0: an object, followed by its ID
+    messenger_arg.append(object::id_address(self).to_bytes());
+
+    let execute_call = transaction::new_move_call(
+        transaction::new_function(
+            transaction::package_id<Messenger>(),
+            ascii::string(b"messenger"),
+            ascii::string(b"execute"),
+        ),
+        vector[
+            vector[2u8], // 2: the ApprovedMessage
+            messenger_arg,
+        ],
+        vector[], // no type arguments
+    );
+
+    discovery.register_transaction(
+        &self.channel,
+        transaction::new_transaction(true, vector[execute_call]),
+    );
+}
+
+public fun set_trusted_sender(self: &mut Messenger, _: &OwnerCap, chain: String, sender: String) {
+    if (self.trusted_senders.contains(chain)) {
+        *self.trusted_senders.borrow_mut(chain) = sender;
+    } else {
+        self.trusted_senders.add(chain, sender);
+    };
+}
+
+/// Returns a ticket for a message from this app's channel.
+/// Pay gas for it, then pass it to `gateway::send_message`.
+public fun prepare_message(
+    self: &Messenger,
+    destination_chain: String,
+    destination_address: String,
+    payload: vector<u8>,
+): MessageTicket {
+    gateway::prepare_message(&self.channel, destination_chain, destination_address, payload)
+}
+
+/// Called by a relayer with a message approved for this app's channel.
+public fun execute(approved_message: ApprovedMessage, self: &mut Messenger) {
+    // Aborts if the message isn't for this channel
+    let (source_chain, message_id, source_address, payload) = self
+        .channel
+        .consume_approved_message(approved_message);
+
+    // The gateway has checked that Axelar approved this message.
+    // Check that it comes from a sender you trust.
+    assert!(
+        self.trusted_senders.contains(source_chain)
+            && self.trusted_senders[source_chain] == source_address,
+        EUntrustedSender,
+    );
+
+    self.last_message = payload;
+    event::emit(MessageReceived { source_chain, message_id, source_address, payload });
+}
+
+/// This app's address on other chains
+public fun channel_address(self: &Messenger): address {
+    self.channel.to_address()
+}
+
+public fun last_message(self: &Messenger): vector<u8> {
+    self.last_message
+}
+
+#[test_only]
+public fun init_for_testing(ctx: &mut TxContext) {
+    init(ctx);
+}
+```
+
+## Send a message
+
+Sending is one transaction with three calls:
+
+1. **Prepare.** `prepare_message` returns a `MessageTicket` from the Messenger's channel. The channel is the sender: its ID is the source address the receiver sees.
+1. **Pay gas** with `pay_gas` on the gas service, for the ticket. Pay in SUI. Without gas, the message is verified but never executed. Get the amount, in MIST, from an [off-chain estimate](/gmp/gas/estimate-and-pay#estimate-the-fee) with `sui` as the source chain. Any refund goes to the refund address. Pass empty `params`.
+1. **Send** the ticket with `send_message` on the gateway.
+
+The package returns the ticket instead of paying gas and sending it itself, as the gateway recommends. If Axelar upgrades the gateway, the transaction calls the new `send_message`, and your package keeps working. A package can also call `pay_gas` and `send_message` itself (add the `gas_service` dependency), but it may then need an upgrade when the gateway is upgraded.
+
+Whatever your package lets callers put in a ticket is sent with your channel as the source address. Here, anyone can call `prepare_message` with any payload, so receivers can trust your channel only that far. In a real app, check the caller or build the payload in Move.
+
+The payload is bytes, and the receiver decodes it however it expects. An [EVM contract](/gmp/integrations/evm/gmp-messages) usually decodes it with `abi.decode`, so ABI-encode it: see [Build and deploy](#build-and-deploy).
+
+## Receive a message
+
+Receiving has two parts:
+
+- **Register once.** `register_transaction` stores, under your channel's ID in the relayer discovery, the call that delivers a message: `messenger::execute` with the approved message and the Messenger object. Only the `OwnerCap` holder can call it. See [Relayer discovery](/gmp/integrations/sui/gmp-contracts#relayer-discovery) for the argument encoding.
+- **Execute.** A relayer takes the approved message from the gateway and calls `execute` with it, in the same transaction. `consume_approved_message` checks that the message is addressed to the Messenger's channel and returns its fields. Only code that holds the channel can consume a message sent to it.
+
+### Check the sender
+
+<Callout emoji="⚠️" title="Consuming a message doesn't check who sent it">
+  The gateway proves that a message came through Axelar, and
+  `consume_approved_message` proves that it's addressed to your channel.
+  Neither proves that it came from your contract on the other chain: anyone
+  can send a message to your channel. Unless your package accepts messages
+  from anyone, check `source_chain` and `source_address` after consuming the
+  message.
+</Callout>
+
+`source_address` is a string in the source chain's format: EVM addresses arrive [EIP-55](https://eips.ethereum.org/EIPS/eip-55) checksummed, and Sui senders are channel IDs, in lowercase hex. `source_chain` is the chain's registered name, and some are capitalized (`Ethereum`, `Avalanche`).
+
+### When `execute` fails
+
+If `execute` aborts, the whole transaction reverts, including the relayer's `take_approved_message`. The message stays approved and can be executed again, e.g. after you trust the sender. Axelarscan shows it as **Error**; see [Debug failed execution](/gmp/track-and-recover/debug-failed-execution).
+
+### After an upgrade
+
+`transaction::package_id<Messenger>()` is the ID of the package that first defined `Messenger`. After you upgrade the package, relayers keep calling `execute` in that first version until you register a call with the new package ID.
+
+## Test
+
+The Axelar packages have test-only helpers:
+
+- `channel::new_approved_message` creates the `ApprovedMessage` that `take_approved_message` returns. Approving a message on a test gateway needs signatures from a verifier set, which the gateway doesn't let other packages create, so tests start from the `ApprovedMessage`.
+- `gateway::create_for_testing` creates a gateway you can send through.
+- `discovery::new` creates a relayer discovery.
+
+`tests/messenger_tests.move`:
+
+```move
+#[test_only]
+module messenger::messenger_tests;
+
+use axelar_gateway::bytes32;
+use axelar_gateway::channel::{Self, ApprovedMessage};
+use axelar_gateway::events::ContractCall;
+use axelar_gateway::gateway;
+use axelar_gateway::weighted_signers;
+use messenger::messenger::{Self, Messenger, OwnerCap};
+use relayer_discovery::discovery;
+use relayer_discovery::transaction;
+use std::ascii::string;
+use std::unit_test::destroy;
+use sui::clock;
+use sui::event;
+use sui::test_scenario as ts;
+
+const OWNER: address = @0xA;
+const CHAIN: vector<u8> = b"Avalanche";
+const SENDER: vector<u8> = b"0x34e904237341C3de02D4447C3fF0ca8880ca6484";
+
+// What the gateway's `take_approved_message` returns for an approved message
+fun approved_message(messenger: &Messenger, source_address: vector<u8>): ApprovedMessage {
+    channel::new_approved_message(
+        string(CHAIN),
+        string(b"0xabc-1"), // message ID
+        string(source_address),
+        messenger.channel_address(), // destination: this app's channel
+        b"hello",
+    )
+}
+
+// Publishes the package, and sets SENDER as the trusted sender on CHAIN
+fun setup(): (ts::Scenario, Messenger, OwnerCap) {
+    let mut scenario = ts::begin(OWNER);
+    messenger::init_for_testing(scenario.ctx());
+    scenario.next_tx(OWNER);
+
+    let mut messenger = scenario.take_shared<Messenger>();
+    let cap = scenario.take_from_sender<OwnerCap>();
+    messenger.set_trusted_sender(&cap, string(CHAIN), string(SENDER));
+    (scenario, messenger, cap)
+}
+
+fun cleanup(scenario: ts::Scenario, messenger: Messenger, cap: OwnerCap) {
+    scenario.return_to_sender(cap);
+    ts::return_shared(messenger);
+    scenario.end();
+}
+
+#[test]
+fun receive_from_trusted_sender() {
+    let (scenario, mut messenger, cap) = setup();
+
+    messenger::execute(approved_message(&messenger, SENDER), &mut messenger);
+    assert!(messenger.last_message() == b"hello");
+
+    cleanup(scenario, messenger, cap);
+}
+
+#[test, expected_failure(abort_code = messenger::EUntrustedSender)]
+fun reject_untrusted_sender() {
+    let (_scenario, mut messenger, _cap) = setup();
+
+    let attacker = b"0x0000000000000000000000000000000000000bad";
+    messenger::execute(approved_message(&messenger, attacker), &mut messenger);
+
+    abort
+}
+
+#[test]
+fun register_execute_with_relayer_discovery() {
+    let (mut scenario, messenger, cap) = setup();
+    let mut discovery = discovery::new(scenario.ctx());
+
+    messenger.register_transaction(&cap, &mut discovery);
+
+    // Relayers look up the call by the channel ID
+    let tx = discovery.get_transaction(object::id_from_address(messenger.channel_address()));
+    let call = tx.move_calls()[0];
+    assert!(tx.is_final());
+    assert!(call.function().package_id_from_function() == transaction::package_id<Messenger>());
+    assert!(call.function().module_name() == string(b"messenger"));
+    assert!(call.function().name() == string(b"execute"));
+
+    destroy(discovery);
+    cleanup(scenario, messenger, cap);
+}
+
+#[test]
+fun send_message() {
+    let (mut scenario, messenger, cap) = setup();
+    let clock = clock::create_for_testing(scenario.ctx());
+    let gateway = gateway::create_for_testing(
+        @0x0,
+        bytes32::new(@0x1),
+        0,
+        1,
+        weighted_signers::dummy(),
+        &clock,
+        scenario.ctx(),
+    );
+
+    let ticket = messenger.prepare_message(string(CHAIN), string(SENDER), b"hello");
+    // The channel is the sender
+    assert!(ticket.source_id() == messenger.channel_address());
+    gateway.send_message(ticket);
+    assert!(event::events_by_type<ContractCall>().length() == 1);
+
+    destroy(gateway);
+    destroy(clock);
+    cleanup(scenario, messenger, cap);
+}
+```
+
+Run it with `sui move test`.
+
+## Build and deploy
+
+```bash
+sui client switch --env testnet
+sui client publish
+```
+
+The output lists the objects the package created: the shared `Messenger`, your `OwnerCap` and the `UpgradeCap`. The `ChannelCreated` event's `id` is your app's address on other chains. Commit the `Published.toml` that `publish` writes.
+
+```bash
+PACKAGE=<published package ID>
+MESSENGER=<Messenger object ID>
+OWNER_CAP=<OwnerCap object ID>
+```
+
+Register `execute` with the relayer discovery (testnet object):
+
+```bash
+sui client ptb \
+  --move-call $PACKAGE::messenger::register_transaction @$MESSENGER @$OWNER_CAP \
+    @0xac080ff19b7d44c9362b83628253a4b55747779096034a72ca62ce89a188305e
+```
+
+Trust the contract that will send to you, e.g. on Avalanche:
+
+```bash
+sui client ptb \
+  --move-call $PACKAGE::messenger::set_trusted_sender @$MESSENGER @$OWNER_CAP \
+    '"Avalanche"' '"<EVM contract, EIP-55 checksummed>"'
+```
+
+Send a message. The payload here is ABI-encoded for an EVM receiver, and the gas amount is in MIST (1 SUI = `1000000000`):
+
+```bash
+PAYLOAD=$(cast abi-encode "f(string)" "hello from Sui" | sed 's/^0x//; s/../0x&u8,/g; s/,$//')
+
+sui client ptb \
+  --move-call $PACKAGE::messenger::prepare_message @$MESSENGER \
+    '"Avalanche"' '"<EVM contract>"' "vector[$PAYLOAD]" \
+  --assign ticket \
+  --split-coins gas "[<gas amount>]" \
+  --assign gas_coins \
+  --move-call 0xddf711b99aec5c72594e5cf2da4014b2d30909850a759d2e8090add1088dbbc9::gas_service::pay_gas "<0x2::sui::SUI>" \
+    @0xac1a4ad12d781c2f31edc2aa398154d53dbda0d50cb39a4319093e3b357bc27d ticket gas_coins.0 @$(sui client active-address) "vector[]" \
+  --move-call 0x6ddfcdd14a1019d13485a724db892fa0defe580f19c991eaabd690140abb21e4::gateway::send_message \
+    @0x6fc18d39a9d7bf46c438bdb66ac9e90e902abffca15b846b32570538982fb3db ticket
+```
+
+The addresses are for testnet; see [Addresses](/gmp/integrations/sui/intro#addresses). Follow the message on [Axelarscan](https://testnet.axelarscan.io/gmp/search) by the transaction digest. Its message ID is `<transaction digest>-<event index>`.
+
+To send to the Messenger from another chain, use `sui` as the destination chain and your channel ID as the destination address, e.g. with `callContract` [on an EVM chain](/gmp/integrations/evm/gmp-messages).
+
+## Limits
+
+A message to Sui can have at most 16 KB of payload, because the relayer passes it to `take_approved_message` as a transaction argument (see [General limitations](https://github.com/axelarnetwork/axelar-cgp-sui/blob/main/INTEGRATION.md#general-limitations)).

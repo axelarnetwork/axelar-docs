@@ -1,0 +1,89 @@
+---
+title: "Stellar"
+description: "Send and receive GMP messages from Soroban contracts on Stellar."
+---
+
+[Stellar](https://stellar.org/) is connected to Axelar through [Amplifier](/infrastructure#a-cross-chain-protocol-amplifier). Soroban contracts on Stellar can exchange messages with every connected chain, and send tokens with the [Interchain Token Service](/its/stellar/intro).
+
+The contracts are in [axelar-amplifier-stellar](https://github.com/axelarnetwork/axelar-amplifier-stellar), published as Rust crates.
+
+<Callout title="Using an AI agent?">
+  Copy this page with **Copy Markdown** at the top and give it to your agent,
+  with what you want to build or the contract you want to make cross-chain. The
+  copied page links to the Markdown of the other pages it refers to, so the
+  agent can read them too. Review what it writes, and test on testnet before
+  mainnet.
+</Callout>
+
+## Message flow
+
+Sending:
+
+1. Your contract pays gas to the gas service (`pay_gas`).
+1. Your contract calls `call_contract` on the gateway, which emits a `contract_called` event.
+1. Axelar verifies the event and routes the message to the destination chain.
+
+Receiving:
+
+1. Axelar approves the message on the Stellar gateway.
+1. A relayer calls `execute` on your contract.
+1. `execute` validates the message with the gateway, which marks it executed, then runs your code.
+
+## Addresses
+
+|                   | Mainnet                                                    | Testnet                                                    |
+| ----------------- | ---------------------------------------------------------- | ---------------------------------------------------------- |
+| Chain name        | `stellar`                                                  | `stellar-2026-q1-2`                                        |
+| Gateway           | `CD6VSKXB4HY2DWU7EP2PUIYTBJBJ36LDJXEZN4NSXFYF5YP37DDFX6NF` | `CB2JYOOZPHO43R57TC5PXV22QICKIDC5NKRF62BZG2J6JYFUIQPIAYY3` |
+| Gas service       | `CDZNIEA5FLJY2L4BWFW3P6WPFYWQNZTNP6ED2K5UHD5PNYTIMNFZDD3W` | `CCLZOCGHHC6F6JCZHEUP53LDQHRBPPCNRYXOVFZFS3O63OGRC47CKCGV` |
+| XLM token address | `CAS3J7GYLGXMF6TDJBBYYSE3HQ6BBSMLNUQ34T6TZMYMW2EVH34XOWMA` | `CDLZFC3SYJYDZT7K67VZ75HPJVIEUVNIXF47ZG2FB2RMQQVU2HHGCYSC` |
+| Soroban RPC       | `https://mainnet.sorobanrpc.com`                           | `https://soroban-testnet.stellar.org`                      |
+
+The current addresses are always in the deployment configs, under `chains.stellar*`: [mainnet](https://github.com/axelarnetwork/axelar-contract-deployments/blob/main/axelar-chains-config/info/mainnet.json) | [testnet](https://github.com/axelarnetwork/axelar-contract-deployments/blob/main/axelar-chains-config/info/testnet.json).
+
+<Callout emoji="⚠️" title="Testnet resets">
+  Stellar [resets its testnet](https://developers.stellar.org/docs/networks)
+  regularly, which deletes every contract. Axelar then redeploys its contracts
+  under a new chain name, such as `stellar-2026-q1-2`. After a reset, redeploy
+  your contracts and use the new chain name and addresses.
+</Callout>
+
+## Setup
+
+You need:
+
+- Rust 1.84 or later, with the `wasm32v1-none` target: `rustup target add wasm32v1-none`.
+- The [Stellar CLI](https://developers.stellar.org/docs/tools/cli/install-cli).
+- A funded testnet account: `stellar keys generate alice --network testnet --fund`.
+
+Add the crates to your contract's `Cargo.toml`:
+
+```toml
+[dependencies]
+stellar-axelar-std = { version = "2.0.1", features = ["derive"] }
+stellar-axelar-gateway = { version = "2.0.1", features = ["library"] }
+stellar-axelar-gas-service = { version = "2.0.1", features = ["library"] }
+```
+
+`stellar-axelar-std` re-exports `soroban-sdk` (version 25), so import Soroban types from it rather than adding `soroban-sdk` yourself. If you do add it, use the same major version, or the types won't match. The `library` feature lets you use the gateway and gas service clients without compiling their contracts into yours.
+
+## Stellar concepts
+
+- **Authorization.** Soroban contracts authorize calls with `require_auth()` instead of `msg.sender`. When your contract sends a message, it authorizes as itself (`env.current_contract_address()`), and the user who pays gas authorizes the payment.
+- **Addresses.** Contracts are `C…` addresses and accounts `G…` addresses. Messages carry them as strings: your contract receives `source_address` as a string, and you send to `destination_address` as a string in the destination chain's format.
+- **Tokens.** XLM and other assets are used through their token contract (Stellar Asset Contract). Amounts are integers in the token's smallest unit: XLM has 7 decimals, so 1 XLM is `10000000`.
+- **Storage expiry.** Contract data expires unless its time to live is extended ([state archival](https://developers.stellar.org/docs/learn/fundamentals/contract-development/storage/state-archival)). `contractimpl` from `stellar-axelar-std` extends your contract's instance storage on every call.
+
+## Next steps
+
+- [Send and receive messages](/gmp/integrations/stellar/gmp-messages): a complete contract, with tests.
+- [Contract reference](/gmp/integrations/stellar/gmp-contracts): gateway and gas service functions and events.
+- [Interchain Token Service on Stellar](/its/stellar/intro).
+
+## Resources
+
+- [axelar-amplifier-stellar](https://github.com/axelarnetwork/axelar-amplifier-stellar): source code of Axelar's Stellar contracts.
+- [API documentation](https://axelarnetwork.github.io/axelar-amplifier-stellar/) of the crates.
+- [stellar-axelar-example](https://github.com/axelarnetwork/axelar-amplifier-stellar/tree/main/contracts/stellar-axelar-example): example contract using GMP and ITS, deployed on testnet.
+- [stellar-gmp-example](https://github.com/axelarnetwork/stellar-gmp-example): a Stellar contract that sends messages to an EVM chain.
+- [Stellar developer docs](https://developers.stellar.org/docs).

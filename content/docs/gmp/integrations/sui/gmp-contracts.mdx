@@ -1,0 +1,183 @@
+---
+title: "Contract reference"
+description: "Sui gateway, channel, gas service and relayer discovery: functions and events."
+---
+
+Package and object IDs are on the [Sui overview](/gmp/integrations/sui/intro#addresses). The full API is in the [generated docs](https://axelarnetwork.github.io/axelar-cgp-sui/). Strings are `std::ascii::String`.
+
+## Sui gateway
+
+[`axelar_gateway::gateway`](https://github.com/axelarnetwork/axelar-cgp-sui/blob/main/move/axelar_gateway/sources/gateway.move). The `Gateway` is a shared object.
+
+```move
+// Creates a ticket for a message from `channel`. The channel's ID is the source address.
+public fun prepare_message(
+    channel: &Channel,
+    destination_chain: String,
+    destination_address: String,
+    payload: vector<u8>,
+): MessageTicket;
+
+// Sends the message: emits `ContractCall`.
+public fun send_message(self: &Gateway, message: MessageTicket);
+
+// Marks an approved message executed and returns it, for the destination channel to consume.
+// Aborts if the message isn't approved. Relayers call it.
+public fun take_approved_message(
+    self: &mut Gateway,
+    source_chain: String,
+    message_id: String,
+    source_address: String,
+    destination_id: address,
+    payload: vector<u8>,
+): ApprovedMessage;
+
+public fun is_message_approved(
+    self: &Gateway,
+    source_chain: String,
+    message_id: String,
+    source_address: String,
+    destination_id: address,
+    payload_hash: Bytes32,
+): bool;
+
+public fun is_message_executed(self: &Gateway, source_chain: String, message_id: String): bool;
+```
+
+Axelar's relayers call the entry functions `approve_messages` and `rotate_signers` with proofs signed by the [verifier set](https://axelarscan.io/verifiers).
+
+Events, in `axelar_gateway::events`:
+
+| Event              | Fields                                                                                           |
+| ------------------ | ------------------------------------------------------------------------------------------------ |
+| `ContractCall`     | `source_id` (the channel), `destination_chain`, `destination_address`, `payload`, `payload_hash` |
+| `MessageApproved`  | `message`: `source_chain`, `message_id`, `source_address`, `destination_id`, `payload_hash`      |
+| `MessageExecuted`  | `message`, as above                                                                              |
+| `ChannelCreated`   | `id`                                                                                             |
+| `ChannelDestroyed` | `id`                                                                                             |
+
+The ID of a message sent from Sui is `<transaction digest>-<event index>`, as shown on Axelarscan.
+
+## Channel
+
+[`axelar_gateway::channel`](https://github.com/axelarnetwork/axelar-cgp-sui/blob/main/move/axelar_gateway/sources/channel.move). A channel is your app's identity: its ID is the source address of the messages you send, and the destination address of the messages you receive. Keep it in an object that only your package can access.
+
+```move
+public struct Channel has key, store {
+    id: UID,
+}
+
+public fun new(ctx: &mut TxContext): Channel; // emits ChannelCreated
+public fun destroy(self: Channel); // emits ChannelDestroyed
+public fun id(self: &Channel): ID;
+public fun to_address(self: &Channel): address;
+
+// Aborts with EInvalidDestination unless the message is addressed to `channel`.
+// Returns (source_chain, message_id, source_address, payload).
+public fun consume_approved_message(
+    channel: &Channel,
+    approved_message: ApprovedMessage,
+): (String, String, String, vector<u8>);
+```
+
+`consume_approved_message` doesn't check who sent the message; see [Check the sender](/gmp/integrations/sui/gmp-messages#check-the-sender).
+
+### ApprovedMessage
+
+```move
+// No abilities: must be consumed in the transaction that takes it
+public struct ApprovedMessage {
+    source_chain: String,
+    message_id: String,
+    source_address: String, // in the source chain's format, e.g. 0x… for EVM
+    destination_id: address, // the destination channel's ID
+    payload: vector<u8>,
+}
+```
+
+## Message ticket
+
+[`axelar_gateway::message_ticket`](https://github.com/axelarnetwork/axelar-cgp-sui/blob/main/move/axelar_gateway/sources/types/message_ticket.move). `prepare_message` creates it, `pay_gas` reads it, and `send_message` consumes it.
+
+```move
+public struct MessageTicket {
+    source_id: address, // the sending channel
+    destination_chain: String,
+    destination_address: String,
+    payload: vector<u8>,
+    version: u64, // gateway version that created it
+}
+```
+
+It has getters for each field: `source_id()`, `destination_chain()`, `destination_address()`, `payload()` and `version()`.
+
+Return the ticket from your package instead of calling `send_message` in it. The transaction then calls the current gateway's `send_message`, so your package doesn't need an upgrade when the gateway is upgraded. A gateway rejects tickets created by a newer version than its own.
+
+## Sui gas service
+
+[`gas_service::gas_service`](https://github.com/axelarnetwork/axelar-cgp-sui/blob/main/move/gas_service/sources/gas_service.move). The `GasService` is a shared object.
+
+```move
+// Pays gas for the ticket's message, before `send_message`.
+// Any refund goes to `refund_address`. Pass empty `params`.
+public fun pay_gas<T>(
+    self: &mut GasService,
+    message_ticket: &MessageTicket,
+    coin: Coin<T>,
+    refund_address: address,
+    params: vector<u8>,
+);
+
+// Adds gas to a message that was already sent.
+public fun add_gas<T>(
+    self: &mut GasService,
+    coin: Coin<T>,
+    message_id: String,
+    refund_address: address,
+    params: vector<u8>,
+);
+```
+
+Pay in SUI (`T` = `0x2::sui::SUI`). The SDK can also [add gas](/gmp/track-and-recover/recover-transactions#add-gas) for you.
+
+Events, generic over the coin type: `GasPaid<T>` (`sender`, `destination_chain`, `destination_address`, `payload_hash`, `value`, `refund_address`, `params`), `GasAdded<T>` (`message_id`, `value`, `refund_address`, `params`) and `Refunded<T>` (`message_id`, `value`, `refund_address`). `sender` is the ticket's channel.
+
+## Relayer discovery
+
+[`relayer_discovery::discovery`](https://github.com/axelarnetwork/axelar-cgp-sui/blob/main/move/relayer_discovery/sources/discovery.move). The `RelayerDiscovery` is a shared object. It stores, per channel, the transaction that relayers run to deliver a message to it.
+
+```move
+// Sets the transaction for `channel`, replacing any previous one.
+public fun register_transaction(self: &mut RelayerDiscovery, channel: &Channel, tx: Transaction);
+public fun remove_transaction(self: &mut RelayerDiscovery, channel: &Channel);
+public fun get_transaction(self: &RelayerDiscovery, channel_id: ID): Transaction;
+```
+
+Build the transaction with [`relayer_discovery::transaction`](https://github.com/axelarnetwork/axelar-cgp-sui/blob/main/move/relayer_discovery/sources/types/transaction.move):
+
+```move
+public fun new_function(package_id: address, module_name: String, name: String): Function;
+public fun new_move_call(
+    function: Function,
+    arguments: vector<vector<u8>>,
+    type_arguments: vector<String>,
+): MoveCall;
+public fun new_transaction(is_final: bool, move_calls: vector<MoveCall>): Transaction;
+
+// ID of the package that first defined `T`
+public fun package_id<T>(): address;
+```
+
+With `is_final = true`, relayers run the move calls as given. With `false`, they run them as a read-only simulation, which must return the `Transaction` to run next.
+
+Each argument starts with a byte that says what the relayer passes:
+
+| Prefix | Argument                                                                                                                                           |
+| ------ | -------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `0`    | An object, followed by its 32-byte ID                                                                                                              |
+| `1`    | A pure value, followed by its [BCS](https://sdk.mystenlabs.com/bcs) encoding                                                                       |
+| `2`    | The `ApprovedMessage`                                                                                                                              |
+| `3`    | The message payload                                                                                                                                |
+| `4`    | A result of an earlier move call: followed by a `u8` call index (0 is the first call after the `ApprovedMessage` is taken) and a `u8` result index |
+
+Events: `TransactionRegistered` (`channel_id`, `transaction`) and `TransactionRemoved` (`channel_id`).

@@ -1,0 +1,47 @@
+---
+title: "Add gas and refunds"
+description: "Top up an underpaid message, and choose where unused gas is refunded."
+---
+
+## Add gas
+
+If the gas you paid isn't enough, for example because the destination gas price rose, the message waits on Axelarscan with an **Insufficient fee** status. Add gas to it on the source chain, and it continues.
+
+The easiest way is the **Add gas** button on the message's Axelarscan page, or the AxelarJS SDK. See [Recover a message](/gmp/track-and-recover/recover-transactions#add-gas).
+
+To do it from a contract or script, call the gas service on the source chain. The message is identified by the hash of the transaction that sent it and the index of its `ContractCall` event log in that transaction:
+
+```solidity
+function addNativeGas(
+    bytes32 txHash,
+    uint256 logIndex,
+    address refundAddress
+) external payable;
+```
+
+| Message | Native token | ERC-20 |
+| --- | --- | --- |
+| Normal | `addNativeGas` | `addGas` |
+| [Express](/gmp/integrations/evm/express) | `addNativeExpressGas` | `addExpressGas` |
+
+The ERC-20 variants take a `gasToken` and `gasFeeAmount`, and need an approval first. Gas you add that isn't used is refunded like the rest.
+
+## Refunds
+
+Gas left after execution is refunded on the source chain to the refund address you set when paying gas ([how refunds are calculated](/gmp/gas/gas-service#refunds)). Refunds are sent in the token you paid with, except on [XRPL](/gmp/integrations/xrpl#refunds), where they're in XRP.
+
+The refund address is the last argument of every payment function:
+
+```solidity
+gasService.payNativeGasForContractCall{ value: msg.value }(
+    address(this),
+    destinationChain,
+    destinationAddress,
+    payload,
+    msg.sender // refund address
+);
+```
+
+`msg.sender` refunds the user who called your contract. To refund somewhere else, pass that address instead, or let the caller choose by taking it as a parameter. If you pass `address(this)`, your contract receives the refund, so it needs a way to receive native tokens (a `receive` function) and to withdraw them.
+
+Each refund emits a `Refunded` event on the gas service, and appears on the message's Axelarscan page.

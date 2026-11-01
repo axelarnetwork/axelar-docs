@@ -3,7 +3,7 @@
   "icon": "Boxes",
   "pages": [
     "index",
-    "---Consensus chains---",
+    "---Consensus connected chains---",
     "arbitrum",
     "avalanche",
     "base",
@@ -20,7 +20,7 @@
     "optimism",
     "polygon",
     "scroll",
-    "---Amplifier chains---",
+    "---Amplifier connected chains---",
     "hedera",
     "hyperliquid",
     "solana",

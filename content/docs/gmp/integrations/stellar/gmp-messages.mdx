@@ -1,0 +1,286 @@
+---
+title: "Send and receive messages"
+description: "A Soroban contract that sends and receives GMP messages, with tests."
+---
+
+This page builds a contract that sends bytes to another chain and stores the bytes it receives. For setup and addresses, see the [Stellar overview](/gmp/integrations/stellar/intro).
+
+## The contract
+
+`src/lib.rs`:
+
+```rust
+#![no_std]
+
+use stellar_axelar_gas_service::AxelarGasServiceClient;
+use stellar_axelar_gateway::executable::{AxelarExecutableInterface, CustomAxelarExecutable};
+use stellar_axelar_gateway::AxelarGatewayMessagingClient;
+use stellar_axelar_std::types::Token;
+use stellar_axelar_std::{
+    contract, contracterror, contractimpl, contracttype, soroban_sdk, Address, AxelarExecutable,
+    Bytes, Env, String,
+};
+
+#[contracttype]
+enum DataKey {
+    Owner,
+    Gateway,
+    GasService,
+    LastMessage,
+    // The sender this contract accepts messages from, per source chain.
+    // Kept in instance storage, whose time to live `contractimpl` extends on every call.
+    TrustedSender(String),
+}
+
+#[contracterror]
+#[derive(Copy, Clone, Debug, Eq, PartialEq)]
+#[repr(u32)]
+pub enum MessengerError {
+    // Required: returned when the gateway hasn't approved the message
+    NotApproved = 1,
+    UntrustedSender = 2,
+}
+
+#[contract]
+#[derive(AxelarExecutable)]
+pub struct Messenger;
+
+impl CustomAxelarExecutable for Messenger {
+    type Error = MessengerError;
+
+    fn __gateway(env: &Env) -> Address {
+        env.storage().instance().get(&DataKey::Gateway).unwrap()
+    }
+
+    // Runs after the gateway has validated the message
+    fn __execute(
+        env: &Env,
+        source_chain: String,
+        _message_id: String,
+        source_address: String,
+        payload: Bytes,
+    ) -> Result<(), Self::Error> {
+        // The gateway has checked that Axelar approved this message.
+        // Check that it comes from a sender you trust.
+        let trusted: Option<String> = env
+            .storage()
+            .instance()
+            .get(&DataKey::TrustedSender(source_chain));
+        if trusted != Some(source_address) {
+            return Err(MessengerError::UntrustedSender);
+        }
+
+        env.storage()
+            .instance()
+            .set(&DataKey::LastMessage, &payload);
+
+        Ok(())
+    }
+}
+
+#[contractimpl]
+impl Messenger {
+    pub fn __constructor(env: &Env, owner: Address, gateway: Address, gas_service: Address) {
+        env.storage().instance().set(&DataKey::Owner, &owner);
+        env.storage().instance().set(&DataKey::Gateway, &gateway);
+        env.storage()
+            .instance()
+            .set(&DataKey::GasService, &gas_service);
+    }
+
+    pub fn set_trusted_sender(env: &Env, chain: String, sender: String) {
+        let owner: Address = env.storage().instance().get(&DataKey::Owner).unwrap();
+        owner.require_auth();
+
+        env.storage()
+            .instance()
+            .set(&DataKey::TrustedSender(chain), &sender);
+    }
+
+    pub fn send(
+        env: &Env,
+        caller: Address,
+        destination_chain: String,
+        destination_address: String,
+        payload: Bytes,
+        gas_token: Token,
+    ) {
+        caller.require_auth();
+
+        let gas_service_address: Address =
+            env.storage().instance().get(&DataKey::GasService).unwrap();
+        let gas_service = AxelarGasServiceClient::new(env, &gas_service_address);
+        let gateway = AxelarGatewayMessagingClient::new(env, &Self::gateway(env));
+
+        // Pay gas first, with the same values as the call. `caller` pays, and gets refunds.
+        gas_service.pay_gas(
+            &env.current_contract_address(),
+            &destination_chain,
+            &destination_address,
+            &payload,
+            &caller,
+            &gas_token,
+            &Bytes::new(env),
+        );
+
+        gateway.call_contract(
+            &env.current_contract_address(),
+            &destination_chain,
+            &destination_address,
+            &payload,
+        );
+    }
+
+    pub fn last_message(env: &Env) -> Option<Bytes> {
+        env.storage().instance().get(&DataKey::LastMessage)
+    }
+}
+
+#[cfg(test)]
+mod test;
+```
+
+## Send a message
+
+`send` does two things, in one call:
+
+1. **Pays gas** with `pay_gas` on the gas service. `caller` pays in `gas_token`, authorizes the payment, and receives any refund. Without gas, the message is verified but never executed. Get the amount from an [off-chain estimate](/gmp/gas/estimate-and-pay#estimate-the-fee) with `stellar` (or the testnet chain name) as the source chain; it's in the gas token's smallest unit. The payment must use the same destination chain, destination address and payload as the call that follows.
+1. **Calls the gateway** with `call_contract`. Your contract is the sender, so it passes `env.current_contract_address()`, and authorizes as itself.
+
+The payload is bytes, and the receiver decodes it however it expects. An [EVM contract](/gmp/integrations/evm/gmp-messages) usually decodes it with `abi.decode`, so ABI-encode it. You can encode it off-chain and pass it to `send`, e.g. `cast abi-encode "f(string)" "hello"`, or in Rust with [`alloy-sol-types`](https://docs.rs/alloy-sol-types).
+
+## Receive a message
+
+Implement `CustomAxelarExecutable` and add `#[derive(AxelarExecutable)]`. The derive generates two contract functions:
+
+- `gateway()`, which returns the address from your `__gateway`.
+- `execute(source_chain, message_id, source_address, payload)`, which a relayer calls. It validates the message with the gateway, which marks it executed, then calls your `__execute`. If the message isn't approved, it returns your error's `NotApproved` variant, so your error enum must have one.
+
+Don't implement `AxelarExecutableInterface` yourself, and don't put `#[contractimpl]` on your `CustomAxelarExecutable` implementation.
+
+### Check the sender
+
+<Callout emoji="⚠️" title="Validation doesn't check who sent the message">
+  The gateway proves that a message came through Axelar. It doesn't prove that
+  it came from your contract on the other chain: anyone can send a message to
+  your contract. Unless your contract accepts messages from anyone, check
+  `source_chain` and `source_address` in `__execute`.
+</Callout>
+
+`source_address` is a string in the source chain's format: EVM addresses arrive [EIP-55](https://eips.ethereum.org/EIPS/eip-55) checksummed, as in the test below. `source_chain` is the chain's registered name, and some are capitalized (`Ethereum`, `Avalanche`).
+
+### When `__execute` fails
+
+If `__execute` returns an error, the whole call fails, including the gateway's validation. The message stays approved and can be executed again, e.g. after you trust the sender. Axelarscan shows it as **Error**; see [Debug failed execution](/gmp/track-and-recover/debug-failed-execution).
+
+## Test
+
+The gateway and gas service crates have test helpers that run a local gateway, sign approvals and create a gas token. Add them as dev-dependencies:
+
+```toml
+[dev-dependencies]
+stellar-axelar-std = { version = "2.0.1", features = ["derive", "testutils"] }
+stellar-axelar-gateway = { version = "2.0.1", features = ["library", "testutils"] }
+stellar-axelar-gas-service = { version = "2.0.1", features = ["library", "testutils"] }
+```
+
+`src/test.rs`, which sends a message, approves one on the local gateway, and executes it:
+
+```rust
+extern crate std;
+
+use stellar_axelar_gas_service::testutils::{setup_gas_service, setup_gas_token};
+use stellar_axelar_gateway::testutils::{approve_gateway_messages, setup_gateway};
+use stellar_axelar_gateway::types::Message;
+use stellar_axelar_std::testutils::Address as _;
+use stellar_axelar_std::{vec, Address, Bytes, Env, String};
+
+use crate::{Messenger, MessengerClient, MessengerError};
+
+#[test]
+fn send_and_receive() {
+    let env = Env::default();
+    env.mock_all_auths();
+
+    // A local gateway and gas service
+    let (signers, gateway) = setup_gateway(&env, 0, 5);
+    let gas_service = setup_gas_service(&env);
+
+    let owner = Address::generate(&env);
+    let id = env.register(Messenger, (&owner, &gateway.address, &gas_service.address));
+    let messenger = MessengerClient::new(&env, &id);
+
+    // Send
+    let user = Address::generate(&env);
+    let gas_token = setup_gas_token(&env, &user);
+    let payload = Bytes::from_slice(&env, b"hello");
+    let chain = String::from_str(&env, "ethereum");
+    let sender = String::from_str(&env, "0x34e904237341C3de02D4447C3fF0ca8880ca6484");
+    messenger.send(&user, &chain, &sender, &payload, &gas_token);
+
+    // Approve a message on the local gateway, as Axelar would
+    let message_id = String::from_str(&env, "0xabc-1");
+    let message = Message {
+        source_chain: chain.clone(),
+        message_id: message_id.clone(),
+        source_address: sender.clone(),
+        contract_address: id.clone(),
+        payload_hash: env.crypto().keccak256(&payload).into(),
+    };
+    approve_gateway_messages(&env, &gateway, signers, vec![&env, message]);
+
+    // Rejected until the sender is trusted
+    let result = messenger.try_execute(&chain, &message_id, &sender, &payload);
+    assert_eq!(
+        result.err().unwrap().ok().unwrap(),
+        MessengerError::UntrustedSender
+    );
+
+    messenger.set_trusted_sender(&chain, &sender);
+    messenger.execute(&chain, &message_id, &sender, &payload);
+    assert_eq!(messenger.last_message(), Some(payload.clone()));
+
+    // A message can be executed only once
+    let result = messenger.try_execute(&chain, &message_id, &sender, &payload);
+    assert_eq!(
+        result.err().unwrap().ok().unwrap(),
+        MessengerError::NotApproved
+    );
+}
+```
+
+Run it with `cargo test`.
+
+## Build and deploy
+
+```bash
+stellar contract build
+
+stellar contract deploy \
+  --wasm target/wasm32v1-none/release/messenger.wasm \
+  --source alice --network testnet \
+  -- \
+  --owner alice \
+  --gateway CB2JYOOZPHO43R57TC5PXV22QICKIDC5NKRF62BZG2J6JYFUIQPIAYY3 \
+  --gas_service CCLZOCGHHC6F6JCZHEUP53LDQHRBPPCNRYXOVFZFS3O63OGRC47CKCGV
+```
+
+The wasm file is named after your package. The addresses are for testnet; see [Addresses](/gmp/integrations/stellar/intro#addresses).
+
+Send a message, with the payload as hex and the gas amount in stroops (1 XLM = `10000000`):
+
+```bash
+stellar contract invoke --id <your contract> --source alice --network testnet \
+  -- send \
+  --caller alice \
+  --destination_chain avalanche \
+  --destination_address <EVM contract> \
+  --payload <hex payload> \
+  --gas_token '{"address":"CDLZFC3SYJYDZT7K67VZ75HPJVIEUVNIXF47ZG2FB2RMQQVU2HHGCYSC","amount":"<gas amount>"}'
+```
+
+Then follow the message on [Axelarscan](https://testnet.axelarscan.io/gmp/search) by the transaction hash.
+
+## Limits
+
+The gateway emits the whole payload in its `contract_called` event, so a payload must fit within Soroban's event size limit for a transaction, together with the other events of the call.

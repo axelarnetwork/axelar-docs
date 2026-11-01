@@ -1,0 +1,55 @@
+---
+title: "Understanding Interchain Transaction Time"
+description: "Why GMP messages take as long as they do, and how fast each connected chain finalizes."
+---
+
+How long a message takes from the source chain to execution on the destination chain depends mostly on the source chain. Axelar only acts on a message once the source chain transaction is final, so it can't be reverted by a block reorganization. On some chains that takes under a second, on others hours.
+
+Two other factors add to the time:
+
+- **Network congestion.** When a chain is busy (popular apps, network upgrades, daily traffic peaks), transactions wait longer to be included, on the source chain and on the destination chain.
+- **Gas.** If the gas you prepay for a message is too low, it waits until gas is added. See [Add gas and refunds](/gmp/gas/add-gas-and-refunds).
+
+If you can't wait for the source chain to finalize, [Express](/gmp/integrations/evm/express) executes eligible messages on the destination chain before finality.
+
+## What finality means
+
+A transaction is final once it can no longer be changed or reverted. Chains reach finality in different ways:
+
+- **Instant finality.** A block is final as soon as it is committed. CometBFT chains (Cosmos chains, Kava, XRPL EVM) work this way, as do Sui, Stellar, XRPL, Hedera, Hyperliquid and Monad.
+- **Fast finality.** Avalanche finalizes blocks in about a second. BNB Chain blocks are final once two thirds of validators vote for them ([BEP-126](https://github.com/bnb-chain/BEPs/blob/master/BEPs/BEP126.md)), within two blocks. Polygon PoS finalizes blocks with validator-signed milestones every few seconds.
+- **Checkpoint finality.** Ethereum finalizes blocks in checkpoints: a checkpoint is final when two thirds of the staked ETH vote for it in two consecutive epochs, which takes at least 12.8 minutes.
+- **Rollups.** An L2 block is final once the batch containing it is posted to Ethereum and that Ethereum block is final. For optimistic rollups (Arbitrum, and OP Stack chains such as Optimism, Base, Celo and Fraxtal) that takes about 15–30 minutes. ZK rollups (Scroll, Linea) also wait for the batch's validity proof to be verified on Ethereum, which can take hours.
+- **Solana.** Since October 21, 2026 Solana finalizes blocks in a single round of validator votes, with a target of about 150 ms instead of about 12.8 seconds. (See [Alpenglow](https://solana.com/upgrades/alpenglow).)
+
+## Finality and block time by chain
+
+Typical values as of October 2026, from each chain's documentation. Chains change these with upgrades, so check the chain's own docs for current figures.
+
+| Chain | Block time | Finality |
+| --- | --- | --- |
+| Arbitrum One | ~0.25 s | ~13–20 min |
+| Avalanche C-Chain | under 1 s | ~1 s |
+| Base | 2 s | ~20 min |
+| BNB Chain | 0.45 s | ~1 s |
+| Celo | 1 s | ~20–30 min |
+| Cosmos chains (CometBFT) | ~1–7 s, depending on the chain | 1 block |
+| Ethereum | 12 s | ~13–19 min |
+| Fantom | varies with load | 1–2 s |
+| Filecoin | 30 s | ~10–15 min |
+| Fraxtal | 2 s | ~25–30 min |
+| Hedera | ~2 s | 3–5 s |
+| Hyperliquid (HyperEVM) | 1 s (small blocks), 1 min (large blocks) | 1 block |
+| Immutable zkEVM | 2 s | 1 block |
+| Kava | ~6 s | 1 block |
+| Linea | ~1 s | ~2 h (median) |
+| Mantle | 2 s | ~30 min |
+| Monad | 0.3 s | 0.6 s |
+| Optimism | 2 s | ~15–30 min |
+| Polygon PoS | 1.5 s | 2–5 s |
+| Scroll | ~3 s | ~2–3 h |
+| Solana | ~0.2 s | ~0.15 s (target) |
+| Stellar | ~5 s | 1 ledger (~5 s) |
+| Sui | ~0.25 s | 0.4–0.7 s |
+| XRPL | 3–5 s | 1 ledger (3–5 s) |
+| XRPL EVM | ~6 s | 1 block |
