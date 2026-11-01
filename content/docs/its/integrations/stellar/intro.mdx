@@ -19,7 +19,7 @@ Unlike on EVM chains (like Ethereum), where tokens follow the [ERC-20 standard](
 Stellar has its classic assets (issued with `G...` address) as well as [contract tokens](https://developers.stellar.org/docs/tokens/token-interface). The classic assets are native assets that have been part of the Stellar network since its inception, including tokens like XLM, USDC, and EURC, they are issued by Stellar Account and have a built-in [asset contract](https://developers.stellar.org/docs/tokens/stellar-asset-contract). Contract tokens were Introduced with Soroban, CAP-41, they allow for custom logic in token implementation through smart contracts. These are similar to ERC-20 tokens on other chains.
   ITS integration adapts to Stellar's unique characteristics:
 
-1. **Hub Mode Operation**: Stellar ITS works exclusively in "Hub mode" - all cross-chain messages go through the [ITS Hub](/its/how-it-works/its-hub/introduction) on the Axelar network rather than directly between chains.
+1. **Hub Mode Operation**: Stellar ITS works exclusively in "Hub mode" - all cross-chain messages go through the [ITS Hub](/its/how-it-works/its-hub) on the Axelar network rather than directly between chains.
 
 1. **Token Representation**: When an external token (like an Ethereum ERC-20) comes to Stellar, it's represented by a Stellar token that's controlled by a special contract called the [TokenManager](https://github.com/axelarnetwork/axelar-amplifier-stellar/blob/main/contracts/stellar-interchain-token-service/src/token_manager.rs).
 
@@ -149,7 +149,7 @@ fn execute(
 
 ### Flow Limits
 
-The ITS implementation includes a [flow-limiting system](/its/how-it-works/flow-limit) to control how many tokens can move in a given period:
+The ITS implementation includes a [flow-limiting system](/its/how-it-works/flow-limits) to control how many tokens can move in a given period:
 
 ```rust
 #[only_operator]
@@ -160,7 +160,7 @@ fn set_flow_limit(
 ) -> Result<(), ContractError> {}
 ```
 
-This function allows the [operator](/its/how-it-works/minter-operator-roles#operator-role) to limit how many tokens can flow in or out over time.
+This function allows the [operator](/its/how-it-works/roles) to limit how many tokens can flow in or out over time.
 
 #### Setting Flow Limits
 

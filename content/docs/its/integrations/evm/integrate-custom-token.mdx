@@ -4,7 +4,7 @@ title: "Integrate Custom Token"
 
 Custom tokens are independently deployed tokens, as opposed to [InterchainTokens](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/interchain-token/InterchainToken.sol) deployed via the [Interchain Token Service (ITS)](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/InterchainTokenService.sol). These tokens are integrated with ITS across different chains by deploying a Token Manager for each.
 
-Once a custom token has a Token Manager deployed on a given chain, it becomes bridgeable between blockchains that also have a token connected to a Token Manager sharing the same [`interchainTokenId`](/its/overview#interchain-token-id).
+Once a custom token has a Token Manager deployed on a given chain, it becomes bridgeable between blockchains that also have a token connected to a Token Manager sharing the same [`interchainTokenId`](/its/how-it-works/concepts#token-id).
 
 ## Install the Axelar ITS Dependency
 
@@ -66,7 +66,7 @@ function registerTokenMetadata(
 ) external payable {};
 ```
 
-This function registers metadata for a token on the [ITS Hub](/its/how-it-works/its-hub/introduction). This metadata is used for scaling linked tokens.
+This function registers metadata for a token on the [ITS Hub](/its/how-it-works/its-hub). This metadata is used for scaling linked tokens.
 
 > **Note:** Token metadata must be registered before [`linkToken`](https://github.com/axelarnetwork/interchain-token-service/blob/94677f1072da127a0ee7ff5ab6784dcfe11789e8/contracts/InterchainTokenService.sol#L329) can be called for the corresponding token. This function links a remote token on `destinationChain` to a local token corresponding to the `tokenId` computed from the provided `salt`.
 
@@ -75,7 +75,7 @@ You can see a real example of this function being used in [this transaction on A
 
 ### Register Custom Token with the Interchain Token Factory
 
-The [registerCustomToken()](https://github.com/axelarnetwork/interchain-token-service/blob/cc6ef7282e18c6b2842cbf1098b06161e38ea32e/contracts/InterchainTokenService.sol#L298) function registers an existing ERC-20 token (your custom token) under an `interchainTokenId` computed from the provided `salt`. Once executed, your token's [token manager](/its/how-it-works/token-manager) will be deployed for that blockchain. This function only needs to be called once on a single "home" chain that your token is being integrated with, as opposed to the `registerTokenMetadata()` function that must be triggered on each chain the token will be linked on. 
+The [registerCustomToken()](https://github.com/axelarnetwork/interchain-token-service/blob/cc6ef7282e18c6b2842cbf1098b06161e38ea32e/contracts/InterchainTokenService.sol#L298) function registers an existing ERC-20 token (your custom token) under an `interchainTokenId` computed from the provided `salt`. Once executed, your token's [token manager](/its/how-it-works/concepts#token-managers) will be deployed for that blockchain. This function only needs to be called once on a single "home" chain that your token is being integrated with, as opposed to the `registerTokenMetadata()` function that must be triggered on each chain the token will be linked on. 
 
 ```solidity
 function registerCustomToken(
@@ -104,8 +104,8 @@ This function is called from the [Interchain Token Factory](https://github.com/a
 
 1. `salt:` The salt is used to compute the `interchainTokenId`. It must be unique for your token integration to ensure the `interchainTokenId` does not intersect with another `interchainTokenId`. If the combination of the `salt` and `sender` is not unique, the transaction will revert.
 1. `tokenAddress`: The token address being linked.
-1. `tokenManagerType`: The [type](/its/how-it-works/token-manager#token-manager-types) of manager being integrated. The value passed in must correspond to the `enum` value of the manager. (ie 2 for [lockUnlock](/its/how-it-works/token-manager#lockunlock), 4 for [mintBurn](/its/how-it-works/token-manager#mintburn)).
-1. `operator`: The address that will hold the [operator](/its/how-it-works/minter-operator-roles#operator-role) role for this token's token manager.
+1. `tokenManagerType`: The [type](/its/how-it-works/concepts#token-managers) of manager being integrated. The value passed in must correspond to the `enum` value of the manager. (ie 2 for [lockUnlock](/its/how-it-works/concepts#token-managers), 4 for [mintBurn](/its/how-it-works/concepts#token-managers)).
+1. `operator`: The address that will hold the [operator](/its/how-it-works/roles) role for this token's token manager.
 
 
 You can see a real example of this function being used in [this transaction on BSC Scan](https://testnet.bscscan.com/tx/0xf0c3fbbece17cc12d9de76182540afb4f5c6c47aeca65c40f9d58f71e362dffe), which demonstrates registering a custom token on BNB.
@@ -129,16 +129,16 @@ function linkToken(
 This function does the following:
 
 1. It computes a `interchainTokenId` using the same salt you used during token registration.
-2. Creates a cross-chain message that instructs the destination chain to deploy a [Token Manager](/its/how-it-works/token-manager) for your token.
+2. Creates a cross-chain message that instructs the destination chain to deploy a [Token Manager](/its/how-it-works/concepts#token-managers) for your token.
 3. Establishes the connection between your tokens across chains by associating them with the same `interchainTokenId`.
-4. Sets up the appropriate [Token Manager](/its/how-it-works/token-manager#token-manager-types) type that defines how tokens will be bridged (lock/unlock, mint/burn, etc.).
+4. Sets up the appropriate [Token Manager](/its/how-it-works/concepts#token-managers) type that defines how tokens will be bridged (lock/unlock, mint/burn, etc.).
 
 You can see a real example of this function being used in [this transaction on Axelarscan](https://testnet.axelarscan.io/gmp/0x11c2a212180d7ea2babe7aceb66c32c1e235cc159bceeb4dd6d04411f4a9669f), which demonstrates linking a token between BNB chain and Avalanche.
 
 
 ### Assign the `minter` Role to Your Token's Token Manager
 
-Transfer the minter / burn role to the [Token Manager](/its/how-it-works/token-manager) using the [transferMintership()](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/utils/Minter.sol#L31) function on your token (or any AccessControls contract that may be handling role management for your token). To retrieve your token manager address, use the `tokenManagerAddress` function on the ITS contract by specifying your `tokenId`. This is role transfer is necessary because when your token is bridged to a destination chain, the `msg.sender` of the `mint()` call will be the Token Manager.
+Transfer the minter / burn role to the [Token Manager](/its/how-it-works/concepts#token-managers) using the [transferMintership()](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/utils/Minter.sol#L31) function on your token (or any AccessControls contract that may be handling role management for your token). To retrieve your token manager address, use the `tokenManagerAddress` function on the ITS contract by specifying your `tokenId`. This is role transfer is necessary because when your token is bridged to a destination chain, the `msg.sender` of the `mint()` call will be the Token Manager.
 
 
 ## What's Next

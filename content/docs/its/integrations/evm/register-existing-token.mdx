@@ -2,9 +2,9 @@
 title: "Register Existing Token"
 ---
 
-If you own an ERC-20 token on a single chain and want a wrapped, bridgeable version on other chains, you can register it as a [Canonical Interchain Token](/its/how-it-works/glossary#canonical-interchain-token) using the [Interchain Token Factory contract](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/InterchainTokenFactory.sol). Each token can only be registered once as a canonical token on its "home" chain.
+If you own an ERC-20 token on a single chain and want a wrapped, bridgeable version on other chains, you can register it as a [Canonical Interchain Token](/its/how-it-works/concepts#kinds-of-token) using the [Interchain Token Factory contract](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/InterchainTokenFactory.sol). Each token can only be registered once as a canonical token on its "home" chain.
 
-You can register your existing token directly via the contract or use the [ITS Portal](/its/portal) no-code solution. Take a look at the diagram below to understand the process of registering an existing token as a Canonical Interchain Token.
+You can register your existing token directly via the contract. Take a look at the diagram below to understand the process of registering an existing token as a Canonical Interchain Token.
 
 <object
   type="image/svg+xml"
@@ -31,7 +31,7 @@ function registerCanonicalInterchainToken(
 ) external payable returns (bytes32 tokenId) {}
 ```
 
-This function deploys a [Lock/Unlock Token Manager](/its/how-it-works/glossary#lockunlock) on the source chain, connects it to ITS upon deployment, and returns a unique token ID. Triggering the `registerCanonicalInterchainToken()` function initiates the process of registering your custom token with a Lock/Unlock token manager type on your token's _home chain_.
+This function deploys a [Lock/Unlock Token Manager](/its/how-it-works/concepts#token-managers) on the source chain, connects it to ITS upon deployment, and returns a unique token ID. Triggering the `registerCanonicalInterchainToken()` function initiates the process of registering your custom token with a Lock/Unlock token manager type on your token's _home chain_.
 
 Once your token is registered on the home chain, you can call the `deployRemoteCanonicalInterchainToken()` function. This will deploy an Interchain Token on a different blockchain that connects to your canonical token on the home chain.
 

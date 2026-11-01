@@ -1,0 +1,49 @@
+---
+title: "Concepts"
+description: "Token IDs, the kinds of interchain token, and the token managers that connect tokens to ITS."
+---
+
+## Contracts
+
+- **Interchain Token Service (ITS).** A contract on each connected chain, sometimes called the ITS edge contract. It registers tokens, deploys token managers, and sends and receives transfers as GMP messages. Implementations: [EVM](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/InterchainTokenService.sol), [Solana](https://github.com/axelarnetwork/axelar-amplifier-solana/tree/main/programs/solana-axelar-its), [Sui](https://github.com/axelarnetwork/axelar-cgp-sui/tree/main/move/interchain_token_service), [Stellar](https://github.com/axelarnetwork/axelar-amplifier-stellar/tree/main/contracts/stellar-interchain-token-service). On XRPL, Axelar's multisig account plays this role.
+- **Interchain Token Factory.** A contract next to ITS on EVM chains, with the functions most token deployers use: deploy an interchain token, register a canonical token, link custom tokens.
+- **ITS Hub.** A contract on the Axelar network that every transfer goes through. See [ITS Hub](/its/how-it-works/its-hub).
+- **Token manager.** A contract that ITS deploys for each token on each chain, which mints and burns, or locks and unlocks, the token. See [Token managers](#token-managers).
+
+## Token ID
+
+Every token connected to ITS has a token ID, a `bytes32` that's the same on every chain. A transfer of a token ID on one chain arrives as the token with the same ID on the destination chain.
+
+ITS derives the ID from the deployer's address and a salt: `keccak256(abi.encode(keccak256('its-interchain-token-id'), deployer, salt))`. The factory computes the IDs of the tokens it deploys or registers:
+
+| Token                                                        | Factory function                               |
+| ------------------------------------------------------------ | ---------------------------------------------- |
+| An interchain token you deployed with a salt                 | `interchainTokenId(deployer, salt)`            |
+| A canonical token, from its address on its home chain        | `canonicalInterchainTokenId(tokenAddress)`     |
+| A custom token you registered and linked with a salt         | `linkedTokenId(deployer, salt)`                |
+
+The ID depends on the deployer and salt, not on the chains, so you can compute it before deploying.
+
+## Kinds of token
+
+- **Interchain token.** A token contract that ITS deploys, [`InterchainToken`](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/interchain-token/InterchainToken.sol), with the same name, symbol and ID on every chain. Its token managers mint and burn it. It can have a [minter](/its/how-it-works/roles#minter) of your choice, or none.
+- **Canonical token.** An existing token on one chain, its home chain, registered with ITS. It's locked on its home chain when it's sent out, and unlocked when it comes back. On every other chain, ITS deploys an interchain token for it, with no minter. Examples: USDT, WETH, WBTC and PAXG from Ethereum, WAVAX from Avalanche, WBNB from BNB Chain, SAUCE from Hedera and wrapped SOL from Solana.
+- **Custom token.** Your own token contracts on several chains, linked under one token ID. Each keeps its own name, symbol and logic, and you choose how ITS handles it on each chain by its token manager type.
+
+## Token managers
+
+A token manager connects one token to ITS on one chain: ITS calls it to take the tokens of an outgoing transfer, and to give out the tokens of an incoming one. It also holds the token's [flow limit](/its/how-it-works/flow-limits) on that chain, and its [operator and flow limiters](/its/how-it-works/roles).
+
+Its type sets how it handles the token ([`ITokenManagerType`](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/interfaces/ITokenManagerType.sol)):
+
+| Type                      | Value | Outgoing   | Incoming | The token must                                                                                           |
+| ------------------------- | ----- | ---------- | -------- | -------------------------------------------------------------------------------------------------------- |
+| `NATIVE_INTERCHAIN_TOKEN` | `0`   | Burn       | Mint     | Be an interchain token. Reserved for tokens ITS deploys                                                  |
+| `MINT_BURN_FROM`          | `1`   | `burnFrom` | Mint     | Let the token manager mint, and burn with an approval from the sender                                    |
+| `LOCK_UNLOCK`             | `2`   | Lock       | Unlock   | Nothing; the token manager holds the locked tokens. The sender approves ITS to transfer them             |
+| `LOCK_UNLOCK_FEE`         | `3`   | Lock       | Unlock   | Same as `LOCK_UNLOCK`, for tokens that take a fee on transfer. ITS accounts for the amount actually received |
+| `MINT_BURN`               | `4`   | Burn       | Mint     | Let the token manager mint and burn                                                                      |
+
+Use lock and unlock on at most one chain, the token's home chain, where its supply lives. On other chains, use a mint and burn type, so tokens are created as they arrive and destroyed as they leave.
+
+ITS moves tokens through a separate contract, the [`TokenHandler`](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/TokenHandler.sol). For an interchain token, ITS makes the token manager a minter right after deploying it.

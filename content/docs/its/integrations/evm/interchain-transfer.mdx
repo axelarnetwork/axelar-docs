@@ -6,7 +6,7 @@ Tokens connected to the Interchain Token Service (ITS) can be transferred betwee
 
 The `interchainTransfer()` function takes the following parameters
 
-1. `tokenId`: The [interchainTokenId](/its/overview#interchain-token-id) of the token being sent.
+1. `tokenId`: The [interchainTokenId](/its/how-it-works/concepts#token-id) of the token being sent.
 1. `destinationChain`: The name of the chain the token is being sent to.
 1. `destinationAddress`: The receiving address of the cross-chain transfer.
 1. `amount`: The amount of tokens being sent.
@@ -24,7 +24,7 @@ function interchainTransfer(
 
 ## What It Does
 
-When triggered, ITS via the [Token Handler](/its/overview#token-handler) Pulls the tokens from `msg.sender` using [takeToken()](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/TokenHandler.sol#L67) function. For mint/burn managers, this will involve burning the token on the source whereas for lock/unlock managers, this will involve escrows/locks on the source via the `safeTransferFrom()` function. The `takeToken()` function will also decrement the [flow limit](/its/how-it-works/token-manager#flow-limits) for the token being moved out of that blockchain.
+When triggered, ITS via the [Token Handler](/its/how-it-works/concepts#token-managers) Pulls the tokens from `msg.sender` using [takeToken()](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/TokenHandler.sol#L67) function. For mint/burn managers, this will involve burning the token on the source whereas for lock/unlock managers, this will involve escrows/locks on the source via the `safeTransferFrom()` function. The `takeToken()` function will also decrement the [flow limit](/its/how-it-works/concepts#token-managers) for the token being moved out of that blockchain.
 
 With the token now either burnt or held by the Token Manager ITS will then send a cross-chain [GMP message](/gmp/overview) with a payload containing the following:
 
@@ -39,7 +39,7 @@ bytes memory payload = abi.encode(
 );
 ```
 
-Once the GMP message arrives to the destination chain, ITS will then call the [giveToken()](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/TokenHandler.sol#L33) function to either `mint` or `unlock` tokens to for the end receiver (depending on which Token Manager Type is used). The `giveToken()` function will also increment the [flow limit](/its/how-it-works/token-manager#flow-limits) for the token being moved into that blockchain.
+Once the GMP message arrives to the destination chain, ITS will then call the [giveToken()](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/TokenHandler.sol#L33) function to either `mint` or `unlock` tokens to for the end receiver (depending on which Token Manager Type is used). The `giveToken()` function will also increment the [flow limit](/its/how-it-works/concepts#token-managers) for the token being moved into that blockchain.
 
 You can see a live example of an interchain transfer being called [here on the Axelarscan Explorer](https://testnet.axelarscan.io/gmp/0xbb7d242ead9fda8ce8d20654fb1c404c611c04bbb198fe15668a17272862e95b-3).
 

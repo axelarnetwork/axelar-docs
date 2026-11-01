@@ -1,0 +1,48 @@
+---
+title: "Roles"
+description: "Who can mint an interchain token, configure its token managers and set its flow limits."
+---
+
+ITS has three roles. Each is held per token, and per chain:
+
+| Role         | Held on                    | Can                                                                     |
+| ------------ | -------------------------- | ----------------------------------------------------------------------- |
+| Minter       | An interchain token        | Mint and burn any amount of the token                                   |
+| Operator     | A token manager            | Add and remove the token manager's flow limiters, and pass on the role  |
+| Flow limiter | A token manager            | Set the token's [flow limit](/its/how-it-works/flow-limits) on that chain |
+
+## Minter
+
+An [interchain token](/its/how-it-works/concepts#kinds-of-token)'s minters can call `mint` and `burn` for any account. Its minters are:
+
+- its token manager, which mints and burns tokens for transfers;
+- the minter you set when you deploy it, if any.
+
+A minter controls the token's supply, so users of the token trust it. To deploy a token that only ITS can mint, set no minter. The [ITS Hub](/its/how-it-works/its-hub) then tracks how much of the token is on each chain, and rejects transfers that would move more out of a chain than was sent to it.
+
+A canonical token's own contract keeps its minting rules, and its copies on other chains are interchain tokens with no minter. A custom token keeps its own minting rules too; with a mint and burn token manager, you grant the token manager the right to mint (and burn).
+
+## Operator
+
+The operator of a [token manager](/its/how-it-works/concepts#token-managers) manages its flow limiters: `addFlowLimiter`, `removeFlowLimiter` and `transferFlowLimiter`. When a token manager is deployed, its operator is:
+
+- for an interchain token, the minter you set;
+- for a custom token, the operator you pass when you link it;
+- for a canonical token, nobody.
+
+ITS is also an operator of every token manager.
+
+## Flow limiter
+
+A flow limiter calls `setFlowLimit` on a token manager. The token manager's operator is a flow limiter, and so is ITS. ITS's own operator, an account Axelar controls, can set flow limits through ITS for every token manager where ITS still has the role; see [Who manages it](/its/how-it-works/flow-limits#who-manages-it). To set flow limits only yourself, call `removeFlowLimiter` with ITS's address as the operator.
+
+## Passing on a role
+
+The minter and operator roles can be passed on in one step, or in two, where the new holder must accept:
+
+| Role     | One step                        | Two steps                                                         |
+| -------- | ------------------------------- | ----------------------------------------------------------------- |
+| Minter   | `transferMintership(newMinter)` | `proposeMintership(newMinter)`, then `acceptMintership(oldMinter)` by the new minter |
+| Operator | `transferOperatorship(newOperator)` | `proposeOperatorship(newOperator)`, then `acceptOperatorship(oldOperator)` by the new operator |
+
+Two steps protect against a typo in the address. Passing a role to `address(0)` gives it up for good.

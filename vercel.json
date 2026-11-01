@@ -852,7 +852,7 @@
     },
     {
       "source": "/dev/send-tokens/interchain-tokens/no-code(/)?",
-      "destination": "/its/portal",
+      "destination": "/its/overview",
       "permanent": true
     },
     {
@@ -872,7 +872,7 @@
     },
     {
       "source": "/dev/send-tokens/interchain-tokens/token-manager(/)?",
-      "destination": "/its/how-it-works/token-manager",
+      "destination": "/its/how-it-works/concepts#token-managers",
       "permanent": true
     },
     {
@@ -882,12 +882,12 @@
     },
     {
       "source": "/dev/send-tokens/interchain-tokens/flow-limit(/)?",
-      "destination": "/its/how-it-works/flow-limit",
+      "destination": "/its/how-it-works/flow-limits",
       "permanent": true
     },
     {
       "source": "/dev/send-tokens/interchain-tokens/minter-operator-roles(/)?",
-      "destination": "/its/how-it-works/minter-operator-roles",
+      "destination": "/its/how-it-works/roles",
       "permanent": true
     },
     {
@@ -912,12 +912,12 @@
     },
     {
       "source": "/dev/amplifier/its-hub/introduction(/)?",
-      "destination": "/its/how-it-works/its-hub/introduction",
+      "destination": "/its/how-it-works/its-hub",
       "permanent": true
     },
     {
       "source": "/dev/amplifier/its-hub/routing-mechanics(/)?",
-      "destination": "/its/how-it-works/its-hub/routing-mechanics",
+      "destination": "/its/how-it-works/its-hub",
       "permanent": true
     },
     {
@@ -987,7 +987,7 @@
     },
     {
       "source": "/dev/send-tokens/glossary(/)?",
-      "destination": "/its/how-it-works/glossary",
+      "destination": "/its/how-it-works/concepts",
       "permanent": true
     },
     {
@@ -1022,7 +1022,7 @@
     },
     {
       "source": "/dev/send-tokens/interchain-tokens/rate-limit(/)?",
-      "destination": "/its/how-it-works/flow-limit",
+      "destination": "/its/how-it-works/flow-limits",
       "permanent": true
     },
     {
@@ -1082,7 +1082,7 @@
     },
     {
       "source": "/its/rate-limit(/)?",
-      "destination": "/its/how-it-works/flow-limit",
+      "destination": "/its/how-it-works/flow-limits",
       "permanent": true
     },
     {
@@ -1102,17 +1102,17 @@
     },
     {
       "source": "/dev/reference/interchain-token-service-rate-limit(/)?",
-      "destination": "/its/how-it-works/flow-limit",
+      "destination": "/its/how-it-works/flow-limits",
       "permanent": true
     },
     {
       "source": "/dev/reference/glossary(/)?",
-      "destination": "/its/how-it-works/glossary",
+      "destination": "/its/how-it-works/concepts",
       "permanent": true
     },
     {
       "source": "/dev/glossary(/)?",
-      "destination": "/its/how-it-works/glossary",
+      "destination": "/its/how-it-works/concepts",
       "permanent": true
     },
     {
@@ -1377,7 +1377,7 @@
     },
     {
       "source": "/dev/send-tokens/interchain-tokens/quick-start/no-code(/)?",
-      "destination": "/its/portal",
+      "destination": "/its/overview",
       "permanent": true
     },
     {
@@ -1452,7 +1452,7 @@
     },
     {
       "source": "/dev/send-tokens/interchain-tokens/its-hub(/)?",
-      "destination": "/its/how-it-works/its-hub/introduction",
+      "destination": "/its/how-it-works/its-hub",
       "permanent": true
     },
     {
@@ -2262,37 +2262,37 @@
     },
     {
       "source": "/its/no-code(/)?",
-      "destination": "/its/portal",
+      "destination": "/its/overview",
       "permanent": true
     },
     {
       "source": "/its/token-manager(/)?",
-      "destination": "/its/how-it-works/token-manager",
+      "destination": "/its/how-it-works/concepts#token-managers",
       "permanent": true
     },
     {
       "source": "/its/glossary(/)?",
-      "destination": "/its/how-it-works/glossary",
+      "destination": "/its/how-it-works/concepts",
       "permanent": true
     },
     {
       "source": "/its/its-hub/introduction(/)?",
-      "destination": "/its/how-it-works/its-hub/introduction",
+      "destination": "/its/how-it-works/its-hub",
       "permanent": true
     },
     {
       "source": "/its/its-hub/routing-mechanics(/)?",
-      "destination": "/its/how-it-works/its-hub/routing-mechanics",
+      "destination": "/its/how-it-works/its-hub",
       "permanent": true
     },
     {
       "source": "/its/minter-operator-roles(/)?",
-      "destination": "/its/how-it-works/minter-operator-roles",
+      "destination": "/its/how-it-works/roles",
       "permanent": true
     },
     {
       "source": "/its/flow-limit(/)?",
-      "destination": "/its/how-it-works/flow-limit",
+      "destination": "/its/how-it-works/flow-limits",
       "permanent": true
     },
     {
@@ -2413,6 +2413,41 @@
     {
       "source": "/its/axlusdc(/)?",
       "destination": "/gmp/resources/axlusdc",
+      "permanent": true
+    },
+    {
+      "source": "/its/portal(/)?",
+      "destination": "/its/overview",
+      "permanent": true
+    },
+    {
+      "source": "/its/how-it-works/glossary(/)?",
+      "destination": "/its/how-it-works/concepts",
+      "permanent": true
+    },
+    {
+      "source": "/its/how-it-works/token-manager(/)?",
+      "destination": "/its/how-it-works/concepts#token-managers",
+      "permanent": true
+    },
+    {
+      "source": "/its/how-it-works/its-hub/introduction(/)?",
+      "destination": "/its/how-it-works/its-hub",
+      "permanent": true
+    },
+    {
+      "source": "/its/how-it-works/its-hub/routing-mechanics(/)?",
+      "destination": "/its/how-it-works/its-hub",
+      "permanent": true
+    },
+    {
+      "source": "/its/how-it-works/minter-operator-roles(/)?",
+      "destination": "/its/how-it-works/roles",
+      "permanent": true
+    },
+    {
+      "source": "/its/how-it-works/flow-limit(/)?",
+      "destination": "/its/how-it-works/flow-limits",
       "permanent": true
     }
   ],

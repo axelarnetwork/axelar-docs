@@ -2,7 +2,7 @@
 title: "Register Existing Sui Token With Interchain Token Service Guide"
 ---
 
-This guide demonstrates, step-by-step, how to use [Axelar's Interchain Token Service (ITS)](/its/overview#interchain-token-service) to register an existing token on Sui and make it available for cross-chain transfers.
+This guide demonstrates, step-by-step, how to use [Axelar's Interchain Token Service (ITS)](/its/how-it-works/concepts#contracts) to register an existing token on Sui and make it available for cross-chain transfers.
 
 By the end, you will be able to:
 
@@ -519,7 +519,7 @@ const coinManagement = registerCoinTx.moveCall({
 })
 ```
 
-The call to ITS's [Coin Management](https://github.com/axelarnetwork/axelar-cgp-sui/blob/main/move/interchain_token_service/sources/types/coin_management.move) will allow you to specify the type of [manager](/its/how-it-works/token-manager) you want for your coin. For this canonical integration, the `lock/unlock` manager type will suffice. This will lock your coins when you make a cross-chain call for your coin from Sui and unlock your coins when they're moved back into Sui.
+The call to ITS's [Coin Management](https://github.com/axelarnetwork/axelar-cgp-sui/blob/main/move/interchain_token_service/sources/types/coin_management.move) will allow you to specify the type of [manager](/its/how-it-works/concepts#token-managers) you want for your coin. For this canonical integration, the `lock/unlock` manager type will suffice. This will lock your coins when you make a cross-chain call for your coin from Sui and unlock your coins when they're moved back into Sui.
 
 When passing in arguments into a Sui function if the argument is a Sui object you need to first make a query to a `Move` package to be able to pass that queried value in as an appropriate `Move` Object.
 
@@ -571,7 +571,7 @@ You can now run the script as follows
 🎯 Token ID: 0x291e9b4f659caeecf96e66c008b794dcce55f1b93bfc4f9ca49af54096316ebd
 ```
 
-You can view your transaction [live on the Sui blockchain](https://suiscan.xyz/testnet/tx/JDrH1enDpWzcfvMso5RkdNFPVnGrSDELqderaFAeTcDB). Though this page could be overwhelming at first, the critical piece to note is the first `ObjectId` in the `Object Change` heading. For this token integration the [0x1eebd0cc85790956efbe96763ae1d19a5e548015c7735c1b7929fdc1f26942ef](https://suiscan.xyz/testnet/object/0x1eebd0cc85790956efbe96763ae1d19a5e548015c7735c1b7929fdc1f26942ef/tx-blocks) object corresponds to the [Coin Data](https://github.com/axelarnetwork/axelar-cgp-sui/blob/main/move/interchain_token_service/sources/types/coin_data.move) module. In the `Coin Data` module you can see the relevant info for your [Coin Info](https://github.com/axelarnetwork/axelar-cgp-sui/blob/main/move/interchain_token_service/sources/types/coin_info.move), which confirms your coin's name, symbol, and decimals. The [Coin Management](https://github.com/axelarnetwork/axelar-cgp-sui/blob/main/move/interchain_token_service/sources/types/coin_management.move) field contains the relevant configuration for your coin's integration to ITS. This includes the [flow limit](/its/how-it-works/flow-limit) value, the [operator's](/its/how-it-works/minter-operator-roles#operator-role) address, as well as the current balance corresponding to any assets locked that are currently bridged out of Sui. Recall, the `lockUnlock` manager type we integrated with is where those assets are be held. 
+You can view your transaction [live on the Sui blockchain](https://suiscan.xyz/testnet/tx/JDrH1enDpWzcfvMso5RkdNFPVnGrSDELqderaFAeTcDB). Though this page could be overwhelming at first, the critical piece to note is the first `ObjectId` in the `Object Change` heading. For this token integration the [0x1eebd0cc85790956efbe96763ae1d19a5e548015c7735c1b7929fdc1f26942ef](https://suiscan.xyz/testnet/object/0x1eebd0cc85790956efbe96763ae1d19a5e548015c7735c1b7929fdc1f26942ef/tx-blocks) object corresponds to the [Coin Data](https://github.com/axelarnetwork/axelar-cgp-sui/blob/main/move/interchain_token_service/sources/types/coin_data.move) module. In the `Coin Data` module you can see the relevant info for your [Coin Info](https://github.com/axelarnetwork/axelar-cgp-sui/blob/main/move/interchain_token_service/sources/types/coin_info.move), which confirms your coin's name, symbol, and decimals. The [Coin Management](https://github.com/axelarnetwork/axelar-cgp-sui/blob/main/move/interchain_token_service/sources/types/coin_management.move) field contains the relevant configuration for your coin's integration to ITS. This includes the [flow limit](/its/how-it-works/flow-limits) value, the [operator's](/its/how-it-works/roles) address, as well as the current balance corresponding to any assets locked that are currently bridged out of Sui. Recall, the `lockUnlock` manager type we integrated with is where those assets are be held. 
 
 At this point your code should be functioning as the code in [checkpoint 4](https://github.com/benjamin852/sui-its-example/tree/checkpoint4) does.
 
@@ -653,7 +653,7 @@ public fun deploy_remote_interchain_token<T>(
 ): MessageTicket {}
 ```
 
-Once executed, it make a cross-chain call to deploy a fresh [Interchain Token](/its/how-it-works/glossary#interchain-token) on a remote blockchain. 
+Once executed, it make a cross-chain call to deploy a fresh [Interchain Token](/its/how-it-works/concepts#kinds-of-token) on a remote blockchain. 
 
 You can call the `deploy_remote_interchain_token()` function by passing in the the 
 

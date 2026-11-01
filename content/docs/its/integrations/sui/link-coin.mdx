@@ -2,9 +2,9 @@
 title: "Link Custom Coins"
 ---
 
-Custom coins are independently deployed coins on Sui, as opposed to [InterchainCoins](https://github.com/axelarnetwork/axelar-cgp-sui/blob/main/move/interchain_token/sources/interchain_token.move) deployed via the Interchain Token Service (ITS). To link your coin on Sui to a token on another blockchain you will need to ensure that the coin is registered with [ITS Hub](/its/how-it-works/its-hub/introduction) and deploy a [token manager](/its/integrations/sui/coin-management) for that coin on Sui as well as the chains the coin is being linked with.
+Custom coins are independently deployed coins on Sui, as opposed to [InterchainCoins](https://github.com/axelarnetwork/axelar-cgp-sui/blob/main/move/interchain_token/sources/interchain_token.move) deployed via the Interchain Token Service (ITS). To link your coin on Sui to a token on another blockchain you will need to ensure that the coin is registered with [ITS Hub](/its/how-it-works/its-hub) and deploy a [token manager](/its/integrations/sui/coin-management) for that coin on Sui as well as the chains the coin is being linked with.
 
-Once a custom token has a Token Manager deployed on a given chain, it becomes bridgeable between blockchains that also have a token connected to a Token Manager sharing the same [`interchainTokenId`](/its/overview#interchain-token-id).
+Once a custom token has a Token Manager deployed on a given chain, it becomes bridgeable between blockchains that also have a token connected to a Token Manager sharing the same [`interchainTokenId`](/its/how-it-works/concepts#token-id).
 
 ## Build your custom coin on Sui
 
@@ -35,7 +35,7 @@ Once your coin is deployed on-chain, linking it to a token on another blockchain
 
 ## Register coin metadata with the ITS contract
 
-When integrating your coin with ITS, you must also update the [ITS Hub](/its/how-it-works/its-hub/introduction) contract, which is deployed on the Axelar network. This function is used to register metadata for your coin on ITS Hub to allow for ITS to handle cases where `decimals` between chains for example may be different. This function must be triggered from each chain that your custom coin will be linked on. Since this is a transaction to ITS Hub, the `register_coin_metadata()` function will be a cross-chain transaction. Once executed, the function will return a [MessageTicket](/gmp/integrations/sui/gmp-contracts#message-ticket) for the cross-chain transaction.
+When integrating your coin with ITS, you must also update the [ITS Hub](/its/how-it-works/its-hub) contract, which is deployed on the Axelar network. This function is used to register metadata for your coin on ITS Hub to allow for ITS to handle cases where `decimals` between chains for example may be different. This function must be triggered from each chain that your custom coin will be linked on. Since this is a transaction to ITS Hub, the `register_coin_metadata()` function will be a cross-chain transaction. Once executed, the function will return a [MessageTicket](/gmp/integrations/sui/gmp-contracts#message-ticket) for the cross-chain transaction.
 
 The function expects two parameters:
 
@@ -50,7 +50,7 @@ public fun register_coin_metadata<T>(self: &InterchainTokenService, coin_metadat
 
 ## Create a coin manager
 
-Before you can register your coin, you must first create a [coin-manager](/its/integrations/sui/coin-management) (also referred to as a [token manager](/its/how-it-works/token-manager) for ITS EVM chains). When creating a manager you must consider what type of manager you want to integrate. You have the choice between a [capped manager](/its/integrations/sui/coin-management#capped-management) and a [locked manager](/its/integrations/sui/coin-management#locked-management)
+Before you can register your coin, you must first create a [coin-manager](/its/integrations/sui/coin-management) (also referred to as a [token manager](/its/how-it-works/concepts#token-managers) for ITS EVM chains). When creating a manager you must consider what type of manager you want to integrate. You have the choice between a [capped manager](/its/integrations/sui/coin-management#capped-management) and a [locked manager](/its/integrations/sui/coin-management#locked-management)
 
 Once, registered you will need to use the `coin_management` object to [register your custom coin](/its/integrations/sui/link-coin#register-custom-coin).
 

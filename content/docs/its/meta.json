@@ -2,5 +2,10 @@
   "title": "ITS",
   "description": "Interchain Token Service",
   "root": true,
-  "pages": ["overview", "portal", "how-it-works", "integrations", "resources"]
+  "pages": [
+    "overview",
+    "how-it-works",
+    "integrations",
+    "resources"
+  ]
 }
