@@ -23,7 +23,7 @@ Gateways and the Axelar network don't talk to each other directly. Relayers watc
 Since anyone can submit a message, Axelar first checks that it really happened on the source chain, and that the source transaction is [final](/gmp/how-it-works/finality-and-timing).
 
 - **Consensus-connected chains:** Axelar's validators vote. Each validator runs a node for the chains it supports, looks up the event on it, and votes in a poll on the Axelar chain.
-- **Amplifier-connected chains:** verifiers vote. Each chain has a voting verifier contract on Axelar, and verifiers running [`ampd`](/infrastructure/verifiers) check the event on their own node for that chain and vote in it.
+- **Amplifier-connected chains:** verifiers vote. Each chain has a [voting verifier contract](/infrastructure/resources/references#amplifier-contracts) on Axelar, and verifiers running [`ampd`](/infrastructure/verifiers) check the event on their own node for that chain and vote in it.
 
 A message is verified when enough voting weight agrees. If the vote fails, the message stops there; it can be [submitted for verification again](/gmp/track-and-recover/manual-relay).
 

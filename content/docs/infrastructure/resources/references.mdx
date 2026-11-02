@@ -15,13 +15,40 @@ Most repositories are under the [axelarnetwork](https://github.com/axelarnetwork
 | [axelarate-community](https://github.com/axelarnetwork/axelarate-community) | Scripts to set up and join the network as a node or validator |
 | [axelarjs-types](https://github.com/axelarnetwork/axelarjs-types) | TypeScript types for Axelar's Protocol Buffers |
 
-## Amplifier Protocol
+## Amplifier
 
 | Repository | Description |
 | --- | --- |
 | [axelar-amplifier](https://github.com/axelarnetwork/axelar-amplifier) | Amplifier CosmWasm contracts, `ampd` and the chain handlers. [Changelog](https://github.com/axelarnetwork/axelar-amplifier/blob/main/CHANGELOG.md) |
 | [ampd-proto](https://github.com/axelarnetwork/ampd-proto) | Protobuf definitions for the `ampd` gRPC interface used by handlers |
 | [amplifier-relayer-api](https://github.com/axelarnetwork/amplifier-relayer-api) | API schema and client for the Amplifier Relayer API |
+
+### Amplifier contracts
+
+[Amplifier](/infrastructure#a-cross-chain-protocol-amplifier) is a set of CosmWasm contracts on the Axelar chain. Their addresses are listed on [Chains and contracts](/infrastructure/network/chains-and-contracts#amplifier-contracts).
+
+Each Amplifier chain has its own gateway, voting verifier and multisig prover:
+
+| Contract | What it does | Links |
+| --- | --- | --- |
+| Gateway | The chain's entry point on Axelar. For incoming messages, it starts verification in the chain's voting verifier (`VerifyMessages`) and passes verified messages to the router (`RouteMessages`). It stores the messages the router delivers to the chain, for the multisig prover to read. | [Source](https://github.com/axelarnetwork/axelar-amplifier/tree/main/contracts/gateway) · [Docs](https://github.com/axelarnetwork/axelar-amplifier/blob/main/doc/src/contracts/gateway.md) |
+| Voting verifier | Runs the polls in which the chain's verifiers vote on whether a message happened on the chain, once it is final there. A message is verified when the votes reach the voting threshold. Verifiers also vote here on verifier set updates submitted to the chain's gateway. Records each verifier's participation with the rewards contract. | [Source](https://github.com/axelarnetwork/axelar-amplifier/tree/main/contracts/voting-verifier) · [Docs](https://github.com/axelarnetwork/axelar-amplifier/blob/main/doc/src/contracts/voting_verifier.md) |
+| Multisig prover | Builds the proof that the chain's gateway accepts (`ConstructProof`): reads the messages from the gateway, encodes them with the chain codec and starts a signing session in the multisig contract. Also manages the chain's [verifier set](/infrastructure/verifiers/amplifier/verifier-rotations): `UpdateVerifierSet` picks the new set from the service registry, and `ConfirmVerifierSet` applies it once the voting verifier confirms the update reached the chain. | [Source](https://github.com/axelarnetwork/axelar-amplifier/tree/main/contracts/multisig-prover) · [Docs](https://github.com/axelarnetwork/axelar-amplifier/blob/main/doc/src/contracts/multisig_prover.md) |
+| Chain codec | One per chain family (EVM, Solana, Stellar, Sui). Encodes what the verifiers sign and what the relayer submits to the chain's gateway, and checks that addresses are valid for the chain. Used by the multisig prover and voting verifier. | Source: [EVM](https://github.com/axelarnetwork/axelar-amplifier/tree/main/contracts/chain-codec-evm), [Solana](https://github.com/axelarnetwork/axelar-amplifier/tree/main/contracts/chain-codec-solana), [Stellar](https://github.com/axelarnetwork/axelar-amplifier/tree/main/contracts/chain-codec-stellar), [Sui](https://github.com/axelarnetwork/axelar-amplifier/tree/main/contracts/chain-codec-sui) · [Docs](https://github.com/axelarnetwork/axelar-amplifier/blob/main/doc/src/contracts/chain_codec.md) |
+
+The rest are shared by all chains:
+
+| Contract | What it does | Links |
+| --- | --- | --- |
+| Router | Forwards each verified message to its destination chain's gateway. Holds the registry of chains and their gateways, and can freeze a chain in either direction or stop all routing in an emergency. | [Source](https://github.com/axelarnetwork/axelar-amplifier/tree/main/contracts/router) · [Docs](https://github.com/axelarnetwork/axelar-amplifier/blob/main/doc/src/contracts/router.md) |
+| Service registry | Where verifiers join: they bond AXL (`BondVerifier`), are authorized by governance, register support for chains (`RegisterChainSupport`), and unbond and claim their stake after the unbonding period. Provides each chain's eligible verifiers. Governance can jail a verifier, which stops it from unbonding or claiming its stake. | [Source](https://github.com/axelarnetwork/axelar-amplifier/tree/main/contracts/service-registry) · [Docs](https://github.com/axelarnetwork/axelar-amplifier/blob/main/doc/src/contracts/service_registry.md) |
+| Multisig | Runs signing sessions for the provers. Verifiers register their public keys and submit signatures; a session completes when the signatures reach the threshold. Only authorized provers can start sessions. Records participation with the rewards contract. | [Source](https://github.com/axelarnetwork/axelar-amplifier/tree/main/contracts/multisig) · [Docs](https://github.com/axelarnetwork/axelar-amplifier/blob/main/doc/src/contracts/multisig.md) |
+| Coordinator | Keeps track of each chain's gateway, voting verifier and prover, and can deploy all three for a new chain in one governance proposal. Tracks which verifiers are in an active verifier set, so they can't unbond while they are. | [Source](https://github.com/axelarnetwork/axelar-amplifier/tree/main/contracts/coordinator) · [Docs](https://github.com/axelarnetwork/axelar-amplifier/blob/main/doc/src/contracts/coordinator.md) |
+| Rewards | Holds a [rewards](/infrastructure/verifiers/amplifier/verifier-rewards) pool for each chain's voting verifier and for its multisig signing. Counts each verifier's participation per epoch and pays out with `DistributeRewards`. Verifiers can send their rewards to a proxy address. | [Source](https://github.com/axelarnetwork/axelar-amplifier/tree/main/contracts/rewards) · [Docs](https://github.com/axelarnetwork/axelar-amplifier/blob/main/doc/src/contracts/rewards.md) |
+| AxelarnetGateway | The gateway for the Axelar chain itself. Contracts on Axelar, like the ITS Hub, send (`CallContract`) and receive (`Execute`) messages through it, and it connects Amplifier chains to consensus and Cosmos chains, which are routed by the Axelar chain's own modules. | [Source](https://github.com/axelarnetwork/axelar-amplifier/tree/main/contracts/axelarnet-gateway) |
+| ITS Hub | Routes every [Interchain Token Service](/its/how-it-works/its-hub) message, tracks how much of each token is on each chain, and converts messages to and from each chain's encoding with a translator contract (ABI for most chains, Borsh for Solana). | [Source](https://github.com/axelarnetwork/axelar-amplifier/tree/main/contracts/interchain-token-service), [ABI translator](https://github.com/axelarnetwork/axelar-amplifier/tree/main/contracts/its-abi-translator), [Solana translator](https://github.com/axelarnetwork/axelar-amplifier/tree/main/contracts/its-solana-translator) |
+
+XRPL has its own gateway, voting verifier and multisig prover, in [axelar-amplifier-xrpl](https://github.com/axelarnetwork/axelar-amplifier-xrpl). For how they fit together, see the upstream [overview](https://github.com/axelarnetwork/axelar-amplifier/blob/main/doc/src/overview.md).
 
 ## Chain integrations
 

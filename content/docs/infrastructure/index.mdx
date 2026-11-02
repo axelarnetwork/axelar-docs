@@ -25,7 +25,7 @@ See [Verifiers](/infrastructure/verifiers) for how to take part in either.
 
 ## A cross-chain protocol: Amplifier
 
-Amplifier is how new chains connect to Axelar, permissionlessly. It is a set of CosmWasm contracts on the Axelar chain, plus the off-chain verifier service:
+Amplifier is how new chains connect to Axelar, permissionlessly. It is a set of [CosmWasm contracts](/infrastructure/resources/references#amplifier-contracts) on the Axelar chain, plus the off-chain verifier service:
 
 - A **gateway contract** on each connected chain is where applications send and receive cross-chain messages.
 - On Axelar, a **verifier contract** for each chain counts the verifiers' votes, a **router** forwards the message to the destination chain, and a **prover** produces the proof the destination gateway needs to accept it.
