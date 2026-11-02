@@ -12,7 +12,7 @@ Axelar has a gateway on every connected chain: a contract on smart contract chai
 - On the source chain, apps call the gateway to send a message. The gateway emits an event with the message.
 - On the destination chain, the gateway accepts approvals of messages from Axelar, and apps check incoming messages against it before acting on them.
 
-A gateway only accepts approvals signed by Axelar. On [consensus chains](/infrastructure#verifying-connected-chains), they're signed by Axelar's validators, weighted by stake. On Amplifier-connected chains, they're signed by the verifiers that support that chain.
+A gateway only accepts approvals signed by Axelar. On [consensus chains](/infrastructure#verifying-connected-chains), they're signed by Axelar's validators, weighted by the square root of their stake ([quadratic voting](/infrastructure/resources/security#quadratic-voting)). On Amplifier-connected chains, they're signed by the verifiers that support that chain.
 
 ## Relayers
 
