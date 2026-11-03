@@ -1,0 +1,84 @@
+---
+title: "Recover a message"
+description: "Add gas to a stuck GMP message, or execute it yourself."
+---
+
+Most stuck messages need one of two things: more gas on the source chain, or an execution on the destination chain. Anyone can do either, from Axelarscan or with the AxelarJS SDK. [Track a message](/gmp/track-and-recover/transaction-states#when-a-message-stops) shows which one a message needs.
+
+If a message never got verified or approved, [relay it manually](/gmp/track-and-recover/manual-relay).
+
+<Callout title="Using an AI agent?">
+  Copy this page with **Copy Markdown** at the top, and give it to your agent
+  with the transaction hash or message ID. It can look up the message through
+  the Axelarscan API and add gas or execute it for you. Review every transaction before it's signed, and
+  don't paste private keys into a chat: let the agent use a wallet or keystore
+  you control.
+</Callout>
+
+## Add gas
+
+Use this when Axelarscan shows **Pay Gas**, **Insufficient Fee** or **Not Enough Gas**. Once the gas is added, Axelar's relayers continue with the message, and the unused part is [refunded](/gmp/gas/add-gas-and-refunds#refunds).
+
+**On Axelarscan:** open the message, connect a wallet on the source chain and click **Add gas**. Axelarscan calculates the amount.
+
+**With the SDK**, on EVM source chains:
+
+```ts
+import { AxelarGMPRecoveryAPI, Environment } from '@axelar-network/axelarjs-sdk';
+
+const sdk = new AxelarGMPRecoveryAPI({ environment: Environment.MAINNET });
+
+const { success, transaction, error } = await sdk.addNativeGas(
+  'avalanche', // source chain
+  txHash, // source transaction
+  200000, // gas the destination execute needs
+  {
+    // all optional
+    amount: '10000000000000000', // in wei; calculated if omitted
+    refundAddress: '0x...', // defaults to the sender
+    evmWalletDetails: { privateKey: '0x...' }, // defaults to the browser wallet
+  },
+);
+```
+
+`addGas(chain, txHash, gasTokenAddress, estimatedGasUsed, options)` pays in an ERC-20 token instead.
+
+Other source chains have their own functions. Except for Cosmos, each returns a transaction for you to sign and send:
+
+| Source chain | Function |
+| --- | --- |
+| Solana | `addGasToSolanaChain({ messageId, gasFeeAmount, sender, refundAddress })` |
+| Sui | `addGasToSuiChain({ messageId, gasParams, refundAddress, amount })` |
+| Stellar | `addGasToStellarChain({ messageId, senderAddress, spender, amount })` |
+| XRPL | `addGasToXrplChain({ messageId, senderAddress, amount })` |
+| Cosmos | `addGasToCosmosChain({ txHash, chain, token, gasLimit, sendOptions })`; sends the gas over IBC, and signs with `sendOptions.offlineSigner` |
+
+To add gas without the SDK, call the gas service directly. See [Add gas and refunds](/gmp/gas/add-gas-and-refunds#add-gas).
+
+## Execute
+
+Use this when a message is approved but not executed: no gas was paid, or execution failed with **Error**. You send the destination transaction yourself and pay its gas.
+
+If execution failed because the destination contract reverts, executing again fails the same way. [Debug it](/gmp/track-and-recover/debug-failed-execution) first.
+
+**On Axelarscan:** open the message, connect a wallet on the destination chain and click **Execute**.
+
+**With the SDK**, on EVM destination chains:
+
+```ts
+const { success, transaction, error } = await sdk.execute(
+  txHash, // source transaction
+  undefined, // log index, if the transaction sent several messages
+  { privateKey: '0x...', gasLimitBuffer: 50000 }, // optional; defaults to the browser wallet
+);
+```
+
+**From the command line**, call `execute` on the destination contract with the values from the message:
+
+```bash
+cast send <destination contract> "execute(bytes32,string,string,bytes)" \
+  <commandId> <sourceChain> <sourceAddress> <payload> \
+  --rpc-url <destination RPC> --private-key <key>
+```
+
+`commandId` is in the **Approved** step on Axelarscan (`approved.returnValues.commandId` in the [API](/gmp/track-and-recover/transaction-states#axelarscan-api)); the payload is in **Sent** (`call.returnValues.payload`).

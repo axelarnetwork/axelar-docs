@@ -1,0 +1,50 @@
+---
+title: "Cosmos"
+description: "How Cosmos chains send and receive GMP messages over IBC."
+---
+
+Cosmos chains connect to Axelar over IBC. A GMP message travels as an [ICS-20 token transfer](https://github.com/cosmos/ibc/tree/main/spec/app/ics-020-fungible-token-transfer) with the message in its memo:
+
+- **Sending from Cosmos:** you transfer tokens to Axelar's GMP account, with a memo that names the destination and carries the payload.
+- **Receiving on Cosmos:** Axelar transfers tokens to the destination, with a memo that the chain executes: a CosmWasm contract call through [ibc-hooks](https://github.com/cosmos/ibc-apps/tree/main/modules/ibc-hooks), or a native Go module.
+
+[Send and receive messages](/gmp/integrations/cosmos/send-and-receive) has the formats and code.
+
+<Callout title="Using an AI agent?">
+  Copy this page with **Copy Markdown** at the top and give it to your agent,
+  with what you want to build or the contract or module you want to make cross-chain. The
+  copied page links to the Markdown of the other pages it refers to, so the
+  agent can read them too. Review what it writes, and test on testnet before
+  mainnet.
+</Callout>
+
+## Routes
+
+| From          | To                     | Messages | Messages with tokens |
+| ------------- | ---------------------- | -------- | -------------------- |
+| Cosmos chains | Consensus EVM chains   | Yes      | Yes, gateway tokens  |
+| Consensus EVM | Cosmos chains          | Yes      | Yes, gateway tokens  |
+| Cosmos chains | Cosmos chains          | Yes      | Yes                  |
+| Cosmos chains | Amplifier chains       | Yes      | No                   |
+
+Which kind each chain is: [Chains and contracts](/infrastructure/network/chains-and-contracts). Sending tokens from an EVM chain uses [`callContractWithToken`](/gmp/integrations/evm/send-tokens-with-messages).
+
+## Addresses
+
+|                                 | Mainnet                                                             | Testnet                                                             |
+| ------------------------------- | ------------------------------------------------------------------- | ------------------------------------------------------------------- |
+| GMP account (send messages to)  | `axelar1dv4u5k73pzqrxlzujxg3qp8kvc3pje7jtdvu72npnt5zhq05ejcsn5qme5` | `axelar1dv4u5k73pzqrxlzujxg3qp8kvc3pje7jtdvu72npnt5zhq05ejcsn5qme5` |
+| Gas receiver (fee `recipient`)  | `axelar1aythygn6z5thymj6tmzfwekzh05ewg3l7d6y89`                     | `axelar1zl3rxpp70lmte2xr6c4lgske2fyuj3hupcsvcd`                     |
+
+The GMP account is a module account on the Axelar chain, not a contract. It's also the sender of every message Axelar delivers to a Cosmos chain.
+
+Use the Axelar chain name of a Cosmos chain in messages, not its chain ID: for Osmosis, `osmosis` on mainnet and `osmosis-7` on testnet (chain ID `osmo-test-5`). Chain names are listed on Axelarscan: [mainnet](https://axelarscan.io/resources/chains) | [testnet](https://testnet.axelarscan.io/resources/chains). The IBC channels between Axelar and each chain are on [Chains and contracts](/infrastructure/network/chains-and-contracts#ibc-channels).
+
+## Chain support
+
+To receive messages, a Cosmos chain needs one of:
+
+- **CosmWasm with ibc-hooks.** The [ibc-hooks](https://github.com/cosmos/ibc-apps/tree/main/modules/ibc-hooks) middleware executes the contract call in the memo of an incoming transfer.
+- **A native Go module** that reads the memo of incoming transfers from Axelar. See the [sample middleware](https://github.com/axelarnetwork/evm-cosmos-gmp-sample/tree/main/native-integration/sample-middleware).
+
+Sending needs only ICS-20 transfers with memos, which current Cosmos SDK chains support.

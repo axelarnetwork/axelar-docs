@@ -1,0 +1,84 @@
+---
+title: "EVM"
+description: "Send and receive GMP messages from Solidity contracts on EVM chains."
+---
+
+On EVM chains, a contract sends a message by calling `callContract` on Axelar's gateway contract, and receives one by implementing `_execute` from `AxelarExecutable`. The contracts are in [axelar-gmp-sdk-solidity](https://github.com/axelarnetwork/axelar-gmp-sdk-solidity).
+
+EVM contracts can exchange messages with every connected chain, not only other EVM chains. To send tokens, use the [Interchain Token Service](/its/overview).
+
+<Callout title="Using an AI agent?">
+  Copy this page with **Copy Markdown** at the top and give it to your agent,
+  with what you want to build or the contract you want to make cross-chain. The
+  copied page links to the Markdown of the other pages it refers to, so the
+  agent can read them too. Review what it writes, and test on testnet before
+  mainnet.
+</Callout>
+
+## Message flow
+
+Sending, on the source chain:
+
+1. Your contract pays gas to the [gas service](/gmp/gas/gas-service) (`payNativeGasForContractCall`).
+1. Your contract calls `callContract` on the gateway, which emits a `ContractCall` event.
+
+Receiving, on the destination chain:
+
+1. Axelar verifies the event and approves the message on the gateway.
+1. A relayer calls `execute` on your contract.
+1. `AxelarExecutable` asks the gateway to validate the message, which marks it executed, then calls your `_execute`.
+
+## Consensus and Amplifier chains
+
+EVM chains connect to Axelar in one of two ways (see [Amplifier](/infrastructure#a-cross-chain-protocol-amplifier)), with a different gateway contract. Contracts that send and receive plain messages work the same way on both: `AxelarExecutable` supports both gateways.
+
+|                                                                      | Consensus chains                                                                                                                    | Amplifier chains                                                                                                                                   |
+| -------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Gateway contract                                                     | [`AxelarGateway`](https://github.com/axelarnetwork/axelar-cgp-solidity/blob/main/contracts/AxelarGateway.sol)                       | [`AxelarAmplifierGateway`](https://github.com/axelarnetwork/axelar-gmp-sdk-solidity/blob/main/contracts/gateway/AxelarAmplifierGateway.sol)          |
+| `callContract`                                                       | Yes                                                                                                                                 | Yes                                                                                                                                                |
+| [`callContractWithToken`](/gmp/integrations/evm/send-tokens-with-messages) | Yes                                                                                                                                 | No                                                                                                                                                 |
+| Command ID                                                           | Assigned by Axelar                                                                                                                  | `keccak256(sourceChain + "_" + messageId)`                                                                                                         |
+| Approval event                                                       | `ContractCallApproved`                                                                                                              | `MessageApproved`                                                                                                                                  |
+
+[Chains and contracts](/infrastructure/network/chains-and-contracts) shows each chain's type. The [contract reference](/gmp/integrations/evm/gmp-contracts) has the details.
+
+## Setup
+
+Install the SDK:
+
+```bash
+# npm
+npm install @axelar-network/axelar-gmp-sdk-solidity
+
+# Foundry
+forge install axelarnetwork/axelar-gmp-sdk-solidity
+```
+
+With Foundry, add a remapping so the imports in these docs resolve:
+
+```
+@axelar-network/axelar-gmp-sdk-solidity/=lib/axelar-gmp-sdk-solidity/
+```
+
+Your contract needs two addresses on each chain it's deployed to, the gateway and the gas service. Both are on [Chains and contracts](/infrastructure/network/chains-and-contracts).
+
+### Chain names
+
+Contracts identify chains by their Axelar name, such as `arbitrum` or `base`, not by EVM chain ID. Names are listed on Axelarscan: [mainnet](https://axelarscan.io/resources/chains) | [testnet](https://testnet.axelarscan.io/resources/chains).
+
+When sending, chain names are case-insensitive. When receiving, `sourceChain` is the name exactly as the chain was registered, and some older chains were registered capitalized: `Ethereum`, `Avalanche`, `Polygon`, `Fantom` and `Moonbeam`. Compare it to the exact string. The source chain of a message is shown on its Axelarscan page.
+
+## Next steps
+
+- [Send and receive messages](/gmp/integrations/evm/gmp-messages): a complete contract, and the checks your contract must make.
+- [Messages with tokens](/gmp/integrations/evm/send-tokens-with-messages): send a message with gateway tokens, between consensus chains.
+- [Express](/gmp/integrations/evm/express): execute messages before the source chain is final.
+- [Contract reference](/gmp/integrations/evm/gmp-contracts): gateway functions and events.
+- [Deployers and libraries](/gmp/integrations/evm/deployers-and-libraries): deploy to the same address on every chain, and helper libraries.
+
+## Resources
+
+- [axelar-gmp-sdk-solidity](https://github.com/axelarnetwork/axelar-gmp-sdk-solidity): executables, the Amplifier gateway, deployers and libraries.
+- [axelar-cgp-solidity](https://github.com/axelarnetwork/axelar-cgp-solidity): the gateway and gas service on consensus chains.
+- [axelar-examples](https://github.com/axelarnetwork/axelar-examples): example apps.
+- [axelar-local-dev](https://github.com/axelarnetwork/axelar-local-dev): run cross-chain tests against local chains.

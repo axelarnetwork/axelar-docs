@@ -1,8 +1,0 @@
-{
-  "title": "AxelarJS SDK",
-  "pages": [
-    "intro",
-    "tx-status-query-recovery",
-    "axelar-query-api"
-  ]
-}

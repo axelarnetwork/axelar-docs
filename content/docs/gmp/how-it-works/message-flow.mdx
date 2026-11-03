@@ -1,0 +1,69 @@
+---
+title: "Flow of Messages"
+description: "How a GMP message gets from the source chain, through Axelar, to the destination chain."
+---
+
+A GMP message passes through three places: the gateway on the source chain, the Axelar network, and the gateway on the destination chain. Relayers carry it between them, and Axelar's validators or verifiers check it on the way.
+
+## Gateways
+
+Axelar has a gateway on every connected chain: a contract on smart contract chains, and a multisig account on XRPL, which has no contracts. Cosmos chains connect over IBC instead; see [Cosmos](/gmp/integrations/cosmos/overview).
+
+- On the source chain, apps call the gateway to send a message. The gateway emits an event with the message.
+- On the destination chain, the gateway accepts approvals of messages from Axelar, and apps check incoming messages against it before acting on them.
+
+A gateway only accepts approvals signed by Axelar. On [consensus-connected chains](/infrastructure#a-cross-chain-protocol-amplifier), they're signed by Axelar's validators, weighted by stake. On Amplifier-connected chains, they're signed by the verifiers that support that chain.
+
+## Relayers
+
+Gateways and the Axelar network don't talk to each other directly. Relayers watch the gateways for new messages and submit them to Axelar, and submit Axelar's approvals to destination gateways. Axelar runs relayers for every chain, but relaying is permissionless: anyone can relay a message, and nothing a relayer submits is trusted without being verified. See [Relay manually](/gmp/track-and-recover/manual-relay).
+
+## Verification
+
+Since anyone can submit a message, Axelar first checks that it really happened on the source chain, and that the source transaction is [final](/gmp/how-it-works/finality-and-timing).
+
+- **Consensus-connected chains:** Axelar's validators vote. Each validator runs a node for the chains it supports, looks up the event on it, and votes in a poll on the Axelar chain.
+- **Amplifier-connected chains:** verifiers vote. Each chain has a voting verifier contract on Axelar, and verifiers running [`ampd`](/infrastructure/verifiers) check the event on their own node for that chain and vote in it.
+
+A message is verified when enough voting weight agrees. If the vote fails, the message stops there; it can be [submitted for verification again](/gmp/track-and-recover/manual-relay).
+
+## Routing and approval
+
+A verified message is routed to its destination chain, and an approval is prepared for the destination gateway:
+
+- **Consensus-connected chains:** the message is added to a batch of commands for the destination chain, which validators sign.
+- **Amplifier-connected chains:** the destination chain's multisig prover builds a proof for the message, which that chain's verifiers sign.
+
+A relayer submits the signed batch or proof to the destination gateway. The gateway checks the signatures, and records the message as approved, with the hash of its payload.
+
+## Execution
+
+An approved message can be executed by anyone. A relayer calls the destination contract with the message, and the contract asks the gateway to validate it: the gateway checks that a message with this source, destination and payload was approved, and marks it executed so it can't run again. Then the contract runs its logic. See [Message verification](/gmp/how-it-works/message-verification).
+
+Execution costs gas on the destination chain. The sender pays for the whole route once, on the source chain, through Axelar's gas service; relayers use that payment and refund the rest. See [How gas works](/gmp/gas/gas-service).
+
+If a message stops on the way, it can be followed and recovered on Axelarscan. See [Track a message](/gmp/track-and-recover/transaction-states).
+
+## Example: a message between EVM chains
+
+[This message](https://axelarscan.io/gmp/0x80ec57f56cd67c12dd5acd9055abac526499afe980906944e5a84ac14278d64f) went from Ethereum to Base, both consensus-connected chains.
+
+On the source chain:
+
+1. A contract calls `callContract` on the gateway with the destination chain, destination address and payload. The gateway emits a `ContractCall` event.
+1. In the same transaction, the contract pays gas to the gas service.
+
+On Axelar:
+
+1. A relayer submits the source transaction to Axelar for verification.
+1. Validators vote that the `ContractCall` event happened, once the transaction is final.
+1. A relayer asks Axelar to sign a batch of commands for Base, including the approval of this message, and validators sign it.
+
+On the destination chain:
+
+1. A relayer submits the signed batch to the gateway on Base. The gateway checks the signatures, stores the approval and emits `ContractCallApproved`.
+1. A relayer calls `execute` on the destination contract.
+1. The contract calls `validateContractCall` on the gateway, which checks the approval and marks it executed.
+1. The contract runs its `_execute` logic with the payload.
+
+Between Amplifier-connected chains, the steps on Axelar differ: verifiers vote in the source chain's voting verifier, the message is routed by the router, and the destination chain's multisig prover produces the proof, which verifiers sign. The destination gateway emits `MessageApproved`. The source and destination steps are the same.

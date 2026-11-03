@@ -1,0 +1,109 @@
+---
+title: "Estimate and pay gas"
+description: "Estimate the gas fee for a message and pay it to the gas service."
+---
+
+Paying gas takes two steps:
+
+1. [Estimate the fee](#estimate-the-fee) for the message, with the AxelarJS SDK or the Axelarscan API.
+1. Pay it to the gas service on the source chain, in the same transaction and before calling the gateway ([pay gas](#pay-gas)).
+
+Both need the execution gas limit: the gas your destination contract's `_execute` uses. Measure it on a testnet or a [fork](/gmp/track-and-recover/debug-failed-execution#test-a-fix-locally), and add some margin.
+
+## Estimate the fee
+
+Estimate the fee off-chain, right before sending the transaction, since gas prices change.
+
+### With the AxelarJS SDK
+
+`estimateGasFee` on `AxelarQueryAPI` returns the total fee in the source chain's smallest unit (wei on EVM chains):
+
+```ts
+import { AxelarQueryAPI, Environment } from '@axelar-network/axelarjs-sdk';
+
+const api = new AxelarQueryAPI({ environment: Environment.MAINNET });
+
+const fee = await api.estimateGasFee(
+  'ethereum', // source chain
+  'avalanche', // destination chain
+  200000, // execution gas limit
+);
+```
+
+Optional parameters help messages that can't afford to get stuck:
+
+- `gasMultiplier` multiplies the execution fee, e.g. `1.2` for a 20% buffer. The default, `"auto"`, uses Axelar's multiplier for the chain.
+- `minGasPrice` sets a floor, in wei, for the destination gas price. Useful on chains where gas prices spike.
+- `executeData` is the destination transaction's calldata. For rollup destinations it makes the L1 data fee more accurate; without it, a placeholder is used.
+- `gmpParams.showDetailedFees: true` returns the breakdown instead of a total.
+
+See [AxelarJS SDK](/gmp/resources/axelarjs-sdk#estimategasfee) for every parameter.
+
+### With the Axelarscan API
+
+Without the SDK, call the same estimate over HTTP:
+
+```bash
+curl -X POST https://api.axelarscan.io/gmp/estimateGasFee \
+  -H 'content-type: application/json' \
+  -d '{"sourceChain":"ethereum","destinationChain":"avalanche","gasLimit":"200000"}'
+```
+
+It returns the total fee in wei. Add `"showDetailedFees": true` for the breakdown, and `"gasMultiplier"` or `"minGasPrice"` as with the SDK. For testnet, use `https://testnet.api.axelarscan.io`.
+
+The detailed response includes `totalFee`, its parts (`baseFee`, `executionFeeWithMultiplier`, `expressFee`) and `isExpressSupported`, which tells you whether Express is available between the two chains. For rollup destinations, `gasLimitWithL1Fee` is the gas limit with the L1 data fee included.
+
+## Pay gas
+
+Call the gas service, then the gateway, in the same transaction. The payment is matched to the message by sender, destination chain, destination address and payload, so pass the same values to both:
+
+```solidity
+import { AxelarExecutable } from '@axelar-network/axelar-gmp-sdk-solidity/contracts/executable/AxelarExecutable.sol';
+import { IAxelarGasService } from '@axelar-network/axelar-gmp-sdk-solidity/contracts/interfaces/IAxelarGasService.sol';
+
+contract Sender is AxelarExecutable {
+    IAxelarGasService public immutable gasService;
+
+    constructor(address gateway_, address gasService_) AxelarExecutable(gateway_) {
+        gasService = IAxelarGasService(gasService_);
+    }
+
+    function sendMessage(
+        string calldata destinationChain,
+        string calldata destinationAddress,
+        string calldata message
+    ) external payable {
+        bytes memory payload = abi.encode(message);
+
+        // msg.value is the fee from estimateGasFee
+        gasService.payNativeGasForContractCall{ value: msg.value }(
+            address(this), // sender: the contract that calls the gateway
+            destinationChain,
+            destinationAddress,
+            payload,
+            msg.sender // refund address
+        );
+
+        gateway().callContract(destinationChain, destinationAddress, payload);
+    }
+
+    function _execute(bytes32, string calldata, string calldata, bytes calldata) internal override {}
+}
+```
+
+From your frontend, send the estimate as the transaction value:
+
+```ts
+await sender.sendMessage('avalanche', '0x...', 'hello', { value: fee });
+```
+
+### Payment functions
+
+All are on [`IAxelarGasService`](https://github.com/axelarnetwork/axelar-gmp-sdk-solidity/blob/main/contracts/interfaces/IAxelarGasService.sol). The `Native` functions take the native token as `msg.value`; the others take an ERC-20 `gasToken` and `gasFeeAmount`, and need an approval first.
+
+| Message | Native token | ERC-20 |
+| --- | --- | --- |
+| `callContract` | `payNativeGasForContractCall` | `payGasForContractCall` |
+| `callContractWithToken` (consensus chains only) | `payNativeGasForContractCallWithToken` | `payGasForContractCallWithToken` |
+| [Express](/gmp/integrations/evm/express) | `payNativeGasForExpressCall` | `payGasForExpressCall` |
+| Express with token | `payNativeGasForExpressCallWithToken` | `payGasForExpressCallWithToken` |

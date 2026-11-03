@@ -1,0 +1,264 @@
+---
+title: "Send and receive messages"
+description: "Memo and payload formats for GMP messages to and from Cosmos chains, with examples."
+---
+
+For how Cosmos GMP works and the addresses used here, see the [Cosmos overview](/gmp/integrations/cosmos/overview).
+
+## Send from a Cosmos chain
+
+Send an ICS-20 transfer over your chain's channel to Axelar, to the GMP account `axelar1dv4u5k73pzqrxlzujxg3qp8kvc3pje7jtdvu72npnt5zhq05ejcsn5qme5` (lowercase), with this JSON as the memo:
+
+```json
+{
+  "destination_chain": "Ethereum",
+  "destination_address": "0x...",
+  "payload": "<base64>",
+  "type": 1,
+  "fee": {
+    "amount": "100000",
+    "recipient": "axelar1aythygn6z5thymj6tmzfwekzh05ewg3l7d6y89",
+    "refund_recipient": "<your address on the source chain>"
+  }
+}
+```
+
+| Field                 | Value                                                                                                                               |
+| --------------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
+| `destination_chain`   | The destination's Axelar chain name. Case doesn't matter.                                                                           |
+| `destination_address` | The destination contract, in its chain's format.                                                                                    |
+| `payload`             | The payload bytes, base64-encoded (or as an array of byte values). For an EVM destination, ABI-encode it, as its `_execute` decodes. |
+| `type`                | `1` for a message: the transferred tokens only pay the fee. `2` for a message with tokens: the tokens left after the fee go to the destination contract. |
+| `fee`                 | Optional. Gas, taken from the transferred tokens; see [Gas](#gas).                                                                   |
+
+The transferred token must be an asset registered on Axelar, such as axlUSDC; see [Assets](/infrastructure/network/chains-and-contracts#assets).
+
+The destination receives the message with your chain's Axelar name as the source chain, and the transfer's sender as the source address: your account, or your contract if a contract sent the transfer. Messages from Cosmos chains get IDs of the form `0x<hash>-<nonce>`, assigned by Axelar.
+
+### From a wallet, with CosmJS
+
+```ts
+import { SigningStargateClient } from '@cosmjs/stargate';
+
+const memo = JSON.stringify({
+  destination_chain: 'Ethereum',
+  destination_address: '0x...',
+  payload: Buffer.from(payloadBytes).toString('base64'),
+  type: 1,
+  fee: { amount: '100000', recipient: 'axelar1aythygn6z5thymj6tmzfwekzh05ewg3l7d6y89' },
+});
+
+const result = await client.signAndBroadcast(
+  sender,
+  [
+    {
+      typeUrl: '/ibc.applications.transfer.v1.MsgTransfer',
+      value: {
+        sourcePort: 'transfer',
+        sourceChannel: '<your channel to Axelar>',
+        token: { denom: '<axlUSDC denom on your chain>', amount: '100000' },
+        sender,
+        receiver: 'axelar1dv4u5k73pzqrxlzujxg3qp8kvc3pje7jtdvu72npnt5zhq05ejcsn5qme5',
+        timeoutTimestamp: BigInt(Date.now() + 10 * 60 * 1000) * 1_000_000n, // nanoseconds
+        memo,
+      },
+    },
+  ],
+  'auto',
+);
+```
+
+### From a CosmWasm contract
+
+Send an IBC transfer with the memo, e.g. with `MsgTransfer` from `osmosis-std`, or `IbcMsg::Transfer` with a memo on chains whose CosmWasm supports it. The memo is the JSON above, serialized from a struct:
+
+```rust
+#[cw_serde]
+pub struct GmpMessage {
+    pub destination_chain: String,
+    pub destination_address: String,
+    pub payload: Vec<u8>,
+    #[serde(rename = "type")]
+    pub type_: i64,
+    pub fee: Option<GmpFee>,
+}
+
+#[cw_serde]
+pub struct GmpFee {
+    pub amount: String,
+    pub recipient: String,
+}
+
+let memo = cosmwasm_std::to_json_string(&msg)?;
+```
+
+[send-message-from-cosmos-to-evm-example](https://github.com/axelarnetwork/send-message-from-cosmos-to-evm-example) is a complete contract that sends messages to an EVM chain and receives them.
+
+### From Go
+
+Native modules build the same JSON, and send it as the memo of an `ibctransfertypes.MsgTransfer` to the GMP account. Encode the payload for EVM destinations with [go-ethereum's `abi`](https://pkg.go.dev/github.com/ethereum/go-ethereum/accounts/abi) package.
+
+## Receive on a Cosmos chain
+
+The sender on the source chain sets the destination address to the CosmWasm contract or the native module's address, and starts the payload with a 4-byte version:
+
+| Version         | For                | The rest of the payload                                        |
+| --------------- | ------------------ | -------------------------------------------------------------- |
+| `0x00000000`    | Native Go modules  | Anything; the module decodes it                                |
+| `0x00000001`    | CosmWasm contracts | The method and its arguments, ABI-encoded                      |
+| `0x00000002`    | CosmWasm contracts | The method and its arguments as JSON                           |
+
+### CosmWasm, from an EVM chain
+
+With version 1, the payload after the version is `abi.encode(method, argNames, argTypes, abi.encode(argValues...))`. Axelar decodes it and calls `method` on the contract with the named arguments. Argument types can be `bool`, `address`, `string`, `bytes`, `uint8`, `uint64` and `string[]`.
+
+This contract calls `receive_message { source_chain, source_address, message }`:
+
+```solidity
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
+
+import { IAxelarGateway } from '@axelar-network/axelar-gmp-sdk-solidity/contracts/interfaces/IAxelarGateway.sol';
+import { IAxelarGasService } from '@axelar-network/axelar-gmp-sdk-solidity/contracts/interfaces/IAxelarGasService.sol';
+
+contract ToCosmWasm {
+    IAxelarGasService public immutable gasService;
+    address public immutable gateway;
+    string public chainName; // this chain's Axelar name, e.g. "Ethereum"
+
+    constructor(address gateway_, address gasService_, string memory chainName_) {
+        gateway = gateway_;
+        gasService = IAxelarGasService(gasService_);
+        chainName = chainName_;
+    }
+
+    // Calls `receive_message { source_chain, source_address, message }` on a CosmWasm contract
+    function sendToCosmWasm(
+        string calldata destinationChain,
+        string calldata destinationContract,
+        string calldata message
+    ) external payable {
+        string[] memory argNames = new string[](3);
+        argNames[0] = 'source_chain';
+        argNames[1] = 'source_address';
+        argNames[2] = 'message';
+
+        string[] memory argTypes = new string[](3);
+        argTypes[0] = 'string';
+        argTypes[1] = 'address';
+        argTypes[2] = 'string';
+
+        bytes memory payload = abi.encodePacked(
+            bytes4(uint32(1)), // version 1: CosmWasm, ABI-encoded arguments
+            abi.encode('receive_message', argNames, argTypes, abi.encode(chainName, address(this), message))
+        );
+
+        gasService.payNativeGasForContractCall{ value: msg.value }(
+            address(this),
+            destinationChain,
+            destinationContract,
+            payload,
+            msg.sender
+        );
+        IAxelarGateway(gateway).callContract(destinationChain, destinationContract, payload);
+    }
+}
+```
+
+With version 2, the payload after the version is the JSON message itself, e.g. `{"receive_message":{"message":"hello"}}`, which is simpler to build off-chain.
+
+### Check where the message came from
+
+Anyone can call your contract's methods directly, so check both that the call came from Axelar, and which contract sent the message:
+
+- **From Axelar:** ibc-hooks calls your contract from an address derived from the IBC channel and the original sender, Axelar's GMP account. Compute it once with `<chain binary> query ibc-hooks wasm-sender <your channel to Axelar> axelar1dv4u5k73pzqrxlzujxg3qp8kvc3pje7jtdvu72npnt5zhq05ejcsn5qme5`, store it, and compare `info.sender` with it.
+- **From your sender:** declare arguments named `source_chain` and `source_address`, and have the sender fill them in, as the example above does. Axelar checks them against the real source, case-insensitively, and rejects the message if they don't match. Without them, your contract can't know the source: ibc-hooks passes only the method and its arguments.
+
+```rust
+use cosmwasm_schema::cw_serde;
+use cosmwasm_std::{
+    entry_point, Addr, DepsMut, Env, MessageInfo, Response, StdError,
+};
+use cw_storage_plus::Item;
+
+#[cw_serde]
+pub struct Config {
+    // ibc-hooks' address for messages from Axelar's GMP account over your channel to Axelar
+    pub axelar_sender: Addr,
+    // The EVM contract this contract accepts messages from
+    pub trusted_chain: String,
+    pub trusted_address: String,
+}
+
+pub const CONFIG: Item<Config> = Item::new("config");
+pub const LAST_MESSAGE: Item<String> = Item::new("last_message");
+
+#[cw_serde]
+pub enum ExecuteMsg {
+    // Called by Axelar. Axelar has checked that `source_chain` and `source_address`
+    // are the message's real source.
+    ReceiveMessage {
+        source_chain: String,
+        source_address: String,
+        message: String,
+    },
+}
+
+#[derive(thiserror::Error, Debug)]
+pub enum ContractError {
+    #[error("{0}")]
+    Std(#[from] StdError),
+    #[error("unauthorized")]
+    Unauthorized,
+}
+
+#[entry_point]
+pub fn execute(deps: DepsMut, _env: Env, info: MessageInfo, msg: ExecuteMsg) -> Result<Response, ContractError> {
+    match msg {
+        ExecuteMsg::ReceiveMessage { source_chain, source_address, message } => {
+            let config = CONFIG.load(deps.storage)?;
+
+            // Only accept calls that came from Axelar, through ibc-hooks
+            if info.sender != config.axelar_sender {
+                return Err(ContractError::Unauthorized);
+            }
+            // Only accept messages from your contract on the source chain
+            if !source_chain.eq_ignore_ascii_case(&config.trusted_chain)
+                || !source_address.eq_ignore_ascii_case(&config.trusted_address)
+            {
+                return Err(ContractError::Unauthorized);
+            }
+
+            LAST_MESSAGE.save(deps.storage, &message)?;
+            Ok(Response::new())
+        }
+    }
+}
+```
+
+### Native modules
+
+With version 0, Axelar delivers this memo to the destination address, in a transfer from the GMP account:
+
+```json
+{
+  "source_chain": "Ethereum",
+  "source_address": "0x...",
+  "payload": "<base64, without the version>",
+  "type": 1
+}
+```
+
+The module should accept it only over the IBC channel to Axelar and from the GMP account as sender. See the [sample middleware](https://github.com/axelarnetwork/evm-cosmos-gmp-sample/blob/main/native-integration/sample-middleware/gmp_middleware.go).
+
+Messages without tokens arrive with a transfer of 1 uaxl, since ICS-20 transfers can't be empty. Messages with tokens arrive with the tokens.
+
+## Gas
+
+- **From a Cosmos chain**, pay gas with the memo's `fee`. `amount` is in the transferred token, and is taken from the transfer; `recipient` is the gas receiver; unused gas is refunded to `refund_recipient`, if set. With `type` 1, the fee can be the whole transfer; with `type` 2, some tokens must be left after it. Estimate it with the [fee API](/gmp/gas/estimate-and-pay#estimate-the-fee), with your chain as the source chain and the token's symbol as `sourceTokenSymbol`.
+- **To a Cosmos chain** from an EVM chain, pay gas to the gas service as for any message. See [Estimate and pay](/gmp/gas/estimate-and-pay).
+
+## When delivery fails
+
+- If Axelar rejects a message sent from a Cosmos chain, e.g. an invalid memo, the transfer fails and the tokens are refunded to the sender by IBC.
+- If delivery to a Cosmos chain fails, e.g. the contract call errors or the transfer times out, the message is marked failed on Axelarscan and can be sent again. See [Relay manually](/gmp/track-and-recover/manual-relay#2-route).

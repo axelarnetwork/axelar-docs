@@ -56,3 +56,9 @@ html > body[data-scroll-locked] {
     z-index: -1;
   }
 }
+
+/* Separators nested inside a sidebar folder (e.g. "Consensus connected chains") are sub-headings */
+#nd-sidebar [data-state] > div > p.inline-flex {
+  font-size: 0.75rem;
+  color: var(--color-fd-muted-foreground);
+}

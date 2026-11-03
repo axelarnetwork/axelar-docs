@@ -1,0 +1,107 @@
+---
+title: "Messages with tokens"
+description: "Send gateway tokens with a GMP message between consensus chains."
+---
+
+<Callout emoji="⚠️" title="Consensus chains only">
+  `callContractWithToken` sends gateway tokens, such as axlUSDC, and exists only
+  on the gateway of [consensus chains](/gmp/integrations/evm/intro#consensus-and-amplifier-chains).
+  The gateway of Amplifier chains doesn't support it. To send tokens with a
+  message to or from any chain, use the [Interchain Token
+  Service](/its/interchain-token-executable).
+</Callout>
+
+`callContractWithToken` sends a message and an amount of a gateway token in one call. On the destination chain, the gateway sends the tokens to your contract before calling it. Gateway tokens are listed under [Assets](/infrastructure/network/chains-and-contracts#assets).
+
+## Example
+
+This contract takes tokens from the caller and sends them to its copy on another chain, which splits them between a list of recipients:
+
+```solidity
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
+
+import { AxelarExecutableWithToken } from '@axelar-network/axelar-gmp-sdk-solidity/contracts/executable/AxelarExecutableWithToken.sol';
+import { IAxelarGasService } from '@axelar-network/axelar-gmp-sdk-solidity/contracts/interfaces/IAxelarGasService.sol';
+import { IERC20 } from '@axelar-network/axelar-gmp-sdk-solidity/contracts/interfaces/IERC20.sol';
+import { SafeTokenTransfer, SafeTokenTransferFrom } from '@axelar-network/axelar-gmp-sdk-solidity/contracts/libs/SafeTransfer.sol';
+
+contract Distributor is AxelarExecutableWithToken {
+    using SafeTokenTransfer for IERC20;
+    using SafeTokenTransferFrom for IERC20;
+
+    IAxelarGasService public immutable gasService;
+
+    constructor(address gateway_, address gasService_) AxelarExecutableWithToken(gateway_) {
+        gasService = IAxelarGasService(gasService_);
+    }
+
+    function sendToMany(
+        string calldata destinationChain,
+        string calldata destinationAddress,
+        address[] calldata recipients,
+        string calldata symbol,
+        uint256 amount
+    ) external payable {
+        IERC20 token = IERC20(gatewayWithToken().tokenAddresses(symbol));
+
+        // Take the tokens from the caller, who approved this contract first
+        token.safeTransferFrom(msg.sender, address(this), amount);
+        // Let the gateway take them from this contract
+        token.approve(address(gateway()), amount);
+
+        bytes memory payload = abi.encode(recipients);
+
+        gasService.payNativeGasForContractCallWithToken{ value: msg.value }(
+            address(this),
+            destinationChain,
+            destinationAddress,
+            payload,
+            symbol,
+            amount,
+            msg.sender // refund address
+        );
+
+        gatewayWithToken().callContractWithToken(destinationChain, destinationAddress, payload, symbol, amount);
+    }
+
+    function _execute(bytes32, string calldata, string calldata, bytes calldata) internal pure override {
+        revert('Tokens required');
+    }
+
+    function _executeWithToken(
+        bytes32 /* commandId */,
+        string calldata /* sourceChain */,
+        string calldata /* sourceAddress */,
+        bytes calldata payload,
+        string calldata tokenSymbol,
+        uint256 amount
+    ) internal override {
+        // The gateway has already sent `amount` of the token to this contract
+        address[] memory recipients = abi.decode(payload, (address[]));
+        IERC20 token = IERC20(gatewayWithToken().tokenAddresses(tokenSymbol));
+
+        uint256 share = amount / recipients.length;
+        for (uint256 i = 0; i < recipients.length; i++) {
+            token.safeTransfer(recipients[i], share);
+        }
+    }
+}
+```
+
+## Send
+
+Before calling the gateway, your contract must hold the tokens and approve the gateway to take them: the gateway burns or locks them from `msg.sender`. Then:
+
+1. Pay gas with `payNativeGasForContractCallWithToken`, with the same values as the call. See [Estimate and pay](/gmp/gas/estimate-and-pay).
+1. Call `callContractWithToken(destinationChain, destinationAddress, payload, symbol, amount)`.
+
+`symbol` is the token's symbol on the source chain, and `tokenAddresses(symbol)` returns its address there. The call reverts if the symbol isn't a gateway token on that chain, if `amount` is 0, or if the gateway isn't approved for the amount.
+
+## Receive
+
+Inherit `AxelarExecutableWithToken` and implement both `_executeWithToken` and `_execute`, which it also requires. A relayer calls `executeWithToken`, which validates the message and the token amount with the gateway. The gateway mints or releases the tokens to your contract, then your `_executeWithToken` runs with `tokenSymbol` (the symbol on this chain) and `amount`.
+
+The same rules apply as for [plain messages](/gmp/integrations/evm/gmp-messages#receive-a-message): check the sender if your logic depends on it, and remember that a revert leaves the message approved for a retry. In the example, anyone may send tokens to be split, so it doesn't check the sender.
+
+Each gateway token can have a limit on how much the gateway mints on a chain in each 6-hour window. If a message would go over it, execution reverts, and the message can be [executed again](/gmp/track-and-recover/recover-transactions#execute) in a later window.

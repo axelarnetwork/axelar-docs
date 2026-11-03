@@ -9,3 +9,7 @@ export const gitConfig = {
   repo: 'axelar-docs',
   branch: 'main',
 };
+
+// Public origin of the docs, for absolute URLs in the sitemap and llms.txt.
+export const siteUrl =
+  process.env.NEXT_PUBLIC_SITE_URL ?? 'https://docs.axelar.dev';

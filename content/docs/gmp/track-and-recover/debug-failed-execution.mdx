@@ -1,0 +1,75 @@
+---
+title: "Debug failed execution"
+description: "Find out why a message failed on the destination chain, and fix it."
+---
+
+When execution fails, Axelarscan shows one of two things on the message:
+
+- **Not Enough Gas**, or an error like `intrinsic gas too low`: the gas paid doesn't cover execution. [Add gas](/gmp/track-and-recover/recover-transactions#add-gas), and the message is executed again.
+- **Error** with `Transaction execution was reverted`: your destination contract's `_execute` reverted. Adding gas won't help; find the cause below, fix the contract, then [execute the message again](/gmp/track-and-recover/recover-transactions#execute) or send a new one.
+
+A message approved on the destination gateway stays approved until it's executed, so you can retry after fixing the cause, e.g. after funding the contract or changing its configuration. If the fix needs a new contract at a different address, send a new message to it.
+
+<Callout title="Using an AI agent?">
+  Copy this page with **Copy Markdown** at the top, and give it to your agent
+  with the transaction hash or message ID. It can look up the message through
+  the Axelarscan API and find the revert for you. Review every transaction before it's signed, and
+  don't paste private keys into a chat: let the agent use a wallet or keystore
+  you control.
+</Callout>
+
+## Find the revert
+
+The examples use [Foundry](https://getfoundry.sh). Take the values from the message on Axelarscan, or from the [API](/gmp/track-and-recover/transaction-states#axelarscan-api):
+
+| Value | Axelarscan step | API field |
+| --- | --- | --- |
+| Destination contract | Sent | `call.returnValues.destinationContractAddress` |
+| Command ID | Approved | `approved.returnValues.commandId` |
+| Source chain | Approved | `approved.returnValues.sourceChain` |
+| Source address | Approved | `approved.returnValues.sourceAddress` |
+| Payload | Sent | `call.returnValues.payload` |
+
+### Simulate the execution
+
+Call `execute` on the destination contract without sending a transaction, and print the call trace:
+
+```bash
+cast call <destination contract> "execute(bytes32,string,string,bytes)" \
+  <commandId> <sourceChain> <sourceAddress> <payload> \
+  --rpc-url <destination RPC> --trace
+```
+
+The trace shows every call your contract made and where it reverted, with the error:
+
+```
+Traces:
+  [9211] 0xB5FB…9e3C::execute(0x892e…f896, "binance", "0xB5FB…9e3C", 0x…)
+    ├─ [4186] 0x1B13…C03d::execute(…) [delegatecall]
+    │   └─ ← [Revert] NotRemoteService()
+    └─ ← [Revert] NotRemoteService()
+```
+
+This works while the message is approved and not yet executed.
+
+### Replay a failed transaction
+
+If the relayer sent a transaction that reverted (its hash is in `error.transactionHash` in the API), replay it at the block where it ran:
+
+```bash
+cast run <transaction hash> --rpc-url <destination RPC>
+```
+
+Add `--debug` to step through it opcode by opcode. Replaying needs an archive RPC for older transactions.
+
+## Test a fix locally
+
+Run a local copy of the destination chain, and try your fix against the real state:
+
+```bash
+anvil --fork-url <destination RPC>
+```
+
+On the fork, change the contract's state, or replace its code with your fix at the same address (`cast rpc anvil_setCode <address> <runtime bytecode>`). Then simulate `execute` against `http://localhost:8545` as above. The fork has the gateway's state from the real chain, so this works for a message that is approved and not yet executed.
+
+For end-to-end tests of your app across local chains, see [axelar-local-dev](https://github.com/axelarnetwork/axelar-local-dev).

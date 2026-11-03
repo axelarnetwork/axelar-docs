@@ -1,0 +1,155 @@
+---
+title: "Contract reference"
+description: "Gateway functions and events on consensus and Amplifier EVM chains, and the executable base contracts."
+---
+
+Gateway and gas service addresses for every chain are on [Chains and contracts](/infrastructure/network/chains-and-contracts). For the gas service, see the [Gas](/gmp/gas/estimate-and-pay#payment-functions) chapter.
+
+## Gateway
+
+Consensus chains run [`AxelarGateway`](https://github.com/axelarnetwork/axelar-cgp-solidity/blob/main/contracts/AxelarGateway.sol) from axelar-cgp-solidity. Amplifier chains run [`AxelarAmplifierGateway`](https://github.com/axelarnetwork/axelar-gmp-sdk-solidity/blob/main/contracts/gateway/AxelarAmplifierGateway.sol) from axelar-gmp-sdk-solidity. Both implement [`IAxelarGateway`](https://github.com/axelarnetwork/axelar-gmp-sdk-solidity/blob/main/contracts/interfaces/IAxelarGateway.sol), which is what `AxelarExecutable` uses.
+
+### Send
+
+```solidity
+function callContract(
+    string calldata destinationChain,
+    string calldata destinationContractAddress,
+    bytes calldata payload
+) external;
+
+event ContractCall(
+    address indexed sender,
+    string destinationChain,
+    string destinationContractAddress,
+    bytes32 indexed payloadHash,
+    bytes payload
+);
+```
+
+On consensus chains, `callContractWithToken` also sends gateway tokens, and emits `ContractCallWithToken` ([`IAxelarGatewayWithToken`](https://github.com/axelarnetwork/axelar-gmp-sdk-solidity/blob/main/contracts/interfaces/IAxelarGatewayWithToken.sol)):
+
+```solidity
+function callContractWithToken(
+    string calldata destinationChain,
+    string calldata contractAddress,
+    bytes calldata payload,
+    string calldata symbol,
+    uint256 amount
+) external;
+
+function tokenAddresses(string memory symbol) external view returns (address);
+```
+
+### Receive
+
+A message is identified on the destination gateway by its command ID. Executables validate it with:
+
+```solidity
+// Checks that the message was approved for msg.sender, and marks it executed.
+// Returns false if it wasn't approved, or was already executed.
+function validateContractCall(
+    bytes32 commandId,
+    string calldata sourceChain,
+    string calldata sourceAddress,
+    bytes32 payloadHash
+) external returns (bool);
+
+// View version, for a given contract; doesn't mark it executed
+function isContractCallApproved(
+    bytes32 commandId,
+    string calldata sourceChain,
+    string calldata sourceAddress,
+    address contractAddress,
+    bytes32 payloadHash
+) external view returns (bool);
+
+function isCommandExecuted(bytes32 commandId) external view returns (bool);
+```
+
+Despite its name, `isCommandExecuted` returns `true` as soon as the message is approved on the gateway, before your contract executes it. To check whether a message was executed, use `isMessageExecuted` on Amplifier gateways. On consensus gateways, an approved message is executed once `isContractCallApproved` returns `false`.
+
+The token version on consensus chains, `validateContractCallAndMint(commandId, sourceChain, sourceAddress, payloadHash, symbol, amount)`, also sends the tokens to the caller.
+
+### Differences between the gateways
+
+|                     | Consensus chains                                                                                  | Amplifier chains                                                                     |
+| ------------------- | ------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------ |
+| Command ID          | Assigned by Axelar                                                                                | `keccak256(bytes(string.concat(sourceChain, "_", messageId)))`, from `messageToCommandId` |
+| Approval event      | `ContractCallApproved(commandId, sourceChain, sourceAddress, contractAddress, payloadHash, sourceTxHash, sourceEventIndex)` | `MessageApproved(commandId, sourceChain, messageId, sourceAddress, contractAddress, payloadHash)` |
+| Execution event     | `ContractCallExecuted(commandId)`                                                                 | `MessageExecuted(commandId)`                                                         |
+| Tokens              | `callContractWithToken`, `validateContractCallAndMint`                                            | Not supported; use [ITS](/its/interchain-token-executable)                           |
+
+Amplifier gateways also identify messages by source chain and message ID ([`IBaseAmplifierGateway`](https://github.com/axelarnetwork/axelar-gmp-sdk-solidity/blob/main/contracts/interfaces/IBaseAmplifierGateway.sol)):
+
+```solidity
+function messageToCommandId(string calldata sourceChain, string calldata messageId) external pure returns (bytes32);
+
+function isMessageApproved(
+    string calldata sourceChain,
+    string calldata messageId,
+    string calldata sourceAddress,
+    address contractAddress,
+    bytes32 payloadHash
+) external view returns (bool);
+
+function isMessageExecuted(string calldata sourceChain, string calldata messageId) external view returns (bool);
+```
+
+The message ID of a message from an EVM chain is `<transaction hash>-<log index>`, as shown on Axelarscan.
+
+### Pausing
+
+Recent gateway versions (axelar-gmp-sdk-solidity 6.2.0 and axelar-cgp-solidity 6.5.0) can be paused in an emergency. While a gateway is paused, `callContract` and `callContractWithToken` revert, and so does validation, so approved messages wait until it's unpaused and can then be executed.
+
+## Executables
+
+| Contract                                                                                                                                                                          | Use it to                                                                  | You implement                                       |
+| --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------- | --------------------------------------------------- |
+| [`AxelarExecutable`](https://github.com/axelarnetwork/axelar-gmp-sdk-solidity/blob/main/contracts/executable/AxelarExecutable.sol)                                                 | [Receive messages](/gmp/integrations/evm/gmp-messages)                     | `_execute`                                          |
+| [`AxelarExecutableWithToken`](https://github.com/axelarnetwork/axelar-gmp-sdk-solidity/blob/main/contracts/executable/AxelarExecutableWithToken.sol)                               | [Receive messages with gateway tokens](/gmp/integrations/evm/send-tokens-with-messages) | `_execute`, `_executeWithToken`                     |
+| [`AxelarExpressExecutableWithToken`](https://github.com/axelarnetwork/axelar-gmp-sdk-solidity/blob/main/contracts/express/AxelarExpressExecutableWithToken.sol)                   | Receive messages with [Express](/gmp/integrations/evm/express)             | `_execute`, `_executeWithToken`                     |
+| [`AxelarValuedExpressExecutable`](https://github.com/axelarnetwork/axelar-gmp-sdk-solidity/blob/main/contracts/express/AxelarValuedExpressExecutable.sol)                         | Express for messages whose value is in the payload                         | `_execute`, `contractCallValue`                     |
+| [`AxelarValuedExpressExecutableWithToken`](https://github.com/axelarnetwork/axelar-gmp-sdk-solidity/blob/main/contracts/express/AxelarValuedExpressExecutableWithToken.sol)       | The same, with gateway tokens                                              | Also `_executeWithToken`, `contractCallWithTokenValue` |
+
+```solidity
+// AxelarExecutable
+function execute(
+    bytes32 commandId,
+    string calldata sourceChain,
+    string calldata sourceAddress,
+    bytes calldata payload
+) external;
+
+function _execute(
+    bytes32 commandId,
+    string calldata sourceChain,
+    string calldata sourceAddress,
+    bytes calldata payload
+) internal virtual;
+
+function gateway() public view returns (IAxelarGateway);
+
+// AxelarExecutableWithToken
+function executeWithToken(
+    bytes32 commandId,
+    string calldata sourceChain,
+    string calldata sourceAddress,
+    bytes calldata payload,
+    string calldata tokenSymbol,
+    uint256 amount
+) external;
+
+function _executeWithToken(
+    bytes32 commandId,
+    string calldata sourceChain,
+    string calldata sourceAddress,
+    bytes calldata payload,
+    string calldata tokenSymbol,
+    uint256 amount
+) internal virtual;
+
+function gatewayWithToken() internal view returns (IAxelarGatewayWithToken);
+```
+
+`execute` and `executeWithToken` revert with `NotApprovedByGateway` if validation fails.
