@@ -1,13 +1,19 @@
 ---
 title: Axelar RFQ API
 description: Executable cross-chain quotes through a single request-for-quote interface.
+icon: BookOpen
 ---
 
 The Axelar RFQ API provides executable cross-chain quotes through a single request-for-quote interface. Given a source asset, a destination asset, and an amount, the API returns one or more quotes, each containing the exact economics of the transfer (input, output, fees, timing, expiry) and the exact on-chain actions required to execute it.
 
 Quotes are priced across multiple Axelar-backed execution routes — including intent-based fills, Interchain Token Service (ITS) transfers, and Axelar gateway transfers — and the API selects and ranks the best available options for each request. Integrators interact with one consistent schema regardless of which route fulfills the transfer.
 
-A machine-readable version of this documentation for LLMs and AI tools is available at [`/llms.txt`](/llms.txt).
+<Callout title="Using an AI agent?">
+  Give it [`llms.txt`](https://docs.axelar.dev/llms.txt): an index of every page
+  of these docs, each linked to its Markdown, so the agent can read the pages it
+  needs. The bot icon next to GitHub in the sidebar copies its link, and **Copy
+  Markdown** at the top of each page copies that page.
+</Callout>
 
 ## Base URL
 

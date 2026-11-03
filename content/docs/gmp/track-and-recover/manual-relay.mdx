@@ -5,9 +5,9 @@ description: "Verify, route and approve a GMP message yourself when no relayer p
 
 Relayers normally move a message through Axelar and approve it on the destination chain. If a message stays at **Confirm** or **Approve** on Axelarscan, or shows **Failed to Confirm**, you can do those steps yourself. Every step is permissionless: you only pay the transaction fees.
 
-Relaying takes the same steps for every chain. What differs is where they happen on Axelar: in the Axelar chain's own modules for [consensus-connected chains](/infrastructure#a-cross-chain-protocol-amplifier) and Cosmos chains, and in the Amplifier contracts for Amplifier-connected chains.
+Relaying takes the same steps for every chain. What differs is where they happen on Axelar: in the Axelar chain's own modules for [consensus chains](/infrastructure#verifying-connected-chains) and Cosmos chains, and in the Amplifier contracts for Amplifier chains.
 
-| Step                                                  | Consensus-connected chains                      | Amplifier-connected chains                       |
+| Step                                                  | Consensus chains                      | Amplifier chains                       |
 | ----------------------------------------------------- | ----------------------------------------------- | ------------------------------------------------ |
 | [1. Verify](#1-verify) the source transaction         | `confirm-gateway-txs`; validators vote           | `verify_messages`, then `end_poll`; verifiers vote |
 | [2. Route](#2-route) to the destination chain         | Automatic; `route-message` for Cosmos chains     | `route_messages`                                 |
@@ -15,7 +15,7 @@ Relaying takes the same steps for every chain. What differs is where they happen
 | [4. Submit](#4-submit) it to the destination gateway  | The batch's `execute_data`                       | The proof's `execute_data`                       |
 | [5. Execute](#5-execute) the message                  | Same for both                                    | Same for both                                    |
 
-For consensus-connected and Cosmos chains, Axelarscan and the SDK do steps 1 to 4 for you. Messages between a consensus-connected or Cosmos chain and an Amplifier-connected chain go through both, and aren't covered here.
+For consensus and Cosmos chains, Axelarscan and the SDK do steps 1 to 4 for you. Messages between a consensus or Cosmos chain and an Amplifier chain go through both, and aren't covered here.
 
 Once the message is approved, [execute it](/gmp/track-and-recover/recover-transactions#execute) if no relayer does.
 
@@ -29,7 +29,7 @@ Once the message is approved, [execute it](/gmp/track-and-recover/recover-transa
 
 ## With Axelarscan or the SDK
 
-For consensus-connected chains and Cosmos chains.
+For consensus chains and Cosmos chains.
 
 **On Axelarscan:** open the message, and click **Approve**.
 
@@ -64,7 +64,7 @@ AXELARD_FLAGS="--from <key> --node https://axelar-rpc.polkachu.com:443 --chain-i
 
 See [Endpoints](/infrastructure/network/endpoints) for other RPCs.
 
-For Amplifier-connected chains, you also need the addresses of the Amplifier contracts. They're in [`mainnet.json`](https://github.com/axelarnetwork/axelar-contract-deployments/blob/main/axelar-chains-config/info/mainnet.json) ([`testnet.json`](https://github.com/axelarnetwork/axelar-contract-deployments/blob/main/axelar-chains-config/info/testnet.json)), under `axelar.contracts`:
+For Amplifier chains, you also need the addresses of the Amplifier contracts. They're in [`mainnet.json`](https://github.com/axelarnetwork/axelar-contract-deployments/blob/main/axelar-chains-config/info/mainnet.json) ([`testnet.json`](https://github.com/axelarnetwork/axelar-contract-deployments/blob/main/axelar-chains-config/info/testnet.json)), under `axelar.contracts`:
 
 | Contract                            | Key                                          |
 | ----------------------------------- | -------------------------------------------- |
@@ -88,13 +88,13 @@ MSG='{
 
 ### 1. Verify
 
-**Consensus-connected chains:** ask Axelar to verify the source transaction. Validators vote on it automatically.
+**Consensus chains:** ask Axelar to verify the source transaction. Validators vote on it automatically.
 
 ```bash
 axelard tx evm confirm-gateway-txs <source chain> <source tx hash> $AXELARD_FLAGS
 ```
 
-**Amplifier-connected chains:** ask the source chain's verifiers to check the message:
+**Amplifier chains:** ask the source chain's verifiers to check the message:
 
 ```bash
 axelard tx wasm execute <source gateway> "{\"verify_messages\":[$MSG]}" $AXELARD_FLAGS
@@ -116,7 +116,7 @@ Messages from Cosmos chains don't need this step: the IBC transfer that carries 
 
 ### 2. Route
 
-**Consensus-connected chains:** messages to EVM chains are routed automatically once verified. Messages to and from Cosmos chains are routed with their message ID and their exact original payload, in hex:
+**Consensus chains:** messages to EVM chains are routed automatically once verified. Messages to and from Cosmos chains are routed with their message ID and their exact original payload, in hex:
 
 ```bash
 axelard tx axelarnet route-message <message ID> <payload hex> $AXELARD_FLAGS
@@ -124,7 +124,7 @@ axelard tx axelarnet route-message <message ID> <payload hex> $AXELARD_FLAGS
 
 The payload must hash to the one in the message, including the 4-byte version prefix for messages to Cosmos chains. Routing a message without tokens costs 1 uaxl, taken from your account. `route-message` also sends a message to a Cosmos chain again after a failed delivery, e.g. a transfer that timed out.
 
-**Amplifier-connected chains:**
+**Amplifier chains:**
 
 ```bash
 axelard tx wasm execute <source gateway> "{\"route_messages\":[$MSG]}" $AXELARD_FLAGS
@@ -132,7 +132,7 @@ axelard tx wasm execute <source gateway> "{\"route_messages\":[$MSG]}" $AXELARD_
 
 ### 3. Sign
 
-**Consensus-connected chains:** ask validators to sign the pending commands for the destination chain, including this message's approval:
+**Consensus chains:** ask validators to sign the pending commands for the destination chain, including this message's approval:
 
 ```bash
 axelard tx evm sign-commands <destination chain> $AXELARD_FLAGS
@@ -144,7 +144,7 @@ Then query the batch until its status is `BATCHED_COMMANDS_STATUS_SIGNED`, and c
 axelard q evm latest-batched-commands <destination chain> --node <rpc>
 ```
 
-**Amplifier-connected chains:** ask the destination chain's verifiers to sign the message:
+**Amplifier chains:** ask the destination chain's verifiers to sign the message:
 
 ```bash
 axelard tx wasm execute <destination multisig prover> \
@@ -168,7 +168,7 @@ On an EVM destination, send `execute_data` to the gateway as calldata, for eithe
 cast send <destination gateway> 0x<execute_data> --rpc-url <destination RPC> --private-key <key>
 ```
 
-For other Amplifier-connected destinations, use the scripts in [axelar-contract-deployments](https://github.com/axelarnetwork/axelar-contract-deployments), with the multisig session ID:
+For other Amplifier destinations, use the scripts in [axelar-contract-deployments](https://github.com/axelarnetwork/axelar-contract-deployments), with the multisig session ID:
 
 | Destination | Command                                                                          |
 | ----------- | -------------------------------------------------------------------------------- |
@@ -182,8 +182,8 @@ The message is now approved on the destination gateway.
 
 [Execute the message](/gmp/track-and-recover/recover-transactions#execute) if no relayer does. To execute it from the command line on an EVM chain, you need its command ID:
 
-- **Consensus-connected chains:** it's in the gateway's `ContractCallApproved` event, and in the **Approved** step on Axelarscan.
-- **Amplifier-connected chains:** compute it from the source chain and message ID:
+- **Consensus chains:** it's in the gateway's `ContractCallApproved` event, and in the **Approved** step on Axelarscan.
+- **Amplifier chains:** compute it from the source chain and message ID:
 
   ```bash
   cast keccak "<source chain>_<message_id>"

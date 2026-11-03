@@ -33,7 +33,7 @@ Messages that use [Express](/gmp/integrations/evm/express) also show **Express E
 
 | Axelarscan shows | Meaning | What to do |
 | --- | --- | --- |
-| **Pay Gas** | No gas was paid, so nobody executes it. | [Add gas](/gmp/track-and-recover/recover-transactions#add-gas), or [execute it yourself](/gmp/track-and-recover/recover-transactions#execute) once approved. |
+| **Pay Gas** | No gas was paid, so the message isn't relayed. | [Add gas](/gmp/track-and-recover/recover-transactions#add-gas), or [relay it manually](/gmp/track-and-recover/manual-relay) and [execute it yourself](/gmp/track-and-recover/recover-transactions#execute). |
 | **Insufficient Fee** | The gas paid doesn't cover verification and approval. | [Add gas](/gmp/track-and-recover/recover-transactions#add-gas). |
 | **Waiting for Finality** | The source transaction isn't final yet. | Wait. See [transaction time](/gmp/how-it-works/finality-and-timing). |
 | **Confirm** or **Approve**, for a long time | The relayer didn't pick it up. | [Relay it manually](/gmp/track-and-recover/manual-relay). |

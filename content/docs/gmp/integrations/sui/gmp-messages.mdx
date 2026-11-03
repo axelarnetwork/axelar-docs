@@ -151,7 +151,7 @@ public fun init_for_testing(ctx: &mut TxContext) {
 Sending is one transaction with three calls:
 
 1. **Prepare.** `prepare_message` returns a `MessageTicket` from the Messenger's channel. The channel is the sender: its ID is the source address the receiver sees.
-1. **Pay gas** with `pay_gas` on the gas service, for the ticket. Pay in SUI. Without gas, the message is verified but never executed. Get the amount, in MIST, from an [off-chain estimate](/gmp/gas/estimate-and-pay#estimate-the-fee) with `sui` as the source chain. Any refund goes to the refund address. Pass empty `params`.
+1. **Pay gas** with `pay_gas` on the gas service, for the ticket. Pay in SUI. Without gas, the message isn't relayed. Get the amount, in MIST, from an [off-chain estimate](/gmp/gas/estimate-and-pay#estimate-the-fee) with `sui` as the source chain. Any refund goes to the refund address. Pass empty `params`.
 1. **Send** the ticket with `send_message` on the gateway.
 
 The package returns the ticket instead of paying gas and sending it itself, as the gateway recommends. If Axelar upgrades the gateway, the transaction calls the new `send_message`, and your package keeps working. A package can also call `pay_gas` and `send_message` itself (add the `gas_service` dependency), but it may then need an upgrade when the gateway is upgraded.

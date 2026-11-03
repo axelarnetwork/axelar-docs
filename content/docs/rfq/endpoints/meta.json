@@ -1,4 +1,10 @@
 {
   "title": "Endpoints",
-  "pages": ["quote", "chains", "tokens", "status"]
+  "icon": "Braces",
+  "pages": [
+    "quote",
+    "chains",
+    "tokens",
+    "status"
+  ]
 }

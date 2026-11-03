@@ -7,7 +7,7 @@ axlUSDC is Axelar's wrapped [USDC](https://www.circle.com/en/usdc). Each axlUSDC
 
 - **Minting.** Depositing USDC at the Ethereum gateway mints the same amount of axlUSDC on the destination chain, minus fees. Sending it back burns it and releases the USDC.
 - **Moving between chains.** Once minted, axlUSDC moves from chain to chain directly, without going back through Ethereum.
-- **Security.** axlUSDC is a [gateway token](/gmp/integrations/evm/send-tokens-with-messages) on consensus-connected chains: the gateways that mint and release it only accept approvals signed by Axelar's validators, weighted by stake. See [Security & Bug Bounty](/infrastructure/resources/security).
+- **Security.** On EVM chains, axlUSDC is a [gateway token](/gmp/integrations/evm/send-tokens-with-messages) on [consensus chains](/infrastructure#verifying-connected-chains): the gateways that lock, mint and release it only accept approvals signed by Axelar's validators, weighted by the square root of their stake ([quadratic voting](/infrastructure/resources/security#quadratic-voting)). On Cosmos chains, it arrives over [IBC](https://ibcprotocol.dev/) from the Axelar chain. See [Security & Bug Bounty](/infrastructure/resources/security).
 
 axlUSDC is widely used in the Cosmos ecosystem, including as the main USDC on [Osmosis](https://osmosis.zone/). Its token address on each chain is under [Assets](/infrastructure/network/chains-and-contracts#assets).
 

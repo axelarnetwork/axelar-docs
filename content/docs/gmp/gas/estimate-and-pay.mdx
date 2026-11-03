@@ -35,7 +35,7 @@ Optional parameters help messages that can't afford to get stuck:
 - `gasMultiplier` multiplies the execution fee, e.g. `1.2` for a 20% buffer. The default, `"auto"`, uses Axelar's multiplier for the chain.
 - `minGasPrice` sets a floor, in wei, for the destination gas price. Useful on chains where gas prices spike.
 - `executeData` is the destination transaction's calldata. For rollup destinations it makes the L1 data fee more accurate; without it, a placeholder is used.
-- `gmpParams.showDetailedFees: true` returns the breakdown instead of a total.
+- `gmpParams` with `showDetailedFees: true` returns the breakdown instead of a total. Its type also requires `destinationContractAddress`, `sourceContractAddress` and `tokenSymbol`; pass empty strings for a plain message, e.g. `{ showDetailedFees: true, destinationContractAddress: '', sourceContractAddress: '', tokenSymbol: '' }`.
 
 See [AxelarJS SDK](/gmp/resources/axelarjs-sdk#estimategasfee) for every parameter.
 

@@ -63,9 +63,14 @@ export async function generateMetadata(
   return {
     title: getPageTabTitle(page),
     description: page.data.description,
-    // Points agents at the Markdown version of the page.
+    // Points agents at the Markdown version of the page. Redeclaring
+    // `alternates` overwrites the root layout's, so its llms.txt link is repeated.
     alternates: {
-      types: { 'text/markdown': getPageMarkdownUrl(page).url },
+      canonical: page.url,
+      types: {
+        'text/markdown': getPageMarkdownUrl(page).url,
+        'text/plain': [{ url: '/llms.txt', title: 'llms.txt' }],
+      },
     },
     // Redeclaring `openGraph` overwrites (not deep-merges) the root layout's, so
     // the shared site-level fields (including the image) are repeated here.
@@ -73,6 +78,7 @@ export async function generateMetadata(
       type: 'article',
       siteName: appName,
       locale: 'en_US',
+      url: page.url,
       images: ogImage,
     },
   };

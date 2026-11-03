@@ -4,25 +4,42 @@ icon: BookOpen
 description: What Axelar is, and how these docs are organized.
 ---
 
-Axelar is an interoperability network: it connects blockchains so that applications on one chain can call contracts and move tokens on another. It is two things at once.
+Axelar is an interoperability network: it connects blockchains so that applications on one chain can call contracts and move tokens on another. This page covers the Axelar chain itself, how it verifies the chains connected to it, Amplifier, and the protocols applications build on.
+
+<Callout title="Using an AI agent?">
+  Give it [`llms.txt`](https://docs.axelar.dev/llms.txt): an index of every page
+  of these docs, each linked to its Markdown, so the agent can read the pages it
+  needs. The bot icon next to GitHub in the sidebar copies its link, and **Copy
+  Markdown** at the top of each page copies that page.
+</Callout>
 
 ## An L1 blockchain
 
-The Axelar network is its own proof-of-stake blockchain, built with the Cosmos SDK. Validators run `axelard`, produce blocks and secure the chain with staked AXL, and anyone can run a node, query it over RPC or follow it in an explorer. Like any L1 it goes through network upgrades and governance proposals.
+The Axelar network is its own proof-of-stake blockchain, built with the Cosmos SDK. [Validators](/infrastructure/validators) produce blocks and secure the chain with staked AXL. Anyone can [run a node](/infrastructure/node/setup), query it over RPC or follow it in an explorer, and like any L1 the chain goes through network upgrades and [governance proposals](/infrastructure/network/governance).
 
-Public RPC, LCD and gRPC endpoints, block explorers and faucets for mainnet and testnet are listed on [Network](/infrastructure/network/endpoints). Everything else needed to run and use the chain itself (nodes, validators, verifiers, upgrades) is in this section.
+The chain is the hub of a hub-and-spoke network. Other blockchains, the [connected chains](/infrastructure/network/chains-and-contracts), connect to Axelar rather than to each other: a message from one connected chain to another passes through Axelar, which checks it and routes it to its destination. A chain that connects to Axelar can reach every other connected chain.
+
+Public RPC, LCD and gRPC endpoints, block explorers and faucets for mainnet and testnet are listed on [Network](/infrastructure/network/endpoints).
+
+## Verifying connected chains
+
+Before Axelar passes a message on, it checks that the message really happened on its source chain: everyone who verifies that chain queries their own node for it and votes. Who votes depends on how the chain is connected:
+
+- **Consensus chains**, the EVM chains connected before Amplifier, are verified by the Axelar validators.
+- **Amplifier chains** are verified by Amplifier verifiers, who don't need to be validators.
+
+See [Verifiers](/infrastructure/verifiers) for how to take part in either.
 
 ## A cross-chain protocol: Amplifier
 
-On top of that chain runs the protocol that carries messages between connected chains. Amplifier is its current version. It is a set of CosmWasm contracts on the Axelar chain, plus an off-chain verifier service, that lets any chain connect to Axelar permissionlessly:
+Amplifier is how new chains connect to Axelar, permissionlessly. It is a set of [CosmWasm contracts](/infrastructure/resources/references#amplifier-contracts) on the Axelar chain, plus the off-chain verifier service:
 
 - A **gateway contract** on each connected chain is where applications send and receive cross-chain messages.
-- On Axelar, a **verifier contract** for each chain checks that a message really happened on its source chain, a **router** forwards it to the destination chain, and a **prover** produces the proof the destination gateway needs to accept it.
-- **Verifiers** run `ampd` to vote on source-chain events and sign outgoing messages for the chains they support.
+- On Axelar, a **verifier contract** for each chain counts the verifiers' votes, a **router** forwards the message to the destination chain, and a **prover** produces the proof the destination gateway needs to accept it.
 
-Chains connected before Amplifier are verified directly by the Axelar validators; new chains connect through Amplifier.
+## Protocols for applications
 
-Amplifier is what the products are built on:
+Applications use two cross-chain protocols that run on Axelar, on both kinds of chain:
 
 - **[General Message Passing (GMP)](/gmp/overview)** sends arbitrary messages between chains, so a contract on one chain can call a contract on another.
 - **[Interchain Token Service (ITS)](/its/overview)** uses GMP to deploy tokens and transfer them across chains, routed through the ITS Hub on Axelar.

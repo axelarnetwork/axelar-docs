@@ -26,7 +26,7 @@ If your code fails after validation, the whole transaction reverts, including th
 
 The destination gateway identifies each message by a command ID, a `bytes32` that your contract receives with the message on EVM chains.
 
-- **Amplifier-connected chains:** the command ID is derived from the message's source chain and message ID: `keccak256(sourceChain + "_" + messageId)`. The gateway's `messageToCommandId` computes it.
-- **Consensus-connected chains:** Axelar assigns the command ID when it approves the message, and it's in the gateway's `ContractCallApproved` event.
+- **Amplifier chains:** the command ID is derived from the message's source chain and message ID: `keccak256(sourceChain + "_" + messageId)`. The gateway's `messageToCommandId` computes it.
+- **Consensus chains:** Axelar assigns the command ID when it approves the message, and it's in the gateway's `ContractCallApproved` event.
 
 The message ID identifies a message across chains, e.g. `<transaction hash>-<log index>` for a message from an EVM chain, and is shown on Axelarscan. For the gateway functions that use them, see the [EVM contract reference](/gmp/integrations/evm/gmp-contracts#receive).

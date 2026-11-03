@@ -144,7 +144,7 @@ mod test;
 
 `send` does two things, in one call:
 
-1. **Pays gas** with `pay_gas` on the gas service. `caller` pays in `gas_token`, authorizes the payment, and receives any refund. Without gas, the message is verified but never executed. Get the amount from an [off-chain estimate](/gmp/gas/estimate-and-pay#estimate-the-fee) with `stellar` (or the testnet chain name) as the source chain; it's in the gas token's smallest unit. The payment must use the same destination chain, destination address and payload as the call that follows.
+1. **Pays gas** with `pay_gas` on the gas service. `caller` pays in `gas_token`, authorizes the payment, and receives any refund. Without gas, the message isn't relayed. Get the amount from an [off-chain estimate](/gmp/gas/estimate-and-pay#estimate-the-fee) with `stellar` (or the testnet chain name) as the source chain; it's in the gas token's smallest unit. The payment must use the same destination chain, destination address and payload as the call that follows.
 1. **Calls the gateway** with `call_contract`. Your contract is the sender, so it passes `env.current_contract_address()`, and authorizes as itself.
 
 The payload is bytes, and the receiver decodes it however it expects. An [EVM contract](/gmp/integrations/evm/gmp-messages) usually decodes it with `abi.decode`, so ABI-encode it. You can encode it off-chain and pass it to `send`, e.g. `cast abi-encode "f(string)" "hello"`, or in Rust with [`alloy-sol-types`](https://docs.rs/alloy-sol-types).

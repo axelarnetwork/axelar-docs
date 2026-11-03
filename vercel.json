@@ -2524,6 +2524,271 @@
       "source": "/its/integrations/sui/coin-management(/)?",
       "destination": "/its/integrations/sui/its-contracts",
       "permanent": true
+    },
+    {
+      "source": "/controller(/)?",
+      "destination": "/infrastructure/network/governance",
+      "permanent": true
+    },
+    {
+      "source": "/controller/add-evm-chain(/)?",
+      "destination": "/infrastructure/network/governance",
+      "permanent": true
+    },
+    {
+      "source": "/controller/deploy-token(/)?",
+      "destination": "/infrastructure/network/governance",
+      "permanent": true
+    },
+    {
+      "source": "/dev/reference/mainnet-chain-names(/)?",
+      "destination": "/gmp/integrations/evm/intro#chain-names",
+      "permanent": true
+    },
+    {
+      "source": "/dev/reference/testnet-chain-names(/)?",
+      "destination": "/gmp/integrations/evm/intro#chain-names",
+      "permanent": true
+    },
+    {
+      "source": "/dev/build/chain-names/mainnet(/)?",
+      "destination": "/gmp/integrations/evm/intro#chain-names",
+      "permanent": true
+    },
+    {
+      "source": "/dev/general-message-passing/build/chain-names(/)?",
+      "destination": "/gmp/integrations/evm/intro#chain-names",
+      "permanent": true
+    },
+    {
+      "source": "/dev/general-message-passing/chain-names(/)?",
+      "destination": "/gmp/integrations/evm/intro#chain-names",
+      "permanent": true
+    },
+    {
+      "source": "/dev/general-message-passing/chain-names/testnet(/)?",
+      "destination": "/gmp/integrations/evm/intro#chain-names",
+      "permanent": true
+    },
+    {
+      "source": "/resources/supported(/)?",
+      "destination": "/infrastructure/network/chains-and-contracts#connected-chains",
+      "permanent": true
+    },
+    {
+      "source": "/dev/cosmos-gmp(/)?",
+      "destination": "/gmp/integrations/cosmos/overview",
+      "permanent": true
+    },
+    {
+      "source": "/dev/general-message-passing/axelar-sandbox/intro(/)?",
+      "destination": "/gmp/resources/examples-and-tutorials",
+      "permanent": true
+    },
+    {
+      "source": "/dev/general-message-passing/example-airdrop(/)?",
+      "destination": "/gmp/resources/examples-and-tutorials",
+      "permanent": true
+    },
+    {
+      "source": "/dev/general-message-passing/example-composable-usdc(/)?",
+      "destination": "/gmp/resources/examples-and-tutorials",
+      "permanent": true
+    },
+    {
+      "source": "/dev/general-message-passing/example-nft-linker(/)?",
+      "destination": "/gmp/resources/examples-and-tutorials",
+      "permanent": true
+    },
+    {
+      "source": "/dev/general-message-passing/example-usdc-cctp(/)?",
+      "destination": "/gmp/resources/examples-and-tutorials",
+      "permanent": true
+    },
+    {
+      "source": "/dev/guides/example-airdrop(/)?",
+      "destination": "/gmp/resources/examples-and-tutorials",
+      "permanent": true
+    },
+    {
+      "source": "/dev/guides/example-composable-usdc(/)?",
+      "destination": "/gmp/resources/examples-and-tutorials",
+      "permanent": true
+    },
+    {
+      "source": "/dev/guides/example-nft-linker(/)?",
+      "destination": "/gmp/resources/examples-and-tutorials",
+      "permanent": true
+    },
+    {
+      "source": "/dev/guides/example-usdc(/)?",
+      "destination": "/gmp/resources/examples-and-tutorials",
+      "permanent": true
+    },
+    {
+      "source": "/dev/general-message-passing/video-guides(/)?",
+      "destination": "/gmp/resources/examples-and-tutorials",
+      "permanent": true
+    },
+    {
+      "source": "/dev/guides/video-guides(/)?",
+      "destination": "/gmp/resources/examples-and-tutorials",
+      "permanent": true
+    },
+    {
+      "source": "/dev/indexers(/)?",
+      "destination": "/infrastructure/network/endpoints",
+      "permanent": true
+    },
+    {
+      "source": "/dev/indexers/overview(/)?",
+      "destination": "/infrastructure/network/endpoints",
+      "permanent": true
+    },
+    {
+      "source": "/dev/indexers/subquery(/)?",
+      "destination": "/infrastructure/network/endpoints",
+      "permanent": true
+    },
+    {
+      "source": "/dev/sdk(/)?",
+      "destination": "/gmp/resources/axelarjs-sdk",
+      "permanent": true
+    },
+    {
+      "source": "/dev/send-tokens/stellar-its(/)?",
+      "destination": "/its/integrations/stellar/intro",
+      "permanent": true
+    },
+    {
+      "source": "/dev/send-tokens/sui-its(/)?",
+      "destination": "/its/integrations/sui/intro",
+      "permanent": true
+    },
+    {
+      "source": "/dev/general-message-passing/stellar-gmp/its-example(/)?",
+      "destination": "/its/integrations/stellar/intro",
+      "permanent": true
+    },
+    {
+      "source": "/resources/axelarscan-add(/)?",
+      "destination": "/infrastructure/resources/references#developer-tools-and-explorer",
+      "permanent": true
+    },
+    {
+      "source": "/resources/axelarscan/axelarscan-add(/)?",
+      "destination": "/infrastructure/resources/references#developer-tools-and-explorer",
+      "permanent": true
+    },
+    {
+      "source": "/resources/community/community-pool-proposals(/)?",
+      "destination": "/infrastructure/network/governance",
+      "permanent": true
+    },
+    {
+      "source": "/resources/governance/community-pool-proposals(/)?",
+      "destination": "/infrastructure/network/governance",
+      "permanent": true
+    },
+    {
+      "source": "/resources/keplr(/)?",
+      "destination": "/infrastructure/network/endpoints#wallets",
+      "permanent": true
+    },
+    {
+      "source": "/resources/lava-iprpc(/)?",
+      "destination": "/infrastructure/network/endpoints",
+      "permanent": true
+    },
+    {
+      "source": "/resources/static-configs/static-configs(/)?",
+      "destination": "/infrastructure/network/chains-and-contracts",
+      "permanent": true
+    },
+    {
+      "source": "/validator/external-chains/aurora(/)?",
+      "destination": "/infrastructure/verifiers",
+      "permanent": true
+    },
+    {
+      "source": "/validator/external-chains/hero(/)?",
+      "destination": "/infrastructure/verifiers",
+      "permanent": true
+    },
+    {
+      "source": "/validator/external-chains/polygon-zkevm(/)?",
+      "destination": "/infrastructure/verifiers",
+      "permanent": true
+    },
+    {
+      "source": "/validator/external-chains/stacks(/)?",
+      "destination": "/infrastructure/verifiers",
+      "permanent": true
+    },
+    {
+      "source": "/sitemap-0.xml",
+      "destination": "/sitemap.xml",
+      "permanent": true
+    },
+    {
+      "source": "/sitemap-index.xml",
+      "destination": "/sitemap.xml",
+      "permanent": true
+    },
+    {
+      "source": "/releases/:slug*",
+      "destination": "/resources/:slug*",
+      "permanent": true
+    },
+    {
+      "source": "/user/:slug*",
+      "destination": "/resources/:slug*",
+      "permanent": true
+    },
+    {
+      "source": "/roles/:slug*",
+      "destination": "/:slug*",
+      "permanent": true
+    },
+    {
+      "source": "/dev/sdk/:slug*",
+      "destination": "/gmp/resources/axelarjs-sdk",
+      "permanent": true
+    },
+    {
+      "source": "/dev/cli/:slug*",
+      "destination": "/learn/cli/:slug*",
+      "permanent": true
+    },
+    {
+      "source": "/dev/build/:path*",
+      "destination": "/dev/general-message-passing/:path*",
+      "permanent": true
+    },
+    {
+      "source": "/dev/debug/:path*",
+      "destination": "/dev/general-message-passing/debug/:path*",
+      "permanent": true
+    },
+    {
+      "source": "/dev/guides/:path*",
+      "destination": "/gmp/resources/examples-and-tutorials",
+      "permanent": true
+    },
+    {
+      "source": "/dev/indexers/:path*",
+      "destination": "/infrastructure/network/endpoints",
+      "permanent": true
+    },
+    {
+      "source": "/controller/:path*",
+      "destination": "/infrastructure/network/governance",
+      "permanent": true
+    },
+    {
+      "source": "/cli-docs/:version/:path*",
+      "destination": "https://github.com/axelarnetwork/axelar-core/blob/main/docs/cli/:path*.md",
+      "permanent": true
     }
   ],
   "rewrites": [
