@@ -87,7 +87,7 @@ Deploy it on two chains with each chain's gateway and gas service, then call `se
 
 `sendMessage` does two things, in one transaction:
 
-1. **Pays gas** to the gas service. Without gas, the message is verified but never executed. Get the amount from an [off-chain estimate](/gmp/gas/estimate-and-pay#estimate-the-fee) and send it as the transaction value. The payment must use the same destination chain, destination address and payload as the call that follows.
+1. **Pays gas** to the gas service. Without gas, the message isn't relayed. Get the amount from an [off-chain estimate](/gmp/gas/estimate-and-pay#estimate-the-fee) and send it as the transaction value. The payment must use the same destination chain, destination address and payload as the call that follows.
 1. **Calls the gateway**: `callContract(destinationChain, destinationAddress, payload)`. `destinationAddress` is a string, so it can be an address on any chain: a `0x` address on EVM chains, a program ID on Solana, and so on.
 
 The payload is arbitrary bytes. Here it's an ABI-encoded string; the receiver decodes it with the same types.

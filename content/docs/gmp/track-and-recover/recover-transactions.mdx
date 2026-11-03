@@ -57,7 +57,7 @@ To add gas without the SDK, call the gas service directly. See [Add gas and refu
 
 ## Execute
 
-Use this when a message is approved but not executed: no gas was paid, or execution failed with **Error**. You send the destination transaction yourself and pay its gas.
+Use this when a message is approved but not executed: execution failed with **Error**, or there wasn't enough gas for it, or you [relayed](/gmp/track-and-recover/manual-relay) an unpaid message yourself. You send the destination transaction yourself and pay its gas.
 
 If execution failed because the destination contract reverts, executing again fails the same way. [Debug it](/gmp/track-and-recover/debug-failed-execution) first.
 

@@ -193,7 +193,7 @@ pub struct SendMessage<'info> {
 
 ### Handler
 
-The handler pays gas first, then sends the message — both via CPI in a single instruction. `gas_amount` is in lamports; get it from an [off-chain estimate](/gmp/gas/estimate-and-pay#estimate-the-fee) with `solana` as the source chain. Without gas, the message is verified but never executed.
+The handler pays gas first, then sends the message — both via CPI in a single instruction. `gas_amount` is in lamports; get it from an [off-chain estimate](/gmp/gas/estimate-and-pay#estimate-the-fee) with `solana` as the source chain. Without gas, the message isn't relayed.
 
 ```rust
 pub fn send_message_handler(
