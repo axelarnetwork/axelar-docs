@@ -1,0 +1,9 @@
+{
+  "title": "Operations",
+  "pages": [
+    "health-check",
+    "monitoring",
+    "mnemonic-rotation",
+    "leave"
+  ]
+}

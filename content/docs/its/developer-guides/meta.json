@@ -1,0 +1,8 @@
+{
+  "title": "Developer Guides",
+  "pages": [
+    "programmatically-create-a-token",
+    "programmatically-create-a-canonical-token",
+    "link-custom-tokens-deployed-across-multiple-chains-into-interchain-tokens"
+  ]
+}

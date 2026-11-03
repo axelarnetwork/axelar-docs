@@ -1,0 +1,32 @@
+---
+title: Overview
+icon: BookOpen
+description: What Axelar is, and how these docs are organized.
+---
+
+Axelar is an interoperability network: it connects blockchains so that applications on one chain can call contracts and move tokens on another. It is two things at once.
+
+## An L1 blockchain
+
+The Axelar network is its own proof-of-stake blockchain, built with the Cosmos SDK. Validators run `axelard`, produce blocks and secure the chain with staked AXL, and anyone can run a node, query it over RPC or follow it in an explorer. Like any L1 it goes through network upgrades and governance proposals.
+
+Public RPC, LCD and gRPC endpoints, block explorers and faucets for mainnet and testnet are listed on [Network](/infrastructure/network/endpoints). Everything else needed to run and use the chain itself (nodes, validators, verifiers, upgrades) is in this section.
+
+## A cross-chain protocol: Amplifier
+
+On top of that chain runs the protocol that carries messages between connected chains. Amplifier is its current version. It is a set of CosmWasm contracts on the Axelar chain, plus an off-chain verifier service, that lets any chain connect to Axelar permissionlessly:
+
+- A **gateway contract** on each connected chain is where applications send and receive cross-chain messages.
+- On Axelar, a **verifier contract** for each chain checks that a message really happened on its source chain, a **router** forwards it to the destination chain, and a **prover** produces the proof the destination gateway needs to accept it.
+- **Verifiers** run `ampd` to vote on source-chain events and sign outgoing messages for the chains they support.
+
+Chains connected before Amplifier are verified directly by the Axelar validators; new chains connect through Amplifier.
+
+Amplifier is what the products are built on:
+
+- **[General Message Passing (GMP)](/gmp/overview)** sends arbitrary messages between chains, so a contract on one chain can call a contract on another.
+- **[Interchain Token Service (ITS)](/its/overview)** uses GMP to deploy tokens and transfer them across chains, routed through the ITS Hub on Axelar.
+
+## Sections
+
+<SectionCards />

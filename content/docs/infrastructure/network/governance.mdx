@@ -1,0 +1,43 @@
+---
+title: "Governance"
+description: "How the Axelar network is governed on-chain, and how governance reaches contracts on other chains."
+---
+
+The Axelar network is governed by holders of staked AXL, through the Cosmos SDK governance module on the Axelar chain. The same proposals also govern Axelar's contracts on connected chains, by sending them cross-chain messages.
+
+## On-chain governance
+
+Anyone can submit a proposal with a deposit. Once the deposit reaches the minimum, the proposal enters its voting period, during which validators vote with the weight of their stake. Delegators inherit their validator's vote unless they vote themselves. If the proposal passes, its messages are executed by the governance module.
+
+Proposals can, for example:
+
+- upgrade the network software (`axelar-core`),
+- change module parameters,
+- spend from the community pool,
+- execute Amplifier contracts on the Axelar chain, such as authorizing verifiers (see [Verifier governance proposals](/infrastructure/verifiers/amplifier/governance-proposals)),
+- send governance messages to other chains (see [below](#interchain-governance)).
+
+Current and past proposals are listed on [Axelarscan](https://axelarscan.io/proposals). With `axelard`, you can check the current deposit and voting parameters, list proposals and vote:
+
+```bash
+axelard q gov params
+axelard q gov proposals
+axelard tx gov vote {PROPOSAL_ID} yes --from validator
+```
+
+## Interchain governance
+
+Axelar's contracts on other chains, such as the gateway, gas service and Interchain Token Service on EVM chains, are owned by governance contracts that only accept commands from Axelar governance.
+
+1. A proposal on the Axelar chain sends a message through Amplifier, from source chain `axelar`, to the governance contract on the destination chain.
+2. The governance contract checks that the message comes from Axelar governance and schedules the change with a timelock.
+3. Once the timelock has passed, anyone can execute the change.
+
+There are two governance contracts on EVM chains:
+
+- [`InterchainGovernance`](https://github.com/axelarnetwork/axelar-gmp-sdk-solidity/blob/main/contracts/governance/InterchainGovernance.sol) schedules and cancels timelocked proposals.
+- [`AxelarServiceGovernance`](https://github.com/axelarnetwork/axelar-gmp-sdk-solidity/blob/main/contracts/governance/AxelarServiceGovernance.sol) does the same, and can also approve proposals for an operator to execute without waiting for the timelock, so that changes can be coordinated with other network upgrades.
+
+Because governance messages are ordinary cross-chain messages, the same mechanism can govern contracts on any chain connected to Axelar that has a governance contract.
+
+The scripts and step-by-step workflows used to create interchain governance proposals are in [axelar-contract-deployments](https://github.com/axelarnetwork/axelar-contract-deployments/blob/main/evm/docs/governance.md).

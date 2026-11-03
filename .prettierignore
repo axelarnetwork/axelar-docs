@@ -1,1 +1,12 @@
-src/scripts/prism.js
+# deps & generated
+node_modules
+.source
+pnpm-lock.yaml
+
+# build output
+.next
+out
+*.tsbuildinfo
+
+# docs prose — formatted by hand (MDX tables etc.)
+content

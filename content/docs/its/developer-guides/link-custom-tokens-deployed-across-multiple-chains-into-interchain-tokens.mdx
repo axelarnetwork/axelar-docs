@@ -1,0 +1,818 @@
+---
+title: "Link Custom Tokens Deployed Across Multiple Chains"
+---
+
+Custom ERC-20 tokens deployed on multiple chains with specific minting policies, ownership structures, rate limits, and other bespoke functionalities can be turned into Interchain Tokens through the [Interchain Token Service](/its/overview).
+
+In this tutorial, you will:
+
+- Link custom tokens deployed across multiple chains into Interchain Tokens
+- Deploy a simple ERC-20 token on the BSC chain
+- Deploy a simple ERC-20 token on the Avalanche Fuji chain
+- Register token metadata with the ITS Contract on both BSC and Avalanche Fuji chain
+- Register the custom token with the [Interchain Token Factory](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/InterchainTokenFactory.sol) on BSC and Avalanche Fuji chain
+- Link custom token with the [Interchain Token Factory](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/InterchainTokenFactory.sol) from BSC to Avalanche Fuji chain
+- Assign the minter role to your token's Token Manager on BSC and Avalanche Fuji chain
+
+## Prerequisites
+
+You will need:
+
+- A basic understanding of [Solidity](https://www.tutorialspoint.com/solidity/index.htm) and [JavaScript](https://www.w3schools.com/js/)
+- A [MetaMask wallet](https://metamask.io/) with tBNB and Avax funds for testing. If you don't have these funds, you can get tBNB from the [BSC faucet](https://www.bnbchain.org/en/testnet-faucet) and Avax from the Avalanche Fuji faucets ([1](https://faucets.chain.link/fuji), [2](https://core.app/tools/testnet-faucet/)).
+
+## Deploy an ERC-20 token on the BSC and Avalanche Fuji testnets
+
+Deploy the following `SimpleCustomToken` on the BSC and Avalanche Fuji testnets.
+
+This code utilizes OpenZeppelin's libraries to create a custom ERC-20 token with functionalities for minting, burning, and access control. The token includes a minter role, which enables designated addresses to mint or burn tokens. Additionally, it incorporates ERC20Permit for gasless transactions. The contract starts with a predefined supply of tokens minted to the deployer's address and establishes roles for a default administrator and minter:
+
+```solidity
+
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.18;
+
+// Import OpenZeppelin contracts for ERC-20 standard token implementations,
+// burnable tokens, access control mechanisms, and permit functionality
+import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Burnable.sol";
+import "@openzeppelin/contracts/access/AccessControl.sol";
+import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Permit.sol";
+
+contract SimpleCustomToken is ERC20, ERC20Burnable, AccessControl, ERC20Permit {
+
+// Define a constant for the minter role using keccak256 to generate a unique hash
+    bytes32 public constant MINTER_ROLE = keccak256("MINTER_ROLE");
+
+    constructor(address defaultAdmin, address minter)
+        ERC20("SimpleCustomToken", "SCT") // Set token name and symbol
+        ERC20Permit("SimpleCustomToken") // Initialize ERC20Permit with the token name
+    {
+        // Mint an initial supply of tokens to the message sender
+        _mint(msg.sender, 10000 * 10 ** decimals());
+
+
+        // Grant the DEFAULT_ADMIN_ROLE to the specified defaultAdmin address
+        _grantRole(DEFAULT_ADMIN_ROLE, defaultAdmin);
+
+
+        // Grant the MINTER_ROLE to the specified minter address
+        // Addresses with the minter role are allowed to mint new tokens
+        _grantRole(MINTER_ROLE, minter);
+    }
+
+    // Mint new tokens. Only addresses with the MINTER_ROLE can call this function
+    function mint(address to, uint256 amount) public onlyRole(MINTER_ROLE) {
+        _mint(to, amount);
+    }
+
+    // Burn tokens from a specified account
+    function burn(address account, uint256 amount) public onlyRole(MINTER_ROLE) {
+        _burn(account, amount);
+    }
+}
+```
+
+Check out this [Hardhat guide](https://hardhat.org/tutorial) to learn how to deploy your ERC-20 token using Hardhat step by step.
+
+## Set up your development environment
+
+### Create and initialize a project
+
+Open up your terminal and navigate to any directory of your choice. Run the following commands to create and initiate a project:
+
+```bash
+mkdir custom-interchain-token-project && cd custom-interchain-token-project
+npm init -y
+```
+
+# Install Hardhat and the AxelarJS SDK
+
+Install Hardhat and the AxelarJS SDK with the following commands:
+
+```bash
+npm install --save-dev hardhat@2.18.1 dotenv@16.3.1
+npm install @axelar-network/axelarjs-sdk@0.13.9 crypto@1.0.1 @nomicfoundation/hardhat-toolbox@2.0.2
+```
+
+### Set up project ABIs
+
+Next, set up the ABIs for the [Interchain Token Service](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/InterchainTokenService.sol) and the contract from the token you deployed.
+
+Create a folder named `utils`. Inside the folder, create the following new files and add the respective ABIs:
+
+- Add the [Interchain Token Service ABI](https://gist.github.com/Olanetsoft/2a632784e6753d34ca7ffc4f73bf58ed) to `interchainTokenServiceABI.json`.
+- Add the [Interchain Token Factory ABI](https://gist.github.com/Olanetsoft/7d24e936f4cf6bd3d10d7b4f9a18d838) to `interchainTokenFactoryABI.json`.
+- Add your custom token ABI to `customTokenABI.json`. You can get this from [BSC Scan](https://testnet.bscscan.com/) or [Avalanche Fuji Scan](https://testnet.snowtrace.io/) with the address of your deployed token if your contract is verified. Otherwise, you can get it from the same service on which you deployed the `SimpleCustomToken`.
+
+## Set up an RPC for the local chain
+
+Set up an RPC for the BSC and Avalanche Fuji testnet in the root directory.
+
+### Create an `.env` file
+
+To make sure you're not accidentally publishing your private key, create an [.env file](https://blog.bitsrc.io/a-gentle-introduction-to-env-files-9ad424cc5ff4) to store it in:
+
+```bash
+touch .env
+```
+
+### Add your private key to `.env` and `hardhat.config.js.`
+
+[Export your private key](https://support.metamask.io/managing-my-wallet/secret-recovery-phrase-and-private-keys/how-to-export-an-accounts-private-key/) and add it to the  `.env` file you just created:
+
+```bash
+PRIVATE_KEY= // Add your account private key here
+```
+
+<Callout emoji="💡">
+  If you will push this project on GitHub, create a `.gitignore` file and
+  include `.env`.
+</Callout>
+
+Then, create a file with the name `hardhat.config.js` and add the following code snippet:
+
+```javascript
+require("@nomicfoundation/hardhat-toolbox");
+require("dotenv").config({ path: ".env" });
+
+const PRIVATE_KEY = process.env.PRIVATE_KEY;
+
+/** @type import('hardhat/config').HardhatUserConfig */
+module.exports = {
+  solidity: "0.8.18",
+  networks: {
+    bsc: {
+      url: "https://bsc-testnet.drpc.org",
+      chainId: 97,
+      accounts: [PRIVATE_KEY],
+    },
+    avalanche: {
+      url: "https://avalanche-fuji-c-chain-rpc.publicnode.com",
+      chainId: 43113,
+      accounts: [PRIVATE_KEY],
+    },
+  },
+};
+```
+
+## Register token metadata with the ITS Contract on both BSC and Avalanche Fuji chain
+
+Now that you have set up an RPC for the BSC and Avalanche Fuji testnet, you can register token metadata with the ITS Contract on both chains.  
+The token metadata registers the metadata for a token on the ITS Hub. This metadata is used to scale linked tokens.
+
+### Create a `customInterchainToken.js` script
+
+Create a new file named `customInterchainToken.js` and import the required dependencies:
+
+- `Ethers.js`
+- The [AxelarJS SDK](https://github.com/axelarnetwork/axelarjs-sdk)
+- The custom token contract ABI
+- The address of the [`InterchainTokenService`](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/InterchainTokenService.sol) contract
+- The address of your token deployed on BSC and Avalanche Fuji testnet
+
+```javascript
+const hre = require("hardhat");
+const crypto = require("crypto");
+const ethers = hre.ethers;
+
+const interchainTokenServiceContractABI = require("./utils/interchainTokenServiceABI");
+const interchainTokenFactoryContractABI = require("./utils/interchainTokenFactoryABI");
+const customTokenABI = require("./utils/customTokenABI");
+
+const MINT_BURN = 4;
+
+const interchainTokenServiceContractAddress =
+  "0xB5FB4BE02232B1bBA4dC8f81dc24C26980dE9e3C";
+const interchainTokenFactoryContractAddress =
+  "0x83a93500d23Fbc3e82B410aD07A6a9F7A0670D66";
+
+const bscCustomTokenAddress = "0x0b769061149B1267e1979C4EA0b57b178dB9a53D"; // Replace with your token address on BSC
+const avalancheCustomTokenAddress =
+  "0xA41E40930CBCDB9fcC63A6307199b0EABC33b4A5"; // Replace with your token address on Avalanche Fuji
+```
+
+### Get the signer
+
+Next, create a `getSigner()` function in `customInterchainToken.js`. This will obtain a signer for a secure transaction:
+
+```javascript
+//...
+
+async function getSigner() {
+  const [signer] = await ethers.getSigners();
+  return signer;
+}
+```
+
+### Get the contract instance
+
+Then, create a `getContractInstance()` function in `customInterchainToken.js`. This will get the contract instance based on the contract's address, ABI, and signer:
+
+```javascript
+//...
+
+async function getContractInstance(contractAddress, contractABI, signer) {
+  return new ethers.Contract(contractAddress, contractABI, signer);
+}
+```
+
+### Register token metadata with the ITS Contract on BSC
+
+Create a `registerTokenMetadataOnBSC` function for the BSC testnet. This will register the token metadata on BSC.
+
+```javascript
+//...
+
+// register token metadata : bsc
+async function registerTokenMetadataOnBSC() {
+  // Get a signer to sign the transaction
+  const signer = await getSigner();
+
+  // Get the InterchainTokenService contract instance
+  const interchainTokenServiceContract = await getContractInstance(
+    interchainTokenServiceContractAddress,
+    interchainTokenServiceContractABI,
+    signer,
+  );
+
+  // Register token metadata
+  const deployTxData =
+    await interchainTokenServiceContract.registerTokenMetadata(
+      bscCustomTokenAddress,
+      ethers.utils.parseEther("0.0001"), // gas value
+      { value: ethers.utils.parseEther("0.001") },
+    );
+
+  console.log(`Transaction Hash: ${deployTxData.hash},`);
+}
+
+//...
+```
+
+### Register token metadata with the ITS Contract on Avalanche Fuji
+
+Create a `registerTokenMetadataOnAvalanche` function for the Avalanche Fuji testnet. This will register the token metadata on Avalanche Fuji.
+
+```javascript
+// register token metadata : avalanche
+async function registerTokenMetadataOnAvalanche() {
+  // Get a signer to sign the transaction
+  const signer = await getSigner();
+
+  // Get the InterchainTokenService contract instance
+  const interchainTokenServiceContract = await getContractInstance(
+    interchainTokenServiceContractAddress,
+    interchainTokenServiceContractABI,
+    signer,
+  );
+
+  // Register token metadata
+  const deployTxData =
+    await interchainTokenServiceContract.registerTokenMetadata(
+      avalancheCustomTokenAddress,
+      ethers.utils.parseEther("0.0001"), // gas value
+      { value: ethers.utils.parseEther("0.001") },
+    );
+
+  console.log(`Transaction Hash: ${deployTxData.hash},`);
+}
+```
+
+### Add a `main()` function
+
+Add a `main()` function to execute the `customInterchainToken.js` script and handle any errors that may arise:
+
+```javascript
+//...
+
+async function main() {
+  const functionName = process.env.FUNCTION_NAME;
+  switch (functionName) {
+    case "registerTokenMetadataOnBSC":
+      await registerTokenMetadataOnBSC();
+      break;
+    case "registerTokenMetadataOnAvalanche":
+      await registerTokenMetadataOnAvalanche();
+      break;
+    default:
+      console.error(`Unknown function: ${functionName}`);
+      process.exitCode = 1;
+      return;
+  }
+}
+
+main().catch((error) => {
+  console.error(error);
+  process.exitCode = 1;
+});
+```
+
+### Run the `customInterchainToken.js` script to deploy to BSC
+
+Run the script in your terminal to register and deploy the token, specifying the `bsc` testnet:
+
+```bash
+FUNCTION_NAME=registerTokenMetadataOnBSC npx hardhat run customInterchainToken.js --network bsc
+```
+
+If you see something similar to the following on your console, you have successfully registered your token metadata on BSC
+
+```bash
+Transaction Hash: 0xf860bd8802d046fb0c752c355bc73c87e69f701348420c6cbdf82534b87c4822,
+
+```
+
+### Run the `customInterchainToken.js` script to deploy to Avalanch Fuji
+
+Run the script in your terminal to register and deploy the token, specifying the `avalanche` testnet:
+
+```bash
+FUNCTION_NAME=registerTokenMetadataOnAvalanche npx hardhat run customInterchainToken.js --network avalanche
+```
+
+If you see something similar to the following on your console, you have successfully registered your token metadata on Avalanche Fuji.
+
+```bash
+Transaction Hash: 0x026ee7992de2108ecb83f37119ec84ebed371ff724d38e8fd055cbecde5b77e6,
+
+```
+
+### Check the transaction on the BSC testnet scanner
+
+Check the [BSC testnet scanner](https://testnet.bscscan.com/) to see if you have successfully [registered your token metadata](https://testnet.bscscan.com/tx/0xf860bd8802d046fb0c752c355bc73c87e69f701348420c6cbdf82534b87c4822).
+
+### Check the transaction on the Avalanche Fuji testnet scanner
+
+Check the [Avalanche Fuji testnet scanner](https://testnet.snowtrace.io/) to see if you have successfully [registered your token metadata](https://testnet.snowtrace.io/tx/0xe3bb64c76637fcd4d9ce9a5bab013fcda95e7040292531230be70daa4f5bd9a1).
+
+## Register the custom token with the Interchain Token Factory
+
+You've registered your token metadata on BSC and Avalanche Fuji. Now, register the custom token with the Interchain Token Factory on the BSC.
+
+To do that, use the following code snippet: create a function with the name `registerCustomTokenOnBSC`. This function registers an existing ERC20 token under a `tokenId` computed from the provided `salt`.
+
+```javascript
+async function registerCustomTokenOnBSC() {
+  // Generate random salt
+  const salt = "0x" + crypto.randomBytes(32).toString("hex");
+
+  // Get a signer to sign the transaction
+  const signer = await getSigner();
+
+  // Get the interchainTokenFactory contract instance
+  const interchainTokenFactoryContract = await getContractInstance(
+    interchainTokenFactoryContractAddress,
+    interchainTokenFactoryContractABI,
+    signer,
+  );
+
+  // Register token metadata
+  const deployTxData = await interchainTokenFactoryContract.registerCustomToken(
+    salt, // salt
+    bscCustomTokenAddress, // token address
+    MINT_BURN, // token management type
+    "0x510e5EA32386B7C48C4DEEAC80e86859b5e2416C", //  the address of the operator
+    { value: ethers.utils.parseEther("0.001") },
+  );
+
+  console.log(`
+    Transaction Hash: ${deployTxData.hash},
+    salt: ${salt}`);
+}
+
+//...
+```
+
+### Update `main()` to register custom token
+
+Update `main()` to execute `registerCustomTokenOnBSC()` :
+
+```javascript
+//...
+
+async function main() {
+  const functionName = process.env.FUNCTION_NAME;
+  switch (functionName) {
+    //...
+    case "registerCustomTokenOnBSC":
+      await registerCustomTokenOnBSC();
+      break;
+    default:
+    //...
+  }
+}
+
+//...
+```
+
+### Run the `customInterchainToken.js` script to deploy to BSC
+
+Run the script in your terminal to register the custom token, once again specifying the `BSC` testnet (the source chain where all transactions are taking place):
+
+```javascript
+FUNCTION_NAME=registerCustomTokenOnBSC npx hardhat run customInterchainToken.js --network bsc
+```
+
+You should see something similar to the following on your console:
+
+```bash
+Transaction Hash: 0xf0c3fbbece17cc12d9de76182540afb4f5c6c47aeca65c40f9d58f71e362dffe,
+salt: 0xd58c9142d863dde9f0b9ea68b10cce9470626040187a00c16b7b3d4edae70cf9
+
+```
+
+## Link custom token with the Interchain Token Factory from BSC to Avalanche Fuji chain
+
+In this section, you must link the custom token using the Interchain Token Factory between the chains where your token exists.
+
+The key difference between `registerCustomToken` and `linkToken` lies in their purpose and scope. `registerCustomToken` is used exclusively by the Interchain Token Factory to register custom tokens on the current chain, enabling them to be linked later. It deploys a token manager for the token but does not facilitate cross-chain linking. On the other hand, `linkToken` is a more general function that links a token to a destination chain by deploying a token manager on the target chain. It allows users to connect tokens across chains, enabling interchain transfers. While `registerCustomToken` is limited to local registration, `linkToken` extends functionality to cross-chain interoperability.
+
+To do that, create a function named `linkCustomToken` with the following code snippet.
+
+```javascript
+async function linkCustomToken() {
+  // Get a signer to sign the transaction
+  const signer = await getSigner();
+
+  // Get the interchainTokenFactory contract instance
+  const interchainTokenFactoryContract = await getContractInstance(
+    interchainTokenFactoryContractAddress,
+    interchainTokenFactoryContractABI,
+    signer,
+  );
+
+  // Register token metadata
+  const deployTxData = await interchainTokenFactoryContract.linkToken(
+    "0xd58c9142d863dde9f0b9ea68b10cce9470626040187a00c16b7b3d4edae70cf9", // salt, same as previously used
+    "Avalanche", // destination chain
+    avalancheCustomTokenAddress, // destination token address
+    MINT_BURN, // token manager type
+    "0x510e5EA32386B7C48C4DEEAC80e86859b5e2416C", //  the address of the operator - linkParams
+    ethers.utils.parseEther("0.001"), // gas value
+    { value: ethers.utils.parseEther("0.001") },
+  );
+
+  console.log(`Transaction Hash: ${deployTxData.hash}`);
+}
+
+//...
+```
+
+### Update `main()` to link custom token
+
+Update `main()` to execute `linkCustomToken()` :
+
+```javascript
+//...
+
+async function main() {
+  const functionName = process.env.FUNCTION_NAME;
+  switch (functionName) {
+    //...
+    case "linkCustomToken":
+      await linkCustomToken();
+      break;
+    default:
+    //...
+  }
+}
+
+//...
+```
+
+### Run the `customInterchainToken.js` script to deploy to BSC
+
+Run the script in your terminal to register the custom token, once again specifying the `BSC` testnet (the source chain where all transactions are taking place):
+
+```javascript
+FUNCTION_NAME=linkCustomToken npx hardhat run customInterchainToken.js --network bsc
+```
+
+You should see something similar to the following on your console:
+
+```bash
+Transaction Hash: 0x11c2a212180d7ea2babe7aceb66c32c1e235cc159bceeb4dd6d04411f4a9669f
+
+```
+
+### Check the transaction on the Axelar testnet scanner
+
+Check the [Axelarscan testnet scanner](https://testnet.axelarscan.io/) to see if you have successfully registered the custom token on the Avalanche Fuji testnet. It should look something like [this](https://testnet.axelarscan.io/gmp/0x11c2a212180d7ea2babe7aceb66c32c1e235cc159bceeb4dd6d04411f4a9669f).
+
+Add gas if needed. Ensure that Axelar shows a successful transaction before continuing to the next step.
+
+## Assign the minter role to your token's Token Manager on BSC and Avalanche Fuji chain
+
+You must transfer mint access to the Token Manager address on both chains before you can mint and burn tokens while moving assets between chains.
+
+### Transfer mint access to the Token Manager address on the BSC testnet
+
+Create a `transferMintAccessToTokenManagerOnBSC()` function that will perform the mint access transfer on the BSC testnet. The token manager is a contract needed for moving your asset from one chain to the other. You need to first retrieve the token manager address using the token ID. So, let's start with that. To do that, use the following code snippet.
+
+```javascript
+async function getTokenManagerAddress() {
+  // Get a signer to sign the transaction
+  const signer = await getSigner();
+
+  // Get the InterchainTokenService contract instance
+  const interchainTokenServiceContract = await getContractInstance(
+    interchainTokenServiceContractAddress,
+    interchainTokenServiceContractABI,
+    signer,
+  );
+
+  // Get the interchainTokenFactory contract instance
+  const interchainTokenFactoryContract = await getContractInstance(
+    interchainTokenFactoryContractAddress,
+    interchainTokenFactoryContractABI,
+    signer,
+  );
+
+  // Retrieve linked token id
+  const tokenId = await interchainTokenFactoryContract.linkedTokenId(
+    "0x510e5EA32386B7C48C4DEEAC80e86859b5e2416C", // sender
+    "0xd58c9142d863dde9f0b9ea68b10cce9470626040187a00c16b7b3d4edae70cf9", // salt, same as previously used
+  );
+
+  const tokenManagerAddress =
+    await interchainTokenServiceContract.tokenManagerAddress(tokenId);
+
+  console.log(`
+    Token Manager Address: ${tokenManagerAddress},
+    Token ID: ${tokenId}`);
+}
+```
+
+### Update `main()` to retrieve the token manager address
+
+Update `main()` to execute `getTokenManagerAddress()` :
+
+```javascript
+//...
+
+async function main() {
+  const functionName = process.env.FUNCTION_NAME;
+  switch (functionName) {
+    //...
+    case "getTokenManagerAddress":
+      await getTokenManagerAddress();
+      break;
+    default:
+    //...
+  }
+}
+
+//...
+```
+
+### Run the `customInterchainToken.js` script to retrieve the token manager address
+
+Run the script in your terminal to retrieve the token manager address.
+
+```javascript
+FUNCTION_NAME=getTokenManagerAddress npx hardhat run customInterchainToken.js --network bsc
+```
+
+You should see something similar to the following on your console:
+
+```bash
+Token Manager Address: 0x1Ca3eAcB1e8C72869d8962f425631A24e19e8a80,
+Token ID: 0xe0898500c75902b24ca99e2bcb77317acfdf01e66b1cacfd1daf75c66ecd8dfb
+
+```
+
+Next, save your token ID details(you will need them later in this tutorial) and use the token manager address as a parameter to transfer Mint access on both chains. Start with BSC using the folllowing code snippet:
+
+```javascript
+//...
+
+// Transfer mint access on all chains to the Expected Token Manager : BSC
+async function transferMintAccessToTokenManagerOnBSC() {
+  // Get a signer to sign the transaction
+  const signer = await getSigner();
+
+  const tokenContract = await getContractInstance(
+    bscCustomTokenAddress,
+    customTokenABI,
+    signer,
+  );
+
+  // Get the minter role
+  const getMinterRole = await tokenContract.MINTER_ROLE();
+
+  const grantRoleTxn = await tokenContract.grantRole(
+    getMinterRole,
+    "0x1Ca3eAcB1e8C72869d8962f425631A24e19e8a80", // your token manager address
+  );
+
+  console.log("grantRoleTxn: ", grantRoleTxn.hash);
+}
+```
+
+### Update `main()` to transfer mint access on the BSC testnet
+
+Update `main()` to execute `transferMintAccessToTokenManagerOnBSC()` :
+
+```javascript
+//...
+
+async function main() {
+  const functionName = process.env.FUNCTION_NAME;
+  switch (functionName) {
+    //...
+    case "transferMintAccessToTokenManagerOnBSC":
+      await transferMintAccessToTokenManagerOnBSC();
+      break;
+    default:
+    //...
+  }
+}
+
+//...
+```
+
+### Run the `customInterchainToken.js` script to deploy to the BSC testnet
+
+Run the script in your terminal to transfer mint access to the Token Manager specifying the `BSC` testnet:
+
+```bash
+FUNCTION_NAME=transferMintAccessToTokenManagerOnBSC npx hardhat run customInterchainToken.js --network bsc
+```
+
+You should see something similar to the following on your console:
+
+```bash
+grantRoleTxn: 0x82f2fdc151e865d08f776485076cb1e5ba8ffb865f5c4f7e6fedbbe046d5e4e3
+
+```
+
+Next, grant mint access to the Avalanche Fuji testnet using the following code snippet:
+
+```javascript
+//...
+
+// Transfer mint access on all chains to the Expected Token Manager : Avalanche
+async function transferMintAccessToTokenManagerOnAvalanche() {
+  // Get a signer to sign the transaction
+  const signer = await getSigner();
+
+  const tokenContract = await getContractInstance(
+    bscCustomTokenAddress,
+    customTokenABI,
+    signer,
+  );
+
+  // Get the minter role
+  const getMinterRole = await tokenContract.MINTER_ROLE();
+
+  const grantRoleTxn = await tokenContract.grantRole(
+    getMinterRole,
+    "0x1Ca3eAcB1e8C72869d8962f425631A24e19e8a80", // your token manager address
+  );
+
+  console.log("grantRoleTxn: ", grantRoleTxn.hash);
+}
+```
+
+### Update `main()` to transfer mint access on the Avalanche Fuji testnet
+
+Update `main()` to execute `transferMintAccessToTokenManagerOnAvalanche()` :
+
+```javascript
+//...
+
+async function main() {
+  const functionName = process.env.FUNCTION_NAME;
+  switch (functionName) {
+    //...
+    case "transferMintAccessToTokenManagerOnAvalanche":
+      await transferMintAccessToTokenManagerOnAvalanche();
+      break;
+    default:
+    //...
+  }
+}
+
+//...
+```
+
+### Run the `customInterchainToken.js` script to deploy to Avalanche Fuji testnet
+
+Run the script in your terminal to transfer mint access to the Token Manager specifying the `Avalanche Fuji` testnet:
+
+```bash
+FUNCTION_NAME=transferMintAccessToTokenManagerOnAvalanche npx hardhat run customInterchainToken.js --network avalanche
+```
+
+You should see something similar to the following on your console:
+
+```bash
+grantRoleTxn: 0xdff5ef006caf387b2f86db5ad09837b72107ba9f95561ee47560a05ce55f2cad
+
+```
+
+## Transfer your token between chains
+
+Now that you have deployed a granted mint access to the token manager on both BSC and Avalanche testnet, you can transfer your token between those two chains using the [interchainTransfer()](/its/interchain-transfer) method.
+
+### Initiate a remote token transfer
+
+In `customInterchainToken.js`, create a `transferTokens()` function to facilitate remote token transfers between chains. Change the token ID to the `tokenId` that you saved from an earlier step, and change the receiver address to your wallet address:
+
+```javascript
+//...
+
+// Transfer tokens : BSC -> Avalanche Fuji
+async function transferTokens() {
+  // Get a signer to sign the transaction
+  const signer = await getSigner();
+
+  const interchainTokenServiceContract = await getContractInstance(
+    interchainTokenServiceContractAddress,
+    interchainTokenServiceContractABI,
+    signer,
+  );
+
+  const transfer = await interchainTokenServiceContract.interchainTransfer(
+    "0xe0898500c75902b24ca99e2bcb77317acfdf01e66b1cacfd1daf75c66ecd8dfb", // tokenId, the one you store in the earlier step
+    "Avalanche", // destination chain
+    "0x510e5EA32386B7C48C4DEEAC80e86859b5e2416C", // receiver address
+    ethers.utils.parseEther("5"), // amount of token to transfer
+    "0x",
+    ethers.utils.parseEther("0.001"), // gasValue
+    {
+      // Transaction options should be passed here as an object
+      value: ethers.utils.parseEther("0.001"),
+    },
+  );
+
+  console.log("Transfer Transaction Hash:", transfer.hash);
+}
+```
+
+### Update `main()` to execute token transfer
+
+Update the `main()` to execute `transferTokens()`:
+
+```javascript
+//...
+
+async function main() {
+  const functionName = process.env.FUNCTION_NAME;
+  switch (functionName) {
+    //...
+    case "transferTokens":
+      await transferTokens();
+      break;
+    default:
+    //...
+  }
+}
+
+//...
+```
+
+### Run the `customInterchainToken.js` script to transfer tokens
+
+Run the script in your terminal, specifying the `BSC` testnet:
+
+```bash
+FUNCTION_NAME=transferTokens npx hardhat run customInterchainToken.js --network bsc
+```
+
+You should see something similar to the following on your console:
+
+```bash
+Transfer Transaction Hash: 0xbb7d242ead9fda8ce8d20654fb1c404c611c04bbb198fe15668a17272862e95b
+
+```
+
+If you see this, your interchain transfer has been successful! 🎉
+
+### Check the transaction on the Axelar testnet scanner
+
+Check the [Axelarscan testnet scanner](https://testnet.axelarscan.io/) to see if you have successfully transferred SCT from the [BSC testnet](https://testnet.ftmscan.com/token/0x8D4a6B2A784749BBc412A41C1440C5A67EAB57EE) to the Avalanche Fuji testnet. It should look something like [this](https://testnet.axelarscan.io/gmp/0xbb7d242ead9fda8ce8d20654fb1c404c611c04bbb198fe15668a17272862e95b).
+
+## Congratulations!
+
+You have now programmatically linked custom tokens deployed on multiple chains as Interchain Tokens, using Axelar's Interchain Token Service to transfer them between chains.
+
+Great job making it this far! To show your support for the author of this tutorial, please post about your experience and tag [@axelarnetwork](https://x.com/axelar) on Twitter (X).
+
+## What's next
+
+For further examples utilizing the Interchain Token Service, check out the following in the [`axelar-examples`](https://github.com/axelarnetwork/axelar-examples/tree/main) repo on GitHub:
+
+- [`its-custom-token`](https://github.com/axelarnetwork/axelar-examples/tree/main/examples/evm/its-custom-token) — Demonstrates how to use the ITS with a custom token implementation.
+- [`its-interchain-token`](https://github.com/axelarnetwork/axelar-examples/tree/main/examples/evm/its-interchain-token) — Demonstrates how to deploy Interchain Tokens that are connected across EVM chains and how to send some tokens across.
+- [`its-canonical-token`](https://github.com/axelarnetwork/axelar-examples/tree/main/examples/evm/its-canonical-token) - Demonstrates how to deploy canonical Interchain Token and send cross-chain transfer for these tokens.
+- [`its-lock-unlock-fee`](https://github.com/axelarnetwork/axelar-examples/tree/main/examples/evm/its-lock-unlock-fee) Demonstrates how to deploy deploy interchain token with lock/unlock_fee token manager type.
+- [`its-executable`](https://github.com/axelarnetwork/axelar-examples/tree/main/examples/evm/its-executable) Demonstrates how to deploy interchain token and send a cross-chain transfer along with a message.
+- [`its-mint-burn-from`](https://github.com/axelarnetwork/axelar-examples/tree/main/examples/evm/its-mint-burn-from) Demonstrates how to deploy interchain token with uses `burnFrom()` on token being bridged rather than `burn()`.
+
+## References
+
+- [Interchain Token Service Documentation](/its/overview)
+- [Interchain Tokens GitHub Repository](https://github.com/axelarnetwork/interchain-token-service/tree/main)
+- [AxelarJS SDK](https://github.com/axelarnetwork/axelarjs-sdk)

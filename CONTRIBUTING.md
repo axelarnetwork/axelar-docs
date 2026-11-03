@@ -82,5 +82,5 @@ We also reserve the right to remove or reject any contributions that do not alig
 
 ## Project structure
 
-- **`src/content/`**: All documentation content in Markdown format.
-- **`src/layouts/navigation.ts`**: Defines the navigation structure for the documentation site.
+- **`content/docs/`**: All documentation content in MDX format, one folder per section.
+- **`meta.json`** (in each content folder): Defines the sidebar order and grouping for that folder.

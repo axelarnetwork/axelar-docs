@@ -1,0 +1,67 @@
+---
+title: "Register Existing Token"
+---
+
+If you own an ERC-20 token on a single chain and want a wrapped, bridgeable version on other chains, you can register it as a [Canonical Interchain Token](/its/glossary#canonical-interchain-token) using the [Interchain Token Factory contract](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/InterchainTokenFactory.sol). Each token can only be registered once as a canonical token on its "home" chain.
+
+You can register your existing token directly via the contract or use the [ITS Portal](/its/no-code) no-code solution. Take a look at the diagram below to understand the process of registering an existing token as a Canonical Interchain Token.
+
+<object
+  type="image/svg+xml"
+  data="/images/its-deployment-diagram.svg"
+  className="hidden dark:block w-full max-w-[60rem] mx-auto py-6"
+>
+  Your browser does not support SVG
+</object>
+<object
+  type="image/svg+xml"
+  data="/images/its-deployment-diagram-light.svg"
+  className="dark:hidden w-full max-w-[60rem] mx-auto py-6"
+>
+  Your browser does not support SVG
+</object>
+
+## Register Your Token as a Canonical Token Using the Interchain Token Factory
+
+Use the [registerCanonicalInterchainToken](https://github.com/axelarnetwork/interchain-token-service/blob/94677f1072da127a0ee7ff5ab6784dcfe11789e8/contracts/InterchainTokenFactory.sol#L402) function to register your token.
+
+```solidity
+function registerCanonicalInterchainToken(
+    address tokenAddress // address of your token
+) external payable returns (bytes32 tokenId) {}
+```
+
+This function deploys a [Lock/Unlock Token Manager](/its/glossary#lockunlock) on the source chain, connects it to ITS upon deployment, and returns a unique token ID. Triggering the `registerCanonicalInterchainToken()` function initiates the process of registering your custom token with a Lock/Unlock token manager type on your token's _home chain_.
+
+Once your token is registered on the home chain, you can call the `deployRemoteCanonicalInterchainToken()` function. This will deploy an Interchain Token on a different blockchain that connects to your canonical token on the home chain.
+
+## Deploy a Remote Canonical Interchain Token
+
+Use the [deployRemoteCanonicalInterchainToken](https://github.com/axelarnetwork/interchain-token-service/blob/94677f1072da127a0ee7ff5ab6784dcfe11789e8/contracts/InterchainTokenFactory.sol#L450) function to deploy the token on a remote chain as a cross-chain transaction:
+
+```solidity
+function deployRemoteCanonicalInterchainToken(
+    address originalTokenAddress, // original token address
+    string calldata destinationChain, // destination chain name
+    uint256 gasValue // gas value
+) public payable returns (bytes32 tokenId) {};
+```
+
+This function deploys a token connected to your registered token on the home chain, making it bridgeable to the destination chain, and returns a token ID.
+
+<Callout emoji="🚨">
+  **NOTE:** The security of your token is only as strong as the security of the
+  chains with which it integrates. When deploying an interchain token, ensure
+  that all target chains are trustworthy.
+</Callout>
+
+
+## What's Next
+
+You can initiate an interchain transfer from your source chain to a destination chain by using the [interchainTransfer()](/its/interchain-transfer) method on the [ITS contract](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/InterchainTokenService.sol).
+
+For further examples utilizing the Interchain Token Service, check out the [Axelar Examples](https://github.com/axelarnetwork/axelar-examples/tree/main/examples/evm) repository on GitHub. There, you will find an example implementation titled [its-canonical-token](https://github.com/axelarnetwork/axelar-examples/tree/main/examples/evm/its-canonical-token), which demonstrates how to deploy canonical Interchain Tokens and perform cross-chain transfers.
+
+## Tutorial
+
+For a step-by-step guide on registering an existing token, check out the [Programmatically Create a Canonical Interchain Token Using the Interchain Token Service](/its/developer-guides/programmatically-create-a-canonical-token) tutorial.

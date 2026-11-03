@@ -1,0 +1,72 @@
+---
+title: "References"
+description: "Source code for the Axelar protocol and its tooling."
+---
+
+Most repositories are under the [axelarnetwork](https://github.com/axelarnetwork) GitHub organization.
+
+## Axelar chain
+
+| Repository | Description |
+| --- | --- |
+| [axelar-core](https://github.com/axelarnetwork/axelar-core) | The Axelar chain node: `axelard` and the `vald` validator process. Releases and the [changelog](https://github.com/axelarnetwork/axelar-core/blob/main/CHANGELOG.md) |
+| [tofnd](https://github.com/axelarnetwork/tofnd) | gRPC threshold signing service used by `vald` and `ampd` |
+| [tofn](https://github.com/axelarnetwork/tofn) | Threshold cryptography library behind `tofnd` |
+| [axelarate-community](https://github.com/axelarnetwork/axelarate-community) | Scripts to set up and join the network as a node or validator |
+| [axelarjs-types](https://github.com/axelarnetwork/axelarjs-types) | TypeScript types for Axelar's Protocol Buffers |
+
+## Amplifier Protocol
+
+| Repository | Description |
+| --- | --- |
+| [axelar-amplifier](https://github.com/axelarnetwork/axelar-amplifier) | Amplifier CosmWasm contracts, `ampd` and the chain handlers. [Changelog](https://github.com/axelarnetwork/axelar-amplifier/blob/main/CHANGELOG.md) |
+| [ampd-proto](https://github.com/axelarnetwork/ampd-proto) | Protobuf definitions for the `ampd` gRPC interface used by handlers |
+| [amplifier-relayer-api](https://github.com/axelarnetwork/amplifier-relayer-api) | API schema and client for the Amplifier Relayer API |
+
+## Chain integrations
+
+| Repository | Description |
+| --- | --- |
+| [axelar-cgp-solidity](https://github.com/axelarnetwork/axelar-cgp-solidity) | Gateway and gas service contracts for EVM chains |
+| [axelar-gmp-sdk-solidity](https://github.com/axelarnetwork/axelar-gmp-sdk-solidity) | Solidity libraries for GMP, including the executable and governance contracts |
+| [interchain-token-service](https://github.com/axelarnetwork/interchain-token-service) | Interchain Token Service contracts for EVM chains |
+| [axelar-amplifier-solana](https://github.com/axelarnetwork/axelar-amplifier-solana) | Gateway, gas service and ITS programs for Solana |
+| [axelar-amplifier-stellar](https://github.com/axelarnetwork/axelar-amplifier-stellar) | Gateway, gas service and ITS contracts for Stellar (Soroban) |
+| [axelar-amplifier-xrpl](https://github.com/axelarnetwork/axelar-amplifier-xrpl) | XRPL integration |
+| [axelar-cgp-sui](https://github.com/axelarnetwork/axelar-cgp-sui) | Gateway, gas service and ITS packages for Sui (Move) |
+| [cgp-spec](https://github.com/axelarnetwork/cgp-spec) | Cross-Chain Gateway Protocol specification |
+
+## Relayers
+
+| Repository | Description |
+| --- | --- |
+| [axelar-relayer-core](https://github.com/commonprefix/axelar-relayer-core) | Shared core used by the Amplifier relayers |
+| [axelar-relayer-evm](https://github.com/axelarnetwork/axelar-relayer-evm) | Amplifier relayer for EVM chains |
+| [axelar-relayer-solana](https://github.com/axelarnetwork/axelar-relayer-solana) | Amplifier relayer for Solana |
+| [axelar-relayer-xrpl](https://github.com/axelarnetwork/axelar-relayer-xrpl) | Amplifier relayer for XRPL |
+
+## Deployments and configuration
+
+| Repository | Description |
+| --- | --- |
+| [axelar-contract-deployments](https://github.com/axelarnetwork/axelar-contract-deployments) | Deployment scripts, release notes and the per-network contract configs |
+| [axelar-configs](https://github.com/axelarnetwork/axelar-configs) | Token configuration and whitelisting |
+
+## Security and governance
+
+| Repository | Description |
+| --- | --- |
+| [audits](https://github.com/axelarnetwork/audits) | Audit reports |
+| [arcs](https://github.com/axelarnetwork/arcs) | Axelar Request for Comments (protocol proposals) |
+| [whitepaper](https://github.com/axelarnetwork/whitepaper) | The Axelar whitepaper |
+
+## Developer tools and explorer
+
+| Repository | Description |
+| --- | --- |
+| [axe](https://github.com/axelarnetwork/axe) | CLI toolkit for deploying, testing and operating Amplifier infrastructure |
+| [axelar-local-dev](https://github.com/axelarnetwork/axelar-local-dev) | Local environment for developing cross-chain apps |
+| [axelar-examples](https://github.com/axelarnetwork/axelar-examples) | Example cross-chain apps and contracts |
+| [axelarscan-api](https://github.com/axelarnetwork/axelarscan-api) | Axelarscan API |
+| [axelarscan-ui](https://github.com/axelarnetwork/axelarscan-ui) | Axelarscan UI |
+| [axelarscan-docs](https://github.com/axelarnetwork/axelarscan-docs) | Axelarscan API documentation |

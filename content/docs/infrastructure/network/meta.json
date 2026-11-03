@@ -1,0 +1,9 @@
+{
+  "title": "Network",
+  "icon": "Network",
+  "pages": [
+    "endpoints",
+    "chains-and-contracts",
+    "governance"
+  ]
+}

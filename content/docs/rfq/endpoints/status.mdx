@@ -1,0 +1,169 @@
+---
+title: Get Transfer Status
+description: Track the execution status of a transfer by quoteId.
+---
+
+```
+GET /rfq/v1/status
+```
+
+Returns the current status of a transfer, identified by the `quoteId` returned from [`POST /rfq/v1/quote`](/rfq/endpoints/quote).
+
+The response uses a normalized `state` that is the same across all backends, plus a backend-specific `details` object for additional context.
+
+## Request
+
+| Query Parameter | Type | Required | Description |
+|-----------------|------|----------|-------------|
+| `quoteId` | string | Always | The identifier returned with a quote from `POST /rfq/v1/quote`. It identifies the specific quote and its backend. |
+
+<Callout type="warn">
+  Execute one quote per source transaction. Bundling multiple quotes into a single transaction is not supported yet.
+</Callout>
+
+```bash
+curl 'https://api.axelar.network/rfq/v1/status?quoteId=quote_123'
+```
+
+## Response
+
+```json
+{
+  "quoteId": "quote_123",
+  "state": "DONE",
+  "backend": {
+    "type": "intent",
+    "name": "Axelar Intents"
+  },
+  "source": {
+    "chain": "eip155:42161",
+    "txHash": "0xabc...",
+    "messageId": "0xabc...-0",
+    "timestamp": "2026-06-16T12:00:03Z"
+  },
+  "destination": {
+    "chain": "eip155:8453",
+    "txHash": "0xdef...",
+    "timestamp": "2026-06-16T12:00:48Z"
+  },
+  "output": {
+    "chain": "eip155:8453",
+    "token": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+    "amount": "995000"
+  },
+  "refund": null,
+  "details": {}
+}
+```
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `quoteId` | string | The quote this transfer was executed from, when known |
+| `state` | string | Normalized transfer state. See [States](#states). |
+| `backend` | object | The execution route serving the transfer ([Backend](/rfq/endpoints/quote#backend)) |
+| `source` | object \| null | Source-chain execution: `chain`, `txHash`, `messageId`, `timestamp`. Null until the source transaction is observed. |
+| `destination` | object \| null | Destination-chain delivery: `chain`, `txHash`, `timestamp`. Null until delivered. |
+| `output` | object \| null | What the recipient actually received: `chain`, `token`, `amount`. Populated on [`DONE`](#states). |
+| `refund` | object \| null | The refund returned to the user on the source chain: `chain`, `token`, `amount`, `txHash`. Populated only once the source-chain refund transaction is observed — it is `null` through [`REFUND_PENDING`](#states) and [`REFUND_INITIATED`](#states), and populated on [`REFUNDED`](#states). |
+| `details` | object | Backend-specific status context. Shape depends on `backend.type`; treat as informational. |
+
+### States
+
+| State | Meaning |
+|-------|---------|
+| `AWAITING_DEPOSIT` | The quote is known, no source-chain execution has been matched to it yet, and its deposit window is still open |
+| `PENDING` | The transfer has been submitted and is in flight |
+| `DONE` | The transfer completed and the recipient received the output |
+| `REFUND_PENDING` | The transfer will not be fulfilled and a refund has been decided, but no refund transaction has been submitted yet (`refund` is `null`) |
+| `REFUND_INITIATED` | The refund has been submitted, but the source-chain refund transaction has not been observed yet (`refund` is still `null`) |
+| `REFUNDED` | The refund landed on the source chain and the user has their funds back (`refund` populated) |
+| `FAILED` | The transfer reached a terminal failure |
+| `NOT_FOUND` | No transfer matches the supplied identifier, or the quote's deposit window closed with no deposit |
+
+`NOT_FOUND` is returned with HTTP `200`: a well-formed lookup for an identifier the API does not (yet) recognize is not an error.
+
+A refund advances `REFUND_PENDING` (decided), `REFUND_INITIATED` (submitted), `REFUNDED` (landed on the source chain). Only `REFUNDED` is terminal: it is the single state that confirms the user has their funds back, and the only one where `refund` is populated. Do not treat `REFUND_INITIATED` as settlement.
+
+<Callout type="warn">
+  Not every backend reports the full sequence yet. A route that cannot observe the source-chain refund transaction stops at `REFUND_INITIATED` and never reaches `REFUNDED`, so a client must not block on `REFUNDED` to consider a transfer resolved.
+</Callout>
+
+The response above shows a `DONE` transfer. The examples below show earlier states, where `source`, `destination`, and `output` are progressively filled in as the transfer advances.
+
+#### `AWAITING_DEPOSIT`
+
+The quote is known but no source-chain transaction has been observed yet.
+
+```json
+{
+  "quoteId": "quote_123",
+  "state": "AWAITING_DEPOSIT",
+  "backend": {
+    "type": "intent",
+    "name": "Axelar Intents"
+  },
+  "source": null,
+  "destination": null,
+  "output": null,
+  "refund": null,
+  "details": {}
+}
+```
+
+#### `PENDING`
+
+The source transaction has landed and the transfer is in flight; the destination has not been delivered yet.
+
+```json
+{
+  "quoteId": "quote_123",
+  "state": "PENDING",
+  "backend": {
+    "type": "intent",
+    "name": "Axelar Intents"
+  },
+  "source": {
+    "chain": "eip155:42161",
+    "txHash": "0xabc...",
+    "messageId": "0xabc...-0",
+    "timestamp": "2026-06-16T12:00:03Z"
+  },
+  "destination": null,
+  "output": null,
+  "refund": null,
+  "details": {}
+}
+```
+
+#### `REFUND_INITIATED`
+
+The transfer will not be fulfilled and the refund has been submitted. `destination` and `output` stay `null`. `refund` is filled in when the source-chain refund transaction is observed, at which point the state becomes `REFUNDED`.
+
+```json
+{
+  "quoteId": "quote_123",
+  "state": "REFUND_INITIATED",
+  "backend": {
+    "type": "intent",
+    "name": "Axelar Intents"
+  },
+  "source": {
+    "chain": "eip155:42161",
+    "txHash": "0xabc...",
+    "messageId": "0xabc...-0",
+    "timestamp": "2026-06-16T12:00:03Z"
+  },
+  "destination": null,
+  "output": null,
+  "refund": null,
+  "details": {}
+}
+```
+
+## Errors
+
+| HTTP Status | Code | Meaning |
+|-------------|------|---------|
+| 400 | `INVALID_REQUEST` | `quoteId` was not provided, or is malformed |
+| 429 | `RATE_LIMITED` | Too many requests |
+| 500 | `INTERNAL_ERROR` | Unexpected server error; safe to retry |

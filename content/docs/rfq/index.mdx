@@ -1,0 +1,55 @@
+---
+title: Axelar RFQ API
+description: Executable cross-chain quotes through a single request-for-quote interface.
+---
+
+The Axelar RFQ API provides executable cross-chain quotes through a single request-for-quote interface. Given a source asset, a destination asset, and an amount, the API returns one or more quotes, each containing the exact economics of the transfer (input, output, fees, timing, expiry) and the exact on-chain actions required to execute it.
+
+Quotes are priced across multiple Axelar-backed execution routes — including intent-based fills, Interchain Token Service (ITS) transfers, and Axelar gateway transfers — and the API selects and ranks the best available options for each request. Integrators interact with one consistent schema regardless of which route fulfills the transfer.
+
+A machine-readable version of this documentation for LLMs and AI tools is available at [`/llms.txt`](/llms.txt).
+
+## Base URL
+
+```
+https://api.axelar.network
+```
+
+All endpoints are versioned under the `/rfq/v1` path prefix. No authentication is currently required.
+
+## Conventions
+
+- **Chains** are identified with [CAIP-2](https://chainagnostic.org/CAIPs/caip-2) identifiers, e.g. `eip155:1` (Ethereum), `eip155:42161` (Arbitrum), `solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp` (Solana), `stellar:pubnet` (Stellar).
+- **Tokens** are identified by their chain-native address: ERC-20 address on EVM chains, mint address on Solana, asset identifier on Stellar. Native tokens use a per-chain convention documented under [`GET /rfq/v1/tokens`](/rfq/endpoints/tokens#native-tokens).
+- **Amounts** are strings in the token's base (smallest) units, e.g. `"1000000"` for 1 USDC.
+- **Timestamps** are ISO 8601 UTC strings.
+- All endpoints accept and return `application/json`.
+
+## Endpoints
+
+| Endpoint | Description |
+|----------|-------------|
+| [`POST /rfq/v1/quote`](/rfq/endpoints/quote) | Request executable cross-chain quotes |
+| [`GET /rfq/v1/chains`](/rfq/endpoints/chains) | List supported chains |
+| [`GET /rfq/v1/tokens`](/rfq/endpoints/tokens) | List supported tokens, optionally by chain |
+| [`GET /rfq/v1/status`](/rfq/endpoints/status) | Track execution status of a transfer |
+
+The action envelope and chain-specific payload formats returned by `POST /rfq/v1/quote` are documented in [User Actions](/rfq/actions).
+
+## Errors
+
+Failed requests return an HTTP error status with a structured error body:
+
+```json
+{
+  "error": {
+    "code": "UNSUPPORTED_ROUTE",
+    "message": "No backend supports the requested route.",
+    "details": {}
+  }
+}
+```
+
+`error.code` is a stable, machine-readable identifier; `error.message` is human-readable and may change. Per-endpoint error codes are documented on each endpoint page.
+
+A syntactically valid quote request for a route with no currently available pricing is **not** an error: it returns `200` with an empty `quotes` array.

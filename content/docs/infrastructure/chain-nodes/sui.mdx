@@ -1,0 +1,296 @@
+---
+title: "Sui"
+---
+
+<Callout title="Amplifier chain">
+  This chain is verified by Amplifier verifiers. Before setting up this node,
+  [set up your ampd verifier](/infrastructure/verifiers/amplifier/verifier-onboarding).
+</Callout>
+
+<Callout type="warn" title="Check the official documentation">
+  The node setup steps below follow Sui's own documentation at the time of
+  writing and may be out of date. Check the [official
+  documentation](https://docs.sui.io/operators/full-node/sui-full-node) before you start. The Axelar-specific steps (connecting
+  the node to `vald` or `ampd`) are maintained here.
+</Callout>
+
+
+Instructions to set up your Sui node.
+
+### Requirements
+
+- [Set up your Amplifier verifier](/infrastructure/verifiers/amplifier/verifier-onboarding)
+- Minimum hardware requirements: CPUs: 8 physical cores / 16 vCPUs RAM: 128 GB Storage (SSD): 4 TB NVMe drive
+- Ubuntu 22.04
+- [Official Documentation](https://docs.sui.io/operators/full-node/sui-full-node)
+
+### Prerequisites
+
+The steps below assume your user has `sudo` permissions. To verify the node at the end, install [grpcurl](https://github.com/fullstorydev/grpcurl).
+
+### Install Sui
+
+Download the release archive for your network from the [Sui releases page](https://github.com/MystenLabs/sui/releases). The tags below are examples; use the latest `mainnet-*` or `testnet-*` release.
+
+<Tabs items={["Mainnet","Testnet"]}>
+  <Tab value="Mainnet">
+    ```bash
+    SUI_TAG=mainnet-v1.82.3
+    ```
+  </Tab>
+  <Tab value="Testnet">
+    ```bash
+    SUI_TAG=testnet-v1.83.0
+    ```
+  </Tab>
+</Tabs>
+
+The archive contains `sui-node`, `sui`, and `sui-tool` (needed for the snapshot step below):
+
+```bash
+cd $HOME
+mkdir -p sui-binaries && cd sui-binaries
+
+# Linux x86_64 (use ubuntu-aarch64 for ARM)
+wget https://github.com/MystenLabs/sui/releases/download/$SUI_TAG/sui-$SUI_TAG-ubuntu-x86_64.tgz
+tar -xzf sui-$SUI_TAG-ubuntu-x86_64.tgz
+sudo install -m 755 $(find . -type f \( -name sui-node -o -name sui -o -name sui-tool \)) /usr/local/bin/
+
+# verify version
+sui-node --version
+sui-tool --version
+cd $HOME
+```
+
+### Download genesis and config files
+
+<Tabs items={["Mainnet","Testnet"]}>
+  <Tab value="Mainnet">
+    ```bash
+    sudo mkdir -p /opt/sui/config/ /opt/sui/db/
+    sudo chown -R $USER:$USER /opt/sui/
+    cd /opt/sui/config/
+    curl -fLJO https://github.com/MystenLabs/sui-genesis/raw/main/mainnet/genesis.blob
+    wget -O fullnode.yaml https://raw.githubusercontent.com/MystenLabs/sui/main/crates/sui-config/data/fullnode-template.yaml
+    ls
+    ```
+  </Tab>
+  <Tab value="Testnet">
+    ```bash
+    sudo mkdir -p /opt/sui/config/ /opt/sui/db/
+    sudo chown -R $USER:$USER /opt/sui/
+    cd /opt/sui/config/
+    curl -fLJO https://github.com/MystenLabs/sui-genesis/raw/main/testnet/genesis.blob
+    wget -O fullnode.yaml https://raw.githubusercontent.com/MystenLabs/sui/main/crates/sui-config/data/fullnode-template.yaml
+    ls
+    ```
+  </Tab>
+</Tabs>
+
+Edit the `fullnode.yaml` file to include peer nodes for state synchronization. Append the following to the end of the current configuration
+
+<Tabs items={["Mainnet","Testnet"]}>
+  <Tab value="Mainnet">
+    ```yaml
+    p2p-config:
+      seed-peers:
+        - address: /dns/mel-00.mainnet.sui.io/udp/8084
+          peer-id: d32b55bdf1737ec415df8c88b3bf91e194b59ee3127e3f38ea46fd88ba2e7849
+        - address: /dns/ewr-00.mainnet.sui.io/udp/8084
+          peer-id: c7bf6cb93ca8fdda655c47ebb85ace28e6931464564332bf63e27e90199c50ee
+        - address: /dns/ewr-01.mainnet.sui.io/udp/8084
+          peer-id: 3227f8a05f0faa1a197c075d31135a366a1c6f3d4872cb8af66c14dea3e0eb66
+        - address: /dns/lhr-00.mainnet.sui.io/udp/8084
+          peer-id: c619a5e0f8f36eac45118c1f8bda28f0f508e2839042781f1d4a9818043f732c
+        - address: /dns/sui-mainnet-ssfn-1.nodeinfra.com/udp/8084
+          peer-id: 0c52ca8d2b9f51be4a50eb44ace863c05aadc940a7bd15d4d3f498deb81d7fc6
+        - address: /dns/sui-mainnet-ssfn-2.nodeinfra.com/udp/8084
+          peer-id: 1dbc28c105aa7eb9d1d3ac07ae663ea638d91f2b99c076a52bbded296bd3ed5c
+        - address: /dns/sui-mainnet-ssfn-ashburn-na.overclock.run/udp/8084
+          peer-id: 5ff8461ab527a8f241767b268c7aaf24d0312c7b923913dd3c11ee67ef181e45
+        - address: /dns/sui-mainnet-ssfn-dallas-na.overclock.run/udp/8084
+          peer-id: e1a4f40d66f1c89559a195352ba9ff84aec28abab1d3aa1c491901a252acefa6
+        - address: /dns/ssn01.mainnet.sui.rpcpool.com/udp/8084
+          peer-id: fadb7ccb0b7fc99223419176e707f5122fef4ea686eb8e80d1778588bf5a0bcd
+        - address: /dns/ssn02.mainnet.sui.rpcpool.com/udp/8084
+          peer-id: 13783584a90025b87d4604f1991252221e5fd88cab40001642f4b00111ae9b7e
+    ```
+  </Tab>
+  <Tab value="Testnet">
+    ```yaml
+    p2p-config:
+      seed-peers:
+        - address: /dns/yto-tnt-ssfn-01.testnet.sui.io/udp/8084
+          peer-id: 2ed53564d5581ded9b6773970ac2f1c84d39f9edf01308ff5a1ffe09b1add7b3
+        - address: /dns/yto-tnt-ssfn-00.testnet.sui.io/udp/8084
+          peer-id: 6563732e5ab33b4ae09c73a98fd37499b71b8f03c27b5cc51acc26934974aff2
+        - address: /dns/nrt-tnt-ssfn-00.testnet.sui.io/udp/8084
+          peer-id: 23a1f7cd901b6277cbedaa986b3fc183f171d800cabba863d48f698f518967e1
+        - address: /dns/ewr-tnt-ssfn-00.testnet.sui.io/udp/8084
+          peer-id: df8a8d128051c249e224f95fcc463f518a0ebed8986bbdcc11ed751181fecd38
+        - address: /dns/lax-tnt-ssfn-00.testnet.sui.io/udp/8084
+          peer-id: f9a72a0a6c17eed09c27898eab389add704777c03e135846da2428f516a0c11d
+        - address: /dns/lhr-tnt-ssfn-00.testnet.sui.io/udp/8084
+          peer-id: 9393d6056bb9c9d8475a3cf3525c747257f17c6a698a7062cbbd1875bc6ef71e
+        - address: /dns/mel-tnt-ssfn-00.testnet.sui.io/udp/8084
+          peer-id: c88742f46e66a11cb8c84aca488065661401ef66f726cb9afeb8a5786d83456e
+    ```
+  </Tab>
+</Tabs>
+
+In the same file, replace the `<mainnet|testnet>` placeholder in `state-archive-read-config.ingestion-url`:
+
+<Tabs items={["Mainnet","Testnet"]}>
+  <Tab value="Mainnet">
+    ```yaml
+    state-archive-read-config:
+      - ingestion-url: "https://checkpoints.mainnet.sui.io"
+        concurrency: 5
+    ```
+  </Tab>
+  <Tab value="Testnet">
+    ```yaml
+    state-archive-read-config:
+      - ingestion-url: "https://checkpoints.testnet.sui.io"
+        concurrency: 5
+    ```
+  </Tab>
+</Tabs>
+
+<Callout title="Ports">
+  The node serves its gRPC API on port `9000`, set by `json-rpc-address` in
+  `fullnode.yaml` (the key keeps its old name; JSON-RPC itself has been removed
+  from Sui full nodes). This is the endpoint the ampd `sui-handler` connects to.
+  Open UDP port `8084` for P2P state sync. The template binds metrics to
+  `0.0.0.0:9184`; consider changing `metrics-address` to `127.0.0.1:9184`.
+</Callout>
+
+Download the snapshot from the latest epoch.
+
+<Tabs items={["Mainnet","Testnet"]}>
+  <Tab value="Mainnet">
+    ```bash
+    sui-tool download-formal-snapshot --latest --genesis /opt/sui/config/genesis.blob --network mainnet --path /opt/sui/db/ --num-parallel-downloads 50 --no-sign-request
+    ```
+  </Tab>
+  <Tab value="Testnet">
+    ```bash
+    sui-tool download-formal-snapshot --latest --genesis /opt/sui/config/genesis.blob --network testnet --path /opt/sui/db/ --num-parallel-downloads 50 --no-sign-request
+    ```
+  </Tab>
+</Tabs>
+
+If you encounter any failures, try lowering the `num-parallel-downloads` value.
+
+Formal snapshots contain no transaction history from before the snapshot, so the node can't serve lookups of older transactions. See [Sui snapshots](https://docs.sui.io/guides/operator/snapshots) for details.
+
+### Setup systemd
+
+Create the systemd service file `/etc/systemd/system/suid.service`
+
+```bash
+sudo tee /etc/systemd/system/suid.service &>/dev/null <<EOF
+[Unit]
+Description=Sui Node
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+User=$USER
+WorkingDirectory=/opt/sui/
+Environment=RUST_LOG=info,sui_core=debug,consensus=debug,jsonrpsee=error
+ExecStart=/usr/local/bin/sui-node --config-path /opt/sui/config/fullnode.yaml
+Restart=on-failure
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target
+EOF
+```
+
+### Start the service
+
+```bash
+sudo systemctl daemon-reload
+sudo systemctl enable suid
+sudo systemctl restart suid
+```
+
+### Check logs
+
+```bash
+# change log settings to persistent if not already
+sudo sed -i 's/#Storage=auto/Storage=persistent/g' /etc/systemd/journald.conf
+sudo systemctl restart systemd-journald
+journalctl -u suid.service -f -n 100 -o cat
+```
+
+On startup, the logs should show the P2P network, discovery, and state sync starting without errors.
+
+## Verify RPC
+
+Once your `sui` node is fully synced, query its gRPC API with [grpcurl](https://github.com/fullstorydev/grpcurl):
+
+```bash
+grpcurl -plaintext localhost:9000 sui.rpc.v2.LedgerService/GetServiceInfo
+```
+
+The response includes the chain name, current epoch, and latest checkpoint height. Compare the epoch and checkpoint with the [explorer](https://suiscan.xyz).
+
+## Configure ampd
+
+This assumes you have set up `ampd` as per [Become an Amplifier verifier](/infrastructure/verifiers/amplifier/verifier-onboarding).
+
+Add the chain to your `ampd` config (`~/.ampd/config.toml`):
+
+<Tabs items={["Mainnet","Testnet"]}>
+<Tab value="Mainnet">
+
+```toml
+[[grpc.blockchain_service.chains]]
+chain_name="sui"
+voting_verifier="axelar1sykyha8kzf35kc5hplqk76kdufntjn6w45ntwlevwxp74dqr3rvsq7fazh"
+multisig_prover="axelar1v8jrupu2rqpskwgtr69max0ajul92q8z5mdxd505m2hu3xc5jzcqm8zyc6"
+multisig="axelar14a4ar5jh7ue4wg28jwsspf23r8k68j7g5d6d3fsttrhp42ajn4xq6zayy5"
+```
+
+</Tab>
+<Tab value="Testnet">
+
+```toml
+[[grpc.blockchain_service.chains]]
+chain_name="sui"
+voting_verifier="axelar1sykyha8kzf35kc5hplqk76kdufntjn6w45ntwlevwxp74dqr3rvsq7fazh"
+multisig_prover="axelar1v8jrupu2rqpskwgtr69max0ajul92q8z5mdxd505m2hu3xc5jzcqm8zyc6"
+multisig="axelar14a4ar5jh7ue4wg28jwsspf23r8k68j7g5d6d3fsttrhp42ajn4xq6zayy5"
+```
+
+</Tab>
+</Tabs>
+
+Create a config directory for the `sui-handler`, pointing it at your node:
+
+```toml title="~/.ampd/sui/config.toml"
+ampd_url = "http://127.0.0.1:9090"
+chain_name = "sui"
+```
+
+```toml title="~/.ampd/sui/sui-handler-config.toml"
+rpc_url = "http://<your-node-host>:9000" # your node's gRPC endpoint
+```
+
+Start the handler:
+
+```bash
+sui-handler --config-dir ~/.ampd/sui/
+```
+
+See [Set up handlers](/infrastructure/verifiers/amplifier/verifier-onboarding#set-up-handlers) for running handlers with Docker or as services.
+
+## Register chain support
+
+Once the handler is running, register your verifier's support for the chain:
+
+```bash
+ampd register-chain-support amplifier sui
+```

@@ -1,0 +1,82 @@
+---
+title: List Supported Tokens
+description: Supported tokens, optionally filtered by chain, backend, or verification status.
+---
+
+```
+GET /rfq/v1/tokens
+```
+
+Returns supported tokens, optionally filtered by chain, backend, or verification status. Use the returned `address` values in [`POST /rfq/v1/quote`](/rfq/endpoints/quote) request fields (`fromToken`, `toToken`).
+
+## Request
+
+| Query Parameter | Type | Required | Description |
+|-----------------|------|----------|-------------|
+| `chain` | string | No | CAIP-2 chain identifier. When set, only tokens on this chain are returned. |
+| `backend` | string | No | Backend type (`intent`, `its`, `gateway`, or `gateway-express`). When set, only tokens served by that backend are returned. |
+| `verified` | boolean | No | When `true`, only verified tokens are returned; when `false`, only unverified tokens. Omit to return both. |
+
+```bash
+curl 'https://api.axelar.network/rfq/v1/tokens?chain=eip155:42161&backend=intent'
+```
+
+## Response
+
+```json
+{
+  "tokens": [
+    {
+      "chainId": "eip155:42161",
+      "address": "0xaf88d065e77c8cC2239327C5EDb3A432268e5831",
+      "symbol": "USDC",
+      "name": "USD Coin",
+      "decimals": 6,
+      "verified": true,
+      "backends": ["intent", "its"]
+    },
+    {
+      "chainId": "eip155:42161",
+      "address": "0x0000000000000000000000000000000000000000",
+      "symbol": "ETH",
+      "name": "Ether",
+      "decimals": 18,
+      "verified": true,
+      "backends": ["intent"]
+    }
+  ]
+}
+```
+
+### Token Object
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `chainId` | string | CAIP-2 identifier of the chain this token lives on |
+| `address` | string | Token address in the chain's native format: ERC-20 address on EVM chains, mint address on Solana, asset identifier on Stellar. For a chain's native token, see [Native tokens](#native-tokens). Use this value in quote requests. |
+| `symbol` | string | Token symbol, e.g. `"USDC"` |
+| `name` | string | Token name, e.g. `"USD Coin"` |
+| `decimals` | number | Token decimals. Amounts in quote requests and responses are expressed in base units of this precision. |
+| `verified` | boolean | Whether the token identity has been reviewed and is part of the curated token list. Interfaces should warn users before interacting with unverified tokens. |
+| `backends` | array | Backend types that can serve this token (see [Backend](/rfq/endpoints/quote#backend)): `intent`, `its`, `gateway`, `gateway-express` |
+
+A token's appearance in this list means at least one route supports it. It does not guarantee that every `fromToken`/`toToken` pair is quotable — an unsupported pair returns the [`UNSUPPORTED_ROUTE`](/rfq/endpoints/quote#errors) error from `POST /rfq/v1/quote`.
+
+### Native tokens
+
+A chain's native token (the asset used to pay gas) has no token contract, so each chain family identifies it by its own convention. Use the value below as the `address`/`token` for the native asset:
+
+| Chain family | Native asset | Identifier | Notes |
+|--------------|--------------|------------|-------|
+| EVM | ETH, AVAX, ... | `0x0000000000000000000000000000000000000000` | The zero address. |
+| Solana | SOL | `11111111111111111111111111111111` | The all-zero account address (which also happens to be the System Program address); a sentinel for native SOL, not a transfer target. Distinct from the wrapped-SOL SPL mint. |
+| Stellar | XLM | `CAS3J7GYLGXMF6TDJBBYYSE3HQ6BBSMLNUQ34T6TZMYMW2EVH34XOWMA` | The native Stellar Asset Contract (SAC) — the same form used for every other Stellar asset. This value is the SAC on pubnet (`stellar:pubnet`); other Stellar networks have their own native SAC address. |
+
+## Errors
+
+| HTTP Status | Code | Meaning |
+|-------------|------|---------|
+| 400 | `INVALID_REQUEST` | Malformed `chain` query parameter, `backend` is not a known backend type, or `verified` is not a boolean |
+| 422 | `UNSUPPORTED_CHAIN` | The requested `chain` is not supported |
+| 429 | `RATE_LIMITED` | Too many requests |
+| 500 | `INTERNAL_ERROR` | Unexpected server error; safe to retry |

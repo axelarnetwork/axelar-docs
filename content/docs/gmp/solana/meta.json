@@ -1,0 +1,8 @@
+{
+  "title": "Solana",
+  "pages": [
+    "intro",
+    "gmp-messages",
+    "gmp-contracts"
+  ]
+}
