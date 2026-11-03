@@ -1,0 +1,32 @@
+---
+title: "ITS Hub"
+description: "The contract on the Axelar network that every interchain transfer goes through."
+---
+
+The ITS Hub is a CosmWasm [contract](https://github.com/axelarnetwork/axelar-amplifier/tree/main/contracts/interchain-token-service) on the Axelar network. ITS on each chain doesn't send messages to ITS on other chains directly: every transfer, token deployment and token link goes through the hub, as two [GMP](/gmp/overview) messages.
+
+<object
+  type="image/svg+xml"
+  data="/images/its-hub/its-hub-routing-dark.svg"
+  className="hidden dark:block w-full max-w-[60rem] mx-auto py-6"
+></object>
+<object
+  type="image/svg+xml"
+  data="/images/its-hub/its-hub-routing-light.svg"
+  className=" dark:hidden w-full max-w-[60rem] mx-auto py-6"
+></object>
+
+1. ITS on the source chain sends a message to the hub, with the destination chain and the ITS message inside (message type `SEND_TO_HUB`, `3`).
+1. The hub checks the message, updates its records and sends it to ITS on the destination chain, with the source chain and the ITS message inside (`RECEIVE_FROM_HUB`, `4`).
+
+On Axelarscan, a transfer therefore shows as two messages: one to the chain `axelar`, and one from it. The hub's address is `axelar1aqcj54lzz0rk22gvqgcn8fr5tx4rzwdv5wv5j9dmnacgefvd7wzsy2j2mr` on mainnet and testnet.
+
+## What the hub does
+
+- **Accepts only registered chains.** Each chain's ITS contract is registered with the hub through Axelar governance. Messages from or to other addresses are rejected.
+- **Tracks supply.** For tokens that only ITS can mint (no custom minter), the hub records how much of the token has been sent to each chain, and rejects transfers back from a chain of more than that amount. A compromised chain can't send back more than it received.
+- **Converts amounts between chains.** Chains differ in how large an integer a token amount can be. When a token is deployed to a chain with a smaller maximum, the hub reduces its decimals there, and scales the amounts of transfers between chains accordingly.
+- **Translates messages.** Each chain has a translator contract that converts its ITS messages to and from the hub's format: an ABI translator for most chains, and one for Solana's encoding.
+- **Can be paused.** Axelar can freeze a chain in the hub, or stop all execution, in an emergency.
+
+Flow limits aren't in the hub: each token's [token manager](/its/how-it-works/concepts#token-managers) enforces them on its chain. See [Flow limits](/its/how-it-works/flow-limits).

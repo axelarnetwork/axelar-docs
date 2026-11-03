@@ -1,0 +1,211 @@
+---
+title: "Contract reference"
+description: "Stellar ITS: functions, events, errors and the interchain token executable."
+---
+
+Addresses are on the [Stellar overview](/its/integrations/stellar/intro#addresses). The full API is in the [crate documentation](https://docs.rs/stellar-interchain-token-service/2.1.1/stellar_interchain_token_service/), and the source in [`stellar-interchain-token-service`](https://github.com/axelarnetwork/axelar-amplifier-stellar/tree/main/contracts/stellar-interchain-token-service). Call ITS from your contract with `InterchainTokenServiceClient`.
+
+`gas_token` is an optional `Token { address, amount }`, paid to the gas service by the address that authorizes the call; see [Gas](/its/integrations/stellar/intro#gas). Every function with a `destination_chain` fails with `UntrustedChain` if ITS doesn't trust that chain.
+
+## Deploy and register
+
+```rust
+// Deploys an interchain token on Stellar, and mints `initial_supply` to `caller`.
+// The token ID comes from `caller` and `salt`. `minter` is an optional extra minter;
+// with none, `initial_supply` must be more than 0. `caller` must authorize.
+fn deploy_interchain_token(
+    env: Env,
+    caller: Address,
+    salt: BytesN<32>,
+    token_metadata: TokenMetadata, // { decimal, name, symbol }
+    initial_supply: i128,
+    minter: Option<Address>,
+) -> Result<BytesN<32>, ContractError>;
+
+// Deploys the interchain token of `caller` and `salt` on another chain, with no minter.
+// `caller` must authorize.
+fn deploy_remote_interchain_token(
+    env: Env,
+    caller: Address,
+    salt: BytesN<32>,
+    destination_chain: String,
+    gas_token: Option<Token>,
+) -> Result<BytesN<32>, ContractError>;
+
+// Registers an existing Stellar token as a canonical token, with a LockUnlock token manager.
+// Anyone can call it.
+fn register_canonical_token(env: Env, token_address: Address) -> Result<BytesN<32>, ContractError>;
+
+// Deploys a canonical token on another chain, with no minter. `spender` pays the gas.
+fn deploy_remote_canonical_token(
+    env: Env,
+    token_address: Address,
+    destination_chain: String,
+    spender: Address,
+    gas_token: Option<Token>,
+) -> Result<BytesN<32>, ContractError>;
+
+// Sends a token's address and decimals to the ITS Hub, before linking it. `spender` pays the gas.
+fn register_token_metadata(
+    env: Env,
+    token_address: Address,
+    spender: Address,
+    gas_token: Option<Token>,
+) -> Result<(), ContractError>;
+
+// Registers a custom token on Stellar, with a token manager of the given type
+// (not NativeInterchainToken). The token ID comes from `deployer` and `salt`.
+// `deployer` must authorize.
+fn register_custom_token(
+    env: Env,
+    deployer: Address,
+    salt: BytesN<32>,
+    token_address: Address,
+    token_manager_type: TokenManagerType,
+) -> Result<BytesN<32>, ContractError>;
+
+// Links a token on another chain to the custom token of `deployer` and `salt`.
+// `token_manager_type` and `link_params` are for the destination chain.
+// `deployer` must authorize, and pays the gas.
+fn link_token(
+    env: Env,
+    deployer: Address,
+    salt: BytesN<32>,
+    destination_chain: String,
+    destination_token_address: Bytes,
+    token_manager_type: TokenManagerType,
+    link_params: Option<Bytes>,
+    gas_token: Option<Token>,
+) -> Result<BytesN<32>, ContractError>;
+```
+
+`TokenMetadata` is from `soroban_token_sdk::metadata`. The name and symbol must be 1 to 32 ASCII characters, and the decimals at most 255. `TokenManagerType` is in `stellar_interchain_token_service::types`; see [Token managers](/its/integrations/stellar/intro#token-managers).
+
+## Transfers
+
+```rust
+// Burns or locks `amount` of `caller`'s tokens and sends them to `destination_address`.
+// With `data`, ITS on the destination chain then calls the recipient contract with it.
+// `caller` must authorize, and pays the gas.
+fn interchain_transfer(
+    env: Env,
+    caller: Address,
+    token_id: BytesN<32>,
+    destination_chain: String,
+    destination_address: Bytes,
+    amount: i128,
+    data: Option<Bytes>,
+    gas_token: Option<Token>,
+) -> Result<(), ContractError>;
+```
+
+`amount` must be more than 0, and `data`, if set, not empty. For the format of `destination_address`, see [Addresses in messages](/its/integrations/stellar/intro#addresses-in-messages).
+
+## Queries
+
+```rust
+fn interchain_token_id(env: Env, deployer: Address, salt: BytesN<32>) -> BytesN<32>;
+fn canonical_interchain_token_id(env: Env, token_address: Address) -> BytesN<32>;
+fn linked_token_id(env: Env, deployer: Address, salt: BytesN<32>) -> BytesN<32>;
+
+fn registered_token_address(env: Env, token_id: BytesN<32>) -> Address;
+fn deployed_token_manager(env: Env, token_id: BytesN<32>) -> Address;
+fn token_manager_type(env: Env, token_id: BytesN<32>) -> TokenManagerType;
+
+fn is_trusted_chain(env: Env, chain: String) -> bool;
+fn chain_name(env: Env) -> String;
+fn native_token_address(env: Env) -> Address; // XLM
+fn gas_service(env: Env) -> Address;
+```
+
+`registered_token_address`, `deployed_token_manager` and `token_manager_type` fail for a token ID that isn't registered on Stellar.
+
+## Flow limits
+
+ITS keeps each token's [flow limit](/its/integrations/stellar/intro#flow-limits): `None` for no limit, and `Some(0)` to block every transfer.
+
+```rust
+fn flow_limit(env: Env, token_id: BytesN<32>) -> Option<i128>;
+fn flow_out_amount(env: Env, token_id: BytesN<32>) -> i128; // sent out in the current window
+fn flow_in_amount(env: Env, token_id: BytesN<32>) -> i128; // received in the current window
+fn is_flow_limiter(env: Env, token_id: BytesN<32>, flow_limiter: Address) -> bool;
+
+// `caller` must be ITS's operator or an approved flow limiter of the token, and authorize.
+fn set_flow_limit(
+    env: Env,
+    caller: Address,
+    token_id: BytesN<32>,
+    flow_limit: Option<i128>,
+) -> Result<(), ContractError>;
+```
+
+ITS's operator approves flow limiters with `add_flow_limiter(token_id, flow_limiter)`, `remove_flow_limiter(token_id, flow_limiter)` and `transfer_flow_limiter(token_id, from, to)`.
+
+## Owner functions
+
+`transfer_token_admin(token_id, new_admin)`, callable only by ITS's owner, makes `new_admin` the admin of a `MintBurn` token in place of its token manager. See [Link custom tokens](/its/integrations/stellar/link-custom-tokens#4-let-the-token-managers-mint).
+
+## Events
+
+| Event                          | Fields                                                                                                     |
+| ------------------------------ | ---------------------------------------------------------------------------------------------------------- |
+| `interchain_token_deployed`    | `token_id`, `token_address`, `name`, `symbol`, `decimals`, `minter`                                        |
+| `token_manager_deployed`       | `token_id`, `token_address`, `token_manager`, `token_manager_type`                                         |
+| `token_deployment_started`     | `token_id`, `token_address`, `destination_chain`, `name`, `symbol`, `decimals`, `minter`                   |
+| `token_metadata_registered`    | `token_address`, `decimals`                                                                                |
+| `link_token_started`           | `token_id`, `destination_chain`, `source_token_address`, `destination_token_address`, `token_manager_type`, `params` |
+| `link_token_received`          | `source_chain`, `token_id`, `source_token_address`, `destination_token_address`, `token_manager_type`, `params` |
+| `interchain_transfer_sent`     | `token_id`, `source_address`, `destination_chain`, `destination_address`, `amount`; `data_hash` in the data |
+| `interchain_transfer_received` | `source_chain`, `token_id`, `source_address`, `destination_address`, `amount`; `data_hash` in the data     |
+| `flow_limit_set`               | `token_id`, `flow_limit`                                                                                   |
+| `flow_limiter_added`           | `token_id`, `flow_limiter`                                                                                 |
+| `flow_limiter_removed`         | `token_id`, `flow_limiter`                                                                                 |
+
+## Errors
+
+A failed call returns `Error(Contract, #n)`. The ones you're most likely to see:
+
+| Code | Error                     | Cause                                                                 |
+| ---- | ------------------------- | --------------------------------------------------------------------- |
+| 7    | `UntrustedChain`          | The destination chain isn't trusted, or its name doesn't match exactly |
+| 10   | `InvalidAmount`           | The amount isn't more than 0                                          |
+| 17   | `InvalidTokenId`          | No token is registered under the token ID                             |
+| 18   | `TokenAlreadyRegistered`  | The token ID is already registered, e.g. the salt was used before     |
+| 20   | `FlowLimitExceeded`       | The transfer would take the net flow over the flow limit              |
+| 23   | `InvalidDestinationChain` | A deployment or link to Stellar itself                                |
+| 25   | `InvalidTokenName`        | The name is empty, longer than 32 characters or not ASCII             |
+| 26   | `InvalidTokenSymbol`      | The symbol is empty, longer than 32 characters or not ASCII           |
+| 28   | `ContractPaused`          | ITS is paused                                                         |
+| 32   | `InvalidTokenConfig`      | `initial_supply` is 0 and there's no minter                           |
+| 34   | `FlowAmountExceededLimit` | The transfer alone is larger than the flow limit                      |
+| 35   | `InvalidTokenManagerType` | `NativeInterchainToken` for a custom token or link                    |
+| 39   | `NotApprovedFlowLimiter`  | `set_flow_limit` from someone who isn't allowed to set it             |
+
+The full list is in [`error.rs`](https://github.com/axelarnetwork/axelar-amplifier-stellar/blob/stellar-interchain-token-service-v2.1.1/contracts/stellar-interchain-token-service/src/error.rs).
+
+## Interchain token executable
+
+[`stellar_interchain_token_service::executable`](https://github.com/axelarnetwork/axelar-amplifier-stellar/blob/main/contracts/stellar-interchain-token-service/src/executable.rs). To receive tokens with data, implement `CustomInterchainTokenExecutable` and derive `InterchainTokenExecutable`:
+
+```rust
+pub trait CustomInterchainTokenExecutable {
+    type Error: Into<stellar_axelar_std::Error>;
+
+    // Returns the ITS address
+    fn __interchain_token_service(env: &Env) -> Address;
+
+    // Your logic, called after ITS has given the tokens to your contract
+    fn __authorized_execute_with_token(
+        env: &Env,
+        source_chain: String,
+        message_id: String,
+        source_address: Bytes,
+        payload: Bytes,
+        token_id: BytesN<32>,
+        token_address: Address,
+        amount: i128,
+    ) -> Result<(), Self::Error>;
+}
+```
+
+The derive generates the contract functions `interchain_token_service()` and `execute_with_interchain_token(...)`, with the same arguments. `execute_with_interchain_token` requires ITS's authorization, then calls `__authorized_execute_with_token`. Check the sender in it; see [Receive tokens](/its/integrations/stellar/its-tokens#receive-tokens).

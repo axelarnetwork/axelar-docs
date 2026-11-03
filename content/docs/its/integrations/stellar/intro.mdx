@@ -1,0 +1,184 @@
+---
+title: "Overview"
+description: "Deploy, register and send interchain tokens from Soroban contracts on Stellar."
+---
+
+On Stellar, ITS is a Soroban contract, [`stellar-interchain-token-service`](https://github.com/axelarnetwork/axelar-amplifier-stellar/tree/main/contracts/stellar-interchain-token-service). Your contracts call it to deploy tokens, register existing ones and send them to other chains, and accounts can call it from a script. Like ITS on every chain, it sends and receives through the [ITS Hub](/its/how-it-works/its-hub).
+
+<Callout title="Using an AI agent?">
+  Copy this page with **Copy Markdown** at the top and give it to your agent,
+  with the token you want to make interchain. The copied page links to the
+  Markdown of the other pages it refers to, so the agent can read them too.
+  Review what it writes, and test on testnet before mainnet.
+</Callout>
+
+## Addresses
+
+|                   | Mainnet                                                    | Testnet                                                    |
+| ----------------- | ---------------------------------------------------------- | ---------------------------------------------------------- |
+| Chain name        | `stellar`                                                  | `stellar-2026-q1-2`                                        |
+| ITS               | `CBDBMIOFHGWUFRYH3D3STI2DHBOWGDDBCRKQEUB4RGQEBVG74SEED6C6` | `CC7LAC4S7KAPIM26WKWFSOXWLNLSG7EXTC2EVY2H2UPKSTX3Z2A7M5YP` |
+| XLM token address | `CAS3J7GYLGXMF6TDJBBYYSE3HQ6BBSMLNUQ34T6TZMYMW2EVH34XOWMA` | `CDLZFC3SYJYDZT7K67VZ75HPJVIEUVNIXF47ZG2FB2RMQQVU2HHGCYSC` |
+
+The gateway, gas service and RPC endpoints are on the [GMP Stellar page](/gmp/integrations/stellar/intro#addresses). The current addresses are always in the deployment configs, under `chains.stellar*`: [mainnet](https://github.com/axelarnetwork/axelar-contract-deployments/blob/main/axelar-chains-config/info/mainnet.json) | [testnet](https://github.com/axelarnetwork/axelar-contract-deployments/blob/main/axelar-chains-config/info/testnet.json).
+
+<Callout emoji="⚠️" title="Testnet resets">
+  Stellar [resets its testnet](https://developers.stellar.org/docs/networks)
+  regularly, which deletes every contract. Axelar then redeploys its
+  contracts under a new chain name, such as `stellar-2026-q1-2`. After a reset,
+  redeploy your contracts and tokens, and use the new chain name and addresses.
+  Token IDs change too, since they depend on the chain name.
+</Callout>
+
+## Setup
+
+Set up as for [GMP on Stellar](/gmp/integrations/stellar/intro#setup), and add ITS and the token SDK to your contract's `Cargo.toml`:
+
+```toml
+[dependencies]
+stellar-axelar-std = { version = "2.0.1", features = ["derive"] }
+stellar-interchain-token-service = { version = "2.1.1", features = ["library"] }
+soroban-token-sdk = "25"
+```
+
+The `library` feature gives you `InterchainTokenServiceClient` without compiling ITS into your contract. `soroban-token-sdk` has `TokenMetadata`, which you pass to deploy a token. All Axelar crates use Soroban 25; if you start from `stellar contract init`, which adds `soroban-sdk` 26, change it to 25.
+
+## Calling ITS
+
+From your contract, call ITS with `InterchainTokenServiceClient`, as on the next pages. From a script, use the [JavaScript SDK](https://github.com/stellar/js-stellar-sdk) (`@stellar/stellar-sdk`).
+
+<Callout emoji="⚠️" title="The Stellar CLI can't call ITS yet">
+  `stellar contract invoke` can't read the interface of the deployed ITS
+  contract, and fails with `Missing Entry
+  __InterchainTokenServiceMigrationData`. Call ITS through your own contract,
+  or with the JavaScript SDK.
+</Callout>
+
+For example, to send tokens from a script on testnet:
+
+```js
+import {
+  Address,
+  Contract,
+  Keypair,
+  Networks,
+  TransactionBuilder,
+  nativeToScVal,
+  rpc,
+} from "@stellar/stellar-sdk";
+
+const server = new rpc.Server("https://soroban-testnet.stellar.org");
+const its = new Contract(
+  "CC7LAC4S7KAPIM26WKWFSOXWLNLSG7EXTC2EVY2H2UPKSTX3Z2A7M5YP",
+);
+const xlm = "CDLZFC3SYJYDZT7K67VZ75HPJVIEUVNIXF47ZG2FB2RMQQVU2HHGCYSC";
+const keypair = Keypair.fromSecret(process.env.STELLAR_SECRET_KEY);
+
+const tokenId = "<token ID>"; // hex
+const recipient = "<EVM address>"; // hex, without 0x
+const amount = 10000000n;
+const gasAmount = 1000000n; // in stroops
+
+const operation = its.call(
+  "interchain_transfer",
+  new Address(keypair.publicKey()).toScVal(), // caller
+  nativeToScVal(Buffer.from(tokenId, "hex")),
+  nativeToScVal("Avalanche", { type: "string" }),
+  nativeToScVal(Buffer.from(recipient, "hex")),
+  nativeToScVal(amount, { type: "i128" }),
+  nativeToScVal(null), // no data
+  nativeToScVal(
+    { address: new Address(xlm), amount: gasAmount },
+    { type: { address: ["symbol", "address"], amount: ["symbol", "i128"] } },
+  ),
+);
+
+const account = await server.getAccount(keypair.publicKey());
+const tx = new TransactionBuilder(account, {
+  fee: "100",
+  networkPassphrase: Networks.TESTNET,
+})
+  .addOperation(operation)
+  .setTimeout(60)
+  .build();
+
+// Simulates the call, and adds its authorization and resource fees
+const prepared = await server.prepareTransaction(tx);
+prepared.sign(keypair);
+const sent = await server.sendTransaction(prepared);
+const result = await server.pollTransaction(sent.hash);
+console.log(sent.hash, result.status);
+```
+
+The arguments are in the order of the [function](/its/integrations/stellar/its-contracts#transfers). An `Option` that's `None` is `null`, and a `Some` is the value itself.
+
+## What's different on Stellar
+
+The [concepts](/its/how-it-works/concepts) are the same as on other chains. These are the differences.
+
+### Token managers
+
+Stellar supports four [token manager types](/its/how-it-works/concepts#token-managers): `NativeInterchainToken` (`0`), `MintBurnFrom` (`1`), `LockUnlock` (`2`) and `MintBurn` (`4`). There's no `LOCK_UNLOCK_FEE`.
+
+No approvals are needed. The sender authorizes the transfer call, and that covers the burn or transfer it makes:
+
+| Type                    | Outgoing                                   | Incoming                                                |
+| ----------------------- | ------------------------------------------ | ------------------------------------------------------- |
+| `NativeInterchainToken` | `burn(sender, amount)`                     | `mint_from(token_manager, recipient, amount)`           |
+| `MintBurnFrom`          | `burn(sender, amount)`                     | `mint_from(token_manager, recipient, amount)`           |
+| `LockUnlock`            | `transfer(sender, token_manager, amount)`  | The token manager transfers to the recipient            |
+| `MintBurn`              | `burn(sender, amount)`                     | `mint(recipient, amount)`, called by the token manager  |
+
+### Flow limits
+
+ITS keeps each token's [flow limit](/its/how-it-works/flow-limits), not its token manager. `None`, the default, means no limit, and `Some(0)` blocks every transfer. ITS's operator, an account Axelar controls, sets it with `set_flow_limit`, and can approve flow limiters for a token, who can set it too. Deploying or registering a token doesn't make you a flow limiter. See [Roles](/its/how-it-works/roles#on-other-chains).
+
+### Minters
+
+When you deploy an interchain token, you can set a minter. The deployed ITS can't pass the role on or remove it, so choose it for good, or set none. ITS also makes the token manager a minter.
+
+A token you deploy from Stellar to other chains has no minter there, whatever you set on Stellar.
+
+### Token IDs
+
+Stellar ITS derives token IDs from its chain name, as well as the deployer and salt (or the token's address). Get them from ITS with `interchain_token_id(deployer, salt)`, `canonical_interchain_token_id(token_address)` and `linked_token_id(deployer, salt)`.
+
+### Addresses in messages
+
+Addresses on other chains are `Bytes`, in the format that chain's ITS reads:
+
+- An EVM address is its 20 bytes. In the Stellar CLI, write it as hex without `0x`.
+- A Stellar address arriving from another chain is the bytes of its `G…` or `C…` string. To send to Stellar from an EVM chain, pass the address string's UTF-8 bytes as the destination address.
+
+The sender of a transfer arrives the same way: an EVM sender as 20 bytes, a Stellar sender as the bytes of its address string.
+
+### Chain names
+
+ITS on Stellar sends only to chains its operator trusts, and compares names exactly. Use the chain's name as registered, such as `Avalanche`; mainnet doesn't accept `avalanche`. `is_trusted_chain(chain)` on ITS tells you if a name is accepted.
+
+### Classic assets
+
+XLM and other classic assets are used through their [Stellar Asset Contract](https://developers.stellar.org/docs/tokens/stellar-asset-contract). Deploy one for an asset with `stellar contract asset deploy --asset CODE:ISSUER --source alice --network testnet`. An account (`G…`) holds a classic asset in a trustline, so it can't receive the asset until it has one; contracts don't need trustlines.
+
+A classic asset's name is `CODE:ISSUER`, longer than ITS's limit of 32 characters, so when you deploy it to other chains, its symbol is used as its name.
+
+### Decimals
+
+A token that ITS deploys between Stellar and another chain keeps its decimals. Linked custom tokens can have different decimals on each chain, and the ITS Hub converts the amounts. Amounts on Stellar are `i128`.
+
+## Gas
+
+Pay gas for every transfer, remote deployment and link on the source chain, as `gas_token`: an address and an amount, in XLM's token address and stroops (1 XLM = `10000000`). Without gas, the message isn't relayed. Get the amount from an [ITS fee estimate](/gmp/gas/estimate-and-pay#estimate-its-fees). Express currently doesn't work for ITS.
+
+## Next steps
+
+- [Deploy and send tokens](/its/integrations/stellar/its-tokens): a contract that deploys, registers, sends and receives tokens, with tests.
+- [Link custom tokens](/its/integrations/stellar/link-custom-tokens): connect your own Stellar token to tokens on other chains.
+- [Contract reference](/its/integrations/stellar/its-contracts): ITS functions, events and the executable.
+
+## Resources
+
+- [axelar-amplifier-stellar](https://github.com/axelarnetwork/axelar-amplifier-stellar): source code of Axelar's Stellar contracts.
+- [API documentation](https://docs.rs/stellar-interchain-token-service/2.1.1/stellar_interchain_token_service/) of the ITS crate.
+- [stellar-axelar-example](https://github.com/axelarnetwork/axelar-amplifier-stellar/tree/main/contracts/stellar-axelar-example): example contract using GMP and ITS, deployed on testnet.
+- [GMP on Stellar](/gmp/integrations/stellar/intro).

@@ -1,0 +1,96 @@
+---
+title: "Interchain tokens"
+description: "Deploy a new token with the Interchain Token Factory, then deploy it to other chains."
+---
+
+An [interchain token](/its/how-it-works/concepts#kinds-of-token) is an ERC-20 that ITS deploys: [`InterchainToken`](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/interchain-token/InterchainToken.sol). You deploy it on one chain with the factory, then deploy it from there to other chains. Every copy has the same name, symbol, token ID and, on chains where ITS has the same address, the same address.
+
+For setup and the variables used below, see the [EVM overview](/its/integrations/evm/intro).
+
+## Deploy the token
+
+```solidity
+function deployInterchainToken(
+    bytes32 salt,
+    string calldata name,
+    string calldata symbol,
+    uint8 decimals,
+    uint256 initialSupply, // minted to msg.sender
+    address minter // gets the minter role, and the token manager's operator and flow limiter roles
+) external payable returns (bytes32 tokenId);
+```
+
+The call deploys the token and its [token manager](/its/how-it-works/concepts#token-managers) on this chain. It sends no message, so send no value with it.
+
+`minter` decides who controls the supply:
+
+| `minter`     | `initialSupply` | Result                                                                                                                          |
+| ------------ | --------------- | ------------------------------------------------------------------------------------------------------------------------------- |
+| Your address | Any             | You can mint and burn, and manage the token's [roles](/its/how-it-works/roles) and [flow limits](/its/how-it-works/flow-limits) |
+| `address(0)` | More than 0     | A fixed supply: only ITS can mint, as tokens arrive from other chains                                                           |
+| `address(0)` | 0               | Reverts with `ZeroSupplyToken`                                                                                                  |
+
+Users of a token with a minter have to trust the minter. See [Minter](/its/how-it-works/roles#minter) for what it can do, and how the [ITS Hub](/its/how-it-works/its-hub) protects tokens without one.
+
+```bash
+SALT=$(cast keccak "my-token-1")
+
+# Deploy "My Token" (MTK), mint 1,000,000 to yourself, and keep the minter role
+cast send $FACTORY "deployInterchainToken(bytes32,string,string,uint8,uint256,address)" \
+  $SALT "My Token" MTK 18 1000000000000000000000000 $ME \
+  --rpc-url $RPC --private-key $PK
+
+TOKEN_ID=$(cast call $FACTORY "interchainTokenId(address,bytes32)(bytes32)" $ME $SALT --rpc-url $RPC)
+TOKEN=$(cast call $ITS "interchainTokenAddress(bytes32)(address)" $TOKEN_ID --rpc-url $RPC)
+```
+
+The token ID depends on your address, the salt and the chain you deploy on, so you can compute it, and the token's address, before deploying.
+
+## Deploy it to other chains
+
+Call this on the chain where you deployed the token, from the same account, with the same salt:
+
+```solidity
+function deployRemoteInterchainToken(
+    bytes32 salt,
+    string calldata destinationChain,
+    uint256 gasValue
+) external payable returns (bytes32 tokenId);
+```
+
+```bash
+cast send $FACTORY "deployRemoteInterchainToken(bytes32,string,uint256)" \
+  $SALT binance $FEE --value $FEE \
+  --rpc-url $RPC --private-key $PK
+```
+
+The call sends a message, so pay its [gas](/its/integrations/evm/intro#gas). It deploys the token and its token manager on the destination chain, with the name, symbol and decimals of the token on this chain. The ITS Hub can lower the decimals on chains with a smaller maximum amount; see [ITS Hub](/its/how-it-works/its-hub#what-the-hub-does). Here's [a remote deployment on Axelarscan](https://testnet.axelarscan.io/gmp/0x7ad7cbbb7b8a76b26eccd97f6c41d6f38066d829f7e0554ab60223b18665f98a).
+
+The token on the destination chain has no minter. To give it one, use:
+
+```solidity
+function deployRemoteInterchainTokenWithMinter(
+    bytes32 salt,
+    address minter, // a minter of the token on this chain
+    string calldata destinationChain,
+    bytes memory destinationMinter, // empty for the same address as minter
+    uint256 gasValue
+) external payable returns (bytes32 tokenId);
+```
+
+With an empty `destinationMinter`, `minter` also becomes the minter on the destination chain. For a different address, for example on a non-EVM chain, `minter` must approve it first:
+
+```solidity
+function approveDeployRemoteInterchainToken(
+    address deployer,
+    bytes32 salt,
+    string calldata destinationChain,
+    bytes calldata destinationMinter
+) external; // called by minter
+```
+
+## Next steps
+
+- [Transfers](/its/integrations/evm/transfers): send the token between chains.
+- [Roles](/its/how-it-works/roles): pass on or give up the minter and operator roles.
+- [its-interchain-token](https://github.com/axelarnetwork/axelar-examples/tree/main/examples/evm/its-interchain-token): an example that deploys an interchain token and sends it between EVM chains.

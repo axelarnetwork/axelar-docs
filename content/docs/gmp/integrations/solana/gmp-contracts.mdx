@@ -519,12 +519,7 @@ pub struct GasAddedEvent {
 
 ### ITS Seeds
 
-| Seed | Derived From | Purpose |
-|------|-------------|---------|
-| `b"axelar-its-token-authority"` | Your program ID | Authority for the ATA holding received interchain tokens. Sign with this to spend. |
-| `b"interchain-transfer-execute"` + destination_program_id | ITS program ID | Signer proving ITS invoked your program via CPI |
-| `b"interchain-token-service"` | ITS program ID | ITS root configuration PDA |
-| `b"token-manager"` + its_root_pda + token_id | ITS program ID | Token manager PDA for a given token |
+The ITS program's PDAs, including the token authority your program uses to spend received tokens, are listed in the [ITS program reference](/its/integrations/solana/its-contracts#pdas).
 
 ## Support
 

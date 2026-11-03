@@ -5,7 +5,7 @@ description: "Send GMP messages from the XRP Ledger with a payment and memos."
 
 The XRP Ledger has no smart contracts, so Axelar has no gateway contract there. Instead, you send a message as a [Payment](https://xrpl.org/docs/references/protocol/transactions/types/payment) to Axelar's multisig account, with the message in the transaction's [memos](https://xrpl.org/docs/references/protocol/transactions/common-fields#memos-field). Axelar's verifiers check the payment, and Axelar routes the message through [Amplifier](/infrastructure#a-cross-chain-protocol-amplifier).
 
-**XRPL can send GMP messages, but can't receive them**: there's no contract on XRPL to execute them. XRPL can receive tokens through the [Interchain Token Service](/its/xrpl), without a payload.
+**XRPL can send GMP messages, but can't receive them**: there's no contract on XRPL to execute them. XRPL can receive tokens through the [Interchain Token Service](/its/integrations/xrpl), without a payload.
 
 <Callout title="Using an AI agent?">
   Copy this page with **Copy Markdown** at the top and give it to your agent,
@@ -102,7 +102,7 @@ To send a message:
 | `destination_address` | The destination contract's address in its chain's format; for EVM chains, `0x` is optional          |
 | `payload`             | The payload, as raw bytes in hex. Required                                                         |
 
-To add gas, see [Add gas](#add-gas). Token transfers use `interchain_transfer`; see [ITS on XRPL](/its/xrpl).
+To add gas, see [Add gas](#add-gas). Token transfers use `interchain_transfer`; see [ITS on XRPL](/its/integrations/xrpl).
 
 ### Rules
 

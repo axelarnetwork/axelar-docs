@@ -1,4 +1,4 @@
-import { getPageMarkdownUrl, source } from '@/lib/source';
+import { getPageMarkdownUrl, getPageTabTitle, source } from '@/lib/source';
 import {
   DocsBody,
   DocsDescription,
@@ -61,7 +61,7 @@ export async function generateMetadata(
   if (!page) notFound();
 
   return {
-    title: page.data.title,
+    title: getPageTabTitle(page),
     description: page.data.description,
     // Points agents at the Markdown version of the page.
     alternates: {

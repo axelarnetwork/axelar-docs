@@ -1,0 +1,117 @@
+---
+title: "Transfers"
+description: "Send an interchain token to another chain, from ITS or from the token contract."
+---
+
+A transfer takes the tokens on the source chain, sends a message through the [ITS Hub](/its/how-it-works/its-hub), and gives the tokens to the recipient on the destination chain. How the tokens are taken and given depends on the token manager's type: burned and minted, or locked and unlocked. See [Token managers](/its/how-it-works/concepts#token-managers).
+
+For setup and the variables used below, see the [EVM overview](/its/integrations/evm/intro).
+
+## From ITS
+
+Call `interchainTransfer` on ITS. It works for every token connected to ITS:
+
+```solidity
+function interchainTransfer(
+    bytes32 tokenId,
+    string calldata destinationChain,
+    bytes calldata destinationAddress,
+    uint256 amount,
+    bytes calldata metadata, // empty for a plain transfer
+    uint256 gasValue
+) external payable;
+```
+
+```bash
+# Send 25 tokens to your own address on BSC
+cast send $ITS "interchainTransfer(bytes32,string,bytes,uint256,bytes,uint256)" \
+  $TOKEN_ID binance $ME 25000000000000000000 0x $FEE --value $FEE \
+  --rpc-url $RPC --private-key $PK
+```
+
+- **`destinationAddress`** is the recipient, as bytes in the destination chain's format; see [Recipient addresses](#recipient-addresses).
+- **`amount`** is in the token's smallest unit on this chain. The hub converts it if the token has different decimals on the destination chain.
+- **`metadata`** is empty for a plain transfer. To call a contract with the tokens, see [Transfers with data](/its/integrations/evm/transfers-with-data).
+- **`gasValue`** pays for the message. Send the same amount as the transaction value; see [Gas](/its/integrations/evm/intro#gas).
+
+For lock and unlock tokens, and `MINT_BURN_FROM` tokens, approve ITS to take `amount` first. Interchain tokens and `MINT_BURN` tokens need no approval. See [the token contract](/its/integrations/evm/custom-tokens#the-token-contract).
+
+On chains running ITS v2.2.0, a shorter form without `metadata` and `gasValue` also works, with the gas paid from `msg.value`: `interchainTransfer(tokenId, destinationChain, destinationAddress, amount)`. See [Versions](/its/integrations/evm/intro#versions).
+
+Here's [a transfer on Axelarscan](https://testnet.axelarscan.io/gmp/0x495f530e603e3bfe425998dcced66e849353a4ba0196cbc0a041ac2f28eb8f96).
+
+## From the token
+
+Interchain tokens, and custom tokens that inherit [`InterchainTokenStandard`](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/interchain-token/InterchainTokenStandard.sol), have their own `interchainTransfer`, which needs no token ID. Gas is paid from `msg.value`:
+
+```solidity
+function interchainTransfer(
+    string calldata destinationChain,
+    bytes calldata recipient,
+    uint256 amount,
+    bytes calldata metadata
+) external payable; // on the token
+```
+
+```bash
+cast send $TOKEN "interchainTransfer(string,bytes,uint256,bytes)" \
+  binance $ME 25000000000000000000 0x --value $FEE \
+  --rpc-url $RPC --private-key $PK
+```
+
+Interchain tokens need no approval. A custom token with a lock and unlock type still needs an approval for ITS.
+
+`interchainTransferFrom(sender, destinationChain, recipient, amount, metadata)` sends tokens from another account that approved you, like `transferFrom`.
+
+## Recipient addresses
+
+`destinationAddress` is bytes, encoded for the destination chain:
+
+| Destination | Encoding                                    |
+| ----------- | ------------------------------------------- |
+| EVM, Sui    | The address, e.g. `0x510e…`                 |
+| Solana      | The 32-byte public key, decoded from base58 |
+| Stellar     | The address string, as ASCII bytes          |
+| XRPL        | The address string, as ASCII bytes          |
+
+Axelar's scripts encode it this way: see `encodeITSDestination` in [axelar-contract-deployments](https://github.com/axelarnetwork/axelar-contract-deployments/blob/main/common/utils.js).
+
+## Flow limits
+
+A token can have a [flow limit](/its/how-it-works/flow-limits) on each chain. A transfer over the limit reverts on the source chain, or fails on arrival, and can be executed again in a later window.
+
+## Track it
+
+On the source chain, ITS emits:
+
+```solidity
+event InterchainTransfer(
+    bytes32 indexed tokenId,
+    address indexed sourceAddress,
+    string destinationChain,
+    bytes destinationAddress,
+    uint256 amount,
+    bytes32 indexed dataHash // 0 for a transfer without data
+);
+```
+
+On the destination chain, ITS emits `InterchainTransferReceived` when it gives the tokens. In between, follow the message on Axelarscan; see [Track a message](/its/integrations/evm/intro#track-a-message).
+
+## Errors
+
+On the source chain:
+
+| Error                     | Cause                                                                                                              |
+| ------------------------- | ------------------------------------------------------------------------------------------------------------------ |
+| `UntrustedChain`          | The destination chain isn't connected to ITS, or its name has the wrong case                                       |
+| `TakeTokenFailed`         | The tokens couldn't be taken: unknown token ID, balance, approval or flow limit. The cause, if any, is in its data |
+| `ZeroAmount`              | `amount` is 0                                                                                                      |
+| `EmptyDestinationAddress` | `destinationAddress` is empty                                                                                      |
+| `Pause`                   | ITS is paused                                                                                                      |
+
+On the destination chain, the execution fails with `GiveTokenFailed` if the tokens can't be given, e.g. over the flow limit or without the right to mint. The message stays approved, and can be [executed again](/gmp/track-and-recover/recover-transactions#execute).
+
+## Next steps
+
+- [Transfers with data](/its/integrations/evm/transfers-with-data): call a contract on the destination chain with the tokens.
+- Users can also send interchain tokens in the [Axelar App](https://app.axelar.network/).

@@ -1,0 +1,122 @@
+---
+title: "Overview"
+description: "Deploy, connect and transfer interchain tokens from EVM chains."
+---
+
+On EVM chains, you use two contracts:
+
+- **Interchain Token Service (ITS)** ([`InterchainTokenService`](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/InterchainTokenService.sol)) registers tokens, deploys their token managers, and sends and receives transfers.
+- **Interchain Token Factory** ([`InterchainTokenFactory`](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/InterchainTokenFactory.sol)) has the functions most token deployers call: deploy an interchain token, register an existing token, and link custom tokens.
+
+| Contract                 | Address on most chains, mainnet and testnet  |
+| ------------------------ | -------------------------------------------- |
+| Interchain Token Service | `0xB5FB4BE02232B1bBA4dC8f81dc24C26980dE9e3C` |
+| Interchain Token Factory | `0x83a93500d23Fbc3e82B410aD07A6a9F7A0670D66` |
+
+The exceptions are on [Chains and contracts](/infrastructure/network/chains-and-contracts). Token IDs, token managers and the ITS Hub are explained in [How it works](/its/how-it-works/concepts).
+
+<Callout title="Using an AI agent?">
+  Copy this page with **Copy Markdown** at the top and give it to your agent,
+  with the token you want to make interchain. The copied page links to the
+  Markdown of the other pages it refers to, so the agent can read them too.
+  Review what it writes, and test on testnet before mainnet.
+</Callout>
+
+## Choose a path
+
+| You have                                             | Page                                                             |
+| ---------------------------------------------------- | ---------------------------------------------------------------- |
+| No token yet                                         | [Interchain tokens](/its/integrations/evm/interchain-tokens)     |
+| A token on one chain                                 | [Canonical tokens](/its/integrations/evm/canonical-tokens)       |
+| Your own token contracts on several chains           | [Custom tokens](/its/integrations/evm/custom-tokens)             |
+| A token connected to ITS, to send to another chain   | [Transfers](/its/integrations/evm/transfers)                     |
+| A contract that should act on the tokens it receives | [Transfers with data](/its/integrations/evm/transfers-with-data) |
+
+## Versions
+
+Most EVM chains run ITS v2.1.x. Some newer chains run v2.2.0, which adds two functions:
+
+| Function                                                              | v2.1.x | v2.2.0 |
+| --------------------------------------------------------------------- | ------ | ------ |
+| `interchainTransfer` with `metadata` and `gasValue` (6 arguments)     | Yes    | Yes    |
+| `interchainTransfer` without them (4 arguments, gas from `msg.value`) | No     | Yes    |
+| `callContractWithInterchainToken`                                     | No     | Yes    |
+
+These pages use the functions that work on both. A chain's version is the `version` of its `InterchainTokenService` in the [deployment configs](https://github.com/axelarnetwork/axelar-contract-deployments/tree/main/axelar-chains-config/info).
+
+## Setup
+
+The examples on these pages use [`cast`](https://getfoundry.sh/cast/overview) and these variables:
+
+```bash
+ITS=0xB5FB4BE02232B1bBA4dC8f81dc24C26980dE9e3C
+FACTORY=0x83a93500d23Fbc3e82B410aD07A6a9F7A0670D66
+RPC=<RPC URL of the chain you send from>
+PK=<your private key>
+ME=$(cast wallet address --private-key $PK)
+FEE=<gas fee in wei, see Gas below>
+```
+
+To build contracts against ITS, install the package. Version 2.1.1 matches what most chains run:
+
+```bash
+# npm
+npm install @axelar-network/interchain-token-service@2.1.1
+
+# Foundry
+forge install axelarnetwork/interchain-token-service@v2.1.1 axelarnetwork/axelar-gmp-sdk-solidity@v6.0.4
+```
+
+With Foundry, add remappings so the imports in these docs resolve:
+
+```
+@axelar-network/interchain-token-service/=lib/interchain-token-service/
+@axelar-network/axelar-gmp-sdk-solidity/=lib/axelar-gmp-sdk-solidity/
+```
+
+### Chain names
+
+ITS identifies chains by their Axelar name, such as `binance` or `Avalanche`. Names are listed on Axelarscan: [mainnet](https://axelarscan.io/resources/chains) | [testnet](https://testnet.axelarscan.io/resources/chains).
+
+ITS on EVM chains matches names exactly, including case: `Avalanche` and `Ethereum` are capitalized, `binance` isn't. A call with a name in the wrong case reverts with `UntrustedChain`.
+
+## Gas
+
+Each call that reaches another chain sends a [GMP](/gmp/overview) message through the [ITS Hub](/its/how-it-works/its-hub), and you pay its gas on the source chain. Most of those calls take a `gasValue` argument: send the same amount as the transaction value. The contract pays `gasValue` to the gas service out of its balance, and keeps any difference.
+
+| Call                                    | Contract | Sends a message | Pay                    |
+| --------------------------------------- | -------- | --------------- | ---------------------- |
+| `deployInterchainToken`                 | Factory  | No              | Nothing                |
+| `deployRemoteInterchainToken`           | Factory  | Yes             | `msg.value = gasValue` |
+| `deployRemoteInterchainTokenWithMinter` | Factory  | Yes             | `msg.value = gasValue` |
+| `registerCanonicalInterchainToken`      | Factory  | No              | Nothing                |
+| `deployRemoteCanonicalInterchainToken`  | Factory  | Yes             | `msg.value = gasValue` |
+| `registerTokenMetadata`                 | ITS      | To the hub only | `msg.value = gasValue` |
+| `registerCustomToken`                   | Factory  | No              | Nothing                |
+| `linkToken`                             | Factory  | Yes             | `msg.value = gasValue` |
+| `interchainTransfer` (6 arguments)      | ITS      | Yes             | `msg.value = gasValue` |
+| `interchainTransfer` on the token       | Token    | Yes             | `msg.value`            |
+
+Calls that send no message are `payable` only so they can be batched in a multicall. Send no value with them: it stays in the contract.
+
+Estimate the fee off-chain, right before sending: see [Estimate ITS fees](/gmp/gas/estimate-and-pay#estimate-its-fees). For `registerTokenMetadata`, estimate a message to the chain `axelar`. Unused gas is refunded to the account that sent the transaction (`tx.origin`).
+
+[Express](/gmp/integrations/evm/express) currently doesn't work for ITS transfers.
+
+## Track a message
+
+Messages go through the hub, so Axelarscan shows each as two: one to the chain `axelar`, and one from it to the destination. A metadata registration is one message, to the hub. Look the transaction up on [Axelarscan](https://axelarscan.io/gmp/search) ([testnet](https://testnet.axelarscan.io/gmp/search)). If it gets stuck, see [Track and recover](/gmp/track-and-recover/transaction-states).
+
+## Next steps
+
+- [Interchain tokens](/its/integrations/evm/interchain-tokens): deploy a new token on several chains.
+- [Canonical tokens](/its/integrations/evm/canonical-tokens): bring an existing token to more chains.
+- [Custom tokens](/its/integrations/evm/custom-tokens): link your own token contracts.
+- [Transfers](/its/integrations/evm/transfers): send tokens between chains.
+- [Transfers with data](/its/integrations/evm/transfers-with-data): call a contract on the destination chain with the tokens.
+
+## Resources
+
+- [interchain-token-service](https://github.com/axelarnetwork/interchain-token-service): the ITS, factory, token manager and interchain token contracts.
+- [axelar-contract-deployments](https://github.com/axelarnetwork/axelar-contract-deployments): addresses and versions per chain, and the scripts Axelar uses to operate ITS.
+- [axelar-examples](https://github.com/axelarnetwork/axelar-examples/tree/main/examples/evm): example apps, including ITS examples.

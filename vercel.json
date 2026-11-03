@@ -847,172 +847,172 @@
     },
     {
       "source": "/dev/send-tokens/introduction(/)?",
-      "destination": "/its/token-transfer-overview",
+      "destination": "/its/overview",
       "permanent": true
     },
     {
       "source": "/dev/send-tokens/interchain-tokens/no-code(/)?",
-      "destination": "/its/no-code",
+      "destination": "/its/overview",
       "permanent": true
     },
     {
       "source": "/dev/send-tokens/interchain-tokens/create-new-interchain-token(/)?",
-      "destination": "/its/create-new-interchain-token",
+      "destination": "/its/integrations/evm/interchain-tokens",
       "permanent": true
     },
     {
       "source": "/dev/send-tokens/interchain-tokens/register-existing-token(/)?",
-      "destination": "/its/register-existing-token",
+      "destination": "/its/integrations/evm/canonical-tokens",
       "permanent": true
     },
     {
       "source": "/dev/send-tokens/interchain-tokens/integrate-custom-token(/)?",
-      "destination": "/its/integrate-custom-token",
+      "destination": "/its/integrations/evm/custom-tokens",
       "permanent": true
     },
     {
       "source": "/dev/send-tokens/interchain-tokens/token-manager(/)?",
-      "destination": "/its/token-manager",
+      "destination": "/its/how-it-works/concepts#token-managers",
       "permanent": true
     },
     {
       "source": "/dev/send-tokens/interchain-tokens/interchain-token-executable(/)?",
-      "destination": "/its/interchain-token-executable",
+      "destination": "/its/integrations/evm/transfers-with-data",
       "permanent": true
     },
     {
       "source": "/dev/send-tokens/interchain-tokens/flow-limit(/)?",
-      "destination": "/its/flow-limit",
+      "destination": "/its/how-it-works/flow-limits",
       "permanent": true
     },
     {
       "source": "/dev/send-tokens/interchain-tokens/minter-operator-roles(/)?",
-      "destination": "/its/minter-operator-roles",
+      "destination": "/its/how-it-works/roles",
       "permanent": true
     },
     {
       "source": "/dev/send-tokens/interchain-tokens/interchain-transfer(/)?",
-      "destination": "/its/interchain-transfer",
+      "destination": "/its/integrations/evm/transfers",
       "permanent": true
     },
     {
       "source": "/dev/send-tokens/interchain-tokens/developer-guides/programmatically-create-a-token(/)?",
-      "destination": "/its/developer-guides/programmatically-create-a-token",
+      "destination": "/its/integrations/evm/interchain-tokens",
       "permanent": true
     },
     {
       "source": "/dev/send-tokens/interchain-tokens/developer-guides/programmatically-create-a-canonical-token(/)?",
-      "destination": "/its/developer-guides/programmatically-create-a-canonical-token",
+      "destination": "/its/integrations/evm/canonical-tokens",
       "permanent": true
     },
     {
       "source": "/dev/send-tokens/interchain-tokens/developer-guides/link-custom-tokens-deployed-across-multiple-chains-into-interchain-tokens(/)?",
-      "destination": "/its/developer-guides/link-custom-tokens-deployed-across-multiple-chains-into-interchain-tokens",
+      "destination": "/its/integrations/evm/custom-tokens",
       "permanent": true
     },
     {
       "source": "/dev/amplifier/its-hub/introduction(/)?",
-      "destination": "/its/its-hub/introduction",
+      "destination": "/its/how-it-works/its-hub",
       "permanent": true
     },
     {
       "source": "/dev/amplifier/its-hub/routing-mechanics(/)?",
-      "destination": "/its/its-hub/routing-mechanics",
+      "destination": "/its/how-it-works/its-hub",
       "permanent": true
     },
     {
       "source": "/dev/send-tokens/sui/intro(/)?",
-      "destination": "/its/sui/intro",
+      "destination": "/its/integrations/sui/intro",
       "permanent": true
     },
     {
       "source": "/dev/send-tokens/sui/coin-management(/)?",
-      "destination": "/its/sui/coin-management",
+      "destination": "/its/integrations/sui/its-contracts",
       "permanent": true
     },
     {
       "source": "/dev/send-tokens/sui/link-coin(/)?",
-      "destination": "/its/sui/link-coin",
+      "destination": "/its/integrations/sui/link-coin",
       "permanent": true
     },
     {
       "source": "/dev/send-tokens/sui/register-existing-coin(/)?",
-      "destination": "/its/sui/register-existing-coin",
+      "destination": "/its/integrations/sui/register-coin",
       "permanent": true
     },
     {
       "source": "/dev/send-tokens/sui/register-existing-coin-guide(/)?",
-      "destination": "/its/sui/register-existing-coin-guide",
+      "destination": "/its/integrations/sui/register-coin",
       "permanent": true
     },
     {
       "source": "/dev/send-tokens/stellar/intro(/)?",
-      "destination": "/its/stellar/intro",
+      "destination": "/its/integrations/stellar/intro",
       "permanent": true
     },
     {
       "source": "/dev/send-tokens/stellar/deploy-new-token(/)?",
-      "destination": "/its/stellar/deploy-new-token",
+      "destination": "/its/integrations/stellar/its-tokens",
       "permanent": true
     },
     {
       "source": "/dev/send-tokens/stellar/register-existing-stellar-token(/)?",
-      "destination": "/its/stellar/register-existing-stellar-token",
+      "destination": "/its/integrations/stellar/its-tokens#register-an-existing-token",
       "permanent": true
     },
     {
       "source": "/dev/send-tokens/solana/its(/)?",
-      "destination": "/its/solana",
+      "destination": "/its/integrations/solana/intro",
       "permanent": true
     },
     {
       "source": "/dev/send-tokens/xrpl/xrpl-its(/)?",
-      "destination": "/its/xrpl",
+      "destination": "/its/integrations/xrpl",
       "permanent": true
     },
     {
       "source": "/learn/axlusdc(/)?",
-      "destination": "/its/axlusdc",
+      "destination": "/gmp/resources/axlusdc",
       "permanent": true
     },
     {
       "source": "/resources/tokens/wrapped-tokens(/)?",
-      "destination": "/its/wrapped-tokens",
+      "destination": "/gmp/integrations/evm/send-tokens-with-messages",
       "permanent": true
     },
     {
       "source": "/dev/send-tokens/roadmap(/)?",
-      "destination": "/its/roadmap",
+      "destination": "/its/overview",
       "permanent": true
     },
     {
       "source": "/dev/send-tokens/glossary(/)?",
-      "destination": "/its/glossary",
+      "destination": "/its/how-it-works/concepts",
       "permanent": true
     },
     {
       "source": "/dev/send-tokens/disabled/send-tokens(/)?",
-      "destination": "/its/disabled/send-tokens",
+      "destination": "/gmp/integrations/evm/send-tokens-with-messages",
       "permanent": true
     },
     {
       "source": "/dev/send-tokens/disabled/deposit-address(/)?",
-      "destination": "/its/disabled/deposit-address",
+      "destination": "/gmp/integrations/evm/send-tokens-with-messages",
       "permanent": true
     },
     {
       "source": "/dev/send-tokens/deprecated/send-tokens(/)?",
-      "destination": "/its/disabled/send-tokens",
+      "destination": "/gmp/integrations/evm/send-tokens-with-messages",
       "permanent": true
     },
     {
       "source": "/dev/send-tokens/deprecated/deposit-address(/)?",
-      "destination": "/its/disabled/deposit-address",
+      "destination": "/gmp/integrations/evm/send-tokens-with-messages",
       "permanent": true
     },
     {
       "source": "/dev/axelarjs-sdk/token-transfer-dep-addr(/)?",
-      "destination": "/its/disabled/deposit-address",
+      "destination": "/gmp/integrations/evm/send-tokens-with-messages",
       "permanent": true
     },
     {
@@ -1022,7 +1022,7 @@
     },
     {
       "source": "/dev/send-tokens/interchain-tokens/rate-limit(/)?",
-      "destination": "/its/flow-limit",
+      "destination": "/its/how-it-works/flow-limits",
       "permanent": true
     },
     {
@@ -1037,7 +1037,7 @@
     },
     {
       "source": "/dev/send-tokens/interchain-tokens/roadmap(/)?",
-      "destination": "/its/roadmap",
+      "destination": "/its/overview",
       "permanent": true
     },
     {
@@ -1052,7 +1052,7 @@
     },
     {
       "source": "/dev/send-tokens/overview(/)?",
-      "destination": "/its/token-transfer-overview",
+      "destination": "/its/overview",
       "permanent": true
     },
     {
@@ -1072,47 +1072,47 @@
     },
     {
       "source": "/its/upgrade-token(/)?",
-      "destination": "/its/register-existing-token",
+      "destination": "/its/integrations/evm/canonical-tokens",
       "permanent": true
     },
     {
       "source": "/its/token-executable(/)?",
-      "destination": "/its/interchain-token-executable",
+      "destination": "/its/integrations/evm/transfers-with-data",
       "permanent": true
     },
     {
       "source": "/its/rate-limit(/)?",
-      "destination": "/its/flow-limit",
+      "destination": "/its/how-it-works/flow-limits",
       "permanent": true
     },
     {
       "source": "/its/create-token-tutorial(/)?",
-      "destination": "/its/developer-guides/programmatically-create-a-token",
+      "destination": "/its/integrations/evm/interchain-tokens",
       "permanent": true
     },
     {
       "source": "/its/canonical-token-tutorial(/)?",
-      "destination": "/its/developer-guides/programmatically-create-a-canonical-token",
+      "destination": "/its/integrations/evm/canonical-tokens",
       "permanent": true
     },
     {
       "source": "/its/link-token-tutorial(/)?",
-      "destination": "/its/developer-guides/link-custom-tokens-deployed-across-multiple-chains-into-interchain-tokens",
+      "destination": "/its/integrations/evm/custom-tokens",
       "permanent": true
     },
     {
       "source": "/dev/reference/interchain-token-service-rate-limit(/)?",
-      "destination": "/its/flow-limit",
+      "destination": "/its/how-it-works/flow-limits",
       "permanent": true
     },
     {
       "source": "/dev/reference/glossary(/)?",
-      "destination": "/its/glossary",
+      "destination": "/its/how-it-works/concepts",
       "permanent": true
     },
     {
       "source": "/dev/glossary(/)?",
-      "destination": "/its/glossary",
+      "destination": "/its/how-it-works/concepts",
       "permanent": true
     },
     {
@@ -1127,7 +1127,7 @@
     },
     {
       "source": "/resources/wrapped-tokens(/)?",
-      "destination": "/its/wrapped-tokens",
+      "destination": "/gmp/integrations/evm/send-tokens-with-messages",
       "permanent": true
     },
     {
@@ -1252,7 +1252,7 @@
     },
     {
       "source": "/resources/weth(/)?",
-      "destination": "/its/wrapped-tokens",
+      "destination": "/gmp/integrations/evm/send-tokens-with-messages",
       "permanent": true
     },
     {
@@ -1272,7 +1272,7 @@
     },
     {
       "source": "/dev/build/tokens(/)?",
-      "destination": "/its/token-transfer-overview",
+      "destination": "/its/overview",
       "permanent": true
     },
     {
@@ -1337,7 +1337,7 @@
     },
     {
       "source": "/dev/general-message-passing/tokens(/)?",
-      "destination": "/its/token-transfer-overview",
+      "destination": "/its/overview",
       "permanent": true
     },
     {
@@ -1367,17 +1367,17 @@
     },
     {
       "source": "/dev/its/create-new-token(/)?",
-      "destination": "/its/create-new-interchain-token",
+      "destination": "/its/integrations/evm/interchain-tokens",
       "permanent": true
     },
     {
       "source": "/dev/its/custom-token(/)?",
-      "destination": "/its/integrate-custom-token",
+      "destination": "/its/integrations/evm/custom-tokens",
       "permanent": true
     },
     {
       "source": "/dev/send-tokens/interchain-tokens/quick-start/no-code(/)?",
-      "destination": "/its/no-code",
+      "destination": "/its/overview",
       "permanent": true
     },
     {
@@ -1387,7 +1387,7 @@
     },
     {
       "source": "/dev/send-tokens/interchain-tokens/quick-start/programmatic(/)?",
-      "destination": "/its/create-new-interchain-token",
+      "destination": "/its/integrations/evm/interchain-tokens",
       "permanent": true
     },
     {
@@ -1442,17 +1442,17 @@
     },
     {
       "source": "/dev/send-tokens/sui/register-existing-coin-demo(/)?",
-      "destination": "/its/sui/register-existing-coin-guide",
+      "destination": "/its/integrations/sui/register-coin",
       "permanent": true
     },
     {
       "source": "/dev/send-tokens/sui/register-existing-sui-token(/)?",
-      "destination": "/its/sui/register-existing-coin-guide",
+      "destination": "/its/integrations/sui/register-coin",
       "permanent": true
     },
     {
       "source": "/dev/send-tokens/interchain-tokens/its-hub(/)?",
-      "destination": "/its/its-hub/introduction",
+      "destination": "/its/how-it-works/its-hub",
       "permanent": true
     },
     {
@@ -1462,7 +1462,7 @@
     },
     {
       "source": "/dev/send-tokens/sui/interchain-transfer(/)?",
-      "destination": "/its/sui/intro",
+      "destination": "/its/integrations/sui/intro",
       "permanent": true
     },
     {
@@ -2258,6 +2258,271 @@
     {
       "source": "/gmp/integrations/sui/gmp-tutorial(/)?",
       "destination": "/gmp/integrations/sui/gmp-messages",
+      "permanent": true
+    },
+    {
+      "source": "/its/no-code(/)?",
+      "destination": "/its/overview",
+      "permanent": true
+    },
+    {
+      "source": "/its/token-manager(/)?",
+      "destination": "/its/how-it-works/concepts#token-managers",
+      "permanent": true
+    },
+    {
+      "source": "/its/glossary(/)?",
+      "destination": "/its/how-it-works/concepts",
+      "permanent": true
+    },
+    {
+      "source": "/its/its-hub/introduction(/)?",
+      "destination": "/its/how-it-works/its-hub",
+      "permanent": true
+    },
+    {
+      "source": "/its/its-hub/routing-mechanics(/)?",
+      "destination": "/its/how-it-works/its-hub",
+      "permanent": true
+    },
+    {
+      "source": "/its/minter-operator-roles(/)?",
+      "destination": "/its/how-it-works/roles",
+      "permanent": true
+    },
+    {
+      "source": "/its/flow-limit(/)?",
+      "destination": "/its/how-it-works/flow-limits",
+      "permanent": true
+    },
+    {
+      "source": "/its/create-new-interchain-token(/)?",
+      "destination": "/its/integrations/evm/interchain-tokens",
+      "permanent": true
+    },
+    {
+      "source": "/its/register-existing-token(/)?",
+      "destination": "/its/integrations/evm/canonical-tokens",
+      "permanent": true
+    },
+    {
+      "source": "/its/integrate-custom-token(/)?",
+      "destination": "/its/integrations/evm/custom-tokens",
+      "permanent": true
+    },
+    {
+      "source": "/its/interchain-transfer(/)?",
+      "destination": "/its/integrations/evm/transfers",
+      "permanent": true
+    },
+    {
+      "source": "/its/interchain-token-executable(/)?",
+      "destination": "/its/integrations/evm/transfers-with-data",
+      "permanent": true
+    },
+    {
+      "source": "/its/developer-guides/programmatically-create-a-token(/)?",
+      "destination": "/its/integrations/evm/interchain-tokens",
+      "permanent": true
+    },
+    {
+      "source": "/its/developer-guides/programmatically-create-a-canonical-token(/)?",
+      "destination": "/its/integrations/evm/canonical-tokens",
+      "permanent": true
+    },
+    {
+      "source": "/its/developer-guides/link-custom-tokens-deployed-across-multiple-chains-into-interchain-tokens(/)?",
+      "destination": "/its/integrations/evm/custom-tokens",
+      "permanent": true
+    },
+    {
+      "source": "/its/solana(/)?",
+      "destination": "/its/integrations/solana/intro",
+      "permanent": true
+    },
+    {
+      "source": "/its/xrpl(/)?",
+      "destination": "/its/integrations/xrpl",
+      "permanent": true
+    },
+    {
+      "source": "/its/sui/link-coin(/)?",
+      "destination": "/its/integrations/sui/link-coin",
+      "permanent": true
+    },
+    {
+      "source": "/its/sui/intro(/)?",
+      "destination": "/its/integrations/sui/intro",
+      "permanent": true
+    },
+    {
+      "source": "/its/sui/register-existing-coin(/)?",
+      "destination": "/its/integrations/sui/register-coin",
+      "permanent": true
+    },
+    {
+      "source": "/its/sui/coin-management(/)?",
+      "destination": "/its/integrations/sui/its-contracts",
+      "permanent": true
+    },
+    {
+      "source": "/its/sui/register-existing-coin-guide(/)?",
+      "destination": "/its/integrations/sui/register-coin",
+      "permanent": true
+    },
+    {
+      "source": "/its/stellar/intro(/)?",
+      "destination": "/its/integrations/stellar/intro",
+      "permanent": true
+    },
+    {
+      "source": "/its/stellar/register-existing-stellar-token(/)?",
+      "destination": "/its/integrations/stellar/its-tokens#register-an-existing-token",
+      "permanent": true
+    },
+    {
+      "source": "/its/stellar/deploy-new-token(/)?",
+      "destination": "/its/integrations/stellar/its-tokens",
+      "permanent": true
+    },
+    {
+      "source": "/its/roadmap(/)?",
+      "destination": "/its/overview",
+      "permanent": true
+    },
+    {
+      "source": "/its/token-transfer-overview(/)?",
+      "destination": "/its/overview",
+      "permanent": true
+    },
+    {
+      "source": "/its/wrapped-tokens(/)?",
+      "destination": "/gmp/integrations/evm/send-tokens-with-messages",
+      "permanent": true
+    },
+    {
+      "source": "/its/disabled/send-tokens(/)?",
+      "destination": "/gmp/integrations/evm/send-tokens-with-messages",
+      "permanent": true
+    },
+    {
+      "source": "/its/disabled/deposit-address(/)?",
+      "destination": "/gmp/integrations/evm/send-tokens-with-messages",
+      "permanent": true
+    },
+    {
+      "source": "/its/axlusdc(/)?",
+      "destination": "/gmp/resources/axlusdc",
+      "permanent": true
+    },
+    {
+      "source": "/its/portal(/)?",
+      "destination": "/its/overview",
+      "permanent": true
+    },
+    {
+      "source": "/its/how-it-works/glossary(/)?",
+      "destination": "/its/how-it-works/concepts",
+      "permanent": true
+    },
+    {
+      "source": "/its/how-it-works/token-manager(/)?",
+      "destination": "/its/how-it-works/concepts#token-managers",
+      "permanent": true
+    },
+    {
+      "source": "/its/how-it-works/its-hub/introduction(/)?",
+      "destination": "/its/how-it-works/its-hub",
+      "permanent": true
+    },
+    {
+      "source": "/its/how-it-works/its-hub/routing-mechanics(/)?",
+      "destination": "/its/how-it-works/its-hub",
+      "permanent": true
+    },
+    {
+      "source": "/its/how-it-works/minter-operator-roles(/)?",
+      "destination": "/its/how-it-works/roles",
+      "permanent": true
+    },
+    {
+      "source": "/its/how-it-works/flow-limit(/)?",
+      "destination": "/its/how-it-works/flow-limits",
+      "permanent": true
+    },
+    {
+      "source": "/its/integrations/evm/create-new-interchain-token(/)?",
+      "destination": "/its/integrations/evm/interchain-tokens",
+      "permanent": true
+    },
+    {
+      "source": "/its/integrations/evm/programmatically-create-a-token(/)?",
+      "destination": "/its/integrations/evm/interchain-tokens",
+      "permanent": true
+    },
+    {
+      "source": "/its/integrations/evm/register-existing-token(/)?",
+      "destination": "/its/integrations/evm/canonical-tokens",
+      "permanent": true
+    },
+    {
+      "source": "/its/integrations/evm/programmatically-create-a-canonical-token(/)?",
+      "destination": "/its/integrations/evm/canonical-tokens",
+      "permanent": true
+    },
+    {
+      "source": "/its/integrations/evm/integrate-custom-token(/)?",
+      "destination": "/its/integrations/evm/custom-tokens",
+      "permanent": true
+    },
+    {
+      "source": "/its/integrations/evm/link-custom-tokens-deployed-across-multiple-chains-into-interchain-tokens(/)?",
+      "destination": "/its/integrations/evm/custom-tokens",
+      "permanent": true
+    },
+    {
+      "source": "/its/integrations/evm/interchain-transfer(/)?",
+      "destination": "/its/integrations/evm/transfers",
+      "permanent": true
+    },
+    {
+      "source": "/its/integrations/evm/interchain-token-executable(/)?",
+      "destination": "/its/integrations/evm/transfers-with-data",
+      "permanent": true
+    },
+    {
+      "source": "/its/integrations/evm(/)?",
+      "destination": "/its/integrations/evm/intro",
+      "permanent": true
+    },
+    {
+      "source": "/its/integrations/stellar/deploy-new-token(/)?",
+      "destination": "/its/integrations/stellar/its-tokens",
+      "permanent": true
+    },
+    {
+      "source": "/its/integrations/stellar/register-existing-stellar-token(/)?",
+      "destination": "/its/integrations/stellar/its-tokens#register-an-existing-token",
+      "permanent": true
+    },
+    {
+      "source": "/its/integrations/solana(/)?",
+      "destination": "/its/integrations/solana/intro",
+      "permanent": true
+    },
+    {
+      "source": "/its/integrations/sui/register-existing-coin(/)?",
+      "destination": "/its/integrations/sui/register-coin",
+      "permanent": true
+    },
+    {
+      "source": "/its/integrations/sui/register-existing-coin-guide(/)?",
+      "destination": "/its/integrations/sui/register-coin",
+      "permanent": true
+    },
+    {
+      "source": "/its/integrations/sui/coin-management(/)?",
+      "destination": "/its/integrations/sui/its-contracts",
       "permanent": true
     }
   ],

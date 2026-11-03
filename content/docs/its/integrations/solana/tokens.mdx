@@ -1,0 +1,97 @@
+---
+title: "Deploy and Register Tokens"
+description: "Deploy an interchain token, register a canonical token or link a custom token on Solana, and manage its roles and flow limits."
+---
+
+ITS on Solana supports the three [kinds of token](/its/how-it-works/concepts#kinds-of-token): interchain tokens that ITS deploys, canonical tokens and custom tokens. This page lists the ITS instructions for each. Their accounts are in the [program source](https://github.com/axelarnetwork/axelar-amplifier-solana/tree/main/programs/solana-axelar-its/src/instructions), and the PDAs in the [ITS program reference](/its/integrations/solana/its-contracts#pdas).
+
+In every instruction, the `payer` account pays for the accounts the instruction creates, and for the gas. Instructions that send a message to another chain take a `gas_value` in lamports: estimate it as in [Estimate ITS fees](/gmp/gas/estimate-and-pay#estimate-its-fees), with `solana` as the source chain.
+
+## Token IDs
+
+The [token ID](/its/how-it-works/concepts#token-id) of a token registered on Solana depends on the deployer's public key and a salt, or on the mint for a canonical token. The instructions that register a token return it, and the crate computes it:
+
+```rust
+use solana_axelar_its::utils::{
+    canonical_interchain_token_id, interchain_token_id, interchain_token_id_internal,
+    linked_token_deployer_salt,
+};
+use solana_axelar_its::{InterchainTokenService, TokenManager};
+
+fn token_ids(deployer: Pubkey, salt: [u8; 32], mint: Pubkey) {
+    // An interchain token you deploy with `salt`
+    let interchain_id = interchain_token_id(&deployer, &salt);
+    // A canonical token, from its mint
+    let canonical_id = canonical_interchain_token_id(&mint);
+    // A custom token you register with `salt`
+    let custom_id = interchain_token_id_internal(&linked_token_deployer_salt(&deployer, &salt));
+
+    // The token manager of a token, and the mint of an interchain token ITS deployed
+    let its_root_pda = InterchainTokenService::find_pda().0;
+    let token_manager_pda = TokenManager::find_pda(interchain_id, its_root_pda).0;
+    let interchain_token_mint = TokenManager::find_token_mint(interchain_id, its_root_pda).0;
+}
+```
+
+The IDs depend on the network feature you build with: use the one for the network you deploy to.
+
+## Deploy a new interchain token
+
+1. **`deploy_interchain_token(salt, name, symbol, decimals, initial_supply)`**, signed by the `deployer`. ITS creates a Token-2022 mint at a PDA, with its token manager as mint and freeze authority, and Metaplex metadata with the name (up to 32 bytes) and symbol (up to 10 bytes) that can't be changed later. It mints `initial_supply` to the deployer's associated token account.
+   - Pass a `minter` account, and its roles PDA, to give it the [minter](/its/how-it-works/roles#minter) role on the token, with the operator and flow limiter roles. Without a minter, `initial_supply` is the fixed supply and must be more than 0.
+2. **`deploy_remote_interchain_token(salt, destination_chain, gas_value)`**, signed by the same `deployer`, for each chain to deploy the token to. The token there has the same name and symbol, the same decimals unless the [ITS Hub](/its/how-it-works/its-hub#what-the-hub-does) reduces them, and no minter.
+
+## Register a canonical token
+
+An existing mint on Solana, SPL Token or Token-2022, can be registered as a [canonical token](/its/how-it-works/concepts#kinds-of-token). Anyone can register it, and no one holds a role on it.
+
+1. **`register_canonical_interchain_token()`** with the mint. The mint must have metadata, from which ITS reads the name and symbol: a Token-2022 metadata extension in the mint itself, or a Metaplex metadata account. ITS creates a `LockUnlock` token manager, or `LockUnlockFee` if the mint has a transfer fee.
+2. **`deploy_remote_canonical_interchain_token(destination_chain, gas_value)`** for each chain to deploy it to. ITS deploys an interchain token there, with no minter.
+
+## Link custom tokens
+
+To connect a mint on Solana with your token contracts on other chains, as a [custom token](/its/how-it-works/concepts#kinds-of-token):
+
+1. **`register_token_metadata(gas_value)`** with the Solana mint, to send its decimals to the ITS Hub. Register the tokens on the other chains with the hub too: the hub links only tokens it knows. For the gas estimate, the destination chain is `axelar`.
+2. **`register_custom_token(salt, token_manager_type, operator)`**, signed by the `deployer`, creates the token manager on Solana. `token_manager_type` can be any type but `NativeInterchainToken`: `LockUnlock` rejects a mint with a transfer fee, and `LockUnlockFee` requires one. `operator`, if set, gets the operator and flow limiter roles; pass its account and roles PDA too.
+3. **`link_token(salt, destination_chain, destination_token_address, token_manager_type, link_params, gas_value)`**, signed by the same `deployer`, for each other chain. `destination_token_address` is the token's address there as raw bytes, `token_manager_type` the type of its token manager there, and `link_params` the operator there as raw bytes, or empty for none.
+4. With a `MintBurn` or `MintBurnFrom` token manager on Solana, give the token manager the mint authority, or transfers fail: call **`handover_mint_authority(token_id)`**, signed by the current mint authority, which also gets the minter role.
+
+To link from another chain to Solana instead, `destination_token_address` is the 32-byte mint, and `link_params` an operator's 32-byte public key, or empty for none.
+
+## Minters
+
+A minter of a token holds the `MINTER` role on its token manager, and mints with **`mint_interchain_token(amount)`** to any token account of the mint. It works for any token whose token manager holds the mint authority: an interchain token, or a custom token after `handover_mint_authority`. The minter passes the role on with **`transfer_interchain_token_mintership`**, in one step.
+
+## Roles
+
+Roles are held per token manager, in a `UserRoles` PDA for each account, as a bitmask:
+
+| Role           | Bit    | Can                                                |
+| -------------- | ------ | -------------------------------------------------- |
+| `MINTER`       | `0x01` | Mint the token                                     |
+| `OPERATOR`     | `0x02` | Add and remove flow limiters, and pass on the role |
+| `FLOW_LIMITER` | `0x04` | Set the token's flow limit on Solana               |
+
+Who gets them:
+
+| Token                                              | Roles                                               |
+| -------------------------------------------------- | --------------------------------------------------- |
+| Interchain token deployed with a minter            | The minter: `MINTER`, `OPERATOR` and `FLOW_LIMITER` |
+| Custom token registered or linked with an operator | The operator: `OPERATOR` and `FLOW_LIMITER`         |
+| After `handover_mint_authority`                    | The previous mint authority: `MINTER`               |
+| Canonical token                                    | No one                                              |
+
+The operator manages flow limiters with **`add_token_manager_flow_limiter`** and **`remove_token_manager_flow_limiter`**, and passes on its role with **`transfer_token_manager_operatorship`**, in one step. Only `OPERATOR` moves: the previous operator keeps `FLOW_LIMITER` until it's removed, and the new operator can set limits only once it's given `FLOW_LIMITER` with `add_token_manager_flow_limiter`. See [Roles](/its/how-it-works/roles) for what each role means.
+
+## Flow limits
+
+A flow limiter sets a token's [flow limit](/its/how-it-works/flow-limits) on Solana with **`set_token_manager_flow_limit(flow_limit)`**, in the token's smallest unit on Solana:
+
+| `flow_limit` | Effect                                                                                         |
+| ------------ | ---------------------------------------------------------------------------------------------- |
+| `None`       | No limit, the default                                                                          |
+| `Some(0)`    | Blocks every transfer                                                                          |
+| `Some(n)`    | Limits the net flow in each 6-hour window to `n`; a single transfer larger than `n` also fails |
+
+ITS's own operator, an account Axelar controls, can also set the flow limit of any token with `set_flow_limit`, and can't be removed. A token manager's operator can't stop it.

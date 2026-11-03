@@ -1,0 +1,127 @@
+---
+title: "Transfers with data"
+description: "Send tokens to a contract on another chain and call it with data, and the checks the receiving contract must make."
+---
+
+A transfer can carry data. ITS on the destination chain then gives the tokens to the recipient contract, and calls it with the data, in the same transaction. For plain transfers, see [Transfers](/its/integrations/evm/transfers).
+
+## Send
+
+Call `interchainTransfer` on ITS, with `metadata` set to `bytes4(0)` followed by your data:
+
+```bash
+RECEIVER=<the receiving contract on the destination chain>
+DATA=$(cast abi-encode "f(address)" $ME) # what the receiver below expects: a recipient
+
+cast send $ITS "interchainTransfer(bytes32,string,bytes,uint256,bytes,uint256)" \
+  $TOKEN_ID binance $RECEIVER 25000000000000000000 \
+  $(cast concat-hex 0x00000000 $DATA) $FEE --value $FEE \
+  --rpc-url $RPC --private-key $PK
+```
+
+The call on the destination chain uses more gas than a plain transfer: measure it, and include it in the fee estimate; see [Estimate ITS fees](/gmp/gas/estimate-and-pay#estimate-its-fees).
+
+In Solidity, the metadata is `bytes.concat(bytes4(0), data)`. The first 4 bytes are a version, and `0` is the only one to use. The same format works for the token's own [`interchainTransfer`](/its/integrations/evm/transfers#from-the-token).
+
+On chains running ITS v2.2.0, you can also pass the data as is, with the gas paid from `msg.value` (see [Versions](/its/integrations/evm/intro#versions)):
+
+```solidity
+function callContractWithInterchainToken(
+    bytes32 tokenId,
+    string calldata destinationChain,
+    bytes calldata destinationAddress,
+    uint256 amount,
+    bytes memory data // without the bytes4(0) prefix
+) external payable;
+```
+
+## Receive
+
+Inherit [`InterchainTokenExecutable`](https://github.com/axelarnetwork/interchain-token-service/blob/main/contracts/executable/InterchainTokenExecutable.sol), pass the ITS address to its constructor, and implement `_executeWithInterchainToken`. When a transfer with data arrives, ITS:
+
+1. Gives the tokens to your contract.
+1. Calls `executeWithInterchainToken` on it, which checks that the caller is ITS and calls your `_executeWithInterchainToken`.
+
+```solidity
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
+
+import { InterchainTokenExecutable } from '@axelar-network/interchain-token-service/contracts/executable/InterchainTokenExecutable.sol';
+import { IERC20 } from '@axelar-network/axelar-gmp-sdk-solidity/contracts/interfaces/IERC20.sol';
+
+contract TokenReceiver is InterchainTokenExecutable {
+    // The token this contract accepts, and the one sender it accepts it from
+    bytes32 public immutable expectedTokenId;
+    bytes32 public immutable trustedChainHash;
+    bytes32 public immutable trustedSenderHash;
+
+    error UnexpectedToken(bytes32 tokenId);
+    error UntrustedSender(string sourceChain, bytes sourceAddress);
+    error TransferFailed();
+
+    event Forwarded(string sourceChain, bytes sourceAddress, address recipient, uint256 amount);
+
+    constructor(
+        address interchainTokenService_,
+        bytes32 tokenId,
+        string memory trustedChain,
+        address trustedSender
+    ) InterchainTokenExecutable(interchainTokenService_) {
+        expectedTokenId = tokenId;
+        trustedChainHash = keccak256(bytes(trustedChain));
+        trustedSenderHash = keccak256(abi.encodePacked(trustedSender));
+    }
+
+    function _executeWithInterchainToken(
+        bytes32 /* commandId */,
+        string calldata sourceChain,
+        bytes calldata sourceAddress,
+        bytes calldata data,
+        bytes32 tokenId,
+        address token,
+        uint256 amount
+    ) internal override {
+        // ITS calls this for any transfer with data to this contract:
+        // check the token and the sender.
+        if (tokenId != expectedTokenId) revert UnexpectedToken(tokenId);
+        if (keccak256(bytes(sourceChain)) != trustedChainHash || keccak256(sourceAddress) != trustedSenderHash) {
+            revert UntrustedSender(sourceChain, sourceAddress);
+        }
+
+        // The tokens are already in this contract. Forward them to the recipient in the data.
+        address recipient = abi.decode(data, (address));
+        emit Forwarded(sourceChain, sourceAddress, recipient, amount);
+
+        if (!IERC20(token).transfer(recipient, amount)) revert TransferFailed();
+    }
+}
+```
+
+`token` and `amount` are the token on this chain and the amount your contract received.
+
+### Check the token and the sender
+
+<Callout emoji="⚠️" title="ITS doesn't check who sent the transfer">
+  ITS proves that a transfer came through Axelar, and the `onlyService` check
+  proves that ITS called you. Neither proves that the transfer came from your
+  contract, or with the token you expect: anyone can send any token, with any
+  data, to your contract. Unless your contract accepts transfers from anyone,
+  check `tokenId`, `sourceChain` and `sourceAddress`.
+</Callout>
+
+When you compare them:
+
+- **`tokenId`** is the token's [ID](/its/how-it-works/concepts#token-id). Anyone can deploy a token and send it to your contract, so compare the ID, not just the amount.
+- **`sourceChain`** is the source chain's name exactly as ITS uses it, e.g. `Avalanche` or `binance`; see [Chain names](/its/integrations/evm/intro#chain-names).
+- **`sourceAddress`** is the account that sent the transfer, as bytes: 20 bytes for an EVM address, so compare it with `abi.encodePacked(address)`. For a transfer sent from the token with `interchainTransferFrom`, it's the account the tokens came from.
+
+### When `_executeWithInterchainToken` reverts
+
+If it reverts, the whole execution reverts, including giving the tokens to your contract. The message stays approved and can be [executed again](/gmp/track-and-recover/recover-transactions#execute), e.g. after you fix your contract's state; see [Debug failed execution](/gmp/track-and-recover/debug-failed-execution). The tokens arrive only when the call succeeds.
+
+Data sent to an address that isn't an `InterchainTokenExecutable` makes the execution fail the same way, every time.
+
+## Next steps
+
+- [its-executable](https://github.com/axelarnetwork/axelar-examples/tree/main/examples/evm/its-executable): an example that sends tokens with a message between EVM chains.
+- [Send and receive messages](/gmp/integrations/evm/gmp-messages): GMP messages without tokens.

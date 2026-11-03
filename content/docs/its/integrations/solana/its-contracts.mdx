@@ -1,0 +1,173 @@
+---
+title: "ITS Program Reference"
+description: "The Solana ITS program: accounts, PDAs, instructions and events."
+---
+
+The [ITS program](https://github.com/axelarnetwork/axelar-amplifier-solana/tree/main/programs/solana-axelar-its) is an Anchor program, published as the [`solana-axelar-its`](https://crates.io/crates/solana-axelar-its) crate. Its address on each network is on [Chains and contracts](/infrastructure/network/chains-and-contracts); the crate's network feature (`mainnet` or `testnet`) sets it as `solana_axelar_its::ID`. See [Setup](/its/integrations/solana/intro#setup).
+
+## Accounts
+
+### ITS root
+
+The ITS root PDA ([`InterchainTokenService`](https://github.com/axelarnetwork/axelar-amplifier-solana/blob/main/programs/solana-axelar-its/src/state/its.rs)) holds the program's configuration:
+
+```rust
+pub struct InterchainTokenService {
+    pub its_hub_address: String,
+    pub chain_name: String,
+    pub paused: bool,
+    pub trusted_chains: Vec<String>,
+    pub bump: u8,
+}
+```
+
+ITS sends and accepts transfers only for chains in `trusted_chains`, and only messages from the ITS Hub at `its_hub_address`.
+
+### Token manager
+
+Each token has a [`TokenManager`](https://github.com/axelarnetwork/axelar-amplifier-solana/blob/main/programs/solana-axelar-its/src/state/token_manager.rs) PDA, which is the authority of the token's mint for mint and burn types, and of the token account that holds locked tokens for lock and unlock types:
+
+```rust
+pub struct TokenManager {
+    pub ty: Type,
+    pub token_id: [u8; 32],
+    pub token_address: Pubkey,             // the mint
+    pub associated_token_account: Pubkey,  // the token manager's token account
+    pub flow_slot: FlowState,
+    pub bump: u8,
+}
+
+pub struct FlowState {
+    pub flow_limit: Option<u64>,
+    pub flow_in: u64,
+    pub flow_out: u64,
+    pub epoch: u64, // the 6-hour window that flow_in and flow_out count
+}
+```
+
+`Type` has the same values as the [token manager types](/its/how-it-works/concepts#token-managers) on other chains: `NativeInterchainToken` (`0`), `MintBurnFrom` (`1`), `LockUnlock` (`2`), `LockUnlockFee` (`3`) and `MintBurn` (`4`). On Solana, `MintBurnFrom` burns like `MintBurn`, with the sender's signature.
+
+### Roles
+
+A [`UserRoles`](https://github.com/axelarnetwork/axelar-amplifier-solana/blob/main/programs/solana-axelar-its/src/state/user_roles.rs) PDA holds an account's roles on a token manager, or on ITS itself for ITS's operator, as a bitmask: `MINTER` (`0x01`), `OPERATOR` (`0x02`) and `FLOW_LIMITER` (`0x04`). See [Roles](/its/integrations/solana/tokens#roles).
+
+## PDAs
+
+| Seeds                                               | Program      | Account                                                            |
+| --------------------------------------------------- | ------------ | ------------------------------------------------------------------ |
+| `b"interchain-token-service"`                       | ITS          | ITS root                                                           |
+| `b"token-manager"`, ITS root, token ID              | ITS          | Token manager of a token                                           |
+| `b"interchain-token"`, ITS root, token ID           | ITS          | Mint of an interchain token that ITS deployed                      |
+| `b"user-roles"`, token manager or ITS root, account | ITS          | An account's roles                                                 |
+| `b"interchain-transfer-execute"`, your program ID   | ITS          | Signer that ITS uses to call your program                          |
+| `b"axelar-its-token-authority"`                     | Your program | Authority of the token account that receives your program's tokens |
+
+The token manager's token account is its associated token account for the mint. The crate exposes the seeds in `solana_axelar_its::seed_prefixes`, and `find_pda` functions on `InterchainTokenService`, `TokenManager` and `UserRoles`.
+
+### Deriving the accounts
+
+The accounts of `interchain_transfer`, derived off-chain with the ITS, Gateway and Gas Service crates:
+
+```rust
+use anchor_spl::associated_token::get_associated_token_address_with_program_id;
+use solana_axelar_its::{InterchainTokenService, TokenManager};
+
+fn interchain_transfer_accounts(
+    token_id: [u8; 32],
+    token_mint: Pubkey,
+    token_program: Pubkey,
+    sender: Pubkey,
+) {
+    let its_root_pda = InterchainTokenService::find_pda().0;
+    let its_event_authority = solana_axelar_its::EVENT_AUTHORITY_AND_BUMP.0;
+    let token_manager_pda = TokenManager::find_pda(token_id, its_root_pda).0;
+    let token_manager_ata =
+        get_associated_token_address_with_program_id(&token_manager_pda, &token_mint, &token_program);
+    let sender_token_account =
+        get_associated_token_address_with_program_id(&sender, &token_mint, &token_program);
+
+    let gateway_root_pda = solana_axelar_gateway::GatewayConfig::find_pda().0;
+    let gateway_event_authority = solana_axelar_gateway::EVENT_AUTHORITY_AND_BUMP.0;
+    // ITS's signing PDA for the gateway, derived from the ITS program ID
+    let call_contract_signing_pda =
+        solana_axelar_gateway::CallContractSigner::find_pda(&solana_axelar_its::ID).0;
+
+    let gas_treasury = Pubkey::find_program_address(
+        &[solana_axelar_gas_service::state::Treasury::SEED_PREFIX],
+        &solana_axelar_gas_service::ID,
+    )
+    .0;
+    let gas_event_authority = solana_axelar_gas_service::EVENT_AUTHORITY_AND_BUMP.0;
+}
+```
+
+The token's mint is `TokenManager::find_token_mint` for an interchain token that ITS deployed, and the existing mint for a canonical or custom token. `token_program` is the mint's owner: the SPL Token or the Token-2022 program.
+
+## Instructions
+
+| Instruction                                | Signed by                    | Does                                                                                                           |
+| ------------------------------------------ | ---------------------------- | -------------------------------------------------------------------------------------------------------------- |
+| `interchain_transfer`                      | The token owner              | Sends tokens, with optional data. See [Send tokens](/its/integrations/solana/interchain-transfers#send-tokens) |
+| `deploy_interchain_token`                  | The deployer                 | Deploys an interchain token on Solana                                                                          |
+| `deploy_remote_interchain_token`           | The deployer                 | Deploys it to another chain                                                                                    |
+| `register_canonical_interchain_token`      | Anyone                       | Registers an existing mint as a canonical token                                                                |
+| `deploy_remote_canonical_interchain_token` | Anyone                       | Deploys a canonical token to another chain                                                                     |
+| `register_token_metadata`                  | Anyone                       | Sends a mint's decimals to the ITS Hub                                                                         |
+| `register_custom_token`                    | The deployer                 | Creates the token manager of a custom token                                                                    |
+| `link_token`                               | The deployer                 | Links a custom token to a token on another chain                                                               |
+| `handover_mint_authority`                  | The mint authority           | Gives the token manager the mint authority, and the signer `MINTER`                                            |
+| `mint_interchain_token`                    | A minter                     | Mints the token                                                                                                |
+| `transfer_interchain_token_mintership`     | A minter                     | Passes on `MINTER`                                                                                             |
+| `add_token_manager_flow_limiter`           | The token manager's operator | Gives an account `FLOW_LIMITER`                                                                                |
+| `remove_token_manager_flow_limiter`        | The token manager's operator | Removes `FLOW_LIMITER` from an account                                                                         |
+| `transfer_token_manager_operatorship`      | The token manager's operator | Passes on `OPERATOR`                                                                                           |
+| `set_token_manager_flow_limit`             | A flow limiter               | Sets the token's flow limit                                                                                    |
+| `set_flow_limit`                           | ITS's operator               | Sets any token's flow limit                                                                                    |
+
+ITS's operator, or the program's upgrade authority, manages the trusted chains (`set_trusted_chain`, `remove_trusted_chain`). The upgrade authority can pause ITS (`set_pause_status`). The relayer calls `execute` for messages from the ITS Hub, and ITS then calls `execute_interchain_transfer`, `execute_deploy_interchain_token` or `execute_link_token` on itself.
+
+## Events
+
+ITS emits Anchor events through CPI ([`events.rs`](https://github.com/axelarnetwork/axelar-amplifier-solana/blob/main/programs/solana-axelar-its/src/events.rs)):
+
+| Event                                    | When                                                  |
+| ---------------------------------------- | ----------------------------------------------------- |
+| `InterchainTransferSent`                 | A transfer leaves Solana                              |
+| `InterchainTransferReceived`             | A transfer arrives on Solana                          |
+| `InterchainTokenDeployed`                | ITS deploys an interchain token on Solana             |
+| `InterchainTokenDeploymentStarted`       | A token is deployed from Solana to another chain      |
+| `TokenManagerDeployed`                   | ITS creates a token manager on Solana                 |
+| `TokenMetadataRegistered`                | A mint's decimals are sent to the ITS Hub             |
+| `LinkTokenStarted`                       | A custom token is linked from Solana to another chain |
+| `FlowLimitSet`                           | A token's flow limit changes                          |
+| `TrustedChainSet`, `TrustedChainRemoved` | ITS's trusted chains change                           |
+
+The transfer events carry the token ID, the source or destination address and chain, the amount after any fee, and the hash of the data, if any:
+
+```rust
+pub struct InterchainTransferSent {
+    pub token_id: [u8; 32],
+    pub source_address: Pubkey,
+    pub source_token_account: Pubkey,
+    pub destination_chain: String,
+    pub destination_address: Vec<u8>,
+    pub amount: u64,
+    pub data_hash: Option<[u8; 32]>,
+}
+
+pub struct InterchainTransferReceived {
+    pub command_id: [u8; 32],
+    pub token_id: [u8; 32],
+    pub source_chain: String,
+    pub source_address: Vec<u8>,
+    pub destination_address: Pubkey,
+    pub destination_token_account: Pubkey,
+    pub amount: u64,
+    pub data_hash: Option<[u8; 32]>,
+}
+```
+
+## Support
+
+- For general questions, open a ticket on [Axelar Zendesk](https://axelar.zendesk.com/).
+- For issues with the Solana programs, open an issue on the [axelar-amplifier-solana](https://github.com/axelarnetwork/axelar-amplifier-solana/issues) repository.
