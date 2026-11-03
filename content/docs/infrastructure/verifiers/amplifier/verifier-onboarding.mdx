@@ -384,7 +384,7 @@ Handlers are separate binaries that connect to ampd's gRPC server. Each handler 
 | `stellar-handler` | Stellar | `axelarnet/axelar-ampd-stellar-handler` |
 | `xrpl-handler` | XRPL | `axelarnet/axelar-ampd-xrpl-handler` |
 
-Prebuilt binaries are available on the [GitHub Releases page](https://github.com/axelarnetwork/axelar-amplifier/releases). Handler releases are tagged as `<handler>-v*` (e.g. `evm-handler-v0.1.8`).
+Prebuilt binaries are available on the [GitHub Releases page](https://github.com/axelarnetwork/axelar-amplifier/releases). Handler releases are tagged as `<handler>-v*` (e.g. `sui-handler-v0.2.1`), and each handler has its own version: use the latest release of each. The Sui handler needs v0.2.0 or later, the first to use the Sui gRPC API that the config below points to.
 
 ### Directory structure
 
@@ -470,7 +470,7 @@ docker run -d \
   --name xrpl-evm-handler \
   --restart unless-stopped \
   -v ~/.ampd/xrpl-evm:/config \
-  axelarnet/axelar-ampd-evm-handler:v0.1.8 \
+  axelarnet/axelar-ampd-evm-handler:v0.1.6 \
   --config-dir /config
 ```
 
@@ -479,7 +479,7 @@ docker run -d \
   --name sui-handler \
   --restart unless-stopped \
   -v ~/.ampd/sui:/config \
-  axelarnet/axelar-ampd-sui-handler:v0.1.8 \
+  axelarnet/axelar-ampd-sui-handler:v0.2.1 \
   --config-dir /config
 ```
 
