@@ -77,7 +77,7 @@ curl 'https://api.axelar.network/rfq/v1/status?quoteId=quote_123'
 | `REFUND_PENDING` | The transfer will not be fulfilled and a refund has been decided, but no refund transaction has been submitted yet (`refund` is `null`) |
 | `REFUND_INITIATED` | The refund has been submitted, but the source-chain refund transaction has not been observed yet (`refund` is still `null`) |
 | `REFUNDED` | The refund landed on the source chain and the user has their funds back (`refund` populated) |
-| `FAILED` | The transfer reached a terminal failure |
+| `FAILED` | The transfer reached a terminal failure. On intent routes, `details.reason` says why when it is known; see [Rejected deposit](#rejected-deposit). |
 | `NOT_FOUND` | No transfer matches the supplied identifier, or the quote's deposit window closed with no deposit |
 
 `NOT_FOUND` is returned with HTTP `200`: a well-formed lookup for an identifier the API does not (yet) recognize is not an error.
@@ -159,6 +159,41 @@ The transfer will not be fulfilled and the refund has been submitted. `destinati
   "details": {}
 }
 ```
+
+#### Rejected deposit
+
+An intent route reports `FAILED` with `details.reason` set to `deposit_rejected` when the deposit does not match its quote. The route does not fill this deposit and does not refund it. After `selfRefundAfter`, the deposit can be refunded through the `refund` function of the `AxelarIntents` contract on the destination chain.
+
+```json
+{
+  "quoteId": "quote_123",
+  "state": "FAILED",
+  "backend": {
+    "type": "intent",
+    "name": "Axelar Intents"
+  },
+  "source": {
+    "chain": "eip155:42161",
+    "txHash": "0xabc...",
+    "messageId": "0xabc...",
+    "timestamp": "2026-06-16T12:00:03Z"
+  },
+  "destination": null,
+  "output": null,
+  "refund": null,
+  "details": {
+    "reason": "deposit_rejected",
+    "deposited": "12000000",
+    "selfRefundAfter": 1781612403
+  }
+}
+```
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `reason` | string | `deposit_rejected` |
+| `deposited` | string | The amount the deposit recorded on the source chain, in base units |
+| `selfRefundAfter` | number | Unix time in seconds: the quote's fulfillment deadline, after which the refund can be requested |
 
 ## Errors
 

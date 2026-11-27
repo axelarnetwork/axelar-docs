@@ -36,7 +36,7 @@ The response may contain multiple quotes, sorted by API preference. **The quote 
 | `toChain` | string | Yes | Destination chain, CAIP-2 identifier |
 | `toToken` | string | Yes | Destination token address on `toChain` |
 | `amount` | string | Yes | Amount in base units. Interpreted according to `orderType` |
-| `orderType` | string | Yes | `EXACT_INPUT` or `EXACT_OUTPUT`. See [Order Types](#order-types). |
+| `orderType` | string | Yes | `EXACT_INPUT`, `EXACT_OUTPUT`, or `MIN_OUTPUT`. See [Order Types](#order-types). |
 | `sender` | string | Yes | Address that will execute the actions and provide the input funds |
 | `recipient` | string | Yes | Address that receives the output on `toChain` |
 | `slippageTolerance` | number | No | Maximum acceptable output slippage, in basis points (e.g. `100` = 1%). See [Slippage](#slippage). |
@@ -71,13 +71,15 @@ The response may contain multiple quotes, sorted by API preference. **The quote 
 
 **`EXACT_INPUT`** — `amount` is the exact source amount the user will send. The API returns the destination amount the user should receive.
 
-**`EXACT_OUTPUT`** — `amount` is the exact destination amount the user wants to receive. The API returns the exact source amount the user must deposit (`input.amount` in each quote).
+**`EXACT_OUTPUT`** — `amount` is the exact destination amount the user wants to receive. The API returns the exact source amount the user must deposit (`input.amount` in each quote). Intent routes accept `EXACT_OUTPUT` only when no swap is needed on either chain; for a route with a swap, they return `INVALID_REQUEST` and ask for `MIN_OUTPUT`.
+
+**`MIN_OUTPUT`** — `amount` is the minimum destination amount the user wants to receive. The API returns the exact source amount the user must deposit. The recipient receives at least `amount` (`output.minimumAmount` is never below it); on a route with a swap, any surplus over the minimum goes to the recipient. On a route without a swap, `MIN_OUTPUT` quotes the same as `EXACT_OUTPUT`.
 
 ### Slippage
 
 `slippageTolerance` bounds how far the delivered output may fall below the quoted estimate, in basis points. It is only meaningful for quotes whose output is determined at execution time — for example, a route that swaps into `toToken` on a destination-chain DEX. For such quotes the API sets `output.minimumAmount = output.amount × (1 − slippageTolerance / 10_000)` (since `slippageTolerance` is in basis points), and the transfer reverts (and refunds) rather than delivering less than `output.minimumAmount`.
 
-For quotes with a guaranteed output — where the backend commits to the amount — there is no execution-time variance, so `slippageTolerance` has **no effect**: `output.minimumAmount` equals `output.amount`. The field is always accepted and never causes an error; it simply does nothing when the route has no output variance to bound.
+For quotes with a guaranteed output — where the backend commits to the amount — there is no execution-time variance, so `slippageTolerance` has **no effect**: `output.minimumAmount` equals `output.amount`. The field does nothing when the route has no output variance to bound.
 
 If omitted, a default tolerance is applied to quotes that require it. To tell whether a given quote's output is firm or subject to slippage, compare `output.amount` and `output.minimumAmount` (see [Input and Output](#input-and-output)).
 
@@ -153,7 +155,7 @@ Quotes expire. The `validity` object describes when the quote must be acted on.
 
 ### Input and Output
 
-For executable quotes, `input.amount` is always the **exact amount the user must deposit** — including for `EXACT_OUTPUT` requests, where it is the computed source amount.
+For executable quotes, `input.amount` is always the **exact amount the user must deposit** — including for `EXACT_OUTPUT` and `MIN_OUTPUT` requests, where it is the computed source amount.
 
 ```json
 {
@@ -188,12 +190,12 @@ For executable quotes, `input.amount` is always the **exact amount the user must
 
 ### Fees
 
-Fees are reported as quote-level aggregates.
+Fees are reported as quote-level aggregates. `userGas` is paid on top of the quote; the other lines are already reflected in the quoted amounts.
 
 ```json
 {
   "fees": {
-    "gas": {
+    "userGas": {
       "amount": "1200000000000000",
       "amountUsdApprox": "4.20",
       "token": {
@@ -215,6 +217,20 @@ Fees are reported as quote-level aggregates.
       "paymentMethod": "input_token",
       "quoteTreatment": "included_in_quote"
     },
+    "protocol": {
+      "amount": "2000000",
+      "amountUsdApprox": "2.00",
+      "token": { "chain": "eip155:42161", "symbol": "USDC", "address": "0xaf88d065e77c8cC2239327C5EDb3A432268e5831" },
+      "paymentMethod": "input_token",
+      "quoteTreatment": "included_in_quote"
+    },
+    "execution": {
+      "amount": "500000",
+      "amountUsdApprox": "0.50",
+      "token": { "chain": "eip155:42161", "symbol": "USDC", "address": "0xaf88d065e77c8cC2239327C5EDb3A432268e5831" },
+      "paymentMethod": "input_token",
+      "quoteTreatment": "included_in_quote"
+    },
     "integrator": null
   }
 }
@@ -222,9 +238,17 @@ Fees are reported as quote-level aggregates.
 
 | Field | Type | Description |
 |-------|------|-------------|
-| `gas` | object | Estimated total native gas for **all** user-executed on-chain actions in the quote. If a quote has an approval and a transfer, this is the aggregate of both. |
-| `user` | object | Fee charged to the user by the execution route |
+| `userGas` | object | Estimated total native gas for **all** user-executed on-chain actions in the quote. If a quote has an approval and a transfer, this is the aggregate of both. Paid from the user's wallet, on top of the quote. |
+| `gas` | object | **Deprecated.** Same entry as `userGas`; use `userGas` instead. |
+| `user` | object | Total fee the route charges the user inside the quoted amounts. On intent routes it is the sum of `protocol`, `dex`, and `execution`. |
+| `protocol` | object | The route provider's own margin. |
+| `dex` | object | What the route's swaps lose to pool fees and price impact against market prices, at their expected outputs. One line for all swaps in the quote (source and destination chain). `0` on routes without a swap. |
+| `execution` | object | Gas the route provider spends to deliver the output on the destination chain, including a destination swap's gas. |
 | `integrator` | object \| null | Integrator-configured fee, if any. Includes `bps` and `recipient` in addition to the standard fee fields. |
+
+`protocol`, `dex`, and `execution` are present on intent routes; other routes may report only `user`.
+
+On intent routes, all lines inside the quote (`user`, `protocol`, `dex`, `execution`) are stated in USDC on the source chain. When the user deposits that USDC, their `paymentMethod` is `input_token`. When the user deposits another token, which a swap on the source chain turns into USDC first, their `paymentMethod` is `route_token`.
 
 Each fee entry contains:
 
@@ -244,6 +268,7 @@ Each fee entry contains:
 | `tx_value` | User sends native value in the executable transaction |
 | `input_token` | Charged from or embedded in the input token |
 | `output_token` | Deducted from the output token |
+| `route_token` | Charged from the route's internal token (such as USDC), which a swap turned the input token into |
 | `sponsored` | Not paid by the user |
 | `offchain` | Tracked or settled outside execution |
 
@@ -347,7 +372,7 @@ curl -X POST 'https://api.axelar.network/rfq/v1/quote' \
         "amountUsdApprox": "0.995"
       },
       "fees": {
-        "gas": {
+        "userGas": {
           "amount": "1200000000000000",
           "amountUsdApprox": "4.20",
           "token": {
